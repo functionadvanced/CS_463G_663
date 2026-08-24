@@ -1,0 +1,848 @@
+/* css styles */
+
+html {
+  background: #fbfdff;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(39, 128, 227, 0.1), transparent 30rem),
+    linear-gradient(135deg, #fbfdff 0%, #f7fbff 45%, #fffdf8 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: 100vw 100vh;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+#neural-background {
+  inset: 0;
+  opacity: 0.38;
+  pointer-events: none;
+  position: fixed;
+  z-index: 0;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  #neural-background {
+    display: none !important;
+  }
+
+  .assignment-card,
+  .assignment-summary,
+  .assignment-facts {
+    background: #fff !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Assignment collection and handouts */
+
+.assignment-intro {
+  color: #475569;
+  font-size: 1.08rem;
+  line-height: 1.7;
+  max-width: 58rem;
+}
+
+.assignment-overview-page .quarto-title-block,
+.assignments-overview {
+  margin-inline: auto;
+  max-width: 72rem;
+  width: 100%;
+}
+
+.assignment-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 1.5rem 0 2rem;
+}
+
+.assignment-card {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid #d8e1e8;
+  border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(15, 57, 78, 0.07);
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  min-height: 16rem;
+  padding: 1.25rem;
+  text-decoration: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.assignment-card:hover,
+.assignment-card:focus-visible {
+  border-color: #007c89;
+  box-shadow: 0 14px 34px rgba(0, 95, 115, 0.14);
+  color: inherit;
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.assignment-card-number {
+  color: #007c89;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.assignment-card h2,
+.assignment-card-title {
+  display: block;
+  font-size: 1.28rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0.55rem 0 0.6rem;
+}
+
+.assignment-card-date {
+  color: #007c89;
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+  margin: -0.15rem 0 0.65rem;
+}
+
+.assignment-card p {
+  color: #52616f;
+  line-height: 1.55;
+  margin-bottom: 1rem;
+}
+
+.assignment-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: auto;
+}
+
+.assignment-tag,
+.assignment-meta span {
+  background: #e8f6f5;
+  border: 1px solid #c5e4e1;
+  border-radius: 999px;
+  color: #006d77;
+  display: inline-flex;
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.42rem 0.65rem;
+}
+
+.assignment-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.2rem 0 1.25rem;
+}
+
+.assignment-summary {
+  background: linear-gradient(135deg, rgba(232, 246, 245, 0.92), rgba(240, 247, 255, 0.92));
+  border: 1px solid #cfe1e7;
+  border-left: 5px solid #007c89;
+  border-radius: 10px;
+  line-height: 1.65;
+  margin: 1rem 0 1.5rem;
+  padding: 1rem 1.15rem;
+}
+
+.assignment-facts {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid #d8e1e8;
+  border-radius: 10px;
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 1rem 0 1.5rem;
+}
+
+.assignment-fact {
+  padding: 0.9rem 1rem;
+}
+
+.assignment-fact + .assignment-fact {
+  border-left: 1px solid #d8e1e8;
+}
+
+.assignment-fact strong {
+  color: #52616f;
+  display: block;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
+.assignment-fact small {
+  color: #64748b;
+  display: block;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  margin-top: 0.22rem;
+}
+
+.starter-download {
+  align-items: center;
+  background: linear-gradient(135deg, #073b4c, #006d77);
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(7, 59, 76, 0.18);
+  color: #fff;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+  margin: 1.25rem 0 1.6rem;
+  padding: 1.1rem 1.2rem;
+}
+
+.starter-download strong {
+  display: block;
+  font-size: 1.08rem;
+  line-height: 1.35;
+  margin-bottom: 0.22rem;
+}
+
+.starter-download p {
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  margin: 0;
+  max-width: 48rem;
+}
+
+.starter-download-label {
+  color: #8ee3dc;
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+}
+
+.starter-download .btn {
+  background: #fff;
+  border-color: #fff;
+  color: #006d77;
+  flex: 0 0 auto;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.starter-download .btn:hover,
+.starter-download .btn:focus-visible {
+  background: #e8f6f5;
+  border-color: #e8f6f5;
+  color: #005964;
+}
+
+.starter-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  justify-content: flex-end;
+}
+
+.starter-download .btn-outline-light {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.72);
+  color: #fff;
+}
+
+.starter-download .btn-outline-light:hover,
+.starter-download .btn-outline-light:focus-visible {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #fff;
+  color: #fff;
+}
+
+/* Classroom source-code viewers */
+
+.starter-viewer-page .quarto-title-block,
+.starter-viewer-page main.content {
+  margin-inline: auto;
+  max-width: 92rem;
+  width: 100%;
+}
+
+.starter-viewer-intro {
+  align-items: center;
+  background: linear-gradient(135deg, rgba(232, 246, 245, 0.94), rgba(240, 247, 255, 0.94));
+  border: 1px solid #cfe1e7;
+  border-left: 5px solid #007c89;
+  border-radius: 10px;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin: 0.75rem 0 1.5rem;
+  padding: 1rem 1.1rem;
+}
+
+.starter-viewer-intro p {
+  color: #475569;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 58rem;
+}
+
+.starter-viewer-intro .starter-actions {
+  white-space: nowrap;
+}
+
+.starter-file-tabs {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #d8e1e8;
+  border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(15, 57, 78, 0.07);
+  overflow: hidden;
+}
+
+.starter-file-tabs .nav-tabs {
+  background: #f4f8fa;
+  border-bottom: 1px solid #d8e1e8;
+  gap: 0.15rem;
+  padding: 0.55rem 0.65rem 0;
+}
+
+.starter-file-tabs .nav-link {
+  color: #3f5361;
+  font-family: var(--bs-font-monospace);
+  font-size: 0.87rem;
+  font-weight: 700;
+}
+
+.starter-file-tabs .nav-link.active {
+  color: #006d77;
+}
+
+.starter-file-tabs .tab-content {
+  padding: 0.85rem;
+}
+
+.starter-file-tabs .sourceCode {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .starter-download,
+  .starter-viewer-intro {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .starter-actions {
+    justify-content: flex-start;
+  }
+
+  .starter-actions .btn {
+    flex: 1 1 auto;
+  }
+}
+
+.tile-legend {
+  display: grid;
+  gap: 0.55rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 1rem 0;
+}
+
+.tile-chip {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #d8e1e8;
+  border-radius: 8px;
+  display: flex;
+  gap: 0.65rem;
+  padding: 0.65rem 0.75rem;
+}
+
+.tile-code {
+  align-items: center;
+  background: #007c89;
+  border-radius: 6px;
+  color: #fff;
+  display: inline-flex;
+  flex: 0 0 1.8rem;
+  font-weight: 800;
+  height: 1.8rem;
+  justify-content: center;
+}
+
+.homework-figure {
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid #d8e1e8;
+  border-radius: 12px;
+  box-shadow: 0 10px 26px rgba(15, 57, 78, 0.06);
+  margin: 1.4rem auto 1.7rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.homework-figure figure,
+.homework-figure p {
+  margin: 0;
+}
+
+.homework-figure img {
+  border-radius: 8px;
+  display: block;
+  height: auto;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.homework-figure figcaption {
+  color: #52616f;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  margin: 0.8rem auto 0;
+  max-width: 58rem;
+}
+
+.homework-figure--map {
+  max-width: 23rem;
+}
+
+.homework-figure--map img {
+  max-width: 17rem;
+}
+
+.homework-figure--stress img {
+  max-width: 34rem;
+}
+
+.homework-figure--mnist img {
+  border: 1px solid #edf1f4;
+  max-width: 50rem;
+}
+
+.homework-figure--wide {
+  max-width: 68rem;
+}
+
+.assignment-nav {
+  border-top: 1px solid #d8e1e8;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+}
+
+@media (max-width: 760px) {
+  .assignment-grid,
+  .assignment-facts,
+  .tile-legend {
+    grid-template-columns: 1fr;
+  }
+
+  .assignment-fact + .assignment-fact {
+    border-left: 0;
+    border-top: 1px solid #d8e1e8;
+  }
+
+  .assignment-card {
+    min-height: 0;
+  }
+
+  .starter-download {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .starter-download .btn {
+    text-align: center;
+    width: 100%;
+  }
+
+  .homework-figure {
+    border-radius: 9px;
+    padding: 0.55rem;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1050px) {
+  .assignment-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .assignment-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .assignment-fact:nth-child(3) {
+    border-left: 0;
+    border-top: 1px solid #d8e1e8;
+  }
+
+  .assignment-fact:nth-child(4) {
+    border-top: 1px solid #d8e1e8;
+  }
+}
+
+.lecture-viewer {
+  margin-inline: auto;
+  max-width: min(100%, 1440px);
+}
+
+.lecture-viewer.page-columns {
+  display: block;
+}
+
+.lecture-viewer.page-columns.page-full {
+  grid-column: screen-start / screen-end !important;
+  max-width: min(calc(100vw - 2rem), 1440px);
+  width: min(calc(100vw - 2rem), 1440px);
+}
+
+.lecture-viewer.page-columns.page-full .lecture-viewer-workspace.page-columns.page-full {
+  column-gap: 0.9rem !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto auto !important;
+  row-gap: 0.8rem !important;
+}
+
+.lecture-viewer-header {
+  align-items: baseline;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.lecture-viewer-header h2 {
+  margin-bottom: 0;
+}
+
+.lecture-viewer-open {
+  white-space: nowrap;
+}
+
+.lecture-viewer-workspace {
+  align-items: stretch;
+  column-gap: 0;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto auto !important;
+  margin-top: 0.8rem;
+  row-gap: 0.8rem;
+}
+
+.lecture-viewer-sidebar {
+  align-self: start;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid #ddd8cf;
+  border-radius: 6px;
+  box-sizing: border-box;
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  max-width: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.lecture-viewer.page-columns.page-full .lecture-viewer-workspace.page-columns.page-full > .lecture-viewer-sidebar {
+  grid-column: 1 / 2 !important;
+  grid-row: 2 / 3 !important;
+}
+
+.lecture-viewer-sidebar-title {
+  background: #f7f9fb;
+  border-bottom: 1px solid #ddd8cf;
+  color: #5d6470;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.55rem 0.75rem;
+  text-transform: uppercase;
+}
+
+.lecture-viewer-thumbs {
+  display: flex;
+  flex-direction: row;
+  gap: 0.65rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.65rem;
+  scrollbar-color: #007c89 #f2f1ec;
+  scrollbar-width: thin;
+  white-space: nowrap;
+}
+
+.lecture-viewer-thumbs::-webkit-scrollbar {
+  height: 0.75rem;
+}
+
+.lecture-viewer-thumbs::-webkit-scrollbar-track {
+  background: #f2f1ec;
+  border-radius: 999px;
+}
+
+.lecture-viewer-thumbs::-webkit-scrollbar-thumb {
+  background: #007c89;
+  border: 2px solid #f2f1ec;
+  border-radius: 999px;
+}
+
+.lecture-viewer-thumb {
+  background: #ffffff;
+  border: 1px solid #ddd8cf;
+  border-radius: 6px;
+  color: #202124;
+  cursor: pointer;
+  flex: 0 0 210px;
+  display: block;
+  padding: 0.45rem;
+  text-align: left;
+  white-space: normal;
+}
+
+.lecture-viewer-thumb:hover,
+.lecture-viewer-thumb:focus-visible {
+  border-color: #007c89;
+  box-shadow: 0 0 0 3px rgba(0, 124, 137, 0.13);
+  outline: none;
+}
+
+.lecture-viewer-thumb.active {
+  background: #e8f6f5;
+  border-color: #007c89;
+}
+
+.lecture-viewer-slide-preview {
+  background: #ffffff;
+  border: 1px solid #ddd8cf;
+  border-radius: 4px;
+  display: block;
+  overflow: hidden;
+  padding-top: 56.25%;
+  position: relative;
+  width: 100%;
+}
+
+.lecture-viewer-slide-canvas {
+  background: #ffffff;
+  display: block;
+  height: 700px;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  transform: scale(calc(var(--thumb-scale, 1)));
+  transform-origin: top left;
+  width: 1050px;
+}
+
+.lecture-viewer-slide-clone {
+  box-sizing: border-box;
+  display: block !important;
+  height: 700px !important;
+  left: 0 !important;
+  margin: 0 !important;
+  opacity: 1 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  top: 0 !important;
+  transform: none !important;
+  width: 1050px !important;
+}
+
+.lecture-viewer-slide-clone .controls,
+.lecture-viewer-slide-clone .progress,
+.lecture-viewer-slide-clone .slide-number,
+.lecture-viewer-slide-clone .asset-credit-link {
+  display: none !important;
+}
+
+.lecture-viewer-thumb-meta {
+  align-items: center;
+  display: grid;
+  gap: 0.45rem;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  margin-top: 0.42rem;
+}
+
+.lecture-viewer-thumb-number {
+  align-items: center;
+  background: #f2f1ec;
+  border-radius: 5px;
+  color: #5d6470;
+  display: inline-flex;
+  font-size: 0.8rem;
+  font-weight: 700;
+  height: 2rem;
+  justify-content: center;
+  line-height: 1;
+  width: 2rem;
+}
+
+.lecture-viewer-thumb.active .lecture-viewer-thumb-number {
+  background: #007c89;
+  color: #ffffff;
+}
+
+.lecture-viewer-thumb-content {
+  min-width: 0;
+}
+
+.lecture-viewer-thumb-title {
+  display: block;
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.15;
+  min-width: 0;
+}
+
+.lecture-viewer-thumb-excerpt {
+  color: #5d6470;
+  display: block;
+  font-size: 0.74rem;
+  line-height: 1.18;
+  margin-top: 0.22rem;
+}
+
+.lecture-viewer-stage {
+  align-self: start;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid #ddd8cf;
+  border-radius: 6px;
+  box-sizing: border-box;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  margin: 0 !important;
+  padding: 0.65rem;
+}
+
+.lecture-viewer.page-columns.page-full .lecture-viewer-workspace.page-columns.page-full > .lecture-viewer-stage {
+  grid-column: 1 / 2 !important;
+  grid-row: 1 / 2 !important;
+}
+
+.lecture-viewer-frame {
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 4px;
+  display: block;
+  height: auto;
+  min-height: 0;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .lecture-viewer-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .lecture-viewer-sidebar {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+  }
+
+  .lecture-viewer.page-columns.page-full .lecture-viewer-workspace.page-columns.page-full > .lecture-viewer-sidebar {
+    grid-column: 1 / 2 !important;
+    grid-row: 2 / 3 !important;
+  }
+
+  .lecture-viewer-stage {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+
+  .lecture-viewer.page-columns.page-full .lecture-viewer-workspace.page-columns.page-full > .lecture-viewer-stage {
+    grid-column: 1 / 2 !important;
+    grid-row: 1 / 2 !important;
+  }
+
+  .lecture-viewer-frame {
+    min-height: 0;
+  }
+}
+
+.lecture-viewer-error {
+  border-left: 6px solid #b8325f;
+  color: #5d6470;
+  padding: 0.75rem 1rem;
+}
+
+div.sourceCode,
+.code-copy-outer-scaffold {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  box-sizing: border-box;
+  margin: 1rem 0 !important;
+  max-width: 100%;
+  padding: 0 !important;
+}
+
+.code-copy-outer-scaffold > div.sourceCode {
+  margin: 0 !important;
+}
+
+pre.sourceCode {
+  background: #f3fbfb;
+  border: 0;
+  border-radius: 7px;
+  box-sizing: border-box;
+  color: #005f73;
+  line-height: 1.35;
+  margin: 0;
+  padding: 0.85rem 1rem;
+}
+
+pre.sourceCode code {
+  color: #005f73;
+}
+
+pre.numberSource {
+  margin-left: 0;
+  padding-left: 1rem;
+}
+
+pre.numberSource code > span {
+  box-sizing: border-box;
+  display: inline-block;
+  left: 0;
+  min-height: 1.25em;
+  min-width: 100%;
+  padding-left: 3.5rem;
+  position: relative;
+  vertical-align: top;
+}
+
+pre.numberSource code > span > a:first-child {
+  position: static;
+}
+
+pre.numberSource code > span > a:first-child::before {
+  box-sizing: border-box;
+  color: #5d6470;
+  font-variant-numeric: tabular-nums;
+  left: 0;
+  line-height: inherit;
+  padding: 0 0.75rem 0 0;
+  position: absolute;
+  text-align: right;
+  text-decoration: none !important;
+  top: 0;
+  width: 2.75rem;
+}
