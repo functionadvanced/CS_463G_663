@@ -268,6 +268,55 @@
   padding: 0.26em 0.38em;
 }
 
+/* Lecture 2: keep the table and comparison legible in slides and viewer previews. */
+.reveal #vacuum-cleaner-agent-function table {
+  font-size: 0.92em;
+  line-height: 1.28;
+}
+
+.reveal #vacuum-cleaner-agent-function th,
+.reveal #vacuum-cleaner-agent-function td {
+  padding: 0.55em 0.65em;
+}
+
+.reveal #reward-hacking .definition,
+.reveal #reward-hacking .takeaway {
+  font-size: 0.86em;
+  margin: 0.6em 0;
+  padding: 0.45em 0.65em;
+}
+
+.reveal #reward-hacking .columns.reward-examples {
+  align-items: flex-start;
+  gap: 1em;
+  margin: 0.6em 0;
+}
+
+.reveal #reward-hacking .reward-examples .column {
+  min-width: 0;
+  font-size: 0.88em;
+}
+
+.reveal #reward-hacking .reward-examples h3 {
+  align-items: center;
+  display: flex;
+  gap: 0.5em;
+  font-size: 1em;
+}
+
+.reveal #reward-hacking .reward-icon {
+  height: 56px;
+  width: 56px;
+  object-fit: contain;
+  margin: 0;
+}
+
+.reveal #reward-hacking .reward-sources {
+  color: var(--cs-muted);
+  font-size: 0.52em;
+  line-height: 1.3;
+}
+
 .reveal .columns.two-column-balance {
   align-items: flex-start;
   display: flex;

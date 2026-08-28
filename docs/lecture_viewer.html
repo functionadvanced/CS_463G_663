@@ -256,7 +256,7 @@ ul.task-list li input[type="checkbox"] {
       img.setAttribute("src", new URL(src, deckDocument.location.href).href);
       img.removeAttribute("data-src");
     });
-    slideClone.querySelectorAll("script, iframe").forEach((node) => node.remove());
+    slideClone.querySelectorAll("script, iframe, .notes").forEach((node) => node.remove());
 
     canvas.appendChild(slideClone);
     preview.appendChild(canvas);

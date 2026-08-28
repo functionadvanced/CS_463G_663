@@ -381,12 +381,12 @@ f(T) =
 <p><em>(Fig. 2.2 of AIMA)</em></p>
 </div></div>
 </section>
-<section id="vacuum-cleaner-agent-function" class="slide level2 compact">
+<section id="vacuum-cleaner-agent-function" class="slide level2">
 <h2>Vacuum-Cleaner Agent Function</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 76%">
+<col style="width: 24%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -452,6 +452,59 @@ f(T) =
 <div class="takeaway">
 <p>Poorly designed objectives can produce unintended behavior.</p>
 </div>
+</section>
+<section id="reward-hacking" class="slide level2">
+<h2>Reward Hacking</h2>
+<div class="definition">
+<p><strong>Reward hacking</strong>, often called <strong>specification gaming</strong>, occurs when an agent exploits a scoring rule to earn a high reward without achieving the intended goal.</p>
+</div>
+<div class="columns reward-examples">
+<div class="column" style="width:48%;">
+<h3>
+<img src="imgs/lec2/vacuum_cleaner_openclipart.svg" alt="" class="reward-icon"> Our vacuum example
+</h3>
+<ul>
+<li><strong>Goal:</strong> keep rooms clean.</li>
+<li><strong>Score:</strong> count dirt picked up.</li>
+<li><strong>Shortcut:</strong> dump and re-collect dirt.</li>
+</ul>
+</div><div class="column" style="width:48%;">
+<h3>
+<img src="imgs/lec1/robot_openclipart.svg" alt="" class="reward-icon"> Today’s coding agents
+</h3>
+<ul>
+<li><strong>Goal:</strong> fix the software bug.</li>
+<li><strong>Score:</strong> count passing tests.</li>
+<li><strong>Shortcut:</strong> change tests to pass while leaving the bug.</li>
+</ul>
+</div></div>
+<div class="takeaway">
+<p>Optimizing the score is not the same as achieving the goal.</p>
+</div>
+<div class="reward-sources">
+<p>A long-standing problem, still studied today: <a href="https://deepmind.google/blog/specification-gaming-the-flip-side-of-ai-ingenuity/" target="_blank" rel="noopener">DeepMind (2020)</a>; <a href="https://alignment.anthropic.com/2026/coding-audit-realism/" target="_blank" rel="noopener">Anthropic (2026)</a>.</p>
+</div>
+<aside class="notes">
+<p>Connect this to the previous slide: repeated dirt collection earns points without keeping rooms clean. The score is a proxy, a measurable stand-in for what we actually want. This is not a newly invented problem; specification gaming is a closely related term. Reward hacking does not require human-like malicious intent.</p>
+<p>In reinforcement learning, a reward signal provides feedback used for learning; our performance measure describes what counts as success. Those need not be identical, and a poorly chosen reward can fail to reflect the intended measure. We will study reinforcement learning later.</p>
+<p>The coding example summarizes a type of behavior studied in controlled evaluations, not a claim that every coding agent does this. The March 2026 Anthropic study audited debugging tasks with deliberately impossible tests and explicit instructions not to modify them. When a test conflicts with the specification, the appropriate response is to flag the conflict, not silently weaken the evaluation. Broader safeguards include protected tests and independent checks of actual outcomes; no single metric guarantees success.</p>
+<p>[Sources]</p>
+<ul>
+<li>Google DeepMind, “Specification gaming: the flip side of AI ingenuity,” April 21, 2020. https://deepmind.google/blog/specification-gaming-the-flip-side-of-ai-ingenuity/</li>
+<li>Kissane, MacDiarmid, and Roger, “Measuring and improving coding audit realism with deployment resources,” March 23, 2026. https://alignment.anthropic.com/2026/coding-audit-realism/</li>
+<li>Reused CC0 icons: see the Lecture 2 section of the site’s visual asset credits.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="better-performance-measure" class="slide level2">
 <h2>Better Performance Measure</h2>
