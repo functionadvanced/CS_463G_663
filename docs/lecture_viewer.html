@@ -243,7 +243,8 @@ ul.task-list li input[type="checkbox"] {
     canvas.className = "lecture-viewer-slide-canvas reveal";
 
     const slideClone = document.importNode(slide, true);
-    slideClone.className = "lecture-viewer-slide-clone";
+    slideClone.classList.remove("past", "present", "future", "scrollable");
+    slideClone.classList.add("lecture-viewer-slide-clone");
     slideClone.removeAttribute("style");
     slideClone.removeAttribute("hidden");
     slideClone.querySelectorAll(".fragment").forEach((fragment) => {

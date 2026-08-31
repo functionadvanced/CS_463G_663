@@ -325,6 +325,45 @@
   width: 100%;
 }
 
+/* Lecture 2b uses full-size teaching tables and short, stepped code examples. */
+.reveal section.agent-design table {
+  font-size: 0.78em;
+  line-height: 1.22;
+}
+
+.reveal section.agent-design th,
+.reveal section.agent-design td {
+  padding: 0.4em 0.5em;
+}
+
+.reveal section.agent-design pre.sourceCode {
+  font-size: 0.64em;
+  padding-top: 0.65em;
+  padding-bottom: 0.65em;
+}
+
+.reveal .agent-figure {
+  margin: 0.5em 0;
+}
+
+.reveal .agent-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 330px;
+}
+
+.reveal section.agent-trace table {
+  font-size: 0.75em;
+}
+
+.reveal .agent-reading {
+  color: var(--cs-muted);
+  font-size: 0.58em;
+  line-height: 1.3;
+  margin-top: 0.9em;
+}
+
 .reveal .columns.two-column-balance > .column {
   box-sizing: border-box;
 }

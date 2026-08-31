@@ -2426,7 +2426,7 @@
     "href": "index.html#course-schedule",
     "title": "CS 463G & CS 663: (Intro to) Artificial Intelligence",
     "section": "Course Schedule",
-    "text": "Course Schedule\nThis schedule (including homework) is tentative and may be adjusted as the semester unfolds. The course website is the source for assignment specifications, dates, starter files, and updates; Canvas is used for submissions, grading, and lecture recordings. Official university dates are listed on the UK Academic Calendar, and the final exam period follows the UK Examination Schedule.\n\n\n\n#\nDate\nContent\n\n\n\n\n1\nMon, Aug 24\nCourse introduction, syllabus, grading, and course logisticsLecture 0: Language and ToolsTextbook: Artificial Intelligence: A Modern Approach\n\n\n2\nWed, Aug 26\nLecture 1: Introduction to AIAIMA 1.1-1.2\n\n\n3\nFri, Aug 28\nLecture 2: Agents and EnvironmentsAIMA 2.1-2.2\n\n\n4\nMon, Aug 31\nLecture 2: Agents and Environments, continuedAIMA 2.3\n\n\n5\nWed, Sep 2\nLecture 3: The Nature of Environments\n\n\n6\nFri, Sep 4\nLecture 4: Introduction of SearchAIMA 3.1-3.2\n\n\n-\nMon, Sep 7\nNo class: Labor Day\n\n\n7\nWed, Sep 9\nLecture 5: BFS and DFSAIMA 3.4; practice BFS/DFS problemsCode: BFS and DFSHomework announced: Homework 1 - Keys, Doors, and Shortest Paths\n\n\n8\nFri, Sep 11\nLecture 6: Uniform-Cost SearchPractice Dijkstra’s algorithmCode: Uniform-cost search\n\n\n9\nMon, Sep 14\nLecture 7: Informed SearchAIMA 3.5Code: A* search\n\n\n10\nWed, Sep 16\nLecture 8: Search Review\n\n\n11\nFri, Sep 18\nLecture 9: Adversarial SearchAIMA U.S. 5.1-5.3 or AIMA Global 6.1-6.3Code: Tic-tac-toe\n\n\n12\nMon, Sep 21\nLecture 10: Alpha-Beta PruningCode: Alpha-beta pruningHomework announced: Homework 2 - Reversi Agents\n\n\n13\nWed, Sep 23\nLecture 11: Local SearchAIMA 4.1-4.2Code: Simulated annealing, 8-puzzleHomework due: Homework 1\n\n\n14\nFri, Sep 25\nLecture 12: Genetic AlgorithmCode: Genetic 8-queens\n\n\n15\nMon, Sep 28\nLecture 13: Constraint Satisfaction ProblemsAIMA U.S. 6.1-6.3 or AIMA Global 5.1-5.3\n\n\n16\nWed, Sep 30\nLecture 14: CSP ConsistencyCode: AC-3\n\n\n17\nFri, Oct 2\nLecture 15: CSP SearchCode: Sudoku\n\n\n18\nMon, Oct 5\nLecture 16: LogicAIMA 7-9Homework due: Homework 2\n\n\n19\nWed, Oct 7\nLecture 16: Logic, continued\n\n\n20\nFri, Oct 9\nLecture 17: First-Order LogicMidterm reviewHomework announced: Homework 3 - Logic Toolkit\n\n\n21\nMon, Oct 12\nMidterm exam in class\n\n\n22\nWed, Oct 14\nLecture 18: Planning\n\n\n23\nFri, Oct 16\nLecture 19: Planning Algorithms\n\n\n24\nMon, Oct 19\nLecture 20: ProbabilityAIMA Appendix A.3; AIMA 12.1-12.5Homework announced: Homework 4 - Probability in Motion\n\n\n25\nWed, Oct 21\nLecture 21: Probabilistic Inference\n\n\n26\nFri, Oct 23\nLecture 22: Bayes NetsAIMA 13.1-13.4Homework due: Homework 3\n\n\n-\nMon, Oct 26\nNo class: Fall Break\n\n\n27\nWed, Oct 28\nLecture 23: Machine LearningAIMA 19.1-19.2Code: KNN on MNIST\n\n\n28\nFri, Oct 30\nLecture 24: Bias, Variance, and OverfittingCode: Linear regression\n\n\n29\nMon, Nov 2\nLecture 25: Decision TreesAIMA 19.3Homework due: Homework 4\n\n\n30\nWed, Nov 4\nLecture 25b: Practical PyTorchTensors, data loaders, models, autograd, training, evaluation, and debugging\n\n\n31\nFri, Nov 6\nLecture 26: Deep LearningAIMA U.S. 21.1 or AIMA Global 22.1Code: Backpropagation\n\n\n32\nMon, Nov 9\nLecture 27: Convolutional Neural NetworksCode: CNNHomework announced: Homework 5 - Two-Digit MNIST with a CNN\n\n\n33\nWed, Nov 11\nLecture 28: Reinforcement LearningAIMA 16.1-16.3 and 16.5\n\n\n34\nFri, Nov 13\nLecture 29: Multi-Armed Bandits\n\n\n35\nMon, Nov 16\nLecture 30: Value-Based Model-Free RL\n\n\n36\nWed, Nov 18\nLecture 31: Policy-Based Model-Free RLHomework announced: Homework 6 - Actor-Critic for Buckshot Roulette\n\n\n37\nFri, Nov 20\nLecture 31b: PPO and GRPO\n\n\n38\nMon, Nov 23\nLecture 32: Generative Machine LearningAIMA 25.1 and 25.4Homework due: Homework 5\n\n\n-\nWed, Nov 25\nNo class: Thanksgiving Break\n\n\n-\nFri, Nov 27\nNo class: Thanksgiving Break\n\n\n39\nMon, Nov 30\nLecture 33: Autoregressive Models\n\n\n40\nWed, Dec 2\nLecture 34: TransformersHomework due: Homework 6\n\n\n41\nFri, Dec 4\nLecture 35: Transformers continued\n\n\n42\nMon, Dec 7\nLecture 36: Cutting-Edge AI TopicsLoRA, DPO, agent skills, evaluation harnessesPrep Day: no major assignments, quizzes, or exams\n\n\n43\nWed, Dec 9\nNew topic placeholder: student questions, demos, or optional wrap-upPrep Day; last day of classesFinal exam review\n\n\n\nFinal exam: Monday, December 14, 2026, 10:30 AM-12:30 PM (official UK examination schedule)."
+    "text": "Course Schedule\nThis schedule (including homework) is tentative and may be adjusted as the semester unfolds. The course website is the source for assignment specifications, dates, starter files, and updates; Canvas is used for submissions, grading, and lecture recordings. Official university dates are listed on the UK Academic Calendar, and the final exam period follows the UK Examination Schedule.\n\n\n\n#\nDate\nContent\n\n\n\n\n1\nMon, Aug 24\nCourse introduction, syllabus, grading, and course logisticsLecture 0: Language and ToolsTextbook: Artificial Intelligence: A Modern Approach\n\n\n2\nWed, Aug 26\nLecture 1: Introduction to AIAIMA 1.1-1.2\n\n\n3\nFri, Aug 28\nLecture 2: Agents and EnvironmentsAIMA 2.1-2.2\n\n\n4\nMon, Aug 31\nLecture 2b: Designing Intelligent AgentsPEAS, agent architectures, and a Python vacuum-agent demonstrationAIMA 2.3-2.4Code: Vacuum agents demo\n\n\n5\nWed, Sep 2\nLecture 3: The Nature of Environments\n\n\n6\nFri, Sep 4\nLecture 4: Introduction of SearchAIMA 3.1-3.2\n\n\n-\nMon, Sep 7\nNo class: Labor Day\n\n\n7\nWed, Sep 9\nLecture 5: BFS and DFSAIMA 3.4; practice BFS/DFS problemsCode: BFS and DFSHomework announced: Homework 1 - Keys, Doors, and Shortest Paths\n\n\n8\nFri, Sep 11\nLecture 6: Uniform-Cost SearchPractice Dijkstra’s algorithmCode: Uniform-cost search\n\n\n9\nMon, Sep 14\nLecture 7: Informed SearchAIMA 3.5Code: A* search\n\n\n10\nWed, Sep 16\nLecture 8: Search Review\n\n\n11\nFri, Sep 18\nLecture 9: Adversarial SearchAIMA U.S. 5.1-5.3 or AIMA Global 6.1-6.3Code: Tic-tac-toe\n\n\n12\nMon, Sep 21\nLecture 10: Alpha-Beta PruningCode: Alpha-beta pruningHomework announced: Homework 2 - Reversi Agents\n\n\n13\nWed, Sep 23\nLecture 11: Local SearchAIMA 4.1-4.2Code: Simulated annealing, 8-puzzleHomework due: Homework 1\n\n\n14\nFri, Sep 25\nLecture 12: Genetic AlgorithmCode: Genetic 8-queens\n\n\n15\nMon, Sep 28\nLecture 13: Constraint Satisfaction ProblemsAIMA U.S. 6.1-6.3 or AIMA Global 5.1-5.3\n\n\n16\nWed, Sep 30\nLecture 14: CSP ConsistencyCode: AC-3\n\n\n17\nFri, Oct 2\nLecture 15: CSP SearchCode: Sudoku\n\n\n18\nMon, Oct 5\nLecture 16: LogicAIMA 7-9Homework due: Homework 2\n\n\n19\nWed, Oct 7\nLecture 16: Logic, continued\n\n\n20\nFri, Oct 9\nLecture 17: First-Order LogicMidterm reviewHomework announced: Homework 3 - Logic Toolkit\n\n\n21\nMon, Oct 12\nMidterm exam in class\n\n\n22\nWed, Oct 14\nLecture 18: Planning\n\n\n23\nFri, Oct 16\nLecture 19: Planning Algorithms\n\n\n24\nMon, Oct 19\nLecture 20: ProbabilityAIMA Appendix A.3; AIMA 12.1-12.5Homework announced: Homework 4 - Probability in Motion\n\n\n25\nWed, Oct 21\nLecture 21: Probabilistic Inference\n\n\n26\nFri, Oct 23\nLecture 22: Bayes NetsAIMA 13.1-13.4Homework due: Homework 3\n\n\n-\nMon, Oct 26\nNo class: Fall Break\n\n\n27\nWed, Oct 28\nLecture 23: Machine LearningAIMA 19.1-19.2Code: KNN on MNIST\n\n\n28\nFri, Oct 30\nLecture 24: Bias, Variance, and OverfittingCode: Linear regression\n\n\n29\nMon, Nov 2\nLecture 25: Decision TreesAIMA 19.3Homework due: Homework 4\n\n\n30\nWed, Nov 4\nLecture 25b: Practical PyTorchTensors, data loaders, models, autograd, training, evaluation, and debugging\n\n\n31\nFri, Nov 6\nLecture 26: Deep LearningAIMA U.S. 21.1 or AIMA Global 22.1Code: Backpropagation\n\n\n32\nMon, Nov 9\nLecture 27: Convolutional Neural NetworksCode: CNNHomework announced: Homework 5 - Two-Digit MNIST with a CNN\n\n\n33\nWed, Nov 11\nLecture 28: Reinforcement LearningAIMA 16.1-16.3 and 16.5\n\n\n34\nFri, Nov 13\nLecture 29: Multi-Armed Bandits\n\n\n35\nMon, Nov 16\nLecture 30: Value-Based Model-Free RL\n\n\n36\nWed, Nov 18\nLecture 31: Policy-Based Model-Free RLHomework announced: Homework 6 - Actor-Critic for Buckshot Roulette\n\n\n37\nFri, Nov 20\nLecture 31b: PPO and GRPO\n\n\n38\nMon, Nov 23\nLecture 32: Generative Machine LearningAIMA 25.1 and 25.4Homework due: Homework 5\n\n\n-\nWed, Nov 25\nNo class: Thanksgiving Break\n\n\n-\nFri, Nov 27\nNo class: Thanksgiving Break\n\n\n39\nMon, Nov 30\nLecture 33: Autoregressive Models\n\n\n40\nWed, Dec 2\nLecture 34: TransformersHomework due: Homework 6\n\n\n41\nFri, Dec 4\nLecture 35: Transformers continued\n\n\n42\nMon, Dec 7\nLecture 36: Cutting-Edge AI TopicsLoRA, DPO, agent skills, evaluation harnessesPrep Day: no major assignments, quizzes, or exams\n\n\n43\nWed, Dec 9\nNew topic placeholder: student questions, demos, or optional wrap-upPrep Day; last day of classesFinal exam review\n\n\n\nFinal exam: Monday, December 14, 2026, 10:30 AM-12:30 PM (official UK examination schedule)."
   },
   {
     "objectID": "index.html#references",
@@ -5353,5 +5353,243 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Reward Hacking",
     "text": "Reward Hacking\n\nReward hacking, often called specification gaming, occurs when an agent exploits a scoring rule to earn a high reward without achieving the intended goal.\n\n\n\n\n Our vacuum example\n\n\nGoal: keep rooms clean.\nScore: count dirt picked up.\nShortcut: dump and re-collect dirt.\n\n\n\n Today’s coding agents\n\n\nGoal: fix the software bug.\nScore: count passing tests.\nShortcut: change tests to pass while leaving the bug.\n\n\n\nOptimizing the score is not the same as achieving the goal.\n\n\nA long-standing problem, still studied today: DeepMind (2020); Anthropic (2026).\n\n\nConnect this to the previous slide: repeated dirt collection earns points without keeping rooms clean. The score is a proxy, a measurable stand-in for what we actually want. This is not a newly invented problem; specification gaming is a closely related term. Reward hacking does not require human-like malicious intent.\nIn reinforcement learning, a reward signal provides feedback used for learning; our performance measure describes what counts as success. Those need not be identical, and a poorly chosen reward can fail to reflect the intended measure. We will study reinforcement learning later.\nThe coding example summarizes a type of behavior studied in controlled evaluations, not a claim that every coding agent does this. The March 2026 Anthropic study audited debugging tasks with deliberately impossible tests and explicit instructions not to modify them. When a test conflicts with the specification, the appropriate response is to flag the conflict, not silently weaken the evaluation. Broader safeguards include protected tests and independent checks of actual outcomes; no single metric guarantees success.\n[Sources]\n\nGoogle DeepMind, “Specification gaming: the flip side of AI ingenuity,” April 21, 2020. https://deepmind.google/blog/specification-gaming-the-flip-side-of-ai-ingenuity/\nKissane, MacDiarmid, and Roger, “Measuring and improving coding audit realism with deployment resources,” March 23, 2026. https://alignment.anthropic.com/2026/coding-audit-realism/\nReused CC0 icons: see the Lecture 2 section of the site’s visual asset credits."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#the-room-is-clean.-should-we-stop",
+    "href": "slides/lec2b_Designing_Agents.html#the-room-is-clean.-should-we-stop",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Room Is Clean. Should We Stop?",
+    "text": "The Room Is Clean. Should We Stop?\nThe vacuum is in A. Its sensor says clean. It cannot see B.\n\n\n Possible world 1 Possible world 2        A: cleanB: clean A: cleanB: dirty  vacuum herevacuum here Same current percept. Different information needed. \n\n\n\nWhat should the agent remember before deciding to stop?\n\n\nBegin with a show of hands: stop, move, or not enough information? The two worlds are shown to the class, not to the agent. This reprises percept versus world state without repeating the Lecture 2 definitions."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#specify-the-task-with-peas",
+    "href": "slides/lec2b_Designing_Agents.html#specify-the-task-with-peas",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Specify the Task with PEAS",
+    "text": "Specify the Task with PEAS\nPEAS = Performance measure, Environment, Actuators, Sensors.\n\n\n\n\n\n\n\nComponent\nOur two-room vacuum\n\n\n\n\nPerformance measure\nKeep rooms clean; avoid unnecessary actions.\n\n\nEnvironment\nRooms A and B, dirt, and the vacuum’s location.\n\n\nActuators\nMove left, move right, suck dirt, or do nothing.\n\n\nSensors\nCurrent location and dirt in the current room only.\n\n\n\n\nDescribe success and available information before choosing an algorithm.\n\n\nPEAS is a task specification, not an agent algorithm. The evaluator may know more than the agent’s sensors reveal. Ask why seeing the current room is not the same as seeing the whole world.\n[Sources]\n\nRussell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 2, task environments. https://aima.cs.berkeley.edu/4th-ed/slides-pdf/chapter02.pdf"
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#one-world-explicit-assumptions",
+    "href": "slides/lec2b_Designing_Agents.html#one-world-explicit-assumptions",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "One World, Explicit Assumptions",
+    "text": "One World, Explicit Assumptions\n\n\n\nTwo connected rooms: A on the left, B on the right.\nA move or a cleaning action takes one step.\nSensors are accurate; actions always succeed.\nDirt does not reappear in the baseline world.\nNoOp means “no operation”: stay idle for one step.\n\n\n\n\n\nWhich assumption makes “I cleaned this room earlier” useful now?\n\n\nThe assumptions define the teaching simulator, not all real vacuums. No new dirt plus deterministic cleaning lets the agent infer that a previously cleaned room remains clean. We will deliberately break the no-new-dirt assumption later.\n[Sources]\n\nReused public-domain OpenClipart vacuum icon; see asset_credits.html#lec2b."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#four-ways-to-choose-an-action",
+    "href": "slides/lec2b_Designing_Agents.html#four-ways-to-choose-an-action",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Four Ways to Choose an Action",
+    "text": "Four Ways to Choose an Action\n\n\n\n\n\n\n\nAgent design\nCentral question\n\n\n\n\nSimple reflex\nWhat rule matches my current percept?\n\n\nModel-based reflex\nWhat is the state, given my history and model?\n\n\nGoal-based\nWhat actions can reach a desired state?\n\n\nUtility-based\nWhich outcome is preferable, including tradeoffs?\n\n\n\n\nThese describe decision mechanisms, not a ranking of intelligence.\n\n\nMemory and models also appear in goal-based and utility-based agents. Learning is not a fifth rung that replaces the other designs: it can improve their components. Preview the distinctions here and use the next slides to unpack them.\n[Sources]\n\nRussell and Norvig, AIMA, Chapter 2, structure of agents. https://aima.cs.berkeley.edu/4th-ed/slides-pdf/chapter02.pdf"
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#simple-reflex-match-a-rule",
+    "href": "slides/lec2b_Designing_Agents.html#simple-reflex-match-a-rule",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Simple Reflex: Match a Rule",
+    "text": "Simple Reflex: Match a Rule\nCurrent percept only. No stored history and no look-ahead.\n\n\n   CurrentperceptCondition-actionrulesAction\n\n\n\nIf the current room is dirty: Suck.\nOtherwise: move to the other room.\n\n\nA simple rule can work well when the current percept is enough.\n\n\nRules can be supplied by a designer or learned; simple reflex describes what information is used for action selection. Here the second rule deliberately does not know whether the other room is already clean.\n[Sources]\n\nRussell and Norvig, AIMA, Chapter 2, simple reflex agents. Original course diagram."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#a-reflex-agent-can-keep-moving",
+    "href": "slides/lec2b_Designing_Agents.html#a-reflex-agent-can-keep-moving",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Reflex Agent Can Keep Moving",
+    "text": "A Reflex Agent Can Keep Moving\nSuppose both rooms are already clean. The same rule keeps firing.\n\n\n   A: cleanB: cleanA: cleanB: cleanRightLeftRightCleanliness stays the same; action costs accumulate.\n\n\n\nCan the agent safely stop based only on “my current room is clean”?\n\n\nNo, not with this sensor and without additional information: the other room might still be dirty. The issue is not that every reflex policy oscillates, but that this particular policy does, and current-room cleanliness does not establish the global goal."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#model-based-maintain-internal-state",
+    "href": "slides/lec2b_Designing_Agents.html#model-based-maintain-internal-state",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Model-Based: Maintain Internal State",
+    "text": "Model-Based: Maintain Internal State\nA model describes how actions and the environment change the world.\n\n\n   Previous state+ previous action+ world modelCurrent perceptUpdate internalstateApply rules;choose action\n\n\n\nInternal state is an estimate of the world, not direct access to hidden facts.\n\n\nFor this vacuum, the internal state records whether A and B are known to be clean, dirty, or still unknown. The model says Suck succeeds and dirt does not reappear. Other model-based agents may track probabilities rather than a single estimated state.\n[Sources]\n\nRussell and Norvig, AIMA, Chapter 2, model-based reflex agents. Original course diagram."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#goal-based-consider-future-states",
+    "href": "slides/lec2b_Designing_Agents.html#goal-based-consider-future-states",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Goal-Based: Consider Future States",
+    "text": "Goal-Based: Consider Future States\nGoal: both rooms are clean. Start in A with both rooms dirty.\n\n\n   Both roomsdirtySuck, Right, SuckRight, Suck, Left, SuckBoth roomsclean\n\n\n\nA goal test says whether a state is acceptable.\nSearch or planning can find actions that reach it.\n\n\nThese are illustrative candidate plans, not a full search tree. A goal-based agent uses a model to consider future consequences. A goal test accepts both outcomes; a search algorithm may additionally minimize path cost. Goal-based does not mean oblivious to cost. This introduces the need for search without teaching BFS early.\n[Sources]\n\nRussell and Norvig, AIMA, Chapter 2, goal-based agents. Original course example and diagram."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#utility-based-compare-acceptable-outcomes",
+    "href": "slides/lec2b_Designing_Agents.html#utility-based-compare-acceptable-outcomes",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Utility-Based: Compare Acceptable Outcomes",
+    "text": "Utility-Based: Compare Acceptable Outcomes\nA utility function assigns a numerical preference to outcomes.\n\n\n\n\n\n\n\n\nPlan from A\nReaches the goal?\nNon-idle actions\n\n\n\n\nSuck, Right, Suck\nYes\n3\n\n\nRight, Suck, Left, Suck\nYes\n4\n\n\n\n\nIf each action uses energy, prefer the first plan, all else equal.\nWith uncertainty, compare expected utility.\nTradeoffs can include cleanliness, energy, time, and risk.\n\n\nReaching a goal and choosing a preferable outcome are different questions.\n\n\nUtility represents preferences, not the agent literally feeling happiness. There is no need to introduce expectation notation yet. A goal plus path cost already expresses a simple preference; utility is a more general way to compare outcomes and uncertainty.\n[Sources]\n\nRussell and Norvig, AIMA, Chapter 2, utility-based agents. Plan lengths are derived from the course example."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#learning-can-improve-any-design",
+    "href": "slides/lec2b_Designing_Agents.html#learning-can-improve-any-design",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Learning Can Improve Any Design",
+    "text": "Learning Can Improve Any Design\n\n\n\nLearn better rules from experience.\nLearn a better model of action outcomes.\nLearn to predict utility more accurately.\nUse feedback to update the decision-making components.\n\n\n\n\n\nRemembering a room’s condition is not, by itself, learning better rules.\n\n\nOur memory-based Python agent will update state but will not change its rules or learn a model. In the classic learning-agent decomposition, the performance element chooses actions, the critic supplies feedback, the learning element improves components, and the problem generator encourages informative experience. Mention these verbally if students ask; formal learning algorithms come later.\n[Sources]\n\nRussell and Norvig, AIMA, Chapter 2, learning agents.\nReused public-domain OpenClipart brain icon; see asset_credits.html#lec2b."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#which-component-is-missing",
+    "href": "slides/lec2b_Designing_Agents.html#which-component-is-missing",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Which Component Is Missing?",
+    "text": "Which Component Is Missing?\n\n\n\n\n\n\n\nSituation\nNeeded addition\n\n\n\n\nThe vacuum forgets rooms it has already cleaned.\nInternal state\n\n\nIt needs an action sequence that cleans both rooms.\nGoal-directed planning\n\n\nTwo plans work, but one uses much less energy.\nA preference / cost criterion\n\n\nIt should improve its rules after repeated mistakes.\nLearning\n\n\n\n\nCan a single agent use all four additions?\n\n\nReveal one answer at a time. Yes: the categories describe components and mechanisms that can be combined. This is a quick check before translating the ideas into Python."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#python-demo-one-fair-experiment",
+    "href": "slides/lec2b_Designing_Agents.html#python-demo-one-fair-experiment",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Python Demo: One Fair Experiment",
+    "text": "Python Demo: One Fair Experiment\n\nBoth agents start in A, with both rooms dirty.\nRun each for 8 steps, including idle steps.\nAfter each action, award 1 point per clean room.\nSubtract 0.25 points per non-idle action.\n\n\nS = \\text{clean-room time} - 0.25 \\times \\text{non-idle actions}\n\n\nSame environment, sensors, starting state, and scoring rule.\n\nDemo and experiments | Download Python\n\nUse this slide to open the runnable demo, then step through the implementation slides. Clean-room time is the sum of the number of clean rooms after each action, not only the number clean at the end. NoOp still advances time and earns cleanliness points, but has no action penalty. The coefficient is a classroom choice, not a universal measure of vacuum quality. No extra Python packages are required."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#the-simulator-owns-the-world",
+    "href": "slides/lec2b_Designing_Agents.html#the-simulator-owns-the-world",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Simulator Owns the World",
+    "text": "The Simulator Owns the World\nclass VacuumWorld:\n    def __init__(self, start=\"A\", dirt=None):\n        self.position = start\n        self.dirt = {\"A\": True, \"B\": True} if dirt is None else dict(dirt)\n\n    def perceive(self):\n        room = self.position\n        return room, self.dirt[room]\n\nTrue means dirty; False means clean.\nThe simulator stores both rooms’ conditions.\nThe agent receives only (current_room, current_dirt).\n\n\nWorld state belongs to the simulator. Percepts are the agent’s input."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#actions-change-the-world",
+    "href": "slides/lec2b_Designing_Agents.html#actions-change-the-world",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Actions Change the World",
+    "text": "Actions Change the World\nThe apply method belongs to VacuumWorld.\ndef apply(self, action):\n    if action == \"Suck\":\n        self.dirt[self.position] = False\n    elif action == \"Left\":\n        self.position = \"A\"\n    elif action == \"Right\":\n        self.position = \"B\"\n    elif action != \"NoOp\":\n        raise ValueError(f\"Unknown action: {action}\")\n\nNoOp leaves the world unchanged. The outer loop still advances time.\n\n\nThe policies only choose Right from A and Left from B. The toy transition function maps Left to A and Right to B; an unnecessary move at an edge would leave the position unchanged and still incur the action cost. Suck is deterministic in this model."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#agent-1-a-simple-reflex-rule",
+    "href": "slides/lec2b_Designing_Agents.html#agent-1-a-simple-reflex-rule",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Agent 1: A Simple Reflex Rule",
+    "text": "Agent 1: A Simple Reflex Rule\nclass ReflexAgent:\n    def act(self, percept):\n        room, dirty = percept\n        if dirty:\n            return \"Suck\"\n        return \"Right\" if room == \"A\" else \"Left\"\n\nDirty here? Clean here.\nOtherwise, go to the other room.\nNo record of what happened before.\n\n\nWhat will it do after it has cleaned both rooms?"
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#agent-2-remember-what-we-know",
+    "href": "slides/lec2b_Designing_Agents.html#agent-2-remember-what-we-know",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Agent 2: Remember What We Know",
+    "text": "Agent 2: Remember What We Know\nclass MemoryAgent:\n    def __init__(self):\n        self.seen = {\"A\": None, \"B\": None}\n\n    def act(self, percept):\n        room, dirty = percept\n        self.seen[room] = dirty\n        if dirty:\n            self.seen[room] = False  # Predict successful cleaning.\n            return \"Suck\"\n        if all(value is False for value in self.seen.values()):\n            return \"NoOp\"\n        return \"Right\" if room == \"A\" else \"Left\"\n\nNone means unknown. Stop only when both rooms are known to be clean.\n\n\nThis is a model-based reflex agent: it applies fixed rules to maintained state, rather than searching over future action sequences. The predicted update on line 9 relies on the known model that cleaning succeeds. The test uses “is False” deliberately: “not value” would also accept None and incorrectly treat an unobserved room as clean. The display comment is shortened from the runnable source; the executable statements are identical."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#connect-sensing-acting-and-scoring",
+    "href": "slides/lec2b_Designing_Agents.html#connect-sensing-acting-and-scoring",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Connect Sensing, Acting, and Scoring",
+    "text": "Connect Sensing, Acting, and Scoring\nStart with a fresh world, an empty trace, and score = 0.0.\nfor step in range(1, steps + 1):\n    percept = world.perceive()\n    action = agent.act(percept)\n    world.apply(action)\n    clean = sum(not value for value in world.dirt.values())\n    effort = int(action != \"NoOp\")\n    score += clean - 0.25 * effort\n    trace.append((step, percept, action, clean, effort))\n\nThe evaluator can inspect both rooms. The agent cannot.\n\n\nThis is the baseline loop in run_agent, without the optional new-dirt event used later. No score or complete world-state dictionary is passed into act. The demo keeps running after NoOp so both agents are evaluated for the same horizon. Highlight input, action, evaluation, then logging."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#predict-the-fourth-action",
+    "href": "slides/lec2b_Designing_Agents.html#predict-the-fourth-action",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Predict the Fourth Action",
+    "text": "Predict the Fourth Action\nStart in A; both rooms are dirty. Both agents take the same first three actions.\n\n\n\n\n\n\n\n\n\nStep\nPercept before acting\nAction\nMemory after acting\n\n\n\n\n1\nA, dirty\nSuck\nA: clean; B: unknown\n\n\n2\nA, clean\nRight\nA: clean; B: unknown\n\n\n3\nB, dirty\nSuck\nA: clean; B: clean\n\n\n\nAt step 4, both agents receive (B, clean).\n\nWhat does each agent do? Which fact lets their answers differ?\n\n\nPause before revealing the result on the next slide. ReflexAgent chooses Left. MemoryAgent chooses NoOp because its memory also says A is clean. At step 2 it does not learn B’s condition merely by moving there; the next percept arrives at step 3."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#the-trace-reveals-the-difference",
+    "href": "slides/lec2b_Designing_Agents.html#the-trace-reveals-the-difference",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Trace Reveals the Difference",
+    "text": "The Trace Reveals the Difference\n\n\n\n\n\n\n\n\n\nStep\nReflex action\nMemory action\nClean rooms, either agent\n\n\n\n\n1\nSuck\nSuck\n1\n\n\n2\nRight\nRight\n1\n\n\n3\nSuck\nSuck\n2\n\n\n4\nLeft\nNoOp\n2\n\n\n5\nRight\nNoOp\n2\n\n\n6\nLeft\nNoOp\n2\n\n\n7\nRight\nNoOp\n2\n\n\n8\nLeft\nNoOp\n2\n\n\n\n\nAfter step 3, extra movement adds cost without improving cleanliness.\n\n\nThese are the exact results of vacuum_agents_demo.py with the default settings. Clean-room counts are measured after the action at each step. Running the script prints this trace and checks the reported scores."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#compare-outcomes-not-only-actions",
+    "href": "slides/lec2b_Designing_Agents.html#compare-outcomes-not-only-actions",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Compare Outcomes, Not Only Actions",
+    "text": "Compare Outcomes, Not Only Actions\n\n\n\n\n\n\n\n\nMetric over 8 steps\nReflex agent\nMemory agent\n\n\n\n\nClean-room time\n14\n14\n\n\nNon-idle actions\n8\n3\n\n\nAction penalty\n2.00\n0.75\n\n\nTotal score\n12.00\n13.25\n\n\n\n\n14 - 0.25(8) = 12, \\qquad 14 - 0.25(3) = 13.25\n\n\nIf the action penalty were zero, would these two scores differ?\n\n\nThey would tie at 14. This links to Lecture 2: the performance measure shapes what counts as better. This example is not a proof that more memory always improves performance or that this particular agent is optimal in all environments."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#change-the-world-recheck-the-model",
+    "href": "slides/lec2b_Designing_Agents.html#change-the-world-recheck-the-model",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Change the World, Recheck the Model",
+    "text": "Change the World, Recheck the Model\nAt the start of step 5, room A becomes dirty again.\n\nThe reflex agent is in A and immediately cleans it.\nThe memory agent is idle in B and does not observe A.\nIts remembered fact “A is clean” is now stale.\n\n\n\n\nSame 8-step scoring rule\nReflex\nMemory\n\n\n\n\nFinal clean rooms\n2\n1\n\n\nTotal score\n12.00\n9.25\n\n\n\n\nMemory helps only when its updates and assumptions fit the environment.\n\n\nRun show_comparison(redirty_at=5). The external event happens before sensing and only changes room A. The memory agent continues seeing clean B. Discuss periodic reinspection or expiring old observations as possible responses, not guaranteed optimal fixes. The agent would need a different environment model and perhaps a tradeoff between checking cost and missed dirt."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#design-exercise-a-battery-limited-vacuum",
+    "href": "slides/lec2b_Designing_Agents.html#design-exercise-a-battery-limited-vacuum",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Design Exercise: A Battery-Limited Vacuum",
+    "text": "Design Exercise: A Battery-Limited Vacuum\n\n\n  Acharging dockBCD\n\n\nBattery capacity: 6 units. Each move or Suck costs 1 unit. Recharge at A restores all 6 in one step; NoOp costs no energy. Dirt can reappear. Sensors report location, current-room dirt, and battery level.\n\nSpecify PEAS, including recharging at A.\nWhat should the agent remember?\nWhich decision mechanisms should it combine?\nFind a case where “clean whenever dirty” fails.\n\n\nAllow small groups to work, then compare designs. Assume the layout is known, NoOp costs no battery, and Recharge is available only at A and restores capacity in one step. One example: starting full at A, the agent reaches dirty D with 3 units left. Cleaning costs 1, leaving only 2 units for the 3 moves back to the dock. No code or optimal-policy derivation is required."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#one-possible-design",
+    "href": "slides/lec2b_Designing_Agents.html#one-possible-design",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "One Possible Design",
+    "text": "One Possible Design\n\nPEAS: sustained cleanliness without getting stranded; four rooms and a dock; move, Suck, NoOp, Recharge; local dirt, location, and battery sensors.\nInternal state: room map, last observations, observation ages, and battery level.\nGoal and planning: complete useful cleaning trips and return to the dock.\nPreference: compare cleanliness gains, energy costs, and stale information.\n\n\nAt D with 3 units left, cleaning would leave too little energy to return to A.\n\n\nAn explicit safety check can reserve enough energy for a return trip before committing to an action. With deterministic one-unit moves, distance to the dock gives the needed reserve; uncertainty would need additional margin or a different model. Treat avoiding stranding as a constraint, not merely a tiny penalty that could be outweighed. Learning could improve estimates of how often rooms become dirty, but is not required for an initial design."
+  },
+  {
+    "objectID": "slides/lec2b_Designing_Agents.html#takeaways",
+    "href": "slides/lec2b_Designing_Agents.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\n\n\nPEAS specifies the task before implementation.\nRules, state, goals, and utility answer different questions.\nLearning can improve the components of an agent.\nEvaluate agents under the same conditions.\nRecheck the design when its assumptions change.\n\n\n\n\nAsset credits\n\nReturn to the opening question. A current clean-room percept is not enough to know whether the whole task is complete. The answer depends on the task specification, maintained information, and the model. Connect to Lecture 3’s environment dimensions and Lecture 4’s search formulations.\n[Sources]\n\nRussell and Norvig, AIMA, Chapter 2. https://aima.cs.berkeley.edu/4th-ed/slides-pdf/chapter02.pdf\nOriginal two-room experiment and battery exercise for this course.\nReused public-domain OpenClipart robot icon; see asset_credits.html#lec2b."
+  },
+  {
+    "objectID": "code_and_homework/vacuum_agents_demo.html",
+    "href": "code_and_homework/vacuum_agents_demo.html",
+    "title": "Vacuum Agents: Runnable Demo",
+    "section": "",
+    "text": "Compare a simple reflex agent with a model-based reflex agent that remembers which rooms are clean. Both agents receive only the current room and its dirt status. The simulator, not the agent, knows the whole world.\nDownload vacuum_agents_demo.py"
+  },
+  {
+    "objectID": "code_and_homework/vacuum_agents_demo.html#run-the-demonstration",
+    "href": "code_and_homework/vacuum_agents_demo.html#run-the-demonstration",
+    "title": "Vacuum Agents: Runnable Demo",
+    "section": "Run the demonstration",
+    "text": "Run the demonstration\nThe file uses only Python built-ins; no packages or imports are needed.\npython3 vacuum_agents_demo.py\nIn Jupyter Notebook or Google Colab, paste the complete file into a cell and run it. The script checks its results and prints two comparisons: no new dirt, then dirt reappearing in A at the start of step 5."
+  },
+  {
+    "objectID": "code_and_homework/vacuum_agents_demo.html#world-and-score",
+    "href": "code_and_homework/vacuum_agents_demo.html#world-and-score",
+    "title": "Vacuum Agents: Runnable Demo",
+    "section": "World and score",
+    "text": "World and score\n\nRooms A and B are adjacent. Both are initially dirty; the agent starts in A.\nSensors report (room, dirty), where True means dirty and False means clean.\nMoves and cleaning always succeed. NoOp means no operation: an idle step.\nBoth agents run for eight steps. After each action, add one point per clean room and subtract 0.25 points for a non-idle action.\nAgent memory begins with None for each room, meaning unknown. The memory agent assumes cleaned rooms remain clean."
+  },
+  {
+    "objectID": "code_and_homework/vacuum_agents_demo.html#expected-results",
+    "href": "code_and_homework/vacuum_agents_demo.html#expected-results",
+    "title": "Vacuum Agents: Runnable Demo",
+    "section": "Expected results",
+    "text": "Expected results\n\n\n\n\n\n\n\n\n\nScenario\nReflex score\nMemory score\nFinal clean rooms: reflex / memory\n\n\n\n\nNo new dirt\n12.00\n13.25\n2 / 2\n\n\nA becomes dirty at step 5\n12.00\n9.25\n2 / 1\n\n\n\nIn the baseline, both agents accumulate 14 clean-room steps. The reflex agent takes eight non-idle actions; the memory agent takes three. When new dirt appears, the idle memory agent is in B and never sees the change in A."
+  },
+  {
+    "objectID": "code_and_homework/vacuum_agents_demo.html#try-another-starting-world",
+    "href": "code_and_homework/vacuum_agents_demo.html#try-another-starting-world",
+    "title": "Vacuum Agents: Runnable Demo",
+    "section": "Try another starting world",
+    "text": "Try another starting world\nIn a separate file in the same directory, or in a notebook after defining the classes:\nfrom vacuum_agents_demo import MemoryAgent, ReflexAgent, run_agent\n\ninitial_dirt = {\"A\": False, \"B\": True}\ntrace, score = run_agent(\n    MemoryAgent(), start=\"B\", dirt=initial_dirt, steps=8\n)\nfor row in trace:\n    print(row)\nprint(\"Score:\", score)\nIf the complete demo is already in your notebook, omit the import line. Each trace row contains (step, percept, action, clean_rooms, effort). Create a fresh agent for every independent run so it does not inherit memory from a previous world."
+  },
+  {
+    "objectID": "code_and_homework/vacuum_agents_demo.html#questions-to-investigate",
+    "href": "code_and_homework/vacuum_agents_demo.html#questions-to-investigate",
+    "title": "Vacuum Agents: Runnable Demo",
+    "section": "Questions to investigate",
+    "text": "Questions to investigate\n\nWhat happens when both rooms start clean? How does the memory agent establish that fact?\nWhy must the stopping test use value is False, rather than not value? What happens to an unknown room represented by None?\nHow do the scores change if the action penalty is zero?\nCan periodically checking the other room help when dirt reappears? What extra cost does it introduce?\nWhat would need to change if cleaning sometimes failed?"
+  },
+  {
+    "objectID": "code_and_homework/vacuum_agents_demo.html#built-in-checks",
+    "href": "code_and_homework/vacuum_agents_demo.html#built-in-checks",
+    "title": "Vacuum Agents: Runnable Demo",
+    "section": "Built-in checks",
+    "text": "Built-in checks\nThe self_check() function tests all eight combinations of starting location and room dirt. It checks that both agents eventually clean both rooms in the static world, the memory agent becomes idle, the supplied initial map is not changed, and the baseline and new-dirt scores match the table above.\nThis is a small deterministic teaching example, not a proof of optimality for either policy.\nLecture 2b slides"
+  },
+  {
+    "objectID": "asset_credits.html#lec2b",
+    "href": "asset_credits.html#lec2b",
+    "title": "Visual Asset Credits",
+    "section": "Lecture 2b: Designing Intelligent Agents",
+    "text": "Lecture 2b: Designing Intelligent Agents\nThe room diagrams, agent information-flow diagrams, and action sequences are original SVG illustrations created for this course. Agent architecture concepts follow Chapter 2 of Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig. The demonstration and its reported results come from the accompanying vacuum agents demo.\n\n\n\nFile\nSource / note\n\n\n\n\nlec2/vacuum_cleaner_openclipart.svg\nOpenClipart vacuum cleaner, public domain; reused from Lecture 2.\n\n\nlec1/brain_lightbulb_openclipart.svg\nOpenClipart brain light bulb, public domain; reused from Lecture 1.\n\n\nlec1/robot_openclipart.svg\nOpenClipart robot, public domain; reused from Lecture 1."
+  },
+  {
+    "objectID": "code_and_homework/vacuum_agents_demo.html#complete-python-code",
+    "href": "code_and_homework/vacuum_agents_demo.html#complete-python-code",
+    "title": "Vacuum Agents: Runnable Demo",
+    "section": "Complete Python code",
+    "text": "Complete Python code\nThis is the complete content of the downloadable file.\n\"\"\"Lecture 2b: compare reflex and memory-based vacuum agents.\n\nRun with Python 3. No packages or imports are required.\nTrue means dirty; False means clean; None means unknown to the agent.\n\"\"\"\n\n\nclass VacuumWorld:\n    def __init__(self, start=\"A\", dirt=None):\n        self.position = start\n        self.dirt = {\"A\": True, \"B\": True} if dirt is None else dict(dirt)\n\n    def perceive(self):\n        room = self.position\n        return room, self.dirt[room]\n\n    def apply(self, action):\n        if action == \"Suck\":\n            self.dirt[self.position] = False\n        elif action == \"Left\":\n            self.position = \"A\"\n        elif action == \"Right\":\n            self.position = \"B\"\n        elif action != \"NoOp\":\n            raise ValueError(f\"Unknown action: {action}\")\n\n\nclass ReflexAgent:\n    def act(self, percept):\n        room, dirty = percept\n        if dirty:\n            return \"Suck\"\n        return \"Right\" if room == \"A\" else \"Left\"\n\n\nclass MemoryAgent:\n    def __init__(self):\n        self.seen = {\"A\": None, \"B\": None}\n\n    def act(self, percept):\n        room, dirty = percept\n        self.seen[room] = dirty\n        if dirty:\n            self.seen[room] = False  # Predict a successful cleaning action.\n            return \"Suck\"\n        if all(value is False for value in self.seen.values()):\n            return \"NoOp\"\n        return \"Right\" if room == \"A\" else \"Left\"\n\n\ndef run_agent(agent, start=\"A\", dirt=None, steps=8, redirty_at=None):\n    world = VacuumWorld(start, dirt)\n    trace, score = [], 0.0\n    for step in range(1, steps + 1):\n        if step == redirty_at:\n            world.dirt[\"A\"] = True\n        percept = world.perceive()\n        action = agent.act(percept)\n        world.apply(action)\n        clean = sum(not value for value in world.dirt.values())\n        effort = int(action != \"NoOp\")\n        score += clean - 0.25 * effort\n        trace.append((step, percept, action, clean, effort))\n    return trace, score\n\n\ndef show_comparison(redirty_at=None):\n    reflex_trace, reflex_score = run_agent(ReflexAgent(), redirty_at=redirty_at)\n    memory_trace, memory_score = run_agent(MemoryAgent(), redirty_at=redirty_at)\n    if redirty_at is None:\n        label = \"No new dirt\"\n    else:\n        label = f\"Room A becomes dirty at step {redirty_at}\"\n    print(f\"\\n{label}\")\n    print(\n        \"Step | Reflex action | Memory action | \"\n        \"Clean rooms (reflex / memory)\"\n    )\n    for reflex, memory in zip(reflex_trace, memory_trace):\n        row = (\n            f\"{reflex[0]:4} | {reflex[2]:13} | \"\n            f\"{memory[2]:13} | {reflex[3]} / {memory[3]}\"\n        )\n        print(row)\n    print(f\"Scores: reflex={reflex_score:.2f}, memory={memory_score:.2f}\")\n    print(\"Non-idle actions:\", sum(row[4] for row in reflex_trace), \"/\",\n          sum(row[4] for row in memory_trace))\n\n\ndef self_check():\n    cases = 0\n    for start in (\"A\", \"B\"):\n        for dirty_a in (False, True):\n            for dirty_b in (False, True):\n                dirt = {\"A\": dirty_a, \"B\": dirty_b}\n                reflex_trace, reflex_score = run_agent(\n                    ReflexAgent(), start, dirt\n                )\n                memory_trace, memory_score = run_agent(\n                    MemoryAgent(), start, dirt\n                )\n                assert reflex_trace[-1][3] == memory_trace[-1][3] == 2\n                assert memory_trace[-1][2] == \"NoOp\"\n                assert memory_score &gt;= reflex_score\n                assert dirt == {\"A\": dirty_a, \"B\": dirty_b}\n                cases += 1\n    assert run_agent(ReflexAgent())[1] == 12.0\n    assert run_agent(MemoryAgent())[1] == 13.25\n    assert run_agent(ReflexAgent(), redirty_at=5)[1] == 12.0\n    assert run_agent(MemoryAgent(), redirty_at=5)[1] == 9.25\n    assert MemoryAgent().act((\"A\", False)) == \"Right\"\n    print(\n        f\"Checks passed: {cases} starting worlds, \"\n        \"baseline scores, and new-dirt case.\"\n    )\n\n\nif __name__ == \"__main__\":\n    self_check()\n    show_comparison()\n    show_comparison(redirty_at=5)"
+  },
+  {
+    "objectID": "code_and_homework/vacuum_agents_demo.html#running-result",
+    "href": "code_and_homework/vacuum_agents_demo.html#running-result",
+    "title": "Vacuum Agents: Runnable Demo",
+    "section": "Running result",
+    "text": "Running result\nRunning the complete file above produces:\nChecks passed: 8 starting worlds, baseline scores, and new-dirt case.\n\nNo new dirt\nStep | Reflex action | Memory action | Clean rooms (reflex / memory)\n   1 | Suck          | Suck          | 1 / 1\n   2 | Right         | Right         | 1 / 1\n   3 | Suck          | Suck          | 2 / 2\n   4 | Left          | NoOp          | 2 / 2\n   5 | Right         | NoOp          | 2 / 2\n   6 | Left          | NoOp          | 2 / 2\n   7 | Right         | NoOp          | 2 / 2\n   8 | Left          | NoOp          | 2 / 2\nScores: reflex=12.00, memory=13.25\nNon-idle actions: 8 / 3\n\nRoom A becomes dirty at step 5\nStep | Reflex action | Memory action | Clean rooms (reflex / memory)\n   1 | Suck          | Suck          | 1 / 1\n   2 | Right         | Right         | 1 / 1\n   3 | Suck          | Suck          | 2 / 2\n   4 | Left          | NoOp          | 2 / 2\n   5 | Suck          | NoOp          | 2 / 1\n   6 | Right         | NoOp          | 2 / 1\n   7 | Left          | NoOp          | 2 / 1\n   8 | Right         | NoOp          | 2 / 1\nScores: reflex=12.00, memory=9.25\nNon-idle actions: 8 / 3"
   }
 ]
