@@ -47,6 +47,82 @@ body > * {
   }
 }
 
+/* Schedule announcements */
+
+.course-announcements {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #d8e1e8;
+  border-radius: 8px;
+  box-shadow: 0 8px 22px rgba(15, 57, 78, 0.07);
+  margin: 1.35rem 0 1.7rem;
+  overflow: hidden;
+}
+
+.course-announcements-header {
+  align-items: center;
+  background: #f4f8fa;
+  border-bottom: 1px solid #d8e1e8;
+  display: flex;
+  min-height: 2.75rem;
+  padding: 0.55rem 0.9rem;
+}
+
+.course-announcements-header h2 {
+  color: #073b4c;
+  font-size: 1.08rem;
+  font-weight: 750;
+  margin: 0;
+}
+
+.course-announcements-list {
+  max-height: 12rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.75rem;
+  scrollbar-gutter: stable;
+}
+
+.course-announcements-list:focus-visible {
+  outline: 3px solid rgba(0, 124, 137, 0.3);
+  outline-offset: -3px;
+}
+
+.course-announcement {
+  border-left: 4px solid #007c89;
+  padding: 0.65rem 0.8rem;
+}
+
+.course-announcement + .course-announcement {
+  border-top: 1px solid #e3e9ed;
+  margin-top: 0.55rem;
+  padding-top: 0.8rem;
+}
+
+.course-announcement time {
+  color: #64748b;
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  margin-bottom: 0.15rem;
+  text-transform: uppercase;
+}
+
+.course-announcement p {
+  color: #334155;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.course-announcement-urgent {
+  background: #fff7df;
+  border-left-color: #c2413a;
+}
+
+.course-announcement-urgent p {
+  color: #a12622;
+  font-weight: 800;
+}
+
 /* Assignment collection and handouts */
 
 .assignment-intro {
