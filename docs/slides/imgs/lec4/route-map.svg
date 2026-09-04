@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 320" role="img" aria-labelledby="title desc" style="text-rendering:geometricPrecision">
+  <title id="title">A five-location route-planning problem</title>
+  <desc id="desc">Bidirectional roads S-A, S-B, A-C, B-C, C-G, and B-G cost 1, 2, 1, 1, 1, and 6 minutes respectively.</desc>
+  <g fill="none" stroke="#5d6470" stroke-width="4">
+    <path d="M 80 160 L 350 65 L 660 65 L 915 165 L 350 255 L 80 160"/>
+    <path d="M 350 255 L 660 65"/>
+  </g>
+  <g fill="#fff" stroke="none">
+    <rect x="196" y="89" width="40" height="44" rx="6"/>
+    <rect x="196" y="187" width="40" height="44" rx="6"/>
+    <rect x="485" y="43" width="40" height="44" rx="6"/>
+    <rect x="485" y="138" width="40" height="44" rx="6"/>
+    <rect x="767" y="93" width="40" height="44" rx="6"/>
+    <rect x="613" y="188" width="40" height="44" rx="6"/>
+  </g>
+  <g fill="#202124" font-family="sans-serif" font-size="30" text-anchor="middle">
+    <text x="216" y="121">1</text><text x="216" y="219">2</text><text x="505" y="75">1</text>
+    <text x="505" y="170">1</text><text x="787" y="125">1</text><text x="633" y="220">6</text>
+  </g>
+  <g stroke-width="3">
+    <circle cx="80" cy="160" r="34" fill="#e8f6f5" stroke="#007c89"/>
+    <circle cx="350" cy="65" r="34" fill="#fff" stroke="#5d6470"/>
+    <circle cx="350" cy="255" r="34" fill="#fff" stroke="#5d6470"/>
+    <circle cx="660" cy="65" r="34" fill="#fff" stroke="#5d6470"/>
+    <circle cx="915" cy="165" r="34" fill="#fdecef" stroke="#b8325f"/>
+  </g>
+  <g fill="#202124" font-family="sans-serif" font-size="33" text-anchor="middle">
+    <text x="80" y="172">S</text><text x="350" y="77">A</text><text x="350" y="267">B</text>
+    <text x="660" y="77">C</text><text x="915" y="177">G</text>
+    <text x="80" y="230" font-size="24" fill="#007c89">Start</text>
+    <text x="915" y="235" font-size="24" fill="#b8325f">Goal</text>
+  </g>
+</svg>

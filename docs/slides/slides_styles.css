@@ -364,6 +364,108 @@
   margin-top: 0.9em;
 }
 
+/* Search introduction: readable worked examples within one slide. */
+.reveal section.search-intro table {
+  font-size: 0.76em;
+  line-height: 1.22;
+}
+
+.reveal section.search-intro th,
+.reveal section.search-intro td {
+  padding: 0.42em 0.5em;
+}
+
+.reveal section.search-intro pre.sourceCode {
+  font-size: 0.63em;
+  padding-top: 0.6em;
+  padding-bottom: 0.6em;
+}
+
+.reveal .search-figure {
+  margin: 0.4em 0;
+}
+
+.reveal .search-figure svg,
+.reveal img.search-diagram {
+  display: block;
+  height: auto;
+  margin: 0 auto;
+  max-height: 310px;
+  max-width: 100%;
+  object-fit: contain;
+  text-rendering: geometricPrecision;
+  width: 100%;
+}
+
+.reveal img.search-map-small {
+  max-height: 215px;
+}
+
+.reveal img.search-state-space,
+.reveal img.search-puzzle,
+.reveal img.search-queens {
+  display: block;
+  height: auto;
+  margin: 0 auto;
+  max-width: 100%;
+  object-fit: contain;
+  width: auto;
+}
+
+.reveal img.search-state-space {
+  max-height: 410px;
+}
+
+.reveal img.search-puzzle {
+  max-height: 310px;
+}
+
+.reveal img.search-queens {
+  max-height: 340px;
+}
+
+/* Logic foundations and inference: readable truth tables and proof traces. */
+.reveal section.logic-foundations table,
+.reveal section.logic-inference table {
+  font-size: 0.76em;
+  line-height: 1.22;
+}
+
+.reveal section.logic-foundations th,
+.reveal section.logic-foundations td,
+.reveal section.logic-inference th,
+.reveal section.logic-inference td {
+  padding: 0.42em 0.5em;
+}
+
+.reveal section.logic-eight-rows th,
+.reveal section.logic-eight-rows td {
+  padding: 0.25em 0.5em;
+}
+
+.reveal section.logic-compare th:nth-last-child(-n+2),
+.reveal section.logic-compare td:nth-last-child(-n+2) {
+  background: var(--cs-soft-teal);
+}
+
+.reveal section.logic-inference pre.sourceCode {
+  font-size: 0.65em;
+  padding-top: 0.65em;
+  padding-bottom: 0.65em;
+}
+
+.reveal .logic-figure {
+  margin: 0.5em 0;
+}
+
+.reveal .logic-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 285px;
+  text-rendering: geometricPrecision;
+}
+
 .reveal .columns.two-column-balance > .column {
   box-sizing: border-box;
 }

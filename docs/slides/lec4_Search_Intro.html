@@ -32,6 +32,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
@@ -163,211 +229,62 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="classical-ai" class="slide level2 section-slide compact scrollable">
-<h2>Classical AI</h2>
+<section id="which-route-would-you-choose" class="slide level2 search-intro">
+<h2>Which Route Would You Choose?</h2>
+<p>Start at <strong>S</strong>, reach the goal <strong>G</strong>. Road labels are travel times in minutes; roads work in both directions.</p>
+<p><img data-src="imgs/lec4/route-map.svg" class="search-diagram" alt="Road map: S to A costs 1, S to B 2, A to C 1, B to C 1, C to G 1, and B to G 6."></p>
+<div class="question">
+<p>Would you prefer fewer roads, or less travel time? Are those the same objective?</p>
+</div>
+<aside class="notes">
+<p>50-minute teaching plan: slides 1-7, 9 minutes; 8-10, 6 minutes including a pair exercise; 11-16, 9 minutes; 17-20, 7 minutes; 21-24, 9 minutes including a frontier trace; 25-32, 10 minutes including the exit check. Pause on questions before revealing answers. The next lecture implements breadth-first and depth-first search.</p>
+<p>Ask students to name a route before calculating. A two-road route can take longer than a three-road route. All examples in this lecture assume a correct, static problem model. The road map and subsequent worked examples are original course illustrations.</p>
+<p>[Sources] - Artificial Intelligence: A Modern Approach (AIMA), Stuart Russell and Peter Norvig, Chapter 3: solving problems by searching. The supplied Beamer lecture provides the original vacuum, puzzle, queens, and algorithm overview topics. - https://inst.eecs.berkeley.edu/~cs188/textbook/search/state.html [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="representation-comes-before-search" class="slide level2 search-intro scrollable">
+<h2>Representation Comes Before Search</h2>
 <div class="columns visual-pair">
-<div class="column" style="width:58%;">
-<h3 id="ai-representation-search">AI = Representation + Search</h3>
+<div class="column" style="width:70%;">
+<p>In <strong>artificial intelligence (AI)</strong>, search is one way to choose actions by considering possible futures.</p>
 <ol type="1">
-<li>Describe the problem.</li>
-<li>Choose a useful abstraction for partial solutions.</li>
-<li>Define operations that change the representation.</li>
-<li>Search through those changes until a solution is found.</li>
+<li><strong>Represent:</strong> What situations and actions matter?</li>
+<li><strong>Search:</strong> Which action sequence reaches a goal?</li>
+<li><strong>Execute:</strong> Carry out the selected actions.</li>
 </ol>
 <div class="takeaway">
-<p>Representation defines the world the agent can think in; search decides how it moves through that world.</p>
+<p>An algorithm cannot fix a problem that was modeled incorrectly.</p>
 </div>
-</div><div class="column" style="width:34%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec3/puzzle_openclipart.svg" class="cc0-icon"></p>
-<figcaption>Puzzle pieces as a visual metaphor for representation and search</figcaption>
-</figure>
-</div>
+</div><div class="column" style="width:24%;">
+<p><img data-src="imgs/lec3/puzzle_openclipart.svg" class="cc0-icon" alt="Colorful interlocking puzzle pieces"></p>
 </div></div>
+<aside class="notes">
+<p>The slogan representation plus search describes a major classical AI approach, not every AI system. Distinguish searching in a model from physically trying every road. Search spends computation to avoid unnecessary real-world actions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="what-is-search" class="slide level2">
-<h2>What Is Search?</h2>
-<ul>
-<li>Search is the process of finding a solution or path in a problem space.</li>
-<li>It is useful when an agent must reason through possible future states before acting.</li>
-</ul>
-<div class="columns visual-pair">
-<div class="column" style="width:32%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec4/car_navigation.png" class="cc0-icon"></p>
-<figcaption>Navigation example</figcaption>
-</figure>
-</div>
-<p>Pathfinding</p>
-</div><div class="column" style="width:32%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec3/chessboard_standard_openclipart.svg" class="cc0-icon"></p>
-<figcaption>Chessboard example</figcaption>
-</figure>
-</div>
-<p>Game playing</p>
-</div><div class="column" style="width:32%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec4/puzzle_8.png" class="cc0-icon"></p>
-<figcaption>Puzzle example</figcaption>
-</figure>
-</div>
-<p>Puzzle solving</p>
-</div></div>
-</section>
-<section id="search-problems" class="slide level2">
-<h2>Search Problems</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Component</th>
-<th>Question</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Initial state</td>
-<td>Where do we start?</td>
-</tr>
-<tr class="even">
-<td>Actions</td>
-<td>What can we do from the current state?</td>
-</tr>
-<tr class="odd">
-<td>Transition model</td>
-<td>What state follows an action?</td>
-</tr>
-<tr class="even">
-<td>Goal test</td>
-<td>How do we know we are done?</td>
-</tr>
-<tr class="odd">
-<td>Path cost</td>
-<td>What rewards or penalties accumulate along the way?</td>
-</tr>
-</tbody>
-</table>
-<div class="question">
-<p>The same real-world task can become easy or hard depending on how these five pieces are defined.</p>
-</div>
-</section>
-<section id="example-vacuum-cleaner-world" class="slide level2">
-<h2>Example: Vacuum-Cleaner World</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:42%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec4/fig2_2.png" class="cc0-figure"></p>
-<figcaption>Vacuum-cleaner world</figcaption>
-</figure>
-</div>
-</div><div class="column" style="width:52%;">
-<ul>
-<li>State count: <span class="math inline">2 \times 2 \times 2 = 8</span>.</li>
-<li>Vacuum location: Room A or Room B.</li>
-<li>Room A: clean or dirty.</li>
-<li>Room B: clean or dirty.</li>
-<li>Actions: L, R, S.</li>
-<li>Goal: both rooms are clean.</li>
-</ul>
-</div></div>
-</section>
-<section id="vacuum-state-space" class="slide level2">
-<h2>Vacuum State Space</h2>
-
-<img data-src="imgs/lec4/state_space.png" class="cc0-figure r-stretch quarto-figure-center"><p class="caption">Vacuum-cleaner state space</p><div class="takeaway">
-<p>Fig. 3.2 of AIMA: states are nodes; actions are edges.</p>
-</div>
-</section>
-<section id="example-8-puzzle" class="slide level2">
-<h2>Example: 8 Puzzle</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:48%;">
-<ul>
-<li>A sliding puzzle with 8 numbered tiles and one empty space.</li>
-<li>Objective: arrange the tiles in a target order.</li>
-<li>States: all tile configurations.</li>
-<li>Actions: slide a neighboring tile into the empty space.</li>
-</ul>
-</div><div class="column" style="width:42%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec4/puzzle_8.png" class="cc0-figure"></p>
-<figcaption>8-puzzle board</figcaption>
-</figure>
-</div>
-<div class="takeaway">
-<p>Fig. 3.3 of AIMA.</p>
-</div>
-</div></div>
-</section>
-<section id="example-eight-queens" class="slide level2">
-<h2>Example: Eight Queens</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:56%;">
-<ul>
-<li>Place 8 queens on an <span class="math inline">8 \times 8</span> chessboard.</li>
-<li>No two queens may share a row, column, or diagonal.</li>
-<li>A search formulation must decide what counts as a state and what counts as an action.</li>
-</ul>
-</div><div class="column" style="width:36%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec4/eight_queens.png" class="cc0-figure"></p>
-<figcaption>Eight queens puzzle</figcaption>
-</figure>
-</div>
-<p><a href="https://en.wikipedia.org/wiki/Eight_queens_puzzle">Wikipedia: Eight Queens Puzzle</a></p>
-</div></div>
-</section>
-<section id="eight-queens-naive-vs.-better" class="slide level2">
-<h2>Eight Queens: Naive vs.&nbsp;Better</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:48%;">
-<h3 id="naive-formulation">Naive Formulation</h3>
-<ul>
-<li>States: any board with 0 to 8 queens.</li>
-<li>Initial: empty board.</li>
-<li>Actions: place a queen on any empty square.</li>
-<li>Goal: 8 queens, none attacking.</li>
-<li>State space: <span class="math inline">\sim 10^{15}</span> states.</li>
-</ul>
-</div><div class="column" style="width:48%;">
-<h3 id="better-formulation">Better Formulation</h3>
-<ul>
-<li>States: one queen per column, filled left to right.</li>
-<li>Actions: place a queen in the leftmost empty column without attacks.</li>
-<li>Goal: 8 queens, none attacking.</li>
-<li>State space: <span class="math inline">\sim 2000</span> states.</li>
-</ul>
-</div></div>
-</section>
-<section id="example-navigation" class="slide level2">
-<h2>Example: Navigation</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:54%;">
-<ul>
-<li>States: current city.</li>
-<li>Initial: starting city.</li>
-<li>Actions: drive to a neighboring city.</li>
-<li>Transition: arrive at the neighboring city.</li>
-<li>Goal: destination city.</li>
-</ul>
-</div><div class="column" style="width:38%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec4/car_navigation.png" class="cc0-figure"></p>
-<figcaption>Car navigation illustration</figcaption>
-</figure>
-</div>
-</div></div>
-</section>
-<section id="overview-uninformed-search" class="slide level2">
-<h2>Overview: Uninformed Search</h2>
+<section id="what-are-we-assuming" class="slide level2 search-intro">
+<h2>What Are We Assuming?</h2>
+<p>Recall the environment dimensions from Lecture 3.</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
@@ -375,88 +292,1133 @@ Peizhong Ju
 </colgroup>
 <thead>
 <tr class="header">
-<th>Algorithm</th>
+<th>Assumption here</th>
+<th>What it lets us do</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Fully observable</td>
+<td>Know the current state</td>
+</tr>
+<tr class="even">
+<td>Known, deterministic actions</td>
+<td>Predict one next state for each action</td>
+</tr>
+<tr class="odd">
+<td>Static during planning</td>
+<td>Plan before executing the first action</td>
+</tr>
+<tr class="even">
+<td>Single agent</td>
+<td>Ignore an opponent’s choices</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>Under these assumptions, a solution can be a fixed sequence of actions.</p>
+</div>
+<aside class="notes">
+<p>These are the assumptions of the introductory search formulation, not requirements for every use of search. With uncertainty, a fixed sequence may be insufficient: the agent may need a policy that reacts to observations. A real navigation application can replan when traffic changes. That is outside today’s static example.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="define-the-search-problem" class="slide level2 search-intro">
+<h2>Define the Search Problem</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Question to answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Initial state</strong></td>
+<td>Where does the agent start?</td>
+</tr>
+<tr class="even">
+<td><strong>Available actions</strong></td>
+<td>Which choices are legal in each state?</td>
+</tr>
+<tr class="odd">
+<td><strong>Transition model</strong></td>
+<td>What state results from an action?</td>
+</tr>
+<tr class="even">
+<td><strong>Goal test</strong></td>
+<td>Does this state satisfy the objective?</td>
+</tr>
+<tr class="odd">
+<td><strong>Action cost</strong></td>
+<td>What does each action cost?</td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>state space</strong> contains the possible modeled states. The <strong>path cost</strong> is the sum of action costs along a path.</p>
+<aside class="notes">
+<p>Some textbook lists treat action cost and path cost together. Here action costs define an additive path cost. Costs can represent time, distance, money, or a unit cost per move; they should match the intended objective. State space may include valid states that are not reachable from a particular start.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="turn-the-map-into-a-problem" class="slide level2 search-intro">
+<h2>Turn the Map into a Problem</h2>
+<p><img data-src="imgs/lec4/route-map.svg" class="search-diagram search-map-small" alt="Five-location weighted road map with S as the start and G as the goal."></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Our navigation task</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>State / initial state</td>
+<td>Current location / S</td>
+</tr>
+<tr class="even">
+<td>Actions / transition</td>
+<td>Take a neighboring road / arrive at its other end</td>
+</tr>
+<tr class="odd">
+<td>Goal test</td>
+<td>Is the current location G?</td>
+</tr>
+<tr class="even">
+<td>Action cost</td>
+<td>Minutes written beside that road</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>At S there are two actions: go to A or go to B. At B there are three: go to S, C, or G. Road direction matters; this example explicitly uses bidirectional roads. The graph is small enough to draw, but a real search implementation can generate neighbors as needed.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="shortest-in-steps-or-cheapest" class="slide level2 search-intro">
+<h2>Shortest in Steps or Cheapest?</h2>
+<p><img data-src="imgs/lec4/route-map.svg" class="search-diagram search-map-small" alt="Road map for comparing a two-action route and a three-action route."></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Route</th>
+<th>Number of actions</th>
+<th>Total travel time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>S → B → G</td>
+<td>2</td>
+<td><span class="math inline">2+6=8</span> minutes</td>
+</tr>
+<tr class="even">
+<td>S → A → C → G</td>
+<td>3</td>
+<td><span class="math inline">1+1+1=3</span> minutes</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment takeaway">
+<p>With <strong>equal positive action costs</strong>, a route with the fewest actions is also a least-cost route.</p>
+</div>
+<aside class="notes">
+<p>The three-minute route is optimal in this map: S to A to C to G has three unit-cost edges; the other simple routes cost at least four. Students do not need an optimality proof yet. This example motivates the difference between breadth-first and uniform-cost search later.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-must-a-state-remember" class="slide level2 search-intro">
+<h2>What Must a State Remember?</h2>
+<div class="columns visual-pair">
+<div class="column" style="width:70%;">
+<p>A search state is a <strong>task-relevant summary</strong>, not a copy of the whole world.</p>
+<ul>
+<li>Plain road planning: current location may be enough.</li>
+<li>A locked door: location <strong>and whether you have the key</strong>.</li>
+<li>Limited battery: location <strong>and remaining charge</strong>.</li>
+</ul>
+<div class="takeaway">
+<p>Keep information that changes legal actions, outcomes, goal status, or future costs.</p>
+</div>
+</div><div class="column" style="width:24%;">
+<p><img data-src="imgs/lec1/robot_openclipart.svg" class="cc0-icon" alt="Robot considering which parts of its situation matter"></p>
+</div></div>
+<aside class="notes">
+<p>Two histories can be merged into one state when they have the same relevant future possibilities. The path already traveled can stay in a search node; it need not be part of the problem state unless history changes the future task. For example, if roads are time-dependent, current time may also matter.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="pair-exercise-pick-up-a-package" class="slide level2 search-intro scrollable">
+<h2>Pair Exercise: Pick Up a Package</h2>
+<p>A robot starts at <strong>Home</strong>, visits the <strong>Shop</strong> to pick up one package, and returns Home with it.</p>
+<div class="search-figure">
+<svg viewbox="0 0 1000 185" role="img" aria-label="Home is connected to a junction, which is connected to a shop. Each road takes one move.">
+  <path d="M 220 81 H 405 M 590 81 H 775" stroke="#5d6470" stroke-width="4"></path>
+  <rect x="20" y="35" width="200" height="92" rx="7" fill="#e8f6f5" stroke="#007c89" stroke-width="2"></rect>
+  <rect x="405" y="35" width="185" height="92" rx="7" fill="#fff4db" stroke="#b7791f" stroke-width="2"></rect>
+  <rect x="775" y="35" width="205" height="92" rx="7" fill="#fdecef" stroke="#b8325f" stroke-width="2"></rect>
+  <g font-family="sans-serif" text-anchor="middle" fill="#202124" font-size="32"><text x="120" y="93">Home</text><text x="497" y="93">Junction</text><text x="877" y="93">Shop</text><text x="312" y="64" font-size="26">1</text><text x="682" y="64" font-size="26">1</text></g>
+</svg>
+</div>
+<ol type="1">
+<li>Is <strong>current location alone</strong> a sufficient state?</li>
+<li>What is the initial state? What is the goal test?</li>
+<li>Specify the pickup action and its cost.</li>
+</ol>
+<div class="question">
+<p>The robot starts at Home. Is the task already done?</p>
+</div>
+<aside class="notes">
+<p>Let pairs propose a state representation. Specify that the shop always has the package, pickup succeeds, the robot cannot drop the package, and each road is bidirectional. The next slide chooses a unit cost for pickup as well as travel. Students could instead choose a different explicit pickup cost without changing the need for a package flag.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-state-includes-package-status" class="slide level2 search-intro">
+<h2>A State Includes Package Status</h2>
+<p><span class="math display">
+\text{state}=(\text{location},\ \text{has package})
+</span></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Piece</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Initial state</td>
+<td><span class="math inline">(\text{Home},\ \text{false})</span></td>
+</tr>
+<tr class="even">
+<td>Pickup action</td>
+<td>At Shop without package: change the flag to <span class="math inline">\text{true}</span></td>
+</tr>
+<tr class="odd">
+<td>Goal test</td>
+<td>Location is Home <strong>and</strong> package flag is <span class="math inline">\text{true}</span></td>
+</tr>
+<tr class="even">
+<td>Costs in this model</td>
+<td>Each road traversal and pickup costs 1</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><strong>A solution:</strong> Home → Junction → Shop → pick up → Junction → Home. Cost: <strong>5</strong>.</p>
+</div>
+<aside class="notes">
+<p>There are three locations times two package-status values, or six possible states. All six are reachable in this model. Home without the package and Home with the package are different states even though the robot occupies the same physical location. Show why the initial state fails the correct goal test.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="vacuum-world-count-the-states" class="slide level2 search-intro">
+<h2>Vacuum World: Count the States</h2>
+<div class="columns visual-pair">
+<div class="column" style="width:42%;">
+<p><img data-src="imgs/lec4/fig2_2.png" class="cc0-figure" alt="Two rooms A and B, both dirty, with the vacuum initially in A."></p>
+</div><div class="column" style="width:52%;">
+<ul>
+<li>Vacuum location: <strong>A or B</strong>.</li>
+<li>Room A: <strong>clean or dirty</strong>.</li>
+<li>Room B: <strong>clean or dirty</strong>.</li>
+</ul>
+<p><span class="math display">
+2\times 2\times 2=8\text{ states}
+</span></p>
+</div></div>
+<p>We will write a state as <span class="math inline">(\text{location},\ \text{A status},\ \text{B status})</span>.</p>
+<div class="question">
+<p>How many states satisfy “both rooms are clean”?</p>
+</div>
+<div class="fragment">
+<p><strong>Two.</strong> The vacuum may finish in either room.</p>
+</div>
+<aside class="notes">
+<p>Both cleanliness values are known. No new dirt appears and cleaning always succeeds. The eight states describe the whole modeled state space; from a specific start with one clean room, some of these states cannot be reached because actions do not create dirt. The illustration is from Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="vacuum-actions-l-r-and-s" class="slide level2 search-intro">
+<h2>Vacuum Actions: L, R, and S</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Label</th>
+<th>Full action name</th>
+<th>Effect in this two-room model</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>L</strong></td>
+<td>Move <strong>Left</strong></td>
+<td>End in A; stay put if already in A</td>
+</tr>
+<tr class="even">
+<td><strong>R</strong></td>
+<td>Move <strong>Right</strong></td>
+<td>End in B; stay put if already in B</td>
+</tr>
+<tr class="odd">
+<td><strong>S</strong></td>
+<td><strong>Suck</strong> up dirt</td>
+<td>Make the current room clean</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Each action costs <strong>1</strong>, even if nothing changes.</li>
+<li>Cleaning an already-clean room leaves the state unchanged.</li>
+<li>Goal: both rooms clean, regardless of vacuum location.</li>
+</ul>
+<div class="takeaway">
+<p>Specify actions with no effect too. Otherwise, two implementations may model different problems.</p>
+</div>
+<aside class="notes">
+<p>The labels on the next diagram are action abbreviations, not state names. Contrast S here, which means Suck, with S on the earlier road map, which labels the start location. The meanings are local to each example.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="work-through-a-vacuum-plan" class="slide level2 search-intro">
+<h2>Work Through a Vacuum Plan</h2>
+<p>Initial state: <span class="math inline">(\text{A},\ \text{dirty},\ \text{dirty})</span>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Action</th>
+<th>Resulting state</th>
+<th>Cost so far</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>Start</td>
+<td><span class="math inline">(\text{A},\ \text{dirty},\ \text{dirty})</span></td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Suck (S)</td>
+<td><span class="math inline">(\text{A},\ \text{clean},\ \text{dirty})</span></td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Right (R)</td>
+<td><span class="math inline">(\text{B},\ \text{clean},\ \text{dirty})</span></td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Suck (S)</td>
+<td><span class="math inline">(\text{B},\ \text{clean},\ \text{clean})</span></td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<div class="question">
+<p>Could any solution cost less than 3 from this start?</p>
+</div>
+<div class="fragment">
+<p><strong>No.</strong> Each dirty room needs a cleaning action, and reaching the other room needs at least one move.</p>
+</div>
+<aside class="notes">
+<p>Trace each action before discussing optimality. This is a lower-bound argument: every valid solution needs two cleanings and one move, and this plan achieves that bound. An alternative sequence Right, Suck, Left, Suck is valid but costs four. Reinforce valid versus optimal.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="read-the-vacuum-state-graph" class="slide level2 search-intro">
+<h2>Read the Vacuum State Graph</h2>
+<p><img data-src="imgs/lec4/state_space.png" class="search-state-space" alt="Eight-state vacuum graph. Directed edges are labeled Left, Right, or Suck; self-loops show actions that do not change the state."></p>
+<p><strong>L = Left; R = Right; S = Suck.</strong> Nodes are states; arrows are actions. A loop returns to the same state.</p>
+<aside class="notes">
+<p>Point to both goal states on the bottom row, then trace S, R, S from the upper-left state. Ask what repeated L does there. This figure includes every possible modeled state; it does not impose a particular search order. Source: Artificial Intelligence: A Modern Approach, Figure 3.2.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-8-puzzle-start-and-goal" class="slide level2 search-intro">
+<h2>The 8-Puzzle: Start and Goal</h2>
+<p>Slide a numbered tile into the empty square. Reach the specified target arrangement.</p>
+<p><img data-src="imgs/lec4/puzzle_8.png" class="search-puzzle" alt="8-puzzle start arrangement 7 2 4 / 5 blank 6 / 8 3 1; goal arrangement blank 1 2 / 3 4 5 / 6 7 8."></p>
+<div class="question">
+<p>What is one action? Does “move left” describe a tile or the blank?</p>
+</div>
+<aside class="notes">
+<p>Use the AIMA figure’s actual goal, which has the blank at the top left. Other puzzle versions use a different goal; the problem definition must state which one. The ambiguity about move direction is intentional and resolved on the next slide. Source: Artificial Intelligence: A Modern Approach, Figure 3.3.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="make-puzzle-actions-unambiguous" class="slide level2 search-intro">
+<h2>Make Puzzle Actions Unambiguous</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Our 8-puzzle definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>State</td>
+<td>Positions of all eight tiles and the blank</td>
+</tr>
+<tr class="even">
+<td>Actions</td>
+<td>Move the <strong>blank</strong> up, down, left, or right when legal</td>
+</tr>
+<tr class="odd">
+<td>Transition</td>
+<td>Swap the blank with the adjacent tile in that direction</td>
+</tr>
+<tr class="even">
+<td>Goal test</td>
+<td>Does the whole board match the target?</td>
+</tr>
+<tr class="odd">
+<td>Action cost</td>
+<td>1 per swap</td>
+</tr>
+</tbody>
+</table>
+<div class="question">
+<p>How many legal actions are available with the blank in the center? In a corner?</p>
+</div>
+<div class="fragment">
+<p><strong>Four</strong> in the center; <strong>two</strong> in a corner. The action set depends on the state.</p>
+</div>
+<aside class="notes">
+<p>In the displayed start, moving the blank left swaps it with tile 5, so tile 5 moves right. The branching factor is not constant across states. Not every arrangement is reachable from a fixed start; parity divides the configurations into two equally sized reachable components. Mention only if asked, since reachability parity is not needed for this introductory formulation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="eight-queens-a-different-kind-of-goal" class="slide level2 search-intro">
+<h2>Eight Queens: A Different Kind of Goal</h2>
+<div class="columns visual-pair">
+<div class="column" style="width:58%;">
+<ul>
+<li>Place 8 queens on an <span class="math inline">8\times 8</span> board.</li>
+<li>No two queens share a row, column, or diagonal.</li>
+<li>We care about a <strong>valid final arrangement</strong>, not travel distance.</li>
+</ul>
+<div class="question">
+<p>Should an action place a queen anywhere, or only in a carefully chosen column?</p>
+</div>
+</div><div class="column" style="width:36%;">
+<p><img data-src="imgs/lec4/eight_queens.png" class="search-queens" alt="Eight queens placed on a chessboard so that no pair attacks another."></p>
+</div></div>
+<aside class="notes">
+<p>Explain a queen’s attack directions for students unfamiliar with chess. Contrast navigation, where we need the path, with a configuration task, where the final assignment is the main result. Incremental placement gives a search formulation; later constraint-satisfaction and local-search lectures revisit this problem.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-better-representation-removes-work" class="slide level2 search-intro">
+<h2>A Better Representation Removes Work</h2>
+<p>Place queens <strong>one column at a time, from left to right</strong>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Choice</th>
+<th>Candidate complete boards before attack checks</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Any 8 distinct squares</td>
+<td><span class="math inline">\binom{64}{8}=4{,}426{,}165{,}368</span></td>
+</tr>
+<tr class="even">
+<td>Exactly one queen per column</td>
+<td><span class="math inline">8^8=16{,}777{,}216</span></td>
+</tr>
+</tbody>
+</table>
+<p>The second representation rules out column conflicts automatically.</p>
+<div class="takeaway">
+<p>These counts are candidate boards, <strong>not valid solutions</strong> or the number of nodes an algorithm must visit.</p>
+</div>
+<aside class="notes">
+<p>The counts compare completed placements only. The first representation chooses an unordered set of eight squares; counting placement orders instead would count many paths to the same board. This distinction corrects the approximate state counts in the old lecture. Since every valid solution already has exactly one queen per column, imposing that structure does not remove any solution.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reject-impossible-partial-solutions" class="slide level2 search-intro">
+<h2>Reject Impossible Partial Solutions</h2>
+<p>Suppose column 1 already has a queen in row 1. Where can the next queen go in column 2?</p>
+<div class="search-figure">
+<svg viewbox="0 0 1000 225" role="img" aria-label="Candidate rows for the second queen: row 1 fails because of a row attack, row 2 fails because of a diagonal attack, and rows 3 through 8 remain legal.">
+  <rect x="15" y="45" width="290" height="130" rx="7" fill="#fdecef" stroke="#b8325f" stroke-width="2"></rect>
+  <rect x="355" y="45" width="290" height="130" rx="7" fill="#fff4db" stroke="#b7791f" stroke-width="2"></rect>
+  <rect x="695" y="45" width="290" height="130" rx="7" fill="#e8f6f5" stroke="#007c89" stroke-width="2"></rect>
+  <g font-family="sans-serif" text-anchor="middle" fill="#202124"><text x="160" y="91" font-size="32">Row 1</text><text x="160" y="140" font-size="27">Same row: reject</text><text x="500" y="91" font-size="32">Row 2</text><text x="500" y="140" font-size="27">Diagonal: reject</text><text x="840" y="91" font-size="32">Rows 3 through 8</text><text x="840" y="140" font-size="27">Keep exploring</text></g>
+</svg>
+</div>
+<p><strong>Pruning</strong> means discarding a branch that cannot lead to a valid solution.</p>
+<div class="takeaway">
+<p>With placement-only actions, adding more queens cannot repair an existing attack.</p>
+</div>
+<aside class="notes">
+<p>Column 1 row 1 attacks column 2 rows 1 and 2. Rows 3 through 8 are legal immediate placements, but not all necessarily extend to complete solutions. Ask why this pruning is safe for incremental placement but would not justify rejecting an entire full-board local-search state where moving an existing queen is allowed.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="same-state-different-search-nodes" class="slide level2 search-intro">
+<h2>Same State, Different Search Nodes</h2>
+<p>A <strong>state</strong> describes a situation. A <strong>search node</strong> also records how we reached it.</p>
+<p><img data-src="imgs/lec4/search-tree.svg" class="search-diagram" alt="Two selected branches from S: via A to C has cost 2; via B to C has cost 3. The two C search nodes represent the same location."></p>
+<p>A node <span class="math inline">n</span> can store its <strong>state</strong>, <strong>parent node</strong>, <strong>last action</strong>, <strong>depth</strong> (actions so far), and <strong>path cost</strong> <span class="math inline">g(n)</span>.</p>
+<div class="takeaway">
+<p>Two nodes can describe the same state but have different paths and costs.</p>
+</div>
+<aside class="notes">
+<p>The drawing shows selected branches of the search tree, not the full tree. The underlying road graph has one vertex C. The path through A reaches C at cost 2; through B reaches C at cost 3. Both nodes have depth 2. In g(n), n denotes a search node, not the number of nodes. Parent links let us reconstruct the action sequence without copying the whole path into every child.</p>
+<p>[Sources] - https://inst.eecs.berkeley.edu/~cs188/textbook/search/state.html [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-frontier-discovered-not-expanded" class="slide level2 search-intro">
+<h2>The Frontier: Discovered, Not Expanded</h2>
+<div class="search-figure">
+<svg viewbox="0 0 1000 240" role="img" aria-label="Expanding the start node S generates child nodes A and B, which enter the frontier.">
+  <defs><marker id="search-frontier-arrow" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="9" markerheight="9" orient="auto" markerunits="userSpaceOnUse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#5d6470"></path></marker></defs>
+  <path d="M 254 115 H 457" stroke="#5d6470" stroke-width="3" marker-end="url(#search-frontier-arrow)"></path>
+  <circle cx="190" cy="115" r="58" fill="#fff4db" stroke="#b7791f" stroke-width="3"></circle>
+  <rect x="475" y="34" width="475" height="162" rx="7" fill="#e8f6f5" stroke="#007c89" stroke-width="2"></rect>
+  <circle cx="620" cy="111" r="39" fill="#fff" stroke="#007c89" stroke-width="2"></circle>
+  <circle cx="800" cy="111" r="39" fill="#fff" stroke="#007c89" stroke-width="2"></circle>
+  <g font-family="sans-serif" text-anchor="middle" fill="#202124"><text x="190" y="127" font-size="36">S</text><text x="190" y="213" font-size="26">Expanded</text><text x="355" y="95" font-size="26">Generate</text><text x="620" y="123" font-size="34">A</text><text x="800" y="123" font-size="34">B</text><text x="710" y="181" font-size="26">Frontier: waiting to be selected</text></g>
+</svg>
+</div>
+<ul>
+<li><strong>Expand a node:</strong> generate children using its available actions.</li>
+<li><strong>Frontier:</strong> nodes still waiting to be explored.</li>
+<li><strong>Reached states:</strong> states already discovered, including those on the frontier.</li>
+</ul>
+<div class="question">
+<p>Which frontier node should we choose next? That choice defines the search strategy.</p>
+</div>
+<aside class="notes">
+<p>Distinguish generated from expanded. S is removed from the frontier and expanded. A and B have been generated but not expanded. Reached is a set of problem states, whereas the frontier stores search nodes. Cost-aware search may instead record the best known cost for each reached state and update it when a cheaper route is found.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-common-search-skeleton" class="slide level2 search-intro">
+<h2>A Common Search Skeleton</h2>
+<p>Python-style <strong>pseudocode</strong> for finding a reachable goal; helper operations are conceptual.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-code-line-numbers="1-2|3-6|7-11|12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>frontier <span class="op">=</span> [Node(initial_state)]</span>
+<span id="cb1-2"><a></a>reached <span class="op">=</span> {initial_state}</span>
+<span id="cb1-3"><a></a><span class="cf">while</span> frontier:</span>
+<span id="cb1-4"><a></a>    node <span class="op">=</span> choose_and_remove(frontier)</span>
+<span id="cb1-5"><a></a>    <span class="cf">if</span> is_goal(node.state):</span>
+<span id="cb1-6"><a></a>        <span class="cf">return</span> reconstruct_path(node)</span>
+<span id="cb1-7"><a></a>    <span class="cf">for</span> action <span class="kw">in</span> actions(node.state):</span>
+<span id="cb1-8"><a></a>        child <span class="op">=</span> make_child(node, action)</span>
+<span id="cb1-9"><a></a>        <span class="cf">if</span> child.state <span class="kw">not</span> <span class="kw">in</span> reached:</span>
+<span id="cb1-10"><a></a>            reached.add(child.state)</span>
+<span id="cb1-11"><a></a>            frontier.append(child)</span>
+<span id="cb1-12"><a></a><span class="cf">return</span> failure</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="takeaway">
+<p>The selection rule changes exploration order. Finding the <strong>cheapest</strong> path also needs careful handling of better routes to known states.</p>
+</div>
+<aside class="notes">
+<p>Step through the highlighted groups. Node creates a root; choose_and_remove applies a selection rule; make_child uses the transition model and stores parent, action, depth, and cumulative cost; reconstruct_path follows parents backward then reverses the actions. failure is a conceptual result meaning no reachable goal was found. The snippet belongs inside a search procedure and is not a standalone executable Python program.</p>
+<p>This version marks states reached when generated and discards later duplicates. For a finite state space, it finds a reachable goal, but does not in general find the least-cost path. It can safely remove cycles for reachability because all future possibilities are represented by the state. Uniform-cost and A* search need best-cost tracking and appropriate updates. Do not present this as their implementation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="your-turn-expand-one-more-node" class="slide level2 search-intro scrollable">
+<h2>Your Turn: Expand One More Node</h2>
+<p><img data-src="imgs/lec4/route-map.svg" class="search-diagram search-map-small" alt="Road map for tracing the frontier after expanding S and then A."></p>
+<p>After expanding S: <strong>frontier = [A, B]</strong>, <strong>reached = {S, A, B}</strong>.</p>
+<p>Now choose <strong>A</strong>, using the search skeleton from the previous slide.</p>
+<ol type="1">
+<li>Which neighbors does A generate?</li>
+<li>Which one is already reached?</li>
+<li>What remains on the frontier? What is the new node’s cost?</li>
+</ol>
+<aside class="notes">
+<p>Allow roughly 90 seconds. The frontier lists locations for readability, but its entries are search nodes. S to A costs 1. A has neighbors S and C. We choose A explicitly rather than introducing a queue or stack policy yet.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="trace-skip-s-add-c" class="slide level2 search-intro">
+<h2>Trace: Skip S, Add C</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Operation</th>
+<th>Frontier</th>
+<th>Reached states</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Before selecting A</td>
+<td>[A, B]</td>
+<td>{S, A, B}</td>
+</tr>
+<tr class="even">
+<td>Remove A</td>
+<td>[B]</td>
+<td>{S, A, B}</td>
+</tr>
+<tr class="odd">
+<td>Generate S; already reached</td>
+<td>[B]</td>
+<td>{S, A, B}</td>
+</tr>
+<tr class="even">
+<td>Generate C; add it</td>
+<td>[B, C]</td>
+<td>{S, A, B, C}</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>The C node has parent <strong>A</strong>, depth <strong>2</strong>, and cost <span class="math inline">g(C)=1+1=2</span>.</p>
+</div>
+<div class="fragment takeaway">
+<p>Without a repeated-state check, a two-way road can create paths such as S → A → S → A → … forever.</p>
+</div>
+<aside class="notes">
+<p>g(C) is shorthand here for the cost of the C search node reached through A. Emphasize that A remains in reached after leaving the frontier. The search order determines whether an algorithm actually gets trapped by repeated paths, but the search tree contains arbitrarily long repeated walks unless we eliminate them.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="three-uninformed-search-strategies" class="slide level2 search-intro">
+<h2>Three Uninformed Search Strategies</h2>
+<p><strong>Uninformed</strong> means no estimate of the remaining distance to the goal. The problem’s action costs may still be used.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Abbreviation</th>
+<th>Full name</th>
+<th>Which node is selected next?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>BFS</strong></td>
+<td><strong>Breadth-First Search</strong></td>
+<td>Shallowest: fewest actions so far</td>
+</tr>
+<tr class="even">
+<td><strong>DFS</strong></td>
+<td><strong>Depth-First Search</strong></td>
+<td>Deepest along the current branch</td>
+</tr>
+<tr class="odd">
+<td><strong>UCS</strong></td>
+<td><strong>Uniform-Cost Search</strong></td>
+<td>Smallest accumulated path cost</td>
+</tr>
+</tbody>
+</table>
+<div class="question">
+<p>Which strategy directly matches our objective of minimizing travel time?</p>
+</div>
+<div class="fragment">
+<p><strong>UCS.</strong> It prioritizes cost, not the number of roads traveled.</p>
+</div>
+<aside class="notes">
+<p>Preview only: breadth-first typically uses a first-in, first-out queue; depth-first uses a last-in, first-out stack or recursion; uniform-cost uses a priority queue. Avoid introducing the queue abbreviations before students see those data structures next lecture. Explain that UCS selects the smallest cost so far, not a guaranteed smallest remaining cost. Its optimality depends on the correct goal test and cost-aware duplicate handling.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="depth-limits-and-repeated-searches" class="slide level2 search-intro">
+<h2>Depth Limits and Repeated Searches</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Abbreviation</th>
+<th>Full name</th>
 <th>Idea</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>BFS</td>
-<td>Explore all nodes at the current depth before going deeper.</td>
+<td><strong>DLS</strong></td>
+<td><strong>Depth-Limited Search</strong></td>
+<td>Depth-first search with a maximum number of actions</td>
 </tr>
 <tr class="even">
-<td>DFS</td>
-<td>Explore as far as possible along one branch before backtracking.</td>
-</tr>
-<tr class="odd">
-<td>UCS</td>
-<td>Expand the least-cost node first.</td>
-</tr>
-<tr class="even">
-<td>DLS</td>
-<td>Run DFS with a depth limit.</td>
-</tr>
-<tr class="odd">
-<td>IDS</td>
-<td>Combine the memory profile of DFS with the completeness of BFS.</td>
+<td><strong>IDS</strong></td>
+<td><strong>Iterative Deepening Search</strong></td>
+<td>Repeat depth-limited search with limits 0, 1, 2, …</td>
 </tr>
 </tbody>
 </table>
+<p>If the shallowest goal needs 3 actions:</p>
+<p><span class="math display">
+\text{limit }0\ \longrightarrow\ 1\ \longrightarrow\ 2\ \longrightarrow\ 3
+</span></p>
+<div class="takeaway">
+<p>Reaching a depth limit is a <strong>cutoff</strong>, not proof that the full problem has no solution.</p>
+</div>
+<aside class="notes">
+<p>IDS is also called iterative deepening depth-first search. It revisits shallow levels in exchange for depth-first-style memory use. Do not claim BFS-like optimal cost without equal positive action costs. The exact guarantees and the distinction between cutoff and failure are covered in later search lectures.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="overview-informed-and-specialized-search" class="slide level2">
-<h2>Overview: Informed and Specialized Search</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:48%;">
-<h3 id="informed-search">Informed Search</h3>
-<ul>
-<li>Greedy Best-First Search</li>
-<li>A* Search</li>
-</ul>
-<p>Uses heuristic information to guide expansion.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="other-search-families">Other Search Families</h3>
-<ul>
-<li>Bidirectional Search</li>
-<li>Local Search</li>
-<li>Adversarial Search</li>
-</ul>
-<p>Use structure from the task to reduce work or model competition.</p>
-</div></div>
-</section>
-<section id="tradeoffs" class="slide level2">
-<h2>Tradeoffs</h2>
+<section id="informed-search-uses-an-estimate" class="slide level2 search-intro">
+<h2>Informed Search Uses an Estimate</h2>
+<p>A <strong>heuristic</strong> <span class="math inline">h(n)</span> estimates the remaining cost from node <span class="math inline">n</span> to a goal. Example: straight-line distance in a distance-based road task.</p>
 <table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>Criterion</th>
-<th>Meaning</th>
+<th>Strategy</th>
+<th>Priority</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Soundness</td>
-<td>Returned value is always a solution.</td>
+<td><strong>Greedy Best-First Search</strong></td>
+<td>Smallest estimated remaining cost: <span class="math inline">h(n)</span></td>
 </tr>
 <tr class="even">
-<td>Completeness</td>
-<td>If a solution exists, it will be found.</td>
+<td><strong>A* Search</strong>, pronounced “A-star”</td>
+<td>Smallest <span class="math inline">f(n)=g(n)+h(n)</span></td>
 </tr>
+</tbody>
+</table>
+<ul>
+<li><span class="math inline">g(n)</span>: actual cost from the start along this node’s path.</li>
+<li><span class="math inline">h(n)</span>: estimated remaining cost, in the <strong>same units</strong>.</li>
+<li><span class="math inline">f(n)</span>: estimated total cost through this node.</li>
+</ul>
+<aside class="notes">
+<p>For our earlier minutes-based map, h must be measured in minutes, not raw kilometers. Greedy can ignore a very expensive path already taken. A* accounts for that cost too. We will examine which heuristic properties support optimality in Lecture 7; do not imply that an arbitrary estimate guarantees it. A* is an algorithm name, not an abbreviation that expands into words.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="other-ways-to-organize-search" class="slide level2 search-intro">
+<h2>Other Ways to Organize Search</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Family</th>
+<th>Central idea</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
 <tr class="odd">
-<td>Optimality</td>
-<td>The returned solution is the best possible one.</td>
+<td><strong>Bidirectional search</strong></td>
+<td>Search from both ends and try to meet</td>
+<td>Route with a known destination and usable reverse actions</td>
 </tr>
 <tr class="even">
-<td>Time complexity</td>
-<td>Time required to find a solution.</td>
+<td><strong>Local search</strong></td>
+<td>Improve a candidate configuration</td>
+<td>Move queens to reduce attacks</td>
 </tr>
 <tr class="odd">
-<td>Space complexity</td>
-<td>Memory required to find a solution.</td>
+<td><strong>Adversarial search</strong></td>
+<td>Account for another player’s choices</td>
+<td>Choose a chess move against an opponent</td>
 </tr>
 </tbody>
 </table>
 <div class="takeaway">
-<p>“Satisficing” means a solution may not be optimal, but is usually good enough. Learn more on <a href="https://en.wikipedia.org/wiki/Satisficing">Wikipedia</a>.</p>
+<p>The representation and the task determine which search approach makes sense.</p>
+</div>
+<aside class="notes">
+<p>These are families rather than a single universal algorithm. Reverse search is not automatic if the goal is a large set or predecessors are hard to generate. Local search often keeps complete candidates rather than paths. Adversarial search deliberately relaxes today’s single-agent assumption. The upcoming course sequence develops each family.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="how-do-we-judge-a-search-algorithm" class="slide level2 search-intro">
+<h2>How Do We Judge a Search Algorithm?</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Criterion</th>
+<th>Question</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Soundness</strong></td>
+<td>Is every returned answer a valid solution?</td>
+</tr>
+<tr class="even">
+<td><strong>Completeness</strong></td>
+<td>Will it find a solution whenever one exists?</td>
+</tr>
+<tr class="odd">
+<td><strong>Optimality</strong></td>
+<td>Is the returned solution guaranteed least-cost?</td>
+</tr>
+<tr class="even">
+<td><strong>Time complexity</strong></td>
+<td>How much computation is needed?</td>
+</tr>
+<tr class="odd">
+<td><strong>Space complexity</strong></td>
+<td>How much memory is needed?</td>
+</tr>
+</tbody>
+</table>
+<div class="question">
+<p>A route reaches G but takes 8 minutes when a 3-minute route exists. Is it valid? Is it optimal?</p>
+</div>
+<aside class="notes">
+<p>Answer: valid but not optimal. Guarantees always have assumptions: for example, finite branching, action-cost conditions, and how repeated states are handled. Soundness is about the correctness of returned solutions, not about always finding one. A satisficing approach seeks an acceptable solution without requiring the best one; the user should decide what acceptable means.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-search-gets-expensive" class="slide level2 search-intro">
+<h2>Why Search Gets Expensive</h2>
+<p>Let <strong><span class="math inline">b</span></strong> be the branching factor (children per node) and <strong><span class="math inline">d</span></strong> a depth measured in actions.</p>
+<p>For a full tree with <span class="math inline">b=3</span> and no repeated-state pruning:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Depth <span class="math inline">d</span></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Nodes at that depth: <span class="math inline">b^d</span></td>
+<td>1</td>
+<td>3</td>
+<td>9</td>
+<td>27</td>
+<td>59,049</td>
+</tr>
+</tbody>
+</table>
+<p>There are <strong>88,573 nodes through depth 10</strong>, counting the root and all earlier levels too.</p>
+<div class="takeaway">
+<p>Better representations, pruning, and good search order can matter more than faster hardware.</p>
+</div>
+<aside class="notes">
+<p>Here b is constant in an illustrative full tree; real states can have different numbers of successors. The total is 1 + 3 + … + 3^10 = (3^11 - 1) / 2 = 88,573. Distinguish nodes at the last depth from nodes through that depth. Ask what memory pressure looks like if a strategy retains a whole level of pending nodes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="exit-check-diagnose-the-mistake" class="slide level2 search-intro scrollable">
+<h2>Exit Check: Diagnose the Mistake</h2>
+<ol type="1">
+<li>A delivery robot stops immediately because it is already Home.</li>
+<li>A planner calls an 8-minute route “best” because it uses fewer roads.</li>
+<li>A search keeps exploring S → A → S → A → … .</li>
+</ol>
+<div class="fragment">
+<p><strong>1. Representation / goal test:</strong> include package status.</p>
+</div>
+<div class="fragment">
+<p><strong>2. Objective:</strong> minimize travel time, not action count.</p>
+</div>
+<div class="fragment">
+<p><strong>3. Repeated states:</strong> recognize equivalent situations instead of exploring the same cycle indefinitely.</p>
+</div>
+<aside class="notes">
+<p>Give students one minute to identify the kind of error, then reveal each answer. Follow up: which mistakes require fixing the problem definition, and which require fixing the search procedure? A correct algorithm on the wrong model still solves the wrong task.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="takeaways" class="slide level2 search-intro">
+<h2>Takeaways</h2>
+<div class="columns visual-pair">
+<div class="column" style="width:70%;">
+<ul>
+<li>Define the <strong>state, actions, transitions, goal, and costs</strong> before searching.</li>
+<li>A good state remembers exactly what the task needs.</li>
+<li>A search node records a <strong>path to a state</strong>; the frontier holds pending nodes.</li>
+<li>Search strategies trade off solution quality, computation, and memory.</li>
+</ul>
+</div><div class="column" style="width:24%;">
+<p><img data-src="imgs/lec3/puzzle_openclipart.svg" class="cc0-icon" alt="Interlocking puzzle pieces"></p>
+</div></div>
+<div class="takeaway">
+<p>Next: implement Breadth-First Search (BFS) and Depth-First Search (DFS), and watch their frontiers evolve.</p>
 </div>
 <p><a class="asset-credit-link" href="../asset_credits.html#lec4" target="_blank" rel="noopener">Asset credits</a></p>
 

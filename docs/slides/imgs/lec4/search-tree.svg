@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 320" role="img" aria-labelledby="title desc" style="text-rendering:geometricPrecision">
+  <title id="title">Two paths to the same state</title>
+  <desc id="desc">Selected branches of a search tree. S to A to C costs 2. S to B to C costs 3. These two C nodes represent one location in the road graph.</desc>
+  <g fill="none" stroke="#5d6470" stroke-width="3">
+    <path d="M 500 43 L 240 145 L 240 257"/>
+    <path d="M 500 43 L 760 145 L 760 257"/>
+  </g>
+  <g stroke-width="2.5">
+    <circle cx="500" cy="43" r="32" fill="#e8f6f5" stroke="#007c89"/>
+    <circle cx="240" cy="145" r="32" fill="#fff" stroke="#5d6470"/>
+    <circle cx="760" cy="145" r="32" fill="#fff" stroke="#5d6470"/>
+    <circle cx="240" cy="257" r="32" fill="#e8f6f5" stroke="#007c89"/>
+    <circle cx="760" cy="257" r="32" fill="#fff4db" stroke="#b7791f"/>
+  </g>
+  <g fill="#202124" font-family="sans-serif" text-anchor="middle" font-size="32">
+    <text x="500" y="55">S</text><text x="240" y="157">A</text><text x="760" y="157">B</text>
+    <text x="240" y="269">C</text><text x="760" y="269">C</text>
+    <text x="240" y="312" font-size="27" fill="#007c89">Path cost 2</text><text x="760" y="312" font-size="27" fill="#b7791f">Path cost 3</text>
+    <text x="365" y="72" font-size="26">1</text><text x="635" y="72" font-size="26">2</text>
+    <text x="211" y="210" font-size="26">1</text><text x="790" y="210" font-size="26">1</text>
+    <text x="500" y="181" font-size="25" fill="#5d6470">Selected branches</text>
+  </g>
+</svg>

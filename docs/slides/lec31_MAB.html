@@ -146,8 +146,8 @@
   <style>
   .reveal table { font-size: 0.76em; line-height: 1.22; }
   .reveal th, .reveal td { padding: 0.4em 0.48em; }
-  .reveal .csp-figure svg { display: block; width: 100%; max-height: 300px; }
-  .reveal img.csp-puzzle { height: 330px; width: 100%; object-fit: contain; }
+  .reveal .bandit-figure svg { display: block; width: 100%; max-height: 300px; }
+  .reveal #the-bandit-setting img { max-height: 300px; }
   </style>
 </head>
 <body class="quarto-light">
@@ -157,7 +157,7 @@
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title"><p>CS 463G &amp; CS 663<br>
 (Intro to) AI</p></h1>
-  <p class="subtitle">Lecture 13: Constraint Satisfaction Problems</p>
+  <p class="subtitle">Lecture 31: Multi-Armed Bandits</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -169,36 +169,15 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="constraint-satisfaction-problems" class="slide level2">
-<h2>Constraint Satisfaction Problems</h2>
-<p>A <strong>constraint satisfaction problem (CSP)</strong> consists of:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Piece</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Variables</td>
-<td><span class="math inline">X = \{X_1, X_2, \ldots, X_n\}</span></td>
-</tr>
-<tr class="even">
-<td>Domains</td>
-<td>Each <span class="math inline">X_i</span> has possible values <span class="math inline">D_i</span></td>
-</tr>
-<tr class="odd">
-<td>Constraints</td>
-<td>Rules for allowable combinations of values</td>
-</tr>
-</tbody>
-</table>
-<div class="takeaway">
-<p>Goal: assign values to all variables so every constraint is satisfied.</p>
+<section id="which-option-should-we-try-next" class="slide level2">
+<h2>Which Option Should We Try Next?</h2>
+<p>Three tutorial recommendations have different, unknown chances of receiving a useful rating.</p>
+<div class="question">
+<p>Would you always recommend the option with the highest average rating so far, even if another has been tried only once?</p>
 </div>
+<p><strong>Multi-armed bandits (MABs)</strong> isolate a central <strong>reinforcement learning (RL)</strong> dilemma: explore uncertain actions or exploit current knowledge.</p>
 <aside class="notes">
-<p>50-minute plan: CSP vocabulary, 6 minutes; scheduling formulation and checks, 13; pruning and infeasibility activity, 9; Sudoku representation, 9; search-space and alternative-model exercises, 8; exit discussion, 5. Pause at question slides before showing their answers. This lecture emphasizes modeling. Detailed consistency algorithms and backtracking heuristics belong to Lectures 14 and 15. Conceptual reference: AIMA, constraint satisfaction chapter; https://inst.eecs.berkeley.edu/~cs188/textbook/csp/csps.html. Scheduling examples and inline SVG diagrams are original course material.</p>
+<p>50-minute plan: setting and feedback, 7 minutes; value estimation and greedy failure, 10; epsilon-greedy calculation, 7; UCB example and practice, 12; regret and evaluation, 9; extensions and exit check, 5. No separate code demonstration or homework release today. References: Sutton and Barto, Reinforcement Learning: An Introduction, second edition, Chapter 2; Auer, Cesa-Bianchi, and Fischer (2002), Finite-time Analysis of the Multiarmed Bandit Problem, https://doi.org/10.1023/A:1013689704352. Numerical examples and SVG diagrams are original, hypothetical teaching examples, not experimental results.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -211,293 +190,231 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="assignments-and-solutions" class="slide level2">
-<h2>Assignments and Solutions</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Term</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Assignment</td>
-<td>Choose a domain value for a variable</td>
-</tr>
-<tr class="even">
-<td>Partial assignment</td>
-<td>Some variables still have no value</td>
-</tr>
-<tr class="odd">
-<td>Complete assignment</td>
-<td>Every variable has a value</td>
-</tr>
-<tr class="even">
-<td>Consistent partial assignment</td>
-<td>No constraint among assigned values is violated</td>
-</tr>
-<tr class="odd">
-<td>Solution</td>
-<td>A complete assignment satisfying every constraint</td>
-</tr>
-</tbody>
-</table>
-<div class="takeaway">
-<p>A consistent partial assignment can still lead to a dead end. A complete assignment can still violate a rule.</p>
-</div>
-</section>
-<section id="csp-examples" class="slide level2">
-<h2>CSP Examples</h2>
+<section id="the-bandit-setting" class="slide level2">
+<h2>The Bandit Setting</h2>
 <div class="columns visual-pair">
-<div class="column" style="width:32%;">
-<h3 id="sudoku">Sudoku</h3>
-<p>Cells are variables; digits are values; rows, columns, and blocks impose constraints.</p>
-</div><div class="column" style="width:32%;">
-<h3 id="map-coloring">Map Coloring</h3>
-<p>Regions are variables; colors are values; neighboring regions must differ.</p>
-</div><div class="column" style="width:32%;">
-<h3 id="scheduling">Scheduling</h3>
-<p>Events are variables; times/rooms are values; conflicts become constraints.</p>
+<div class="column" style="width:38%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="imgs/lec29/MAB.png" class="cc0-figure"></p>
+<figcaption>Multi-armed bandit illustration</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:56%;">
+<p>A multi-armed bandit has:</p>
+<ul>
+<li><span class="math inline">k</span> actions, called arms.</li>
+<li>Unknown reward distribution for each arm.</li>
+<li>One chosen arm per time step.</li>
+<li>Immediate reward after each choice.</li>
+</ul>
+<div class="takeaway">
+<p>The basic model has no changing state or context. You observe the reward only for the arm you choose.</p>
+</div>
 </div></div>
 </section>
-<section id="a-small-exam-schedule" class="slide level2">
-<h2>A Small Exam Schedule</h2>
-<p>Four exams <span class="math inline">A,B,C,D</span> need slots <span class="math inline">1,2,3</span>. Each exam lasts one slot.</p>
+<section id="why-study-bandits" class="slide level2">
+<h2>Why Study Bandits?</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Requirement</th>
-<th>Given information</th>
+<th>Application</th>
+<th>Arm</th>
+<th>Reward</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Availability</td>
-<td><span class="math inline">A</span> must use slot <span class="math inline">1</span></td>
+<td>Tutorial selection</td>
+<td>Tutorial variant</td>
+<td>Useful rating</td>
 </tr>
 <tr class="even">
-<td>Availability</td>
-<td><span class="math inline">B</span> cannot use slot <span class="math inline">3</span>; <span class="math inline">D</span> cannot use slot <span class="math inline">1</span></td>
+<td>Online ads</td>
+<td>Ad variant</td>
+<td>Click or conversion</td>
 </tr>
 <tr class="odd">
-<td>Shared students</td>
-<td>Pairs <span class="math inline">AB</span>, <span class="math inline">AC</span>, <span class="math inline">BD</span>, <span class="math inline">CD</span> cannot overlap</td>
+<td>Recommendation</td>
+<td>Item</td>
+<td>Engagement</td>
 </tr>
 <tr class="even">
-<td>Rooms</td>
-<td>Enough rooms for all nonconflicting exams</td>
+<td>Games</td>
+<td>Strategy</td>
+<td>Score</td>
 </tr>
 </tbody>
 </table>
-<div class="question">
-<p>What are the variables, domains, and constraints? Do we need to represent rooms?</p>
-</div>
+<p>Common structure:</p>
+<ul>
+<li>Try actions.</li>
+<li>Observe outcomes.</li>
+<li>Improve future choices.</li>
+</ul>
 </section>
-<section id="scheduling-variables-and-domains" class="slide level2">
-<h2>Scheduling Variables and Domains</h2>
-<p>Let <span class="math inline">X_A</span> be the slot assigned to exam <span class="math inline">A</span>, and similarly for the others.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Variable</th>
-<th>Domain after availability restrictions</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">X_A</span></td>
-<td><span class="math inline">\{1\}</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">X_B</span></td>
-<td><span class="math inline">\{1,2\}</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">X_C</span></td>
-<td><span class="math inline">\{1,2,3\}</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">X_D</span></td>
-<td><span class="math inline">\{2,3\}</span></td>
-</tr>
-</tbody>
-</table>
-<p><span class="math display">X_A\ne X_B,\quad X_A\ne X_C,\quad X_B\ne X_D,\quad X_C\ne X_D.</span></p>
-<p>Rooms need no variables <strong>under the stated unlimited-room assumption</strong>.</p>
-</section>
-<section id="the-constraint-graph" class="slide level2">
-<h2>The Constraint Graph</h2>
-<p>Each node is a <strong>variable</strong>. Each edge represents a binary constraint.</p>
-<div class="csp-figure">
-<svg viewbox="0 0 1000 290" role="img" aria-label="Exam constraint graph: A conflicts with B and C, D conflicts with B and C. B and C have no edge and may share a slot.">
-<g stroke="#5d6470" stroke-width="3"><path d="M225 65H775M225 225H775M225 65V225M775 65V225"></path></g>
-<g fill="#e8f6f5" stroke="#007c89" stroke-width="2"><circle cx="225" cy="65" r="42"></circle><circle cx="775" cy="65" r="42"></circle><circle cx="225" cy="225" r="42"></circle><circle cx="775" cy="225" r="42"></circle></g>
-<g font-family="sans-serif" fill="#202124" text-anchor="middle"><g font-size="32"><text x="225" y="76">A</text><text x="775" y="76">B</text><text x="225" y="236">C</text><text x="775" y="236">D</text></g><g font-size="27"><text x="500" y="53">different slots</text><text x="500" y="212">different slots</text><text x="500" y="142">No B-C conflict</text></g></g>
+<section id="recommendation-as-a-bandit" class="slide level2">
+<h2>Recommendation as a Bandit</h2>
+<div class="bandit-figure">
+<svg viewbox="0 0 1000 280" role="img" aria-label="Bandit feedback loop: choose one item, observe its reward, update that item's estimate, then choose again. Rewards for unchosen items are not observed.">
+<defs><marker id="bandit-loop-arrow" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="9" markerheight="9" markerunits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#5d6470"></path></marker></defs>
+<g fill="none" stroke="#5d6470" stroke-width="3" marker-end="url(#bandit-loop-arrow)"><path d="M290 83H347"></path><path d="M645 83H702"></path><path d="M845 150V230H150V157"></path></g>
+<g stroke-width="2"><rect x="5" y="25" width="285" height="125" rx="7" fill="#e8f6f5" stroke="#007c89"></rect><rect x="355" y="25" width="290" height="125" rx="7" fill="#fff4db" stroke="#b7791f"></rect><rect x="710" y="25" width="285" height="125" rx="7" fill="#fdecef" stroke="#b8325f"></rect></g>
+<g font-family="sans-serif" fill="#202124" text-anchor="middle" font-size="28"><text x="147" y="79">Choose an item</text><text x="500" y="79">Observe its reward</text><text x="852" y="79">Update its estimate</text><text x="500" y="216">Use the new information at the next decision</text></g>
 </svg>
 </div>
 <div class="takeaway">
-<p>These edges describe incompatible assignments, not physical travel routes or a search path.</p>
+<p>Recommendations happen online, so learning and acting are intertwined.</p>
 </div>
 </section>
-<section id="which-assignments-are-valid" class="slide level2 scrollable">
-<h2>Which Assignments Are Valid?</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Assignment</th>
-<th>Complete?</th>
-<th>Consistent?</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">X_A=1,\ X_B=2</span></td>
-<td>?</td>
-<td>?</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">X_A=1,\ X_B=1</span></td>
-<td>?</td>
-<td>?</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">(X_A,X_B,X_C,X_D)=(1,2,2,2)</span></td>
-<td>?</td>
-<td>?</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">(X_A,X_B,X_C,X_D)=(1,2,2,3)</span></td>
-<td>?</td>
-<td>?</td>
-</tr>
-</tbody>
-</table>
-<div class="fragment">
-<ol type="1">
-<li>Partial and consistent.</li>
-<li>Partial and inconsistent: <span class="math inline">A</span> conflicts with <span class="math inline">B</span>.</li>
-<li>Complete but inconsistent: <span class="math inline">D</span> conflicts with both <span class="math inline">B</span> and <span class="math inline">C</span>.</li>
-<li>Complete and consistent: <strong>a solution</strong>.</li>
-</ol>
-</div>
-</section>
-<section id="a-domain-reduction-trace" class="slide level2">
-<h2>A Domain-Reduction Trace</h2>
-<p>Start with the availability domains. Apply the four conflict rules.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Step</th>
-<th>Consequence</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">X_A=1</span></td>
-<td>Remove <span class="math inline">1</span> from <span class="math inline">D_B</span> and <span class="math inline">D_C</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">D_B=\{2\}</span></td>
-<td><span class="math inline">X_B=2</span> forces <span class="math inline">D_D=\{3\}</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">X_D=3</span></td>
-<td>Remove <span class="math inline">3</span> from <span class="math inline">D_C</span>, leaving <span class="math inline">\{2\}</span></td>
-</tr>
-<tr class="even">
-<td>All domains are singletons</td>
-<td><span class="math inline">(X_A,X_B,X_C,X_D)=(1,2,2,3)</span></td>
-</tr>
-</tbody>
-</table>
-<div class="takeaway">
-<p>The constraints force this schedule without trying all complete assignments.</p>
-</div>
-<aside class="notes">
-<p>Work through the domain changes on the board before revealing the table rows verbally. This is a small propagation example, not yet a presentation of AC-3. Domain D_B names the remaining values for X_B; D_D names the domain of X_D.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="one-new-requirement-can-make-it-impossible" class="slide level2">
-<h2>One New Requirement Can Make It Impossible</h2>
-<p>A new student takes both <span class="math inline">B</span> and <span class="math inline">C</span>. Add <span class="math inline">X_B\ne X_C</span>.</p>
-<div class="question">
-<p>Can the schedule still use the same availability restrictions and three slots?</p>
-</div>
-<div class="fragment">
+<section id="formal-problem" class="slide level2">
+<h2>Formal Problem</h2>
+<p>At time <span class="math inline">t</span>:</p>
 <ul>
-<li>Existing rules force <span class="math inline">X_A=1</span>, <span class="math inline">X_B=2</span>, and <span class="math inline">X_D=3</span>.</li>
-<li><span class="math inline">C</span> conflicts with <span class="math inline">A</span>, <span class="math inline">B</span>, and <span class="math inline">D</span>.</li>
-<li>No slot remains for <span class="math inline">C</span>: its domain becomes <span class="math inline">\varnothing</span>.</li>
+<li>Choose arm <span class="math inline">A_t \in \{a_1,\ldots,a_k\}</span>.</li>
+<li>Receive reward <span class="math inline">R_t \sim \mathcal{R}(A_t)</span>.</li>
 </ul>
-<p><strong>No satisfying assignment exists under these requirements.</strong></p>
-</div>
-<aside class="notes">
-<p>Give students two minutes. Ask for an explanation of infeasibility, not just a failed guess. Possible repairs require changing a stated requirement, for example allowing a fourth slot for C. A solver must not silently drop a conflict.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<p>In today’s <strong>stationary stochastic</strong> model, each arm has a fixed reward distribution with unknown mean <span class="math inline">\mu_a</span>.</p>
+<p>Goal over horizon <span class="math inline">T</span>:</p>
+<p><span class="math display">
+\max \mathbb{E}\left[\sum_{t=1}^T R_t\right]
+</span></p>
 </section>
-<section id="unary-binary-and-global-constraints" class="slide level2">
-<h2>Unary, Binary, and Global Constraints</h2>
-<p>The <strong>arity</strong> of a constraint is the number of variables it involves.</p>
+<section id="exploration-vs.-exploitation" class="slide level2">
+<h2>Exploration vs.&nbsp;Exploitation</h2>
+<div class="columns two-column-balance">
+<div class="column" style="width:48%;">
+<h3 id="exploitation">Exploitation</h3>
+<p>Choose the arm with the highest estimated value.</p>
+<p>Good short-term reward.</p>
+</div><div class="column" style="width:48%;">
+<h3 id="exploration">Exploration</h3>
+<p>Try uncertain arms to learn more.</p>
+<p>Potentially better long-term reward.</p>
+</div></div>
+<div class="takeaway">
+<p>Exploit too early and you may miss the best arm; explore too much and you waste reward.</p>
+</div>
+</section>
+<section id="bandits-vs.-full-rl" class="slide level2">
+<h2>Bandits vs.&nbsp;Full RL</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Bandits</th>
+<th>Reinforcement learning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>No state transitions</td>
+<td>Actions affect future states</td>
+</tr>
+<tr class="even">
+<td>Immediate reward</td>
+<td>Delayed consequences</td>
+</tr>
+<tr class="odd">
+<td>Learn action values</td>
+<td>Learn policies or value functions</td>
+</tr>
+<tr class="even">
+<td>Core exploration problem</td>
+<td>Exploration plus sequential planning</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="action-value-estimation" class="slide level2">
+<h2>Action-Value Estimation</h2>
+<p>Before round <span class="math inline">t</span>, <span class="math inline">N_t(a)</span> is the number of times arm <span class="math inline">a</span> has been pulled.</p>
+<p><span class="math display">
+Q_t(a)\approx\mu_a
+</span></p>
+<p>Sample average:</p>
+<p><span class="math display">
+Q_t(a)=
+\frac{\sum_{i=1}^{t-1}\mathbf{1}\{A_i=a\}R_i}{N_t(a)},\qquad N_t(a)&gt;0.
+</span></p>
+<p>Incremental update:</p>
+<p><span class="math display">
+Q_{t+1}(a)=Q_t(a)+\frac{R_t-Q_t(a)}{N_t(a)+1},\qquad a=A_t.
+</span></p>
+<p>Only the selected arm’s estimate and count change.</p>
+</section>
+<section id="updating-an-estimate-by-hand" class="slide level2">
+<h2>Updating an Estimate by Hand</h2>
+<p>One arm produced rewards <span class="math inline">1,0,1,1</span>. Its sample mean is <span class="math inline">3/4=0.75</span>.</p>
+<p>The next reward is <span class="math inline">0</span>:</p>
+<p><span class="math display">N_{\text{new}}=5,\qquad Q_{\text{new}}=0.75+\frac{0-0.75}{5}=0.60.</span></p>
+<div class="question">
+<p>If the following reward is <span class="math inline">1</span>, what is the next estimate?</p>
+</div>
+<div class="fragment">
+<p><span class="math display">Q_{\text{next}}=0.60+\frac{1-0.60}{6}=\frac46\approx0.667.</span> The incremental update matches recomputing the average from all six rewards.</p>
+</div>
+</section>
+<section id="greedy-action-selection" class="slide level2">
+<h2>Greedy Action Selection</h2>
+<p>Always choose:</p>
+<p><span class="math display">
+A_t=\arg\max_a Q_t(a)
+</span></p>
+<p>Pros:</p>
+<ul>
+<li>Simple.</li>
+<li>Exploits current knowledge.</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>No deliberate exploration.</li>
+<li>Can lock onto a bad early estimate.</li>
+</ul>
+</section>
+<section id="a-lucky-first-pull-can-mislead-greedy-search" class="slide level2">
+<h2>A Lucky First Pull Can Mislead Greedy Search</h2>
+<p>Suppose each arm is tried once before greedy selection starts.</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 20%">
+<col style="width: 26%">
+<col style="width: 26%">
+<col style="width: 26%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Kind</th>
-<th>Example</th>
-<th>Interpretation</th>
+<th>Arm</th>
+<th style="text-align: right;">True mean, hidden from learner</th>
+<th style="text-align: right;">First reward</th>
+<th style="text-align: right;">Initial estimate</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Unary</td>
-<td><span class="math inline">X_A=1</span></td>
-<td>Restricts one exam</td>
+<td><span class="math inline">A</span></td>
+<td style="text-align: right;"><span class="math inline">0.4</span></td>
+<td style="text-align: right;"><span class="math inline">1</span></td>
+<td style="text-align: right;"><span class="math inline">1</span></td>
 </tr>
 <tr class="even">
-<td>Binary</td>
-<td><span class="math inline">X_A\ne X_B</span></td>
-<td>Relates two exams</td>
+<td><span class="math inline">B</span></td>
+<td style="text-align: right;"><span class="math inline">0.6</span></td>
+<td style="text-align: right;"><span class="math inline">0</span></td>
+<td style="text-align: right;"><span class="math inline">0</span></td>
 </tr>
 <tr class="odd">
-<td>Global</td>
-<td><span class="math inline">\operatorname{AllDifferent}(X_1,\ldots,X_9)</span></td>
-<td>All nine values must differ</td>
+<td><span class="math inline">C</span></td>
+<td style="text-align: right;"><span class="math inline">0.8</span></td>
+<td style="text-align: right;"><span class="math inline">0</span></td>
+<td style="text-align: right;"><span class="math inline">0</span></td>
 </tr>
 </tbody>
 </table>
-<p>For three variables, <span class="math inline">\operatorname{AllDifferent}(X,Y,Z)</span> means</p>
-<p><span class="math display">X\ne Y\ \land\ X\ne Z\ \land\ Y\ne Z.</span></p>
+<div class="fragment takeaway">
+<p>Pure greedy keeps choosing <span class="math inline">A</span>. Its sample mean stays positive at every finite step because of the first success, while <span class="math inline">B</span> and <span class="math inline">C</span> stay at zero.</p>
+</div>
 <aside class="notes">
-<p>Global constraints describe a collection of variables together. AllDifferent has a pairwise-inequality logical encoding, but specialized propagation can exploit the global structure more effectively. Save that algorithmic detail for the consistency lecture.</p>
+<p>These are Bernoulli rewards, either zero or one. The true means are shown only for classroom evaluation. The learner does not know them. The displayed unlucky initialization has positive probability, and establishes a genuine failure mode of sample-average greedy selection.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -510,324 +427,280 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="feasibility-versus-preference" class="slide level2">
-<h2>Feasibility Versus Preference</h2>
-<ul>
-<li><strong>Hard constraint:</strong> a shared student cannot take two exams at once.</li>
-<li><strong>Soft preference:</strong> fewer students should have exams in the last slot.</li>
-</ul>
-<div class="definition">
-<p>A basic CSP asks for any feasible assignment. A constraint optimization problem also scores feasible assignments.</p>
+<section id="epsilon-greedy" class="slide level2">
+<h2>Epsilon-Greedy</h2>
+<div class="pseudo-code">
+<div class="pseudo-line">
+<span class="pseudo-kw">function</span> <span class="pseudo-fn">EpsilonGreedy</span>(<span class="pseudo-var">Q</span>, <span class="pseudo-var">epsilon</span>)
 </div>
-<p>For example, with <span class="math inline">n_i</span> students in exam <span class="math inline">i</span>:</p>
-<p><span class="math display">\min_X\sum_i n_i\,\mathbf{1}\{X_i=3\}\quad\text{subject to all hard constraints}.</span></p>
-<p>The indicator <span class="math inline">\mathbf{1}\{X_i=3\}</span> equals <span class="math inline">1</span> if exam <span class="math inline">i</span> uses slot <span class="math inline">3</span>, and <span class="math inline">0</span> otherwise.</p>
-</section>
-<section id="sudoku-rules" class="slide level2">
-<h2>Sudoku Rules</h2>
-<ul>
-<li>Fill a <span class="math inline">9 \times 9</span> grid with digits 1 through 9.</li>
-<li>Each row must contain each digit exactly once.</li>
-<li>Each column must contain each digit exactly once.</li>
-<li>Each <span class="math inline">3 \times 3</span> subgrid must contain each digit exactly once.</li>
-</ul>
-<div class="takeaway">
-<p>Sudoku is useful because the rules are simple, but the constraints interact strongly.</p>
+<div class="pseudo-line fragment indent-1">
+<span class="pseudo-var">u</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">Uniform</span>(<span class="pseudo-num">0</span>, <span class="pseudo-num">1</span>)
 </div>
-</section>
-<section id="sudoku-example" class="slide level2">
-<h2>Sudoku Example</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:46%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec13/Sudoku.png" class="csp-puzzle"></p>
-<figcaption>Sudoku puzzle</figcaption>
-</figure>
+<div class="pseudo-line fragment indent-1">
+<span class="pseudo-kw">if</span> <span class="pseudo-var">u</span> <span class="pseudo-op">&lt;</span> <span class="pseudo-var">epsilon</span>
 </div>
-</div><div class="column" style="width:46%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec13/SudokuSolution.png" class="csp-puzzle"></p>
-<figcaption>Sudoku solution</figcaption>
-</figure>
+<div class="pseudo-line fragment indent-2">
+<span class="pseudo-kw">return</span> random arm <span class="pseudo-comment">// explore</span>
 </div>
-</div></div>
-<div class="takeaway">
-<p>The puzzle is a partial assignment. The solution is a complete satisfying assignment.</p>
+<div class="pseudo-line fragment indent-1">
+<span class="pseudo-kw">else</span>
 </div>
+<div class="pseudo-line fragment indent-2">
+<span class="pseudo-kw">return</span> <span class="pseudo-fn">argmax</span><sub>a</sub> <span class="pseudo-var">Q</span>(<span class="pseudo-var">a</span>) <span class="pseudo-comment">// exploit</span>
+</div>
+</div>
+<p>Exploration samples uniformly from <strong>all</strong> arms, including the current best.</p>
 </section>
-<section id="sudoku-variables" class="slide level2">
-<h2>Sudoku Variables</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Row &nbsp;Column</th>
-<th style="text-align: right;">1</th>
-<th style="text-align: right;">2</th>
-<th style="text-align: right;">3</th>
-<th style="text-align: right;">…</th>
-<th style="text-align: right;">9</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>A</td>
-<td style="text-align: right;">A1</td>
-<td style="text-align: right;">A2</td>
-<td style="text-align: right;">A3</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">A9</td>
-</tr>
-<tr class="even">
-<td>B</td>
-<td style="text-align: right;">B1</td>
-<td style="text-align: right;">B2</td>
-<td style="text-align: right;">B3</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">B9</td>
-</tr>
-<tr class="odd">
-<td>C</td>
-<td style="text-align: right;">C1</td>
-<td style="text-align: right;">C2</td>
-<td style="text-align: right;">C3</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">C9</td>
-</tr>
-<tr class="even">
-<td>…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-</tr>
-<tr class="odd">
-<td>I</td>
-<td style="text-align: right;">I1</td>
-<td style="text-align: right;">I2</td>
-<td style="text-align: right;">I3</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">I9</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>Variables: A1 through I9.</li>
-<li>Domain for each variable: <span class="math inline">\{1,2,\ldots,9\}</span>.</li>
-</ul>
-</section>
-<section id="sudoku-constraints" class="slide level2">
-<h2>Sudoku Constraints</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:32%;">
-<h3 id="row">Row</h3>
-<p>Example: A1, A2, …, A9 must all differ.</p>
-</div><div class="column" style="width:32%;">
-<h3 id="column">Column</h3>
-<p>Example: A4, B4, …, I4 must all differ.</p>
-</div><div class="column" style="width:32%;">
-<h3 id="block">Block</h3>
-<p>Example: D4, D5, D6, E4, E5, E6, F4, F5, F6 must all differ.</p>
-</div></div>
-</section>
-<section id="sudoku-as-a-csp" class="slide level2">
-<h2>Sudoku as a CSP</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>CSP piece</th>
-<th>Sudoku formulation</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Variables</td>
-<td>A1, A2, …, I9</td>
-</tr>
-<tr class="even">
-<td>Domain</td>
-<td><span class="math inline">\{1,2,\ldots,9\}</span> for each cell</td>
-</tr>
-<tr class="odd">
-<td>Row constraints</td>
-<td>Cells in the same row must differ</td>
-</tr>
-<tr class="even">
-<td>Column constraints</td>
-<td>Cells in the same column must differ</td>
-</tr>
-<tr class="odd">
-<td>Block constraints</td>
-<td>Cells in the same <span class="math inline">3 \times 3</span> block must differ</td>
-</tr>
-<tr class="even">
-<td>Given cells</td>
-<td>Pre-filled cells have fixed values</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="candidate-values-for-one-cell" class="slide level2">
-<h2>Candidate Values for One Cell</h2>
-<p>For an empty Sudoku cell, suppose the existing digits are:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Related cells</th>
-<th>Digits already present</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Same row</td>
-<td><span class="math inline">\{1,3,5,7\}</span></td>
-</tr>
-<tr class="even">
-<td>Same column</td>
-<td><span class="math inline">\{2,3,8\}</span></td>
-</tr>
-<tr class="odd">
-<td>Same block</td>
-<td><span class="math inline">\{1,4,8\}</span></td>
-</tr>
-</tbody>
-</table>
+<section id="epsilon-greedy-actual-selection-probabilities" class="slide level2">
+<h2>Epsilon-Greedy: Actual Selection Probabilities</h2>
+<p>Let <span class="math inline">k=3</span>, <span class="math inline">\epsilon=0.15</span>, and suppose <span class="math inline">A</span> is the unique greedy arm.</p>
+<p><span class="math display">P(A)=1-\epsilon+\frac{\epsilon}{k}=0.85+0.05=0.90.</span> <span class="math display">P(B)=P(C)=\frac{\epsilon}{k}=0.05.</span></p>
 <div class="question">
-<p>Which values remain in this cell’s domain?</p>
+<p>Why is the probability of selecting <span class="math inline">A</span> larger than <span class="math inline">1-\epsilon</span>?</p>
 </div>
 <div class="fragment">
-<p><span class="math display">\{1,\ldots,9\}\setminus\{1,2,3,4,5,7,8\}=\{6,9\}.</span> Two candidates remain. The current constraints do not justify choosing one yet.</p>
+<p>Exploration can also select <span class="math inline">A</span>. The probability of exploring and the probability of choosing a nongreedy arm are different.</p>
 </div>
 </section>
-<section id="naive-sudoku-search" class="slide level2 scrollable">
-<h2>Naive Sudoku Search</h2>
-<p>Naive backtracking:</p>
+<section id="upper-confidence-bound" class="slide level2">
+<h2>Upper Confidence Bound</h2>
+<p><strong>Upper confidence bound (UCB)</strong> adds an uncertainty bonus:</p>
+<p><span class="math display">
+A_t=
+\arg\max_a
+\left[
+Q_t(a)+c\sqrt{\frac{\ln t}{N_t(a)}}
+\right]
+</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">Q_t(a)</span></td>
+<td>Exploitation</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\sqrt{\ln t/N_t(a)}</span></td>
+<td>Exploration bonus</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">c</span></td>
+<td>Exploration strength</td>
+</tr>
+</tbody>
+</table>
+<p>Try each arm once first so <span class="math inline">N_t(a)&gt;0</span>. Here <span class="math inline">\ln</span> is the natural logarithm.</p>
+<aside class="notes">
+<p>The familiar UCB1 bonus for rewards in [0,1] uses c=sqrt(2). The next numerical exercise uses c=1 to illustrate the decision rule, not to claim UCB1’s exact theorem or a calibrated 95-percent confidence interval. Rewards and c must use compatible scales.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ucb-a-numerical-decision" class="slide level2">
+<h2>UCB: A Numerical Decision</h2>
+<p>Before round <span class="math inline">t=11</span>, ten pulls have produced these statistics. Use <span class="math inline">c=1</span> and <span class="math inline">\ln 11\approx2.398</span>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Arm</th>
+<th style="text-align: right;"><span class="math inline">N_t(a)</span></th>
+<th style="text-align: right;"><span class="math inline">Q_t(a)</span></th>
+<th style="text-align: right;"><span class="math inline">\sqrt{\ln(11)/N_t(a)}</span></th>
+<th style="text-align: right;">Total score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">A</span></td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;"><span class="math inline">0.500</span></td>
+<td style="text-align: right;"><span class="math inline">0.632</span></td>
+<td style="text-align: right;"><span class="math inline">1.132</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">B</span></td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;"><span class="math inline">0.333</span></td>
+<td style="text-align: right;"><span class="math inline">0.894</span></td>
+<td style="text-align: right;"><span class="math inline">1.227</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">C</span></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;"><span class="math inline">0.000</span></td>
+<td style="text-align: right;"><span class="math inline">1.549</span></td>
+<td style="text-align: right;"><strong><span class="math inline">1.549</span></strong></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment takeaway">
+<p>UCB chooses <span class="math inline">C</span>, although it has the lowest sample mean. One failure leaves substantial uncertainty about its true mean.</p>
+</div>
+<p>Scores above <span class="math inline">1</span> are allowed. These are selection scores, not probabilities.</p>
+</section>
+<section id="estimates-and-exploration-bonuses" class="slide level2">
+<h2>Estimates and Exploration Bonuses</h2>
+<p>The dot is the estimate. The line extends to its UCB score in the preceding example.</p>
+<div class="bandit-figure">
+<svg viewbox="0 0 1000 280" role="img" aria-label="Arm A has mean 0.5 and UCB score 1.132, B has mean 0.333 and score 1.227, C has mean zero and score 1.549. C has the largest exploration bonus.">
+<path d="M100 240H930" stroke="#5d6470" stroke-width="2"></path>
+<g stroke-width="8" stroke-linecap="round"><path d="M350 50H666" stroke="#007c89"></path><path d="M267 115H714" stroke="#b7791f"></path><path d="M100 180H874" stroke="#b8325f"></path></g>
+<g fill="#202124"><circle cx="350" cy="50" r="10"></circle><circle cx="267" cy="115" r="10"></circle><circle cx="100" cy="180" r="10"></circle></g>
+<g font-family="sans-serif" font-size="27" fill="#202124"><text x="35" y="59">A</text><text x="35" y="124">B</text><text x="35" y="189">C</text><text x="684" y="59">1.132</text><text x="732" y="124">1.227</text><text x="890" y="189">1.549</text><text x="94" y="275">0</text><text x="590" y="275">1.0</text><text x="841" y="275">1.5</text></g>
+</svg>
+</div>
+<p>This bonus shrinks with an arm’s pull count, but grows slowly with time if that arm remains ignored.</p>
+</section>
+<section id="ucb-intuition" class="slide level2">
+<h2>UCB Intuition</h2>
+<div class="pseudo-code">
+<div class="pseudo-line">
+<span class="pseudo-kw">for each</span> arm <span class="pseudo-var">a</span>
+</div>
+<div class="pseudo-line fragment indent-1">
+<span class="pseudo-var">score</span>(<span class="pseudo-var">a</span>) <span class="pseudo-op">=</span> <span class="pseudo-var">Q</span>(<span class="pseudo-var">a</span>) <span class="pseudo-op">+</span> explorationBonus(<span class="pseudo-var">a</span>)
+</div>
+<div class="pseudo-line fragment">
+<span class="pseudo-kw">choose</span> arm with largest <span class="pseudo-var">score</span>
+</div>
+</div>
+<div class="takeaway">
+<p>Rarely tried arms get larger bonuses; uncertainty shrinks as <span class="math inline">N_t(a)</span> grows.</p>
+</div>
+</section>
+<section id="practice-the-next-ucb-round" class="slide level2 scrollable">
+<h2>Practice: The Next UCB Round</h2>
+<p>At round <span class="math inline">11</span>, choose <span class="math inline">C</span> and observe reward <span class="math inline">1</span>.</p>
+<div class="question">
 <ol type="1">
-<li>Choose an unassigned variable.</li>
-<li>Try a value.</li>
-<li>Backtrack if a constraint is violated.</li>
+<li>What are <span class="math inline">N_{12}(C)</span> and <span class="math inline">Q_{12}(C)</span>?</li>
+<li>Using <span class="math inline">\ln12\approx2.485</span> and <span class="math inline">c=1</span>, which arm wins next?</li>
 </ol>
-<div class="definition">
-<p>With <span class="math inline">m</span> empty cells and at most <span class="math inline">9</span> candidate values per cell, there are at most <span class="math inline">9^m</span> complete fillings before checking constraints.</p>
-</div>
-<p>Using a fixed variable order avoids exploring many orders of the same assignments.</p>
-<aside class="notes">
-<p>This is a count of candidate complete assignments, not a tight running-time claim for a solver. Fixed givens and constraint checks reduce the actual search. Check cost and propagation cost also contribute to runtime.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="constraint-propagation" class="slide level2">
-<h2>Constraint Propagation</h2>
-<ul>
-<li>Enforce constraints before committing to deeper choices.</li>
-<li>When a value is assigned, eliminate inconsistent values from neighboring variables.</li>
-<li>If a cell has only one possible value left, it must take that value.</li>
-<li>If a domain becomes empty, the current partial assignment cannot work.</li>
-</ul>
-<div class="takeaway">
-<p>Constraint propagation reduces the effective branching factor and detects failure earlier.</p>
-</div>
-</section>
-<section id="consistent-so-far-does-not-mean-solvable" class="slide level2">
-<h2>Consistent So Far Does Not Mean Solvable</h2>
-<p>Three exams conflict pairwise, but only slots <span class="math inline">1</span> and <span class="math inline">2</span> are available.</p>
-<p><span class="math display">D_A=D_B=D_C=\{1,2\},\qquad X_A\ne X_B,\ X_B\ne X_C,\ X_A\ne X_C.</span></p>
-<div class="question">
-<p>The partial assignment <span class="math inline">X_A=1</span> violates no constraint. Can it be completed?</p>
 </div>
 <div class="fragment">
-<p>No.&nbsp;Both <span class="math inline">X_B</span> and <span class="math inline">X_C</span> must be <span class="math inline">2</span>, violating <span class="math inline">X_B\ne X_C</span>. Starting with <span class="math inline">X_A=2</span> gives the same problem.</p>
-</div>
-<div class="takeaway">
-<p>Checking the current assignment and proving that a completion exists are different tasks.</p>
-</div>
-</section>
-<section id="modeling-practice-a-small-lab-schedule" class="slide level2">
-<h2>Modeling Practice: A Small Lab Schedule</h2>
-<p>Experiments <span class="math inline">P,Q,R</span> each take one slot from <span class="math inline">\{1,2,3\}</span>.</p>
-<ul>
-<li><span class="math inline">P</span> must finish before <span class="math inline">Q</span> starts.</li>
-<li><span class="math inline">Q</span> and <span class="math inline">R</span> share equipment and cannot run together.</li>
-<li><span class="math inline">R</span> cannot run in slot <span class="math inline">1</span>.</li>
-</ul>
-<div class="question">
-<p>Write the variables, domains, and constraints. Give one valid schedule and one invalid schedule with a reason.</p>
-</div>
-<aside class="notes">
-<p>Allow three minutes in pairs. Slots are equal length and nonoverlapping, so the precedence relation is a strict inequality on slot indices. There is no P-R equipment conflict unless the specification says so.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="lab-schedule-one-formulation" class="slide level2">
-<h2>Lab Schedule: One Formulation</h2>
-<p><span class="math display">D_P=D_Q=\{1,2,3\},\qquad D_R=\{2,3\}.</span></p>
-<p><span class="math display">X_P&lt;X_Q,\qquad X_Q\ne X_R.</span></p>
+<p><span class="math inline">N_{12}(C)=2</span> and <span class="math inline">Q_{12}(C)=0.5</span>. Other estimates stay unchanged.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Assignment <span class="math inline">(X_P,X_Q,X_R)</span></th>
-<th>Check</th>
+<th>Arm</th>
+<th style="text-align: right;">Next score</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><span class="math inline">(1,2,3)</span></td>
-<td>Valid</td>
+<td><span class="math inline">A</span></td>
+<td style="text-align: right;"><span class="math inline">0.500+\sqrt{2.485/6}\approx1.144</span></td>
 </tr>
 <tr class="even">
-<td><span class="math inline">(1,3,2)</span></td>
-<td>Also valid</td>
+<td><span class="math inline">B</span></td>
+<td style="text-align: right;"><span class="math inline">0.333+\sqrt{2.485/3}\approx1.243</span></td>
 </tr>
 <tr class="odd">
-<td><span class="math inline">(2,1,3)</span></td>
-<td>Violates precedence</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">(1,2,2)</span></td>
-<td>Violates the equipment constraint</td>
+<td><span class="math inline">C</span></td>
+<td style="text-align: right;"><span class="math inline">0.500+\sqrt{2.485/2}\approx1.615</span></td>
 </tr>
 </tbody>
 </table>
-<div class="takeaway">
-<p>Multiple solutions are allowed. Include every stated requirement, but do not invent extra ones.</p>
+<p>Choose <span class="math inline">C</span> again: its higher estimate outweighs the smaller bonus.</p>
 </div>
 </section>
-<section id="another-representation-n-queens" class="slide level2">
-<h2>Another Representation: N-Queens</h2>
-<p>Use one variable <span class="math inline">Q_i</span> per column. Its value is the queen’s row.</p>
-<p><span class="math display">D_i=\{1,\ldots,N\}.</span></p>
-<p>For each pair of distinct columns <span class="math inline">i,j</span>:</p>
-<p><span class="math display">Q_i\ne Q_j,\qquad |Q_i-Q_j|\ne |i-j|.</span></p>
+<section id="regret" class="slide level2">
+<h2>Regret</h2>
+<p>Regret measures reward missed relative to always choosing the best arm.</p>
+<p><span class="math display">
+\operatorname{Regret}(T)=T\mu^*-\mathbb{E}\!\left[\sum_{t=1}^{T}R_t\right].
+</span></p>
+<p>where:</p>
 <ul>
-<li>One variable per column already guarantees one queen in each column.</li>
-<li>The first constraint prevents a shared row.</li>
-<li>The second prevents a shared diagonal.</li>
+<li><span class="math inline">\mu^*</span> is the expected reward of the best arm.</li>
+<li><span class="math inline">T</span> is the horizon.</li>
 </ul>
 <div class="question">
-<p>Why would using one Boolean variable per square require additional constraints?</p>
+<p>Good bandit algorithms aim for low regret, not just good final estimates.</p>
+</div>
+</section>
+<section id="regret-as-the-cost-of-each-pull" class="slide level2">
+<h2>Regret as the Cost of Each Pull</h2>
+<p>Let <span class="math inline">\Delta_a=\mu^*-\mu_a</span> be the gap between arm <span class="math inline">a</span> and the best mean.</p>
+<p><span class="math display">\operatorname{Regret}(T)=\sum_a\Delta_a\,\mathbb{E}[N_{T+1}(a)].</span></p>
+<p>For means <span class="math inline">(0.4,0.6,0.8)</span> and a fixed 100-pull allocation:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Arm</th>
+<th style="text-align: right;">Pulls</th>
+<th style="text-align: right;">Gap</th>
+<th style="text-align: right;">Expected reward lost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">A</span></td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;"><span class="math inline">0.4</span></td>
+<td style="text-align: right;"><span class="math inline">20</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">B</span></td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;"><span class="math inline">0.2</span></td>
+<td style="text-align: right;"><span class="math inline">6</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">C</span></td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;"><span class="math inline">0</span></td>
+<td style="text-align: right;"><span class="math inline">0</span></td>
+</tr>
+</tbody>
+</table>
+<p>Total expected regret: <strong><span class="math inline">26</span></strong>. Expected reward: <span class="math inline">80-26=54</span>.</p>
+</section>
+<section id="comparing-two-allocations" class="slide level2">
+<h2>Comparing Two Allocations</h2>
+<p>These are hypothetical fixed allocations, not results from a simulation.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Allocation over <span class="math inline">(A,B,C)</span></th>
+<th style="text-align: right;">Expected reward</th>
+<th style="text-align: right;">Expected regret</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">(50,30,20)</span></td>
+<td style="text-align: right;"><span class="math inline">54</span></td>
+<td style="text-align: right;"><span class="math inline">26</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">(20,20,60)</span></td>
+<td style="text-align: right;"><span class="math inline">68</span></td>
+<td style="text-align: right;"><span class="math inline">12</span></td>
+</tr>
+</tbody>
+</table>
+<div class="question">
+<p>If two learners both identify <span class="math inline">C</span> as best on the last round, did they perform equally well?</p>
+</div>
+<div class="fragment takeaway">
+<p>No.&nbsp;Learning cost includes the rewards missed along the way. A single lucky run also cannot establish which algorithm is better.</p>
 </div>
 <aside class="notes">
-<p>Answer: square occupancy alone does not guarantee exactly N queens or one in each row/column. This slide connects to local search and illustrates that representation can build some requirements into the variables. Do not spend time solving N-queens here.</p>
+<p>Ask how to compare algorithms experimentally: same arm distributions and horizon, many independent runs, cumulative reward/regret, and variation across runs. In simulation the true means are available to the evaluator. In an application they usually are not directly known.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -840,17 +713,81 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="why-csps-help" class="slide level2">
-<h2>Why CSPs Help</h2>
+<section id="when-reward-distributions-change" class="slide level2">
+<h2>When Reward Distributions Change</h2>
+<p>An old tutorial may become less useful after the course material changes.</p>
 <ul>
-<li>CSPs separate <strong>what the problem is</strong> from <strong>how we search</strong>.</li>
-<li>General CSP algorithms can use domain-independent structure.</li>
-<li>Constraints allow pruning before a full assignment is attempted.</li>
+<li>A sample average gives all previous rewards equal weight.</li>
+<li>A constant step size emphasizes recent observations:</li>
 </ul>
+<p><span class="math display">Q_{\text{new}}(a)=Q_{\text{old}}(a)+\alpha\bigl[r-Q_{\text{old}}(a)\bigr].</span></p>
+<p>For <span class="math inline">Q_{\text{old}}=0.8</span>, <span class="math inline">r=0</span>, and <span class="math inline">\alpha=0.2</span>, the new value is <span class="math inline">0.64</span>.</p>
 <div class="takeaway">
-<p>The next lecture formalizes consistency: how much pruning can we do before search?</p>
+<p>Adapting to change requires continued exploration. Stationary-bandit guarantees do not automatically apply.</p>
 </div>
-<p><a class="asset-credit-link" href="../asset_credits.html#lec13" target="_blank" rel="noopener">Asset credits</a></p>
+</section>
+<section id="context-changes-the-best-choice" class="slide level2">
+<h2>Context Changes the Best Choice</h2>
+<p>A tutorial that helps a beginner may not help an experienced student.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Information before acting</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Basic bandit</td>
+<td>One shared set of arm estimates</td>
+</tr>
+<tr class="even">
+<td>Contextual bandit</td>
+<td>User or task features, then a context-dependent choice</td>
+</tr>
+<tr class="odd">
+<td>Full RL</td>
+<td>A state whose future can change because of the action</td>
+</tr>
+</tbody>
+</table>
+<div class="question">
+<p>If a recommendation changes what a student learns and therefore later decisions, what does a one-step bandit model leave out?</p>
+</div>
+<div class="fragment">
+<p>The long-term effect on the student’s state and future rewards.</p>
+</div>
+</section>
+<section id="exit-check" class="slide level2 scrollable">
+<h2>Exit Check</h2>
+<ol type="1">
+<li>Four arms, <span class="math inline">\epsilon=0.2</span>, unique greedy arm: what is its selection probability?</li>
+<li>Does a zero reward prove that an arm has zero expected reward?</li>
+<li>Is a UCB score of <span class="math inline">1.4</span> an invalid probability?</li>
+</ol>
+<div class="fragment">
+<ol type="1">
+<li><span class="math inline">0.8+0.2/4=0.85</span>.</li>
+<li>No.&nbsp;A sample is not the distribution’s mean.</li>
+<li>It is a selection score, not a probability.</li>
+</ol>
+</div>
+</section>
+<section id="what-to-remember" class="slide level2">
+<h2>What to Remember</h2>
+<ul>
+<li>Basic bandits remove changing state and delayed consequences.</li>
+<li>Exploration gathers information; exploitation uses current knowledge.</li>
+<li>Action-value estimates summarize observed rewards.</li>
+<li>Epsilon-greedy explores randomly some fraction of the time.</li>
+<li>UCB explores actions with high uncertainty.</li>
+<li>Regret measures the cost of not knowing the best arm.</li>
+</ul>
+<p><a href="../asset_credits.html#lec31" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
 
 
 </section>

@@ -298,6 +298,19 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const slides = reveal.getSlides();
+    const deckTitle = cleanText(deckDocument.querySelector("#title-slide .subtitle")?.textContent || title);
+    const loadedUrl = new URL(deckDocument.location.href);
+    const loadedDeck = `slides/${loadedUrl.pathname.split("/").pop()}`;
+    if (loadedUrl.origin === window.location.origin && /^slides\/lec[\w-]+\.html$/.test(loadedDeck)) {
+      // Follow renamed decks and keep saved viewer links consistent with their slides.
+      heading.textContent = deckTitle;
+      document.title = `${deckTitle} - CS 463G & 663: (Intro to) AI`;
+      openLink.href = `${loadedDeck}?print-pdf`;
+      const viewerUrl = new URL(window.location.href);
+      viewerUrl.searchParams.set("deck", loadedDeck);
+      viewerUrl.searchParams.set("title", deckTitle);
+      window.history.replaceState(null, "", viewerUrl);
+    }
     copyDeckStyles(deckDocument);
     thumbs.innerHTML = "";
 

@@ -146,8 +146,9 @@
   <style>
   .reveal table { font-size: 0.76em; line-height: 1.22; }
   .reveal th, .reveal td { padding: 0.4em 0.48em; }
-  .reveal .csp-figure svg { display: block; width: 100%; max-height: 300px; }
-  .reveal img.csp-puzzle { height: 330px; width: 100%; object-fit: contain; }
+  .reveal .inference-figure svg { display: block; width: 100%; max-height: 240px; }
+  .reveal .math.inline { white-space: nowrap; }
+  .reveal #the-toothache-model img { max-height: 125px; }
   </style>
 </head>
 <body class="quarto-light">
@@ -157,7 +158,7 @@
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title"><p>CS 463G &amp; CS 663<br>
 (Intro to) AI</p></h1>
-  <p class="subtitle">Lecture 13: Constraint Satisfaction Problems</p>
+  <p class="subtitle">Lecture 22: Probabilistic Inference</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -169,36 +170,17 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="constraint-satisfaction-problems" class="slide level2">
-<h2>Constraint Satisfaction Problems</h2>
-<p>A <strong>constraint satisfaction problem (CSP)</strong> consists of:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Piece</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Variables</td>
-<td><span class="math inline">X = \{X_1, X_2, \ldots, X_n\}</span></td>
-</tr>
-<tr class="even">
-<td>Domains</td>
-<td>Each <span class="math inline">X_i</span> has possible values <span class="math inline">D_i</span></td>
-</tr>
-<tr class="odd">
-<td>Constraints</td>
-<td>Rules for allowable combinations of values</td>
-</tr>
-</tbody>
-</table>
-<div class="takeaway">
-<p>Goal: assign values to all variables so every constraint is satisfied.</p>
+<section id="what-does-an-observation-tell-us" class="slide level2">
+<h2>What Does an Observation Tell Us?</h2>
+<p>A robot sees an umbrella. Does that establish that it is raining?</p>
+<div class="question">
+<p>An observation can support several explanations. What numbers would we need to compare them?</p>
+</div>
+<div class="fragment takeaway">
+<p>We need a probability model relating weather and umbrella use. Inference turns that model and the observation into a conditional distribution.</p>
 </div>
 <aside class="notes">
-<p>50-minute plan: CSP vocabulary, 6 minutes; scheduling formulation and checks, 13; pruning and infeasibility activity, 9; Sudoku representation, 9; search-space and alternative-model exercises, 8; exit discussion, 5. Pause at question slides before showing their answers. This lecture emphasizes modeling. Detailed consistency algorithms and backtracking heuristics belong to Lectures 14 and 15. Conceptual reference: AIMA, constraint satisfaction chapter; https://inst.eecs.berkeley.edu/~cs188/textbook/csp/csps.html. Scheduling examples and inline SVG diagrams are original course material.</p>
+<p>50-minute plan: weather query and vocabulary, 8 minutes; joint-table operations, 12; multiple-evidence activity, 10; independence and common errors, 10; representation and exit problem, 10. No separate code demo or homework release today. HW4 was introduced in the preceding class; leave the last few minutes flexible for questions. The toothache probabilities follow the AIMA teaching example and are not clinical estimates. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/bayes-nets/inference.html. New exercises and inline diagrams are original course material.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -211,243 +193,462 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="assignments-and-solutions" class="slide level2">
-<h2>Assignments and Solutions</h2>
+<section id="what-is-inference" class="slide level2">
+<h2>What Is Inference?</h2>
+<div class="definition">
+<p>Probabilistic inference answers queries such as <span class="math inline">P(\text{Query} \mid \text{Evidence})</span>.</p>
+</div>
+<p>Examples:</p>
+<ul>
+<li>Given an umbrella observation, infer the probability of rain.</li>
+<li>Given robot sensor readings, infer the robot’s location.</li>
+<li>Given user behavior, infer a likely preference.</li>
+</ul>
+<div class="takeaway">
+<p>The distribution is the model; inference is how we ask questions of the model.</p>
+</div>
+</section>
+<section id="full-joint-distribution" class="slide level2">
+<h2>Full Joint Distribution</h2>
+<p>A full joint distribution assigns probability to every complete assignment of variables.</p>
+<p>For weather <span class="math inline">W</span> and umbrella use <span class="math inline">U</span>:</p>
 <table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Term</th>
-<th>Meaning</th>
+<th>Weather</th>
+<th>Umbrella</th>
+<th style="text-align: right;"><span class="math inline">P(W,U)</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Assignment</td>
-<td>Choose a domain value for a variable</td>
+<td>Sunny</td>
+<td>Yes</td>
+<td style="text-align: right;">0.1</td>
 </tr>
 <tr class="even">
-<td>Partial assignment</td>
-<td>Some variables still have no value</td>
+<td>Sunny</td>
+<td>No</td>
+<td style="text-align: right;">0.6</td>
 </tr>
 <tr class="odd">
-<td>Complete assignment</td>
-<td>Every variable has a value</td>
+<td>Rainy</td>
+<td>Yes</td>
+<td style="text-align: right;">0.2</td>
 </tr>
 <tr class="even">
-<td>Consistent partial assignment</td>
-<td>No constraint among assigned values is violated</td>
-</tr>
-<tr class="odd">
-<td>Solution</td>
-<td>A complete assignment satisfying every constraint</td>
+<td>Rainy</td>
+<td>No</td>
+<td style="text-align: right;">0.1</td>
 </tr>
 </tbody>
 </table>
-<div class="takeaway">
-<p>A consistent partial assignment can still lead to a dead end. A complete assignment can still violate a rule.</p>
+<div class="fragment">
+<p><span class="math display">
+P(U=\text{Yes})=0.1+0.2=0.3
+</span></p>
 </div>
 </section>
-<section id="csp-examples" class="slide level2">
-<h2>CSP Examples</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:32%;">
-<h3 id="sudoku">Sudoku</h3>
-<p>Cells are variables; digits are values; rows, columns, and blocks impose constraints.</p>
-</div><div class="column" style="width:32%;">
-<h3 id="map-coloring">Map Coloring</h3>
-<p>Regions are variables; colors are values; neighboring regions must differ.</p>
-</div><div class="column" style="width:32%;">
-<h3 id="scheduling">Scheduling</h3>
-<p>Events are variables; times/rooms are values; conflicts become constraints.</p>
-</div></div>
-</section>
-<section id="a-small-exam-schedule" class="slide level2">
-<h2>A Small Exam Schedule</h2>
-<p>Four exams <span class="math inline">A,B,C,D</span> need slots <span class="math inline">1,2,3</span>. Each exam lasts one slot.</p>
+<section id="rain-given-an-umbrella" class="slide level2">
+<h2>Rain Given an Umbrella</h2>
+<p>The observation keeps only the two rows with <span class="math inline">U=\text{Yes}</span>.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Requirement</th>
-<th>Given information</th>
+<th>Weather</th>
+<th style="text-align: right;">Joint mass with umbrella</th>
+<th style="text-align: right;">Conditional probability</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Availability</td>
-<td><span class="math inline">A</span> must use slot <span class="math inline">1</span></td>
+<td>Sunny</td>
+<td style="text-align: right;"><span class="math inline">0.1</span></td>
+<td style="text-align: right;"><span class="math inline">0.1/0.3=1/3</span></td>
 </tr>
 <tr class="even">
-<td>Availability</td>
-<td><span class="math inline">B</span> cannot use slot <span class="math inline">3</span>; <span class="math inline">D</span> cannot use slot <span class="math inline">1</span></td>
+<td>Rainy</td>
+<td style="text-align: right;"><span class="math inline">0.2</span></td>
+<td style="text-align: right;"><span class="math inline">0.2/0.3=2/3</span></td>
+</tr>
+</tbody>
+</table>
+<p><span class="math display">P(W=\text{Rainy}\mid U=\text{Yes})=\frac{0.2}{0.3}=\frac23.</span></p>
+<div class="takeaway">
+<p>Rain becomes more likely, but the observation does not make it certain.</p>
+</div>
+</section>
+<section id="query-evidence-and-hidden-variables" class="slide level2">
+<h2>Query, Evidence, and Hidden Variables</h2>
+<p>Suppose we ask <span class="math inline">P(C\mid T)</span> in a model with variables <span class="math inline">C,T,H</span>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Role</th>
+<th>Variable</th>
+<th>What we do</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Query</td>
+<td>Cavity <span class="math inline">C</span></td>
+<td>Keep both possible outcomes</td>
+</tr>
+<tr class="even">
+<td>Evidence</td>
+<td>Toothache <span class="math inline">T</span></td>
+<td>Fix to the observed value</td>
 </tr>
 <tr class="odd">
-<td>Shared students</td>
-<td>Pairs <span class="math inline">AB</span>, <span class="math inline">AC</span>, <span class="math inline">BD</span>, <span class="math inline">CD</span> cannot overlap</td>
-</tr>
-<tr class="even">
-<td>Rooms</td>
-<td>Enough rooms for all nonconflicting exams</td>
+<td>Hidden</td>
+<td>Probe catches <span class="math inline">H</span></td>
+<td>Sum over possible values</td>
 </tr>
 </tbody>
 </table>
 <div class="question">
-<p>What are the variables, domains, and constraints? Do we need to represent rooms?</p>
+<p>An unobserved variable is not automatically false. Why would setting <span class="math inline">H=\text{false}</span> change the question?</p>
 </div>
+<aside class="notes">
+<p>It would add evidence that we do not have, yielding P(C given T and not H). In formulas below, an uppercase Boolean symbol by itself denotes its true event, and a negated symbol denotes its false event. A distribution over C includes both C and not C.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="scheduling-variables-and-domains" class="slide level2">
-<h2>Scheduling Variables and Domains</h2>
-<p>Let <span class="math inline">X_A</span> be the slot assigned to exam <span class="math inline">A</span>, and similarly for the others.</p>
+<section id="the-toothache-model" class="slide level2">
+<h2>The Toothache Model</h2>
+<div class="columns visual-pair">
+<div class="column" style="width:20%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="imgs/lec21/tooth.png" class="cc0-icon"></p>
+<figcaption>Toothache illustration</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:76%;">
+<p><strong>Toy Boolean variables:</strong></p>
+<ul>
+<li><span class="math inline">C</span>: cavity.</li>
+<li><span class="math inline">T</span>: toothache.</li>
+<li><span class="math inline">H</span>: probe catches.</li>
+</ul>
+<p>An event such as <span class="math inline">C</span> means <span class="math inline">C=\text{true}</span>.</p>
+</div></div>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Variable</th>
-<th>Domain after availability restrictions</th>
+<th></th>
+<th style="text-align: right;"><span class="math inline">T,H</span></th>
+<th style="text-align: right;"><span class="math inline">T,\neg H</span></th>
+<th style="text-align: right;"><span class="math inline">\neg T,H</span></th>
+<th style="text-align: right;"><span class="math inline">\neg T,\neg H</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><span class="math inline">X_A</span></td>
-<td><span class="math inline">\{1\}</span></td>
+<td><span class="math inline">C</span></td>
+<td style="text-align: right;">0.108</td>
+<td style="text-align: right;">0.012</td>
+<td style="text-align: right;">0.072</td>
+<td style="text-align: right;">0.008</td>
 </tr>
 <tr class="even">
-<td><span class="math inline">X_B</span></td>
-<td><span class="math inline">\{1,2\}</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">X_C</span></td>
-<td><span class="math inline">\{1,2,3\}</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">X_D</span></td>
-<td><span class="math inline">\{2,3\}</span></td>
+<td><span class="math inline">\neg C</span></td>
+<td style="text-align: right;">0.016</td>
+<td style="text-align: right;">0.064</td>
+<td style="text-align: right;">0.144</td>
+<td style="text-align: right;">0.576</td>
 </tr>
 </tbody>
 </table>
-<p><span class="math display">X_A\ne X_B,\quad X_A\ne X_C,\quad X_B\ne X_D,\quad X_C\ne X_D.</span></p>
-<p>Rooms need no variables <strong>under the stated unlimited-room assumption</strong>.</p>
+<p>All eight nonnegative entries sum to <span class="math inline">1</span>.</p>
 </section>
-<section id="the-constraint-graph" class="slide level2">
-<h2>The Constraint Graph</h2>
-<p>Each node is a <strong>variable</strong>. Each edge represents a binary constraint.</p>
-<div class="csp-figure">
-<svg viewbox="0 0 1000 290" role="img" aria-label="Exam constraint graph: A conflicts with B and C, D conflicts with B and C. B and C have no edge and may share a slot.">
-<g stroke="#5d6470" stroke-width="3"><path d="M225 65H775M225 225H775M225 65V225M775 65V225"></path></g>
-<g fill="#e8f6f5" stroke="#007c89" stroke-width="2"><circle cx="225" cy="65" r="42"></circle><circle cx="775" cy="65" r="42"></circle><circle cx="225" cy="225" r="42"></circle><circle cx="775" cy="225" r="42"></circle></g>
-<g font-family="sans-serif" fill="#202124" text-anchor="middle"><g font-size="32"><text x="225" y="76">A</text><text x="775" y="76">B</text><text x="225" y="236">C</text><text x="775" y="236">D</text></g><g font-size="27"><text x="500" y="53">different slots</text><text x="500" y="212">different slots</text><text x="500" y="142">No B-C conflict</text></g></g>
+<section id="query-1-pc-lor-t" class="slide level2">
+<h2>Query 1: <span class="math inline">P(C \lor T)</span></h2>
+<p>It is easier to use the complement:</p>
+<p><span class="math display">
+P(C \lor T)=1-P(\neg C,\neg T)
+</span></p>
+<div class="fragment">
+<p>From the full joint table:</p>
+<p><span class="math display">
+P(\neg C,\neg T)=P(\neg C,\neg T,H)+P(\neg C,\neg T,\neg H)
+</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">
+P(\neg C,\neg T)=0.144+0.576=0.72
+</span></p>
+</div>
+<div class="fragment takeaway">
+<p><span class="math display">
+P(C \lor T)=1-0.72=0.28
+</span></p>
+</div>
+</section>
+<section id="marginalization" class="slide level2">
+<h2>Marginalization</h2>
+<p>To compute a marginal, sum out variables that are not in the query.</p>
+<p><span class="math display">
+P(C)=\sum_T\sum_H P(C,T,H)
+</span></p>
+<div class="fragment">
+<p>For the cavity row:</p>
+<p><span class="math display">
+P(C)=0.108+0.012+0.072+0.008=0.2
+</span></p>
+</div>
+<div class="takeaway">
+<p>“Summing out” reduces a distribution over many variables to a distribution over fewer variables.</p>
+</div>
+</section>
+<section id="query-2-pc-mid-t" class="slide level2">
+<h2>Query 2: <span class="math inline">P(C \mid T)</span></h2>
+<p>Keep <span class="math inline">T=\text{true}</span> and sum over both values of <span class="math inline">H</span>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Quantity</th>
+<th>Matching joint mass</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Numerator <span class="math inline">P(C,T)</span></td>
+<td><span class="math inline">0.108+0.012=0.12</span></td>
+</tr>
+<tr class="even">
+<td>Other outcome <span class="math inline">P(\neg C,T)</span></td>
+<td><span class="math inline">0.016+0.064=0.08</span></td>
+</tr>
+<tr class="odd">
+<td>Evidence probability <span class="math inline">P(T)</span></td>
+<td><span class="math inline">0.12+0.08=0.20</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment takeaway">
+<p><span class="math display">
+P(C \mid T)=\frac{P(C,T)}{P(T)}=\frac{0.12}{0.2}=0.6
+</span></p>
+</div>
+</section>
+<section id="normalization-with-alpha" class="slide level2">
+<h2>Normalization with <span class="math inline">\alpha</span></h2>
+<p>For query outcomes ordered as <span class="math inline">(C,\neg C)</span>, first collect joint masses:</p>
+<p><span class="math display">
+w=(0.12,0.08).
+</span></p>
+<div class="fragment">
+<p>Normalize with:</p>
+<p><span class="math display">
+\alpha=\frac{1}{0.12+0.08}=5
+</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">
+\bigl(P(C\mid T),P(\neg C\mid T)\bigr)=(0.6,0.4).
+</span></p>
+</div>
+<div class="takeaway">
+<p>Normalization divides nonnegative weights by their positive sum. Here that sum is the evidence probability <span class="math inline">P(T)</span>.</p>
+</div>
+</section>
+<section id="a-reusable-inference-procedure" class="slide level2">
+<h2>A Reusable Inference Procedure</h2>
+<div class="inference-figure">
+<svg viewbox="0 0 1000 240" role="img" aria-label="Three steps of joint-table inference: keep rows matching evidence, sum hidden values separately for each query outcome, and divide by the total remaining probability mass.">
+<defs><marker id="inference-flow-arrow" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="9" markerheight="9" markerunits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#5d6470"></path></marker></defs>
+<g stroke="#5d6470" stroke-width="3" marker-end="url(#inference-flow-arrow)"><path d="M295 105H351"></path><path d="M645 105H701"></path></g>
+<rect x="5" y="30" width="290" height="155" rx="7" fill="#fff4db" stroke="#b7791f" stroke-width="2"></rect>
+<rect x="355" y="30" width="290" height="155" rx="7" fill="#e8f6f5" stroke="#007c89" stroke-width="2"></rect>
+<rect x="705" y="30" width="290" height="155" rx="7" fill="#fdecef" stroke="#b8325f" stroke-width="2"></rect>
+<g font-family="sans-serif" fill="#202124" text-anchor="middle"><g font-size="31"><text x="150" y="89">Filter</text><text x="500" y="89">Sum</text><text x="850" y="89">Normalize</text></g><g font-size="25"><text x="150" y="137">Match the evidence</text><text x="500" y="137">Remove hidden values</text><text x="850" y="137">Divide by total mass</text></g></g>
 </svg>
 </div>
-<div class="takeaway">
-<p>These edges describe incompatible assignments, not physical travel routes or a search path.</p>
-</div>
+<p>Query <span class="math inline">Q</span>, evidence <span class="math inline">E=e</span>, hidden variables <span class="math inline">H</span>:</p>
+<p><span class="math display">
+\begin{aligned}
+w(q)&amp;=\sum_h P(Q=q,E=e,H=h),\\[0.4em]
+P(Q=q\mid E=e)&amp;=\frac{w(q)}{\sum_{q'}w(q')}.
+\end{aligned}
+</span></p>
+<p>Keep query outcomes separate until the final normalization.</p>
 </section>
-<section id="which-assignments-are-valid" class="slide level2 scrollable">
-<h2>Which Assignments Are Valid?</h2>
+<section id="two-pieces-of-evidence" class="slide level2">
+<h2>Two Pieces of Evidence</h2>
+<p>Now we observe both toothache and a probe catch: <span class="math inline">T,H</span>.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Assignment</th>
-<th>Complete?</th>
-<th>Consistent?</th>
+<th>Query outcome</th>
+<th style="text-align: right;">Matching joint mass</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><span class="math inline">X_A=1,\ X_B=2</span></td>
-<td>?</td>
-<td>?</td>
+<td><span class="math inline">C</span></td>
+<td style="text-align: right;"><span class="math inline">0.108</span></td>
 </tr>
 <tr class="even">
-<td><span class="math inline">X_A=1,\ X_B=1</span></td>
-<td>?</td>
-<td>?</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">(X_A,X_B,X_C,X_D)=(1,2,2,2)</span></td>
-<td>?</td>
-<td>?</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">(X_A,X_B,X_C,X_D)=(1,2,2,3)</span></td>
-<td>?</td>
-<td>?</td>
+<td><span class="math inline">\neg C</span></td>
+<td style="text-align: right;"><span class="math inline">0.016</span></td>
 </tr>
 </tbody>
 </table>
+<div class="question">
+<p>What is <span class="math inline">P(C\mid T,H)</span>? Is there any hidden variable left to sum out?</p>
+</div>
 <div class="fragment">
+<p><span class="math display">P(C\mid T,H)=\frac{0.108}{0.108+0.016}\approx0.871.</span> No hidden variable remains in this three-variable model.</p>
+</div>
+</section>
+<section id="practice-evidence-against-the-first-guess" class="slide level2 scrollable">
+<h2>Practice: Evidence Against the First Guess</h2>
+<p>Observe a toothache but <strong>no</strong> probe catch: <span class="math inline">T,\neg H</span>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;"><span class="math inline">T,H</span></th>
+<th style="text-align: right;"><span class="math inline">T,\neg H</span></th>
+<th style="text-align: right;"><span class="math inline">\neg T,H</span></th>
+<th style="text-align: right;"><span class="math inline">\neg T,\neg H</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">C</span></td>
+<td style="text-align: right;">0.108</td>
+<td style="text-align: right;"><strong>0.012</strong></td>
+<td style="text-align: right;">0.072</td>
+<td style="text-align: right;">0.008</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\neg C</span></td>
+<td style="text-align: right;">0.016</td>
+<td style="text-align: right;"><strong>0.064</strong></td>
+<td style="text-align: right;">0.144</td>
+<td style="text-align: right;">0.576</td>
+</tr>
+</tbody>
+</table>
+<div class="question">
 <ol type="1">
-<li>Partial and consistent.</li>
-<li>Partial and inconsistent: <span class="math inline">A</span> conflicts with <span class="math inline">B</span>.</li>
-<li>Complete but inconsistent: <span class="math inline">D</span> conflicts with both <span class="math inline">B</span> and <span class="math inline">C</span>.</li>
-<li>Complete and consistent: <strong>a solution</strong>.</li>
+<li>Compute <span class="math inline">P(C\mid T,\neg H)</span>.</li>
+<li>Compare it with <span class="math inline">P(C\mid T)=0.6</span>.</li>
+<li>Does observing more evidence always increase the probability of <span class="math inline">C</span>?</li>
 </ol>
 </div>
+<aside class="notes">
+<p>Allow three minutes. Ask students to write the numerator and denominator before using a calculator. The answer comes on the next slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="a-domain-reduction-trace" class="slide level2">
-<h2>A Domain-Reduction Trace</h2>
-<p>Start with the availability domains. Apply the four conflict rules.</p>
+<section id="practice-answer-evidence-can-lower-a-belief" class="slide level2">
+<h2>Practice Answer: Evidence Can Lower a Belief</h2>
+<p><span class="math display">
+P(C\mid T,\neg H)=\frac{0.012}{0.012+0.064}\approx0.158.
+</span></p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Step</th>
-<th>Consequence</th>
+<th>Available evidence</th>
+<th style="text-align: right;">Probability of <span class="math inline">C</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><span class="math inline">X_A=1</span></td>
-<td>Remove <span class="math inline">1</span> from <span class="math inline">D_B</span> and <span class="math inline">D_C</span></td>
+<td>None</td>
+<td style="text-align: right;"><span class="math inline">0.200</span></td>
 </tr>
 <tr class="even">
-<td><span class="math inline">D_B=\{2\}</span></td>
-<td><span class="math inline">X_B=2</span> forces <span class="math inline">D_D=\{3\}</span></td>
+<td>Toothache</td>
+<td style="text-align: right;"><span class="math inline">0.600</span></td>
 </tr>
 <tr class="odd">
-<td><span class="math inline">X_D=3</span></td>
-<td>Remove <span class="math inline">3</span> from <span class="math inline">D_C</span>, leaving <span class="math inline">\{2\}</span></td>
+<td>Toothache and probe catches</td>
+<td style="text-align: right;"><span class="math inline">0.871</span></td>
 </tr>
 <tr class="even">
-<td>All domains are singletons</td>
-<td><span class="math inline">(X_A,X_B,X_C,X_D)=(1,2,2,3)</span></td>
+<td>Toothache and probe does not catch</td>
+<td style="text-align: right;"><span class="math inline">0.158</span></td>
 </tr>
 </tbody>
 </table>
 <div class="takeaway">
-<p>The constraints force this schedule without trying all complete assignments.</p>
+<p>More evidence can raise or lower a particular hypothesis’s probability. The direction depends on what was observed.</p>
 </div>
-<aside class="notes">
-<p>Work through the domain changes on the board before revealing the table rows verbally. This is a small propagation example, not yet a presentation of AC-3. Domain D_B names the remaining values for X_B; D_D names the domain of X_D.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="one-new-requirement-can-make-it-impossible" class="slide level2">
-<h2>One New Requirement Can Make It Impossible</h2>
-<p>A new student takes both <span class="math inline">B</span> and <span class="math inline">C</span>. Add <span class="math inline">X_B\ne X_C</span>.</p>
+<section id="reversing-a-conditional" class="slide level2">
+<h2>Reversing a Conditional</h2>
+<p>The same joint mass appears in both numerators:</p>
+<p><span class="math display">P(C,H)=0.108+0.072=0.18.</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Calculation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Probe catches, given cavity</td>
+<td><span class="math inline">P(H\mid C)=0.18/0.20=0.90</span></td>
+</tr>
+<tr class="even">
+<td>Cavity, given probe catches</td>
+<td><span class="math inline">P(C\mid H)=0.18/0.34\approx0.529</span></td>
+</tr>
+</tbody>
+</table>
 <div class="question">
-<p>Can the schedule still use the same availability restrictions and three slots?</p>
+<p>Why do the answers differ even though both use <span class="math inline">P(C,H)</span>?</p>
 </div>
 <div class="fragment">
-<ul>
-<li>Existing rules force <span class="math inline">X_A=1</span>, <span class="math inline">X_B=2</span>, and <span class="math inline">X_D=3</span>.</li>
-<li><span class="math inline">C</span> conflicts with <span class="math inline">A</span>, <span class="math inline">B</span>, and <span class="math inline">D</span>.</li>
-<li>No slot remains for <span class="math inline">C</span>: its domain becomes <span class="math inline">\varnothing</span>.</li>
-</ul>
-<p><strong>No satisfying assignment exists under these requirements.</strong></p>
+<p>They condition on different events, so they divide by different evidence probabilities.</p>
+</div>
+</section>
+<section id="can-we-multiply-the-marginals" class="slide level2">
+<h2>Can We Multiply the Marginals?</h2>
+<p>From the toothache table:</p>
+<p><span class="math display">P(T)=0.20,\quad P(H)=0.34,\quad P(T,H)=0.124.</span></p>
+<div class="question">
+<p>Are toothache and probe catches independent in this model?</p>
+</div>
+<div class="fragment">
+<p><span class="math display">P(T)P(H)=0.20\times0.34=0.068\ne0.124.</span> <strong>No.</strong> Multiplying the marginals would give the wrong joint probability.</p>
+</div>
+</section>
+<section id="conditional-independence-is-different" class="slide level2">
+<h2>Conditional Independence Is Different</h2>
+<p>Within the cavity group:</p>
+<p><span class="math display">P(T\mid C)=0.6,\qquad P(H\mid C)=0.9.</span> <span class="math display">P(T,H\mid C)=\frac{0.108}{0.2}=0.54=0.6\times0.9.</span></p>
+<p>Within the no-cavity group:</p>
+<p><span class="math display">P(T\mid\neg C)=0.1,\quad P(H\mid\neg C)=0.2,</span> <span class="math display">P(T,H\mid\neg C)=0.02=0.1\times0.2.</span></p>
+<div class="takeaway">
+<p>This table has <span class="math inline">T\perp H\mid C</span>, although <span class="math inline">T</span> and <span class="math inline">H</span> are not marginally independent.</p>
 </div>
 <aside class="notes">
-<p>Give students two minutes. Ask for an explanation of infeasibility, not just a failed guess. Possible repairs require changing a stated requirement, for example allowing a fourth slot for C. A solver must not silently drop a conflict.</p>
+<p>The symbol perpendicular means independence. Given each Boolean value of C, the joint table for Boolean T,H factorizes. State explicitly that this is a property of the toy distribution, not a universal claim about medical symptoms. It motivates the following Bayesian-network lecture.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -460,44 +661,44 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="unary-binary-and-global-constraints" class="slide level2">
-<h2>Unary, Binary, and Global Constraints</h2>
-<p>The <strong>arity</strong> of a constraint is the number of variables it involves.</p>
+<section id="common-inference-mistakes" class="slide level2">
+<h2>Common Inference Mistakes</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 50%">
+<col style="width: 50%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Kind</th>
-<th>Example</th>
-<th>Interpretation</th>
+<th>Mistake</th>
+<th>What goes wrong</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Unary</td>
-<td><span class="math inline">X_A=1</span></td>
-<td>Restricts one exam</td>
+<td>Treat an unobserved variable as false</td>
+<td>Adds evidence that was never observed</td>
 </tr>
 <tr class="even">
-<td>Binary</td>
-<td><span class="math inline">X_A\ne X_B</span></td>
-<td>Relates two exams</td>
+<td>Sum the numerator across both query outcomes</td>
+<td>Loses the distinction we are trying to infer</td>
 </tr>
 <tr class="odd">
-<td>Global</td>
-<td><span class="math inline">\operatorname{AllDifferent}(X_1,\ldots,X_9)</span></td>
-<td>All nine values must differ</td>
+<td>Use the full table total as denominator</td>
+<td>Fails to condition on the evidence</td>
+</tr>
+<tr class="even">
+<td>Multiply marginals without checking independence</td>
+<td>Changes the probability model</td>
+</tr>
+<tr class="odd">
+<td>Normalize weights that sum to zero</td>
+<td>Conditions on an impossible event in the model</td>
 </tr>
 </tbody>
 </table>
-<p>For three variables, <span class="math inline">\operatorname{AllDifferent}(X,Y,Z)</span> means</p>
-<p><span class="math display">X\ne Y\ \land\ X\ne Z\ \land\ Y\ne Z.</span></p>
 <aside class="notes">
-<p>Global constraints describe a collection of variables together. AllDifferent has a pairwise-inequality logical encoding, but specialized propagation can exploit the global structure more effectively. Save that algorithmic detail for the consistency lecture.</p>
+<p>For discrete conditional probability, P(E=e)=0 makes the ratio undefined. This does not prove the real-world observation impossible; it may reveal a deficient model or data-entry error. Do not replace the result by a uniform distribution without stating a new modeling assumption.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -510,347 +711,97 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="feasibility-versus-preference" class="slide level2">
-<h2>Feasibility Versus Preference</h2>
-<ul>
-<li><strong>Hard constraint:</strong> a shared student cannot take two exams at once.</li>
-<li><strong>Soft preference:</strong> fewer students should have exams in the last slot.</li>
-</ul>
-<div class="definition">
-<p>A basic CSP asks for any feasible assignment. A constraint optimization problem also scores feasible assignments.</p>
-</div>
-<p>For example, with <span class="math inline">n_i</span> students in exam <span class="math inline">i</span>:</p>
-<p><span class="math display">\min_X\sum_i n_i\,\mathbf{1}\{X_i=3\}\quad\text{subject to all hard constraints}.</span></p>
-<p>The indicator <span class="math inline">\mathbf{1}\{X_i=3\}</span> equals <span class="math inline">1</span> if exam <span class="math inline">i</span> uses slot <span class="math inline">3</span>, and <span class="math inline">0</span> otherwise.</p>
-</section>
-<section id="sudoku-rules" class="slide level2">
-<h2>Sudoku Rules</h2>
-<ul>
-<li>Fill a <span class="math inline">9 \times 9</span> grid with digits 1 through 9.</li>
-<li>Each row must contain each digit exactly once.</li>
-<li>Each column must contain each digit exactly once.</li>
-<li>Each <span class="math inline">3 \times 3</span> subgrid must contain each digit exactly once.</li>
-</ul>
-<div class="takeaway">
-<p>Sudoku is useful because the rules are simple, but the constraints interact strongly.</p>
-</div>
-</section>
-<section id="sudoku-example" class="slide level2">
-<h2>Sudoku Example</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:46%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec13/Sudoku.png" class="csp-puzzle"></p>
-<figcaption>Sudoku puzzle</figcaption>
-</figure>
-</div>
-</div><div class="column" style="width:46%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec13/SudokuSolution.png" class="csp-puzzle"></p>
-<figcaption>Sudoku solution</figcaption>
-</figure>
-</div>
-</div></div>
-<div class="takeaway">
-<p>The puzzle is a partial assignment. The solution is a complete satisfying assignment.</p>
-</div>
-</section>
-<section id="sudoku-variables" class="slide level2">
-<h2>Sudoku Variables</h2>
+<section id="full-joint-tables-do-not-scale" class="slide level2">
+<h2>Full Joint Tables Do Not Scale</h2>
+<p>For <span class="math inline">n</span> binary variables, a full joint table has:</p>
+<p><span class="math display">
+2^n
+</span></p>
+<p>entries.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Row &nbsp;Column</th>
-<th style="text-align: right;">1</th>
-<th style="text-align: right;">2</th>
-<th style="text-align: right;">3</th>
-<th style="text-align: right;">…</th>
-<th style="text-align: right;">9</th>
+<th style="text-align: right;">Variables</th>
+<th style="text-align: right;">Entries</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>A</td>
-<td style="text-align: right;">A1</td>
-<td style="text-align: right;">A2</td>
-<td style="text-align: right;">A3</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">A9</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;"><span class="math inline">2^{10}=1024</span></td>
 </tr>
 <tr class="even">
-<td>B</td>
-<td style="text-align: right;">B1</td>
-<td style="text-align: right;">B2</td>
-<td style="text-align: right;">B3</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">B9</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;"><span class="math inline">2^{50}\approx 10^{15}</span></td>
 </tr>
 <tr class="odd">
-<td>C</td>
-<td style="text-align: right;">C1</td>
-<td style="text-align: right;">C2</td>
-<td style="text-align: right;">C3</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">C9</td>
-</tr>
-<tr class="even">
-<td>…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-</tr>
-<tr class="odd">
-<td>I</td>
-<td style="text-align: right;">I1</td>
-<td style="text-align: right;">I2</td>
-<td style="text-align: right;">I3</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">I9</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>Variables: A1 through I9.</li>
-<li>Domain for each variable: <span class="math inline">\{1,2,\ldots,9\}</span>.</li>
-</ul>
-</section>
-<section id="sudoku-constraints" class="slide level2">
-<h2>Sudoku Constraints</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:32%;">
-<h3 id="row">Row</h3>
-<p>Example: A1, A2, …, A9 must all differ.</p>
-</div><div class="column" style="width:32%;">
-<h3 id="column">Column</h3>
-<p>Example: A4, B4, …, I4 must all differ.</p>
-</div><div class="column" style="width:32%;">
-<h3 id="block">Block</h3>
-<p>Example: D4, D5, D6, E4, E5, E6, F4, F5, F6 must all differ.</p>
-</div></div>
-</section>
-<section id="sudoku-as-a-csp" class="slide level2">
-<h2>Sudoku as a CSP</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>CSP piece</th>
-<th>Sudoku formulation</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Variables</td>
-<td>A1, A2, …, I9</td>
-</tr>
-<tr class="even">
-<td>Domain</td>
-<td><span class="math inline">\{1,2,\ldots,9\}</span> for each cell</td>
-</tr>
-<tr class="odd">
-<td>Row constraints</td>
-<td>Cells in the same row must differ</td>
-</tr>
-<tr class="even">
-<td>Column constraints</td>
-<td>Cells in the same column must differ</td>
-</tr>
-<tr class="odd">
-<td>Block constraints</td>
-<td>Cells in the same <span class="math inline">3 \times 3</span> block must differ</td>
-</tr>
-<tr class="even">
-<td>Given cells</td>
-<td>Pre-filled cells have fixed values</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="candidate-values-for-one-cell" class="slide level2">
-<h2>Candidate Values for One Cell</h2>
-<p>For an empty Sudoku cell, suppose the existing digits are:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Related cells</th>
-<th>Digits already present</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Same row</td>
-<td><span class="math inline">\{1,3,5,7\}</span></td>
-</tr>
-<tr class="even">
-<td>Same column</td>
-<td><span class="math inline">\{2,3,8\}</span></td>
-</tr>
-<tr class="odd">
-<td>Same block</td>
-<td><span class="math inline">\{1,4,8\}</span></td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;"><span class="math inline">2^{100}\approx 10^{30}</span></td>
 </tr>
 </tbody>
 </table>
 <div class="question">
-<p>Which values remain in this cell’s domain?</p>
+<p>The table is exact, but exactness becomes useless if we cannot store or query it.</p>
+</div>
+</section>
+<section id="the-need-for-structure" class="slide level2">
+<h2>The Need for Structure</h2>
+<p>Full joint inference requires summing many entries.</p>
+<p>Structured representations reduce the work by exploiting conditional independence.</p>
+<div class="inference-figure">
+<svg viewbox="0 0 1000 200" role="img" aria-label="Bayesian network with cavity C pointing to toothache T and probe catches H. The model states that T and H are conditionally independent given C.">
+<defs><marker id="inference-bayes-arrow" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="9" markerheight="9" markerunits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#5d6470"></path></marker></defs>
+<path d="M440 80L270 134M560 80L730 134" stroke="#5d6470" stroke-width="3" marker-end="url(#inference-bayes-arrow)"></path>
+<g stroke-width="2"><rect x="390" y="15" width="220" height="67" rx="7" fill="#e8f6f5" stroke="#007c89"></rect><rect x="70" y="133" width="290" height="62" rx="7" fill="#fff4db" stroke="#b7791f"></rect><rect x="640" y="133" width="290" height="62" rx="7" fill="#fdecef" stroke="#b8325f"></rect></g>
+<g font-family="sans-serif" font-size="29" text-anchor="middle" fill="#202124"><text x="500" y="59">Cavity C</text><text x="215" y="174">Toothache T</text><text x="785" y="174">Probe catches H</text></g>
+</svg>
+</div>
+<p><span class="math display">P(C,T,H)=P(C)P(T\mid C)P(H\mid C).</span></p>
+<div class="takeaway">
+<p>Bayesian networks can store the distribution compactly. Exact inference can still be expensive, depending on the graph.</p>
+</div>
+</section>
+<section id="exit-problem-a-robots-sensor" class="slide level2">
+<h2>Exit Problem: A Robot’s Sensor</h2>
+<p>A robot occupies either the left or right room. Its sensor flashes or stays dark.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Location</th>
+<th style="text-align: right;">Flash</th>
+<th style="text-align: right;">Dark</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Left</td>
+<td style="text-align: right;"><span class="math inline">0.36</span></td>
+<td style="text-align: right;"><span class="math inline">0.24</span></td>
+</tr>
+<tr class="even">
+<td>Right</td>
+<td style="text-align: right;"><span class="math inline">0.08</span></td>
+<td style="text-align: right;"><span class="math inline">0.32</span></td>
+</tr>
+</tbody>
+</table>
+<div class="question">
+<p>Compute <span class="math inline">P(\text{Left})</span>, <span class="math inline">P(\text{Left}\mid\text{Flash})</span>, and <span class="math inline">P(\text{Flash}\mid\text{Left})</span>.</p>
 </div>
 <div class="fragment">
-<p><span class="math display">\{1,\ldots,9\}\setminus\{1,2,3,4,5,7,8\}=\{6,9\}.</span> Two candidates remain. The current constraints do not justify choosing one yet.</p>
+<p><span class="math display">0.60,\qquad \frac{0.36}{0.44}\approx0.818,\qquad \frac{0.36}{0.60}=0.60.</span></p>
 </div>
 </section>
-<section id="naive-sudoku-search" class="slide level2 scrollable">
-<h2>Naive Sudoku Search</h2>
-<p>Naive backtracking:</p>
-<ol type="1">
-<li>Choose an unassigned variable.</li>
-<li>Try a value.</li>
-<li>Backtrack if a constraint is violated.</li>
-</ol>
-<div class="definition">
-<p>With <span class="math inline">m</span> empty cells and at most <span class="math inline">9</span> candidate values per cell, there are at most <span class="math inline">9^m</span> complete fillings before checking constraints.</p>
-</div>
-<p>Using a fixed variable order avoids exploring many orders of the same assignments.</p>
-<aside class="notes">
-<p>This is a count of candidate complete assignments, not a tight running-time claim for a solver. Fixed givens and constraint checks reduce the actual search. Check cost and propagation cost also contribute to runtime.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="constraint-propagation" class="slide level2">
-<h2>Constraint Propagation</h2>
+<section id="what-to-remember" class="slide level2">
+<h2>What to Remember</h2>
 <ul>
-<li>Enforce constraints before committing to deeper choices.</li>
-<li>When a value is assigned, eliminate inconsistent values from neighboring variables.</li>
-<li>If a cell has only one possible value left, it must take that value.</li>
-<li>If a domain becomes empty, the current partial assignment cannot work.</li>
+<li>Full joint distributions answer any probability query in principle.</li>
+<li>Marginalization sums out variables.</li>
+<li>Conditioning divides by the evidence probability.</li>
+<li>Normalization rescales relative values into probabilities.</li>
+<li>Full joint tables grow exponentially, so we need structured models.</li>
 </ul>
-<div class="takeaway">
-<p>Constraint propagation reduces the effective branching factor and detects failure earlier.</p>
-</div>
-</section>
-<section id="consistent-so-far-does-not-mean-solvable" class="slide level2">
-<h2>Consistent So Far Does Not Mean Solvable</h2>
-<p>Three exams conflict pairwise, but only slots <span class="math inline">1</span> and <span class="math inline">2</span> are available.</p>
-<p><span class="math display">D_A=D_B=D_C=\{1,2\},\qquad X_A\ne X_B,\ X_B\ne X_C,\ X_A\ne X_C.</span></p>
-<div class="question">
-<p>The partial assignment <span class="math inline">X_A=1</span> violates no constraint. Can it be completed?</p>
-</div>
-<div class="fragment">
-<p>No.&nbsp;Both <span class="math inline">X_B</span> and <span class="math inline">X_C</span> must be <span class="math inline">2</span>, violating <span class="math inline">X_B\ne X_C</span>. Starting with <span class="math inline">X_A=2</span> gives the same problem.</p>
-</div>
-<div class="takeaway">
-<p>Checking the current assignment and proving that a completion exists are different tasks.</p>
-</div>
-</section>
-<section id="modeling-practice-a-small-lab-schedule" class="slide level2">
-<h2>Modeling Practice: A Small Lab Schedule</h2>
-<p>Experiments <span class="math inline">P,Q,R</span> each take one slot from <span class="math inline">\{1,2,3\}</span>.</p>
-<ul>
-<li><span class="math inline">P</span> must finish before <span class="math inline">Q</span> starts.</li>
-<li><span class="math inline">Q</span> and <span class="math inline">R</span> share equipment and cannot run together.</li>
-<li><span class="math inline">R</span> cannot run in slot <span class="math inline">1</span>.</li>
-</ul>
-<div class="question">
-<p>Write the variables, domains, and constraints. Give one valid schedule and one invalid schedule with a reason.</p>
-</div>
-<aside class="notes">
-<p>Allow three minutes in pairs. Slots are equal length and nonoverlapping, so the precedence relation is a strict inequality on slot indices. There is no P-R equipment conflict unless the specification says so.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="lab-schedule-one-formulation" class="slide level2">
-<h2>Lab Schedule: One Formulation</h2>
-<p><span class="math display">D_P=D_Q=\{1,2,3\},\qquad D_R=\{2,3\}.</span></p>
-<p><span class="math display">X_P&lt;X_Q,\qquad X_Q\ne X_R.</span></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Assignment <span class="math inline">(X_P,X_Q,X_R)</span></th>
-<th>Check</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">(1,2,3)</span></td>
-<td>Valid</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">(1,3,2)</span></td>
-<td>Also valid</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">(2,1,3)</span></td>
-<td>Violates precedence</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">(1,2,2)</span></td>
-<td>Violates the equipment constraint</td>
-</tr>
-</tbody>
-</table>
-<div class="takeaway">
-<p>Multiple solutions are allowed. Include every stated requirement, but do not invent extra ones.</p>
-</div>
-</section>
-<section id="another-representation-n-queens" class="slide level2">
-<h2>Another Representation: N-Queens</h2>
-<p>Use one variable <span class="math inline">Q_i</span> per column. Its value is the queen’s row.</p>
-<p><span class="math display">D_i=\{1,\ldots,N\}.</span></p>
-<p>For each pair of distinct columns <span class="math inline">i,j</span>:</p>
-<p><span class="math display">Q_i\ne Q_j,\qquad |Q_i-Q_j|\ne |i-j|.</span></p>
-<ul>
-<li>One variable per column already guarantees one queen in each column.</li>
-<li>The first constraint prevents a shared row.</li>
-<li>The second prevents a shared diagonal.</li>
-</ul>
-<div class="question">
-<p>Why would using one Boolean variable per square require additional constraints?</p>
-</div>
-<aside class="notes">
-<p>Answer: square occupancy alone does not guarantee exactly N queens or one in each row/column. This slide connects to local search and illustrates that representation can build some requirements into the variables. Do not spend time solving N-queens here.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="why-csps-help" class="slide level2">
-<h2>Why CSPs Help</h2>
-<ul>
-<li>CSPs separate <strong>what the problem is</strong> from <strong>how we search</strong>.</li>
-<li>General CSP algorithms can use domain-independent structure.</li>
-<li>Constraints allow pruning before a full assignment is attempted.</li>
-</ul>
-<div class="takeaway">
-<p>The next lecture formalizes consistency: how much pruning can we do before search?</p>
-</div>
-<p><a class="asset-credit-link" href="../asset_credits.html#lec13" target="_blank" rel="noopener">Asset credits</a></p>
+<p><a href="../asset_credits.html#lec22" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
 
 
 </section>

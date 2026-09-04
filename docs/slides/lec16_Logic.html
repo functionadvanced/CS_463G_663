@@ -163,175 +163,217 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="logic" class="slide level2 section-slide">
-<h2>Logic</h2>
+<section id="what-does-the-rule-actually-permit" class="slide level2 logic-foundations">
+<h2>What Does the Rule Actually Permit?</h2>
 <div class="columns visual-pair">
-<div class="column" style="width:60%;">
-<p>Logic is the formal study of reasoning.</p>
-<ul>
-<li>It represents knowledge precisely.</li>
-<li>It manipulates that knowledge with rules.</li>
-<li>It supports automated reasoning, decision-making, and problem-solving.</li>
-</ul>
-<div class="takeaway">
-<p>Logic gives AI a language for deriving new facts from known facts.</p>
-</div>
-</div><div class="column" style="width:32%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec1/brain_lightbulb_openclipart.svg" class="cc0-icon"></p>
-<figcaption>Brain lightbulb icon for reasoning</figcaption>
-</figure>
-</div>
-</div></div>
-</section>
-<section id="a-first-inference" class="slide level2">
-<h2>A First Inference</h2>
+<div class="column" style="width:70%;">
+<p>A lab’s access rule says:</p>
 <div class="definition">
-<p>If it is raining, then the ground is wet.</p>
-<p>It is raining.</p>
-<p>Therefore, the ground is wet.</p>
-</div>
-<p><span class="math display">
-\text{Raining} \rightarrow \text{GroundWet}
-</span></p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec16/a-first-inference.svg" alt="A First Inference process diagram"></p>
+<p>If a person has a valid badge, the door unlocks.</p>
 </div>
 <div class="question">
-<p>The sentence above is simple; the power comes from making the reasoning rule explicit.</p>
+<p>Does this also say that the door stays locked for everyone without a valid badge?</p>
 </div>
-</section>
-<section id="why-logic-matters-in-ai" class="slide level2">
-<h2>Why Logic Matters in AI</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Area</th>
-<th>How logic helps</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Knowledge representation</td>
-<td>Store facts and rules</td>
-</tr>
-<tr class="even">
-<td>Automated theorem proving</td>
-<td>Derive consequences formally</td>
-</tr>
-<tr class="odd">
-<td>Expert systems</td>
-<td>Apply domain rules to cases</td>
-</tr>
-<tr class="even">
-<td>Natural language processing</td>
-<td>Represent meaning and entailment</td>
-</tr>
-<tr class="odd">
-<td>Planning and robotics</td>
-<td>Reason about actions and goals</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="types-of-logic" class="slide level2">
-<h2>Types of Logic</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:32%;">
-<h3 id="propositional-logic">Propositional Logic</h3>
-<ul>
-<li>Atomic statements.</li>
-<li>Each statement is true or false.</li>
-<li>Example: <span class="math inline">R \rightarrow W</span>.</li>
-</ul>
-</div><div class="column" style="width:32%;">
-<h3 id="first-order-logic">First-Order Logic</h3>
-<ul>
-<li>Objects, relations, and quantifiers.</li>
-<li>Example:</li>
-</ul>
-<p><span class="math display">
-\forall x\; \text{Human}(x) \rightarrow \text{Mortal}(x)
-</span></p>
-</div><div class="column" style="width:32%;">
-<h3 id="other-logics">Other Logics</h3>
-<ul>
-<li>Temporal logic.</li>
-<li>Modal logic.</li>
-<li>Fuzzy logic.</li>
-</ul>
+<div class="fragment">
+<p><strong>No.</strong> A rule can promise one outcome without ruling out other ways to reach it.</p>
+</div>
+</div><div class="column" style="width:24%;">
+<p><img data-src="imgs/lec1/robot_openclipart.svg" class="cc0-icon" alt="Robot representing an agent that must interpret a rule precisely"></p>
 </div></div>
+<aside class="notes">
+<p>50-minute teaching plan, including discussion: slides 1-6, 8 minutes; 7-12, 9 minutes; 13-19, 12 minutes; 20-26, 10 minutes; 27-31, 11 minutes. Ask students to commit to an answer before revealing it. Main activities: translation on slide 11, formula evaluation on slide 20, and policy debugging on slides 27-29. This lecture develops representation and truth conditions. The following lecture develops entailment, CNF, and proof procedures.</p>
+<p>The badge rule is a material implication about one fixed person and one evaluation of the access decision. It is not a description of an electrical actuator or a complete security policy.</p>
+<p>[Sources] - AIMA, Russell and Norvig, Chapter 7: logical agents and propositional logic. - Public-domain OpenClipart robot: https://openclipart.org/detail/325789/robot-2. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="propositional-logic-1" class="slide level2">
-<h2>Propositional Logic</h2>
-<p>Propositional logic is a formal system where each proposition is either true or false.</p>
+<section id="logic-separates-meaning-from-wording" class="slide level2 logic-foundations">
+<h2>Logic Separates Meaning from Wording</h2>
+<p><strong>Logic</strong> provides a precise language for representing facts and constraints.</p>
+<div class="logic-figure">
+<svg viewbox="0 0 1000 235" role="img" aria-label="An English rule is translated to a formula, which can be checked against a possible world.">
+  <defs><marker id="logic-language-arrow" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto-start-reverse" markerunits="userSpaceOnUse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#5d6470"></path></marker></defs>
+  <path d="M 290 112 H 351" stroke="#5d6470" stroke-width="3" marker-end="url(#logic-language-arrow)"></path>
+  <path d="M 649 112 H 710" stroke="#5d6470" stroke-width="3" marker-end="url(#logic-language-arrow)"></path>
+  <rect x="10" y="36" width="280" height="153" rx="7" fill="#fff4db" stroke="#b7791f" stroke-width="2"></rect>
+  <rect x="360" y="36" width="280" height="153" rx="7" fill="#e8f6f5" stroke="#007c89" stroke-width="2"></rect>
+  <rect x="720" y="36" width="270" height="153" rx="7" fill="#fdecef" stroke="#b8325f" stroke-width="2"></rect>
+  <g font-family="sans-serif" text-anchor="middle" fill="#202124"><text x="150" y="91" font-size="31">English rule</text><text x="150" y="138" font-size="25">Choose the meaning</text><text x="500" y="91" font-size="31">Logical formula</text><text x="500" y="138" font-size="25">Make it explicit</text><text x="855" y="91" font-size="31">Possible world</text><text x="855" y="138" font-size="25">Check true or false</text></g>
+</svg>
+</div>
+<ul>
+<li><strong>Representation:</strong> What exactly does the rule assert?</li>
+<li><strong>Evaluation:</strong> Does a particular situation satisfy the rule?</li>
+<li><strong>Reasoning:</strong> What else follows from the facts and rules?</li>
+</ul>
+<aside class="notes">
+<p>Connect to CSPs: a logical formula also restricts combinations of values. A precise formula can still encode the wrong English meaning. Reasoning does not repair a mistranslated requirement. The diagram is original course artwork.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="which-sentences-are-propositions" class="slide level2 logic-foundations">
+<h2>Which Sentences Are Propositions?</h2>
+<p>A <strong>proposition</strong> is a statement with a truth value, once its context is fixed.</p>
 <table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>Component</th>
-<th>Example</th>
+<th>Sentence</th>
+<th>A proposition?</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Proposition</td>
-<td><span class="math inline">R</span>: it is raining</td>
+<td>“The lab door is unlocked now.”</td>
+<td>Yes, even if we have not checked</td>
 </tr>
 <tr class="even">
-<td>Negation</td>
-<td><span class="math inline">\neg R</span></td>
+<td>“Two plus three equals six.”</td>
+<td>Yes; it is false</td>
 </tr>
 <tr class="odd">
-<td>Conjunction</td>
-<td><span class="math inline">R \land W</span></td>
+<td>“Unlock the lab door!”</td>
+<td>No; this is a command</td>
 </tr>
 <tr class="even">
-<td>Disjunction</td>
-<td><span class="math inline">R \lor W</span></td>
+<td>“Is the lab door unlocked?”</td>
+<td>No; this is a question</td>
 </tr>
 <tr class="odd">
-<td>Implication</td>
-<td><span class="math inline">R \rightarrow W</span></td>
-</tr>
-<tr class="even">
-<td>Biconditional</td>
-<td><span class="math inline">R \leftrightarrow W</span></td>
+<td>“<span class="math inline">x</span> is greater than three.”</td>
+<td>Not a closed proposition until <span class="math inline">x</span> is specified</td>
 </tr>
 </tbody>
 </table>
+<div class="takeaway">
+<p>Having a truth value is different from knowing that truth value.</p>
+</div>
+<aside class="notes">
+<p>Ask whether an unobserved fact counts. Classical propositional logic uses two truth values, not a third value for our ignorance. Fix the person, door, and time whenever natural language would otherwise leave them implicit. The open expression involving x motivates predicates later; do not introduce quantifiers yet.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="truth-tables" class="slide level2">
-<h2>Truth Tables</h2>
-<p>Truth tables define connectives by listing all possible input values and outputs.</p>
-<div class="columns two-column-balance">
-<div class="column" style="width:42%;">
-<h3 id="negation">Negation</h3>
+<section id="give-each-atom-a-stable-meaning" class="slide level2 logic-foundations">
+<h2>Give Each Atom a Stable Meaning</h2>
+<p>For one person, at one access decision:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th><span class="math inline">P</span></th>
-<th><span class="math inline">\neg P</span></th>
+<th>Symbol</th>
+<th>Atomic proposition</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>T</td>
-<td>F</td>
+<td><span class="math inline">B</span></td>
+<td>The person has a valid badge</td>
 </tr>
 <tr class="even">
-<td>F</td>
-<td>T</td>
+<td><span class="math inline">V</span></td>
+<td>The person is an approved visitor</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">E</span></td>
+<td>An emergency is active</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">D</span></td>
+<td>The door unlocks</td>
 </tr>
 </tbody>
 </table>
-</div><div class="column" style="width:54%;">
-<h3 id="conjunction">Conjunction</h3>
+<ul>
+<li>An <strong>atom</strong> is a proposition that we treat as indivisible.</li>
+<li>Symbols are names, not numerical measurements.</li>
+<li>Keep the same meaning everywhere in a formula.</li>
+</ul>
+<aside class="notes">
+<p>These four atoms will return in the final policy activity. They are a deliberately simplified access decision, not advice for physical security systems. Ask why E should not mean “no emergency” on one slide and “emergency” on another.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="syntax-groups-semantics-evaluates" class="slide level2 logic-foundations">
+<h2>Syntax Groups; Semantics Evaluates</h2>
+<p><strong>Syntax:</strong> how a formula is built. <strong>Semantics:</strong> when it is true.</p>
+<p><span class="math display">
+(B \lor V) \land \neg E
+</span></p>
+<div class="logic-figure">
+<svg viewbox="0 0 1000 300" role="img" aria-label="A formula tree: AND combines the OR of B and V with NOT E. Evaluate from the leaves upward.">
+  <path d="M 500 62 L 275 133 M 500 62 L 725 133 M 275 168 L 170 250 M 275 168 L 380 250 M 725 168 L 725 250" fill="none" stroke="#5d6470" stroke-width="3"></path>
+  <rect x="425" y="15" width="150" height="62" rx="7" fill="#e8f6f5" stroke="#007c89" stroke-width="2"></rect>
+  <rect x="200" y="117" width="150" height="62" rx="7" fill="#fff4db" stroke="#b7791f" stroke-width="2"></rect>
+  <rect x="650" y="117" width="150" height="62" rx="7" fill="#fdecef" stroke="#b8325f" stroke-width="2"></rect>
+  <g font-family="sans-serif" font-size="31" text-anchor="middle" fill="#202124"><text x="500" y="57">AND</text><text x="275" y="159">OR</text><text x="725" y="159">NOT</text><text x="170" y="282">B</text><text x="380" y="282">V</text><text x="725" y="282">E</text></g>
+</svg>
+</div>
+<p>Parentheses matter: <span class="math inline">(B \lor V) \land \neg E</span> is not <span class="math inline">B \lor (V \land \neg E)</span>.</p>
+<aside class="notes">
+<p>Read the tree bottom-up. The top-level connective combines two subformulas. The two displayed formulas differ when B is true and E is true. Prefer explicit parentheses over depending on a convention about precedence. Original diagram.</p>
+<p>[Sources] - https://inst.eecs.berkeley.edu/~cs188/textbook/logic/propositional.html [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="negation-and-conjunction" class="slide level2 logic-foundations">
+<h2>Negation and Conjunction</h2>
+<ul>
+<li><strong>NOT:</strong> <span class="math inline">\neg P</span> flips the truth value of <span class="math inline">P</span>.</li>
+<li><strong>AND:</strong> <span class="math inline">P \land Q</span> requires both inputs to be true.</li>
+</ul>
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th><span class="math inline">P</span></th>
 <th><span class="math inline">Q</span></th>
+<th><span class="math inline">\neg P</span></th>
 <th><span class="math inline">P \land Q</span></th>
 </tr>
 </thead>
@@ -339,224 +381,717 @@ Peizhong Ju
 <tr class="odd">
 <td>T</td>
 <td>T</td>
+<td>F</td>
 <td>T</td>
 </tr>
 <tr class="even">
 <td>T</td>
+<td>F</td>
 <td>F</td>
 <td>F</td>
 </tr>
 <tr class="odd">
 <td>F</td>
 <td>T</td>
+<td>T</td>
 <td>F</td>
 </tr>
 <tr class="even">
 <td>F</td>
 <td>F</td>
+<td>T</td>
 <td>F</td>
 </tr>
 </tbody>
 </table>
-</div></div>
-</section>
-<section id="more-truth-tables" class="slide level2">
-<h2>More Truth Tables</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:32%;">
-<h3 id="disjunction">Disjunction</h3>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th><span class="math inline">P</span></th>
-<th><span class="math inline">Q</span></th>
-<th><span class="math inline">P \lor Q</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>T</td>
-<td>T</td>
-<td>T</td>
-</tr>
-<tr class="even">
-<td>T</td>
-<td>F</td>
-<td>T</td>
-</tr>
-<tr class="odd">
-<td>F</td>
-<td>T</td>
-<td>T</td>
-</tr>
-<tr class="even">
-<td>F</td>
-<td>F</td>
-<td>F</td>
-</tr>
-</tbody>
-</table>
-</div><div class="column" style="width:32%;">
-<h3 id="implication">Implication</h3>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th><span class="math inline">P</span></th>
-<th><span class="math inline">Q</span></th>
-<th><span class="math inline">P \rightarrow Q</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>T</td>
-<td>T</td>
-<td>T</td>
-</tr>
-<tr class="even">
-<td>T</td>
-<td>F</td>
-<td>F</td>
-</tr>
-<tr class="odd">
-<td>F</td>
-<td>T</td>
-<td>T</td>
-</tr>
-<tr class="even">
-<td>F</td>
-<td>F</td>
-<td>T</td>
-</tr>
-</tbody>
-</table>
-</div><div class="column" style="width:32%;">
-<h3 id="biconditional">Biconditional</h3>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th><span class="math inline">P</span></th>
-<th><span class="math inline">Q</span></th>
-<th><span class="math inline">P \leftrightarrow Q</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>T</td>
-<td>T</td>
-<td>T</td>
-</tr>
-<tr class="even">
-<td>T</td>
-<td>F</td>
-<td>F</td>
-</tr>
-<tr class="odd">
-<td>F</td>
-<td>T</td>
-<td>F</td>
-</tr>
-<tr class="even">
-<td>F</td>
-<td>F</td>
-<td>T</td>
-</tr>
-</tbody>
-</table>
-</div></div>
-</section>
-<section id="implication-is-subtle" class="slide level2">
-<h2>Implication Is Subtle</h2>
-<p>For <span class="math inline">P \rightarrow Q</span>:</p>
-<ul>
-<li>It is false only when <span class="math inline">P</span> is true and <span class="math inline">Q</span> is false.</li>
-<li>If <span class="math inline">P</span> is false, the implication is true in propositional logic.</li>
-</ul>
 <div class="takeaway">
-<p>An implication promises: whenever <span class="math inline">P</span> holds, <span class="math inline">Q</span> must hold.</p>
+<p>T and F abbreviate <span class="math inline">\text{true}</span> and <span class="math inline">\text{false}</span> throughout the tables.</p>
 </div>
 </section>
-<section id="logical-equivalence" class="slide level2">
-<h2>Logical Equivalence</h2>
-<p>Two formulas are logically equivalent if they have the same truth value under every assignment.</p>
+<section id="logical-or-allows-both" class="slide level2 logic-foundations">
+<h2>Logical OR Allows Both</h2>
+<p><span class="math inline">B \lor V</span>: the person has a valid badge <strong>or</strong> is an approved visitor.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th><span class="math inline">B</span></th>
+<th><span class="math inline">V</span></th>
+<th><span class="math inline">B \lor V</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr class="even">
+<td>T</td>
+<td>F</td>
+<td>T</td>
+</tr>
+<tr class="odd">
+<td>F</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>F</td>
+<td>F</td>
+</tr>
+</tbody>
+</table>
+<div class="question">
+<p>Does a visitor with a valid badge satisfy this condition?</p>
+</div>
+<div class="fragment">
+<p><strong>Yes.</strong> Logical OR is inclusive: at least one input is true.</p>
+</div>
+</section>
+<section id="exactly-one-is-a-different-requirement" class="slide level2 logic-foundations">
+<h2>Exactly One Is a Different Requirement</h2>
+<p>Suppose the robot must choose <strong>exactly one</strong> route, <span class="math inline">A</span> or <span class="math inline">B</span>.</p>
 <p><span class="math display">
-A \equiv B
+(A \lor B) \land \neg(A \land B)
 </span></p>
-<p>Common equivalences:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th><span class="math inline">A</span></th>
+<th><span class="math inline">B</span></th>
+<th>At least one: <span class="math inline">A \lor B</span></th>
+<th>Exactly one</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>F</td>
+</tr>
+<tr class="even">
+<td>T</td>
+<td>F</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr class="odd">
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+</tr>
+</tbody>
+</table>
+<p>This is <strong>exclusive OR (XOR)</strong>. Ordinary <span class="math inline">\lor</span> does not express it.</p>
+<aside class="notes">
+<p>A and B mean that the respective route is selected, not that it is open. Ask students which factor rules out neither route, and which factor rules out both routes. The English word “or” can be ambiguous; ask what the task requires.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="build-a-requirement-in-pieces" class="slide level2 logic-foundations scrollable">
+<h2>Build a Requirement in Pieces</h2>
+<p>“A valid badge or approved visitor, and no active emergency.”</p>
+<div class="fragment">
+<ol type="1">
+<li>Either authorization method: <span class="math inline">B \lor V</span>.</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="2" type="1">
+<li>No emergency: <span class="math inline">\neg E</span>.</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="3" type="1">
+<li>Both requirements:</li>
+</ol>
+<p><span class="math display">
+(B \lor V) \land \neg E
+</span></p>
+</div>
+<div class="takeaway">
+<p>Translate the parts, then connect them. Negation applies only to its stated scope.</p>
+</div>
+</section>
+<section id="your-turn-translate-the-requirement" class="slide level2 logic-foundations scrollable">
+<h2>Your Turn: Translate the Requirement</h2>
+<p>Let <span class="math inline">B</span> mean “battery ready” and <span class="math inline">C</span> mean “corridor clear.”</p>
+<div class="question">
+<ol type="1">
+<li>The battery is ready and the corridor is clear.</li>
+<li>It is not the case that both conditions hold.</li>
+<li>Neither condition holds.</li>
+</ol>
+</div>
+<p>Write one formula for each. Are the last two equivalent?</p>
+<aside class="notes">
+<p>Give pairs two minutes, then invite different formulas. This is a new small scenario: explicitly redefine B as battery ready for slides 11-12. The following slides restore the badge vocabulary. Do not reveal the next slide prematurely. A common mistake is translating “not both” as “neither.”</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="not-both-is-not-the-same-as-neither" class="slide level2 logic-foundations">
+<h2>Not Both Is Not the Same as Neither</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Requirement</th>
+<th>Formula</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Both conditions hold</td>
+<td><span class="math inline">B \land C</span></td>
+</tr>
+<tr class="even">
+<td>Not both hold</td>
+<td><span class="math inline">\neg(B \land C)</span></td>
+</tr>
+<tr class="odd">
+<td>Neither holds</td>
+<td><span class="math inline">\neg B \land \neg C</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Take <span class="math inline">B=\text{true}</span> and <span class="math inline">C=\text{false}</span>:</p>
+<ul>
+<li><strong>Not both</strong> is true.</li>
+<li><strong>Neither</strong> is false.</li>
+</ul>
+</div>
+<div class="takeaway">
+<p>One situation where the outputs differ is enough to show that two formulas are not equivalent.</p>
+</div>
+</section>
+<section id="implication-rules-out-one-case" class="slide level2 logic-foundations">
+<h2>Implication Rules Out One Case</h2>
+<p>Back to the lab: <span class="math inline">B</span> = valid badge; <span class="math inline">D</span> = door unlocks.</p>
+<p><span class="math display">
+B \rightarrow D
+</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th><span class="math inline">B</span></th>
+<th><span class="math inline">D</span></th>
+<th><span class="math inline">B \rightarrow D</span></th>
+<th>Rule satisfied?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>T</td>
+<td>F</td>
+<td>F</td>
+<td><strong>No: badge, but no unlock</strong></td>
+</tr>
+<tr class="odd">
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>F</td>
+<td>T</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>The implication is false only when its premise is true and its conclusion is false.</p>
+</div>
+</section>
+<section id="a-false-premise-leaves-the-rule-unbroken" class="slide level2 logic-foundations">
+<h2>A False Premise Leaves the Rule Unbroken</h2>
+<p>“If there is a valid badge, the door unlocks”: <span class="math inline">B \rightarrow D</span>.</p>
+<ul>
+<li>No valid badge, door locked: the rule is not violated.</li>
+<li>No valid badge, door unlocked: the rule is still not violated.</li>
+</ul>
+<div class="definition">
+<p>This is <strong>material implication</strong>. It constrains truth values; it does not by itself express causation, timing, or a complete policy.</p>
+</div>
+<div class="question">
+<p>Which extra condition would rule out unlocking without a badge?</p>
+</div>
+<div class="fragment">
+<p><span class="math inline">D \rightarrow B</span>: unlocking requires a valid badge.</p>
+</div>
+<aside class="notes">
+<p>The implication is often called vacuously true when its premise is false. Use “not violated” to explain the convention, not to add a third truth value. The badge rule alone is compatible with a visitor, an override, or a faulty system unlocking the door. Do not infer a causal mechanism from a logical arrow.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="if-and-only-if-reverse-the-direction" class="slide level2 logic-foundations">
+<h2>“If” and “Only If” Reverse the Direction</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>English</th>
+<th>Formula</th>
+<th>What it requires</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">D</span> <strong>if</strong> <span class="math inline">B</span></td>
+<td><span class="math inline">B \rightarrow D</span></td>
+<td>Badge is sufficient for unlocking</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">D</span> <strong>only if</strong> <span class="math inline">B</span></td>
+<td><span class="math inline">D \rightarrow B</span></td>
+<td>Badge is necessary for unlocking</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Sufficient:</strong> enough to guarantee the conclusion.</li>
+<li><strong>Necessary:</strong> required whenever the conclusion holds.</li>
+</ul>
+<div class="question">
+<p>“The robot moves only if its battery is ready.” Let <span class="math inline">M</span> = moves, <span class="math inline">R</span> = ready. Which arrow?</p>
+</div>
+<div class="fragment">
+<p><span class="math inline">M \rightarrow R</span>. Read it as “movement requires readiness.”</p>
+</div>
+</section>
+<section id="reversing-the-arrow-changes-the-rule" class="slide level2 logic-foundations">
+<h2>Reversing the Arrow Changes the Rule</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th>Name</th>
-<th>Equivalence</th>
+<th>Formula</th>
+<th>Equivalent to the original?</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Double negation</td>
-<td><span class="math inline">\neg(\neg P) \equiv P</span></td>
+<td>Original</td>
+<td><span class="math inline">B \rightarrow D</span></td>
+<td>Yes</td>
 </tr>
 <tr class="even">
-<td>De Morgan</td>
-<td><span class="math inline">\neg(P \land Q) \equiv \neg P \lor \neg Q</span></td>
+<td>Converse</td>
+<td><span class="math inline">D \rightarrow B</span></td>
+<td>No</td>
 </tr>
 <tr class="odd">
-<td>De Morgan</td>
-<td><span class="math inline">\neg(P \lor Q) \equiv \neg P \land \neg Q</span></td>
+<td>Inverse</td>
+<td><span class="math inline">\neg B \rightarrow \neg D</span></td>
+<td>No</td>
 </tr>
 <tr class="even">
-<td>Implication</td>
-<td><span class="math inline">P \rightarrow Q \equiv \neg P \lor Q</span></td>
+<td>Contrapositive</td>
+<td><span class="math inline">\neg D \rightarrow \neg B</span></td>
+<td>Yes</td>
 </tr>
 </tbody>
 </table>
+<div class="question">
+<p>Try <span class="math inline">B=\text{false}</span>, <span class="math inline">D=\text{true}</span>. Which rows are true?</p>
+</div>
+<div class="fragment">
+<p>Original and contrapositive: true. Converse and inverse: false.</p>
+</div>
+<aside class="notes">
+<p>The converse and inverse are equivalent to each other, but not to the original. Here “not equivalent” means that there exists an assignment where the values differ, not that they differ on every assignment. Naming is less important than checking the truth conditions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="more-equivalence-laws" class="slide level2">
-<h2>More Equivalence Laws</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="identity">Identity</h3>
-<ul>
-<li><span class="math inline">P \land \text{true} \equiv P</span></li>
-<li><span class="math inline">P \lor \text{false} \equiv P</span></li>
-</ul>
-<h3 id="domination">Domination</h3>
-<ul>
-<li><span class="math inline">P \lor \text{true} \equiv \text{true}</span></li>
-<li><span class="math inline">P \land \text{false} \equiv \text{false}</span></li>
-</ul>
-</div><div class="column" style="width:48%;">
-<h3 id="idempotent">Idempotent</h3>
-<ul>
-<li><span class="math inline">P \lor P \equiv P</span></li>
-<li><span class="math inline">P \land P \equiv P</span></li>
-</ul>
-<h3 id="why-they-matter">Why They Matter</h3>
-<p>Equivalences let us rewrite formulas without changing meaning.</p>
-</div></div>
+<section id="check-the-contrapositive-in-every-world" class="slide level2 logic-foundations logic-compare">
+<h2>Check the Contrapositive in Every World</h2>
+<p><span class="math display">
+(B \rightarrow D) \equiv (\neg D \rightarrow \neg B)
+</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th><span class="math inline">B</span></th>
+<th><span class="math inline">D</span></th>
+<th><span class="math inline">B \rightarrow D</span></th>
+<th><span class="math inline">\neg D \rightarrow \neg B</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr class="even">
+<td>T</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+</tr>
+<tr class="odd">
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>F</td>
+<td>T</td>
+<td>T</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>Equivalent formulas agree on every assignment, not just on one convenient example.</p>
+</div>
 </section>
-<section id="proof-by-truth-table" class="slide level2 compact">
-<h2>Proof by Truth Table</h2>
-<p>Example: De Morgan’s law.</p>
+<section id="a-biconditional-requires-both-directions" class="slide level2 logic-foundations">
+<h2>A Biconditional Requires Both Directions</h2>
+<p>“The door unlocks <strong>if and only if</strong> the badge is valid.”</p>
+<p><span class="math display">
+B \leftrightarrow D
+\qquad\equiv\qquad
+(B \rightarrow D) \land (D \rightarrow B)
+</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th><span class="math inline">B</span></th>
+<th><span class="math inline">D</span></th>
+<th><span class="math inline">B \leftrightarrow D</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr class="even">
+<td>T</td>
+<td>F</td>
+<td>F</td>
+</tr>
+<tr class="odd">
+<td>F</td>
+<td>T</td>
+<td>F</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>F</td>
+<td>T</td>
+</tr>
+</tbody>
+</table>
+<p>The two propositions must have the <strong>same truth value</strong>. “Iff” abbreviates “if and only if.”</p>
+</section>
+<section id="unless-needs-a-careful-translation" class="slide level2 logic-foundations">
+<h2>Unless Needs a Careful Translation</h2>
+<p>“The robot returns to its dock unless an emergency is active.”</p>
+<p>Let <span class="math inline">R</span> = returns and <span class="math inline">E</span> = emergency active.</p>
+<p><span class="math display">
+\neg E \rightarrow R
+\qquad\equiv\qquad
+E \lor R
+</span></p>
+<ul>
+<li>No emergency: returning is required.</li>
+<li>Emergency active: this rule does not determine whether it returns.</li>
+</ul>
+<div class="takeaway">
+<p>To also prohibit returning during an emergency, add <span class="math inline">E \rightarrow \neg R</span>. That is an extra requirement.</p>
+</div>
+<aside class="notes">
+<p>Use the conventional inclusive reading of unless. Everyday usage can imply more; clarify the intended behavior before formalizing it. Returning during an emergency is neither required nor forbidden by the first rule alone. This is not automatically an XOR.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="evaluate-from-the-inside-out" class="slide level2 logic-foundations scrollable">
+<h2>Evaluate from the Inside Out</h2>
+<p>For the access condition:</p>
+<p><span class="math display">
+F=(B \lor V) \land \neg E
+</span></p>
+<div class="question">
+<p>Evaluate <span class="math inline">F</span> for <span class="math inline">B=\text{false}</span>, <span class="math inline">V=\text{true}</span>, <span class="math inline">E=\text{false}</span>.</p>
+</div>
+<div class="fragment">
+<ol type="1">
+<li><span class="math inline">B \lor V = \text{true}</span>.</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="2" type="1">
+<li><span class="math inline">\neg E = \text{true}</span>.</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="3" type="1">
+<li><span class="math inline">F = \text{true} \land \text{true} = \text{true}</span>.</li>
+</ol>
+</div>
+<aside class="notes">
+<p>Give students 30 seconds to evaluate before stepping through the fragments. Then ask what changes when E becomes true. Explain that F names the whole formula, while the tables use the letter F as an abbreviation for false; these are different contexts.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-truth-table-checks-every-assignment" class="slide level2 logic-foundations logic-eight-rows">
+<h2>A Truth Table Checks Every Assignment</h2>
+<p>Three atoms give <span class="math inline">2^3=8</span> rows. Keep the intermediate columns.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th><span class="math inline">B</span></th>
+<th><span class="math inline">V</span></th>
+<th><span class="math inline">E</span></th>
+<th><span class="math inline">B \lor V</span></th>
+<th><span class="math inline">\neg E</span></th>
+<th><span class="math inline">(B \lor V) \land \neg E</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>F</td>
+<td>F</td>
+</tr>
+<tr class="even">
+<td>T</td>
+<td>T</td>
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr class="odd">
+<td>T</td>
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td>F</td>
+<td>F</td>
+</tr>
+<tr class="even">
+<td>T</td>
+<td>F</td>
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr class="odd">
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>F</td>
+<td>F</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>T</td>
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr class="odd">
+<td>F</td>
+<td>F</td>
+<td>T</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>T</td>
+<td>F</td>
+</tr>
+</tbody>
+</table>
+<p>The condition holds in <strong>three</strong> assignments. An emergency always makes it false.</p>
+<aside class="notes">
+<p>Show the enumeration pattern: B changes every four rows, V every two, E every row. Ask a student to explain the final row: no emergency alone is not enough. Emphasize that systematic enumeration avoids missing cases. In n variables, a full table has 2^n rows, which motivates more efficient reasoning next lecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="equivalence-preserves-all-truth-values" class="slide level2 logic-foundations">
+<h2>Equivalence Preserves All Truth Values</h2>
+<p><span class="math display">
+A \equiv B
+</span></p>
+<p>means that formulas <span class="math inline">A</span> and <span class="math inline">B</span> agree under <strong>every assignment</strong> to their atoms.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Goal</th>
+<th>What is enough?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Prove equivalence with a truth table</td>
+<td>All output rows agree</td>
+</tr>
+<tr class="even">
+<td>Disprove equivalence</td>
+<td>One row where the outputs differ</td>
+</tr>
+<tr class="odd">
+<td>Rewrite safely</td>
+<td>Apply an established equivalence law</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>Equivalent formulas can replace each other inside a larger formula without changing its meaning.</p>
+</div>
+<aside class="notes">
+<p>A and B here are arbitrary formulas, not the badge atom from the worked scenario. Mention that equivalence is a relation between formulas. The biconditional is a connective whose truth is evaluated within a world. A and B are equivalent exactly when their biconditional is true in every world. No formal entailment notation yet.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="de-morgan-moves-not-across-a-group" class="slide level2 logic-foundations">
+<h2>De Morgan Moves NOT Across a Group</h2>
 <p><span class="math display">
 \neg(P \land Q) \equiv \neg P \lor \neg Q
 </span></p>
-<table class="caption-top" style="width:100%;">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-</colgroup>
+<p>Not both requirements succeed: <strong>at least one fails</strong>.</p>
+<p><span class="math display">
+\neg(P \lor Q) \equiv \neg P \land \neg Q
+</span></p>
+<p>Neither option succeeds: <strong>both fail</strong>.</p>
+<div class="takeaway">
+<p>Negate each part and swap AND with OR. Keep the parentheses until the scope is clear.</p>
+</div>
+<aside class="notes">
+<p>Return to the “not both” versus “neither” exercise. Use a two-input sensor as an intuitive check: not(all ready) means any not-ready; not(any ready) means all not-ready. These equivalences are not an instruction to replace AND with OR without also negating the inputs.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="verify-de-morgan-with-a-truth-table" class="slide level2 logic-foundations logic-compare">
+<h2>Verify De Morgan with a Truth Table</h2>
+<p><span class="math display">
+\neg(P \land Q) \equiv \neg P \lor \neg Q
+</span></p>
+<table class="caption-top">
 <thead>
 <tr class="header">
 <th><span class="math inline">P</span></th>
 <th><span class="math inline">Q</span></th>
-<th><span class="math inline">P \land Q</span></th>
 <th><span class="math inline">\neg(P \land Q)</span></th>
-<th><span class="math inline">\neg P</span></th>
-<th><span class="math inline">\neg Q</span></th>
 <th><span class="math inline">\neg P \lor \neg Q</span></th>
 </tr>
 </thead>
@@ -564,16 +1099,10 @@ A \equiv B
 <tr class="odd">
 <td>T</td>
 <td>T</td>
-<td>T</td>
-<td>F</td>
-<td>F</td>
 <td>F</td>
 <td>F</td>
 </tr>
 <tr class="even">
-<td>T</td>
-<td>F</td>
-<td>F</td>
 <td>T</td>
 <td>F</td>
 <td>T</td>
@@ -582,25 +1111,293 @@ A \equiv B
 <tr class="odd">
 <td>F</td>
 <td>T</td>
-<td>F</td>
 <td>T</td>
-<td>T</td>
-<td>F</td>
 <td>T</td>
 </tr>
 <tr class="even">
 <td>F</td>
 <td>F</td>
-<td>F</td>
-<td>T</td>
-<td>T</td>
 <td>T</td>
 <td>T</td>
 </tr>
 </tbody>
 </table>
-<p>The two highlighted expressions have identical columns, so they are equivalent.</p>
-<p><a class="asset-credit-link" href="../asset_credits.html#lec16" target="_blank" rel="noopener">Asset credits</a></p>
+<p>The shaded output columns agree in all four rows.</p>
+<div class="question">
+<p>Why is checking only the first row insufficient?</p>
+</div>
+<aside class="notes">
+<p>Have students compute the second row aloud. Even two non-equivalent formulas may match on the first row. Four rows exhaust the two-variable assignments, so agreement here establishes equivalence. The table omits intermediate columns for space; students should add them on paper if they need them.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="simplify-without-changing-the-requirement" class="slide level2 logic-foundations">
+<h2>Simplify Without Changing the Requirement</h2>
+<p>“Valid badge and lab open, or valid badge and lab not open.”</p>
+<p>Let <span class="math inline">B</span> = valid badge and <span class="math inline">L</span> = lab open.</p>
+<p><span class="math display">
+(B \land L) \lor (B \land \neg L)
+</span></p>
+<div class="fragment">
+<p>Distribute the common factor:</p>
+<p><span class="math display">
+\equiv B \land (L \lor \neg L)
+</span></p>
+</div>
+<div class="fragment">
+<p>One of <span class="math inline">L</span> and <span class="math inline">\neg L</span> always holds:</p>
+<p><span class="math display">
+\equiv B \land \text{true} \equiv B
+</span></p>
+</div>
+<aside class="notes">
+<p>The lab-open condition has canceled from the policy. Ask whether that was intended. The identity used is (X and Y) or (X and Z) equivalent to X and (Y or Z). The law of excluded middle makes L or not L true under every classical assignment. Rewriting exposes redundancies, but does not decide whether a requirement is appropriate.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-small-toolbox-for-rewriting" class="slide level2 logic-foundations">
+<h2>A Small Toolbox for Rewriting</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Law</th>
+<th>Equivalence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Double negation</td>
+<td><span class="math inline">\neg\neg P \equiv P</span></td>
+</tr>
+<tr class="even">
+<td>Identity</td>
+<td><span class="math inline">P \land \text{true} \equiv P</span>; <span class="math inline">P \lor \text{false} \equiv P</span></td>
+</tr>
+<tr class="odd">
+<td>Domination</td>
+<td><span class="math inline">P \lor \text{true} \equiv \text{true}</span>; <span class="math inline">P \land \text{false} \equiv \text{false}</span></td>
+</tr>
+<tr class="even">
+<td>Idempotence</td>
+<td><span class="math inline">P \land P \equiv P</span>; <span class="math inline">P \lor P \equiv P</span></td>
+</tr>
+<tr class="odd">
+<td>Implication</td>
+<td><span class="math inline">(P \rightarrow Q) \equiv \neg P \lor Q</span></td>
+</tr>
+</tbody>
+</table>
+<div class="question">
+<p>Rewrite <span class="math inline">\neg(P \rightarrow Q)</span> without an implication.</p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\neg(\neg P \lor Q) \equiv P \land \neg Q</span>: precisely the case that violates the implication.</p>
+</div>
+</section>
+<section id="mini-lab-does-this-policy-say-enough" class="slide level2 logic-foundations">
+<h2>Mini-Lab: Does This Policy Say Enough?</h2>
+<p><span class="math inline">B</span> = valid badge; <span class="math inline">V</span> = approved visitor; <span class="math inline">E</span> = emergency; <span class="math inline">D</span> = unlock.</p>
+<p>The intended policy: <strong>unlock exactly when authorized and no emergency is active</strong>.</p>
+<p>The proposed rules are:</p>
+<p><span class="math display">
+((B \lor V) \land \neg E) \rightarrow D
+</span> <span class="math display">
+D \rightarrow \neg E
+</span></p>
+<div class="question">
+<p>Could both rules be true while an unauthorized person gets in? Find an assignment or explain why not.</p>
+</div>
+<aside class="notes">
+<p>Allow three minutes in pairs. Suggested prompts: what happens if both B and V are false? What does the second rule actually require? Do not assume that a proposition is false just because no rule requires it to be true. The rules constrain possible access decisions; they are not a sequential program with an implicit else branch.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-missing-direction-leaves-a-gap" class="slide level2 logic-foundations">
+<h2>A Missing Direction Leaves a Gap</h2>
+<p>Try an unauthorized person, no emergency, and an unlocked door:</p>
+<p><span class="math display">
+B=\text{false},\quad V=\text{false},\quad
+E=\text{false},\quad D=\text{true}
+</span></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Proposed rule</th>
+<th>Evaluation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">((B \lor V) \land \neg E) \rightarrow D</span></td>
+<td><span class="math inline">\text{false} \rightarrow \text{true}</span>: true</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">D \rightarrow \neg E</span></td>
+<td><span class="math inline">\text{true} \rightarrow \text{true}</span>: true</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Missing requirement: unlocking must require authorization.</p>
+<p><span class="math display">
+D \rightarrow (B \lor V)
+</span></p>
+</div>
+<div class="takeaway">
+<p>All written rules can be satisfied while the intended policy is violated.</p>
+</div>
+</section>
+<section id="repair-the-policy-with-both-directions" class="slide level2 logic-foundations scrollable">
+<h2>Repair the Policy with Both Directions</h2>
+<p><span class="math display">
+D \leftrightarrow ((B \lor V) \land \neg E)
+</span></p>
+<ul>
+<li>Authorization and no emergency <strong>guarantee</strong> unlocking.</li>
+<li>Unlocking <strong>requires</strong> authorization and no emergency.</li>
+</ul>
+<div class="question">
+<p>What must <span class="math inline">D</span> be in each case?</p>
+<ol type="1">
+<li>Valid badge, emergency active.</li>
+<li>Approved visitor, no badge, no emergency.</li>
+<li>No badge, no visitor approval, no emergency.</li>
+</ol>
+</div>
+<div class="fragment">
+<p><strong>False; true; false.</strong> The two directions now specify the complete Boolean decision.</p>
+</div>
+<aside class="notes">
+<p>Give students one minute, then reveal. The repaired biconditional is equivalent to all three implications from the preceding slides. It is complete only for this simplified Boolean authorization decision; real systems require additional details such as identity, timing, access rights, failure handling, and safety requirements. The activity demonstrates specification debugging, not deployment-ready access control.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-propositional-logic-leaves-out" class="slide level2 logic-foundations">
+<h2>What Propositional Logic Leaves Out</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Need</th>
+<th>What changes?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Facts about many people</td>
+<td>First-order logic adds objects and predicates</td>
+</tr>
+<tr class="even">
+<td>“Every approved visitor has a host”</td>
+<td>Quantifiers express general rules</td>
+</tr>
+<tr class="odd">
+<td>“The door eventually locks”</td>
+<td>Temporal logic expresses time relationships</td>
+</tr>
+<tr class="even">
+<td>A sensor is only 90% reliable</td>
+<td>A probabilistic model represents uncertainty</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>Choose the representation for the task. Today, each atom is a fixed true-or-false statement.</p>
+</div>
+<aside class="notes">
+<p>This replaces the old broad types-of-logic survey with a motivation for richer representations. Explain the distinction between truth values and an agent’s uncertain beliefs. No quantifier exercises here; First-Order Logic comes after Propositional Inference. Probability is a separate later part of the course.</p>
+<p>[Sources] - AIMA, Russell and Norvig: propositional logic, first-order logic, and probabilistic reasoning. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="takeaways" class="slide level2 logic-foundations">
+<h2>Takeaways</h2>
+<div class="columns visual-pair">
+<div class="column" style="width:74%;">
+<ul>
+<li><strong>Atoms:</strong> define one stable statement per symbol.</li>
+<li><strong>Connectives:</strong> distinguish OR, XOR, implication, and iff.</li>
+<li><strong>Translation:</strong> check “only if,” “unless,” and negation scope.</li>
+<li><strong>Truth tables:</strong> evaluate every assignment systematically.</li>
+<li><strong>Equivalence:</strong> preserve truth values when rewriting.</li>
+</ul>
+</div><div class="column" style="width:20%;">
+<p><img data-src="imgs/lec1/brain_lightbulb_openclipart.svg" class="cc0-icon" alt="Brain and lightbulb representing precise reasoning"></p>
+</div></div>
+<div class="takeaway">
+<p>A formula says exactly what its truth conditions allow, not everything its author intended.</p>
+</div>
+<p><a href="../asset_credits.html#lec16" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
+<aside class="notes">
+<p>Close the opening badge question. Students should now be able to give the missing reverse implication and a concrete assignment that exposes the gap. Next lecture asks what conclusions must hold across every world compatible with a collection of formulas.</p>
+<p>[Sources] - Public-domain OpenClipart brain/lightbulb: https://openclipart.org/detail/266221/brain-light-bulb. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 </section>

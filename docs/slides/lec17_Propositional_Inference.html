@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<link href="../assets/cs463-ai-icon.svg" rel="icon" type="image/svg+xml">
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.37">
+
+  <meta name="author" content="Peizhong Ju">
+  <title>CS 463G &amp; 663: (Intro to) AI – CS 463G &amp; CS 663 (Intro to) AI</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link rel="stylesheet" href="slides_styles.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title"><p>CS 463G &amp; CS 663<br>
+(Intro to) AI</p></h1>
+  <p class="subtitle">Lecture 17: Propositional Inference</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Peizhong Ju 
+</div>
+</div>
+</div>
+
+  <p class="date">Fall 2026</p>
+</section>
+<section id="can-the-robot-conclude-it-may-move" class="slide level2 logic-inference">
+<h2>Can the Robot Conclude It May Move?</h2>
+<div class="columns visual-pair">
+<div class="column" style="width:70%;">
+<p>Let <strong>B</strong> = battery ready, <strong>C</strong> = corridor clear, and <strong>M</strong> = movement permitted.</p>
+<p>The robot knows:</p>
+<p><span class="math display">
+B, \qquad (B \land C) \rightarrow M
+</span></p>
+<div class="question">
+<p>Must <span class="math inline">M</span> be true? Must <span class="math inline">M</span> be false? Or is it still undetermined?</p>
+</div>
+</div><div class="column" style="width:24%;">
+<p><img data-src="imgs/lec1/robot_openclipart.svg" class="cc0-icon" alt="Robot representing an agent reasoning from limited information"></p>
+</div></div>
+<aside class="notes">
+<p>Take a quick vote without revealing the answer yet. The intended answer is undetermined. We know B, but lack information about C and M. Do not read the implication as a biconditional. M is a proposition about permission, not an instruction that is executed automatically. The example will return at the end.</p>
+<p>50-minute teaching plan, including discussion and answer reveals:</p>
+<ul>
+<li>Slides 1-8: facts, models, entailment, and counterexamples (11 minutes).</li>
+<li>Slides 9-16: query exercise, formula classification, SAT, and model checking (14 minutes).</li>
+<li>Slides 17-24: inference rules, CNF practice, and resolution (14 minutes).</li>
+<li>Slides 25-31: refutation, common mistakes, and the robot exit exercise (11 minutes).</li>
+</ul>
+<p>Keep the three main activities on slides 9, 21, and 29 interactive. Students should justify an answer with a model, equivalence, or proof step, not just name a result. This lecture builds on Lecture 16 and prepares the propositional foundations needed for Lecture 18 and Homework 3; the examples are not the homework solutions.</p>
+<p>[Sources]</p>
+<ul>
+<li>Original robot example for this course.</li>
+<li>OpenClipart public-domain robot icon; see asset_credits.html#lec17.</li>
+<li>Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 7, logical agents and propositional theorem proving.</li>
+<li>UC Berkeley CS 188, propositional logic and inference: https://inst.eecs.berkeley.edu/~cs188/textbook/logic/propositional.html and https://inst.eecs.berkeley.edu/~cs188/textbook/logic/inference.html</li>
+<li>AIMA algorithm reference, truth-table enumeration and propositional resolution: https://aima.cs.berkeley.edu/algorithms.pdf</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="facts-rules-and-a-query" class="slide level2 logic-inference">
+<h2>Facts, Rules, and a Query</h2>
+<p>A <strong>knowledge base (KB)</strong> is a collection of sentences assumed true.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Role</th>
+<th>Robot example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Fact</td>
+<td><span class="math inline">B</span></td>
+</tr>
+<tr class="even">
+<td>Rule</td>
+<td><span class="math inline">(B \land C) \rightarrow M</span></td>
+</tr>
+<tr class="odd">
+<td>Query</td>
+<td>Does <span class="math inline">M</span> follow from the KB?</td>
+</tr>
+</tbody>
+</table>
+<p>We read all KB sentences together as a conjunction:</p>
+<p><span class="math display">
+\text{KB} = B \land \bigl((B \land C) \rightarrow M\bigr)
+</span></p>
+<div class="takeaway">
+<p>Inference asks what follows from the sentences, not what seems plausible.</p>
+</div>
+<aside class="notes">
+<p>Clarify that rules and facts are both formulas. Writing KB as a set or as their conjunction is a representational choice. The assumed facts could be wrong about the physical world; inference guarantees a consequence of the encoded premises, not the correctness of the sensors.</p>
+<p>[Sources]</p>
+<ul>
+<li>AIMA Chapter 7, knowledge-based agents. Original robot encoding.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-model-is-a-compatible-world" class="slide level2 logic-inference">
+<h2>A Model Is a Compatible World</h2>
+<p>An <strong>assignment</strong> gives every proposition a truth value. It is a <strong>model of a formula</strong> when that formula evaluates to true.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th><span class="math inline">P</span></th>
+<th><span class="math inline">Q</span></th>
+<th><span class="math inline">P \rightarrow Q</span></th>
+<th>Model of <span class="math inline">P \rightarrow Q</span>?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>T</td>
+<td>F</td>
+<td>F</td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>F</td>
+<td>T</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>The implication rules out exactly one world: <span class="math inline">P</span> true and <span class="math inline">Q</span> false.</p>
+</div>
+<aside class="notes">
+<p>T and F abbreviate true and false. Textbooks also call a full assignment a model and then say it satisfies or fails to satisfy a formula. Here, compatible world always means satisfying assignment. Ask students to identify the excluded row before explaining it.</p>
+<p>[Sources]</p>
+<ul>
+<li>https://inst.eecs.berkeley.edu/~cs188/textbook/logic/propositional.html</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="entailment-means-every-compatible-world" class="slide level2 logic-inference">
+<h2>Entailment Means Every Compatible World</h2>
+<p><span class="math display">
+\text{KB} \models \alpha
+</span></p>
+<p>The query <span class="math inline">\alpha</span> is true in <strong>every</strong> model of the KB.</p>
+<div class="logic-figure">
+<svg viewbox="0 0 1000 275" role="img" aria-label="The models of the knowledge base form a subset of the models of the query, both within all assignments.">
+<rect x="12" y="12" width="976" height="250" rx="7" fill="#f5f6f7" stroke="#b7bdc5" stroke-width="2"></rect> <text x="40" y="51" font-family="sans-serif" font-size="26" fill="#5d6470">All assignments</text> <rect x="310" y="32" width="645" height="205" rx="7" fill="#e8f6f5" stroke="#007c89" stroke-width="3"></rect> <text x="344" y="76" font-family="sans-serif" font-size="28" fill="#007c89">Worlds where the query is true</text> <rect x="465" y="104" width="438" height="104" rx="7" fill="#fff4db" stroke="#b7791f" stroke-width="3"></rect> <text x="684" y="149" text-anchor="middle" font-family="sans-serif" font-size="28" fill="#202124">Models of the KB</text> <text x="684" y="184" text-anchor="middle" font-family="sans-serif" font-size="24" fill="#5d6470">Every one also satisfies the query</text>
+</svg>
+</div>
+<aside class="notes">
+<p>Alpha names the query formula; it need not be a single atom. Explain the set inclusion visually. The reverse inclusion is not required: the query may hold in worlds that violate the KB.</p>
+<p>[Sources]</p>
+<ul>
+<li>Entailment definition: https://inst.eecs.berkeley.edu/~cs188/textbook/logic/inference.html</li>
+<li>Original SVG set-inclusion illustration.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ignore-rows-that-violate-the-kb" class="slide level2 logic-inference">
+<h2>Ignore Rows That Violate the KB</h2>
+<p><span class="math display">
+\text{KB} = P \land (P \rightarrow Q), \qquad \alpha = Q
+</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th><span class="math inline">P</span></th>
+<th><span class="math inline">Q</span></th>
+<th><span class="math inline">P \rightarrow Q</span></th>
+<th>KB true?</th>
+<th>Relevant to the query?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td><strong>Yes</strong></td>
+<td><strong>Yes: Q is true</strong></td>
+</tr>
+<tr class="even">
+<td>T</td>
+<td>F</td>
+<td>F</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>F</td>
+<td>T</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment takeaway">
+<p><span class="math inline">\text{KB} \models Q</span>. No row makes the KB true and the query false.</p>
+</div>
+<aside class="notes">
+<p>Have students find the rows where the complete KB is true, not merely where one rule is true. There is exactly one such row. This is a semantic verification of modus ponens, which we will name later.</p>
+<p>[Sources]</p>
+<ul>
+<li>Original truth-table example using standard propositional semantics.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="one-counterexample-is-enough" class="slide level2 logic-inference">
+<h2>One Counterexample Is Enough</h2>
+<p>Now reverse the proposed reasoning:</p>
+<p><span class="math display">
+\text{KB} = Q \land (P \rightarrow Q), \qquad \alpha = P
+</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Assignment</th>
+<th>KB true?</th>
+<th>Query <span class="math inline">P</span> true?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">P=\text{true},\ Q=\text{true}</span></td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">P=\text{false},\ Q=\text{true}</span></td>
+<td><strong>Yes</strong></td>
+<td><strong>No</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment takeaway">
+<p><span class="math inline">\text{KB} \not\models P</span>. The second row is a <strong>countermodel</strong>: a model of the KB that falsifies the query.</p>
+</div>
+<aside class="notes">
+<p>This is the fallacy of affirming the consequent. One supporting example never proves entailment, but one countermodel disproves it. The two listed assignments exhaust the KB’s models over P and Q.</p>
+<p>[Sources]</p>
+<ul>
+<li>Original countermodel example. AIMA Chapter 7, entailment.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="not-entailed-does-not-mean-false" class="slide level2 logic-inference">
+<h2>Not Entailed Does Not Mean False</h2>
+<p>Return to <span class="math inline">\text{KB}=B\land((B\land C)\rightarrow M)</span>.</p>
+<p>Both of these assignments satisfy it:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th><span class="math inline">B</span></th>
+<th><span class="math inline">C</span></th>
+<th><span class="math inline">M</span></th>
+<th>Compatible with KB?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T</td>
+<td>F</td>
+<td>F</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>T</td>
+<td>F</td>
+<td>T</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><span class="math display">
+\text{KB} \not\models M
+\qquad\text{and}\qquad
+\text{KB} \not\models \neg M
+</span></p>
+</div>
+<div class="takeaway">
+<p>The truth of <span class="math inline">M</span> is undetermined by the KB. Missing information is not automatically false.</p>
+</div>
+<aside class="notes">
+<p>These are two witnesses, not an exhaustive list: B=true, C=true, M=true is also a model. The three cases supported, refuted, and undetermined describe our information; they do not introduce a third truth value into classical propositional logic. A closed-world convention would be an additional assumption, not the default here.</p>
+<p>[Sources]</p>
+<ul>
+<li>Original robot example and model enumeration.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="your-turn-which-queries-follow" class="slide level2 logic-inference">
+<h2>Your Turn: Which Queries Follow?</h2>
+<p>A robot has two routes: <span class="math inline">A</span> and <span class="math inline">B</span> mean the respective route is open; <span class="math inline">G</span> means the destination is reachable.</p>
+<p><span class="math display">
+\text{KB} = (A \lor B) \land (A \rightarrow G) \land (B \rightarrow G)
+</span></p>
+<div class="question">
+<p>Does the KB entail each of these queries?</p>
+<p><span class="math display">G \qquad A \qquad \neg A</span></p>
+<p>Justify each answer with all compatible worlds or a countermodel.</p>
+</div>
+<aside class="notes">
+<p>Allow three minutes of pair work. A and B are new symbols for this route example, not the earlier battery variables. Students may reason by cases rather than write all eight rows. Ask for explicit assignments when they claim non-entailment. Keep the answers on the next slide hidden until discussion ends.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-destination-is-certain-the-route-is-not" class="slide level2 logic-inference">
+<h2>The Destination Is Certain; the Route Is Not</h2>
+<p>The KB has exactly these three models over <span class="math inline">A,B,G</span>:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th><span class="math inline">A</span></th>
+<th><span class="math inline">B</span></th>
+<th><span class="math inline">G</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T</td>
+<td>F</td>
+<td>T</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr class="odd">
+<td>T</td>
+<td>T</td>
+<td>T</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li><strong><span class="math inline">G</span> is entailed:</strong> every surviving world has <span class="math inline">G</span> true.</li>
+<li><strong><span class="math inline">A</span> is not entailed:</strong> the second row is a countermodel.</li>
+<li><strong><span class="math inline">\neg A</span> is not entailed:</strong> the first row is a countermodel.</li>
+</ul>
+</div>
+<div class="takeaway">
+<p>Reachability can be certain even when the open route is unknown.</p>
+</div>
+<aside class="notes">
+<p>Explain why G=false is impossible: the disjunction requires at least one open route, and its implication forces G=true. We will prove this same conclusion with resolution later, without listing all assignments.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="classify-a-formula-across-all-worlds" class="slide level2 logic-inference">
+<h2>Classify a Formula Across All Worlds</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Classification</th>
+<th>Truth pattern</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Valid / tautology</strong></td>
+<td>True in every assignment</td>
+<td><span class="math inline">P \lor \neg P</span></td>
+</tr>
+<tr class="even">
+<td><strong>Unsatisfiable / contradiction</strong></td>
+<td>True in no assignment</td>
+<td><span class="math inline">P \land \neg P</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Contingent</strong></td>
+<td>True in some, false in others</td>
+<td><span class="math inline">P \land Q</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Satisfiable</strong> means true in at least one assignment.</p>
+<div class="takeaway">
+<p>Valid formulas and contingent formulas are both satisfiable.</p>
+</div>
+<aside class="notes">
+<p>Make explicit that valid/unsatisfiable/contingent form the three-way classification used in Homework 3, while satisfiable is a broader yes/no property. Validity concerns one formula across all assignments; entailment relates a KB to a query.</p>
+<p>[Sources]</p>
+<ul>
+<li>AIMA Chapter 7, validity and satisfiability.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="quick-check-which-kind-of-formula" class="slide level2 logic-inference">
+<h2>Quick Check: Which Kind of Formula?</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Formula</th>
+<th>Classification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">(P \land Q) \rightarrow P</span></td>
+<td><span class="fragment"><strong>Valid</strong></span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">(P \lor Q) \land \neg P \land \neg Q</span></td>
+<td><span class="fragment"><strong>Unsatisfiable</strong></span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">P \rightarrow Q</span></td>
+<td><span class="fragment"><strong>Contingent</strong></span></td>
+</tr>
+</tbody>
+</table>
+<div class="question">
+<p>For the contingent formula, give one satisfying assignment and one falsifying assignment.</p>
+</div>
+<div class="fragment takeaway">
+<p><span class="math inline">P=\text{false},Q=\text{false}</span> satisfies it; <span class="math inline">P=\text{true},Q=\text{false}</span> falsifies it.</p>
+</div>
+<aside class="notes">
+<p>Reveal one classification at a time. First row: whenever the premise is true, P is already true. Second: the disjunction conflicts with the last two conjuncts. Third: not every implication is a tautology. These are different formulas from the homework.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="entailment-as-a-satisfiability-question" class="slide level2 logic-inference">
+<h2>Entailment as a Satisfiability Question</h2>
+<p>The <strong>Boolean satisfiability problem (SAT)</strong> asks whether any assignment satisfies a formula.</p>
+<p><span class="math display">
+\text{KB} \models \alpha
+\quad\Longleftrightarrow\quad
+\text{KB} \land \neg\alpha \text{ is unsatisfiable}
+</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Test result for <span class="math inline">\text{KB}\land\neg\alpha</span></th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A satisfying assignment exists</td>
+<td>It is a countermodel to the query</td>
+</tr>
+<tr class="even">
+<td>No satisfying assignment exists</td>
+<td>The query is entailed</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>Try to make the premises true and the conclusion false. If that is impossible, the conclusion follows.</p>
+</div>
+<aside class="notes">
+<p>Read the equivalence in words before introducing SAT as a computational problem. This is the foundation of refutation. Do not equate satisfiable with entailed: the negated query is essential.</p>
+<p>[Sources]</p>
+<ul>
+<li>https://inst.eecs.berkeley.edu/~cs188/textbook/logic/inference.html</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="first-check-that-the-kb-is-consistent" class="slide level2 logic-inference">
+<h2>First Check That the KB Is Consistent</h2>
+<p>Suppose sensor reports give:</p>
+<p><span class="math display">
+\text{KB} = C \land \neg C
+</span></p>
+<ul>
+<li>No assignment satisfies the KB.</li>
+<li>In classical logic, an inconsistent KB entails <strong>every</strong> query.</li>
+<li>This does not make every claim about the physical world true.</li>
+</ul>
+<div class="takeaway">
+<p>No compatible worlds means the premises need repair, not that the robot knows everything.</p>
+</div>
+<aside class="notes">
+<p>The universal condition for entailment holds vacuously over an empty set of models. In a practical pipeline, check the KB’s consistency before treating a yes answer as useful evidence. Other logics handle inconsistency differently, but this course example uses classical logic.</p>
+<p>[Sources]</p>
+<ul>
+<li>Consequence of the classical model-theoretic entailment definition. Original sensor example.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="model-checking-searches-for-a-countermodel" class="slide level2 logic-inference">
+<h2>Model Checking Searches for a Countermodel</h2>
+<p>Conceptual pseudocode; <code>model</code> is a complete truth assignment.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-code-line-numbers="|1-3|4|5-6|7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">def</span> entails(kb, query):</span>
+<span id="cb1-2"><a></a>    symbols <span class="op">=</span> symbols_in(kb, query)</span>
+<span id="cb1-3"><a></a>    <span class="cf">for</span> model <span class="kw">in</span> all_assignments(symbols):</span>
+<span id="cb1-4"><a></a>        <span class="cf">if</span> evaluate(kb, model):</span>
+<span id="cb1-5"><a></a>            <span class="cf">if</span> <span class="kw">not</span> evaluate(query, model):</span>
+<span id="cb1-6"><a></a>                <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb1-7"><a></a>    <span class="cf">return</span> <span class="va">True</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Enumerate symbols from <strong>both</strong> the KB and the query.</li>
+<li>Skip assignments that violate the KB.</li>
+<li><span class="math inline">n</span> symbols give <span class="math inline">2^n</span> assignments before pruning.</li>
+</ul>
+<aside class="notes">
+<p>Define all three helpers verbally: symbols_in gathers distinct proposition symbols, all_assignments enumerates Boolean assignments, evaluate applies the truth tables. The snippet is pseudocode, not a complete Python program. Step through the highlighted lines with the earlier reversed-implication countermodel. Ask why returning True inside the loop would be wrong. Formula evaluation adds work per assignment; do not claim O(2^n) regardless of formula size.</p>
+<p>[Sources]</p>
+<ul>
+<li>Simplified iterative teaching pseudocode based on the semantics of AIMA Figure 7.10, not a copied implementation: https://aima.cs.berkeley.edu/algorithms.pdf</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="meaning-and-proof-are-different" class="slide level2 logic-inference">
+<h2>Meaning and Proof Are Different</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Notation</th>
+<th>What it says</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\text{KB}\models\alpha</span></td>
+<td>The query is true in every model of the KB</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\text{KB}\vdash\alpha</span></td>
+<td>Our proof system derives the query</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sound:</strong> everything the proof system derives is entailed.</p>
+<p><strong>Complete:</strong> every entailed query can be derived by that system.</p>
+<div class="takeaway">
+<p>A sound proof cannot invent a consequence. A complete system can reach every consequence in its scope.</p>
+</div>
+<aside class="notes">
+<p>The single turnstile is a derivability relation; the double turnstile is semantic entailment. Completeness is relative to a logic and proof system, not a guarantee that any arbitrary short search will find the proof. If using the term algorithm, it must exhaust its complete procedure before a negative result is conclusive.</p>
+<p>[Sources]</p>
+<ul>
+<li>AIMA Chapter 7, inference and proofs.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="two-sound-inference-rules" class="slide level2 logic-inference">
+<h2>Two Sound Inference Rules</h2>
+<div class="columns two-column-balance">
+<div class="column" style="width:48%;">
+<h3 id="modus-ponens">Modus Ponens</h3>
+<p><span class="math display">
+P\rightarrow Q,\quad P
+</span></p>
+<p>Therefore:</p>
+<p><span class="math display">Q</span></p>
+<p>Affirm the premise; conclude its consequence.</p>
+</div><div class="column" style="width:48%;">
+<h3 id="modus-tollens">Modus Tollens</h3>
+<p><span class="math display">
+P\rightarrow Q,\quad \neg Q
+</span></p>
+<p>Therefore:</p>
+<p><span class="math display">\neg P</span></p>
+<p>Deny the consequence; rule out its premise.</p>
+</div></div>
+<div class="takeaway">
+<p>Neither rule lets us infer <span class="math inline">P</span> from <span class="math inline">Q</span> and <span class="math inline">P\rightarrow Q</span>.</p>
+</div>
+<aside class="notes">
+<p>Link modus ponens to the earlier truth table and modus tollens to the implication’s one forbidden row. The Latin names are conventional names for these patterns. No new probability or causal assumption is involved.</p>
+<p>[Sources]</p>
+<ul>
+<li>AIMA Chapter 7, sound propositional inference rules.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="cnf-gives-proofs-a-uniform-input" class="slide level2 logic-inference">
+<h2>CNF Gives Proofs a Uniform Input</h2>
+<p><strong>Conjunctive normal form (CNF)</strong> is an AND of clauses.</p>
+<p><span class="math display">
+(P\lor\neg Q)\land(Q\lor R)\land\neg R
+</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Meaning</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Literal</strong></td>
+<td>An atom or its negation</td>
+<td><span class="math inline">P</span>, <span class="math inline">\neg Q</span></td>
+</tr>
+<tr class="even">
+<td><strong>Clause</strong></td>
+<td>An OR of literals</td>
+<td><span class="math inline">P\lor\neg Q</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Unit clause</strong></td>
+<td>A clause with one literal</td>
+<td><span class="math inline">\neg R</span></td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>All clauses must hold. Within a clause, at least one literal must hold.</p>
+</div>
+<aside class="notes">
+<p>Conjunctions and disjunctions can have more than two inputs. A unit clause is already valid CNF syntax; it does not need extra literals. Distinguish a formula from a set of clauses with implicit conjunction.</p>
+<p>[Sources]</p>
+<ul>
+<li>https://inst.eecs.berkeley.edu/~cs188/textbook/logic/propositional.html</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rewrite-without-changing-the-models" class="slide level2 logic-inference scrollable">
+<h2>Rewrite Without Changing the Models</h2>
+<ol type="1">
+<li><strong>Remove implications and biconditionals.</strong></li>
+</ol>
+<p><span class="math display">
+P\rightarrow Q\equiv\neg P\lor Q
+</span></p>
+<p><span class="math display">
+P\leftrightarrow Q\equiv(\neg P\lor Q)\land(\neg Q\lor P)
+</span></p>
+<ol start="2" type="1">
+<li><strong>Move negation inward</strong> using De Morgan and double negation.</li>
+<li><strong>Distribute OR over AND</strong> until the outer operation is AND.</li>
+</ol>
+<p><span class="math display">
+X\lor(Y\land Z)\equiv(X\lor Y)\land(X\lor Z)
+</span></p>
+<aside class="notes">
+<p>These propositional rewrites preserve equivalence over the same symbols. Later, FOL Skolemization preserves satisfiability rather than equivalence in the original language; do not introduce that machinery here. Naive distribution can increase formula size substantially; the small examples are for understanding the transformation.</p>
+<p>[Sources]</p>
+<ul>
+<li>AIMA Chapter 7, conversion to conjunctive normal form.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="worked-conversion-distribute-carefully" class="slide level2 logic-inference">
+<h2>Worked Conversion: Distribute Carefully</h2>
+<p>Start with <span class="math inline">\neg(P\rightarrow Q)\lor R</span>.</p>
+<div class="fragment">
+<p><strong>Remove the implication:</strong></p>
+<p><span class="math display">\neg(\neg P\lor Q)\lor R</span></p>
+</div>
+<div class="fragment">
+<p><strong>Move negation inward:</strong></p>
+<p><span class="math display">(P\land\neg Q)\lor R</span></p>
+</div>
+<div class="fragment">
+<p><strong>Distribute:</strong></p>
+<p><span class="math display">(P\lor R)\land(\neg Q\lor R)</span></p>
+</div>
+<aside class="notes">
+<p>Pause before each reveal and have students predict the next expression. The result contains two clauses, not P OR NOT Q OR R. For a quick check, set R=false and verify that both the original and the result require P=true and Q=false.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="your-turn-one-clause-or-two" class="slide level2 logic-inference">
+<h2>Your Turn: One Clause or Two?</h2>
+<p>Convert both formulas to CNF. Show the intermediate rewrite.</p>
+<div class="columns two-column-balance">
+<div class="column" style="width:48%;">
+<h3 id="formula-1">Formula 1</h3>
+<p><span class="math display">P\rightarrow(Q\land R)</span></p>
+<p>One premise requires two consequences.</p>
+</div><div class="column" style="width:48%;">
+<h3 id="formula-2">Formula 2</h3>
+<p><span class="math display">(P\land Q)\rightarrow R</span></p>
+<p>Two conditions jointly require one consequence.</p>
+</div></div>
+<div class="question">
+<p>Why should moving a conjunction across the implication change the clause structure?</p>
+</div>
+<aside class="notes">
+<p>Allow three minutes to work in pairs. Ask students to eliminate the implication before deciding how many clauses they need. The two forms deliberately expose a common distribution and negation error.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="cnf-answers-the-conjunctions-location-matters" class="slide level2 logic-inference">
+<h2>CNF Answers: The Conjunction’s Location Matters</h2>
+<h3 id="formula-1-1">Formula 1</h3>
+<p><span class="math display">
+P\rightarrow(Q\land R)
+\equiv\neg P\lor(Q\land R)
+</span></p>
+<div class="fragment">
+<p><span class="math display">\equiv(\neg P\lor Q)\land(\neg P\lor R)</span></p>
+</div>
+<h3 id="formula-2-1">Formula 2</h3>
+<p><span class="math display">
+(P\land Q)\rightarrow R
+\equiv\neg(P\land Q)\lor R
+</span></p>
+<div class="fragment">
+<p><span class="math display">\equiv\neg P\lor\neg Q\lor R</span></p>
+</div>
+<aside class="notes">
+<p>The first answer has two clauses; the second has one. In the first, P=true forces Q and R. In the second, R is forced only if P and Q are both true. Ask students to read the final clauses back into the original sentences.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="resolution-combines-two-clauses" class="slide level2 logic-inference">
+<h2>Resolution Combines Two Clauses</h2>
+<p>Resolve one complementary pair, <span class="math inline">P</span> and <span class="math inline">\neg P</span>:</p>
+<p><span class="math display">
+\frac{P\lor A\qquad\neg P\lor B}{A\lor B}
+</span></p>
+<div class="logic-figure">
+<svg viewbox="0 0 1000 260" role="img" aria-label="Two parent clauses P or A and not P or B resolve to the clause A or B.">
+<defs><marker id="l16b-resolution-arrow" markerwidth="10" markerheight="10" refx="9" refy="5" orient="auto" markerunits="userSpaceOnUse"><path d="M0 0 L10 5 L0 10 Z" fill="#5d6470"></path></marker></defs> <g fill="none" stroke="#5d6470" stroke-width="3" marker-end="url(#l16b-resolution-arrow)"><path d="M240 91 L405 177"></path><path d="M760 91 L595 177"></path></g> <rect x="55" y="17" width="355" height="76" rx="7" fill="#e8f6f5" stroke="#007c89" stroke-width="3"></rect> <rect x="590" y="17" width="355" height="76" rx="7" fill="#e8f6f5" stroke="#007c89" stroke-width="3"></rect> <rect x="338" y="177" width="324" height="68" rx="7" fill="#fff4db" stroke="#b7791f" stroke-width="3"></rect> <g font-family="sans-serif" text-anchor="middle" font-size="31" fill="#202124"><text x="232" y="65">P or A</text><text x="768" y="65">not P or B</text><text x="500" y="221">A or B</text></g>
+</svg>
+</div>
+<p>The derived clause is called the <strong>resolvent</strong>. Keep every other literal.</p>
+<aside class="notes">
+<p>P is the pivot atom. A and B can stand for the remaining disjunctions, including an empty remainder. Resolution is a sound consequence step, not generally an equivalence rewrite: replacing both parents by only the resolvent can lose information. In a refutation procedure, add derived clauses to the existing set.</p>
+<p>[Sources]</p>
+<ul>
+<li>AIMA Chapter 7, propositional resolution. Original SVG derivation diagram.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-the-resolution-rule-is-sound" class="slide level2 logic-inference">
+<h2>Why the Resolution Rule Is Sound</h2>
+<p>Suppose both <span class="math inline">P\lor A</span> and <span class="math inline">\neg P\lor B</span> are true.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Case</th>
+<th>What the parents force</th>
+<th>Therefore</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">P=\text{false}</span></td>
+<td>The first clause requires <span class="math inline">A</span></td>
+<td><span class="math inline">A\lor B</span> is true</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">P=\text{true}</span></td>
+<td>The second clause requires <span class="math inline">B</span></td>
+<td><span class="math inline">A\lor B</span> is true</td>
+</tr>
+</tbody>
+</table>
+<p>Special cases:</p>
+<p><span class="math display">
+\frac{P\qquad\neg P\lor Q}{Q}
+\qquad\qquad
+\frac{P\qquad\neg P}{\bot}
+</span></p>
+<div class="takeaway">
+<p>The <strong>empty clause</strong>, written <span class="math inline">\bot</span> here, is false under every assignment.</p>
+</div>
+<aside class="notes">
+<p>Some texts use a square or an empty pair of braces for the empty clause. Here bottom denotes that contradictory clause; do not confuse the empty clause with an empty clause set, whose conjunction is true. The unit example on the left is modus ponens after implication elimination.</p>
+<p>[Sources]</p>
+<ul>
+<li>AIMA Chapter 7, soundness of resolution and empty clause. Original case analysis.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="prove-reachability-by-refutation" class="slide level2 logic-inference">
+<h2>Prove Reachability by Refutation</h2>
+<p>Recall <span class="math inline">A</span>: route A open, <span class="math inline">B</span>: route B open, <span class="math inline">G</span>: reachable.</p>
+<p><span class="math display">
+\text{KB}=(A\lor B)\land(A\rightarrow G)\land(B\rightarrow G)
+</span></p>
+<p>To prove <span class="math inline">G</span>, add the <strong>negated query</strong> <span class="math inline">\neg G</span> and convert to clauses:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Clause</th>
+<th>Origin</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><span class="math inline">A\lor B</span></td>
+<td>At least one route is open</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><span class="math inline">\neg A\lor G</span></td>
+<td><span class="math inline">A\rightarrow G</span></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><span class="math inline">\neg B\lor G</span></td>
+<td><span class="math inline">B\rightarrow G</span></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><span class="math inline">\neg G</span></td>
+<td>Negated query</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>This is the same example students classified by models earlier. We are temporarily supposing the destination is not reachable and checking whether that can coexist with the KB. Keep these clause IDs visible or write them on the board for the next slide.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-resolution-proof-is-a-checkable-trace" class="slide level2 logic-inference">
+<h2>A Resolution Proof Is a Checkable Trace</h2>
+<p>Start: <span class="math inline">1: A\lor B</span>, <span class="math inline">2:\neg A\lor G</span>, <span class="math inline">3:\neg B\lor G</span>, <span class="math inline">4:\neg G</span>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>New ID</th>
+<th>Parents</th>
+<th>Resolve on</th>
+<th>Derived clause</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>5</td>
+<td>2 and 4</td>
+<td><span class="math inline">G</span></td>
+<td><span class="fragment"><span class="math inline">\neg A</span></span></td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>1 and 5</td>
+<td><span class="math inline">A</span></td>
+<td><span class="fragment"><span class="math inline">B</span></span></td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>3 and 6</td>
+<td><span class="math inline">B</span></td>
+<td><span class="fragment"><span class="math inline">G</span></span></td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>4 and 7</td>
+<td><span class="math inline">G</span></td>
+<td><span class="fragment"><span class="math inline">\bot</span></span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment takeaway">
+<p><span class="math inline">\text{KB}\land\neg G</span> is unsatisfiable. Therefore <span class="math inline">\text{KB}\models G</span>.</p>
+</div>
+<aside class="notes">
+<p>Reveal and discuss one resolvent per click. Read parents and pivot aloud. Ask why line 8 proves the original query, not its negation. A different valid proof order is acceptable. This proof avoids exhaustive truth-table enumeration.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="do-not-cancel-two-pairs-at-once" class="slide level2 logic-inference">
+<h2>Do Not Cancel Two Pairs at Once</h2>
+<p>Consider these clauses:</p>
+<p><span class="math display">P\lor Q,\qquad\neg P\lor\neg Q</span></p>
+<div class="question">
+<p>Can we erase both complementary pairs and conclude <span class="math inline">\bot</span>?</p>
+</div>
+<div class="fragment">
+<p><strong>No.</strong> The assignment <span class="math inline">P=\text{true}, Q=\text{false}</span> satisfies both parents.</p>
+</div>
+<div class="fragment takeaway">
+<p>Resolving only on <span class="math inline">P</span> gives <span class="math inline">Q\lor\neg Q</span>, a tautology, not a contradiction.</p>
+</div>
+<aside class="notes">
+<p>Give students a brief opportunity to challenge the tempting but invalid cancellation. Resolving on Q instead gives P OR NOT P, also a tautology. A sound rule cannot turn a satisfiable set into a contradictory consequence.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="unit-propagation-connects-back-to-search" class="slide level2 logic-inference">
+<h2>Unit Propagation Connects Back to Search</h2>
+<p>A <strong>unit clause</strong> forces its only literal to be true. Repeat after simplifying.</p>
+<p>For <span class="math inline">\{A\lor B,\ \neg A\lor G,\ \neg B\lor G,\ \neg G\}</span>:</p>
+<div class="logic-figure">
+<svg viewbox="0 0 1000 240" role="img" aria-label="The unit clause not G forces G false; this forces A and B false, which conflicts with the clause A or B.">
+<defs><marker id="l16b-unit-arrow" markerwidth="10" markerheight="10" refx="9" refy="5" orient="auto" markerunits="userSpaceOnUse"><path d="M0 0 L10 5 L0 10 Z" fill="#5d6470"></path></marker></defs> <g fill="none" stroke="#5d6470" stroke-width="3" marker-end="url(#l16b-unit-arrow)"><path d="M270 115 H350"></path><path d="M650 115 H730"></path></g> <rect x="10" y="48" width="260" height="133" rx="7" fill="#e8f6f5" stroke="#007c89" stroke-width="3"></rect> <rect x="350" y="48" width="300" height="133" rx="7" fill="#fff4db" stroke="#b7791f" stroke-width="3"></rect> <rect x="730" y="48" width="260" height="133" rx="7" fill="#fdecef" stroke="#b8325f" stroke-width="3"></rect> <g font-family="sans-serif" text-anchor="middle" fill="#202124"><text x="140" y="102" font-size="30">G = false</text><text x="140" y="145" font-size="24">forced by not G</text><text x="500" y="102" font-size="28">A = B = false</text><text x="500" y="145" font-size="24">forced by the rules</text><text x="860" y="102" font-size="30">Conflict</text><text x="860" y="145" font-size="24">A or B is false</text></g>
+</svg>
+</div>
+<div class="takeaway">
+<p>Forced assignments can prune search. In general, no unit clauses does not mean the problem is solved; branching may still be needed.</p>
+</div>
+<aside class="notes">
+<p>This connects to constraint propagation from the preceding CSP lectures. A SAT solver can mix propagation with branching; this slide is not a full DPLL lecture. In this particular clause set, the unit clauses suffice to find a contradiction. Unit propagation alone is not complete for general CNF satisfiability.</p>
+<p>[Sources]</p>
+<ul>
+<li>Unit clause heuristic: https://inst.eecs.berkeley.edu/~cs188/textbook/logic/inference.html</li>
+<li>Original propagation diagram for the route example.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="exit-exercise-what-changed-for-the-robot" class="slide level2 logic-inference scrollable">
+<h2>Exit Exercise: What Changed for the Robot?</h2>
+<p>Again, <span class="math inline">B</span>: battery ready, <span class="math inline">C</span>: corridor clear, <span class="math inline">M</span>: movement permitted.</p>
+<p><span class="math display">\text{KB}_0=\{B,\ (B\land C)\rightarrow M\}</span></p>
+<p>Consider two <strong>separate</strong> updates to this original KB:</p>
+<ol type="1">
+<li>Add <span class="math inline">C</span>. Does <span class="math inline">M</span> follow?</li>
+<li>Instead, add <span class="math inline">\neg M</span>. Does <span class="math inline">\neg C</span> follow?</li>
+</ol>
+<div class="question">
+<p>Write the rule as a clause, then justify both answers with resolution.</p>
+</div>
+<aside class="notes">
+<p>Allow two minutes of individual work before comparing answers. Keep the two updates separate. Students should get the clause NOT B OR NOT C OR M. This question returns to the opener but adds information, testing whether students understand why the answer can change.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-added-fact-determines-the-conclusion" class="slide level2 logic-inference">
+<h2>The Added Fact Determines the Conclusion</h2>
+<p>The rule becomes <span class="math inline">\neg B\lor\neg C\lor M</span>.</p>
+<p>Resolving with known <span class="math inline">B</span> first gives <span class="math inline">\neg C\lor M</span>.</p>
+<div class="columns two-column-balance">
+<div class="column" style="width:48%;">
+<h3 id="update-1-add-c">Update 1: Add <span class="math inline">C</span></h3>
+<div class="fragment">
+<p><span class="math display">\frac{\neg C\lor M\qquad C}{M}</span></p>
+<p>Movement permission follows.</p>
+</div>
+</div><div class="column" style="width:48%;">
+<h3 id="update-2-add-neg-m">Update 2: Add <span class="math inline">\neg M</span></h3>
+<div class="fragment">
+<p><span class="math display">\frac{\neg C\lor M\qquad\neg M}{\neg C}</span></p>
+<p>The corridor cannot be clear under these premises.</p>
+</div>
+</div></div>
+<div class="takeaway">
+<p>The original KB left <span class="math inline">M</span> undetermined. New facts eliminate possible worlds.</p>
+</div>
+<aside class="notes">
+<p>Both are direct resolution derivations. To express either as a refutation proof, add the negation of its conclusion and resolve the derived unit clause with that assumption to obtain bottom. The second conclusion is logical, not a claim that permission always measures physical corridor safety; it follows because the encoded rule and B are assumed true.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="takeaways" class="slide level2 logic-inference">
+<h2>Takeaways</h2>
+<div class="columns visual-pair">
+<div class="column" style="width:72%;">
+<ul>
+<li><strong>Entailment:</strong> the query holds in every model of the KB.</li>
+<li><strong>Countermodel:</strong> one compatible world falsifies the query.</li>
+<li><strong>CNF:</strong> an AND of clauses; each clause is an OR of literals.</li>
+<li><strong>Resolution:</strong> remove one complementary pair and keep the rest.</li>
+<li><strong>Refutation:</strong> show the KB plus the negated query is inconsistent.</li>
+</ul>
+</div><div class="column" style="width:22%;">
+<p><img data-src="imgs/lec1/brain_lightbulb_openclipart.svg" class="cc0-icon" alt="Brain lightbulb icon representing logical reasoning"></p>
+</div></div>
+<div class="takeaway">
+<p>Support a conclusion with a proof. Reject entailment with a countermodel. Do not confuse either with a guess.</p>
+</div>
+<p><a href="../asset_credits.html#lec17" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
+<aside class="notes">
+<p>Close by asking for the difference between not entailed and false. Bridge to the next class: the same entailment question remains, but FOL gives us objects, relations, and quantifiers. Source details are in notes and asset credits rather than an extra reading paragraph or credits slide.</p>
+<p>[Sources]</p>
+<ul>
+<li>AIMA Chapter 7 and UC Berkeley CS 188 logic notes, as cited above.</li>
+<li>OpenClipart public-domain brain/lightbulb icon; see asset_credits.html#lec17.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
