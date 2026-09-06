@@ -32,72 +32,6 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-    /* CSS for syntax highlighting */
-    html { -webkit-text-size-adjust: 100%; }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
@@ -209,6 +143,27 @@
       margin-right: 0; 
     }
   </style>
+  <style>
+  .reveal section.search-method table {
+    font-size: 0.73em;
+    line-height: 1.2;
+  }
+  .reveal section.search-method th,
+  .reveal section.search-method td {
+    padding: 0.4em 0.48em;
+  }
+  .reveal .search-method-image {
+    display: block;
+    height: auto;
+    margin: 0 auto;
+    max-height: 285px;
+    max-width: 100%;
+    object-fit: contain;
+  }
+  .reveal section.pseudocode-slide .pseudo-code {
+    font-size: 0.56em;
+  }
+  </style>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -229,145 +184,539 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="uninformed-search" class="slide level2 section-slide">
+<section id="uninformed-search" class="slide level2 section-slide search-method">
 <h2>Uninformed Search</h2>
-<p>Uninformed search, also called <em>blind search</em>, uses only the problem definition:</p>
+<p>Uninformed search uses the problem definition but no estimate of distance to the goal.</p>
 <ul>
-<li>state representation</li>
-<li>actions and transition model</li>
-<li>goal test</li>
-<li>path cost, if provided</li>
+<li>It knows the initial state, actions, transitions, and goal test.</li>
+<li>It may also know step costs, but it has no heuristic.</li>
+<li>The search rule chooses which frontier node to expand next.</li>
 </ul>
 <div class="takeaway">
-<p>The search rule decides which frontier node to expand next.</p>
+<p>BFS and DFS differ mainly in how they remove nodes from the frontier.</p>
+</div>
+<aside class="notes">
+<p>50-minute teaching plan:</p>
+<ul>
+<li>Slides 2-3: review uninformed search and frontier rules, 6 minutes.</li>
+<li>Slides 4-8: BFS intuition, trace, pseudocode, and guarantees, 14 minutes.</li>
+<li>Slides 9-14: DFS intuition, traces, pseudocode, and guarantees, 16 minutes.</li>
+<li>Slides 15-17: comparison, selection exercise, and Homework 1 introduction, 11 minutes.</li>
+<li>Slide 18: recap and transition to the notebook, 3 minutes.</li>
+</ul>
+<p>Keep the slide discussion conceptual. Open the separately linked Jupyter Notebook after the deck and use its new Markdown explanation blocks to teach the implementation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="queue-or-stack" class="slide level2 search-method">
+<h2>Queue or Stack?</h2>
+<p>The frontier stores discovered nodes that still await expansion.</p>
+<div class="columns two-column-balance">
+<div class="column" style="width:47%;">
+<h3 id="bfs-queue">BFS queue</h3>
+<div class="token-row">
+<span class="token-chip">oldest</span><span class="token-chip">…</span><span class="token-chip">newest</span>
+</div>
+<p>Remove from the <strong>front</strong>. Add at the <strong>back</strong>.</p>
+<p>First in, first out.</p>
+</div><div class="column" style="width:47%;">
+<h3 id="dfs-stack">DFS stack</h3>
+<div class="token-row">
+<span class="token-chip">older</span><span class="token-chip">…</span><span class="token-chip">newest / top</span>
+</div>
+<p>Remove and add at the <strong>top</strong>.</p>
+<p>Last in, first out.</p>
+</div></div>
+<div class="question">
+<p>Which rule preserves a layer-by-layer expansion order?</p>
 </div>
 </section>
-<section id="breadth-first-search" class="slide level2">
+<section id="breadth-first-search" class="slide level2 search-method">
 <h2>Breadth-First Search</h2>
 <div class="columns visual-pair">
 <div class="column" style="width:62%;">
 <ul>
-<li>Explores all nodes at depth <span class="math inline">d</span> before any node at depth <span class="math inline">d+1</span>.</li>
-<li>Equivalent to level-order traversal in a tree.</li>
-<li>Uses a <strong>queue</strong>: first in, first out.</li>
-<li>In an unweighted graph, BFS finds a shortest path by number of edges.</li>
+<li>BFS expands every node at depth <span class="math inline">d</span> before any node at depth <span class="math inline">d+1</span>.</li>
+<li>The frontier is a <strong>queue</strong>.</li>
+<li>With equal step costs, BFS returns a solution with the fewest actions.</li>
 </ul>
 <div class="question">
-<p>Think ripples: expansion spreads outward one layer at a time.</p>
+<p>Think of the frontier as a wave spreading outward one layer at a time.</p>
 </div>
-</div><div class="column" style="width:32%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec5/ripple.png" class="cc0-figure"></p>
-<figcaption>Ripple image for BFS layer expansion</figcaption>
-</figure>
-</div>
+</div><div class="column" style="width:31%;">
+<p><img data-src="imgs/lec5/ripple.png" class="search-method-image" alt="Ripples spreading outward in layers"></p>
 </div></div>
 </section>
-<section id="bfs-frontier" class="slide level2">
-<h2>BFS Frontier</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec5/bfs-frontier.svg" alt="Breadth first frontier tree from S to A B and then C D E F"></p>
+<section id="the-bfs-frontier" class="slide level2 search-method search-trace">
+<h2>The BFS Frontier</h2>
+<p class="trace-intro">
+Remove from the <strong>front</strong> of the queue. Add children at the <strong>back</strong>, left to right.
+</p>
+<div class="trace-layout">
+  <div class="trace-tree">
+    <div class="trace-tree-frames" role="img" aria-label="S has children A and B. A has C and D; B has E and F. The highlighted tree follows BFS expansion order: S, A, B, C, D, E, F.">
+      <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec5/bfs-trace-0.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec5/bfs-trace-1.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec5/bfs-trace-2.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="3" src="imgs/drawio/lec5/bfs-trace-3.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="4" src="imgs/drawio/lec5/bfs-trace-4.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="5" src="imgs/drawio/lec5/bfs-trace-5.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="6" src="imgs/drawio/lec5/bfs-trace-6.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="7" src="imgs/drawio/lec5/bfs-trace-7.png" alt="" aria-hidden="true">
+    </div>
+    <p class="trace-caption">Numbers show expansion order.</p>
+    <div class="trace-legend"><span class="trace-key-frontier">Frontier</span><span class="trace-key-current">This step</span><span class="trace-key-expanded">Expanded</span></div>
+  </div>
+  <div class="trace-history">
+    <p class="trace-direction">Queue: front on the left</p>
+
+<table class="trace-table caption-top" aria-label="BFS queue after each expansion">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 22%">
+<col style="width: 60%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" scope="col">Remove</th>
+<th data-quarto-table-cell-role="th" scope="col">Add</th>
+<th data-quarto-table-cell-role="th" scope="col">Queue afterward</th>
+</tr>
+</thead>
+<tbody>
+<tr class="trace-start visible odd" data-discover="S">
+<td>Start</td>
+<td>S</td>
+<td><code>[S]</code></td>
+</tr>
+<tr class="fragment even" data-fragment-index="0" data-expand="S" data-discover="A B">
+<td>S</td>
+<td>A, B</td>
+<td><code>[A, B]</code></td>
+</tr>
+<tr class="fragment odd" data-fragment-index="1" data-expand="A" data-discover="C D">
+<td>A</td>
+<td>C, D</td>
+<td><code>[B, C, D]</code></td>
+</tr>
+<tr class="fragment even" data-fragment-index="2" data-expand="B" data-discover="E F">
+<td>B</td>
+<td>E, F</td>
+<td><code>[C, D, E, F]</code></td>
+</tr>
+<tr class="fragment odd" data-fragment-index="3" data-expand="C">
+<td>C</td>
+<td>–</td>
+<td><code>[D, E, F]</code></td>
+</tr>
+<tr class="fragment even" data-fragment-index="4" data-expand="D">
+<td>D</td>
+<td>–</td>
+<td><code>[E, F]</code></td>
+</tr>
+<tr class="fragment odd" data-fragment-index="5" data-expand="E">
+<td>E</td>
+<td>–</td>
+<td><code>[F]</code></td>
+</tr>
+<tr class="fragment even" data-fragment-index="6" data-expand="F">
+<td>F</td>
+<td>–</td>
+<td><code>[]</code></td>
+</tr>
+</tbody>
+</table>
+
+  </div>
 </div>
+<div class="takeaway">
+<p>Every depth-1 node waits ahead of every depth-2 node.</p>
+</div>
+<aside class="notes">
+<p>Each step removes one node, expands it, and adds its children. Trace the queue and the matching node together. After B, the queue contains the entire depth-2 layer. If F is the goal and the goal test occurs on removal, S, A, B, C, D, and E have already been expanded before F is removed. The traversal shown here continues until the queue is empty.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="breadth-first-search-pseudocode" class="slide level2 search-method pseudocode-slide">
+<h2>Breadth-First Search Pseudocode</h2>
+<div class="pseudo-code" role="img" aria-label="Breadth-first search pseudocode">
+  <div class="pseudo-line"><span class="pseudo-fn">BFS</span>(<span class="pseudo-var">problem</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-var">frontier</span> &lt;- <span class="pseudo-fn">FIFO-QUEUE</span>(<span class="pseudo-var">initial node</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-var">reached</span> &lt;- {<span class="pseudo-var">initial state</span>}</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="0"><span class="pseudo-kw">while</span> <span class="pseudo-var">frontier</span> is not empty</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-var">node</span> &lt;- <span class="pseudo-fn">POP-FRONT</span>(<span class="pseudo-var">frontier</span>)</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="2"><span class="pseudo-kw">if</span> <span class="pseudo-fn">GOAL-TEST</span>(<span class="pseudo-var">node.state</span>)</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="2"><span class="pseudo-kw">return</span> <span class="pseudo-fn">SOLUTION</span>(<span class="pseudo-var">node</span>)</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="3"><span class="pseudo-kw">for each</span> <span class="pseudo-var">child</span> in <span class="pseudo-fn">EXPAND</span>(<span class="pseudo-var">node</span>)</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="3"><span class="pseudo-kw">if</span> <span class="pseudo-var">child.state</span> not in <span class="pseudo-var">reached</span></div>
+  <div class="pseudo-line indent-4 fragment" data-fragment-index="4">add <span class="pseudo-var">child.state</span> to <span class="pseudo-var">reached</span></div>
+  <div class="pseudo-line indent-4 fragment" data-fragment-index="4"><span class="pseudo-fn">PUSH-BACK</span>(<span class="pseudo-var">frontier</span>, <span class="pseudo-var">child</span>)</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="5"><span class="pseudo-kw">return</span> <span class="pseudo-lit">failure</span></div>
+</div>
+<aside class="notes">
+<p>Reveal initialization, removal, goal test, expansion, and insertion in stages. Parent links live inside each search node and allow SOLUTION to reconstruct the action sequence. Reached contains states, while the frontier contains search nodes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="record-reached-states-on-insertion" class="slide level2 search-method">
+<h2>Record Reached States on Insertion</h2>
+<p>Suppose S connects to A and B, and both A and B connect to C.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Step</th>
-<th>Queue intuition</th>
+<th>Policy</th>
+<th>Result</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Start</td>
-<td><code>[S]</code></td>
+<td>Record C when adding it</td>
+<td>C enters the frontier once</td>
 </tr>
 <tr class="even">
-<td>Expand S</td>
-<td><code>[A, B]</code></td>
-</tr>
-<tr class="odd">
-<td>Expand A</td>
-<td><code>[B, C, D]</code></td>
-</tr>
-<tr class="even">
-<td>Expand B</td>
-<td><code>[C, D, E, F]</code></td>
+<td>Wait until removing C</td>
+<td>Both A and B may add C</td>
 </tr>
 </tbody>
 </table>
+<p>Repeated entries waste memory and can multiply rapidly in a graph with many converging paths.</p>
+<div class="takeaway">
+<p>For BFS and DFS graph search, record a new state when it enters the frontier.</p>
+</div>
+<aside class="notes">
+<p>Lecture 6 will refine this rule for cost-sensitive search. Uniform-Cost Search may need to replace a previously discovered route when it finds a cheaper one.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="breadth-first-search-pseudocode" class="slide level2">
-<h2>Breadth-First Search Pseudocode</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>BFS(G, s):</span>
-<span id="cb1-2"><a></a>    initialize an empty queue Q</span>
-<span id="cb1-3"><a></a>    enqueue s into Q</span>
-<span id="cb1-4"><a></a>    mark s <span class="im">as</span> visited</span>
-<span id="cb1-5"><a></a></span>
-<span id="cb1-6"><a></a>    <span class="cf">while</span> Q <span class="kw">is</span> <span class="kw">not</span> empty:</span>
-<span id="cb1-7"><a></a>        u <span class="op">=</span> dequeue Q</span>
-<span id="cb1-8"><a></a>        process u</span>
-<span id="cb1-9"><a></a></span>
-<span id="cb1-10"><a></a>        <span class="cf">for</span> each neighbor v of u:</span>
-<span id="cb1-11"><a></a>            <span class="cf">if</span> v <span class="kw">is</span> <span class="kw">not</span> visited:</span>
-<span id="cb1-12"><a></a>                mark v <span class="im">as</span> visited</span>
-<span id="cb1-13"><a></a>                enqueue v into Q</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="bfs-guarantees-and-cost" class="slide level2 search-method">
+<h2>BFS Guarantees and Cost</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>BFS answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Complete?</td>
+<td>Yes on a finite graph; also with finite branching and a finite-depth goal</td>
+</tr>
+<tr class="even">
+<td>Fewest actions?</td>
+<td>Yes when every step has equal cost</td>
+</tr>
+<tr class="odd">
+<td>Graph traversal time</td>
+<td><span class="math inline">O(V+E)</span> with adjacency lists</td>
+</tr>
+<tr class="even">
+<td>Graph traversal storage</td>
+<td><span class="math inline">O(V)</span> for frontier, reached states, and parents</td>
+</tr>
+<tr class="odd">
+<td>Search-tree growth</td>
+<td>A layer can contain about <span class="math inline">b^d</span> nodes</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>BFS obtains a shortest-action guarantee by retaining a potentially wide frontier.</p>
+</div>
+<aside class="notes">
+<p>V and E describe an explicit graph. Branching factor b and shallowest solution depth d describe an implicit search tree. Unequal costs break the connection between shallowest and cheapest, motivating Uniform-Cost Search.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="depth-first-search" class="slide level2">
+<section id="depth-first-search" class="slide level2 search-method">
 <h2>Depth-First Search</h2>
 <div class="columns visual-pair">
 <div class="column" style="width:62%;">
 <ul>
-<li>Explores as deeply as possible along one branch before backtracking.</li>
-<li>Similar to preorder traversal in a tree.</li>
-<li>Uses a <strong>stack</strong>, either explicitly or through recursion.</li>
-<li>Does not generally guarantee a shortest path.</li>
+<li>DFS follows one branch until it reaches a goal or a dead end.</li>
+<li>The frontier is a <strong>stack</strong> or the language’s call stack.</li>
+<li>Backtracking resumes the most recent unfinished branch.</li>
+<li>DFS does not generally return a shortest path.</li>
 </ul>
 <div class="question">
-<p>Think maze: follow a path until it ends, then backtrack.</p>
+<p>Think of following one corridor, then returning to the last junction.</p>
 </div>
-</div><div class="column" style="width:32%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec5/maze.png" class="cc0-figure"></p>
-<figcaption>Maze image for DFS backtracking</figcaption>
-</figure>
-</div>
+</div><div class="column" style="width:31%;">
+<p><img data-src="imgs/lec5/maze.png" class="search-method-image" alt="Maze representing depth-first exploration and backtracking"></p>
 </div></div>
 </section>
-<section id="recursive-dfs-pseudocode" class="slide level2">
-<h2>Recursive DFS Pseudocode</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>DFS(u):</span>
-<span id="cb2-2"><a></a>    mark u <span class="im">as</span> visited</span>
-<span id="cb2-3"><a></a>    process u</span>
-<span id="cb2-4"><a></a></span>
-<span id="cb2-5"><a></a>    <span class="cf">for</span> each neighbor v of u:</span>
-<span id="cb2-6"><a></a>        <span class="cf">if</span> v <span class="kw">is</span> <span class="kw">not</span> visited:</span>
-<span id="cb2-7"><a></a>            DFS(v)</span>
-<span id="cb2-8"><a></a></span>
-<span id="cb2-9"><a></a>Main:</span>
-<span id="cb2-10"><a></a>    DFS(s)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="dfs-expansion-order" class="slide level2 search-method search-trace">
+<h2>DFS Expansion Order</h2>
+<p class="trace-intro">
+Remove from the <strong>top</strong> of the stack. Push right children first so left children come out first.
+</p>
+<div class="trace-layout">
+  <div class="trace-tree">
+    <div class="trace-tree-frames" role="img" aria-label="S has children A and B. A has C and D; B has E and F. The highlighted tree follows DFS expansion order: S, A, C, D, B, E, F.">
+      <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec5/dfs-trace-0.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec5/dfs-trace-1.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec5/dfs-trace-2.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="3" src="imgs/drawio/lec5/dfs-trace-3.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="4" src="imgs/drawio/lec5/dfs-trace-4.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="5" src="imgs/drawio/lec5/dfs-trace-5.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="6" src="imgs/drawio/lec5/dfs-trace-6.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="7" src="imgs/drawio/lec5/dfs-trace-7.png" alt="" aria-hidden="true">
+    </div>
+    <p class="trace-caption">Numbers show expansion order.</p>
+    <div class="trace-legend"><span class="trace-key-frontier">Frontier</span><span class="trace-key-current">This step</span><span class="trace-key-expanded">Expanded</span></div>
+  </div>
+  <div class="trace-history">
+    <p class="trace-direction">Stack: top on the right</p>
+
+<table class="trace-table caption-top" aria-label="DFS stack after each expansion">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 22%">
+<col style="width: 60%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" scope="col">Remove</th>
+<th data-quarto-table-cell-role="th" scope="col">Push</th>
+<th data-quarto-table-cell-role="th" scope="col">Stack afterward</th>
+</tr>
+</thead>
+<tbody>
+<tr class="trace-start visible odd" data-discover="S">
+<td>Start</td>
+<td>S</td>
+<td><code>[S]</code></td>
+</tr>
+<tr class="fragment even" data-fragment-index="0" data-expand="S" data-discover="B A">
+<td>S</td>
+<td>B, A</td>
+<td><code>[B, A]</code></td>
+</tr>
+<tr class="fragment odd" data-fragment-index="1" data-expand="A" data-discover="D C">
+<td>A</td>
+<td>D, C</td>
+<td><code>[B, D, C]</code></td>
+</tr>
+<tr class="fragment even" data-fragment-index="2" data-expand="C">
+<td>C</td>
+<td>–</td>
+<td><code>[B, D]</code></td>
+</tr>
+<tr class="fragment odd" data-fragment-index="3" data-expand="D">
+<td>D</td>
+<td>–</td>
+<td><code>[B]</code></td>
+</tr>
+<tr class="fragment even" data-fragment-index="4" data-expand="B" data-discover="F E">
+<td>B</td>
+<td>F, E</td>
+<td><code>[F, E]</code></td>
+</tr>
+<tr class="fragment odd" data-fragment-index="5" data-expand="E">
+<td>E</td>
+<td>–</td>
+<td><code>[F]</code></td>
+</tr>
+<tr class="fragment even" data-fragment-index="6" data-expand="F">
+<td>F</td>
+<td>–</td>
+<td><code>[]</code></td>
+</tr>
+</tbody>
+</table>
+
+  </div>
+</div>
 <div class="takeaway">
-<p>The call stack stores the current path.</p>
+<p>DFS finishes A’s branch before returning to B.</p>
+</div>
+<aside class="notes">
+<p>B remains in the frontier while A, C, and D are expanded. The fourth expansion finishes A’s subtree. The next pop returns to B. The Push column records insertion order, so B then A puts A on top of the stack. The gold node and table row identify the same completed expansion step.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="recursive-dfs-pseudocode" class="slide level2 search-method pseudocode-slide">
+<h2>Recursive DFS Pseudocode</h2>
+<div class="pseudo-code" role="img" aria-label="Recursive depth-first search pseudocode">
+  <div class="pseudo-line"><span class="pseudo-fn">DFS</span>(<span class="pseudo-var">node</span>, <span class="pseudo-var">reached</span>)</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="0"><span class="pseudo-kw">if</span> <span class="pseudo-fn">GOAL-TEST</span>(<span class="pseudo-var">node.state</span>)</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="0"><span class="pseudo-kw">return</span> <span class="pseudo-fn">SOLUTION</span>(<span class="pseudo-var">node</span>)</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="1">add <span class="pseudo-var">node.state</span> to <span class="pseudo-var">reached</span></div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="2"><span class="pseudo-kw">for each</span> <span class="pseudo-var">child</span> in <span class="pseudo-fn">EXPAND</span>(<span class="pseudo-var">node</span>)</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="2"><span class="pseudo-kw">if</span> <span class="pseudo-var">child.state</span> not in <span class="pseudo-var">reached</span></div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="3"><span class="pseudo-var">result</span> &lt;- <span class="pseudo-fn">DFS</span>(<span class="pseudo-var">child</span>, <span class="pseudo-var">reached</span>)</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="4"><span class="pseudo-kw">if</span> <span class="pseudo-var">result</span> is not <span class="pseudo-lit">failure</span></div>
+  <div class="pseudo-line indent-4 fragment" data-fragment-index="4"><span class="pseudo-kw">return</span> <span class="pseudo-var">result</span></div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="5"><span class="pseudo-kw">return</span> <span class="pseudo-lit">failure</span></div>
+</div>
+<div class="takeaway">
+<p>The active function calls remember the current branch.</p>
 </div>
 </section>
-<section id="iterative-dfs-pseudocode" class="slide level2">
+<section id="iterative-dfs-pseudocode" class="slide level2 search-method pseudocode-slide">
 <h2>Iterative DFS Pseudocode</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>DFS<span class="op">-</span>Iterative(G, s):</span>
-<span id="cb3-2"><a></a>    initialize an empty stack S</span>
-<span id="cb3-3"><a></a>    push s onto S</span>
-<span id="cb3-4"><a></a>    mark s <span class="im">as</span> visited</span>
-<span id="cb3-5"><a></a></span>
-<span id="cb3-6"><a></a>    <span class="cf">while</span> S <span class="kw">is</span> <span class="kw">not</span> empty:</span>
-<span id="cb3-7"><a></a>        u <span class="op">=</span> pop S</span>
-<span id="cb3-8"><a></a>        process u</span>
-<span id="cb3-9"><a></a></span>
-<span id="cb3-10"><a></a>        <span class="cf">for</span> each neighbor v of u:</span>
-<span id="cb3-11"><a></a>            <span class="cf">if</span> v <span class="kw">is</span> <span class="kw">not</span> visited:</span>
-<span id="cb3-12"><a></a>                mark v <span class="im">as</span> visited</span>
-<span id="cb3-13"><a></a>                push v onto S</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="pseudo-code" role="img" aria-label="Iterative depth-first search pseudocode">
+  <div class="pseudo-line"><span class="pseudo-fn">DFS-ITERATIVE</span>(<span class="pseudo-var">problem</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-var">frontier</span> &lt;- <span class="pseudo-fn">LIFO-STACK</span>(<span class="pseudo-var">initial node</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-var">reached</span> &lt;- {<span class="pseudo-var">initial state</span>}</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="0"><span class="pseudo-kw">while</span> <span class="pseudo-var">frontier</span> is not empty</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-var">node</span> &lt;- <span class="pseudo-fn">POP-TOP</span>(<span class="pseudo-var">frontier</span>)</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="2"><span class="pseudo-kw">if</span> <span class="pseudo-fn">GOAL-TEST</span>(<span class="pseudo-var">node.state</span>)</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="2"><span class="pseudo-kw">return</span> <span class="pseudo-fn">SOLUTION</span>(<span class="pseudo-var">node</span>)</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="3"><span class="pseudo-kw">for each</span> <span class="pseudo-var">child</span> in reverse(<span class="pseudo-fn">EXPAND</span>(<span class="pseudo-var">node</span>))</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="3"><span class="pseudo-kw">if</span> <span class="pseudo-var">child.state</span> not in <span class="pseudo-var">reached</span></div>
+  <div class="pseudo-line indent-4 fragment" data-fragment-index="4">add <span class="pseudo-var">child.state</span> to <span class="pseudo-var">reached</span></div>
+  <div class="pseudo-line indent-4 fragment" data-fragment-index="4"><span class="pseudo-fn">PUSH-TOP</span>(<span class="pseudo-var">frontier</span>, <span class="pseudo-var">child</span>)</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="5"><span class="pseudo-kw">return</span> <span class="pseudo-lit">failure</span></div>
+</div>
+<aside class="notes">
+<p>Reverse the generated order only when you want the leftmost generated child to leave the stack first. Without reversal, the last generated child receives priority. The linked notebook makes this effect visible through its fixed grid-neighbor order.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="bfs-vs.-dfs" class="slide level2">
-<h2>BFS vs.&nbsp;DFS</h2>
+<section id="dfs-guarantees-and-cost" class="slide level2 search-method">
+<h2>DFS Guarantees and Cost</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>DFS answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Complete on a finite graph?</td>
+<td>Yes with a reached set</td>
+</tr>
+<tr class="even">
+<td>Infinite-depth tree?</td>
+<td>It can follow one branch forever</td>
+</tr>
+<tr class="odd">
+<td>Shortest path?</td>
+<td>No general guarantee</td>
+</tr>
+<tr class="even">
+<td>Graph traversal time</td>
+<td><span class="math inline">O(V+E)</span> with adjacency lists</td>
+</tr>
+<tr class="odd">
+<td>Graph traversal storage</td>
+<td><span class="math inline">O(V)</span> when all reached states are retained</td>
+</tr>
+</tbody>
+</table>
+<p>For tree search with branching factor <span class="math inline">b</span> and maximum depth <span class="math inline">m</span>, work can grow as <span class="math inline">O(b^m)</span>.</p>
+<div class="takeaway">
+<p>DFS may keep a narrow frontier, but graph search still stores reached states.</p>
+</div>
+</section>
+<section id="neighbor-order-matters" class="slide level2 search-method">
+<h2>Neighbor Order Matters</h2>
+<p>Suppose S has two branches that both reach G.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>First branch considered</th>
+<th>Route found first</th>
+<th style="text-align: right;">Edges</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A before B</td>
+<td>S, A, C, D, G</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td>B before A</td>
+<td>S, B, G</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>DFS can return either route depending on neighbor order.</li>
+<li>BFS still returns a two-edge route because it explores by depth.</li>
+<li>If several shortest routes exist, BFS’s tie-breaking also follows neighbor order.</li>
+</ul>
+<div class="question">
+<p>When should an implementation sort neighbors rather than trust their stored order?</p>
+</div>
+</section>
+<section id="bfs-and-dfs-compared" class="slide level2 search-method">
+<h2>BFS and DFS Compared</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -383,32 +732,115 @@ Peizhong Ju
 </thead>
 <tbody>
 <tr class="odd">
-<td>Frontier structure</td>
+<td>Frontier</td>
 <td>Queue</td>
-<td>Stack / recursion</td>
+<td>Stack or recursion</td>
 </tr>
 <tr class="even">
 <td>Expansion pattern</td>
 <td>Layer by layer</td>
-<td>Deep branch first</td>
+<td>One branch first</td>
 </tr>
 <tr class="odd">
-<td>Shortest path in unweighted graphs</td>
-<td>Yes</td>
+<td>Fewest actions</td>
+<td>Yes with equal step costs</td>
 <td>Not guaranteed</td>
 </tr>
 <tr class="even">
-<td>Memory pressure</td>
-<td>Can be large at wide levels</td>
-<td>Usually tracks a path plus alternatives</td>
+<td>Main memory pressure</td>
+<td>Wide frontier</td>
+<td>Reached set and deep pending paths</td>
 </tr>
 <tr class="odd">
-<td>Common use</td>
-<td>Shortest fewest-step path</td>
-<td>Reachability, backtracking, exhaustive exploration</td>
+<td>Useful when</td>
+<td>A shallow or shortest solution matters</td>
+<td>Any solution or exhaustive traversal is enough</td>
 </tr>
 </tbody>
 </table>
+<div class="takeaway">
+<p>A small frontier change produces different search order, memory use, and solution quality.</p>
+</div>
+</section>
+<section id="which-search-would-you-choose" class="slide level2 search-method">
+<h2>Which Search Would You Choose?</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>Starting point</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Fewest moves through an unweighted maze</td>
+<td><span class="fragment">BFS</span></td>
+</tr>
+<tr class="even">
+<td>Determine whether any vertex is reachable</td>
+<td><span class="fragment">Either BFS or DFS</span></td>
+</tr>
+<tr class="odd">
+<td>Explore a deep decision tree with tight memory</td>
+<td><span class="fragment">DFS, with depth and cycle safeguards</span></td>
+</tr>
+<tr class="even">
+<td>Find the cheapest route with unequal costs</td>
+<td><span class="fragment">Neither; use Uniform-Cost Search</span></td>
+</tr>
+</tbody>
+</table>
+<div class="question">
+<p>A social-network query asks for a person within two friendship links. Which frontier rule fits the depth limit?</p>
+</div>
+<div class="fragment takeaway">
+<p>BFS naturally completes distance 1 before exploring distance 2.</p>
+</div>
+</section>
+<section id="homework-1-connection" class="slide level2 search-method">
+<h2>Homework 1 Connection</h2>
+<p>For a keys-and-doors search problem:</p>
+<ul>
+<li>The state needs the <strong>current location</strong> and the <strong>keys already collected</strong>.</li>
+<li>One location with different key sets can represent different states.</li>
+<li>If every move has equal cost, BFS provides a shortest-move baseline.</li>
+<li>Parent links can reconstruct the moves after reaching the goal.</li>
+</ul>
+<div class="question">
+<p>Why would a reached set containing only locations discard valid solutions?</p>
+</div>
+<p><a href="../homeworks/hw1.html" target="_blank" rel="noopener">Open Homework 1</a></p>
+<aside class="notes">
+<p>Allow several minutes to explain the released homework specification. Do not derive a complete assignment implementation. A location-only reached set can merge situations with different available actions because the agent may own different keys.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="takeaways" class="slide level2 search-method">
+<h2>Takeaways</h2>
+<ul>
+<li>BFS uses a queue and finds a fewest-action path when step costs are equal.</li>
+<li>DFS uses a stack or recursion and explores one branch at a time.</li>
+<li>Record new states when adding them to the frontier.</li>
+<li>Store parent links when the search must return a path.</li>
+<li>Neighbor order strongly affects DFS traversal.</li>
+</ul>
+<div class="takeaway">
+<p>Use the notebook’s explanation blocks to connect these ideas to the grid-world implementation.</p>
+</div>
+<p><a href="../code_and_homework/search_BFS_DFS.html" target="_blank" rel="noopener">Open Code: BFS and DFS</a></p>
 <p><a class="asset-credit-link" href="../asset_credits.html#lec5" target="_blank" rel="noopener">Asset credits</a></p>
 
 

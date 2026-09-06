@@ -25,28 +25,28 @@
     "href": "code_and_homework/search_BFS_DFS.html",
     "title": "Breadth-First and Depth-First Search",
     "section": "",
-    "text": "This notebook compares BFS and DFS on the same grid world. Both algorithms explore reachable states, but their frontier discipline leads to very different behavior.\nWhat to notice: BFS uses a queue and finds the shortest path in an unweighted graph, while DFS uses a stack and may find a path quickly without guaranteeing shortest length.\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nWALL = \"#\"\nEMPTY = \".\"\n\nfigure_size = 1.5\n\ndef generate_map(width, height, seed):\n    np.random.seed(seed)\n    m = np.random.choice([WALL, EMPTY], size=(height, width))\n    # scan all 2x2 blocks and remove walls that are not needed\n    for i in range(height - 1):\n        for j in range(width - 1):\n            block = m[i : i + 2, j : j + 2]\n            if np.sum(block == WALL) == 4:\n                # randomly remove one wall\n                block[np.random.randint(2), np.random.randint(2)] = EMPTY\n    # run union-find to make sure the map is connected\n    parent = np.arange(width * height)\n\n    def find(x):\n        while parent[x] != x:\n            parent[x] = parent[parent[x]]\n            x = parent[x]\n        return parent[x]\n\n    def union(x, y):\n        parent[find(x)] = find(y)\n\n    for i in range(height):\n        for j in range(width):\n            if m[i, j] == WALL:\n                continue\n            for ni, nj in [(i + 1, j), (i, j + 1)]:\n                if ni &lt; height and nj &lt; width and m[ni, nj] == EMPTY:\n                    union(i * width + j, ni * width + nj)\n    for i in range(height):\n        for j in range(width):\n            if m[i, j] == WALL:\n                # check if all neighbors of this wall are connected\n                # if not, remove this wall\n                neighbors = []\n                for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:\n                    if 0 &lt;= ni &lt; height and 0 &lt;= nj &lt; width and m[ni, nj] == EMPTY:\n                        neighbors.append(\n                            find(ni * width + nj)\n                        )  # get the parent of all empty neighbors\n                if len(neighbors) != 0 and len(set(neighbors)) != 1:\n                    m[i, j] = EMPTY\n                    # connect all neighbors\n                    for k in range(1, len(neighbors)):\n                        union(neighbors[k - 1], neighbors[k])\n    return m\n\n\ndef find_start_end(m):\n    # randomly find a start and end point\n    h, w = m.shape\n    start = np.random.randint(h), np.random.randint(w)\n    end = np.random.randint(h), np.random.randint(w)\n    while m[start] == WALL or m[end] == WALL:\n        start = np.random.randint(h), np.random.randint(w)\n        end = np.random.randint(h), np.random.randint(w)\n    return start, end\n\n\ndef show_map(m, ax=None):\n    h, w = m.shape\n    for i in range(h):\n        for j in range(w):\n            # draw a rectangle\n            ax.add_patch(\n                plt.Rectangle(\n                    (j, h - i - 1), 1, 1, fc=\"gray\" if m[i, j] == WALL else \"white\"\n                )\n            )\n            # draw the border\n            ax.add_patch(\n                plt.Rectangle((j, h - i - 1), 1, 1, fill=False, edgecolor=\"black\")\n            )\n    # draw indices of horizontal and vertical axis\n    for i in range(h):\n        ax.text(-0.5, h - i - 0.5, str(i), ha=\"center\", va=\"center\")\n    for j in range(w):\n        ax.text(j + 0.5, h + 0.5, str(j), ha=\"center\", va=\"center\")\n    ax.set_xlim(-0.3, w + 0.3)\n    ax.set_ylim(-0.3, h + 0.3)\n    ax.set_aspect(\"equal\", adjustable=\"box\")\n    ax.axis(\"off\")\n\n\ndef draw_path(m, path, ax):\n    h, w = m.shape\n    last = path[0]\n    show_map(m, ax)\n    # draw the start and end points by filling the grid with a different color\n    ax.add_patch(plt.Rectangle((last[1], h - last[0] - 1), 1, 1, fc=\"green\"))\n    ax.add_patch(plt.Rectangle((path[-1][1], h - path[-1][0] - 1), 1, 1, fc=\"red\"))\n    for i, j in path[1:]:\n        # connect the two points\n        ax.plot([last[1] + 0.5, j + 0.5], [h - last[0] - 0.5, h - i - 0.5], \"r\", lw=2)\n        last = (i, j)\n\n\n# a = generate_map(5, 3, 1)\na = generate_map(6, 5, 2)\nstart, end = find_start_end(a)\n# create a figure\nfig, ax = plt.subplots(figsize=(figure_size, figure_size))\nshow_map(a, ax)\n# plot the start and end points\nax.add_patch(\n    plt.Circle((start[1] + 0.5, a.shape[0] - start[0] - 0.5), 0.3, color=\"green\")\n)\nax.add_patch(plt.Circle((end[1] + 0.5, a.shape[0] - end[0] - 0.5), 0.3, color=\"red\"))\nplt.show()"
+    "text": "This notebook compares BFS and DFS on the same grid world. Both algorithms explore reachable states, but the data structure used for the frontier changes the order of exploration and the path that is returned."
   },
   {
     "objectID": "code_and_homework/search_BFS_DFS.html#breadth-first-search",
     "href": "code_and_homework/search_BFS_DFS.html#breadth-first-search",
     "title": "Breadth-First and Depth-First Search",
     "section": "Breadth-First Search",
-    "text": "Breadth-First Search\nBFS expands shallower states first, so the first time it reaches the goal is along a shortest path.\n\n# BFS to find the shortest path\ndef bfs(m, start, end):\n    h, w = m.shape\n    q = [start]\n    visited = np.zeros((h, w), dtype=bool)\n    visited[start[0], start[1]] = True\n    parent = np.zeros((h, w, 2), dtype=int)\n\n    print(\"queue:\", q)\n\n    while q:\n        i, j = q.pop(0)\n\n        print(\"current position:\", (i, j))\n        print(\"queue:\", q)\n        fig, ax = plt.subplots(figsize=(figure_size, figure_size))\n        show_map(m, ax)\n        # paint the visited grid with a different color\n        for ii in range(h):\n            for jj in range(w):\n                if visited[ii, jj]:\n                    ax.add_patch(\n                        plt.Rectangle((jj, h - ii - 1), 1, 1, fc=\"yellow\", alpha=0.5)\n                    )\n        ax.add_patch(plt.Rectangle((j + 0.1, h - i - 0.9), 0.8, 0.8, fc=\"cyan\"))\n        plt.show()\n\n        if (i, j) == end:\n            break\n        for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:\n            if (\n                0 &lt;= ni &lt; h\n                and 0 &lt;= nj &lt; w\n                and not visited[ni, nj]\n                and m[ni, nj] == EMPTY\n            ):\n                visited[ni, nj] = True\n                parent[ni, nj] = (i, j)\n                q.append((ni, nj))\n        print(\"queue:\", q)\n    path = []\n    i, j = end\n    while (i, j) != start:\n        path.append((i, j))\n        i, j = parent[i, j]\n    path.append(start)\n    return path[::-1]\n\n\npath = bfs(a, start, end)\nprint(path)\n\n\nfig, ax = plt.subplots(figsize=(figure_size, figure_size))\ndraw_path(a, path, ax)\nplt.show()\n\nqueue: [(2, 4)]\ncurrent position: (2, 4)\nqueue: []\n\n\n\n\n\n\n\n\n\nqueue: [(3, 4), (2, 5), (2, 3)]\ncurrent position: (3, 4)\nqueue: [(2, 5), (2, 3)]\n\n\n\n\n\n\n\n\n\nqueue: [(2, 5), (2, 3), (4, 4), (3, 5), (3, 3)]\ncurrent position: (2, 5)\nqueue: [(2, 3), (4, 4), (3, 5), (3, 3)]\n\n\n\n\n\n\n\n\n\nqueue: [(2, 3), (4, 4), (3, 5), (3, 3), (1, 5)]\ncurrent position: (2, 3)\nqueue: [(4, 4), (3, 5), (3, 3), (1, 5)]\n\n\n\n\n\n\n\n\n\nqueue: [(4, 4), (3, 5), (3, 3), (1, 5), (1, 3), (2, 2)]\ncurrent position: (4, 4)\nqueue: [(3, 5), (3, 3), (1, 5), (1, 3), (2, 2)]\n\n\n\n\n\n\n\n\n\nqueue: [(3, 5), (3, 3), (1, 5), (1, 3), (2, 2), (4, 5), (4, 3)]\ncurrent position: (3, 5)\nqueue: [(3, 3), (1, 5), (1, 3), (2, 2), (4, 5), (4, 3)]\n\n\n\n\n\n\n\n\n\n[(2, 4), (3, 4), (3, 5)]"
+    "text": "Breadth-First Search\nBFS expands states in increasing depth order. Because every grid move has the same cost, the first path it finds to the goal has the fewest moves.\nThe function has four stages:\n\nInitialize the queue with the start state and mark it visited.\nRemove the oldest queued state with pop(0).\nAdd each valid, unvisited neighbor and record its parent.\nFollow parent links backward from the goal, then reverse the list.\n\nThe state is marked visited when it is added to the queue. This prevents the same state from being queued by multiple parents. A Python list is clear for this small demonstration; collections.deque gives efficient removal from the left for larger problems.\n\n# BFS to find the shortest path\ndef bfs(m, start, end):\n    h, w = m.shape\n    q = [start]\n    visited = np.zeros((h, w), dtype=bool)\n    visited[start[0], start[1]] = True\n    parent = np.zeros((h, w, 2), dtype=int)\n\n    print(\"queue:\", q)\n\n    while q:\n        i, j = q.pop(0)\n\n        print(\"current position:\", (i, j))\n        print(\"queue:\", q)\n        fig, ax = plt.subplots(figsize=(figure_size, figure_size))\n        show_map(m, ax)\n        # paint the visited grid with a different color\n        for ii in range(h):\n            for jj in range(w):\n                if visited[ii, jj]:\n                    ax.add_patch(\n                        plt.Rectangle((jj, h - ii - 1), 1, 1, fc=\"yellow\", alpha=0.5)\n                    )\n        ax.add_patch(plt.Rectangle((j + 0.1, h - i - 0.9), 0.8, 0.8, fc=\"cyan\"))\n        plt.show()\n\n        if (i, j) == end:\n            break\n        for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:\n            if (\n                0 &lt;= ni &lt; h\n                and 0 &lt;= nj &lt; w\n                and not visited[ni, nj]\n                and m[ni, nj] == EMPTY\n            ):\n                visited[ni, nj] = True\n                parent[ni, nj] = (i, j)\n                q.append((ni, nj))\n        print(\"queue:\", q)\n    path = []\n    i, j = end\n    while (i, j) != start:\n        path.append((i, j))\n        i, j = parent[i, j]\n    path.append(start)\n    return path[::-1]\n\n\n\n\nRun BFS\nThe printed queue reveals FIFO order. In each saved figure, yellow cells have been discovered and the cyan cell is the state currently being expanded. The final figure draws the returned shortest path.\n\npath = bfs(a, start, end)\nprint(path)\n\n\nfig, ax = plt.subplots(figsize=(figure_size, figure_size))\ndraw_path(a, path, ax)\nplt.show()\n\nqueue: [(2, 4)]\ncurrent position: (2, 4)\nqueue: []\n\n\n\n\n\n\n\n\n\nqueue: [(3, 4), (2, 5), (2, 3)]\ncurrent position: (3, 4)\nqueue: [(2, 5), (2, 3)]\n\n\n\n\n\n\n\n\n\nqueue: [(2, 5), (2, 3), (4, 4), (3, 5), (3, 3)]\ncurrent position: (2, 5)\nqueue: [(2, 3), (4, 4), (3, 5), (3, 3)]\n\n\n\n\n\n\n\n\n\nqueue: [(2, 3), (4, 4), (3, 5), (3, 3), (1, 5)]\ncurrent position: (2, 3)\nqueue: [(4, 4), (3, 5), (3, 3), (1, 5)]\n\n\n\n\n\n\n\n\n\nqueue: [(4, 4), (3, 5), (3, 3), (1, 5), (1, 3), (2, 2)]\ncurrent position: (4, 4)\nqueue: [(3, 5), (3, 3), (1, 5), (1, 3), (2, 2)]\n\n\n\n\n\n\n\n\n\nqueue: [(3, 5), (3, 3), (1, 5), (1, 3), (2, 2), (4, 5), (4, 3)]\ncurrent position: (3, 5)\nqueue: [(3, 3), (1, 5), (1, 3), (2, 2), (4, 5), (4, 3)]\n\n\n\n\n\n\n\n\n\n[(2, 4), (3, 4), (3, 5)]"
   },
   {
     "objectID": "code_and_homework/search_BFS_DFS.html#iterative-depth-first-search",
     "href": "code_and_homework/search_BFS_DFS.html#iterative-depth-first-search",
     "title": "Breadth-First and Depth-First Search",
     "section": "Iterative Depth-First Search",
-    "text": "Iterative Depth-First Search\nDFS follows one branch deeply before backtracking. It is memory-efficient but not optimal on this grid.\n\ndef dfs_iterative(m, start, end):\n    h, w = m.shape\n    s = [start]\n    visited = np.zeros((h, w), dtype=bool)\n    visited[start[0], start[1]] = True\n    parent = np.zeros((h, w, 2), dtype=int)\n\n    print(\"stack:\", s)\n\n    while s:\n        i, j = s.pop()\n\n        print(\"current position:\", (i, j))\n        print(\"stack:\", s)\n        fig, ax = plt.subplots(figsize=(figure_size, figure_size))\n        show_map(m, ax)\n        # paint the visited grid with a different color\n        for ii in range(h):\n            for jj in range(w):\n                if visited[ii, jj]:\n                    ax.add_patch(\n                        plt.Rectangle((jj, h - ii - 1), 1, 1, fc=\"yellow\", alpha=0.5)\n                    )\n        ax.add_patch(plt.Rectangle((j + 0.1, h - i - 0.9), 0.8, 0.8, fc=\"cyan\"))\n        plt.show()\n\n        if (i, j) == end:\n            break\n        for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:\n            if (\n                0 &lt;= ni &lt; h\n                and 0 &lt;= nj &lt; w\n                and not visited[ni, nj]\n                and m[ni, nj] == EMPTY\n            ):\n                visited[ni, nj] = True\n                parent[ni, nj] = (i, j)\n                s.append((ni, nj))\n        print(\"stack:\", s)\n    path = []\n    i, j = end\n    while (i, j) != start:\n        path.append((i, j))\n        i, j = parent[i, j]\n    path.append(start)\n    return path[::-1]\n\n\npath = dfs_iterative(a, start, end)\nprint(path)\nfig, ax = plt.subplots(figsize=(figure_size, figure_size))\ndraw_path(a, path, ax)\nplt.show()\n\nstack: [(2, 4)]\ncurrent position: (2, 4)\nstack: []\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (2, 3)]\ncurrent position: (2, 3)\nstack: [(3, 4), (2, 5)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (2, 2)]\ncurrent position: (2, 2)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (2, 1)]\ncurrent position: (2, 1)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (2, 0)]\ncurrent position: (2, 0)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (3, 0)]\ncurrent position: (3, 0)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (4, 0)]\ncurrent position: (4, 0)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (4, 1)]\ncurrent position: (4, 1)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (4, 2)]\ncurrent position: (4, 2)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (4, 3)]\ncurrent position: (4, 3)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (4, 4)]\ncurrent position: (4, 4)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (4, 5)]\ncurrent position: (4, 5)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (3, 5)]\ncurrent position: (3, 5)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\n[(2, 4), (2, 3), (2, 2), (2, 1), (2, 0), (3, 0), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4), (4, 5), (3, 5)]"
+    "text": "Iterative Depth-First Search\nIterative DFS follows one branch deeply before backtracking. Its structure closely matches BFS, but the frontier is a stack:\n\nappend pushes a state onto the stack.\npop() removes the newest state.\nThe parent array records how the returned path was reached.\n\nNeighbor order matters because the last neighbor pushed is the first one expanded. DFS may reach the goal quickly, but the first path it finds is not guaranteed to be shortest. Its frontier can be smaller than BFS’s frontier, although the visited and parent arrays still require space proportional to the grid.\n\ndef dfs_iterative(m, start, end):\n    h, w = m.shape\n    s = [start]\n    visited = np.zeros((h, w), dtype=bool)\n    visited[start[0], start[1]] = True\n    parent = np.zeros((h, w, 2), dtype=int)\n\n    print(\"stack:\", s)\n\n    while s:\n        i, j = s.pop()\n\n        print(\"current position:\", (i, j))\n        print(\"stack:\", s)\n        fig, ax = plt.subplots(figsize=(figure_size, figure_size))\n        show_map(m, ax)\n        # paint the visited grid with a different color\n        for ii in range(h):\n            for jj in range(w):\n                if visited[ii, jj]:\n                    ax.add_patch(\n                        plt.Rectangle((jj, h - ii - 1), 1, 1, fc=\"yellow\", alpha=0.5)\n                    )\n        ax.add_patch(plt.Rectangle((j + 0.1, h - i - 0.9), 0.8, 0.8, fc=\"cyan\"))\n        plt.show()\n\n        if (i, j) == end:\n            break\n        for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:\n            if (\n                0 &lt;= ni &lt; h\n                and 0 &lt;= nj &lt; w\n                and not visited[ni, nj]\n                and m[ni, nj] == EMPTY\n            ):\n                visited[ni, nj] = True\n                parent[ni, nj] = (i, j)\n                s.append((ni, nj))\n        print(\"stack:\", s)\n    path = []\n    i, j = end\n    while (i, j) != start:\n        path.append((i, j))\n        i, j = parent[i, j]\n    path.append(start)\n    return path[::-1]\n\n\n\n\nRun iterative DFS\nCompare the printed stack and yellow exploration region with the BFS output. The map and endpoints are unchanged, so the difference comes from LIFO rather than FIFO frontier order.\n\npath = dfs_iterative(a, start, end)\nprint(path)\nfig, ax = plt.subplots(figsize=(figure_size, figure_size))\ndraw_path(a, path, ax)\nplt.show()\n\nstack: [(2, 4)]\ncurrent position: (2, 4)\nstack: []\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (2, 3)]\ncurrent position: (2, 3)\nstack: [(3, 4), (2, 5)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (2, 2)]\ncurrent position: (2, 2)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (2, 1)]\ncurrent position: (2, 1)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (2, 0)]\ncurrent position: (2, 0)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (3, 0)]\ncurrent position: (3, 0)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (4, 0)]\ncurrent position: (4, 0)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (4, 1)]\ncurrent position: (4, 1)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (4, 2)]\ncurrent position: (4, 2)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (4, 3)]\ncurrent position: (4, 3)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (4, 4)]\ncurrent position: (4, 4)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (4, 5)]\ncurrent position: (4, 5)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1), (3, 5)]\ncurrent position: (3, 5)\nstack: [(3, 4), (2, 5), (3, 3), (1, 3), (3, 2), (3, 1), (1, 1)]\n\n\n\n\n\n\n\n\n\n[(2, 4), (2, 3), (2, 2), (2, 1), (2, 0), (3, 0), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4), (4, 5), (3, 5)]"
   },
   {
     "objectID": "code_and_homework/search_BFS_DFS.html#recursive-depth-first-search",
     "href": "code_and_homework/search_BFS_DFS.html#recursive-depth-first-search",
     "title": "Breadth-First and Depth-First Search",
     "section": "Recursive Depth-First Search",
-    "text": "Recursive Depth-First Search\nThe recursive version has the same search order idea as iterative DFS, expressed through the call stack.\n\n# dfs with recursion\ndef dfs_recursive(m, start, end):\n    h, w = m.shape\n    visited = np.zeros((h, w), dtype=bool)\n    visited[start[0], start[1]] = True\n    parent = np.zeros((h, w, 2), dtype=int)\n\n    def dfs(i, j):\n        print(\"current position:\", (i, j))\n        fig, ax = plt.subplots(figsize=(figure_size, figure_size))\n        show_map(m, ax)\n        # paint the visited grid with a different color\n        for ii in range(h):\n            for jj in range(w):\n                if visited[ii, jj]:\n                    ax.add_patch(\n                        plt.Rectangle((jj, h - ii - 1), 1, 1, fc=\"yellow\", alpha=0.5)\n                    )\n        ax.add_patch(plt.Rectangle((j + 0.1, h - i - 0.9), 0.8, 0.8, fc=\"cyan\"))\n        plt.show()\n\n        if (i, j) == end:\n            return [(i, j)]\n        for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:\n            if (\n                0 &lt;= ni &lt; h\n                and 0 &lt;= nj &lt; w\n                and not visited[ni, nj]\n                and m[ni, nj] == EMPTY\n            ):\n                visited[ni, nj] = True\n                parent[ni, nj] = (i, j)\n                path = dfs(ni, nj)\n                if path:\n                    return [(i, j)] + path\n        return []\n\n    path = dfs(start[0], start[1])\n    return path[::-1]\n\npath = dfs_recursive(a, start, end)\nprint(path)\nfig, ax = plt.subplots(figsize=(figure_size, figure_size))\ndraw_path(a, path, ax)\nplt.show()\n\ncurrent position: (2, 4)\n\n\n\n\n\n\n\n\n\ncurrent position: (3, 4)\n\n\n\n\n\n\n\n\n\ncurrent position: (4, 4)\n\n\n\n\n\n\n\n\n\ncurrent position: (4, 5)\n\n\n\n\n\n\n\n\n\ncurrent position: (3, 5)\n\n\n\n\n\n\n\n\n\n[(3, 5), (4, 5), (4, 4), (3, 4), (2, 4)]"
+    "text": "Recursive Depth-First Search\nThe recursive version stores the frontier implicitly in Python’s call stack. Each call explores one position and recursively tries its valid neighbors.\n\nThe base case returns a one-state path at the goal.\nA successful recursive call prepends the current state as the calls unwind.\nAn empty list signals that a branch did not reach the goal.\n\nBecause the path is assembled while recursion unwinds, check its direction before applying another reversal. Deep searches can also reach Python’s recursion limit, so iterative DFS is more robust on large state spaces.\n\n# dfs with recursion\ndef dfs_recursive(m, start, end):\n    h, w = m.shape\n    visited = np.zeros((h, w), dtype=bool)\n    visited[start[0], start[1]] = True\n    parent = np.zeros((h, w, 2), dtype=int)\n\n    def dfs(i, j):\n        print(\"current position:\", (i, j))\n        fig, ax = plt.subplots(figsize=(figure_size, figure_size))\n        show_map(m, ax)\n        # paint the visited grid with a different color\n        for ii in range(h):\n            for jj in range(w):\n                if visited[ii, jj]:\n                    ax.add_patch(\n                        plt.Rectangle((jj, h - ii - 1), 1, 1, fc=\"yellow\", alpha=0.5)\n                    )\n        ax.add_patch(plt.Rectangle((j + 0.1, h - i - 0.9), 0.8, 0.8, fc=\"cyan\"))\n        plt.show()\n\n        if (i, j) == end:\n            return [(i, j)]\n        for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:\n            if (\n                0 &lt;= ni &lt; h\n                and 0 &lt;= nj &lt; w\n                and not visited[ni, nj]\n                and m[ni, nj] == EMPTY\n            ):\n                visited[ni, nj] = True\n                parent[ni, nj] = (i, j)\n                path = dfs(ni, nj)\n                if path:\n                    return [(i, j)] + path\n        return []\n\n    path = dfs(start[0], start[1])\n    return path[::-1]\n\n\n\nRun recursive DFS\nInspect the printed path before interpreting the final drawing. If the first coordinate is the goal instead of the start, the outer reversal has reversed a path that was already assembled in start-to-goal order.\n\npath = dfs_recursive(a, start, end)\nprint(path)\nfig, ax = plt.subplots(figsize=(figure_size, figure_size))\ndraw_path(a, path, ax)\nplt.show()\n\ncurrent position: (2, 4)\n\n\n\n\n\n\n\n\n\ncurrent position: (3, 4)\n\n\n\n\n\n\n\n\n\ncurrent position: (4, 4)\n\n\n\n\n\n\n\n\n\ncurrent position: (4, 5)\n\n\n\n\n\n\n\n\n\ncurrent position: (3, 5)\n\n\n\n\n\n\n\n\n\n[(3, 5), (4, 5), (4, 4), (3, 4), (2, 4)]"
   },
   {
     "objectID": "code_and_homework/linear_regression.html",
@@ -270,14 +270,14 @@
     "href": "slides/lec5_BFS_DFS.html#uninformed-search",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Uninformed Search",
-    "text": "Uninformed Search\nUninformed search, also called blind search, uses only the problem definition:\n\nstate representation\nactions and transition model\ngoal test\npath cost, if provided\n\n\nThe search rule decides which frontier node to expand next."
+    "text": "Uninformed Search\nUninformed search uses the problem definition but no estimate of distance to the goal.\n\nIt knows the initial state, actions, transitions, and goal test.\nIt may also know step costs, but it has no heuristic.\nThe search rule chooses which frontier node to expand next.\n\n\nBFS and DFS differ mainly in how they remove nodes from the frontier.\n\n\n50-minute teaching plan:\n\nSlides 2-3: review uninformed search and frontier rules, 6 minutes.\nSlides 4-8: BFS intuition, trace, pseudocode, and guarantees, 14 minutes.\nSlides 9-14: DFS intuition, traces, pseudocode, and guarantees, 16 minutes.\nSlides 15-17: comparison, selection exercise, and Homework 1 introduction, 11 minutes.\nSlide 18: recap and transition to the notebook, 3 minutes.\n\nKeep the slide discussion conceptual. Open the separately linked Jupyter Notebook after the deck and use its new Markdown explanation blocks to teach the implementation."
   },
   {
     "objectID": "slides/lec5_BFS_DFS.html#breadth-first-search",
     "href": "slides/lec5_BFS_DFS.html#breadth-first-search",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Breadth-First Search",
-    "text": "Breadth-First Search\n\n\n\nExplores all nodes at depth d before any node at depth d+1.\nEquivalent to level-order traversal in a tree.\nUses a queue: first in, first out.\nIn an unweighted graph, BFS finds a shortest path by number of edges.\n\n\nThink ripples: expansion spreads outward one layer at a time.\n\n\n\n\n\nRipple image for BFS layer expansion"
+    "text": "Breadth-First Search\n\n\n\nBFS expands every node at depth d before any node at depth d+1.\nThe frontier is a queue.\nWith equal step costs, BFS returns a solution with the fewest actions.\n\n\nThink of the frontier as a wave spreading outward one layer at a time."
   },
   {
     "objectID": "slides/lec5_BFS_DFS.html#bfs-frontier",
@@ -291,28 +291,28 @@
     "href": "slides/lec5_BFS_DFS.html#breadth-first-search-pseudocode",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Breadth-First Search Pseudocode",
-    "text": "Breadth-First Search Pseudocode\nBFS(G, s):\n    initialize an empty queue Q\n    enqueue s into Q\n    mark s as visited\n\n    while Q is not empty:\n        u = dequeue Q\n        process u\n\n        for each neighbor v of u:\n            if v is not visited:\n                mark v as visited\n                enqueue v into Q"
+    "text": "Breadth-First Search Pseudocode\n\n  BFS(problem)\n  frontier &lt;- FIFO-QUEUE(initial node)\n  reached &lt;- {initial state}\n  while frontier is not empty\n  node &lt;- POP-FRONT(frontier)\n  if GOAL-TEST(node.state)\n  return SOLUTION(node)\n  for each child in EXPAND(node)\n  if child.state not in reached\n  add child.state to reached\n  PUSH-BACK(frontier, child)\n  return failure\n\n\nReveal initialization, removal, goal test, expansion, and insertion in stages. Parent links live inside each search node and allow SOLUTION to reconstruct the action sequence. Reached contains states, while the frontier contains search nodes."
   },
   {
     "objectID": "slides/lec5_BFS_DFS.html#depth-first-search",
     "href": "slides/lec5_BFS_DFS.html#depth-first-search",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Depth-First Search",
-    "text": "Depth-First Search\n\n\n\nExplores as deeply as possible along one branch before backtracking.\nSimilar to preorder traversal in a tree.\nUses a stack, either explicitly or through recursion.\nDoes not generally guarantee a shortest path.\n\n\nThink maze: follow a path until it ends, then backtrack.\n\n\n\n\n\nMaze image for DFS backtracking"
+    "text": "Depth-First Search\n\n\n\nDFS follows one branch until it reaches a goal or a dead end.\nThe frontier is a stack or the language’s call stack.\nBacktracking resumes the most recent unfinished branch.\nDFS does not generally return a shortest path.\n\n\nThink of following one corridor, then returning to the last junction."
   },
   {
     "objectID": "slides/lec5_BFS_DFS.html#recursive-dfs-pseudocode",
     "href": "slides/lec5_BFS_DFS.html#recursive-dfs-pseudocode",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Recursive DFS Pseudocode",
-    "text": "Recursive DFS Pseudocode\nDFS(u):\n    mark u as visited\n    process u\n\n    for each neighbor v of u:\n        if v is not visited:\n            DFS(v)\n\nMain:\n    DFS(s)\n\nThe call stack stores the current path."
+    "text": "Recursive DFS Pseudocode\n\n  DFS(node, reached)\n  if GOAL-TEST(node.state)\n  return SOLUTION(node)\n  add node.state to reached\n  for each child in EXPAND(node)\n  if child.state not in reached\n  result &lt;- DFS(child, reached)\n  if result is not failure\n  return result\n  return failure\n\n\nThe active function calls remember the current branch."
   },
   {
     "objectID": "slides/lec5_BFS_DFS.html#iterative-dfs-pseudocode",
     "href": "slides/lec5_BFS_DFS.html#iterative-dfs-pseudocode",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Iterative DFS Pseudocode",
-    "text": "Iterative DFS Pseudocode\nDFS-Iterative(G, s):\n    initialize an empty stack S\n    push s onto S\n    mark s as visited\n\n    while S is not empty:\n        u = pop S\n        process u\n\n        for each neighbor v of u:\n            if v is not visited:\n                mark v as visited\n                push v onto S"
+    "text": "Iterative DFS Pseudocode\n\n  DFS-ITERATIVE(problem)\n  frontier &lt;- LIFO-STACK(initial node)\n  reached &lt;- {initial state}\n  while frontier is not empty\n  node &lt;- POP-TOP(frontier)\n  if GOAL-TEST(node.state)\n  return SOLUTION(node)\n  for each child in reverse(EXPAND(node))\n  if child.state not in reached\n  add child.state to reached\n  PUSH-TOP(frontier, child)\n  return failure\n\n\nReverse the generated order only when you want the leftmost generated child to leave the stack first. Without reversal, the last generated child receives priority. The linked notebook makes this effect visible through its fixed grid-neighbor order."
   },
   {
     "objectID": "slides/lec5_BFS_DFS.html#bfs-vs.-dfs",
@@ -1222,7 +1222,7 @@
     "href": "asset_credits.html#lec5",
     "title": "Visual Asset Credits",
     "section": "Lecture 5: Breadth-First Search and Depth-First Search",
-    "text": "Lecture 5: Breadth-First Search and Depth-First Search\nCarried-over assets needing source verification: car_navigation.png, eight_queens.png, fig2_2.png, maze.png, poker.png, puzzle_8.png, ripple.png, state_space.png."
+    "text": "Lecture 5: Breadth-First Search and Depth-First Search\nripple.png and maze.png were carried over from the Spring 2025 Beamer project. Local assets in that project came from Artificial Intelligence: A Modern Approach or Wikipedia; exact page attribution remains to be verified. The BFS and DFS animation trees are original course illustrations by Peizhong Ju, assisted by Codex. Each step is an editable page in bfs-trace.drawio or dfs-trace.drawio, exported from draw.io as a PNG image for the slides. Search concepts and terminology follow AIMA Chapter 3."
   },
   {
     "objectID": "asset_credits.html#lec6",
@@ -6830,5 +6830,376 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Exit Check",
     "text": "Exit Check\n\nWhich objects determine the attention weights?\nWhich objects are averaged to form the output?\nDoes self-attention mean that queries and keys are identical?\n\n\nQueries and keys, values, and no: self-attention uses the same source sequence but different learned projections."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#one-graph-for-both-algorithms",
+    "href": "slides/lec5_BFS_DFS.html#one-graph-for-both-algorithms",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "One Graph for Both Algorithms",
+    "text": "One Graph for Both Algorithms\n\n\ngraph = {\n    \"S\": [\"A\", \"B\"],\n    \"A\": [\"C\"],\n    \"B\": [\"G\"],\n    \"C\": [\"D\"],\n    \"D\": [\"G\"],\n    \"G\": [],\n}\n\nLong branch\nS, A, C, D, G has 4 edges.\nShort branch\nS, B, G has 2 edges.\nNeighbor order sets tie-breaking.\n\n\nIf a search explores A before B, must it still find the two-edge route first?\n\n\nThe answer depends on the frontier rule. BFS still finds S, B, G first because it exhausts shallower nodes. DFS follows the A branch and reaches G by the four-edge route. The graph is directed for this example. Every referenced state appears as a dictionary key."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#reconstructing-a-path",
+    "href": "slides/lec5_BFS_DFS.html#reconstructing-a-path",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Reconstructing a Path",
+    "text": "Reconstructing a Path\nStore one parent for each discovered state. The start has no parent.\ndef path_from(parent, goal):\n    if goal not in parent:\n        return None\n    path = []\n    state = goal\n    while state is not None:\n        path.append(state)\n        state = parent[state]\n    return path[::-1]\nIf parent = {\"S\": None, \"B\": \"S\", \"G\": \"B\"}, the function returns ['S', 'B', 'G'].\n\nParent links recover the solution without copying a complete path into every frontier entry."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#the-bfs-frontier",
+    "href": "slides/lec5_BFS_DFS.html#the-bfs-frontier",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The BFS Frontier",
+    "text": "The BFS Frontier\n\nRemove from the front of the queue. Add children at the back, left to right.\n\n\n  \n    \n      \n      \n      \n      \n      \n      \n      \n      \n    \n    Numbers show expansion order.\n    FrontierThis stepExpanded\n  \n  \n    Queue: front on the left\n\n\n\n\n\n\n\n\n\nRemove\nAdd\nQueue afterward\n\n\n\n\nStart\nS\n[S]\n\n\nS\nA, B\n[A, B]\n\n\nA\nC, D\n[B, C, D]\n\n\nB\nE, F\n[C, D, E, F]\n\n\nC\n–\n[D, E, F]\n\n\nD\n–\n[E, F]\n\n\nE\n–\n[F]\n\n\nF\n–\n[]\n\n\n\n\n  \n\n\nEvery depth-1 node waits ahead of every depth-2 node.\n\n\nEach step removes one node, expands it, and adds its children. Trace the queue and the matching node together. After B, the queue contains the entire depth-2 layer. If F is the goal and the goal test occurs on removal, S, A, B, C, D, and E have already been expanded before F is removed. The traversal shown here continues until the queue is empty."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#bfs-trace-on-the-example-graph",
+    "href": "slides/lec5_BFS_DFS.html#bfs-trace-on-the-example-graph",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "BFS Trace on the Example Graph",
+    "text": "BFS Trace on the Example Graph\nThe front of the queue appears on the left.\n\n\n\nRemoved\nNewly discovered\nQueue afterward\nParent update\n\n\n\n\nnone\nS\n[S]\nS: None\n\n\nS\nA, B\n[A, B]\nA: S, B: S\n\n\nA\nC\n[B, C]\nC: A\n\n\nB\nG\n[C, G]\nG: B\n\n\nC\nD\n[G, D]\nD: C\n\n\nG\nnone\nreturn\npath S, B, G\n\n\n\n\nWhy does BFS remove C before G even though G is already known?\n\n\nC entered the queue before G, so first in, first out order removes C first. G’s parent is fixed when G is discovered. On this unweighted graph that first discovery gives a shortest path. The implementation tests the goal when removing it to match the common search skeleton from Lecture 4."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#bfs-in-python",
+    "href": "slides/lec5_BFS_DFS.html#bfs-in-python",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "BFS in Python",
+    "text": "BFS in Python\nfrom collections import deque\n\ndef bfs(graph, start, goal):\n    frontier = deque([start])\n    parent = {start: None}\n    expanded = []\n\n    while frontier:\n        state = frontier.popleft()\n        expanded.append(state)\n        if state == goal:\n            return path_from(parent, goal), expanded\n\n        for next_state in graph[state]:\n            if next_state not in parent:\n                parent[next_state] = state\n                frontier.append(next_state)\n\n    return None, expanded\n\npopleft() makes the frontier a queue. The parent dictionary also serves as the reached set.\n\n\nThis is complete runnable Python when combined with the graph and path_from function from slides 3 and 4. Python’s deque supports constant-time removal from the left. A list with pop(0) shifts all remaining entries and is less suitable for a queue."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#running-bfs",
+    "href": "slides/lec5_BFS_DFS.html#running-bfs",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Running BFS",
+    "text": "Running BFS\nbfs_path, bfs_expanded = bfs(graph, \"S\", \"G\")\nprint(\"path:\", bfs_path)\nprint(\"expanded:\", bfs_expanded)\n\npath: [‘S’, ‘B’, ‘G’] expanded: [‘S’, ‘A’, ‘B’, ‘C’, ‘G’]\n\n\n\n\nResult\nMeaning\n\n\n\n\nPath has 2 edges\nBFS finds the shallowest goal\n\n\n5 states expanded\nDiscovery and expansion are different events\n\n\nD never expanded\nThe algorithm stops when it removes G"
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#when-to-mark-a-state-reached",
+    "href": "slides/lec5_BFS_DFS.html#when-to-mark-a-state-reached",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "When to Mark a State Reached",
+    "text": "When to Mark a State Reached\nConsider a diamond: S connects to A and B, and both connect to C.\n\n\n\nPolicy\nWhat happens to C?\n\n\n\n\nMark C when adding it to the frontier\nC enters once\n\n\nMark C only when removing it\nA and B can both add C\n\n\n\nif next_state not in parent:\n    parent[next_state] = state\n    frontier.append(next_state)\n\nRecord a state at the same moment it enters the frontier.\n\n\nFor BFS and DFS reachability, this prevents duplicate frontier entries and avoids cycles. Later lectures revise the rule for Uniform-Cost Search and A*, where a cheaper path to a known state may need to replace the previous one."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#bfs-guarantees-and-cost",
+    "href": "slides/lec5_BFS_DFS.html#bfs-guarantees-and-cost",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "BFS Guarantees and Cost",
+    "text": "BFS Guarantees and Cost\n\n\n\n\n\n\n\nQuestion\nBFS answer\n\n\n\n\nComplete?\nYes on a finite graph; also with finite branching and a finite-depth goal\n\n\nFewest actions?\nYes when every step has equal cost\n\n\nGraph traversal time\nO(V+E) with adjacency lists\n\n\nGraph traversal storage\nO(V) for frontier, reached states, and parents\n\n\nSearch-tree growth\nA layer can contain about b^d nodes\n\n\n\n\nBFS obtains a shortest-action guarantee by retaining a potentially wide frontier.\n\n\nV and E describe an explicit graph. Branching factor b and shallowest solution depth d describe an implicit search tree. Unequal costs break the connection between shallowest and cheapest, motivating Uniform-Cost Search."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#dfs-trace-on-the-example-graph",
+    "href": "slides/lec5_BFS_DFS.html#dfs-trace-on-the-example-graph",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "DFS Trace on the Example Graph",
+    "text": "DFS Trace on the Example Graph\nThe top of the stack appears on the right. Push neighbors in reverse order so A is removed first.\n\n\n\nRemoved\nNewly pushed\nStack afterward\nParent update\n\n\n\n\nnone\nS\n[S]\nS: None\n\n\nS\nB, then A\n[B, A]\nB: S, A: S\n\n\nA\nC\n[B, C]\nC: A\n\n\nC\nD\n[B, D]\nD: C\n\n\nD\nG\n[B, G]\nG: D\n\n\nG\nnone\nreturn\npath S, A, C, D, G\n\n\n\n\nDFS reaches a goal after five expansions, but its path has four edges."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#dfs-in-python-iterative",
+    "href": "slides/lec5_BFS_DFS.html#dfs-in-python-iterative",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "DFS in Python: Iterative",
+    "text": "DFS in Python: Iterative\ndef dfs(graph, start, goal):\n    frontier = [start]\n    parent = {start: None}\n    expanded = []\n\n    while frontier:\n        state = frontier.pop()\n        expanded.append(state)\n        if state == goal:\n            return path_from(parent, goal), expanded\n\n        for next_state in reversed(graph[state]):\n            if next_state not in parent:\n                parent[next_state] = state\n                frontier.append(next_state)\n\n    return None, expanded\n\npop() makes the frontier a stack. reversed() preserves the listed left-to-right neighbor order."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#running-dfs",
+    "href": "slides/lec5_BFS_DFS.html#running-dfs",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Running DFS",
+    "text": "Running DFS\ndfs_path, dfs_expanded = dfs(graph, \"S\", \"G\")\nprint(\"path:\", dfs_path)\nprint(\"expanded:\", dfs_expanded)\n\npath: [‘S’, ‘A’, ‘C’, ‘D’, ‘G’] expanded: [‘S’, ‘A’, ‘C’, ‘D’, ‘G’]\n\n\n\n\nBFS\nDFS\n\n\n\n\nS, B, G\nS, A, C, D, G\n\n\n2 edges\n4 edges\n\n\n\n\nDFS reached a goal with the same number of expansions as BFS. Why is its answer still worse for a shortest-path task?"
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#dfs-in-python-recursive",
+    "href": "slides/lec5_BFS_DFS.html#dfs-in-python-recursive",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "DFS in Python: Recursive",
+    "text": "DFS in Python: Recursive\ndef dfs_recursive(graph, start, goal):\n    parent = {start: None}\n    expanded = []\n\n    def visit(state):\n        expanded.append(state)\n        if state == goal:\n            return True\n        for next_state in graph[state]:\n            if next_state not in parent:\n                parent[next_state] = state\n                if visit(next_state):\n                    return True\n        return False\n\n    found = visit(start)\n    path = path_from(parent, goal) if found else None\n    return path, expanded\n\nThis version uses the listed neighbor order directly because each recursive call begins before the loop considers the next neighbor. It returns True to stop all active calls once it finds the goal. Without that return propagation, the search would continue after finding a solution."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#explicit-stack-or-call-stack",
+    "href": "slides/lec5_BFS_DFS.html#explicit-stack-or-call-stack",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Explicit Stack or Call Stack?",
+    "text": "Explicit Stack or Call Stack?\n\n\n\n\n\n\n\nIterative DFS\nRecursive DFS\n\n\n\n\nPending states live in a Python list\nActive calls live on the call stack\n\n\nEasy to inspect or pause the frontier\nClosely matches the recursive definition\n\n\nHandles very deep graphs without recursion\nCan exceed Python’s recursion limit\n\n\nReverse insertion controls visit order\nThe loop order controls visit order\n\n\n\n\nBoth versions implement depth-first behavior. Their bookkeeping lives in different places."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#dfs-guarantees-and-cost",
+    "href": "slides/lec5_BFS_DFS.html#dfs-guarantees-and-cost",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "DFS Guarantees and Cost",
+    "text": "DFS Guarantees and Cost\n\n\n\n\n\n\n\nQuestion\nDFS answer\n\n\n\n\nComplete on a finite graph?\nYes with a reached set\n\n\nInfinite-depth tree?\nIt can follow one branch forever\n\n\nShortest path?\nNo general guarantee\n\n\nGraph traversal time\nO(V+E) with adjacency lists\n\n\nGraph traversal storage\nO(V) when all reached states are retained\n\n\n\nFor tree search with branching factor b and maximum depth m, work can grow as O(b^m).\n\nDFS may keep a narrow frontier, but graph search still stores reached states."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#neighbor-order-changes-the-dfs-result",
+    "href": "slides/lec5_BFS_DFS.html#neighbor-order-changes-the-dfs-result",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Neighbor Order Changes the DFS Result",
+    "text": "Neighbor Order Changes the DFS Result\nOnly change the start state’s neighbor list.\n\n\n\ngraph[\"S\"]\nFirst DFS path found\n\n\n\n\n[\"A\", \"B\"]\nS, A, C, D, G\n\n\n[\"B\", \"A\"]\nS, B, G\n\n\n\n\nDFS can return very different answers after a harmless-looking reorder.\nBFS still returns a two-edge path in this graph.\nAmong several equally short paths, BFS tie-breaking also follows neighbor order.\n\n\nWhat neighbor order should a test use if the exact traversal order matters?\n\n\nUse a documented deterministic order, such as the order stored in the adjacency list or a sorted order. Sorting changes behavior and adds work, so do it only when the specification requires that order. In sets and some external data sources, iteration order may not express the intended priority."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#bfs-and-dfs-compared",
+    "href": "slides/lec5_BFS_DFS.html#bfs-and-dfs-compared",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "BFS and DFS Compared",
+    "text": "BFS and DFS Compared\n\n\n\n\n\n\n\n\nProperty\nBFS\nDFS\n\n\n\n\nFrontier\nQueue\nStack or recursion\n\n\nExpansion pattern\nLayer by layer\nOne branch first\n\n\nFewest actions\nYes with equal step costs\nNot guaranteed\n\n\nMain memory pressure\nWide frontier\nReached set and deep pending paths\n\n\nUseful when\nA shallow or shortest solution matters\nAny solution or exhaustive traversal is enough\n\n\n\n\nA small frontier change produces different search order, memory use, and solution quality."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#code-clinic-find-the-problems",
+    "href": "slides/lec5_BFS_DFS.html#code-clinic-find-the-problems",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Code Clinic: Find the Problems",
+    "text": "Code Clinic: Find the Problems\nfrontier = [start]\nwhile frontier:\n    state = frontier.pop(0)\n    for next_state in graph[state]:\n        if next_state not in reached:\n            frontier.append(next_state)\nreturn None\n\n\nreached is never initialized or updated.\npop(0) shifts the remaining list; use deque.popleft() for BFS.\nThe code has no goal test and stores no parents, so it cannot return a path.\n\n\n\nGive students about two minutes before revealing the diagnoses. If reached existed but states were never added to it, cycles would keep generating work. A traversal that returns only True or False would not need parents, but this snippet returns neither reachability nor a solution path."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#choosing-a-search-strategy",
+    "href": "slides/lec5_BFS_DFS.html#choosing-a-search-strategy",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Choosing a Search Strategy",
+    "text": "Choosing a Search Strategy\n\n\n\n\n\n\n\nTask\nBetter starting point\n\n\n\n\nFewest moves in an unweighted maze\nBFS\n\n\nDetermine whether any vertex is reachable\nEither BFS or DFS\n\n\nExplore a very deep decision tree with tight memory\nDFS, with safeguards for depth and cycles\n\n\nFind the cheapest route with unequal edge costs\nNeither; use Uniform-Cost Search\n\n\n\n\nA social-network query asks for a person within two friendship links. Which frontier rule fits the depth limit?\n\n\nBFS naturally explores all people at distance 1 before distance 2."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#homework-1-connection",
+    "href": "slides/lec5_BFS_DFS.html#homework-1-connection",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Homework 1 Connection",
+    "text": "Homework 1 Connection\nFor a keys-and-doors search problem:\n\nThe state needs the current location and the keys already collected.\nOne location with different key sets can represent different states.\nIf every move has equal cost, BFS provides a shortest-move baseline.\nParent links can reconstruct the moves after reaching the goal.\n\n\nWhy would a reached set containing only locations discard valid solutions?\n\nOpen Homework 1\n\nAllow several minutes to explain the released homework specification. Do not derive a complete assignment implementation. A location-only reached set can merge situations with different available actions because the agent may own different keys."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#takeaways",
+    "href": "slides/lec5_BFS_DFS.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nBFS uses a queue and finds a fewest-action path when step costs are equal.\nDFS uses a stack or recursion and explores one branch at a time.\nRecord new states when adding them to the frontier.\nStore parent links when the search must return a path.\nNeighbor order strongly affects DFS traversal.\n\n\nUse the notebook’s explanation blocks to connect these ideas to the grid-world implementation.\n\nOpen Code: BFS and DFS\nAsset credits"
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#the-jupyter-notebook",
+    "href": "slides/lec5_BFS_DFS.html#the-jupyter-notebook",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Jupyter Notebook",
+    "text": "The Jupyter Notebook\n\n\nThe notebook creates a 5 by 6 grid with walls, then chooses a start and goal.\n\nGreen marks the start.\nRed marks the goal.\nGray cells are walls.\nA state is a (row, column) tuple.\n\nOpen Code: BFS and DFS\n\n\n\n\nThis is the exact first output image from the schedule’s notebook. For the saved run, start is (2, 4) and the goal is (3, 5). The notebook uses NumPy for the grid and Matplotlib for the visual trace. Its first code cell also defines generate_map, find_start_end, show_map, and draw_path."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#the-grid-search-model",
+    "href": "slides/lec5_BFS_DFS.html#the-grid-search-model",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Grid Search Model",
+    "text": "The Grid Search Model\n\n\n\nSearch component\nNotebook definition\n\n\n\n\nState\nGrid coordinate (i, j)\n\n\nCandidate actions\nDown, up, right, left\n\n\nValid transition\nInside the grid, not visited, and EMPTY\n\n\nGoal test\n(i, j) == end\n\n\nPath record\nparent[child] = current\n\n\nStep cost\nOne grid move\n\n\n\n[(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]\n\nThe same model supports BFS and DFS. Only the frontier behavior changes."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#notebook-bfs-1-initialize",
+    "href": "slides/lec5_BFS_DFS.html#notebook-bfs-1-initialize",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Notebook BFS 1: Initialize",
+    "text": "Notebook BFS 1: Initialize\nThis is the beginning of the notebook’s BFS cell.\n# BFS to find the shortest path\ndef bfs(m, start, end):\n    h, w = m.shape\n    q = [start]\n    visited = np.zeros((h, w), dtype=bool)\n    visited[start[0], start[1]] = True\n    parent = np.zeros((h, w, 2), dtype=int)\n\n    print(\"queue:\", q)\n\n    while q:\n        i, j = q.pop(0)\n\nq.pop(0) removes the oldest position.\nThe start is marked visited before the loop.\nparent stores the preceding coordinate for each discovered cell."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#notebook-bfs-2-visualize-expansion",
+    "href": "slides/lec5_BFS_DFS.html#notebook-bfs-2-visualize-expansion",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Notebook BFS 2: Visualize Expansion",
+    "text": "Notebook BFS 2: Visualize Expansion\nThe notebook draws every removed state and all cells visited so far.\n        print(\"current position:\", (i, j))\n        print(\"queue:\", q)\n        fig, ax = plt.subplots(figsize=(figure_size, figure_size))\n        show_map(m, ax)\n        # paint the visited grid with a different color\n        for ii in range(h):\n            for jj in range(w):\n                if visited[ii, jj]:\n                    ax.add_patch(\n                        plt.Rectangle((jj, h - ii - 1), 1, 1, fc=\"yellow\", alpha=0.5)\n                    )\n        ax.add_patch(plt.Rectangle((j + 0.1, h - i - 0.9), 0.8, 0.8, fc=\"cyan\"))\n        plt.show()\n\nThis block is copied from the linked notebook. Yellow shows all positions marked visited. Cyan shows the position removed from the queue for the current expansion. The display coordinates convert row indices into Matplotlib’s bottom-up plotting coordinates."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#notebook-bfs-3-generate-neighbors",
+    "href": "slides/lec5_BFS_DFS.html#notebook-bfs-3-generate-neighbors",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Notebook BFS 3: Generate Neighbors",
+    "text": "Notebook BFS 3: Generate Neighbors\n        if (i, j) == end:\n            break\n        for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:\n            if (\n                0 &lt;= ni &lt; h\n                and 0 &lt;= nj &lt; w\n                and not visited[ni, nj]\n                and m[ni, nj] == EMPTY\n            ):\n                visited[ni, nj] = True\n                parent[ni, nj] = (i, j)\n                q.append((ni, nj))\n        print(\"queue:\", q)\n\nA cell becomes visited when it enters the queue, so another parent cannot add it again."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#notebook-bfs-4-reconstruct-the-path",
+    "href": "slides/lec5_BFS_DFS.html#notebook-bfs-4-reconstruct-the-path",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Notebook BFS 4: Reconstruct the Path",
+    "text": "Notebook BFS 4: Reconstruct the Path\n    path = []\n    i, j = end\n    while (i, j) != start:\n        path.append((i, j))\n        i, j = parent[i, j]\n    path.append(start)\n    return path[::-1]\n\npath = bfs(a, start, end)\nprint(path)\n\nfig, ax = plt.subplots(figsize=(figure_size, figure_size))\ndraw_path(a, path, ax)\nplt.show()\nThe parent chain runs from goal to start. path[::-1] changes it to start-to-goal order."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#bfs-output-from-the-notebook",
+    "href": "slides/lec5_BFS_DFS.html#bfs-output-from-the-notebook",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "BFS Output from the Notebook",
+    "text": "BFS Output from the Notebook\n\n\nThe saved run prints:\n\n[(2, 4), (3, 4), (3, 5)]\n\n\nStart: (2, 4)\nGoal: (3, 5)\nPath length: 2 moves\n\nThe red polyline is the reconstructed path.\n\n\n\n\nThe notebook records the queue before and after each expansion and produces one grid image per removed state. Use the live notebook to step through those intermediate outputs. The final image shown here is copied from the notebook’s saved output."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#reading-the-notebooks-bfs",
+    "href": "slides/lec5_BFS_DFS.html#reading-the-notebooks-bfs",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Reading the Notebook’s BFS",
+    "text": "Reading the Notebook’s BFS\n\n\n\n\n\n\n\nCode\nAlgorithmic role\n\n\n\n\nq.pop(0)\nRemove the oldest frontier state\n\n\nvisited[...] = True before append\nPrevent duplicate queue entries\n\n\nparent[ni, nj] = (i, j)\nRemember how the cell was reached\n\n\nq.append((ni, nj))\nAdd a newly discovered state to the back\n\n\npath[::-1]\nReturn the path from start to goal\n\n\n\n\nWhy does the notebook mark a neighbor visited before appending it, rather than after removing it?\n\n\nIf two frontier cells both connect to the same unvisited neighbor, marking on removal could add that neighbor twice. The notebook uses a list so the queue contents are easy to print. For larger programs, collections.deque provides faster removal from the left, but this lecture follows the schedule’s code as written."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#notebook-dfs-1-initialize",
+    "href": "slides/lec5_BFS_DFS.html#notebook-dfs-1-initialize",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Notebook DFS 1: Initialize",
+    "text": "Notebook DFS 1: Initialize\nThis is the beginning of the notebook’s iterative DFS cell.\ndef dfs_iterative(m, start, end):\n    h, w = m.shape\n    s = [start]\n    visited = np.zeros((h, w), dtype=bool)\n    visited[start[0], start[1]] = True\n    parent = np.zeros((h, w, 2), dtype=int)\n\n    print(\"stack:\", s)\n\n    while s:\n        i, j = s.pop()\n\ns.pop() removes the newest position, turning the frontier into a stack."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#notebook-dfs-2-visualize-expansion",
+    "href": "slides/lec5_BFS_DFS.html#notebook-dfs-2-visualize-expansion",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Notebook DFS 2: Visualize Expansion",
+    "text": "Notebook DFS 2: Visualize Expansion\nThe drawing block matches BFS. Only the frontier name changes.\n        print(\"current position:\", (i, j))\n        print(\"stack:\", s)\n        fig, ax = plt.subplots(figsize=(figure_size, figure_size))\n        show_map(m, ax)\n        # paint the visited grid with a different color\n        for ii in range(h):\n            for jj in range(w):\n                if visited[ii, jj]:\n                    ax.add_patch(\n                        plt.Rectangle((jj, h - ii - 1), 1, 1, fc=\"yellow\", alpha=0.5)\n                    )\n        ax.add_patch(plt.Rectangle((j + 0.1, h - i - 0.9), 0.8, 0.8, fc=\"cyan\"))\n        plt.show()\n\nThis block is copied from the linked notebook. The notebook deliberately visualizes visited states and the current state after every stack removal, which makes the different traversal order visible."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#notebook-dfs-3-generate-neighbors",
+    "href": "slides/lec5_BFS_DFS.html#notebook-dfs-3-generate-neighbors",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Notebook DFS 3: Generate Neighbors",
+    "text": "Notebook DFS 3: Generate Neighbors\n        if (i, j) == end:\n            break\n        for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:\n            if (\n                0 &lt;= ni &lt; h\n                and 0 &lt;= nj &lt; w\n                and not visited[ni, nj]\n                and m[ni, nj] == EMPTY\n            ):\n                visited[ni, nj] = True\n                parent[ni, nj] = (i, j)\n                s.append((ni, nj))\n        print(\"stack:\", s)\n\nThe neighbor loop is unchanged. The last appended neighbor becomes the next state removed."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#notebook-dfs-4-reconstruct-the-path",
+    "href": "slides/lec5_BFS_DFS.html#notebook-dfs-4-reconstruct-the-path",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Notebook DFS 4: Reconstruct the Path",
+    "text": "Notebook DFS 4: Reconstruct the Path\n    path = []\n    i, j = end\n    while (i, j) != start:\n        path.append((i, j))\n        i, j = parent[i, j]\n    path.append(start)\n    return path[::-1]\n\npath = dfs_iterative(a, start, end)\nprint(path)\nfig, ax = plt.subplots(figsize=(figure_size, figure_size))\ndraw_path(a, path, ax)\nplt.show()\nThe iterative DFS uses the same parent-chain reconstruction as BFS."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#dfs-output-from-the-notebook",
+    "href": "slides/lec5_BFS_DFS.html#dfs-output-from-the-notebook",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "DFS Output from the Notebook",
+    "text": "DFS Output from the Notebook\n\n\nThe saved run prints:\n\n[(2, 4), (2, 3), (2, 2), (2, 1), (2, 0), (3, 0), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4), (4, 5), (3, 5)]\n\n\nStart: (2, 4)\nGoal: (3, 5)\nPath length: 12 moves\n\n\n\n\n\nThe final path is much longer than the two-move BFS path. DFS did not make an error. It satisfied the goal of finding a path, but it has no shortest-path guarantee. The exact route depends on the order of the four candidate neighbors and the stack’s last-in, first-out behavior."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#one-line-changes-the-frontier",
+    "href": "slides/lec5_BFS_DFS.html#one-line-changes-the-frontier",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "One Line Changes the Frontier",
+    "text": "One Line Changes the Frontier\n\n\n\nBFS cell\nIterative DFS cell\n\n\n\n\nq = [start]\ns = [start]\n\n\ni, j = q.pop(0)\ni, j = s.pop()\n\n\nq.append((ni, nj))\ns.append((ni, nj))\n\n\n\nEverything else in these two notebook search loops is structurally the same:\n\nthe grid and neighbor order\nthe visited array\nthe parent array and path reconstruction\nthe Matplotlib trace\n\n\nChanging which frontier element leaves next changes the whole traversal."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#paths-from-the-same-notebook-run",
+    "href": "slides/lec5_BFS_DFS.html#paths-from-the-same-notebook-run",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Paths from the Same Notebook Run",
+    "text": "Paths from the Same Notebook Run\n\n\n\n\n\n\n\n\nResult\nBFS\nIterative DFS\n\n\n\n\nReturned path\n(2,4), (3,4), (3,5)\n13 coordinates ending at (3,5)\n\n\nNumber of moves\n2\n12\n\n\nShortest-path guarantee\nYes for equal step costs\nNo\n\n\nFrontier rule\nRemove oldest\nRemove newest\n\n\n\n\nWhy can DFS reach the same goal correctly but still return a worse path for this task?\n\n\nCorrectness means the path reaches the goal. Optimality asks whether a better valid path exists."
+  },
+  {
+    "objectID": "code_and_homework/search_BFS_DFS.html#how-to-use-this-notebook-in-class",
+    "href": "code_and_homework/search_BFS_DFS.html#how-to-use-this-notebook-in-class",
+    "title": "Breadth-First and Depth-First Search",
+    "section": "How to use this notebook in class",
+    "text": "How to use this notebook in class\nRun the cells from top to bottom. The first code cell builds one reproducible grid and defines the drawing helpers. The remaining cells run BFS, iterative DFS, and recursive DFS on that same grid. Keeping the problem fixed makes the frontier rule the main difference students can observe.\n\n\n\nSection\nMain question\n\n\n\n\nSetup\nWhat counts as a state, neighbor, wall, start, and goal?\n\n\nBFS\nHow does a queue create layer-by-layer exploration?\n\n\nIterative DFS\nHow does a stack commit to one branch?\n\n\nRecursive DFS\nHow does the call stack replace an explicit stack?\n\n\n\n\nVisual legend\n\nGray: wall\nWhite: open cell\nGreen: start of the final path\nRed: goal of the final path\nYellow overlay: a cell already marked visited\nCyan square: the state currently removed from the frontier\n\n\n\nShared state representation\nA state is a (row, column) tuple. Candidate neighbors appear in this order: down, up, right, and left. A neighbor is usable only when it lies inside the grid, has not been visited, and contains EMPTY rather than WALL. Every move has the same cost.\n\nTeaching cue: Before running the setup cell, ask students what information the search state must contain. After the grid appears, identify the start and goal coordinates together.\n\n\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nWALL = \"#\"\nEMPTY = \".\"\n\nfigure_size = 1.5\n\ndef generate_map(width, height, seed):\n    np.random.seed(seed)\n    m = np.random.choice([WALL, EMPTY], size=(height, width))\n    # scan all 2x2 blocks and remove walls that are not needed\n    for i in range(height - 1):\n        for j in range(width - 1):\n            block = m[i : i + 2, j : j + 2]\n            if np.sum(block == WALL) == 4:\n                # randomly remove one wall\n                block[np.random.randint(2), np.random.randint(2)] = EMPTY\n    # run union-find to make sure the map is connected\n    parent = np.arange(width * height)\n\n    def find(x):\n        while parent[x] != x:\n            parent[x] = parent[parent[x]]\n            x = parent[x]\n        return parent[x]\n\n    def union(x, y):\n        parent[find(x)] = find(y)\n\n    for i in range(height):\n        for j in range(width):\n            if m[i, j] == WALL:\n                continue\n            for ni, nj in [(i + 1, j), (i, j + 1)]:\n                if ni &lt; height and nj &lt; width and m[ni, nj] == EMPTY:\n                    union(i * width + j, ni * width + nj)\n    for i in range(height):\n        for j in range(width):\n            if m[i, j] == WALL:\n                # check if all neighbors of this wall are connected\n                # if not, remove this wall\n                neighbors = []\n                for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:\n                    if 0 &lt;= ni &lt; height and 0 &lt;= nj &lt; width and m[ni, nj] == EMPTY:\n                        neighbors.append(\n                            find(ni * width + nj)\n                        )  # get the parent of all empty neighbors\n                if len(neighbors) != 0 and len(set(neighbors)) != 1:\n                    m[i, j] = EMPTY\n                    # connect all neighbors\n                    for k in range(1, len(neighbors)):\n                        union(neighbors[k - 1], neighbors[k])\n    return m\n\n\ndef find_start_end(m):\n    # randomly find a start and end point\n    h, w = m.shape\n    start = np.random.randint(h), np.random.randint(w)\n    end = np.random.randint(h), np.random.randint(w)\n    while m[start] == WALL or m[end] == WALL:\n        start = np.random.randint(h), np.random.randint(w)\n        end = np.random.randint(h), np.random.randint(w)\n    return start, end\n\n\ndef show_map(m, ax=None):\n    h, w = m.shape\n    for i in range(h):\n        for j in range(w):\n            # draw a rectangle\n            ax.add_patch(\n                plt.Rectangle(\n                    (j, h - i - 1), 1, 1, fc=\"gray\" if m[i, j] == WALL else \"white\"\n                )\n            )\n            # draw the border\n            ax.add_patch(\n                plt.Rectangle((j, h - i - 1), 1, 1, fill=False, edgecolor=\"black\")\n            )\n    # draw indices of horizontal and vertical axis\n    for i in range(h):\n        ax.text(-0.5, h - i - 0.5, str(i), ha=\"center\", va=\"center\")\n    for j in range(w):\n        ax.text(j + 0.5, h + 0.5, str(j), ha=\"center\", va=\"center\")\n    ax.set_xlim(-0.3, w + 0.3)\n    ax.set_ylim(-0.3, h + 0.3)\n    ax.set_aspect(\"equal\", adjustable=\"box\")\n    ax.axis(\"off\")\n\n\ndef draw_path(m, path, ax):\n    h, w = m.shape\n    last = path[0]\n    show_map(m, ax)\n    # draw the start and end points by filling the grid with a different color\n    ax.add_patch(plt.Rectangle((last[1], h - last[0] - 1), 1, 1, fc=\"green\"))\n    ax.add_patch(plt.Rectangle((path[-1][1], h - path[-1][0] - 1), 1, 1, fc=\"red\"))\n    for i, j in path[1:]:\n        # connect the two points\n        ax.plot([last[1] + 0.5, j + 0.5], [h - last[0] - 0.5, h - i - 0.5], \"r\", lw=2)\n        last = (i, j)\n\n\n# a = generate_map(5, 3, 1)\na = generate_map(6, 5, 2)\nstart, end = find_start_end(a)\n# create a figure\nfig, ax = plt.subplots(figsize=(figure_size, figure_size))\nshow_map(a, ax)\n# plot the start and end points\nax.add_patch(\n    plt.Circle((start[1] + 0.5, a.shape[0] - start[0] - 0.5), 0.3, color=\"green\")\n)\nax.add_patch(plt.Circle((end[1] + 0.5, a.shape[0] - end[0] - 0.5), 0.3, color=\"red\"))\nplt.show()"
+  },
+  {
+    "objectID": "code_and_homework/search_BFS_DFS.html#comparison-and-discussion",
+    "href": "code_and_homework/search_BFS_DFS.html#comparison-and-discussion",
+    "title": "Breadth-First and Depth-First Search",
+    "section": "Comparison and discussion",
+    "text": "Comparison and discussion\n\n\n\n\n\n\n\n\n\nQuestion\nBFS\nIterative DFS\nRecursive DFS\n\n\n\n\nFrontier discipline\nFIFO queue\nLIFO stack\nPython call stack\n\n\nShortest path with equal step costs?\nYes\nNo\nNo\n\n\nSensitive to neighbor order?\nYes\nYes\nYes\n\n\nMain depth risk\nBroad frontier\nDeep branch\nDeep branch and recursion limit"
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#queue-or-stack",
+    "href": "slides/lec5_BFS_DFS.html#queue-or-stack",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Queue or Stack?",
+    "text": "Queue or Stack?\nThe frontier stores discovered nodes that still await expansion.\n\n\nBFS queue\n\noldest…newest\n\nRemove from the front. Add at the back.\nFirst in, first out.\n\nDFS stack\n\nolder…newest / top\n\nRemove and add at the top.\nLast in, first out.\n\n\nWhich rule preserves a layer-by-layer expansion order?"
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#bfs-expansion-order",
+    "href": "slides/lec5_BFS_DFS.html#bfs-expansion-order",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "BFS Expansion Order",
+    "text": "BFS Expansion Order\nUsing the tree from the previous slide:\n\n\n\nExpansion\nRemoved\nQueue after adding children\n\n\n\n\n1\nS\n[A, B]\n\n\n2\nA\n[B, C, D]\n\n\n3\nB\n[C, D, E, F]\n\n\n4\nC\n[D, E, F]\n\n\n5\nD\n[E, F]\n\n\n6\nE\n[F]\n\n\n7\nF\n[]\n\n\n\n\nIf F is the goal, which nodes have already been expanded when BFS reaches it?"
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#record-reached-states-on-insertion",
+    "href": "slides/lec5_BFS_DFS.html#record-reached-states-on-insertion",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Record Reached States on Insertion",
+    "text": "Record Reached States on Insertion\nSuppose S connects to A and B, and both A and B connect to C.\n\n\n\nPolicy\nResult\n\n\n\n\nRecord C when adding it\nC enters the frontier once\n\n\nWait until removing C\nBoth A and B may add C\n\n\n\nRepeated entries waste memory and can multiply rapidly in a graph with many converging paths.\n\nFor BFS and DFS graph search, record a new state when it enters the frontier.\n\n\nLecture 6 will refine this rule for cost-sensitive search. Uniform-Cost Search may need to replace a previously discovered route when it finds a cheaper one."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#dfs-expansion-order",
+    "href": "slides/lec5_BFS_DFS.html#dfs-expansion-order",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "DFS Expansion Order",
+    "text": "DFS Expansion Order\n\nRemove from the top of the stack. Push right children first so left children come out first.\n\n\n  \n    \n      \n      \n      \n      \n      \n      \n      \n      \n    \n    Numbers show expansion order.\n    FrontierThis stepExpanded\n  \n  \n    Stack: top on the right\n\n\n\n\n\n\n\n\n\nRemove\nPush\nStack afterward\n\n\n\n\nStart\nS\n[S]\n\n\nS\nB, A\n[B, A]\n\n\nA\nD, C\n[B, D, C]\n\n\nC\n–\n[B, D]\n\n\nD\n–\n[B]\n\n\nB\nF, E\n[F, E]\n\n\nE\n–\n[F]\n\n\nF\n–\n[]\n\n\n\n\n  \n\n\nDFS finishes A’s branch before returning to B.\n\n\nB remains in the frontier while A, C, and D are expanded. The fourth expansion finishes A’s subtree. The next pop returns to B. The Push column records insertion order, so B then A puts A on top of the stack. The gold node and table row identify the same completed expansion step."
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#neighbor-order-matters",
+    "href": "slides/lec5_BFS_DFS.html#neighbor-order-matters",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Neighbor Order Matters",
+    "text": "Neighbor Order Matters\nSuppose S has two branches that both reach G.\n\n\n\nFirst branch considered\nRoute found first\nEdges\n\n\n\n\nA before B\nS, A, C, D, G\n4\n\n\nB before A\nS, B, G\n2\n\n\n\n\nDFS can return either route depending on neighbor order.\nBFS still returns a two-edge route because it explores by depth.\nIf several shortest routes exist, BFS’s tie-breaking also follows neighbor order.\n\n\nWhen should an implementation sort neighbors rather than trust their stored order?"
+  },
+  {
+    "objectID": "slides/lec5_BFS_DFS.html#which-search-would-you-choose",
+    "href": "slides/lec5_BFS_DFS.html#which-search-would-you-choose",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Which Search Would You Choose?",
+    "text": "Which Search Would You Choose?\n\n\n\n\n\n\n\nTask\nStarting point\n\n\n\n\nFewest moves through an unweighted maze\nBFS\n\n\nDetermine whether any vertex is reachable\nEither BFS or DFS\n\n\nExplore a deep decision tree with tight memory\nDFS, with depth and cycle safeguards\n\n\nFind the cheapest route with unequal costs\nNeither; use Uniform-Cost Search\n\n\n\n\nA social-network query asks for a person within two friendship links. Which frontier rule fits the depth limit?\n\n\nBFS naturally completes distance 1 before exploring distance 2."
+  },
+  {
+    "objectID": "code_and_homework/search_BFS_DFS.html#notebook-overview",
+    "href": "code_and_homework/search_BFS_DFS.html#notebook-overview",
+    "title": "Breadth-First and Depth-First Search",
+    "section": "Notebook overview",
+    "text": "Notebook overview\nRun the cells from top to bottom. The notebook has four parts:\n\nBuild and display a connected grid map.\nExplore it with breadth-first search.\nExplore it with iterative depth-first search.\nExpress depth-first search recursively."
+  },
+  {
+    "objectID": "code_and_homework/search_BFS_DFS.html#visual-legend",
+    "href": "code_and_homework/search_BFS_DFS.html#visual-legend",
+    "title": "Breadth-First and Depth-First Search",
+    "section": "Visual legend",
+    "text": "Visual legend\n\nGray: wall\nWhite: open state\nGreen: start\nRed: goal\nYellow: visited state\nCyan: state currently being expanded\n\nAll three searches use the same map, start state, goal state, neighbor order, and drawing helpers. This makes their exploration patterns directly comparable."
+  },
+  {
+    "objectID": "code_and_homework/search_BFS_DFS.html#imports-and-shared-constants",
+    "href": "code_and_homework/search_BFS_DFS.html#imports-and-shared-constants",
+    "title": "Breadth-First and Depth-First Search",
+    "section": "Imports and shared constants",
+    "text": "Imports and shared constants\nNumPy stores the grid and visited arrays. Matplotlib draws the map and the intermediate search states. A wall is represented by \"#\"; an open cell is represented by \".\".\n\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nWALL = \"#\"\nEMPTY = \".\"\n\nfigure_size = 1.5"
+  },
+  {
+    "objectID": "code_and_homework/search_BFS_DFS.html#generate-a-connected-map",
+    "href": "code_and_homework/search_BFS_DFS.html#generate-a-connected-map",
+    "title": "Breadth-First and Depth-First Search",
+    "section": "Generate a connected map",
+    "text": "Generate a connected map\ngenerate_map first samples walls and open cells, then removes one wall from any completely blocked (2 imes 2) region. It next uses union-find, also called the disjoint-set data structure, to track which open cells belong to the same connected component.\n\nfind(x) follows parent links to obtain a component representative and shortens future searches with path compression.\nunion(x, y) joins the components containing two neighboring open cells.\nA wall is removed when its open neighbors belong to different components, allowing those components to be connected.\n\nFor a visual introduction to the data structure, see Princeton Algorithms’ Union-Find case study.\n\ndef generate_map(width, height, seed):\n    np.random.seed(seed)\n    m = np.random.choice([WALL, EMPTY], size=(height, width))\n    # scan all 2x2 blocks and remove walls that are not needed\n    for i in range(height - 1):\n        for j in range(width - 1):\n            block = m[i : i + 2, j : j + 2]\n            if np.sum(block == WALL) == 4:\n                # randomly remove one wall\n                block[np.random.randint(2), np.random.randint(2)] = EMPTY\n    # run union-find to make sure the map is connected\n    parent = np.arange(width * height)\n\n    def find(x):\n        while parent[x] != x:\n            parent[x] = parent[parent[x]]\n            x = parent[x]\n        return parent[x]\n\n    def union(x, y):\n        parent[find(x)] = find(y)\n\n    for i in range(height):\n        for j in range(width):\n            if m[i, j] == WALL:\n                continue\n            for ni, nj in [(i + 1, j), (i, j + 1)]:\n                if ni &lt; height and nj &lt; width and m[ni, nj] == EMPTY:\n                    union(i * width + j, ni * width + nj)\n    for i in range(height):\n        for j in range(width):\n            if m[i, j] == WALL:\n                # check if all neighbors of this wall are connected\n                # if not, remove this wall\n                neighbors = []\n                for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:\n                    if 0 &lt;= ni &lt; height and 0 &lt;= nj &lt; width and m[ni, nj] == EMPTY:\n                        neighbors.append(\n                            find(ni * width + nj)\n                        )  # get the parent of all empty neighbors\n                if len(neighbors) != 0 and len(set(neighbors)) != 1:\n                    m[i, j] = EMPTY\n                    # connect all neighbors\n                    for k in range(1, len(neighbors)):\n                        union(neighbors[k - 1], neighbors[k])\n    return m"
+  },
+  {
+    "objectID": "code_and_homework/search_BFS_DFS.html#choose-the-start-and-goal",
+    "href": "code_and_homework/search_BFS_DFS.html#choose-the-start-and-goal",
+    "title": "Breadth-First and Depth-First Search",
+    "section": "Choose the start and goal",
+    "text": "Choose the start and goal\nfind_start_end repeatedly samples two grid coordinates until both are open cells. The same start and end values are reused by every search algorithm below.\n\ndef find_start_end(m):\n    # randomly find a start and end point\n    h, w = m.shape\n    start = np.random.randint(h), np.random.randint(w)\n    end = np.random.randint(h), np.random.randint(w)\n    while m[start] == WALL or m[end] == WALL:\n        start = np.random.randint(h), np.random.randint(w)\n        end = np.random.randint(h), np.random.randint(w)\n    return start, end"
+  },
+  {
+    "objectID": "code_and_homework/search_BFS_DFS.html#draw-the-grid",
+    "href": "code_and_homework/search_BFS_DFS.html#draw-the-grid",
+    "title": "Breadth-First and Depth-First Search",
+    "section": "Draw the grid",
+    "text": "Draw the grid\nshow_map draws one rectangle per cell, adds row and column indices, preserves square cells with an equal aspect ratio, and hides the ordinary plot axes.\n\ndef show_map(m, ax=None):\n    h, w = m.shape\n    for i in range(h):\n        for j in range(w):\n            # draw a rectangle\n            ax.add_patch(\n                plt.Rectangle(\n                    (j, h - i - 1), 1, 1, fc=\"gray\" if m[i, j] == WALL else \"white\"\n                )\n            )\n            # draw the border\n            ax.add_patch(\n                plt.Rectangle((j, h - i - 1), 1, 1, fill=False, edgecolor=\"black\")\n            )\n    # draw indices of horizontal and vertical axis\n    for i in range(h):\n        ax.text(-0.5, h - i - 0.5, str(i), ha=\"center\", va=\"center\")\n    for j in range(w):\n        ax.text(j + 0.5, h + 0.5, str(j), ha=\"center\", va=\"center\")\n    ax.set_xlim(-0.3, w + 0.3)\n    ax.set_ylim(-0.3, h + 0.3)\n    ax.set_aspect(\"equal\", adjustable=\"box\")\n    ax.axis(\"off\")"
+  },
+  {
+    "objectID": "code_and_homework/search_BFS_DFS.html#draw-a-returned-path",
+    "href": "code_and_homework/search_BFS_DFS.html#draw-a-returned-path",
+    "title": "Breadth-First and Depth-First Search",
+    "section": "Draw a returned path",
+    "text": "Draw a returned path\ndraw_path first draws the grid, colors the two endpoints, and then connects consecutive coordinates in path. It expects the path to be ordered from the start state to the goal state.\n\ndef draw_path(m, path, ax):\n    h, w = m.shape\n    last = path[0]\n    show_map(m, ax)\n    # draw the start and end points by filling the grid with a different color\n    ax.add_patch(plt.Rectangle((last[1], h - last[0] - 1), 1, 1, fc=\"green\"))\n    ax.add_patch(plt.Rectangle((path[-1][1], h - path[-1][0] - 1), 1, 1, fc=\"red\"))\n    for i, j in path[1:]:\n        # connect the two points\n        ax.plot([last[1] + 0.5, j + 0.5], [h - last[0] - 0.5, h - i - 0.5], \"r\", lw=2)\n        last = (i, j)"
+  },
+  {
+    "objectID": "code_and_homework/search_BFS_DFS.html#build-the-example-problem",
+    "href": "code_and_homework/search_BFS_DFS.html#build-the-example-problem",
+    "title": "Breadth-First and Depth-First Search",
+    "section": "Build the example problem",
+    "text": "Build the example problem\nThe fixed random seed makes the map reproducible. The saved figure below shows the exact problem used by BFS and both DFS implementations.\n\n# a = generate_map(5, 3, 1)\na = generate_map(6, 5, 2)\nstart, end = find_start_end(a)\n# create a figure\nfig, ax = plt.subplots(figsize=(figure_size, figure_size))\nshow_map(a, ax)\n# plot the start and end points\nax.add_patch(\n    plt.Circle((start[1] + 0.5, a.shape[0] - start[0] - 0.5), 0.3, color=\"green\")\n)\nax.add_patch(plt.Circle((end[1] + 0.5, a.shape[0] - end[0] - 0.5), 0.3, color=\"red\"))\nplt.show()"
+  },
+  {
+    "objectID": "code_and_homework/search_BFS_DFS.html#check-your-understanding",
+    "href": "code_and_homework/search_BFS_DFS.html#check-your-understanding",
+    "title": "Breadth-First and Depth-First Search",
+    "section": "Check your understanding",
+    "text": "Check your understanding\n\nWhy does marking a state visited when it enters the frontier avoid duplicate work?\nWhich single line changes FIFO behavior into LIFO behavior?\nWhy can two correct DFS implementations return different paths?\nWhat happens if a goal is unreachable and path reconstruction assumes it was found?\nHow would a deque change the BFS implementation without changing the algorithm?"
+  },
+  {
+    "objectID": "code_and_homework/search_BFS_DFS.html#summary",
+    "href": "code_and_homework/search_BFS_DFS.html#summary",
+    "title": "Breadth-First and Depth-First Search",
+    "section": "Summary",
+    "text": "Summary\nBFS and DFS share most of their machinery. The frontier discipline controls exploration order, completeness behavior, memory use, and whether the first discovered path is guaranteed to be shortest."
   }
 ]

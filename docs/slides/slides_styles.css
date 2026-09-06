@@ -140,6 +140,140 @@
   color: var(--cs-teal);
 }
 
+/* Lecture 5: Reveal fragments select the matching draw.io animation frame. */
+.reveal .search-trace .trace-intro {
+  font-size: 0.8em;
+  margin: 0 0 0.65em;
+  min-height: 2.6em;
+}
+
+.reveal .search-trace .trace-layout {
+  align-items: start;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+}
+
+.reveal .search-trace .trace-tree-frames {
+  aspect-ratio: 480 / 345;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.reveal .search-trace .trace-tree-frames img {
+  border: 0;
+  box-shadow: none;
+  display: block;
+  height: 100%;
+  inset: 0;
+  margin: 0;
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  opacity: 0;
+  position: absolute;
+  transition: opacity 180ms ease;
+  width: 100%;
+}
+
+.reveal .search-trace .trace-frame[data-trace-step="0"],
+.reveal .search-trace:has(.visible[data-fragment-index="0"]) .trace-frame[data-trace-step="1"],
+.reveal .search-trace:has(.visible[data-fragment-index="1"]) .trace-frame[data-trace-step="2"],
+.reveal .search-trace:has(.visible[data-fragment-index="2"]) .trace-frame[data-trace-step="3"],
+.reveal .search-trace:has(.visible[data-fragment-index="3"]) .trace-frame[data-trace-step="4"],
+.reveal .search-trace:has(.visible[data-fragment-index="4"]) .trace-frame[data-trace-step="5"],
+.reveal .search-trace:has(.visible[data-fragment-index="5"]) .trace-frame[data-trace-step="6"],
+.reveal .search-trace:has(.visible[data-fragment-index="6"]) .trace-frame[data-trace-step="7"] {
+  opacity: 1;
+}
+
+.reveal .search-trace .trace-caption,
+.reveal .search-trace .trace-direction {
+  color: var(--cs-muted);
+  font-size: 0.64em;
+  margin: 0 0 0.5em;
+}
+
+.reveal .search-trace .trace-caption {
+  text-align: center;
+}
+
+.reveal .search-trace .trace-legend {
+  display: flex;
+  font-size: 0.63em;
+  gap: 0.9em;
+  justify-content: center;
+}
+
+.reveal .search-trace .trace-legend span {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.35em;
+  white-space: nowrap;
+}
+
+.reveal .search-trace .trace-legend span::before {
+  border: 2px solid;
+  border-radius: 50%;
+  box-sizing: border-box;
+  content: "";
+  height: 0.8em;
+  width: 0.8em;
+}
+
+.reveal .search-trace .trace-legend .trace-key-frontier::before {
+  background: #d9f1ff;
+  border-color: #0878a5;
+}
+
+.reveal .search-trace .trace-legend .trace-key-current::before {
+  background: #fff0bd;
+  border-color: #b7791f;
+}
+
+.reveal .search-trace .trace-legend .trace-key-expanded::before {
+  background: #007c89;
+  border-color: #00616a;
+}
+
+.reveal section.search-trace table.trace-table {
+  font-size: 0.7em;
+  line-height: 1.2;
+  margin: 0;
+  table-layout: fixed;
+}
+
+.reveal section.search-trace .trace-table th,
+.reveal section.search-trace .trace-table td {
+  padding: 0.34em 0.44em;
+  white-space: nowrap;
+}
+
+.reveal section.search-trace .trace-table code {
+  background: transparent;
+  color: #005f73;
+  font-size: 1em;
+  padding: 0;
+}
+
+.reveal section.search-trace .trace-table .current-fragment td,
+.reveal section.search-trace .trace-table tr:last-child.visible td {
+  background: #fff0bd;
+  font-weight: 700;
+}
+
+.reveal .search-trace .takeaway {
+  font-size: 0.8em;
+  margin-top: 0.7em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal .search-trace .trace-tree-frames img {
+    transition: none;
+  }
+}
+
 .reveal .title-slide {
   text-align: left;
 }
