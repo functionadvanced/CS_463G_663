@@ -4,7 +4,7 @@
     "href": "code_and_homework/sudoku.html",
     "title": "Sudoku as Constraint Search",
     "section": "",
-    "text": "Sudoku is a constraint satisfaction problem: each empty cell is a variable, and row, column, and box rules constrain its possible values.\nWhat to notice: the backtracking solver tries legal values and undoes choices when a partial assignment violates later constraints."
+    "text": "Download notebook (.ipynb)\n  Download page (.html)\nEach blank is a variable with candidates 1 through 9. Rows, columns, and 3-by-3 boxes must contain no repeated digit. This is a constraint satisfaction problem (CSP).\nCompare a straightforward backtracking solver with a domain-reduction demonstration on the same puzzle. Run the cells in order with Matplotlib installed. The saved results are specific to this puzzle, not a benchmark across Sudoku instances."
   },
   {
     "objectID": "code_and_homework/sudoku.html#puzzle-setup-and-display",
@@ -25,7 +25,7 @@
     "href": "code_and_homework/search_BFS_DFS.html",
     "title": "Breadth-First and Depth-First Search",
     "section": "",
-    "text": "This notebook compares BFS and DFS on the same grid world. Both algorithms explore reachable states, but the data structure used for the frontier changes the order of exploration and the path that is returned."
+    "text": "Download notebook (.ipynb)\n  Download page (.html)\nThis notebook compares BFS and DFS on the same grid world. Both algorithms explore reachable states, but the data structure used for the frontier changes the order of exploration and the path that is returned."
   },
   {
     "objectID": "code_and_homework/search_BFS_DFS.html#breadth-first-search",
@@ -53,7 +53,7 @@
     "href": "code_and_homework/linear_regression.html",
     "title": "Linear Regression and Generalization",
     "section": "",
-    "text": "This notebook uses synthetic data to study how linear regression behaves as the number of fitted features changes.\nWhat to notice: underparameterized and overparameterized models can have very different train and test error behavior."
+    "text": "Download notebook (.ipynb)\n  Download page (.html)\nHow does adding fitted features change training and test error? This synthetic experiment holds the data-generating rule fixed and varies the number of features used by a least-squares model.\nRun the cells in order with NumPy and Matplotlib installed. Repeated pseudoinverse calculations can take time. For a quick check, reduce num_of_trials; the saved figures use 20 trials."
   },
   {
     "objectID": "code_and_homework/linear_regression.html#simulate-train-and-test-error",
@@ -81,7 +81,7 @@
     "href": "code_and_homework/backpropagation.html",
     "title": "Backpropagation by Hand",
     "section": "",
-    "text": "This notebook compares PyTorch automatic differentiation with a manual chain-rule calculation for a tiny neural network.\nWhat to notice: every gradient is a local derivative multiplied by upstream derivatives, which is the core idea behind backpropagation."
+    "text": "Download notebook (.ipynb)\n  Download page (.html)\nThis notebook computes the same gradients in two ways: PyTorch’s automatic differentiation and an explicit application of the chain rule. The network has two input features, one hidden unit, and one scalar output.\nRun the cells in order with PyTorch installed. One final gradient-descent update shows how gradients change predictions; this is one optimization step, not a full training run."
   },
   {
     "objectID": "code_and_homework/backpropagation.html#forward-pass-with-autograd",
@@ -95,7 +95,7 @@
     "href": "code_and_homework/alpha_beta.html",
     "title": "Alpha-Beta Pruning Demo",
     "section": "",
-    "text": "This page demonstrates minimax search with alpha-beta pruning on a game tree. Alpha-beta gives the same minimax decision while avoiding branches that cannot change the final result.\nWhat to notice: alpha tracks the best value available to MAX so far, and beta tracks the best value available to MIN so far."
+    "text": "Download notebook (.ipynb)\n  Download page (.html)\nMinimax assumes that MAX chooses the highest utility and MIN chooses the lowest. Alpha-beta pruning returns the same root value while skipping branches that cannot change the decision.\nThis notebook uses NetworkX and Matplotlib to show the recursive calls. Run the cells in order. Leaf utilities are always measured from MAX’s perspective."
   },
   {
     "objectID": "code_and_homework/alpha_beta.html#tree-search-and-visualization",
@@ -109,7 +109,7 @@
     "href": "code_and_homework/CNN.html",
     "title": "Convolutional Neural Network Demo",
     "section": "",
-    "text": "This notebook trains a compact convolutional neural network on image data. It connects the lecture idea of local receptive fields to a working PyTorch model.\nWhat to notice: convolution and pooling layers extract spatial features before the classifier turns those features into class predictions."
+    "text": "Download notebook (.ipynb)\n  Download page (.html)\nA convolutional neural network (CNN) learns spatial features before classifying an image. This example trains a small network on MNIST handwritten digits, evaluates held-out accuracy, and displays misclassified examples.\nRun the cells in order with PyTorch, torchvision, and Matplotlib installed. The first run needs internet access to download MNIST. Training uses CUDA when available and otherwise the CPU; the supplied setting is one epoch."
   },
   {
     "objectID": "code_and_homework/CNN.html#end-to-end-cnn-training",
@@ -1124,7 +1124,7 @@
     "href": "homeworks/hw1.html#the-puzzle",
     "title": "Homework 1: Keys, Doors, and Shortest Paths",
     "section": "The puzzle",
-    "text": "The puzzle\nThe map is a rectangular 2D list with at most 20 rows and 20 columns. It contains exactly one player and exactly one exit, at most 16 keys, and at most 16 doors.\n\n\n0RoadAlways passable\n\n\n1DoorCosts one key the first time\n\n\n2WallNever passable\n\n\n3KeyCollected once\n\n\n4ExitDestination\n\n\n5PlayerStarting position\n\n\n\nMovement and state changes\nFrom (row, column), the player may move one cell up, down, left, or right. Diagonal moves are not allowed.\n\nEntering a road, an already-collected key cell, or an already-opened door is free.\nEntering an uncollected key cell adds one key to the inventory. That key cannot be collected again.\nEntering a closed door requires at least one key and consumes exactly one key. That door remains open afterward.\nA wall and any closed door that cannot be paid for are impassable.\nReaching the exit ends the path.\n\nYou may copy the grid internally, but your method should not rely on changes persisting after it returns."
+    "text": "The puzzle\nThe map is a rectangular 2D list with at most 20 rows and 20 columns. It contains exactly one player and exactly one exit, at most 18 keys, and at most 18 doors.\n\n\n0RoadAlways passable\n\n\n1DoorCosts one key the first time\n\n\n2WallNever passable\n\n\n3KeyCollected once\n\n\n4ExitDestination\n\n\n5PlayerStarting position\n\n\n\nMovement and state changes\nFrom (row, column), the player may move one cell up, down, left, or right. Diagonal moves are not allowed.\n\nEntering a road, an already-collected key cell, or an already-opened door is free.\nEntering an uncollected key cell adds one key to the inventory. That key cannot be collected again.\nEntering a closed door requires at least one key and consumes exactly one key. That door remains open afterward.\nA wall and any closed door that cannot be paid for are impassable.\nReaching the exit ends the path.\n\nYou may copy the grid internally, but your method should not rely on changes persisting after it returns."
   },
   {
     "objectID": "homeworks/hw1.html#required-output",
@@ -1145,7 +1145,7 @@
     "href": "homeworks/hw1.html#examples",
     "title": "Homework 1: Keys, Doors, and Shortest Paths",
     "section": "Examples",
-    "text": "Examples\n\nExample 1\ngrid = [\n    [4, 2, 1, 3],\n    [0, 5, 0, 2],\n    [2, 3, 1, 0],\n]\nOne shortest path is:\n[(1, 1), (1, 0), (0, 0)]\n\n\n\n\nExample 1 map with the player-to-exit path shown in green.\n\n\n\n\n\nExample 2\ngrid = [\n    [1, 0, 3, 2, 1],\n    [2, 3, 0, 0, 1],\n    [3, 0, 3, 0, 2],\n    [0, 4, 1, 5, 2],\n    [2, 1, 2, 3, 0],\n]\nOne shortest path is:\n[(3, 3), (2, 3), (2, 2), (3, 2), (3, 1)]\n\n\n\n\nExample 2 requires collecting a key before opening the door on the shortest route.\n\n\n\n\n\nExample 3\ngrid = [\n    [5, 1, 4],\n    [2, 2, 2],\n    [3, 0, 0],\n]\nThe key is unreachable, so the result is None.\n\n\n\n\nLarger maps combine many keys and doors, making resource history part of the search state."
+    "text": "Examples\n\nExample 1\ngrid = [\n    [4, 2, 1, 3],\n    [0, 5, 0, 2],\n    [2, 3, 1, 0],\n]\nOne shortest path is:\n[(1, 1), (1, 0), (0, 0)]\n\n\n\n\nExample 1 map with the player-to-exit path shown in green.\n\n\n\n\n\nExample 2\ngrid = [\n    [1, 0, 3, 2, 1],\n    [2, 3, 0, 0, 1],\n    [3, 0, 3, 0, 2],\n    [0, 4, 1, 5, 2],\n    [2, 1, 2, 3, 0],\n]\nOne shortest path is:\n[(3, 3), (2, 3), (2, 2), (3, 2), (3, 1)]\n\n\n\n\nExample 2 requires collecting a key before opening the door on the shortest route.\n\n\n\n\n\nExample 3\ngrid = [\n    [2, 0, 0, 2, 2, 2, 2, 0, 0, 3, 0, 2, 0, 1, 2],\n    [1, 0, 2, 0, 2, 1, 3, 0, 2, 0, 3, 0, 0, 2, 2],\n    [1, 2, 2, 0, 2, 2, 3, 0, 2, 3, 0, 2, 2, 0, 0],\n    [0, 2, 5, 1, 2, 1, 0, 2, 2, 0, 2, 0, 2, 3, 0],\n    [0, 0, 0, 0, 1, 2, 0, 3, 2, 0, 3, 0, 3, 0, 2],\n    [2, 0, 3, 0, 2, 0, 3, 0, 0, 0, 1, 0, 3, 3, 1],\n    [0, 1, 0, 0, 1, 1, 2, 0, 2, 2, 0, 1, 2, 3, 2],\n    [2, 1, 0, 0, 2, 2, 1, 0, 2, 0, 3, 0, 4, 2, 0],\n    [0, 0, 0, 0, 2, 1, 0, 0, 2, 2, 2, 2, 0, 0, 0],\n    [0, 2, 0, 2, 2, 3, 0, 3, 2, 0, 3, 1, 1, 2, 2],\n]\nThe player starts at (3, 2) and the exit is at (7, 12). The only reachable key is at (5, 2), but reaching the region containing the exit requires opening both doors at (6, 4) and (6, 5). One key is not enough, so the result is None.\n\n\n\n\nExample 3: the player cannot collect enough keys to reach the exit."
   },
   {
     "objectID": "homeworks/hw1.html#what-will-be-checked",
@@ -1481,7 +1481,7 @@
     "href": "homeworks/hw1-starter.html",
     "title": "Homework 1 Starter Files",
     "section": "",
-    "text": "Select a filename below to show its complete contents. These are the same files included in the downloadable ZIP, so this page can be used for a live walkthrough in class.\n\n\nAssignmentDownload ZIP\n\n\n\nREADME.mdhw1.pycheck_hw1.py\n\n\n# Homework 1 starter\n\nThis package contains everything needed to develop and check Homework 1.\n\n## Files\n\n- `hw1.py`: the only file you edit and submit.\n- `check_hw1.py`: public examples and a legal-path checker.\n\n## Run the public checks\n\n```bash\npython check_hw1.py\n```\n\nThe checker validates path format, movement, keys, doors, and the public shortest lengths. It does not reveal the hidden tests or the required state representation.\n\nUpload only `hw1.py` to Canvas.\n\n\nROAD = 0\nDOOR = 1\nWALL = 2\nKEY = 3\nEXIT = 4\nPLAYER = 5\n\nDIRECTIONS = ((-1, 0), (1, 0), (0, -1), (0, 1))\n\n\ndef find_tile(grid: list[list[int]], tile: int) -&gt; tuple[int, int]:\n    \"\"\"Return the coordinate of the first matching tile.\"\"\"\n    for row, values in enumerate(grid):\n        for col, value in enumerate(values):\n            if value == tile:\n                return row, col\n    raise ValueError(f\"tile {tile} is missing\")\n\n\ndef neighbors(row: int, col: int, height: int, width: int):\n    \"\"\"Yield orthogonally adjacent coordinates inside the grid.\"\"\"\n    for d_row, d_col in DIRECTIONS:\n        next_row = row + d_row\n        next_col = col + d_col\n        if 0 &lt;= next_row &lt; height and 0 &lt;= next_col &lt; width:\n            yield next_row, next_col\n\n\nclass Solution:\n    def shortest_path(\n        self, grid: list[list[int]]\n    ) -&gt; list[tuple[int, int]] | None:\n        \"\"\"Return a shortest legal path, or None when none exists.\"\"\"\n        raise NotImplementedError(\"Implement Homework 1 here\")\n\n\nfrom hw1 import Solution\n\nROAD, DOOR, WALL, KEY, EXIT, PLAYER = range(6)\n\n\ndef find_tile(grid, target):\n    return next(\n        (row, col)\n        for row, values in enumerate(grid)\n        for col, tile in enumerate(values)\n        if tile == target\n    )\n\n\ndef path_is_legal(grid, path):\n    if not path:\n        return False\n\n    board = [row[:] for row in grid]\n    height = len(board)\n    width = len(board[0])\n    start = find_tile(board, PLAYER)\n    goal = find_tile(board, EXIT)\n\n    if path[0] != start:\n        return False\n\n    keys = 0\n    previous = start\n    for step in path[1:]:\n        if not (\n            isinstance(step, tuple)\n            and len(step) == 2\n            and all(isinstance(value, int) for value in step)\n        ):\n            return False\n\n        row, col = step\n        if not (0 &lt;= row &lt; height and 0 &lt;= col &lt; width):\n            return False\n        if abs(row - previous[0]) + abs(col - previous[1]) != 1:\n            return False\n\n        tile = board[row][col]\n        if tile == WALL:\n            return False\n        if tile == KEY:\n            keys += 1\n            board[row][col] = ROAD\n        elif tile == DOOR:\n            if keys == 0:\n                return False\n            keys -= 1\n            board[row][col] = ROAD\n\n        previous = step\n\n    return path[-1] == goal\n\n\nCASES = [\n    (\n        [[4, 2, 1, 3], [0, 5, 0, 2], [2, 3, 1, 0]],\n        3,\n    ),\n    (\n        [\n            [1, 0, 3, 2, 1],\n            [2, 3, 0, 0, 1],\n            [3, 0, 3, 0, 2],\n            [0, 4, 1, 5, 2],\n            [2, 1, 2, 3, 0],\n        ],\n        5,\n    ),\n    (\n        [[5, 1, 4], [2, 2, 2], [3, 0, 0]],\n        None,\n    ),\n]\n\n\ndef main():\n    solution = Solution()\n    for number, (grid, expected_length) in enumerate(CASES, 1):\n        try:\n            result = solution.shortest_path([row[:] for row in grid])\n        except NotImplementedError:\n            print(\"shortest_path: TODO\")\n            return\n        if expected_length is None:\n            assert result is None, f\"case {number}: expected None\"\n        else:\n            assert path_is_legal(grid, result), f\"case {number}: illegal path\"\n            assert len(result) == expected_length, (\n                f\"case {number}: expected length {expected_length}, \"\n                f\"received {len(result)}\"\n            )\n        print(f\"case {number}: passed\")\n\n\nif __name__ == \"__main__\":\n    main()\n\n\n\n\n← Homework 1 assignmentDownload package →"
+    "text": "Select a filename below to show its complete contents. These are the same files included in the downloadable ZIP, so this page can be used for a live walkthrough in class.\n\n\nAssignmentDownload ZIP\n\n\n\nREADME.mdhw1.pycheck_hw1.py\n\n\n# Homework 1 starter\n\nThis package contains everything needed to develop and check Homework 1.\n\n## Files\n\n- `hw1.py`: the only file you edit and submit.\n- `check_hw1.py`: public examples and a legal-path checker.\n\n## Run the public checks\n\n```bash\npython check_hw1.py\n```\n\nThe checker validates path format, movement, keys, doors, and the public shortest lengths. It does not reveal the hidden tests or the required state representation.\n\nUpload only `hw1.py` to Canvas.\n\n\nROAD = 0\nDOOR = 1\nWALL = 2\nKEY = 3\nEXIT = 4\nPLAYER = 5\n\nDIRECTIONS = ((-1, 0), (1, 0), (0, -1), (0, 1))\n\n\ndef find_tile(grid: list[list[int]], tile: int) -&gt; tuple[int, int]:\n    \"\"\"Return the coordinate of the first matching tile.\"\"\"\n    for row, values in enumerate(grid):\n        for col, value in enumerate(values):\n            if value == tile:\n                return row, col\n    raise ValueError(f\"tile {tile} is missing\")\n\n\ndef neighbors(row: int, col: int, height: int, width: int):\n    \"\"\"Yield orthogonally adjacent coordinates inside the grid.\"\"\"\n    for d_row, d_col in DIRECTIONS:\n        next_row = row + d_row\n        next_col = col + d_col\n        if 0 &lt;= next_row &lt; height and 0 &lt;= next_col &lt; width:\n            yield next_row, next_col\n\n\nclass Solution:\n    def shortest_path(\n        self, grid: list[list[int]]\n    ) -&gt; list[tuple[int, int]] | None:\n        \"\"\"Return a shortest legal path, or None when none exists.\"\"\"\n        raise NotImplementedError(\"Implement Homework 1 here\")\n\n\nfrom hw1 import Solution\n\nROAD, DOOR, WALL, KEY, EXIT, PLAYER = range(6)\n\n\ndef find_tile(grid, target):\n    return next(\n        (row, col)\n        for row, values in enumerate(grid)\n        for col, tile in enumerate(values)\n        if tile == target\n    )\n\n\ndef path_is_legal(grid, path):\n    if not path:\n        return False\n\n    board = [row[:] for row in grid]\n    height = len(board)\n    width = len(board[0])\n    start = find_tile(board, PLAYER)\n    goal = find_tile(board, EXIT)\n\n    if path[0] != start:\n        return False\n\n    keys = 0\n    previous = start\n    for step in path[1:]:\n        if not (\n            isinstance(step, tuple)\n            and len(step) == 2\n            and all(isinstance(value, int) for value in step)\n        ):\n            return False\n\n        row, col = step\n        if not (0 &lt;= row &lt; height and 0 &lt;= col &lt; width):\n            return False\n        if abs(row - previous[0]) + abs(col - previous[1]) != 1:\n            return False\n\n        tile = board[row][col]\n        if tile == WALL:\n            return False\n        if tile == KEY:\n            keys += 1\n            board[row][col] = ROAD\n        elif tile == DOOR:\n            if keys == 0:\n                return False\n            keys -= 1\n            board[row][col] = ROAD\n\n        previous = step\n\n    return path[-1] == goal\n\n\nCASES = [\n    (\n        [[4, 2, 1, 3], [0, 5, 0, 2], [2, 3, 1, 0]],\n        3,\n    ),\n    (\n        [\n            [1, 0, 3, 2, 1],\n            [2, 3, 0, 0, 1],\n            [3, 0, 3, 0, 2],\n            [0, 4, 1, 5, 2],\n            [2, 1, 2, 3, 0],\n        ],\n        5,\n    ),\n    (\n        [\n            [2, 0, 0, 2, 2, 2, 2, 0, 0, 3, 0, 2, 0, 1, 2],\n            [1, 0, 2, 0, 2, 1, 3, 0, 2, 0, 3, 0, 0, 2, 2],\n            [1, 2, 2, 0, 2, 2, 3, 0, 2, 3, 0, 2, 2, 0, 0],\n            [0, 2, 5, 1, 2, 1, 0, 2, 2, 0, 2, 0, 2, 3, 0],\n            [0, 0, 0, 0, 1, 2, 0, 3, 2, 0, 3, 0, 3, 0, 2],\n            [2, 0, 3, 0, 2, 0, 3, 0, 0, 0, 1, 0, 3, 3, 1],\n            [0, 1, 0, 0, 1, 1, 2, 0, 2, 2, 0, 1, 2, 3, 2],\n            [2, 1, 0, 0, 2, 2, 1, 0, 2, 0, 3, 0, 4, 2, 0],\n            [0, 0, 0, 0, 2, 1, 0, 0, 2, 2, 2, 2, 0, 0, 0],\n            [0, 2, 0, 2, 2, 3, 0, 3, 2, 0, 3, 1, 1, 2, 2],\n        ],\n        None,\n    ),\n]\n\n\ndef main():\n    solution = Solution()\n    for number, (grid, expected_length) in enumerate(CASES, 1):\n        try:\n            result = solution.shortest_path([row[:] for row in grid])\n        except NotImplementedError:\n            print(\"shortest_path: TODO\")\n            return\n        if expected_length is None:\n            assert result is None, f\"case {number}: expected None\"\n        else:\n            assert path_is_legal(grid, result), f\"case {number}: illegal path\"\n            assert len(result) == expected_length, (\n                f\"case {number}: expected length {expected_length}, \"\n                f\"received {len(result)}\"\n            )\n        print(f\"case {number}: passed\")\n\n\nif __name__ == \"__main__\":\n    main()\n\n\n\n\n← Homework 1 assignmentDownload package →"
   },
   {
     "objectID": "homeworks/hw2-starter.html",
@@ -2524,7 +2524,7 @@
     "href": "code_and_homework/AC3.html",
     "title": "AC-3 Constraint Propagation",
     "section": "",
-    "text": "This example solves a small constraint satisfaction problem with four variables and four arithmetic constraints. It is meant to show how AC-3 repeatedly removes unsupported values from variable domains until every arc is locally consistent.\nWhat to notice: the queue stores arcs that still need checking, and pruning one variable’s domain can force neighboring arcs back into the queue."
+    "text": "Download notebook (.ipynb)\n  Download page (.html)\nA constraint satisfaction problem (CSP) consists of variables, their possible values, and constraints. AC-3, Arc Consistency Algorithm 3, removes values that have no supporting value in a neighboring domain.\nThe variables here are a, b, c, and d, each initially a digit from 0 through 9. Propagation reduces domains; it does not necessarily choose one complete assignment. Run the cells in order; only Python’s standard library is needed."
   },
   {
     "objectID": "code_and_homework/AC3.html#complete-ac-3-walkthrough",
@@ -2538,7 +2538,7 @@
     "href": "code_and_homework/KNN_MNIST.html",
     "title": "K-Nearest Neighbors on MNIST",
     "section": "",
-    "text": "This demo applies a simple nonparametric classifier to handwritten digits. KNN makes predictions by comparing a test image to nearby training examples instead of learning model weights.\nWhat to notice: the quality of KNN depends heavily on the distance metric, the value of k, and the amount of training data used for comparison."
+    "text": "Download notebook (.ipynb)\n  Download page (.html)\nK-nearest neighbors (KNN) predicts a label by finding similar labeled examples and taking a vote. Unlike a neural network, it does not learn weights during fitting.\nMNIST, the Modified National Institute of Standards and Technology dataset, contains 28-by-28 grayscale images of handwritten digits. Run the cells in order with PyTorch, torchvision, NumPy, and Matplotlib installed. The first run downloads the data and needs an internet connection."
   },
   {
     "objectID": "code_and_homework/KNN_MNIST.html#load-data-and-define-knn",
@@ -2559,7 +2559,7 @@
     "href": "code_and_homework/annealing.html",
     "title": "Simulated Annealing",
     "section": "",
-    "text": "Simulated annealing is a local search method that sometimes accepts worse moves early on, then becomes more conservative as the temperature decreases.\nWhat to notice: the temperature schedule controls the exploration-to-exploitation tradeoff."
+    "text": "Download notebook (.ipynb)\n  Download page (.html)\nSimulated annealing minimizes an objective while sometimes accepting a worse candidate. Temperature controls how willing the search is to do this: high temperature encourages exploration, while low temperature favors improvement.\nRun the cells in order with NumPy and Matplotlib installed. This small example uses a one-dimensional objective so both the landscape and the search history are visible."
   },
   {
     "objectID": "code_and_homework/annealing.html#objective-landscape",
@@ -2580,7 +2580,7 @@
     "href": "code_and_homework/genetic_8_queen.html",
     "title": "Genetic Algorithm for N-Queens",
     "section": "",
-    "text": "This demo uses a population of candidate queen placements and evolves them with selection, crossover, and mutation.\nWhat to notice: the fitness function rewards boards with fewer attacking queen pairs, and mutation helps the search escape premature convergence."
+    "text": "Download notebook (.ipynb)\n  Download page (.html)\nA genetic algorithm evolves a population of candidate boards using selection, crossover, and mutation. The file name refers to eight queens, but the supplied experiment uses 30 queens.\nRun the cells in order. Only Matplotlib needs installation; random is part of Python. The default population and generation limits can be computationally expensive; a smaller board is useful for quick experiments."
   },
   {
     "objectID": "code_and_homework/genetic_8_queen.html#evolutionary-search",
@@ -2601,7 +2601,7 @@
     "href": "code_and_homework/search_A_star.html",
     "title": "A* Search on a Grid",
     "section": "",
-    "text": "A* combines the actual path cost so far with a heuristic estimate of the remaining distance. With an admissible heuristic, it finds an optimal path while often expanding fewer states than uninformed search.\nWhat to notice: the Manhattan-distance heuristic guides the frontier toward the goal without overestimating the remaining cost."
+    "text": "Download notebook (.ipynb)\n  Download page (.html)\nA* ranks a candidate by the cost already paid plus an estimate of the remaining cost: f(n) = g(n) + h(n). This example uses unit-cost moves in four directions and Manhattan distance.\nRun the cells in order with NumPy and Matplotlib installed. The map helpers mirror the BFS/DFS notebook, so the main change is how the frontier chooses its next path."
   },
   {
     "objectID": "code_and_homework/search_A_star.html#grid-setup",
@@ -2622,7 +2622,7 @@
     "href": "code_and_homework/search_UCS.html",
     "title": "Uniform-Cost Search and Dijkstra’s Algorithm",
     "section": "",
-    "text": "Uniform-cost search expands the frontier node with the lowest path cost so far. On graphs with nonnegative edge weights, it is the single-source shortest-path idea behind Dijkstra’s algorithm.\nWhat to notice: the priority queue orders paths by accumulated cost, not by the number of steps."
+    "text": "Download notebook (.ipynb)\n  Download page (.html)\nA route with fewer edges is not necessarily cheaper. Uniform-cost search (UCS) expands the frontier entry with the lowest accumulated cost, rather than the smallest depth.\nThis notebook builds a weighted graph, traces a least-cost route, and then finds routes to every reachable node from the same source. Run the cells from top to bottom. The external packages are NetworkX, Matplotlib, and NumPy; the other imports belong to Python’s standard library."
   },
   {
     "objectID": "code_and_homework/search_UCS.html#weighted-graph-setup",
@@ -2636,7 +2636,7 @@
     "href": "code_and_homework/search_UCS.html#uniform-cost-search",
     "title": "Uniform-Cost Search and Dijkstra’s Algorithm",
     "section": "Uniform-Cost Search",
-    "text": "Uniform-Cost Search\nUCS finds the least-cost path from one source to one target.\n\nimport heapq\n\nsource = 0\ntarget = 3\n# find the shortest path from source to target, using uniform cost search\ndef uniform_cost_search(G, source, target):\n    visited = set()\n    queue = [(0, source, [])]\n    all_parents = {}\n    heapq.heapify(queue)\n    while len(queue) &gt; 0:\n        print(queue)\n        cost, node, parent = heapq.heappop(queue)\n        # draw a picture of the search process\n        nx.draw(G, pos, with_labels=True)\n        labels = nx.get_edge_attributes(G, 'weight')\n        nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)\n        nx.draw_networkx_nodes(G, pos, nodelist=visited, node_color='r') # visited nodes\n        nx.draw_networkx_nodes(G, pos, nodelist=[node], node_color='g') # current node\n        plt.show()\n        \n        if node in visited:\n            continue\n        visited.add(node)\n        all_parents[node] = parent\n        if node == target:\n            path = [node]\n            while node != source:\n                node = all_parents[node]\n                path.append(node)\n            path.reverse()\n            return path\n        for neighbor in G.neighbors(node):\n            if neighbor in visited:\n                continue\n            weight = G[node][neighbor]['weight']\n            heapq.heappush(queue, (cost + weight, neighbor, node))\n    return None\n\npath = uniform_cost_search(G, source, target)\nprint(path)\n\n[(0, 0, [])]\n\n\n\n\n\n\n\n\n\n[(6, 7, 0), (9, 4, 0), (7, 1, 0)]\n\n\n\n\n\n\n\n\n\n[(7, 1, 0), (8, 2, 7), (11, 6, 7), (16, 5, 7), (9, 4, 0)]\n\n\n\n\n\n\n\n\n\n[(8, 2, 7), (9, 4, 0), (11, 6, 7), (16, 5, 7), (17, 2, 1), (14, 5, 1), (17, 3, 1)]\n\n\n\n\n\n\n\n\n\n[(9, 4, 0), (13, 4, 2), (11, 6, 7), (16, 5, 7), (17, 2, 1), (14, 5, 1), (13, 3, 2), (17, 3, 1)]\n\n\n\n\n\n\n\n\n\n[(11, 6, 7), (13, 4, 2), (13, 3, 2), (16, 5, 7), (17, 2, 1), (14, 5, 1), (17, 3, 1)]\n\n\n\n\n\n\n\n\n\n[(13, 3, 2), (13, 4, 2), (14, 5, 1), (16, 5, 7), (17, 2, 1), (17, 3, 1)]\n\n\n\n\n\n\n\n\n\n[0, 7, 2, 3]"
+    "text": "Uniform-Cost Search\nThe loop removes a cheapest entry, skips an already finalized node, and records its parent. A node becomes visited when it is removed, not when first discovered: a cheaper route may be found while it is still in the frontier.\nWith nonnegative weights, the first removal of a node finalizes its shortest-path cost. The goal test therefore belongs after removal. On reaching the target, parent links are followed backward and the list is reversed into source-to-target order.\nNeighbor entries may duplicate a node already in the heap. The visited check discards those stale alternatives. If the heap empties first, the function returns None.\n\ndef uniform_cost_search(G, source, target):\n    visited = set()\n    queue = [(0, source, [])]\n    all_parents = {}\n    heapq.heapify(queue)\n    while len(queue) &gt; 0:\n        print(queue)\n        cost, node, parent = heapq.heappop(queue)\n        # draw a picture of the search process\n        nx.draw(G, pos, with_labels=True)\n        labels = nx.get_edge_attributes(G, 'weight')\n        nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)\n        nx.draw_networkx_nodes(G, pos, nodelist=visited, node_color='r') # visited nodes\n        nx.draw_networkx_nodes(G, pos, nodelist=[node], node_color='g') # current node\n        plt.show()\n        \n        if node in visited:\n            continue\n        visited.add(node)\n        all_parents[node] = parent\n        if node == target:\n            path = [node]\n            while node != source:\n                node = all_parents[node]\n                path.append(node)\n            path.reverse()\n            return path\n        for neighbor in G.neighbors(node):\n            if neighbor in visited:\n                continue\n            weight = G[node][neighbor]['weight']\n            heapq.heappush(queue, (cost + weight, neighbor, node))\n    return None"
   },
   {
     "objectID": "code_and_homework/search_UCS.html#dijkstra-for-all-targets",
@@ -7158,7 +7158,7 @@
     "href": "code_and_homework/search_BFS_DFS.html#generate-a-connected-map",
     "title": "Breadth-First and Depth-First Search",
     "section": "Generate a connected map",
-    "text": "Generate a connected map\ngenerate_map first samples walls and open cells, then removes one wall from any completely blocked (2 imes 2) region. It next uses union-find, also called the disjoint-set data structure, to track which open cells belong to the same connected component.\n\nfind(x) follows parent links to obtain a component representative and shortens future searches with path compression.\nunion(x, y) joins the components containing two neighboring open cells.\nA wall is removed when its open neighbors belong to different components, allowing those components to be connected.\n\nFor a visual introduction to the data structure, see Princeton Algorithms’ Union-Find case study.\n\ndef generate_map(width, height, seed):\n    np.random.seed(seed)\n    m = np.random.choice([WALL, EMPTY], size=(height, width))\n    # scan all 2x2 blocks and remove walls that are not needed\n    for i in range(height - 1):\n        for j in range(width - 1):\n            block = m[i : i + 2, j : j + 2]\n            if np.sum(block == WALL) == 4:\n                # randomly remove one wall\n                block[np.random.randint(2), np.random.randint(2)] = EMPTY\n    # run union-find to make sure the map is connected\n    parent = np.arange(width * height)\n\n    def find(x):\n        while parent[x] != x:\n            parent[x] = parent[parent[x]]\n            x = parent[x]\n        return parent[x]\n\n    def union(x, y):\n        parent[find(x)] = find(y)\n\n    for i in range(height):\n        for j in range(width):\n            if m[i, j] == WALL:\n                continue\n            for ni, nj in [(i + 1, j), (i, j + 1)]:\n                if ni &lt; height and nj &lt; width and m[ni, nj] == EMPTY:\n                    union(i * width + j, ni * width + nj)\n    for i in range(height):\n        for j in range(width):\n            if m[i, j] == WALL:\n                # check if all neighbors of this wall are connected\n                # if not, remove this wall\n                neighbors = []\n                for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:\n                    if 0 &lt;= ni &lt; height and 0 &lt;= nj &lt; width and m[ni, nj] == EMPTY:\n                        neighbors.append(\n                            find(ni * width + nj)\n                        )  # get the parent of all empty neighbors\n                if len(neighbors) != 0 and len(set(neighbors)) != 1:\n                    m[i, j] = EMPTY\n                    # connect all neighbors\n                    for k in range(1, len(neighbors)):\n                        union(neighbors[k - 1], neighbors[k])\n    return m"
+    "text": "Generate a connected map\ngenerate_map first samples walls and open cells, then removes one wall from any completely blocked 2-by-2 region. It next uses union-find, also called the disjoint-set data structure, to track which open cells belong to the same connected component.\n\nfind(x) follows parent links to obtain a component representative and shortens future searches with path compression.\nunion(x, y) joins the components containing two neighboring open cells.\nA wall is removed when its open neighbors belong to different components, allowing those components to be connected.\n\nFor a visual introduction to the data structure, see Princeton Algorithms’ Union-Find case study.\n\ndef generate_map(width, height, seed):\n    np.random.seed(seed)\n    m = np.random.choice([WALL, EMPTY], size=(height, width))\n    # scan all 2x2 blocks and remove walls that are not needed\n    for i in range(height - 1):\n        for j in range(width - 1):\n            block = m[i : i + 2, j : j + 2]\n            if np.sum(block == WALL) == 4:\n                # randomly remove one wall\n                block[np.random.randint(2), np.random.randint(2)] = EMPTY\n    # run union-find to make sure the map is connected\n    parent = np.arange(width * height)\n\n    def find(x):\n        while parent[x] != x:\n            parent[x] = parent[parent[x]]\n            x = parent[x]\n        return parent[x]\n\n    def union(x, y):\n        parent[find(x)] = find(y)\n\n    for i in range(height):\n        for j in range(width):\n            if m[i, j] == WALL:\n                continue\n            for ni, nj in [(i + 1, j), (i, j + 1)]:\n                if ni &lt; height and nj &lt; width and m[ni, nj] == EMPTY:\n                    union(i * width + j, ni * width + nj)\n    for i in range(height):\n        for j in range(width):\n            if m[i, j] == WALL:\n                # check if all neighbors of this wall are connected\n                # if not, remove this wall\n                neighbors = []\n                for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:\n                    if 0 &lt;= ni &lt; height and 0 &lt;= nj &lt; width and m[ni, nj] == EMPTY:\n                        neighbors.append(\n                            find(ni * width + nj)\n                        )  # get the parent of all empty neighbors\n                if len(neighbors) != 0 and len(set(neighbors)) != 1:\n                    m[i, j] = EMPTY\n                    # connect all neighbors\n                    for k in range(1, len(neighbors)):\n                        union(neighbors[k - 1], neighbors[k])\n    return m"
   },
   {
     "objectID": "code_and_homework/search_BFS_DFS.html#choose-the-start-and-goal",
@@ -7193,7 +7193,7 @@
     "href": "code_and_homework/search_BFS_DFS.html#check-your-understanding",
     "title": "Breadth-First and Depth-First Search",
     "section": "Check your understanding",
-    "text": "Check your understanding\n\nWhy does marking a state visited when it enters the frontier avoid duplicate work?\nWhich single line changes FIFO behavior into LIFO behavior?\nWhy can two correct DFS implementations return different paths?\nWhat happens if a goal is unreachable and path reconstruction assumes it was found?\nHow would a deque change the BFS implementation without changing the algorithm?"
+    "text": "Check your understanding\n\nWhy does marking a state visited when it enters the frontier avoid duplicate work?\nWhich single line changes FIFO behavior into LIFO behavior?\nWhy can two correct DFS implementations return different paths?\nWhat happens if a goal is unreachable and path reconstruction assumes it was found?\nHow would a deque change the BFS implementation without changing the algorithm?\n\n\n\nAnswers and discussion\n\n\nMark on discovery. Once a state is marked, another parent cannot add it again. Each reachable state enters the frontier at most once, avoiding repeated expansion and conflicting parent assignments. This is appropriate for this unweighted BFS/DFS example; weighted shortest-path search needs different cost bookkeeping.\nChange which end is removed. Replacing i, j = q.pop(0) with i, j = q.pop() changes the same list from FIFO to LIFO. The iterative DFS code calls its list s, but the name is not what changes the behavior.\nDFS depends on traversal order. Recursive DFS immediately follows the first eligible neighbor, whereas pushing neighbors onto a stack makes the last pushed neighbor run first. Different ordering or discovery timing can produce different parent trees and valid paths. Neither version promises a shortest path.\nReconstruction can fail or never terminate. Here the unused parent entries contain (0, 0). Starting from an unreachable goal can follow those defaults, produce an invalid path, or loop at (0, 0). Check that the goal was reached and return None or an empty path before reconstructing; the drawing helper must also handle failure.\nUse efficient queue removal. Import deque, initialize q = deque([start]), and replace q.pop(0) with q.popleft(). Keep append for insertion. FIFO order and the returned shortest-path length stay the same, while removal avoids shifting all remaining list elements."
   },
   {
     "objectID": "code_and_homework/search_BFS_DFS.html#summary",
@@ -7201,5 +7201,719 @@
     "title": "Breadth-First and Depth-First Search",
     "section": "Summary",
     "text": "Summary\nBFS and DFS share most of their machinery. The frontier discipline controls exploration order, completeness behavior, memory use, and whether the first discovered path is guaranteed to be shortest."
+  },
+  {
+    "objectID": "code_and_homework/search_UCS.html#imports",
+    "href": "code_and_homework/search_UCS.html#imports",
+    "title": "Uniform-Cost Search and Dijkstra’s Algorithm",
+    "section": "Imports",
+    "text": "Imports\nNetworkX stores nodes, edges, and edge weights. Matplotlib draws the graph. Both random-number generators are seeded below so the graph and its initial layout can be reproduced.\n\n# generate random weighted graphs and show it\nimport networkx as nx\nimport matplotlib.pyplot as plt\nimport random\nimport numpy as np"
+  },
+  {
+    "objectID": "code_and_homework/search_UCS.html#generate-a-weighted-graph",
+    "href": "code_and_homework/search_UCS.html#generate-a-weighted-graph",
+    "title": "Uniform-Cost Search and Dijkstra’s Algorithm",
+    "section": "Generate a Weighted Graph",
+    "text": "Generate a Weighted Graph\ngenerate_random_graph(n, m, seed) creates an undirected graph with integer node labels. It rejects self-loops and duplicate edges, then assigns each accepted edge a cost from 1 through 10.\nChoose at most n * (n - 1) // 2 edges: a larger request would leave the sampling loop unable to finish. Random generation does not guarantee connectivity, so some targets may be unreachable.\n\ndef generate_random_graph(n, m, seed):\n    # n: number of nodes\n    # m: number of edges\n    # seed: random seed\n    random.seed(seed)\n    np.random.seed(seed)\n    G = nx.Graph()\n    for i in range(n):\n        G.add_node(i)\n    for i in range(m):\n        # get an edge that is not in the graph\n        while True:\n            u = random.randint(0, n-1)\n            v = random.randint(0, n-1)\n            if u == v:\n                continue # no self loop\n            if not G.has_edge(u, v):\n                break\n        w = random.randint(1, 10)\n        G.add_edge(u, v, weight=w)\n    return G"
+  },
+  {
+    "objectID": "code_and_homework/search_UCS.html#draw-nodes-and-edge-costs",
+    "href": "code_and_homework/search_UCS.html#draw-nodes-and-edge-costs",
+    "title": "Uniform-Cost Search and Dijkstra’s Algorithm",
+    "section": "Draw Nodes and Edge Costs",
+    "text": "Draw Nodes and Edge Costs\nshow_graph(G) returns the positions used by the drawing. Later search frames reuse these positions, so nodes do not move as the frontier changes. The numbers on edges are travel costs; geometric distances on the screen are not costs.\n\ndef show_graph(G):\n    pos = nx.spring_layout(G)\n    nx.draw(G, pos, with_labels=True)\n    labels = nx.get_edge_attributes(G, 'weight')\n    nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)\n    plt.show()\n    return pos"
+  },
+  {
+    "objectID": "code_and_homework/search_UCS.html#example-graph",
+    "href": "code_and_homework/search_UCS.html#example-graph",
+    "title": "Uniform-Cost Search and Dijkstra’s Algorithm",
+    "section": "Example Graph",
+    "text": "Example Graph\nThe example has eight nodes and twelve edges. Before searching from node 0 to node 3, compare a route with few edges against a route whose edge weights have a small sum.\n\nG = generate_random_graph(8, 12, 0)\npos = show_graph(G)"
+  },
+  {
+    "objectID": "code_and_homework/search_UCS.html#priority-queue-and-query",
+    "href": "code_and_homework/search_UCS.html#priority-queue-and-query",
+    "title": "Uniform-Cost Search and Dijkstra’s Algorithm",
+    "section": "Priority Queue and Query",
+    "text": "Priority Queue and Query\nPython’s heapq maintains a min-heap. Each search entry is (cost, node, parent), so the lowest total cost is removed first. Equal-cost entries are ordered by node label in this example.\n\nimport heapq\n\nsource = 0\ntarget = 3\n# find the shortest path from source to target, using uniform cost search"
+  },
+  {
+    "objectID": "code_and_homework/search_UCS.html#trace-the-search",
+    "href": "code_and_homework/search_UCS.html#trace-the-search",
+    "title": "Uniform-Cost Search and Dijkstra’s Algorithm",
+    "section": "Trace the Search",
+    "text": "Trace the Search\nGreen marks the current popped node; red marks previously finalized nodes. Drawing occurs before the duplicate check, so a stale entry can also produce a frame.\nThe printed list is the heap’s internal storage, not a fully sorted list. Only its first entry is guaranteed to have minimum priority. The final printed list is the route; add the weights along its edges to obtain its cost.\n\npath = uniform_cost_search(G, source, target)\nprint(path)\n\n[(0, 0, [])]\n\n\n\n\n\n\n\n\n\n[(6, 7, 0), (9, 4, 0), (7, 1, 0)]\n\n\n\n\n\n\n\n\n\n[(7, 1, 0), (8, 2, 7), (11, 6, 7), (16, 5, 7), (9, 4, 0)]\n\n\n\n\n\n\n\n\n\n[(8, 2, 7), (9, 4, 0), (11, 6, 7), (16, 5, 7), (17, 2, 1), (14, 5, 1), (17, 3, 1)]\n\n\n\n\n\n\n\n\n\n[(9, 4, 0), (13, 4, 2), (11, 6, 7), (16, 5, 7), (17, 2, 1), (14, 5, 1), (13, 3, 2), (17, 3, 1)]\n\n\n\n\n\n\n\n\n\n[(11, 6, 7), (13, 4, 2), (13, 3, 2), (16, 5, 7), (17, 2, 1), (14, 5, 1), (17, 3, 1)]\n\n\n\n\n\n\n\n\n\n[(13, 3, 2), (13, 4, 2), (14, 5, 1), (16, 5, 7), (17, 2, 1), (17, 3, 1)]\n\n\n\n\n\n\n\n\n\n[0, 7, 2, 3]"
+  },
+  {
+    "objectID": "code_and_homework/search_UCS.html#dijkstra-one-source-every-reachable-target",
+    "href": "code_and_homework/search_UCS.html#dijkstra-one-source-every-reachable-target",
+    "title": "Uniform-Cost Search and Dijkstra’s Algorithm",
+    "section": "Dijkstra: One Source, Every Reachable Target",
+    "text": "Dijkstra: One Source, Every Reachable Target\nThis version continues until the frontier is empty. It returns a dictionary mapping each reachable node to (cost, path). Despite the original code comment, this is single-source, not all-pairs, shortest paths.\nHere each heap entry carries an entire path instead of one parent. Copying paths makes the example easy to inspect but uses extra memory. A larger implementation would usually track best distances and parent pointers separately.\n\n# dijkstra's algorithm for every pair shortest path\ndef dijkstra(G, source):\n    visited = set()\n    queue = [(0, source, [])]\n    shortest_paths = {}\n    heapq.heapify(queue)\n    while len(queue) &gt; 0:\n        cost, node, path = heapq.heappop(queue)\n        if node in visited:\n            continue\n        visited.add(node)\n        path = path + [node]\n        shortest_paths[node] = (cost, path)\n        for neighbor in G.neighbors(node):\n            if neighbor in visited:\n                continue\n            weight = G[node][neighbor]['weight']\n            heapq.heappush(queue, (cost + weight, neighbor, path))\n    return shortest_paths"
+  },
+  {
+    "objectID": "code_and_homework/search_UCS.html#read-the-results",
+    "href": "code_and_homework/search_UCS.html#read-the-results",
+    "title": "Uniform-Cost Search and Dijkstra’s Algorithm",
+    "section": "Read the Results",
+    "text": "Read the Results\nEach line shows a destination and its route from node 0. The dictionary also stores the total cost, although the loop below prints only the path. Unreachable nodes are absent.\nThe route to node 3 should agree in cost with UCS. Equal-cost alternatives need not use exactly the same route.\n\nshortest_paths = dijkstra(G, source)\nfor node, (cost, path) in shortest_paths.items():\n    print(f'{node}: {path}')\n\n\n\n0: [0]\n7: [0, 7]\n1: [0, 1]\n2: [0, 7, 2]\n4: [0, 4]\n6: [0, 7, 6]\n3: [0, 7, 2, 3]\n5: [0, 1, 5]"
+  },
+  {
+    "objectID": "code_and_homework/search_UCS.html#compare-and-explore",
+    "href": "code_and_homework/search_UCS.html#compare-and-explore",
+    "title": "Uniform-Cost Search and Dijkstra’s Algorithm",
+    "section": "Compare and Explore",
+    "text": "Compare and Explore\n\nGive every edge weight 1. How does the optimal cost relate to the number of edges found by BFS?\nChange the target. Which UCS frames disappear because search stops earlier?\nInspect shortest_paths[target][0] and sum the weights on the returned route.\nWhy would a negative edge invalidate the claim that the first removal finalizes a node?\n\n\n\nAnswers and discussion\n\n\nUnit weights recover minimum depth. A route’s cost equals its number of edges, so UCS and BFS find the same optimal path length. Tie-breaking can still produce different routes of that length.\nStop at the new goal’s removal. With node 2 as the target, the saved expansion order ends after 0, 7, 1, 2. The later frames for nodes 4, 6, and 3 disappear. A different target is not necessarily reached earlier; the result depends on its least-cost distance and tie-breaking.\nThe saved route costs 13. For target 3, the route is 0 -&gt; 7 -&gt; 2 -&gt; 3, with edge costs 6 + 2 + 5 = 13. This agrees with shortest_paths[3][0]. Three edges do not mean a cost of three unless every weight is one.\nA later route could become cheaper. In a directed example with edges S -&gt; A: 1, S -&gt; B: 2, and B -&gt; A: -3, A would be finalized at cost 1 before the route through B reveals cost -1. Nonnegative weights prevent that decrease. In this notebook’s undirected graph, a negative edge additionally creates a negative-cost back-and-forth walk, so a finite shortest-walk cost may not exist.\n\n\nTakeaway: UCS and Dijkstra use the same cheapest-first principle. Their stopping conditions differ: one target versus every reachable target."
+  },
+  {
+    "objectID": "code_and_homework/search_A_star.html#imports-and-grid-symbols",
+    "href": "code_and_homework/search_A_star.html#imports-and-grid-symbols",
+    "title": "A* Search on a Grid",
+    "section": "Imports and Grid Symbols",
+    "text": "Imports and Grid Symbols\nThe array stores walls as “#” and open cells as “.”. Positions are (row, column) tuples. The figure size controls only the display, not the search space.\n\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nWALL = \"#\"\nEMPTY = \".\"\n\nfigure_size = 5"
+  },
+  {
+    "objectID": "code_and_homework/search_A_star.html#generate-the-map",
+    "href": "code_and_homework/search_A_star.html#generate-the-map",
+    "title": "A* Search on a Grid",
+    "section": "Generate the Map",
+    "text": "Generate the Map\nThe generator samples walls, opens a cell in each completely blocked 2-by-2 patch, and uses a union-find structure to identify connected regions. A cell’s one-dimensional index is row * width + column.\nThe nested find follows parent links and shortens paths; union joins two roots. The final scan removes walls separating different neighboring regions. This is map preparation, not A* itself. For the data structure, see Princeton’s union-find introduction.\n\ndef generate_map(width, height, seed):\n    np.random.seed(seed)\n    m = np.random.choice([WALL, EMPTY], size=(height, width))\n    # scan all 2x2 blocks and remove walls that are not needed\n    for i in range(height - 1):\n        for j in range(width - 1):\n            block = m[i : i + 2, j : j + 2]\n            if np.sum(block == WALL) == 4:\n                # randomly remove one wall\n                block[np.random.randint(2), np.random.randint(2)] = EMPTY\n    # run union-find to make sure the map is connected\n    parent = np.arange(width * height)\n\n    def find(x):\n        while parent[x] != x:\n            parent[x] = parent[parent[x]]\n            x = parent[x]\n        return parent[x]\n\n    def union(x, y):\n        parent[find(x)] = find(y)\n\n    for i in range(height):\n        for j in range(width):\n            if m[i, j] == WALL:\n                continue\n            for ni, nj in [(i + 1, j), (i, j + 1)]:\n                if ni &lt; height and nj &lt; width and m[ni, nj] == EMPTY:\n                    union(i * width + j, ni * width + nj)\n    for i in range(height):\n        for j in range(width):\n            if m[i, j] == WALL:\n                # check if all neighbors of this wall are connected\n                # if not, remove this wall\n                neighbors = []\n                for ni, nj in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:\n                    if 0 &lt;= ni &lt; height and 0 &lt;= nj &lt; width and m[ni, nj] == EMPTY:\n                        neighbors.append(\n                            find(ni * width + nj)\n                        )  # get the parent of all empty neighbors\n                if len(neighbors) != 0 and len(set(neighbors)) != 1:\n                    m[i, j] = EMPTY\n                    # connect all neighbors\n                    for k in range(1, len(neighbors)):\n                        union(neighbors[k - 1], neighbors[k])\n    return m"
+  },
+  {
+    "objectID": "code_and_homework/search_A_star.html#select-start-and-goal",
+    "href": "code_and_homework/search_A_star.html#select-start-and-goal",
+    "title": "A* Search on a Grid",
+    "section": "Select Start and Goal",
+    "text": "Select Start and Goal\nThe function resamples until both chosen cells are open. It does not require different endpoints or independently check that a path connects them. Search still needs to handle the actual map it receives.\n\ndef find_start_end(m):\n    # randomly find a start and end point\n    h, w = m.shape\n    start = np.random.randint(h), np.random.randint(w)\n    end = np.random.randint(h), np.random.randint(w)\n    while m[start] == WALL or m[end] == WALL:\n        start = np.random.randint(h), np.random.randint(w)\n        end = np.random.randint(h), np.random.randint(w)\n    return start, end"
+  },
+  {
+    "objectID": "code_and_homework/search_A_star.html#draw-the-grid",
+    "href": "code_and_homework/search_A_star.html#draw-the-grid",
+    "title": "A* Search on a Grid",
+    "section": "Draw the Grid",
+    "text": "Draw the Grid\nEach array cell becomes a rectangle. The drawing flips the vertical coordinate because array rows increase downward, while plot coordinates increase upward. Pass an existing Matplotlib axes object as ax.\n\ndef show_map(m, ax=None):\n    h, w = m.shape\n    for i in range(h):\n        for j in range(w):\n            # draw a rectangle\n            ax.add_patch(\n                plt.Rectangle(\n                    (j, h - i - 1), 1, 1, fc=\"gray\" if m[i, j] == WALL else \"white\"\n                )\n            )\n            # draw the border\n            ax.add_patch(\n                plt.Rectangle((j, h - i - 1), 1, 1, fill=False, edgecolor=\"black\")\n            )\n    # draw indices of horizontal and vertical axis\n    for i in range(h):\n        ax.text(-0.5, h - i - 0.5, str(i), ha=\"center\", va=\"center\")\n    for j in range(w):\n        ax.text(j + 0.5, h + 0.5, str(j), ha=\"center\", va=\"center\")\n    ax.set_xlim(-0.3, w + 0.3)\n    ax.set_ylim(-0.3, h + 0.3)\n    ax.set_aspect(\"equal\", adjustable=\"box\")\n    ax.axis(\"off\")"
+  },
+  {
+    "objectID": "code_and_homework/search_A_star.html#draw-a-returned-path",
+    "href": "code_and_homework/search_A_star.html#draw-a-returned-path",
+    "title": "A* Search on a Grid",
+    "section": "Draw a Returned Path",
+    "text": "Draw a Returned Path\nThe first cell is green, the final cell is red, and line segments connect consecutive positions. This helper expects a nonempty path; it does not handle a failed search result of None.\n\ndef draw_path(m, path, ax):\n    h, w = m.shape\n    last = path[0]\n    show_map(m, ax)\n    # draw the start and end points by filling the grid with a different color\n    ax.add_patch(plt.Rectangle((last[1], h - last[0] - 1), 1, 1, fc=\"green\"))\n    ax.add_patch(plt.Rectangle((path[-1][1], h - path[-1][0] - 1), 1, 1, fc=\"red\"))\n    for i, j in path[1:]:\n        # connect the two points\n        ax.plot([last[1] + 0.5, j + 0.5], [h - last[0] - 0.5, h - i - 0.5], \"r\", lw=2)\n        last = (i, j)"
+  },
+  {
+    "objectID": "code_and_homework/search_A_star.html#build-the-example",
+    "href": "code_and_homework/search_A_star.html#build-the-example",
+    "title": "A* Search on a Grid",
+    "section": "Build the Example",
+    "text": "Build the Example\nThe seed reproduces this 15-column, 10-row map. Green and red circles mark the start and goal. Count the row and column displacement between them before considering the walls.\n\na = generate_map(15, 10, 1)\nstart, end = find_start_end(a)\n# create a figure\nfig, ax = plt.subplots(figsize=(figure_size, figure_size))\nshow_map(a, ax)\n# plot the start and end points\nax.add_patch(\n    plt.Circle((start[1] + 0.5, a.shape[0] - start[0] - 0.5), 0.3, color=\"green\")\n)\nax.add_patch(plt.Circle((end[1] + 0.5, a.shape[0] - end[0] - 0.5), 0.3, color=\"red\"))\nplt.show()"
+  },
+  {
+    "objectID": "code_and_homework/search_A_star.html#manhattan-distance-heuristic",
+    "href": "code_and_homework/search_A_star.html#manhattan-distance-heuristic",
+    "title": "A* Search on a Grid",
+    "section": "Manhattan-Distance Heuristic",
+    "text": "Manhattan-Distance Heuristic\nFor positions (r_1,c_1) and (r_2,c_2), h = |r_1-r_2| + |c_1-c_2|. With four-direction, unit-cost movement, every route must cover that displacement. Walls can force extra moves but cannot make a shorter route, so the estimate is admissible.\nThe estimate is also consistent: crossing one edge changes Manhattan distance by at most that edge’s cost. Diagonal moves or different edge costs would require reconsidering this heuristic.\n\nimport heapq\n\n# A* algorithm\ndef heuristic(a, b):\n    return abs(a[0] - b[0]) + abs(a[1] - b[1]) # Manhattan distance"
+  },
+  {
+    "objectID": "code_and_homework/search_A_star.html#expand-the-lowest-estimated-total-cost",
+    "href": "code_and_homework/search_A_star.html#expand-the-lowest-estimated-total-cost",
+    "title": "A* Search on a Grid",
+    "section": "Expand the Lowest Estimated Total Cost",
+    "text": "Expand the Lowest Estimated Total Cost\nEach heap entry contains (f, position, path). The stored path excludes its current position. Extending it adds the current position, making len(new_path) the cost of reaching the neighbor. The goal is tested when its entry is removed.\nThis compact version is tree search over paths: it has no best-cost dictionary or closed set. The same grid cell can therefore appear many times, including via cycles. An unreachable goal can lead to unbounded repeated exploration. A scalable graph-search version should track the best known g for each state and skip inferior entries.\nBlue circles show entries in the frontier. The frame is drawn before the next heap removal, so the green circle still shows the previously selected position.\n\ndef astar(m, start, end):\n    h, w = m.shape\n    open_list = [(0, start, [])] # f, pos, path\n    pos = start\n    heapq.heapify(open_list)\n    while open_list:\n        # draw the current position and all elements in the open list\n        fig, ax = plt.subplots(figsize=(figure_size, figure_size))\n        show_map(m, ax)\n        ax.add_patch(plt.Circle((pos[1] + 0.5, h - pos[0] - 0.5), 0.3, color=\"green\"))\n        ax.add_patch(plt.Circle((end[1] + 0.5, a.shape[0] - end[0] - 0.5), 0.3, color=\"red\"))\n        for _, p, _ in open_list:\n            ax.add_patch(plt.Circle((p[1] + 0.5, h - p[0] - 0.5), 0.1, color=\"blue\"))\n        plt.show()\n\n        f, pos, path = heapq.heappop(open_list)\n        print(f, pos, path)\n\n        if pos == end:\n            return path + [pos]\n        for i, j in [(1, 0), (-1, 0), (0, 1), (0, -1)]:\n            ni, nj = pos[0] + i, pos[1] + j\n            if 0 &lt;= ni &lt; h and 0 &lt;= nj &lt; w and m[ni, nj] == EMPTY:\n                new_path = path + [pos]\n                heapq.heappush(open_list, (len(new_path) + heuristic((ni, nj), end), (ni, nj), new_path))\n    return None"
+  },
+  {
+    "objectID": "code_and_homework/search_A_star.html#run-and-read-the-trace",
+    "href": "code_and_homework/search_A_star.html#run-and-read-the-trace",
+    "title": "A* Search on a Grid",
+    "section": "Run and Read the Trace",
+    "text": "Run and Read the Trace\nEach printed line gives the popped priority, position, and path prefix. The final plot overlays the returned route. Its number of moves is len(path) - 1, not the number of cells in the list.\nThe saved example reaches the goal. Keep that distinction separate from the implementation’s limitation on unreachable maps.\n\npath = astar(a, start, end)\nfig, ax = plt.subplots(figsize=(figure_size, figure_size))\ndraw_path(a, path, ax)\nplt.show()\n\n\n\n\n\n\n\n\n0 (9, 8) []\n\n\n\n\n\n\n\n\n\n12 (8, 8) [(9, 8)]\n\n\n\n\n\n\n\n\n\n12 (7, 8) [(9, 8), (8, 8)]\n\n\n\n\n\n\n\n\n\n12 (7, 7) [(9, 8), (8, 8), (7, 8)]\n\n\n\n\n\n\n\n\n\n12 (6, 7) [(9, 8), (8, 8), (7, 8), (7, 7)]\n\n\n\n\n\n\n\n\n\n12 (6, 6) [(9, 8), (8, 8), (7, 8), (7, 7), (6, 7)]\n\n\n\n\n\n\n\n\n\n12 (7, 6) [(9, 8), (8, 8), (7, 8), (7, 7)]\n\n\n\n\n\n\n\n\n\n12 (6, 6) [(9, 8), (8, 8), (7, 8), (7, 7), (7, 6)]\n\n\n\n\n\n\n\n\n\n12 (7, 5) [(9, 8), (8, 8), (7, 8), (7, 7), (7, 6)]\n\n\n\n\n\n\n\n\n\n12 (7, 4) [(9, 8), (8, 8), (7, 8), (7, 7), (7, 6), (7, 5)]\n\n\n\n\n\n\n\n\n\n12 (6, 4) [(9, 8), (8, 8), (7, 8), (7, 7), (7, 6), (7, 5), (7, 4)]\n\n\n\n\n\n\n\n\n\n12 (6, 3) [(9, 8), (8, 8), (7, 8), (7, 7), (7, 6), (7, 5), (7, 4), (6, 4)]\n\n\n\n\n\n\n\n\n\n12 (5, 3) [(9, 8), (8, 8), (7, 8), (7, 7), (7, 6), (7, 5), (7, 4), (6, 4), (6, 3)]\n\n\n\n\n\n\n\n\n\n12 (7, 3) [(9, 8), (8, 8), (7, 8), (7, 7), (7, 6), (7, 5), (7, 4)]\n\n\n\n\n\n\n\n\n\n12 (6, 3) [(9, 8), (8, 8), (7, 8), (7, 7), (7, 6), (7, 5), (7, 4), (7, 3)]\n\n\n\n\n\n\n\n\n\n12 (5, 3) [(9, 8), (8, 8), (7, 8), (7, 7), (7, 6), (7, 5), (7, 4), (7, 3), (6, 3)]\n\n\n\n\n\n\n\n\n\n14 (5, 2) [(9, 8), (8, 8), (7, 8), (7, 7), (7, 6), (7, 5), (7, 4), (6, 4), (6, 3), (5, 3)]\n\n\n\n\n\n\n\n\n\n14 (4, 2) [(9, 8), (8, 8), (7, 8), (7, 7), (7, 6), (7, 5), (7, 4), (6, 4), (6, 3), (5, 3), (5, 2)]\n\n\n\n\n\n\n\n\n\n14 (3, 2) [(9, 8), (8, 8), (7, 8), (7, 7), (7, 6), (7, 5), (7, 4), (6, 4), (6, 3), (5, 3), (5, 2), (4, 2)]\n\n\n\n\n\n\n\n\n\n14 (2, 2) [(9, 8), (8, 8), (7, 8), (7, 7), (7, 6), (7, 5), (7, 4), (6, 4), (6, 3), (5, 3), (5, 2), (4, 2), (3, 2)]\n\n\n\n\n\n\n\n\n\n14 (2, 3) [(9, 8), (8, 8), (7, 8), (7, 7), (7, 6), (7, 5), (7, 4), (6, 4), (6, 3), (5, 3), (5, 2), (4, 2), (3, 2), (2, 2)]"
+  },
+  {
+    "objectID": "code_and_homework/search_A_star.html#compare-search-strategies",
+    "href": "code_and_homework/search_A_star.html#compare-search-strategies",
+    "title": "A* Search on a Grid",
+    "section": "Compare Search Strategies",
+    "text": "Compare Search Strategies\n\nReplace the heuristic by zero: the priority becomes accumulated cost, as in UCS.\nCompare Manhattan distance at the start with the returned path length. Where do obstacles create the difference?\nCount repeated positions in the printed trace. What information would a best-cost dictionary retain?\nWhy is ranking only by the heuristic greedy best-first search rather than A*?\n\n\n\nAnswers and discussion\n\n\nZero heuristic gives UCS priorities. With h = 0, every entry is ranked by its accumulated cost g. With these unit-cost moves, that is also a depth ordering. However, this implementation still stores repeated paths, unlike the state-deduplicating UCS implementation in the other notebook.\nThe saved route uses two extra moves. The start is (9, 8) and the goal is (2, 3), so Manhattan distance is 7 + 5 = 12. The returned route contains 15 cells, or 14 moves. The obstacle-avoiding route reaches column 2 before returning to column 3; this detour accounts for the difference.\nThree expansions repeat a previously popped position. Among the 21 printed removals, (6, 6), (6, 3), and (5, 3) each appear twice. A best_g dictionary would retain the cheapest discovered cost for each position. Only an improving route should add a new entry; on removal, skip an entry whose cost is worse than the recorded best.\nGreedy search ignores the cost already paid. Ranking only by h prefers whichever state appears closest to the goal, even if getting there was expensive. A* ranks by g + h, accounting for the whole estimated route cost. An admissible heuristic does not make greedy best-first search optimal.\n\n\nTakeaway: a heuristic guides search without replacing path cost. Avoiding repeated inferior paths is a separate implementation responsibility."
+  },
+  {
+    "objectID": "code_and_homework/alpha_beta.html#imports",
+    "href": "code_and_homework/alpha_beta.html#imports",
+    "title": "Alpha-Beta Pruning Demo",
+    "section": "Imports",
+    "text": "Imports\nThe directed graph stores parent-to-child edges; Matplotlib displays it after each recursive call. The search itself uses the supplied child lists, not a NetworkX search routine.\n\n# alpha beta pruning demo\n\nimport networkx as nx\nimport matplotlib.pyplot as plt"
+  },
+  {
+    "objectID": "code_and_homework/alpha_beta.html#tree-drawing-and-search",
+    "href": "code_and_homework/alpha_beta.html#tree-drawing-and-search",
+    "title": "Alpha-Beta Pruning Demo",
+    "section": "Tree, Drawing, and Search",
+    "text": "Tree, Drawing, and Search\nThe methods stay in one cell because Python requires a class definition to be a complete block. Read the class in four parts:\n\nInitialization: __init__ stores the child lists and leaf utilities, creates dictionaries for backed-up values and bounds, then calls create_tree.\nStructure: create_tree assigns depths recursively, places nodes by level, and adds graph edges. The first dictionary key is treated as the root; the input must be an acyclic tree.\nDrawing: draw_tree colors the current node red. Node labels contain stored values; edge labels show the bounds passed into an explored child. Unvisited edges display default infinite bounds, not an explicit pruning marker.\nRecursion: alpha_beta_pruning returns a leaf’s utility, or alternates between maximizing and minimizing child values. MAX raises alpha, MIN lowers beta, and beta &lt;= alpha stops the remaining siblings.\n\nMeaning of the bounds: alpha is the best lower bound MAX can already secure on the current search path; beta is the best upper bound MIN can already enforce. Once the interval closes, exploring additional siblings cannot improve the ancestor’s choice.\n\nclass AlphaBetaTree:\n    def __init__(self, tree_structure, values):\n        self.tree = nx.DiGraph()\n        self.tree_structure = tree_structure\n        self.values = values\n        self.node_values = {}\n        self.positions = {}\n        self.alpha_beta_edges = {}\n        self.create_tree()\n\n    def create_tree(self):\n        levels = {}\n\n        def assign_levels(node, depth=0):\n            if node not in levels:\n                levels[node] = depth\n            for child in self.tree_structure.get(node, []):\n                assign_levels(child, depth + 1)\n\n        root = list(self.tree_structure.keys())[0]\n        assign_levels(root)\n\n        level_widths = {}\n        for depth in levels.values():\n            if depth not in level_widths:\n                level_widths[depth] = 0\n                level_widths[depth] += 1\n\n        level_positions = {depth: 0 for depth in level_widths}\n        self.positions = {}\n        for node in sorted(levels, key=lambda x: (levels[x], x)):\n            depth = levels[node]\n            self.positions[node] = (level_positions[depth], -depth)\n            level_positions[depth] += 1\n\n        for node, children in self.tree_structure.items():\n            self.tree.add_node(node)\n            for child in children:\n                self.tree.add_edge(node, child)\n\n        # set all leaf nodes values\n        for node in self.tree.nodes():\n            if node in self.values:\n                self.node_values[node] = self.values[node]\n\n    def draw_tree(self, highlight_node=None):\n        labels = {\n            node: f\"{node}\\n{self.node_values.get(node, '')}\"\n            for node in self.tree.nodes()\n        }\n        edge_labels = {\n            edge: f\"({self.alpha_beta_edges.get(edge, (-float('inf'), float('inf')))[0]}, {self.alpha_beta_edges.get(edge, (-float('inf'), float('inf')))[1]})\"\n            for edge in self.tree.edges()\n        }\n        # print(self.alpha_beta_edges)\n        colors = [\n            \"red\" if node == highlight_node else \"lightblue\"\n            for node in self.tree.nodes()\n        ]\n        nx.draw(\n            self.tree,\n            self.positions,\n            with_labels=True,\n            labels=labels,\n            node_color=colors,\n            node_size=2000,\n            font_size=10,\n        )\n        nx.draw_networkx_edge_labels(\n            self.tree, self.positions, edge_labels=edge_labels, font_size=8\n        )\n        plt.show()\n\n    def alpha_beta_pruning(\n        self, node, alpha=-float(\"inf\"), beta=float(\"inf\"), maximizing=True\n    ):\n        self.draw_tree(highlight_node=node)\n        if node in self.values:\n            self.node_values[node] = self.values[node]\n            return self.values[node]\n\n        if maximizing:\n            value = -float(\"inf\")\n            for child in self.tree_structure[node]:\n                # update alpha_beta_edges\n                self.alpha_beta_edges[(node, child)] = (alpha, beta)\n                value = max(value, self.alpha_beta_pruning(child, alpha, beta, False))\n                alpha = max(alpha, value)\n                if beta &lt;= alpha:\n                    break  # Prune\n        else:\n            value = float(\"inf\")\n            for child in self.tree_structure[node]:\n                # update alpha_beta_edges\n                self.alpha_beta_edges[(node, child)] = (alpha, beta)\n                value = min(value, self.alpha_beta_pruning(child, alpha, beta, True))\n                beta = min(beta, value)\n                if beta &lt;= alpha:\n                    break  # Prune\n\n        self.node_values[node] = value\n        return value"
+  },
+  {
+    "objectID": "code_and_homework/alpha_beta.html#define-a-small-game-tree",
+    "href": "code_and_homework/alpha_beta.html#define-a-small-game-tree",
+    "title": "Alpha-Beta Pruning Demo",
+    "section": "Define a Small Game Tree",
+    "text": "Define a Small Game Tree\nA is MAX; B and C are MIN. The left subtree has leaves 3 and 5, so B returns 3. Before running the code, decide whether both leaves under C need to be visited once A can already obtain 3.\nThe child-list order determines the search order. All terminal nodes must have entries in values.\n\n# Example tree structure\ntree_structure = {\n    \"A\": [\"B\", \"C\"],\n    \"B\": [\"D\", \"E\"],\n    \"C\": [\"F\", \"G\"],\n    \"D\": [],\n    \"E\": [],\n    \"F\": [],\n    \"G\": [],\n}\n\nvalues = {\"D\": 3, \"E\": 5, \"F\": 2, \"G\": 9}"
+  },
+  {
+    "objectID": "code_and_homework/alpha_beta.html#run-the-trace",
+    "href": "code_and_homework/alpha_beta.html#run-the-trace",
+    "title": "Alpha-Beta Pruning Demo",
+    "section": "Run the Trace",
+    "text": "Run the Trace\nThe expected call order is A, B, D, E, C, F. B returns 3, raising A’s alpha to 3. At C, F yields 2, lowering beta to 2. Since 2 is no greater than 3, G is skipped. The printed root value is 3.\nThe whole tree remains visible even when a branch is not searched. A picture is drawn on entry to a call, before that call backs up its result, so its label can still be blank. The last printed value is the final answer.\n\nalpha_beta_demo = AlphaBetaTree(tree_structure, values)\nprint(alpha_beta_demo.alpha_beta_pruning(\"A\"))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n3"
+  },
+  {
+    "objectID": "code_and_homework/alpha_beta.html#check-the-pruning-decision",
+    "href": "code_and_homework/alpha_beta.html#check-the-pruning-decision",
+    "title": "Alpha-Beta Pruning Demo",
+    "section": "Check the Pruning Decision",
+    "text": "Check the Pruning Decision\n\nChange G’s value from 9 to 100. Why does the root value remain 3?\nSwap the order of C’s children. Which additional recursive call appears?\nCompute the root value without pruning and compare it with the printed result.\n\n\n\nAnswers and discussion\n\n\nMIN still selects 2 under C. Changing G from 9 to 100 gives C = min(2, 100) = 2, while B = min(3, 5) = 3. A therefore remains max(3, 2) = 3. With the original child order, G is never evaluated because F already makes C no better than 2 for MAX.\nG is now visited as well. Searching C’s children in the order G, F first obtains 9. C’s beta is then 9, still greater than the inherited alpha of 3, so F must also be checked. The full call order becomes A, B, D, E, C, G, F. The root value stays 3, but no leaf is skipped.\nOrdinary minimax also returns 3. Evaluate both children of each MIN node: B = min(3, 5) = 3 and C = min(2, 9) = 2. The MAX root chooses max(3, 2) = 3. Alpha-beta obtains this same answer without visiting G in the original ordering.\n\n\nTakeaway: move ordering changes the amount of pruning, not the minimax answer. A value returned from a cutoff can be a bound rather than the exact value of that subtree."
+  },
+  {
+    "objectID": "code_and_homework/annealing.html#imports",
+    "href": "code_and_homework/annealing.html#imports",
+    "title": "Simulated Annealing",
+    "section": "Imports",
+    "text": "Imports\nNumPy supplies vectorized arithmetic and random sampling. Matplotlib draws the objective and the score history.\n\n# simulated annealing demo\nimport numpy as np\nimport matplotlib.pyplot as plt"
+  },
+  {
+    "objectID": "code_and_homework/annealing.html#define-the-objective",
+    "href": "code_and_homework/annealing.html#define-the-objective",
+    "title": "Simulated Annealing",
+    "section": "Define the Objective",
+    "text": "Define the Objective\nThe function returns f(x)=-(x+\\sin x)e^{-x^2}. Smaller values are better. NumPy lets the same function accept either one candidate or a whole array of sample positions.\n\ndef objective(x):\n    return -(x + np.sin(x)) * np.exp(-x**2.0)"
+  },
+  {
+    "objectID": "code_and_homework/annealing.html#inspect-the-landscape",
+    "href": "code_and_homework/annealing.html#inspect-the-landscape",
+    "title": "Simulated Annealing",
+    "section": "Inspect the Landscape",
+    "text": "Inspect the Landscape\nThe plot samples 1,000 points between -5 and 5. The red point and printed values identify the best sampled point, not an exact analytic minimum. Use it as a reference for the stochastic search below.\n\n# draw the landscape of objective function\nx = np.linspace(-5, 5, 1000)\ny = objective(x)\nplt.plot(x, y)\n# print the minimum value and its location\nindex = np.argmin(y)\nprint('x= {:.2f}'.format(x[index]))\nprint('minimum f(x)= {:.2f}'.format(y[index]))\n# plot the minimum point\nplt.plot(x[index], y[index], 'ro')\nplt.show()\n\nx= 0.68\nminimum f(x)= -0.82"
+  },
+  {
+    "objectID": "code_and_homework/annealing.html#initialize-the-search",
+    "href": "code_and_homework/annealing.html#initialize-the-search",
+    "title": "Simulated Annealing",
+    "section": "Initialize the Search",
+    "text": "Initialize the Search\nThe initial candidate is uniform on [-5, 5]. The seed line is commented out, so repeated runs can produce different results. The list scores records the objective along the trajectory.\n\n# simulated annealing algorithm\n# the objective is to find the value of x that minimizes the objective function\n\n# set the seed\n# np.random.seed(1)\n\n# define the total iterations\nn_iter = 1000\n# initial guess\nx = np.random.uniform(-5, 5)\n# run the algorithm\nscores = list()"
+  },
+  {
+    "objectID": "code_and_homework/annealing.html#propose-evaluate-and-accept",
+    "href": "code_and_homework/annealing.html#propose-evaluate-and-accept",
+    "title": "Simulated Annealing",
+    "section": "Propose, Evaluate, and Accept",
+    "text": "Propose, Evaluate, and Accept\nEach iteration proposes a new point uniformly across the entire interval. This particular demonstration uses global proposals, not a small step around the current point.\nAn improvement is always accepted. For a worsening change \\Delta=f_{\\text{new}}-f_{\\text{old}}, acceptance probability is e^{-\\Delta/T}. As temperature decreases, a fixed worsening change becomes less likely to pass.\nThe linear schedule starts at 1 and reaches 0.001 on its final iteration, so this loop never divides by zero. The history appends the score before the move; it is neither the post-move score nor a running best.\n\nfor i in range(n_iter):\n    T = 1.0 - (i / float(n_iter)) # temperature schedule\n    # take a step\n    x_new = np.random.uniform(-5, 5)\n    # evaluate the objective function\n    f_new = objective(x_new)\n    f_old = objective(x)\n    if f_new &lt; f_old:\n        x = x_new\n    else:\n        p = np.exp((f_old - f_new) / T)\n        if np.random.rand() &lt; p:\n            x = x_new\n    # keep track of scores\n    scores.append(f_old)"
+  },
+  {
+    "objectID": "code_and_homework/annealing.html#inspect-the-final-state",
+    "href": "code_and_homework/annealing.html#inspect-the-final-state",
+    "title": "Simulated Annealing",
+    "section": "Inspect the Final State",
+    "text": "Inspect the Final State\nThe original print labels say “Best,” but the code reports the final candidate: it does not separately retain the best point ever visited. The history can rise because accepting worse moves is intentional.\nCompare the final score with the sampled minimum from the first plot. One run is not a guarantee of finding the global minimum.\n\n# print the best result\nprint('Done!')\nprint('Best x: {:.2f}'.format(x))\nprint('Best score: {:.2f}'.format(objective(x)))\n# plot scores\nplt.plot(scores)\nplt.show()\n\nDone!\nBest x: 0.67\nBest score: -0.82"
+  },
+  {
+    "objectID": "code_and_homework/annealing.html#experiments",
+    "href": "code_and_homework/annealing.html#experiments",
+    "title": "Simulated Annealing",
+    "section": "Experiments",
+    "text": "Experiments\n\nRepeat the search with a fixed seed, then without one. Which results are reproducible?\nCompare faster and slower cooling. How often does the search still accept worse candidates near the end?\nConsider storing a separate best-so-far candidate. Why would that history never increase even when the current score does?\n\n\n\nAnswers and discussion\n\n\nReset the seed before each run. With the same seed, parameters, and random-call order, the initial point, proposals, acceptance decisions, and trajectory repeat in the same environment. Without reseeding, the random generator advances and the next run generally differs. The separately sampled objective landscape is deterministic and does not depend on this randomness.\nLower temperature suppresses worsening moves. For the same worsening amount, faster cooling gives a lower acceptance probability at a comparable iteration; slower cooling preserves more exploration. For a worsening amount of 0.2, the probability is about 0.819 at temperature 1 and 0.135 at temperature 0.1. Actual counts depend on the proposed candidates and random draws, so a single run does not establish which schedule is better.\nThe best-so-far record only accepts improvements. Initialize a separate best candidate from the starting point, then replace it only when the current candidate has a smaller objective. Its score is the minimum over all candidates visited so far and therefore cannot increase. The current candidate can still worsen under the annealing acceptance rule. Record the updated state so the final move is not omitted.\n\n\nTakeaway: temperature changes acceptance, while the proposal rule changes which candidates are considered. They are two separate design choices."
+  },
+  {
+    "objectID": "code_and_homework/genetic_8_queen.html#parameters-and-reproducibility",
+    "href": "code_and_homework/genetic_8_queen.html#parameters-and-reproducibility",
+    "title": "Genetic Algorithm for N-Queens",
+    "section": "Parameters and Reproducibility",
+    "text": "Parameters and Reproducibility\nThe population contains 1,000 candidates and search allows up to 1,000 generations. The mutation rate is the probability of swapping two positions in one child, not a probability per queen. The seed fixes the random sequence.\nFor n queens, the target fitness is n(n-1)/2, the number of unordered pairs. With 30 queens, it is 435. If you change the board size, rerun the definition cells too: Python evaluates default parameter values when a function is defined.\n\nimport random\nimport matplotlib.pyplot as plt\n\n# Parameters\ndefault_board_size = 30\npopulation_size = 1000\ngenerations = 1000\nmutation_rate = 0.3\n\n# print target fitness\nprint(\"Target Fitness:\", (default_board_size * (default_board_size - 1)) // 2)\n\nrandom.seed(0)\n# random.seed(1)\n# random.seed(2)"
+  },
+  {
+    "objectID": "code_and_homework/genetic_8_queen.html#score-a-board",
+    "href": "code_and_homework/genetic_8_queen.html#score-a-board",
+    "title": "Genetic Algorithm for N-Queens",
+    "section": "Score a Board",
+    "text": "Score a Board\nEntry board[i] is the row occupied by the queen in column i. The fitness function checks each pair once. Different rows and a row difference unequal to the column difference mean that the pair does not attack.\nHigher fitness is better. Reaching the target means every pair is non-attacking. Evaluation takes quadratic time in the number of queens.\n\n# Fitness function: Counts non-attacking pairs\ndef fitness(board):\n    non_attacking = 0\n    n = len(board)\n    for i in range(n):\n        for j in range(i + 1, n):\n            if board[i] != board[j] and abs(board[i] - board[j]) != j - i:\n                non_attacking += 1\n    return non_attacking"
+  },
+  {
+    "objectID": "code_and_homework/genetic_8_queen.html#create-one-candidate",
+    "href": "code_and_homework/genetic_8_queen.html#create-one-candidate",
+    "title": "Genetic Algorithm for N-Queens",
+    "section": "Create One Candidate",
+    "text": "Create One Candidate\nA random permutation places exactly one queen in each column and each row. This representation rules out row and column conflicts by construction; diagonal conflicts remain for the search to resolve.\n\n# Generate an individual (random permutation of row positions)\ndef generate_individual(n=default_board_size):\n    return random.sample(range(n), n)"
+  },
+  {
+    "objectID": "code_and_homework/genetic_8_queen.html#create-the-population",
+    "href": "code_and_homework/genetic_8_queen.html#create-the-population",
+    "title": "Genetic Algorithm for N-Queens",
+    "section": "Create the Population",
+    "text": "Create the Population\nEach individual is sampled independently. The population is a list of candidate permutations, not one shared board referenced many times.\n\n# Create initial population\ndef generate_population(size, n=default_board_size):\n    return [generate_individual(n) for _ in range(size)]"
+  },
+  {
+    "objectID": "code_and_homework/genetic_8_queen.html#select-a-parent",
+    "href": "code_and_homework/genetic_8_queen.html#select-a-parent",
+    "title": "Genetic Algorithm for N-Queens",
+    "section": "Select a Parent",
+    "text": "Select a Parent\nTournament selection samples ten candidates and returns the fittest. Stronger candidates are favored without making every parent the global best. The population must contain at least ten individuals.\n\n# Selection: Tournament selection\ndef selection(population):\n    return max(random.sample(population, 10), key=fitness)"
+  },
+  {
+    "objectID": "code_and_homework/genetic_8_queen.html#combine-two-parents",
+    "href": "code_and_homework/genetic_8_queen.html#combine-two-parents",
+    "title": "Genetic Algorithm for N-Queens",
+    "section": "Combine Two Parents",
+    "text": "Combine Two Parents\nThe crossover copies a slice from the first parent, then fills the empty positions with unused values in the second parent’s order. This preserves the permutation constraint: no row is duplicated or lost. It does not guarantee fewer diagonal conflicts.\n\n# Crossover: Order Crossover (OX)\ndef crossover(parent1, parent2):\n    n = len(parent1)\n    start, end = sorted(random.sample(range(n), 2))\n    child = [-1] * n\n    child[start:end] = parent1[start:end]\n    fill_values = [x for x in parent2 if x not in child]\n    child = [fill_values.pop(0) if x == -1 else x for x in child]\n    return child"
+  },
+  {
+    "objectID": "code_and_homework/genetic_8_queen.html#mutate-a-child",
+    "href": "code_and_homework/genetic_8_queen.html#mutate-a-child",
+    "title": "Genetic Algorithm for N-Queens",
+    "section": "Mutate a Child",
+    "text": "Mutate a Child\nA mutation swaps two entries in place. Swapping preserves the one-queen-per-row constraint while changing diagonal relationships. The function receives a newly created child, so it does not directly mutate its parents.\n\n# Mutation: Swap mutation\ndef mutate(individual):\n    if random.random() &lt; mutation_rate:\n        i, j = random.sample(range(len(individual)), 2)\n        individual[i], individual[j] = individual[j], individual[i]\n    return individual"
+  },
+  {
+    "objectID": "code_and_homework/genetic_8_queen.html#evolve-the-population",
+    "href": "code_and_homework/genetic_8_queen.html#evolve-the-population",
+    "title": "Genetic Algorithm for N-Queens",
+    "section": "Evolve the Population",
+    "text": "Evolve the Population\nEach generation ranks candidates, prints average fitness, and checks whether the best is a solution. Elitism copies the best individual into the next generation; selection, crossover, and mutation fill the remaining slots.\nKeeping an elite protects the best score, but does not require average fitness to increase. If no solution is found at the checked generations, the function returns None. This is stochastic optimization, not a proof that an instance has no solution.\n\n# Genetic Algorithm main loop\ndef genetic_algorithm():\n    population = generate_population(population_size)\n    for generation in range(generations):\n        population = sorted(population, key=fitness, reverse=True)\n        # print the average fitness of the population\n        print(\"Generation:\", generation, \"Average Fitness:\", sum(fitness(x) for x in population) / len(population))\n        if fitness(population[0]) == (default_board_size * (default_board_size - 1)) // 2:\n            return population[0]\n        next_gen = [population[0]]  # Elitism: Carry best individual forward\n        while len(next_gen) &lt; population_size:\n            p1, p2 = selection(population), selection(population)\n            child = mutate(crossover(p1, p2))\n            next_gen.append(child)\n        population = next_gen\n    return None"
+  },
+  {
+    "objectID": "code_and_homework/genetic_8_queen.html#run-and-inspect-fitness",
+    "href": "code_and_homework/genetic_8_queen.html#run-and-inspect-fitness",
+    "title": "Genetic Algorithm for N-Queens",
+    "section": "Run and Inspect Fitness",
+    "text": "Run and Inspect Fitness\nThe saved output includes the setup’s target-fitness line followed by generation statistics and a solution. Check that the final fitness equals the target and that the returned list is a permutation.\nThe final print assumes a solution was found. For new parameter choices, check for None before calling fitness or drawing the result.\n\n# Run the algorithm\nsolution = genetic_algorithm()\nprint(\"Solution:\", solution)\nprint(\"Fitness:\", fitness(solution))\n\nTarget Fitness: 435\nGeneration: 0 Average Fitness: 415.537\nGeneration: 1 Average Fitness: 417.595\nGeneration: 2 Average Fitness: 418.247\nGeneration: 3 Average Fitness: 418.498\nGeneration: 4 Average Fitness: 418.936\nGeneration: 5 Average Fitness: 419.174\nGeneration: 6 Average Fitness: 419.268\nGeneration: 7 Average Fitness: 419.284\nGeneration: 8 Average Fitness: 419.781\nGeneration: 9 Average Fitness: 420.118\nGeneration: 10 Average Fitness: 420.336\nGeneration: 11 Average Fitness: 420.55\nGeneration: 12 Average Fitness: 421.053\nGeneration: 13 Average Fitness: 421.503\nGeneration: 14 Average Fitness: 422.189\nGeneration: 15 Average Fitness: 422.798\nGeneration: 16 Average Fitness: 423.42\nGeneration: 17 Average Fitness: 424.657\nGeneration: 18 Average Fitness: 426.6\nGeneration: 19 Average Fitness: 429.307\nGeneration: 20 Average Fitness: 431.576\nGeneration: 21 Average Fitness: 432.148\nGeneration: 22 Average Fitness: 432.169\nGeneration: 23 Average Fitness: 432.173\nGeneration: 24 Average Fitness: 431.92\nGeneration: 25 Average Fitness: 430.979\nGeneration: 26 Average Fitness: 431.748\nGeneration: 27 Average Fitness: 433.209\nGeneration: 28 Average Fitness: 433.138\nSolution: [16, 26, 1, 27, 21, 5, 3, 14, 20, 10, 4, 6, 25, 23, 17, 7, 18, 22, 11, 28, 24, 29, 2, 19, 9, 13, 0, 8, 15, 12]\nFitness: 435"
+  },
+  {
+    "objectID": "code_and_homework/genetic_8_queen.html#draw-a-candidate",
+    "href": "code_and_homework/genetic_8_queen.html#draw-a-candidate",
+    "title": "Genetic Algorithm for N-Queens",
+    "section": "Draw a Candidate",
+    "text": "Draw a Candidate\nThe plotting helper places a queen at each (column, board[column]) coordinate. The inverted vertical axis makes row 0 the top row. Drawing is a visual check; the pairwise fitness calculation is the actual conflict test.\n\n# draw the solution on a chessboard\ndef draw_board(board):\n    n = len(board)\n    plt.figure(figsize=(6, 6))\n    plt.xlim(0, n)\n    plt.ylim(0, n)\n    plt.gca().set_aspect('equal', adjustable='box')\n    plt.xticks([])\n    plt.yticks([])\n    plt.gca().invert_yaxis()\n    for i in range(n):\n        for j in range(n):\n            plt.gca().add_patch(plt.Rectangle((i, j), 1, 1, fc='white' if (i + j) % 2 == 0 else 'gray'))\n            if j == board[i]:\n                plt.text(i + 0.5, j + 0.5, '♕', ha='center', va='center', fontsize=12, color='red')\n    plt.show()"
+  },
+  {
+    "objectID": "code_and_homework/genetic_8_queen.html#inspect-the-board",
+    "href": "code_and_homework/genetic_8_queen.html#inspect-the-board",
+    "title": "Genetic Algorithm for N-Queens",
+    "section": "Inspect the Board",
+    "text": "Inspect the Board\nNo two queens should share a row, column, or diagonal. On a large board, inspect the numeric fitness as well as the picture.\n\ndraw_board(solution)"
+  },
+  {
+    "objectID": "code_and_homework/genetic_8_queen.html#explore-the-design-choices",
+    "href": "code_and_homework/genetic_8_queen.html#explore-the-design-choices",
+    "title": "Genetic Algorithm for N-Queens",
+    "section": "Explore the Design Choices",
+    "text": "Explore the Design Choices\n\nCompare several seeds rather than judging a setting by a single successful run.\nLower mutation toward zero. Does the population lose useful diversity?\nCompare the best fitness with the printed average. Why can they move differently?\n\n\n\nAnswers and discussion\n\n\nCompare a distribution of outcomes. Different seeds change the initial population, tournament samples, crossover choices, and mutations. Across seeds, compare the fraction of runs that reach fitness 435 and the generations needed by successful runs. Keep population size, mutation rate, and generation budget fixed. Report unsuccessful runs too; one quick success is not representative.\nVery low mutation can reduce diversity. Selection repeatedly favors similar strong candidates. If parents become identical, crossover alone cannot create a different permutation; swap mutation can introduce new arrangements. Zero mutation does not guarantee failure, since initial diversity and crossover may suffice. Excessively high mutation can also disrupt useful arrangements, so the best rate is an empirical question.\nElitism protects the maximum, not the mean. The best individual survives unchanged, so the population’s best fitness cannot decrease between generations. The other individuals are replaced by children that may be worse than their parents, allowing average fitness to fall even while the best score holds steady or improves.\n\n\nTakeaway: representation enforces some constraints automatically; fitness and genetic operators handle the constraints that remain."
+  },
+  {
+    "objectID": "code_and_homework/AC3.html#equations-and-queue",
+    "href": "code_and_homework/AC3.html#equations-and-queue",
+    "title": "AC-3 Constraint Propagation",
+    "section": "Equations and Queue",
+    "text": "Equations and Queue\nThe four equations form a cycle. A queued triple (xi, xj, value) means: revise the domain of xi using the equation xi + xj = value. The deque supports removing the oldest pending arc and appending arcs that need another check.\n\n# a + b = 3\n# b + c = 4\n# c + d = 2\n# d + a = 1\n\n# using AC-3 to solve it\n# the domains of a, b, c, d are all 0~9 digits\n# the constraints are the four equations above\n\nfrom collections import deque\nfrom typing import List, Tuple"
+  },
+  {
+    "objectID": "code_and_homework/AC3.html#display-the-current-domains",
+    "href": "code_and_homework/AC3.html#display-the-current-domains",
+    "title": "AC-3 Constraint Propagation",
+    "section": "Display the Current Domains",
+    "text": "Display the Current Domains\nThis helper prints each variable’s remaining candidates. It does not change domains and does not imply that arbitrary choices from the four lists can be combined into a solution.\n\ndef print_domains(domains: dict):\n    print(\"a: {}\".format(domains['a']))\n    print(\"b: {}\".format(domains['b']))\n    print(\"c: {}\".format(domains['c']))\n    print(\"d: {}\".format(domains['d']))"
+  },
+  {
+    "objectID": "code_and_homework/AC3.html#process-pending-arcs",
+    "href": "code_and_homework/AC3.html#process-pending-arcs",
+    "title": "AC-3 Constraint Propagation",
+    "section": "Process Pending Arcs",
+    "text": "Process Pending Arcs\nThe loop calls revise on one directed arc. If a domain shrinks, incoming arcs from other neighbors are queued again because values they previously supported may now have lost their support.\nAn empty domain proves inconsistency and returns False. An empty queue means no listed arc currently needs revision, so the function returns True. It does not mean all domains are singletons.\nThe next cell defines revise. Python resolves that name when ac3 is called, so define all helpers before running solve.\n\ndef ac3(constraints: List[Tuple[str, str, int]], domains: dict):\n    queue = deque(constraints)\n    while queue:\n        (xi, xj, value) = queue.popleft()\n        if revise(domains, xi, xj, value):\n            print(f'queue: {queue}')\n            print_domains(domains)            \n            if not domains[xi]:\n                return False\n            for xk, xl, this_value in constraints:\n                if xl == xi and xk != xj:\n                    # print the constraints that will be added to the queue\n                    print(f'adding {xk}+{xl}={this_value}')\n                    queue.append((xk, xi, this_value))\n    return True"
+  },
+  {
+    "objectID": "code_and_homework/AC3.html#remove-unsupported-values",
+    "href": "code_and_homework/AC3.html#remove-unsupported-values",
+    "title": "AC-3 Constraint Propagation",
+    "section": "Remove Unsupported Values",
+    "text": "Remove Unsupported Values\nFor every candidate x in the first domain, any(…) asks whether at least one y in the second domain satisfies the equation. If not, x is marked for deletion.\nThe function collects deletions first, then removes them. Modifying a list while iterating over it could skip candidates. Its Boolean return value reports whether the domain changed, not whether the whole CSP is solved.\n\ndef revise(domains: dict, xi: str, xj: str, value: int):\n    revised = False\n    print(f'revising {xi}+{xj}={value}')\n    del_x = []\n    for x in domains[xi]:\n        if not any(x + y == value for y in domains[xj]):\n            del_x.append(x)\n            revised = True\n    for x in del_x:\n        domains[xi].remove(x)\n    return revised"
+  },
+  {
+    "objectID": "code_and_homework/AC3.html#initialize-and-propagate",
+    "href": "code_and_homework/AC3.html#initialize-and-propagate",
+    "title": "AC-3 Constraint Propagation",
+    "section": "Initialize and Propagate",
+    "text": "Initialize and Propagate\nThe wrapper creates fresh digit domains, runs propagation, and returns either the reduced domains or None. This implementation initializes variables from the first position of each constraint tuple; the example includes every variable there.\n\ndef solve(constraints: List[Tuple[str, str, int]]):\n    domains = {x: list(range(10)) for x in set(x for x, _, _ in constraints)}\n    if ac3(constraints, domains):\n        return domains\n    return None"
+  },
+  {
+    "objectID": "code_and_homework/AC3.html#supply-the-constraints",
+    "href": "code_and_homework/AC3.html#supply-the-constraints",
+    "title": "AC-3 Constraint Propagation",
+    "section": "Supply the Constraints",
+    "text": "Supply the Constraints\nEach tuple describes a sum equation. Although the equation is symmetric, a revision is directional. The original example supplies one direction per equation. For the standard full AC-3 treatment, include each reverse arc as well, such as (‘b’, ‘a’, 3) for (‘a’, ‘b’, 3).\nDo not infer bidirectional consistency merely because the arithmetic equation is symmetric: the queue processes only the directions it receives.\n\nconstraints = [\n    ('a', 'b', 3),\n    ('b', 'c', 4),\n    ('c', 'd', 2),\n    ('d', 'a', 1),\n]"
+  },
+  {
+    "objectID": "code_and_homework/AC3.html#follow-the-domain-changes",
+    "href": "code_and_homework/AC3.html#follow-the-domain-changes",
+    "title": "AC-3 Constraint Propagation",
+    "section": "Follow the Domain Changes",
+    "text": "Follow the Domain Changes\nThe trace prints each revision attempt. When something is removed, it also prints the remaining queue and the updated domains. Requeued arcs reflect consequences of a domain change, not new constraints.\nFor this example, the final candidate sets are a and d in {0, 1}, b in {2, 3}, and c in {1, 2}. There are still multiple possibilities; they are not independent choices.\n\ndomains = solve(constraints)\nif domains:\n    print('final result of domains:')\n    print_domains(domains)\nelse:\n    print('No solution')\n\nrevising a+b=3\nqueue: deque([('b', 'c', 4), ('c', 'd', 2), ('d', 'a', 1)])\na: [0, 1, 2, 3]\nb: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\nc: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\nd: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\nadding d+a=1\nrevising b+c=4\nqueue: deque([('c', 'd', 2), ('d', 'a', 1), ('d', 'a', 1)])\na: [0, 1, 2, 3]\nb: [0, 1, 2, 3, 4]\nc: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\nd: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\nadding a+b=3\nrevising c+d=2\nqueue: deque([('d', 'a', 1), ('d', 'a', 1), ('a', 'b', 3)])\na: [0, 1, 2, 3]\nb: [0, 1, 2, 3, 4]\nc: [0, 1, 2]\nd: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\nadding b+c=4\nrevising d+a=1\nqueue: deque([('d', 'a', 1), ('a', 'b', 3), ('b', 'c', 4)])\na: [0, 1, 2, 3]\nb: [0, 1, 2, 3, 4]\nc: [0, 1, 2]\nd: [0, 1]\nadding c+d=2\nrevising d+a=1\nrevising a+b=3\nrevising b+c=4\nqueue: deque([('c', 'd', 2)])\na: [0, 1, 2, 3]\nb: [2, 3, 4]\nc: [0, 1, 2]\nd: [0, 1]\nadding a+b=3\nrevising c+d=2\nqueue: deque([('a', 'b', 3)])\na: [0, 1, 2, 3]\nb: [2, 3, 4]\nc: [1, 2]\nd: [0, 1]\nadding b+c=4\nrevising a+b=3\nqueue: deque([('b', 'c', 4)])\na: [0, 1]\nb: [2, 3, 4]\nc: [1, 2]\nd: [0, 1]\nadding d+a=1\nrevising b+c=4\nqueue: deque([('d', 'a', 1)])\na: [0, 1]\nb: [2, 3]\nc: [1, 2]\nd: [0, 1]\nadding a+b=3\nrevising d+a=1\nrevising a+b=3\nfinal result of domains:\na: [0, 1]\nb: [2, 3]\nc: [1, 2]\nd: [0, 1]"
+  },
+  {
+    "objectID": "code_and_homework/AC3.html#from-domains-to-assignments",
+    "href": "code_and_homework/AC3.html#from-domains-to-assignments",
+    "title": "AC-3 Constraint Propagation",
+    "section": "From Domains to Assignments",
+    "text": "From Domains to Assignments\nTwo complete solutions satisfy all four equations:\n\n\n\na\nb\nc\nd\n\n\n\n\n1\n2\n2\n0\n\n\n0\n3\n1\n1\n\n\n\nChoosing a = 0 and b = 2 from their remaining domains would still violate a + b = 3. Local domain filtering is therefore different from selecting a globally consistent assignment.\nTry: add the reverse arcs and compare the trace and final domains. Then fix a to one value and consider what further propagation would imply.\n\n\nAnswers and discussion\n\n\nReverse arcs change the work, but not these final domains. Add ('b', 'a', 3), ('c', 'b', 4), ('d', 'c', 2), and ('a', 'd', 1). The queue now explicitly checks support in both directions, so the revision trace changes. For this particular example, the final domains remain a: {0, 1}, b: {2, 3}, c: {1, 2}, and d: {0, 1}: each surviving value participates in one of the two complete solutions above. Other CSPs can need reverse arcs to remove additional values.\nFixing a selects one of the two solutions. If a = 0, the equations force b = 3, then c = 1, then d = 1. If a = 1, they force b = 2, c = 2, and d = 0. Set the chosen domain to a singleton and rerun ac3 on that domain dictionary. Calling solve instead would recreate all digit domains and discard the restriction. Fixing a to any other digit makes the CSP inconsistent.\n\n\nTakeaway: unsupported values can be removed without branching, but surviving values do not generally certify that every combination is valid."
+  },
+  {
+    "objectID": "code_and_homework/sudoku.html#imports-and-puzzle",
+    "href": "code_and_homework/sudoku.html#imports-and-puzzle",
+    "title": "Sudoku as Constraint Search",
+    "section": "Imports and Puzzle",
+    "text": "Imports and Puzzle\nThe puzzle is a list of nine row lists. Zero represents an unassigned cell, not a Sudoku digit. The nonzero entries are fixed clues.\n\nimport matplotlib.pyplot as plt\nimport matplotlib.patches as patches\n\n# show a sudoku problem\npuzzle = [\n    [5, 3, 0, 0, 7, 0, 0, 0, 0],\n    [6, 0, 0, 1, 9, 5, 0, 0, 0],\n    [0, 9, 8, 0, 0, 0, 0, 6, 0],\n    [8, 0, 0, 0, 6, 0, 0, 0, 3],\n    [4, 0, 0, 8, 0, 3, 0, 0, 1],\n    [7, 0, 0, 0, 2, 0, 0, 0, 6],\n    [0, 6, 0, 0, 0, 0, 2, 8, 0],\n    [0, 0, 0, 4, 1, 9, 0, 0, 5],\n    [0, 0, 0, 0, 8, 0, 0, 7, 9]\n]"
+  },
+  {
+    "objectID": "code_and_homework/sudoku.html#draw-the-grid",
+    "href": "code_and_homework/sudoku.html#draw-the-grid",
+    "title": "Sudoku as Constraint Search",
+    "section": "Draw the Grid",
+    "text": "Draw the Grid\nThe helper writes only nonzero entries, draws thin cell boundaries, and emphasizes each 3-by-3 box. The vertical coordinate is flipped so list row 0 appears at the top. Drawing does not validate a solution.\n\ndef"
+  },
+  {
+    "objectID": "code_and_homework/sudoku.html#inspect-the-starting-state",
+    "href": "code_and_homework/sudoku.html#inspect-the-starting-state",
+    "title": "Sudoku as Constraint Search",
+    "section": "Inspect the Starting State",
+    "text": "Inspect the Starting State\nChoose one blank and eliminate digits already present in its row, column, and box. That manual candidate test is what the next helper automates.\n\n\nExample answer\n\nUsing zero-based indices, choose (0, 2). Its row excludes 3, 5, and 7; its column excludes 8; and its box excludes 3, 5, 6, 8, and 9. The remaining candidates are 1, 2, and 4. This is a local legality check, not a guarantee that all three candidates extend to a full solution.\n\n\ndraw_puzzle(puzzle):\n    fig, ax = plt.subplots(figsize=(3, 3))\n    ax.set_aspect('equal')\n    ax.set_xlim(0, 9)\n    ax.set_ylim(0, 9)\n    ax.set_xticks([])\n    ax.set_yticks([])\n    ax.add_patch(patches.Rectangle((0, 0), 9, 9, fill=False))\n    for i in range(9):\n        for j in range(9):\n            if puzzle[i][j] != 0:\n                ax.text(j + 0.5, 8.5 - i, str(puzzle[i][j]), ha='center', va='center')\n    for i in range(3):\n        for j in range(3):\n            ax.add_patch(patches.Rectangle((3 * j, 3 * i), 3, 3, fill=False\n                , linewidth=2))\n    for i in range(8):\n        ax.add_patch(patches.ConnectionPatch((i + 1, 0), (i + 1, 9), 'data', 'data'))\n        ax.add_patch(patches.ConnectionPatch((0, i + 1), (9, i + 1), 'data', 'data'))\n    plt.show()\n\ndraw_puzzle(puzzle)"
+  },
+  {
+    "objectID": "code_and_homework/sudoku.html#check-a-candidate",
+    "href": "code_and_homework/sudoku.html#check-a-candidate",
+    "title": "Sudoku as Constraint Search",
+    "section": "Check a Candidate",
+    "text": "Check a Candidate\nis_valid(puzzle, i, j, n) checks whether digit n conflicts with an existing entry in the row, column, or box of a blank cell. Integer division identifies the upper-left corner of the box.\nThe counters below record recursive calls and ensure the successful board is printed once. Reset them before comparing repeated runs.\n\ndef is_valid(puzzle, i, j, n):\n    for k in range(9):\n        if puzzle[i][k] == n or puzzle[k][j] == n:\n            return False\n    for k in range(3):\n        for l in range(3):\n            if puzzle[(i // 3) * 3 + k][(j // 3) * 3 + l] == n:\n                return False\n    return True\n\nsuccess_flag = False\nnum = 0"
+  },
+  {
+    "objectID": "code_and_homework/sudoku.html#backtrack-through-assignments",
+    "href": "code_and_homework/sudoku.html#backtrack-through-assignments",
+    "title": "Sudoku as Constraint Search",
+    "section": "Backtrack Through Assignments",
+    "text": "Backtrack Through Assignments\nThe solver chooses the first blank in row-major order and tries digits from 1 through 9. A legal digit is written into the board before recursion. If the recursive call fails, the cell is reset to zero before trying another digit.\nNo blanks means success. Exhausting candidates at a blank means failure. This implementation assumes the supplied clues are valid; it is not a separate validator for arbitrary filled boards. The recursion mutates its argument, so later runs pass a deep copy.\n\ndef solve(puzzle):\n    global success_flag, num\n    num += 1\n    for i in range(9):\n        for j in range(9):\n            if puzzle[i][j] == 0:\n                for n in range(1, 10):\n                    if is_valid(puzzle, i, j, n):\n                        puzzle[i][j] = n\n                        if solve(puzzle):\n                            if not success_flag:\n                                print(\"success with \", num, \" steps\")\n                                draw_puzzle(puzzle)\n                                success_flag = True\n                            return True\n                        puzzle[i][j] = 0\n                return False\n    return True"
+  },
+  {
+    "objectID": "code_and_homework/sudoku.html#represent-candidate-domains",
+    "href": "code_and_homework/sudoku.html#represent-candidate-domains",
+    "title": "Sudoku as Constraint Search",
+    "section": "Represent Candidate Domains",
+    "text": "Represent Candidate Domains\nEvery coordinate maps to a set of candidates. Blank cells initially allow all digits; clue cells begin with a singleton set. Domain reduction can make forced assignments before branching.\n\n# solve the sudoku problem by reducing the search space with inference\n# generate a dictionary of possible values for each cell\nall_cells = [(i, j) for i in range(9) for j in range(9)]\npossible_values = {cell: set(range(1, 10)) for cell in all_cells}\nfor i in range(9):\n    for j in range(9):\n        if puzzle[i][j] != 0:\n            possible_values[(i, j)] = set(puzzle[i][j] for _ in range(1))"
+  },
+  {
+    "objectID": "code_and_homework/sudoku.html#remove-an-assigned-digit-from-peers",
+    "href": "code_and_homework/sudoku.html#remove-an-assigned-digit-from-peers",
+    "title": "Sudoku as Constraint Search",
+    "section": "Remove an Assigned Digit from Peers",
+    "text": "Remove an Assigned Digit from Peers\ninfer removes the assigned digit from candidates in the same row, column, and box. If an unresolved peer loses its last candidate, it returns False.\nThis demonstration uses an unusual convention: a processed cell has an empty set because its singleton was consumed with pop(). An unresolved cell becoming empty means failure, while an already processed empty set is skipped. Distinguishing assigned cells explicitly would make a general solver easier to reason about.\n\nimport copy\ndef infer(possible_values, i, j, n):\n    for k in range(9):\n        if n in possible_values[(i, k)]:\n            possible_values[(i, k)].remove(n)\n            if len(possible_values[(i, k)]) == 0:\n                return False\n        if n in possible_values[(k, j)]:\n            possible_values[(k, j)].remove(n)\n            if len(possible_values[(k, j)]) == 0:\n                return False\n    for k in range(3):\n        for l in range(3):\n            if n in possible_values[(i // 3 * 3 + k, j // 3 * 3 + l)]:\n                possible_values[(i // 3 * 3 + k, j // 3 * 3 + l)].remove(n)\n                if len(possible_values[(i // 3 * 3 + k, j // 3 * 3 + l)]) == 0:\n                    return False\n    return True\n\nnum_reduce = 0"
+  },
+  {
+    "objectID": "code_and_homework/sudoku.html#propagate-forced-values",
+    "href": "code_and_homework/sudoku.html#propagate-forced-values",
+    "title": "Sudoku as Constraint Search",
+    "section": "Propagate Forced Values",
+    "text": "Propagate Forced Values\nThe function copies the board and candidate dictionary, then ranks cells by domain size. Singleton candidates are assigned and removed from peers. Repeated recursive passes can reveal further singletons.\nScope of this demonstration: the supplied puzzle is solved by propagation. The fallback branching code writes a guessed digit into the board but does not restrict that cell’s domain or propagate the guess. It is therefore not a complete inference-plus-backtracking solver for arbitrary puzzles. Do not interpret its success here as evidence that harder instances will terminate correctly.\n\ndef solve_reduce(puzzle, possible_values):\n    global num_reduce\n    num_reduce += 1\n    copy_possible_values = copy.deepcopy(possible_values)\n    copy_puzzle = copy.deepcopy(puzzle)\n    # rank the cells by the number of possible values\n    cells = sorted(all_cells, key=lambda cell: len(copy_possible_values[cell]))\n    for cell in cells:\n        if len(copy_possible_values[cell]) == 1:\n            n = copy_possible_values[cell].pop()\n            copy_puzzle[cell[0]][cell[1]] = n\n            if not infer(copy_possible_values, cell[0], cell[1], n):\n                return False\n    if all(len(copy_possible_values[cell]) == 0 for cell in all_cells):\n        print(\"success with \", num_reduce, \" steps\")\n        draw_puzzle(copy_puzzle)\n        return True\n    for cell in cells:\n        if len(copy_possible_values[cell]) &gt; 1:\n            for n in copy_possible_values[cell]:\n                copy_puzzle[cell[0]][cell[1]] = n\n                if solve_reduce(copy_puzzle, copy_possible_values):\n                    return True\n            return False\n    return False"
+  },
+  {
+    "objectID": "code_and_homework/sudoku.html#run-plain-backtracking",
+    "href": "code_and_homework/sudoku.html#run-plain-backtracking",
+    "title": "Sudoku as Constraint Search",
+    "section": "Run Plain Backtracking",
+    "text": "Run Plain Backtracking\nThe deep copy protects the original clues. The saved run reports 4,209 recursive calls and displays the solved board. The printed word “steps” refers to function calls, not individual constraint checks.\n\nsolve(copy.deepcopy(puzzle))\n\nsuccess with  4209  steps"
+  },
+  {
+    "objectID": "code_and_homework/sudoku.html#run-domain-reduction",
+    "href": "code_and_homework/sudoku.html#run-domain-reduction",
+    "title": "Sudoku as Constraint Search",
+    "section": "Run Domain Reduction",
+    "text": "Run Domain Reduction\nThe saved run reports four recursive calls for this puzzle. A propagation call can scan many cells and candidates, so four versus 4,209 calls is not a direct timing ratio. The final True is the returned success flag.\n\nsolve_reduce(copy.deepcopy(puzzle), possible_values)\n\nsuccess with  4  steps\n\n\n\n\n\n\n\n\n\nTrue"
+  },
+  {
+    "objectID": "code_and_homework/sudoku.html#compare-the-two-approaches",
+    "href": "code_and_homework/sudoku.html#compare-the-two-approaches",
+    "title": "Sudoku as Constraint Search",
+    "section": "Compare the Two Approaches",
+    "text": "Compare the Two Approaches\n\nConfirm that every original clue is unchanged in the displayed solutions.\nTrace where plain backtracking undoes a choice and where inference removes a candidate.\nExplain why choosing a cell with few remaining values can reduce branching. This is the minimum remaining values (MRV) heuristic.\nBefore extending the inference solver, specify how a guessed value should update its domain and how failure should restore the previous state.\n\n\n\nAnswers and discussion\n\n\nCheck the clues independently of the blanks. Every initially nonzero entry must equal the corresponding final entry. For example, the original top-row 5, 3, and 7 retain their positions. Plain backtracking writes only into zeros; the inference version initializes each clue with exactly its given digit. A complete solution also needs each row, column, and box to contain digits 1 through 9.\nUndo versus eliminate. In solve, the line puzzle[i][j] = 0 restores a blank after a recursive branch fails. In infer, calls to .remove(n) delete an assigned digit from peer domains. Backtracking reverses a tentative assignment; inference rules out conflicting candidates before trying them.\nMRV exposes difficult choices early. A cell with two candidates creates at most two branches, while one with eight creates up to eight. A singleton is forced, and an unresolved empty domain signals failure. MRV often reduces wasted search by finding constrained decisions and contradictions early, but does not guarantee the smallest search tree on every puzzle.\nA guess must change the search state. On a branch-local copy, restrict the chosen cell’s domain to {n}, assign or propagate it using a consistent assigned-cell convention, and continue inference before recursion. If the branch fails, discard that copy or restore every changed domain and board entry. The current fallback only writes the board entry; without restricting the domain, recursion can revisit the same unresolved choice.\n\n\nTakeaway: inference can avoid search, but a general solver still needs correct state management and branching when propagation stalls."
+  },
+  {
+    "objectID": "code_and_homework/KNN_MNIST.html#imports-seed-and-device",
+    "href": "code_and_homework/KNN_MNIST.html#imports-seed-and-device",
+    "title": "K-Nearest Neighbors on MNIST",
+    "section": "Imports, Seed, and Device",
+    "text": "Imports, Seed, and Device\nPyTorch and torchvision load the images; NumPy performs the nearest-neighbor calculations. Counter counts votes. The PyTorch seed controls the shuffled training subset, but the later random image selection uses NumPy and is not seeded here.\nAlthough the code prints a CUDA-or-CPU device, this KNN implementation converts the tensors to NumPy arrays and performs its distance calculations on the CPU.\n\nimport torch\nimport torchvision\nimport torchvision.transforms as transforms\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom collections import Counter\n\n# set random seed for reproducibility\ntorch.manual_seed(42)\n\n# Set device\ndevice = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\nprint(f\"Using device: {device}\")\n\n# -------------------------------\n# 1. Load and Preprocess MNIST\n# -------------------------------\n# Define transformations: Convert to tensor & normalize"
+  },
+  {
+    "objectID": "code_and_homework/KNN_MNIST.html#convert-and-load-images",
+    "href": "code_and_homework/KNN_MNIST.html#convert-and-load-images",
+    "title": "K-Nearest Neighbors on MNIST",
+    "section": "Convert and Load Images",
+    "text": "Convert and Load Images\nToTensor() converts pixel intensities into floating-point values in [0, 1]. Normalizing with mean 0.5 and standard deviation 0.5 maps that range to [-1, 1]. The same transformation is used for training and test images.\nThe dataset is cached under ~/temp_data. Training labels provide neighbors’ votes; test labels are held aside for measuring accuracy.\n\ntransform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])\n\n# Load MNIST dataset\nbatch_size = 10000  # Load a large batch since KNN requires all data\ntrain_dataset = torchvision.datasets.MNIST(root='~/temp_data', train=True, transform=transform, download=True)\ntest_dataset = torchvision.datasets.MNIST(root='~/temp_data', train=False, transform=transform, download=True)"
+  },
+  {
+    "objectID": "code_and_homework/KNN_MNIST.html#select-batches-and-flatten-images",
+    "href": "code_and_homework/KNN_MNIST.html#select-batches-and-flatten-images",
+    "title": "K-Nearest Neighbors on MNIST",
+    "section": "Select Batches and Flatten Images",
+    "text": "Select Batches and Flatten Images\nThe code takes only the first batch from each loader. With a batch size of 10,000, that means 10,000 shuffled training examples, not all 60,000 MNIST training images, and all 10,000 test images.\nFlattening changes each image from shape (1, 28, 28) to a 784-element feature vector. Row i of the data remains paired with label i. The printed shapes in the saved run confirm these dimensions.\n\n# Convert dataset to DataLoader\ntrain_loader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)\ntest_loader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=False)\n\n# Extract data from DataLoader\ntrain_data, train_labels = next(iter(train_loader))\ntest_data, test_labels = next(iter(test_loader))\n\n# Flatten images (28x28 → 784)\ntrain_data = train_data.view(train_data.size(0), -1).numpy()\ntest_data = test_data.view(test_data.size(0), -1).numpy()\n\n# Convert labels to numpy\ntrain_labels = train_labels.numpy()\ntest_labels = test_labels.numpy()\n\nprint(f\"Train data shape: {train_data.shape}, Train labels shape: {train_labels.shape}\")\nprint(f\"Test data shape: {test_data.shape}, Test labels shape: {test_labels.shape}\")\n\n# -------------------------------\n# 2. Implement Custom KNN\n# -------------------------------"
+  },
+  {
+    "objectID": "code_and_homework/KNN_MNIST.html#store-examples-and-predict",
+    "href": "code_and_homework/KNN_MNIST.html#store-examples-and-predict",
+    "title": "K-Nearest Neighbors on MNIST",
+    "section": "Store Examples and Predict",
+    "text": "Store Examples and Predict\nThe class remains a single runnable cell. Its three methods have distinct jobs:\n\n__init__ stores the chosen number of neighbors.\nfit(X, y) retains the examples and labels. There is no gradient descent or parameter training.\npredict(X) computes Euclidean distances to every stored example, sorts them, takes the nearest k, and returns the most frequent label.\n\nChoose k between 1 and the number of stored examples. Voting ties follow the encounter order of labels in this implementation. Flattened pixel distance is a simple baseline; it does not explicitly understand shifted or rotated digits.\n\nclass CustomKNN:\n    def __init__(self, k=3):\n        self.k = k\n        self.train_data = None\n        self.train_labels = None\n\n    def fit(self, X, y):\n        \"\"\"Stores training data and labels\"\"\"\n        self.train_data = X\n        self.train_labels = y\n\n    def predict(self, X):\n        \"\"\"Predict labels for given test data\"\"\"\n        predictions = []\n        for test_sample in X:\n            # Compute distances (Euclidean)\n            distances = np.linalg.norm(self.train_data - test_sample, axis=1)\n            \n            # Find k nearest neighbors\n            k_indices = np.argsort(distances)[:self.k]\n            k_nearest_labels = self.train_labels[k_indices]\n            \n            # Get most common label among neighbors\n            most_common = Counter(k_nearest_labels).most_common(1)[0][0]\n            predictions.append(most_common)\n        \n        return np.array(predictions)\n\n# -------------------------------\n# 3. Train & Evaluate the Model\n# -------------------------------"
+  },
+  {
+    "objectID": "code_and_homework/KNN_MNIST.html#fit-and-evaluate",
+    "href": "code_and_homework/KNN_MNIST.html#fit-and-evaluate",
+    "title": "K-Nearest Neighbors on MNIST",
+    "section": "Fit and Evaluate",
+    "text": "Fit and Evaluate\nFor each test image, the prediction uses only stored training labels. Accuracy is the fraction of predicted labels equal to the held-out test labels. The saved text below includes earlier device and shape messages as well as this result.\nPrediction is the expensive step: 10,000 queries each compare against 10,000 vectors of length 784 and sort the resulting distances. For a quick trial, reduce the batch size and rerun the data-preparation cells.\n\nk = 3  # Set k\nknn = CustomKNN(k)\nprint(\"\\nTraining KNN model...\")\nknn.fit(train_data, train_labels)\n\nprint(\"\\nEvaluating model...\")\ntest_predictions = knn.predict(test_data)\naccuracy = np.mean(test_predictions == test_labels)  # Accuracy calculation\nprint(f\"KNN Classification Accuracy: {accuracy * 100:.2f}%\")\n\n# -------------------------------\n# 4. Visualize Some Predictions\n# -------------------------------\n\nUsing device: cpu\nTrain data shape: (10000, 784), Train labels shape: (10000,)\nTest data shape: (10000, 784), Test labels shape: (10000,)\n\nTraining KNN model...\n\nEvaluating model...\nKNN Classification Accuracy: 95.02%"
+  },
+  {
+    "objectID": "code_and_homework/KNN_MNIST.html#draw-predictions",
+    "href": "code_and_homework/KNN_MNIST.html#draw-predictions",
+    "title": "K-Nearest Neighbors on MNIST",
+    "section": "Draw Predictions",
+    "text": "Draw Predictions\nThe helper samples test indices, reshapes each flattened vector into a 28-by-28 image, and places the true and predicted labels above it. Green titles indicate correct predictions; red titles indicate errors. It reads the arrays produced by the preceding cells.\n\ndef visualize_predictions(n=5):\n    indices = np.random.choice(len(test_data), n, replace=False)\n    \n    plt.figure(figsize=(10, 5))\n    for i, idx in enumerate(indices):\n        image = test_data[idx].reshape(28, 28)\n        true_label = test_labels[idx]\n        predicted_label = test_predictions[idx]\n\n        plt.subplot(1, n, i + 1)\n        plt.imshow(image, cmap='gray')\n        plt.title(f\"True: {true_label}\\nPred: {predicted_label}\", color=\"green\" if true_label == predicted_label else \"red\")\n        plt.axis('off')\n    \n    plt.show()"
+  },
+  {
+    "objectID": "code_and_homework/KNN_MNIST.html#inspect-five-examples",
+    "href": "code_and_homework/KNN_MNIST.html#inspect-five-examples",
+    "title": "K-Nearest Neighbors on MNIST",
+    "section": "Inspect Five Examples",
+    "text": "Inspect Five Examples\nA handful of images helps explain individual predictions, but is not a substitute for accuracy over the full evaluated test set.\n\nvisualize_predictions(5)"
+  },
+  {
+    "objectID": "code_and_homework/KNN_MNIST.html#inspect-a-larger-sample",
+    "href": "code_and_homework/KNN_MNIST.html#inspect-a-larger-sample",
+    "title": "K-Nearest Neighbors on MNIST",
+    "section": "Inspect a Larger Sample",
+    "text": "Inspect a Larger Sample\nThis call chooses ten fresh random images. Ambiguous handwriting can reveal why pixel distance and a small neighbor vote sometimes disagree with the true label.\n\nvisualize_predictions(10)"
+  },
+  {
+    "objectID": "code_and_homework/KNN_MNIST.html#questions-to-explore",
+    "href": "code_and_homework/KNN_MNIST.html#questions-to-explore",
+    "title": "K-Nearest Neighbors on MNIST",
+    "section": "Questions to Explore",
+    "text": "Questions to Explore\n\nCompare small and large values of k. How does the vote trade sensitivity to nearby examples against smoothing?\nUse a validation subset of training data to select k; keep the test set for final evaluation.\nHow would doubling the number of stored examples affect prediction work and memory?\n\n\n\nAnswers and discussion\n\n\nSmall k is local; large k smooths. At k = 1, one nearby training example determines the prediction, making the classifier sensitive to noise and unusual examples. A larger vote is more stable but can mix nearby classes and miss fine distinctions. At the extreme of using every stored example, every query receives the same overall majority-label vote, subject to tie-breaking. Accuracy need not improve monotonically with k.\nChoose k without using the test answers. Split the available training examples into a reference set and a validation set. Store only reference examples in fit, compare candidate k values on validation accuracy, and choose one. Then fit using the available training data and evaluate on the untouched test set. Repeatedly choosing k from test accuracy would make the reported test result optimistically biased.\nMore stored examples increase both work and memory. Holding feature dimension and the number of test queries fixed, doubling stored examples doubles the distance-computation work and stored feature/label memory. This implementation also fully sorts the distances for each query; its sorting cost grows as N log N, so that component increases a little more than twofold. The distance and sorting temporary arrays grow too.\n\n\nTakeaway: KNN postpones most of its work until prediction. The representation, distance measure, and reference examples define what “similar” means."
+  },
+  {
+    "objectID": "code_and_homework/linear_regression.html#define-the-data-generating-model",
+    "href": "code_and_homework/linear_regression.html#define-the-data-generating-model",
+    "title": "Linear Regression and Generalization",
+    "section": "Define the Data-Generating Model",
+    "text": "Define the Data-Generating Model\nThere are 50 observations per dataset, at most 250 candidate features, and only 10 features with nonzero true coefficients. The coefficient vector is normalized to length 1. Independent Gaussian noise has standard deviation 0.2.\nThe seed fixes the experiment’s random sequence. Training and test samples will be drawn independently but use the same true coefficient vector.\n\n# linear regression on synthetic data\n\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nnp.random.seed(0)\n\ns = 10 # number of true features\nbeta_star = np.random.randn(s)\n# normalize beta_star\nbeta_star /= np.linalg.norm(beta_star)\nn = 50 # number of samples\np_max = 250 # max possible number of features\nsigma = 0.2 # noise level"
+  },
+  {
+    "objectID": "code_and_homework/linear_regression.html#generate-one-dataset",
+    "href": "code_and_homework/linear_regression.html#generate-one-dataset",
+    "title": "Linear Regression and Generalization",
+    "section": "Generate One Dataset",
+    "text": "Generate One Dataset\nThe matrix has shape (250, 50): features are rows and observations are columns, the transpose of a common machine-learning convention. Only the first ten feature rows contribute to the response.\nThe expression X[:s, :].T @ beta_star produces one noiseless response per observation; the noise vector adds independent measurement error.\n\ndef generate_samples():\n    \"\"\"\n    Generate synthetic data for linear regression.\n    \"\"\"\n    X = np.random.randn(p_max, n)\n    noise = sigma * np.random.randn(n) # generate noise\n    # generate response variable\n    y = X[:s, :].T @ beta_star + noise\n    return X, y"
+  },
+  {
+    "objectID": "code_and_homework/linear_regression.html#choose-model-sizes",
+    "href": "code_and_homework/linear_regression.html#choose-model-sizes",
+    "title": "Linear Regression and Generalization",
+    "section": "Choose Model Sizes",
+    "text": "Choose Model Sizes\nThe first range uses 1 through 48 fitted features; the second uses 52 through 250. The near-interpolation values 49, 50, and 51 are excluded, matching the undefined or divergent expected-error cases in the theoretical comparison.\nThe lists separately collect training and test error for the two ranges.\n\np_under = list(range(1, n-1))\np_over = list(range(n+2, p_max+1))\nerr_under = []\nerr_over = []\ntrain_err_under = []\ntrain_err_over = []"
+  },
+  {
+    "objectID": "code_and_homework/linear_regression.html#fit-and-measure-error",
+    "href": "code_and_homework/linear_regression.html#fit-and-measure-error",
+    "title": "Linear Regression and Generalization",
+    "section": "Fit and Measure Error",
+    "text": "Fit and Measure Error\nThe function selects the first p features and computes least squares using the Moore-Penrose pseudoinverse. When there are more features than observations, this selects the minimum-Euclidean-norm least-squares solution.\nBoth returned quantities are mean squared error (MSE): the average squared difference between response and prediction. Test predictions use the fitted training coefficients without refitting. Training error and generalization error answer different questions.\n\ndef compute_error(X_train, y_train, X_test, y_test, p):\n    \"\"\"\n    Compute training and test errors for linear regression.\n    \"\"\"\n    X = X_train[:p, :] # select first p features\n    beta = np.linalg.pinv(X.T) @ y_train # compute beta\n    train_error = np.mean((y_train - X.T @ beta) ** 2) # compute train error\n    X = X_test[:p, :] # select first p features\n    y_pred = X.T @ beta # compute predictions\n    test_error = np.mean((y_test - y_pred) ** 2) # compute test error\n    return train_error, test_error"
+  },
+  {
+    "objectID": "code_and_homework/linear_regression.html#repeat-on-independent-datasets",
+    "href": "code_and_homework/linear_regression.html#repeat-on-independent-datasets",
+    "title": "Linear Regression and Generalization",
+    "section": "Repeat on Independent Datasets",
+    "text": "Repeat on Independent Datasets\nEach trial draws fresh training and test data, then fits every requested model size on those same datasets. Sharing data within a trial makes comparisons across feature counts more meaningful.\nError lists have one row per trial and one column per model size. This cell performs the calculations; the following cells summarize and plot the stored results.\n\nnum_of_trials = 20\nfor ii in range(num_of_trials):\n    X_train, y_train = generate_samples()\n    X_test, y_test = generate_samples() # generate test data\n    test_errors_under = []\n    test_errors_over = []\n    train_errors_under = []\n    train_errors_over = []\n    for p in p_under:\n        train_error, test_error = compute_error(X_train, y_train, X_test, y_test, p)\n        test_errors_under.append(test_error)\n        train_errors_under.append(train_error)\n    for p in p_over:\n        train_error, test_error = compute_error(X_train, y_train, X_test, y_test, p)\n        test_errors_over.append(test_error)\n        train_errors_over.append(train_error)\n    # store errors\n    err_under.append(test_errors_under)\n    err_over.append(test_errors_over)\n    train_err_under.append(train_errors_under)\n    train_err_over.append(train_errors_over)"
+  },
+  {
+    "objectID": "code_and_homework/linear_regression.html#summarize-test-error",
+    "href": "code_and_homework/linear_regression.html#summarize-test-error",
+    "title": "Linear Regression and Generalization",
+    "section": "Summarize Test Error",
+    "text": "Summarize Test Error\nThe mean is computed across trials at each feature count. The shaded band will span the minimum and maximum observed trial errors. It is not a confidence interval or a standard-deviation band.\n\nerr_under_max = np.max(err_under, axis=0)\nerr_under_min = np.min(err_under, axis=0)\nerr_over_max = np.max(err_over, axis=0)\nerr_over_min = np.min(err_over, axis=0)\n\nerr_under_mean = np.mean(err_under, axis=0)\nerr_over_mean = np.mean(err_over, axis=0)"
+  },
+  {
+    "objectID": "code_and_homework/linear_regression.html#plot-generalization",
+    "href": "code_and_homework/linear_regression.html#plot-generalization",
+    "title": "Linear Regression and Generalization",
+    "section": "Plot Generalization",
+    "text": "Plot Generalization\nBoth axes use logarithmic scales. Compare the initial benefit of adding true features with the instability near the interpolation threshold.\nThe saved legend says “Underfitting” and “Overfitting,” but its colors actually identify underparameterized (p &lt; n) and overparameterized (p &gt; n) ranges. Parameter count alone does not establish whether a model overfits.\n\nplt.figure(figsize=(10, 5))\n\n# Plot underfitting errors\nplt.plot(p_under, err_under_mean, label='Underfitting (mean)', color='blue')\nplt.fill_between(p_under, err_under_min, err_under_max, color='blue', alpha=0.2, label='Underfitting (range)')\n\n# Plot overfitting errors\nplt.plot(p_over, err_over_mean, label='Overfitting (mean)', color='red')\nplt.fill_between(p_over, err_over_min, err_over_max, color='red', alpha=0.2, label='Overfitting (range)')\n\nplt.xlabel('Number of features')\nplt.ylabel('Test Error')\nplt.yscale('log')\nplt.xscale('log')\nplt.legend()\nplt.show()"
+  },
+  {
+    "objectID": "code_and_homework/linear_regression.html#plot-training-error",
+    "href": "code_and_homework/linear_regression.html#plot-training-error",
+    "title": "Linear Regression and Generalization",
+    "section": "Plot Training Error",
+    "text": "Plot Training Error\nThe training curve uses a linear vertical axis. In the overparameterized range, a full-row-rank design can fit all training responses, including noise, so training error is numerically near zero.\nCompare this with the nonzero test error. Interpolating the training data does not make unseen noisy responses perfectly predictable.\n\n# show the training errors in another figure\n\ntrain_err_under_max = np.max(train_err_under, axis=0)\ntrain_err_under_min = np.min(train_err_under, axis=0)\ntrain_err_over_max = np.max(train_err_over, axis=0)\ntrain_err_over_min = np.min(train_err_over, axis=0)\ntrain_err_under_mean = np.mean(train_err_under, axis=0)\ntrain_err_over_mean = np.mean(train_err_over, axis=0)\n\nplt.figure(figsize=(10, 5))\n# Plot underfitting training errors\nplt.plot(p_under, train_err_under_mean, label='Underfitting (mean)', color='blue')\nplt.fill_between(p_under, train_err_under_min, train_err_under_max, color='blue', alpha=0.2, label='Underfitting (range)')\n# Plot overfitting training errors\nplt.plot(p_over, train_err_over_mean, label='Overfitting (mean)', color='red')\nplt.fill_between(p_over, train_err_over_min, train_err_over_max, color='red', alpha=0.2, label='Overfitting (range)')\nplt.xlabel('Number of features')\nplt.ylabel('Training Error')\n# plt.yscale('log')\nplt.xscale('log')\nplt.show()"
+  },
+  {
+    "objectID": "code_and_homework/linear_regression.html#expected-test-error-under-this-model",
+    "href": "code_and_homework/linear_regression.html#expected-test-error-under-this-model",
+    "title": "Linear Regression and Generalization",
+    "section": "Expected Test Error Under This Model",
+    "text": "Expected Test Error Under This Model\nThe formula assumes the isotropic Gaussian features, independent Gaussian noise, and unregularized minimum-norm estimator used here. It is not a universal law for arbitrary datasets.\nFor p &lt; s, omitted true coefficients contribute extra unexplained variation. Once all true features are included, that term disappears. Above the interpolation threshold, the expression combines signal bias with noise and estimation terms. The function returns None around the singular threshold rather than drawing a finite value there.\n\ndef theoretical_test_error(p, n, s, sigma, beta_star):\n    \"\"\"\n    Compute the theoretical test error for linear regression.\n    \"\"\"\n    if p &gt;= n-1 and p &lt;= n+1:\n        return None\n    if p &lt; s:\n        return (np.sum(beta_star[p:] ** 2) + sigma ** 2) * ((n - 1) / (n - p - 1))\n    if p &lt; n - 1:\n        return (n - 1) / (n - p - 1) * sigma ** 2\n    return (1 - n / p) * np.sum(beta_star ** 2) + sigma ** 2 + n / (p - n - 1) * sigma ** 2"
+  },
+  {
+    "objectID": "code_and_homework/linear_regression.html#compare-theory-with-the-simulation",
+    "href": "code_and_homework/linear_regression.html#compare-theory-with-the-simulation",
+    "title": "Linear Regression and Generalization",
+    "section": "Compare Theory with the Simulation",
+    "text": "Compare Theory with the Simulation\nThe dashed curves show the model’s expected test error, while the earlier curves are finite-trial estimates. Compare their trends, especially near the threshold, where variability is large.\nThe noise variance is sigma ** 2 = 0.04. Even knowing the true coefficients would leave that expected error when predicting a fresh noisy response.\n\np = np.array(p_under + p_over)\ntheoretical_errors = []\nfor pp in p:\n    theoretical_errors.append(theoretical_test_error(pp, n, s, sigma, beta_star))\ntheoretical_errors = np.array(theoretical_errors)\ntheoretical_errors_under = theoretical_errors[:len(p_under)]\ntheoretical_errors_over = theoretical_errors[len(p_under):]\nplt.figure(figsize=(10, 5))\n# Plot theoretical errors\nplt.plot(p_under, theoretical_errors_under, label='Theoretical Underfitting', color='blue', linestyle='--')\nplt.plot(p_over, theoretical_errors_over, label='Theoretical Overfitting', color='red', linestyle='--')\nplt.xlabel('Number of features')\nplt.ylabel('Test Error')\nplt.yscale('log')\nplt.xscale('log')\nplt.legend()\nplt.show()"
+  },
+  {
+    "objectID": "code_and_homework/linear_regression.html#questions-to-explore",
+    "href": "code_and_homework/linear_regression.html#questions-to-explore",
+    "title": "Linear Regression and Generalization",
+    "section": "Questions to Explore",
+    "text": "Questions to Explore\n\nWhy does using fewer than ten features omit part of the true signal?\nWhy can training error keep falling while test error rises?\nChange the noise level and rerun the experiment. Which part of the theoretical expression changes?\nWhy might a small number of trials give an unstable average near interpolation?\n\n\n\nAnswers and discussion\n\n\nThe omitted features carry real signal. The response uses the first ten feature coordinates with nonzero coefficients. A fit with p &lt; 10 cannot represent the contribution from coordinates p through 9. Because the features are independent Gaussian variables, that omitted contribution has variance sum(beta_star[p:] ** 2) and cannot be recovered from the included features alone.\nFitting noise is not generalization. Adding features cannot worsen the best achievable training least-squares fit, and enough features can interpolate the noisy training responses. Near the interpolation threshold, poorly determined directions can amplify noise and make predictions unstable on independent test examples. Thus training error can fall while test error rises; the full test-error curve need not be monotone on either side of the threshold.\nThe noise-dependent terms change with sigma squared. The omitted-signal term and coefficient norm stay fixed. The irreducible noise variance and the noise-amplification terms all depend on sigma ** 2. Doubling sigma quadruples those contributions; for example, the irreducible error changes from 0.04 to 0.16. It does not quadruple any separate signal-bias contribution.\nRare unstable fits can dominate a small average. Near interpolation, a random design can have very small singular values. Taking their reciprocals in the pseudoinverse amplifies noise and can produce exceptionally large test errors. A small set of trials may include or miss such cases, making its mean and min-to-max band unstable. More trials help away from the excluded singular cases, but do not turn a divergent expected error into a finite one.\n\n\nTakeaway: training fit, model size, and generalization are not interchangeable. The estimator and the data-generating assumptions matter."
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#inputs-parameters-and-learning-rate",
+    "href": "code_and_homework/backpropagation.html#inputs-parameters-and-learning-rate",
+    "title": "Backpropagation by Hand",
+    "section": "Inputs, Parameters, and Learning Rate",
+    "text": "Inputs, Parameters, and Learning Rate\nThe input has shape (1, 2) and the target has shape (1, 1): one example with two features and one response. requires_grad=True tells PyTorch to track operations on the learnable weights and biases.\nThe hidden weight matrix has shape (2, 1); the output weight has shape (1, 1). Biases are added by broadcasting. The seed reproduces initialization, and the learning rate sets the size of the eventual update.\n\nimport torch\n\n# Set random seed for reproducibility\ntorch.manual_seed(42)\n\n# Define input (2 features) and target output (scalar)\nX = torch.tensor([[0.5, 1.0]], dtype=torch.float32)  # Input shape: (1,2)\ny = torch.tensor([[1.0]], dtype=torch.float32)       # Target shape: (1,1)\n\n# Initialize weights and bias\nw1 = torch.randn((2, 1), requires_grad=True)  # Weights for input layer (2 → 1 hidden unit)\nb1 = torch.zeros(1, requires_grad=True)       # Bias for hidden layer\n\nw2 = torch.randn((1, 1), requires_grad=True)  # Weights for hidden layer → output\nb2 = torch.zeros(1, requires_grad=True)       # Bias for output layer\n\n# Learning rate\nlr = 0.1"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#hidden-layer",
+    "href": "code_and_homework/backpropagation.html#hidden-layer",
+    "title": "Backpropagation by Hand",
+    "section": "Hidden Layer",
+    "text": "Hidden Layer\nFirst compute z_1=Xw_1+b_1. The rectified linear unit (ReLU) activation keeps positive values and replaces negative ones with zero: a_1=\\max(0,z_1).\nFor this one-unit network, both intermediate tensors have shape (1, 1).\n\n# Step 1: Forward Pass (Layer 1 - Hidden Layer)\nz1 = X @ w1 + b1  # Linear transformation\na1 = torch.relu(z1)  # Activation function (ReLU)"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#output-and-loss",
+    "href": "code_and_homework/backpropagation.html#output-and-loss",
+    "title": "Backpropagation by Hand",
+    "section": "Output and Loss",
+    "text": "Output and Loss\nThe output layer is linear: O=a_1w_2+b_2. The code uses mean squared error (MSE) with no factor of one half. There is one scalar prediction, so L=(O-y)^2 and \\partial L/\\partial O=2(O-y).\nThe printed prediction and loss are measured before any parameter update.\n\n# Step 2: Forward Pass (Layer 2 - Output Layer)\nz2 = a1 @ w2 + b2  # Linear transformation\noutput = z2  # Final output\n\n# Step 3: Compute Loss (Mean Squared Error)\nloss = torch.mean((output - y) ** 2)\n\n# Print forward pass results\nprint(f\"Output before backpropagation: {output.item():.4f}\")\nprint(f\"Loss before backpropagation: {loss.item():.4f}\")\n\n\nOutput before backpropagation: 0.0697\nLoss before backpropagation: 0.8655"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#ask-autograd-for-gradients",
+    "href": "code_and_homework/backpropagation.html#ask-autograd-for-gradients",
+    "title": "Backpropagation by Hand",
+    "section": "Ask Autograd for Gradients",
+    "text": "Ask Autograd for Gradients\nloss.backward() traverses the computation graph and accumulates derivatives in each leaf parameter’s .grad field. It does not change parameter values. We retain these gradients to compare against the manual calculation.\n\n# Step 4: Backward Pass (Compute Gradients)\nloss.backward()  # Automatically computes gradients using backpropagation"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#compute-the-chain-rule-manually",
+    "href": "code_and_homework/backpropagation.html#compute-the-chain-rule-manually",
+    "title": "Backpropagation by Hand",
+    "section": "Compute the Chain Rule Manually",
+    "text": "Compute the Chain Rule Manually\nLet \\delta_2=2(O-y). The output is linear, so\n\\frac{\\partial L}{\\partial w_2}=a_1\\delta_2, \\qquad \\frac{\\partial L}{\\partial b_2}=\\delta_2.\nThe hidden error is \\delta_1=\\delta_2 w_2\\,\\mathbb{1}[z_1&gt;0], giving\n\\frac{\\partial L}{\\partial w_1}=X^\\top\\delta_1, \\qquad \\frac{\\partial L}{\\partial b_1}=\\delta_1.\nPyTorch uses derivative zero for ReLU at zero. The code’s Boolean mask follows that convention. torch.no_grad() prevents these manual calculations from creating another autograd graph.\nThe elementwise products below work for this single-example, single-hidden-unit network. Larger batches and layers require appropriate matrix products and sums over examples.\n\nwith torch.no_grad():\n    # Step 5: Compute Manual Gradients\n    dL_dO = 2 * (output - y) / 1  # Derivative of MSE loss w.r.t. output\n    dO_dz2 = 1  # Since output = z2, its derivative is 1\n    dL_dz2 = dL_dO * dO_dz2  # Chain rule\n\n    # Gradients for w2 and b2 (Output layer)\n    dL_dw2 = dL_dz2 * a1  # dL/dw2 = dL/dz2 * da1/dw2\n    dL_db2 = dL_dz2 * 1    # dL/db2 = dL/dz2 * db2/db2\n\n    # Gradients for w1 and b1 (Hidden layer)\n    dz2_da1 = w2  # Derivative of z2 w.r.t. a1 (weights from hidden to output layer)\n    da1_dz1 = (z1 &gt; 0).float()  # ReLU derivative (1 if z1 &gt; 0, else 0)\n\n    dL_dz1 = dL_dz2 * dz2_da1 * da1_dz1  # Chain rule: dL/dz1 = dL/dz2 * dz2/da1 * da1/dz1\n    dL_dw1 = dL_dz1 * X.T  # dL/dw1 = dL/dz1 * X\n    dL_db1 = dL_dz1 * 1  # dL/db1 = dL/dz1 * db1/db1"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#compare-the-four-parameter-gradients",
+    "href": "code_and_homework/backpropagation.html#compare-the-four-parameter-gradients",
+    "title": "Backpropagation by Hand",
+    "section": "Compare the Four Parameter Gradients",
+    "text": "Compare the Four Parameter Gradients\nCompare the automatic and manual entries for both weights and both biases. The first-layer weight gradient has two entries because the hidden unit receives two features. The saved combined log is displayed after the final forward pass below.\n\n# Print Gradients\nprint(\"\\nAutomatic Gradients (PyTorch):\")\nprint(f\"dL/dw1: {w1.grad}\")\nprint(f\"dL/db1: {b1.grad}\")\nprint(f\"dL/dw2: {w2.grad}\")\nprint(f\"dL/db2: {b2.grad}\")\n\nprint(\"\\nManual Gradients (Calculated using Chain Rule):\")\nprint(f\"dL/dw1: {dL_dw1}\")\nprint(f\"dL/db1: {dL_db1}\")\nprint(f\"dL/dw2: {dL_dw2}\")\nprint(f\"dL/db2: {dL_db2}\")"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#check-numerical-agreement",
+    "href": "code_and_homework/backpropagation.html#check-numerical-agreement",
+    "title": "Backpropagation by Hand",
+    "section": "Check Numerical Agreement",
+    "text": "Check Numerical Agreement\ntorch.allclose checks agreement within floating-point tolerances. All four checks should be True. A missing factor of two in the MSE derivative would fail this comparison.\nSome manual bias gradients retain a (1, 1) shape while the parameter gradients have shape (1,); this comparison allows broadcasting. Values agree here, but shape checks also matter when extending the network.\n\n# Step 6: Verify Matching\nprint(\"\\nChecking if manual and automatic gradients match:\")\nprint(torch.allclose(w1.grad, dL_dw1), \"for dL/dw1\")\nprint(torch.allclose(b1.grad, dL_db1), \"for dL/db1\")\nprint(torch.allclose(w2.grad, dL_dw2), \"for dL/dw2\")\nprint(torch.allclose(b2.grad, dL_db2), \"for dL/db2\")"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#take-a-gradient-descent-step",
+    "href": "code_and_homework/backpropagation.html#take-a-gradient-descent-step",
+    "title": "Backpropagation by Hand",
+    "section": "Take a Gradient-Descent Step",
+    "text": "Take a Gradient-Descent Step\nEach parameter follows \\theta\\leftarrow\\theta-\\eta\\nabla_\\theta L. The update occurs inside no_grad(), since changing the parameters is not part of the next differentiation graph.\nThe gradients are then zeroed because PyTorch accumulates them by default. Rerunning the comparison after this cell would compare against zeroed gradients; restart from initialization for a fresh full comparison.\n\n# Step 7: Update Weights (Gradient Descent)\nwith torch.no_grad():\n    w1 -= lr * w1.grad\n    b1 -= lr * b1.grad\n    w2 -= lr * w2.grad\n    b2 -= lr * b2.grad\n\n    # Zero out gradients after update\n    w1.grad.zero_()\n    b1.grad.zero_()\n    w2.grad.zero_()\n    b2.grad.zero_()"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#recompute-the-prediction",
+    "href": "code_and_homework/backpropagation.html#recompute-the-prediction",
+    "title": "Backpropagation by Hand",
+    "section": "Recompute the Prediction",
+    "text": "Recompute the Prediction\nRun the forward equations again with the updated parameters and measure a new loss. The saved log contains the earlier gradient values, the four agreement checks, and the prediction and loss after the update.\nA smaller loss in this example confirms that the chosen update helped on this example. An excessively large learning rate can increase loss even when the gradient is correct.\n\n# Step 8: Forward Pass Again (After Weight Update)\nz1 = X @ w1 + b1\na1 = torch.relu(z1)\nz2 = a1 @ w2 + b2\nnew_output = z2\n\n# Compute new loss\nnew_loss = torch.mean((new_output - y) ** 2)\n\n# Print updated results\nprint(f\"\\nOutput after weight update: {new_output.item():.4f}\")\nprint(f\"Loss after weight update: {new_loss.item():.4f}\")\n\n\nAutomatic Gradients (PyTorch):\ndL/dw1: tensor([[-0.2181],\n        [-0.4363]])\ndL/db1: tensor([-0.4363])\ndL/dw2: tensor([[-0.5529]])\ndL/db2: tensor([-1.8607])\n\nManual Gradients (Calculated using Chain Rule):\ndL/dw1: tensor([[-0.2181],\n        [-0.4363]])\ndL/db1: tensor([[-0.4363]])\ndL/dw2: tensor([[-0.5529]])\ndL/db2: tensor([[-1.8607]])\n\nChecking if manual and automatic gradients match:\nTrue for dL/dw1\nTrue for dL/db1\nTrue for dL/dw2\nTrue for dL/db2\n\nOutput after weight update: 0.3006\nLoss after weight update: 0.4891"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#check-your-understanding",
+    "href": "code_and_homework/backpropagation.html#check-your-understanding",
+    "title": "Backpropagation by Hand",
+    "section": "Check Your Understanding",
+    "text": "Check Your Understanding\n\nWhich operations compute gradients, which modify weights, and which clear accumulated gradients?\nIf the hidden preactivation were negative, which weight gradients would become zero? Could the output bias still learn?\nWhy does MSE averaged over several outputs require dividing its derivative by the number of averaged elements?\n\n\n\nAnswers and discussion\n\n\nGradient calculation, parameter update, and reset are separate. loss.backward() accumulates automatic gradients in .grad; the explicit chain-rule expressions compute the manual versions. The statements such as w1 -= lr * w1.grad change parameters. Calls such as w1.grad.zero_() clear the stored gradients. torch.no_grad() only disables graph tracking for operations inside its block; it neither clears gradients nor updates parameters by itself.\nA negative hidden preactivation blocks this unit’s gradient. ReLU gives a1 = 0 and derivative zero. Both entries of the w1 gradient and the b1 gradient become zero. The w2 gradient is also zero because its input a1 is zero. The output bias still has gradient 2(O-y), so it can learn unless the prediction already matches the target.\nDifferentiation preserves the averaging factor. For m scalar output elements, MSE is the sum of their squared errors divided by m. The derivative for element i is therefore 2(O_i-y_i)/m. Omitting the division differentiates the sum of squared errors instead, scaling the gradient by m and making the update magnitude depend on how many elements were averaged. Here m is one.\n\n\nTakeaway: backpropagation computes derivatives; gradient descent uses them. Keeping those two steps separate makes training code easier to debug."
+  },
+  {
+    "objectID": "code_and_homework/CNN.html#imports-and-random-seed",
+    "href": "code_and_homework/CNN.html#imports-and-random-seed",
+    "title": "Convolutional Neural Network Demo",
+    "section": "Imports and Random Seed",
+    "text": "Imports and Random Seed\nThe data loader batches examples, torch.nn supplies layers and loss functions, and torch.optim supplies the optimizer. The seed helps reproduce initialization and shuffling, although results can still vary across devices and software versions.\n\nimport torch\nfrom torchvision import datasets, transforms\nfrom torch.utils.data import DataLoader\nimport torch.nn as nn\nimport torch.optim as optim\nimport matplotlib.pyplot as plt\n\n# set random seed for reproducibility\ntorch.manual_seed(42)"
+  },
+  {
+    "objectID": "code_and_homework/CNN.html#define-layers-and-the-forward-pass",
+    "href": "code_and_homework/CNN.html#define-layers-and-the-forward-pass",
+    "title": "Convolutional Neural Network Demo",
+    "section": "Define Layers and the Forward Pass",
+    "text": "Define Layers and the Forward Pass\n__init__ creates the learnable layers. forward specifies how an input moves through them. The class stays together as a complete Python definition.\nPyTorch uses tensor order (batch, channels, height, width). For a batch of size B, the shape changes are:\n\n\n\n\n\n\n\n\nStage\nOutput shape\nRole\n\n\n\n\nInput\nB x 1 x 28 x 28\nGrayscale images\n\n\nFirst convolution + ReLU\nB x 32 x 28 x 28\nLocal feature maps\n\n\nSecond convolution + ReLU\nB x 64 x 28 x 28\nCombine local features\n\n\nMax pooling\nB x 64 x 14 x 14\nReduce spatial resolution\n\n\nFlatten\nB x 12544\nOne feature vector per image\n\n\nFully connected + ReLU\nB x 128\nLearned classifier features\n\n\nDropout + output layer\nB x 10\nOne score per digit\n\n\n\nReLU means rectified linear unit. Padding preserves spatial size in both convolutions; pooling occurs only after the second. Dropout randomly suppresses hidden activations during training. The final scores are logits, not probabilities.\n\n# Define the CNN model\nclass CNN(nn.Module):\n    def __init__(self):\n        super(CNN, self).__init__()\n        self.conv1 = nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1) # size 28x28x1 -&gt; 28x28x32\n        self.conv2 = nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1) # size 28x28x32 -&gt; 28x28x64\n        self.pool = nn.MaxPool2d(kernel_size=2, stride=2) # size 28x28x64 -&gt; 14x14x64\n        self.fc1 = nn.Linear(64 * 14 * 14, 128)\n        self.fc2 = nn.Linear(128, 10)\n        self.relu = nn.ReLU()\n        self.dropout = nn.Dropout(0.5)\n\n    def forward(self, x):\n        x = self.relu(self.conv1(x))\n        x = self.pool(self.relu(self.conv2(x)))\n        x = x.view(-1, 64 * 14 * 14)\n        x = self.relu(self.fc1(x))\n        x = self.dropout(x)\n        x = self.fc2(x)\n        return x"
+  },
+  {
+    "objectID": "code_and_homework/CNN.html#load-and-normalize-images",
+    "href": "code_and_homework/CNN.html#load-and-normalize-images",
+    "title": "Convolutional Neural Network Demo",
+    "section": "Load and Normalize Images",
+    "text": "Load and Normalize Images\nMNIST is the Modified National Institute of Standards and Technology digit dataset. Tensor conversion maps pixels to [0, 1]; normalization maps them to [-1, 1]. Both data splits use identical preprocessing.\nUnlike the KNN notebook’s single-batch subset, these loaders are iterated over completely. Training batches are shuffled; test batches are not. A smaller final batch is allowed.\n\n# Load MNIST dataset\ntransform = transforms.Compose([\n    transforms.ToTensor(),\n    transforms.Normalize((0.5,), (0.5,))\n])\n\ntrain_dataset = datasets.MNIST(root='~/temp_data', train=True, transform=transform, download=True)\ntest_dataset = datasets.MNIST(root='~/temp_data', train=False, transform=transform, download=True)\n\ntrain_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)\ntest_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)"
+  },
+  {
+    "objectID": "code_and_homework/CNN.html#model-loss-and-optimizer",
+    "href": "code_and_homework/CNN.html#model-loss-and-optimizer",
+    "title": "Convolutional Neural Network Demo",
+    "section": "Model, Loss, and Optimizer",
+    "text": "Model, Loss, and Optimizer\nThe model and each batch must be on the same device. CrossEntropyLoss consumes raw logits and integer class labels; do not insert a softmax before this loss.\nAdam updates the model’s parameters using gradients and running moment estimates. Its learning rate is 0.001. Constructing the optimizer does not train the model.\n\n# Initialize model, loss function, and optimizer\ndevice = torch.device('cuda' if torch.cuda.is_available() else 'cpu')\nmodel = CNN().to(device)\ncriterion = nn.CrossEntropyLoss()\noptimizer = optim.Adam(model.parameters(), lr=0.001)"
+  },
+  {
+    "objectID": "code_and_homework/CNN.html#train-for-one-epoch",
+    "href": "code_and_homework/CNN.html#train-for-one-epoch",
+    "title": "Convolutional Neural Network Demo",
+    "section": "Train for One Epoch",
+    "text": "Train for One Epoch\nOne epoch visits the whole training set once. model.train() enables training behavior, including dropout. For each batch:\n\nMove images and labels to the selected device.\nClear old gradients with zero_grad().\nCompute logits and cross-entropy loss.\nBackpropagate with loss.backward().\nUpdate parameters with optimizer.step().\n\nThe printed loss is the mean of batch loss values. Since the last batch can be smaller, it is not an exactly sample-weighted dataset mean.\n\n# Training loop\nnum_epochs = 1\nfor epoch in range(num_epochs):\n    model.train()\n    running_loss = 0.0\n    for images, labels in train_loader:\n        images, labels = images.to(device), labels.to(device)\n        optimizer.zero_grad()\n        outputs = model(images)\n        loss = criterion(outputs, labels)\n        loss.backward()\n        optimizer.step()\n        running_loss += loss.item()\n    print(f\"Epoch {epoch+1}/{num_epochs}, Loss: {running_loss/len(train_loader)}\")\n\n\nEpoch 1/1, Loss: 0.2424318811405442"
+  },
+  {
+    "objectID": "code_and_homework/CNN.html#prepare-held-out-evaluation",
+    "href": "code_and_homework/CNN.html#prepare-held-out-evaluation",
+    "title": "Convolutional Neural Network Demo",
+    "section": "Prepare Held-Out Evaluation",
+    "text": "Prepare Held-Out Evaluation\nmodel.eval() disables dropout. Counters record the number of correct predictions and total test examples. The lists retain the first three errors for later inspection.\nEvaluation mode and gradient tracking are different controls: the next cell also uses no_grad() to avoid building backward graphs.\n\n# Evaluation\nmodel.eval()\ncorrect = 0\ntotal = 0\nwrong_images = []\nwrong_labels = []\nwrong_predictions = []"
+  },
+  {
+    "objectID": "code_and_homework/CNN.html#predict-without-updating-weights",
+    "href": "code_and_homework/CNN.html#predict-without-updating-weights",
+    "title": "Convolutional Neural Network Demo",
+    "section": "Predict Without Updating Weights",
+    "text": "Predict Without Updating Weights\nFor each image, the index of the largest logit is the predicted digit. Correct predictions are counted across the entire test set. Misclassified images and labels are copied back to the CPU for plotting.\nNo backward call or optimizer step occurs here. The test labels measure performance; they are not used to train on these examples.\n\nwith torch.no_grad():\n    for images, labels in test_loader:\n        images, labels = images.to(device), labels.to(device)\n        outputs = model(images)\n        _, predicted = torch.max(outputs, 1)\n        total += labels.size(0)\n        correct += (predicted == labels).sum().item()\n        \n        if len(wrong_images) &lt; 3:  # Collect wrong predictions\n            # Collect wrong predictions\n            for i in range(len(labels)):\n                if predicted[i] != labels[i]:\n                    wrong_images.append(images[i].cpu())\n                    wrong_labels.append(labels[i].cpu())\n                    wrong_predictions.append(predicted[i].cpu())\n                    if len(wrong_images) == 3:  # Stop after collecting 3 wrong images\n                        break"
+  },
+  {
+    "objectID": "code_and_homework/CNN.html#inspect-misclassifications",
+    "href": "code_and_homework/CNN.html#inspect-misclassifications",
+    "title": "Convolutional Neural Network Demo",
+    "section": "Inspect Misclassifications",
+    "text": "Inspect Misclassifications\nThe displayed images are the first three errors encountered, not a random or representative sample. Compare the true and predicted digits: an aggregate accuracy cannot reveal the appearance of individual failures.\nThis plotting code assumes that at least three errors were collected, which holds for the saved run. A more accurate model or a smaller evaluation subset would need a length check.\n\n# Display 3 wrong images\nfig, axes = plt.subplots(1, 3, figsize=(6, 2))\nfor i, ax in enumerate(axes):\n    ax.imshow(wrong_images[i].squeeze(), cmap='gray')\n    ax.set_title(f\"True: {wrong_labels[i].item()}, Pred: {wrong_predictions[i].item()}\")\n    ax.axis('off')\nplt.show()"
+  },
+  {
+    "objectID": "code_and_homework/CNN.html#report-test-accuracy",
+    "href": "code_and_homework/CNN.html#report-test-accuracy",
+    "title": "Convolutional Neural Network Demo",
+    "section": "Report Test Accuracy",
+    "text": "Report Test Accuracy\nAccuracy divides the total number correct by the number of test images, then expresses the result as a percentage. This is held-out performance after one epoch, not training accuracy.\n\nprint(f\"Test Accuracy: {100 * correct / total:.2f}%\")\n\nTest Accuracy: 98.47%"
+  },
+  {
+    "objectID": "code_and_homework/CNN.html#connect-the-pieces",
+    "href": "code_and_homework/CNN.html#connect-the-pieces",
+    "title": "Convolutional Neural Network Demo",
+    "section": "Connect the Pieces",
+    "text": "Connect the Pieces\n\nHow do shared convolutional kernels differ from connecting every input pixel to every hidden unit?\nWhy must the input size of fc1 change if the pooling layout changes?\nWhat happens to prediction variability if dropout is accidentally left in training mode?\nUse validation data, not the final test set, when choosing epochs or architecture changes.\n\n\n\nAnswers and discussion\n\n\nConvolutions combine locality with shared weights. A 3-by-3 kernel connects to a local patch and reuses the same weights at every spatial position. A dense layer assigns separate weights to each input-to-output connection. Sharing makes a feature detector usable across the image with fewer parameters than an unrestricted dense mapping to the same spatial outputs.\nPooling determines the flattened feature count. Currently the final feature map is 64 x 14 x 14, so fc1 expects 12,544 inputs per image. Adding another 2-by-2, stride-2 pooling stage would reduce it to 64 x 7 x 7, or 3,136 inputs. Both the flattening expression in forward and the input dimension of fc1 must match the new shape; otherwise the tensor operations or batch dimensions will be wrong.\nTraining-mode dropout makes predictions stochastic. Each forward pass samples a new mask, so repeated predictions for the same image can have different logits and sometimes different labels. model.eval() disables dropout for ordinary evaluation. torch.no_grad() alone does not disable it: gradient tracking and training/evaluation behavior are independent.\nValidation supports model selection; testing estimates generalization. Reserve part of the training data for comparing epoch counts, architectures, and other choices. After those choices are fixed, evaluate on the untouched test set. Repeatedly changing the model in response to test accuracy effectively uses the test set for tuning and weakens its role as an independent final check.\n\n\nTakeaway: a working training pipeline needs consistent shapes, the correct loss inputs, explicit gradient updates, and a separate evaluation mode."
   }
 ]

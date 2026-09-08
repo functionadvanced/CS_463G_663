@@ -47,6 +47,50 @@ body > * {
   }
 }
 
+.notebook-downloads {
+  align-items: center;
+  border-bottom: 1px solid #d8e1e8;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.95rem;
+  gap: 0.6rem 1.6rem;
+  margin: 0 0 1.5rem;
+  padding: 0.4rem 0 0.9rem;
+}
+
+.notebook-answers {
+  background: #f2fafb;
+  border-left: 3px solid #007c89;
+  border-radius: 6px;
+  margin: 1rem 0 1.4rem;
+  padding: 0.75rem 1rem;
+}
+
+.notebook-answers > summary {
+  color: #07535c;
+  cursor: pointer;
+  font-weight: 650;
+}
+
+.notebook-answers > summary:focus-visible {
+  outline: 2px solid #007c89;
+  outline-offset: 4px;
+}
+
+.notebook-answers[open] > summary {
+  margin-bottom: 0.85rem;
+}
+
+.notebook-answers > :last-child {
+  margin-bottom: 0;
+}
+
+@media print {
+  .notebook-downloads {
+    display: none;
+  }
+}
+
 /* Schedule announcements */
 
 .course-announcements {
@@ -500,7 +544,7 @@ body > * {
 }
 
 .homework-figure--stress img {
-  max-width: 34rem;
+  max-width: min(100%, 34rem);
 }
 
 .homework-figure--mnist img {
