@@ -1152,6 +1152,128 @@
   font-style: italic;
 }
 
+/* Lecture 6 keeps the worked graph and its frontier at a readable, fixed scale. */
+.reveal section.ucs-slide {
+  font-size: 0.88em;
+}
+
+.reveal section.ucs-slide table {
+  font-size: 0.78em;
+  line-height: 1.22;
+}
+
+.reveal section.ucs-slide th,
+.reveal section.ucs-slide td {
+  padding: 0.43em 0.52em;
+}
+
+.reveal section.ucs-slide .ucs-graph {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 350px;
+  margin: 0.15em auto;
+  object-fit: contain;
+}
+
+.reveal section.ucs-slide .ucs-wide-graph {
+  display: block;
+  width: 94%;
+  height: auto;
+  max-height: 180px;
+  margin: 0.4em auto 0.6em;
+  object-fit: contain;
+}
+
+.reveal section.ucs-trace .trace-intro {
+  min-height: 0;
+  font-size: 0.92em;
+}
+
+.reveal section.ucs-trace .trace-layout {
+  grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr);
+  gap: 0.65em;
+}
+
+.reveal section.ucs-trace .trace-tree-frames {
+  aspect-ratio: 650 / 420;
+}
+
+.reveal section.ucs-trace table.trace-table {
+  font-size: 0.78em;
+}
+
+.reveal section.ucs-trace .trace-table th,
+.reveal section.ucs-trace .trace-table td {
+  padding: 0.32em 0.4em;
+}
+
+.reveal section.ucs-trace .ucs-best-record {
+  margin-bottom: 0.55em;
+}
+
+.reveal section.ucs-trace .ucs-best-heading {
+  align-items: baseline;
+  display: flex;
+  font-size: 0.74em;
+  justify-content: space-between;
+  margin-bottom: 0.3em;
+}
+
+.reveal section.ucs-trace .ucs-best-heading span {
+  color: #8a570e;
+}
+
+.reveal section.ucs-trace table.ucs-best-table {
+  font-variant-numeric: tabular-nums;
+  height: 4em;
+  margin: 0;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.reveal section.ucs-trace .ucs-best-table th,
+.reveal section.ucs-trace .ucs-best-table td {
+  padding: 0.3em;
+  text-align: center;
+  width: 20%;
+}
+
+.reveal section.ucs-trace .ucs-best-table .ucs-cost-update {
+  background: #fff0bd;
+  color: #754d0d;
+  font-weight: 700;
+}
+
+/* Match the existing frontier fragments without adding extra animation steps. */
+.reveal section.ucs-trace .ucs-best-state {
+  display: none;
+}
+
+.reveal section.ucs-trace:not(:has(.trace-table .fragment.visible)) .ucs-best-state[data-best-step="0"],
+.reveal section.ucs-trace:has(.trace-table [data-fragment-index="0"].visible):not(:has(.trace-table [data-fragment-index="1"].visible)) .ucs-best-state[data-best-step="1"],
+.reveal section.ucs-trace:has(.trace-table [data-fragment-index="1"].visible):not(:has(.trace-table [data-fragment-index="2"].visible)) .ucs-best-state[data-best-step="2"],
+.reveal section.ucs-trace:has(.trace-table [data-fragment-index="2"].visible):not(:has(.trace-table [data-fragment-index="3"].visible)) .ucs-best-state[data-best-step="3"],
+.reveal section.ucs-trace:has(.trace-table [data-fragment-index="3"].visible):not(:has(.trace-table [data-fragment-index="4"].visible)) .ucs-best-state[data-best-step="4"],
+.reveal section.ucs-trace:has(.trace-table [data-fragment-index="4"].visible) .ucs-best-state[data-best-step="5"] {
+  display: table-row;
+}
+
+.reveal section.ucs-trace .trace-caption,
+.reveal section.ucs-trace .trace-direction,
+.reveal section.ucs-trace .trace-legend {
+  font-size: 0.71em;
+}
+
+.reveal section.ucs-trace .trace-caption {
+  margin-top: 0.65em;
+}
+
+.reveal section.ucs-pseudocode .pseudo-code {
+  font-size: 0.7em;
+  line-height: 1.38;
+}
+
 .pseudo-code {
   background: #f3fbfb;
   border: 0;

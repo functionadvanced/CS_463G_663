@@ -32,72 +32,6 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-    /* CSS for syntax highlighting */
-    html { -webkit-text-size-adjust: 100%; }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
@@ -229,148 +163,833 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="uniform-cost-search" class="slide level2 section-slide">
-<h2>Uniform-Cost Search</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:58%;">
-<ul>
-<li>UCS is an <strong>uninformed search</strong> algorithm.</li>
-<li>It expands the path with the lowest cumulative cost so far.</li>
-<li>It is BFS-like when all edge costs are equal.</li>
-<li>It is equivalent to Dijkstra’s algorithm when we stop at a single goal.</li>
-</ul>
+<section id="cheapest-not-shallowest" class="slide level2 ucs-slide">
+<h2>Cheapest, Not Shallowest</h2>
+<div class="columns">
+<div class="column" style="width:61%;">
+<p><img data-src="imgs/drawio/lec6/ucs-trace-0.png" class="ucs-graph" alt="Directed weighted graph with start S and goal G. The direct edge costs 12; the route through B, A, and C costs 6."></p>
+</div><div class="column" style="width:36%;">
+<p><strong>Breadth-first search (BFS)</strong> minimizes the number of edges.</p>
+<p>The direct route <span class="math inline">S \to G</span> has <strong>one edge</strong>, but costs <strong>12</strong>.</p>
+<div class="fragment">
+<p><strong>Uniform-cost search (UCS)</strong> minimizes the sum of edge costs.</p>
+<p><span class="math inline">S \to B \to A \to C \to G</span> costs <span class="math inline">2+1+1+2=6</span>.</p>
+</div>
+</div></div>
 <div class="takeaway">
-<p>UCS is not looking for the fewest actions. It is looking for the cheapest path.</p>
+<p>Fewer actions do not necessarily mean a cheaper solution.</p>
 </div>
-</div><div class="column" style="width:34%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec4/car_navigation.png" class="cc0-icon"></p>
-<figcaption>Navigation illustration for path cost search</figcaption>
-</figure>
-</div>
-</div></div>
+<aside class="notes">
+<p>Recall the FIFO queue from Lecture 5. Ask which objective BFS optimizes before comparing the two routes. All arrows in this lecture’s worked graph are directed; only the eight drawn edges exist. Reserve about 8 minutes near the end for the existing UCS notebook and allow time for HW1 questions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="why-bfs-is-not-enough" class="slide level2">
-<h2>Why BFS Is Not Enough</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:48%;">
-<h3 id="unweighted">Unweighted</h3>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec6/why-bfs-is-not-enough.svg" alt="Unweighted graph connecting A to B and C, then to D"></p>
-</div>
-<p>BFS is optimal when every edge has the same cost.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="weighted">Weighted</h3>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec6/why-bfs-is-not-enough-2.svg" alt="Weighted graph with edge costs 4, 2, 5, and 3"></p>
-</div>
-<p>UCS is needed when edge costs differ.</p>
-</div></div>
-</section>
-<section id="priority-queue-intuition" class="slide level2">
-<h2>Priority Queue Intuition</h2>
+<section id="the-priority-is-the-cost-so-far" class="slide level2 ucs-slide">
+<h2>The Priority Is the Cost So Far</h2>
+<p><span class="math display">g(n)=\sum_{\text{edges on the current path to }n} c(u,v)</span></p>
+<ul>
+<li><span class="math inline">g(n)</span> is the cost of a <strong>particular path found so far</strong>, not a guess of the remaining cost.</li>
+<li>A <strong>min-priority queue</strong> removes an entry with the smallest <span class="math inline">g</span>.</li>
+<li>UCS is <strong>uninformed</strong>: it uses no estimate of distance to the goal.</li>
+</ul>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Frontier item</th>
-<th style="text-align: right;">Path cost</th>
+<th>After expanding <span class="math inline">S</span></th>
+<th style="text-align: right;">Path cost <span class="math inline">g</span></th>
+<th style="text-align: right;">Depth</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Start -&gt; C</td>
-<td style="text-align: right;">2</td>
+<td><span class="math inline">S \to B</span></td>
+<td style="text-align: right;"><strong>2</strong></td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td>Start -&gt; B</td>
-<td style="text-align: right;">4</td>
+<td><span class="math inline">S \to A</span></td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td>Start -&gt; C -&gt; D</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td>Start -&gt; B -&gt; D</td>
-<td style="text-align: right;">9</td>
+<td><span class="math inline">S \to G</span></td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">1</td>
 </tr>
 </tbody>
 </table>
-<div class="question">
-<p>The next expanded path is always the cheapest frontier path, not necessarily the shallowest one.</p>
+<div class="takeaway">
+<p>With equal positive edge costs, ordering by cost is ordering by depth, as in BFS.</p>
 </div>
 </section>
-<section id="ucs-pseudocode" class="slide level2">
-<h2>UCS Pseudocode</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>UCS(G, s, g):</span>
-<span id="cb1-2"><a></a>    initialize priority queue Q</span>
-<span id="cb1-3"><a></a>    insert path [s] <span class="cf">with</span> cost <span class="dv">0</span></span>
-<span id="cb1-4"><a></a>    initialize visited <span class="bu">set</span> V</span>
-<span id="cb1-5"><a></a></span>
-<span id="cb1-6"><a></a>    <span class="cf">while</span> Q <span class="kw">is</span> <span class="kw">not</span> empty:</span>
-<span id="cb1-7"><a></a>        path <span class="op">=</span> remove lowest<span class="op">-</span>cost path <span class="im">from</span> Q</span>
-<span id="cb1-8"><a></a>        u <span class="op">=</span> final node of path</span>
-<span id="cb1-9"><a></a></span>
-<span id="cb1-10"><a></a>        <span class="cf">if</span> u <span class="kw">is</span> the goal g:</span>
-<span id="cb1-11"><a></a>            <span class="cf">return</span> path <span class="kw">and</span> cost(path)</span>
-<span id="cb1-12"><a></a></span>
-<span id="cb1-13"><a></a>        <span class="cf">if</span> u <span class="kw">is</span> <span class="kw">not</span> <span class="kw">in</span> V:</span>
-<span id="cb1-14"><a></a>            add u to V</span>
-<span id="cb1-15"><a></a>            <span class="cf">for</span> each neighbor v of u <span class="cf">with</span> edge cost c:</span>
-<span id="cb1-16"><a></a>                add path <span class="op">+</span> [v] <span class="cf">with</span> cost(path) <span class="op">+</span> c to Q</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="ucs-frontier" class="slide level2 search-trace ucs-slide ucs-trace">
+<h2>Follow the UCS Frontier</h2>
+<p class="trace-intro">
+Start at <strong>S</strong>, seek <strong>G</strong>. Update the frontier and best costs <strong>after</strong> processing each node.
+</p>
+<div class="trace-layout">
+  <div class="trace-tree">
+    <div class="trace-tree-frames" role="img" aria-label="UCS trace on a directed weighted graph. Nodes are removed in order S, B, A, C, G; costs are 0, 2, 3, 4, 6. The final route is S to B to A to C to G.">
+      <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec6/ucs-trace-0.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec6/ucs-trace-1.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec6/ucs-trace-2.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="3" src="imgs/drawio/lec6/ucs-trace-3.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="4" src="imgs/drawio/lec6/ucs-trace-4.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="5" src="imgs/drawio/lec6/ucs-trace-5.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="6" src="imgs/drawio/lec6/ucs-trace-6.png" alt="" aria-hidden="true">
+    </div>
+    <div class="trace-legend">
+      <span class="trace-key-frontier">Frontier</span>
+      <span class="trace-key-current">This step</span>
+      <span class="trace-key-expanded">Finalized</span>
+    </div>
+    <p class="trace-caption">Gold edges: improvements this step. Final frame: the least-cost route.</p>
+  </div>
+  <div class="trace-history">
+    <div class="ucs-best-record">
+      <div class="ucs-best-heading"><strong>Best costs: <code>best</code></strong><span>Gold = updated</span></div>
+      
+<table class="ucs-best-table caption-top" aria-label="Best cost found so far for every node, including finalized nodes">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" scope="col">S</th>
+<th data-quarto-table-cell-role="th" scope="col">A</th>
+<th data-quarto-table-cell-role="th" scope="col">B</th>
+<th data-quarto-table-cell-role="th" scope="col">C</th>
+<th data-quarto-table-cell-role="th" scope="col">G</th>
+</tr>
+</thead>
+<tbody>
+<tr class="ucs-best-state odd" data-best-step="0">
+<td class="ucs-cost-update">0</td>
+<td>∞</td>
+<td>∞</td>
+<td>∞</td>
+<td>∞</td>
+</tr>
+<tr class="ucs-best-state even" data-best-step="1">
+<td>0</td>
+<td class="ucs-cost-update">6</td>
+<td class="ucs-cost-update">2</td>
+<td>∞</td>
+<td class="ucs-cost-update">12</td>
+</tr>
+<tr class="ucs-best-state odd" data-best-step="2">
+<td>0</td>
+<td class="ucs-cost-update">3</td>
+<td>2</td>
+<td class="ucs-cost-update">6</td>
+<td>12</td>
+</tr>
+<tr class="ucs-best-state even" data-best-step="3">
+<td>0</td>
+<td>3</td>
+<td>2</td>
+<td class="ucs-cost-update">4</td>
+<td class="ucs-cost-update">10</td>
+</tr>
+<tr class="ucs-best-state odd" data-best-step="4">
+<td>0</td>
+<td>3</td>
+<td>2</td>
+<td>4</td>
+<td class="ucs-cost-update">6</td>
+</tr>
+<tr class="ucs-best-state even" data-best-step="5">
+<td>0</td>
+<td>3</td>
+<td>2</td>
+<td>4</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+
+    </div>
+    
+<table class="trace-table caption-top" aria-label="UCS frontier after each step">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Remove</th>
+<th data-quarto-table-cell-role="th">Current frontier</th>
+</tr>
+</thead>
+<tbody>
+<tr class="trace-start visible odd">
+<td>Start</td>
+<td><code>[S:0]</code></td>
+</tr>
+<tr class="fragment even" data-fragment-index="0">
+<td>S:0</td>
+<td><code>[B:2, A:6, G:12]</code></td>
+</tr>
+<tr class="fragment odd" data-fragment-index="1">
+<td>B:2</td>
+<td><code>[A:3, C:6, G:12]</code></td>
+</tr>
+<tr class="fragment even" data-fragment-index="2">
+<td>A:3</td>
+<td><code>[C:4, G:10]</code></td>
+</tr>
+<tr class="fragment odd" data-fragment-index="3">
+<td>C:4</td>
+<td><code>[G:6]</code></td>
+</tr>
+<tr class="fragment even" data-fragment-index="4">
+<td>G:6</td>
+<td>Return goal, cost <strong>6</strong></td>
+</tr>
+</tbody>
+</table>
+
+    <p class="trace-caption">Frontier: cheapest first, node:cost. Stale entries omitted.</p>
+  </div>
+</div>
+<div class="takeaway fragment" data-fragment-index="5">
+<p>Final route: <span class="math inline">S \to B \to A \to C \to G</span>. Its cost is <strong>6</strong>, even though <span class="math inline">G</span> was first discovered at cost <strong>12</strong>.</p>
+</div>
+<aside class="notes">
+<p>Allow 5-6 minutes for prediction and tracing. Before each reveal ask for the next node, its outgoing edges, and the resulting queue. The best-cost record starts at S:0 with infinity for every other node; infinity means no route has been found yet. Gold cells mark newly recorded or improved costs. Unlike the frontier, best retains the costs of finalized nodes: B remains at 2 after leaving the queue, for example. The goal is removed and accepted, not expanded. The frontier table shows only the best pending entry per node, not Python’s raw heap array. If a lazy heap breaks ties alphabetically, stale A:6 and C:6 are skipped before the valid G:6. These removals do not expand nodes; the old-entry slide makes them explicit.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="ucs-guarantees" class="slide level2">
-<h2>UCS Guarantees</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="works-well-when">Works Well When</h3>
-<ul>
-<li>edge costs are non-negative</li>
-<li>path costs are meaningful</li>
-<li>the cheapest solution matters</li>
-</ul>
-</div><div class="column" style="width:48%;">
-<h3 id="watch-for">Watch For</h3>
-<ul>
-<li>high memory use</li>
-<li>many nearly equal-cost paths</li>
-<li>no optimality guarantee with negative edge costs</li>
-</ul>
+<section id="a-better-route-can-arrive-later" class="slide level2 ucs-slide">
+<h2>A Better Route Can Arrive Later</h2>
+<div class="columns">
+<div class="column" style="width:56%;">
+<p><img data-src="imgs/drawio/lec6/ucs-trace-2.png" class="ucs-graph" alt="After expanding B, its route to A improves A's tentative cost from 6 to 3."></p>
+</div><div class="column" style="width:41%;">
+<p>First discovery: <span class="math inline">S \to A</span>, cost <strong>6</strong>.</p>
+<p>Later discovery: <span class="math inline">S \to B \to A</span>, cost <strong>3</strong>.</p>
+<p><span class="math display">\begin{aligned}
+\text{candidate} &amp;= g(B)+c(B,A) \\
+&amp;=2+1=3&lt;6.
+\end{aligned}</span></p>
+<div class="fragment">
+<p><strong>Relaxation:</strong> replace a recorded route when the candidate is cheaper. Update its <strong>cost and parent</strong> together.</p>
+</div>
 </div></div>
-</section>
-<section id="dijkstras-algorithm" class="slide level2 compact">
-<h2>Dijkstra’s Algorithm</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>Dijkstra(G, s):</span>
-<span id="cb2-2"><a></a>    <span class="bu">set</span> d[v] <span class="op">=</span> infinity <span class="cf">for</span> every node v</span>
-<span id="cb2-3"><a></a>    <span class="bu">set</span> d[s] <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb2-4"><a></a>    insert (<span class="dv">0</span>, s) into priority queue Q</span>
-<span id="cb2-5"><a></a></span>
-<span id="cb2-6"><a></a>    <span class="cf">while</span> Q <span class="kw">is</span> <span class="kw">not</span> empty:</span>
-<span id="cb2-7"><a></a>        remove node u <span class="cf">with</span> the smallest d[u]</span>
-<span id="cb2-8"><a></a></span>
-<span id="cb2-9"><a></a>        <span class="cf">for</span> each neighbor v of u <span class="cf">with</span> edge cost w(u, v):</span>
-<span id="cb2-10"><a></a>            <span class="cf">if</span> d[u] <span class="op">+</span> w(u, v) <span class="op">&lt;</span> d[v]:</span>
-<span id="cb2-11"><a></a>                d[v] <span class="op">=</span> d[u] <span class="op">+</span> w(u, v)</span>
-<span id="cb2-12"><a></a>                insert (d[v], v) into Q</span>
-<span id="cb2-13"><a></a></span>
-<span id="cb2-14"><a></a>    <span class="cf">return</span> <span class="bu">all</span> distances d[v]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="takeaway">
-<p>UCS stops at a goal. Dijkstra keeps going to compute shortest paths to all nodes.</p>
+<p>Unlike BFS with unit costs, UCS cannot finalize a node when it is first discovered.</p>
 </div>
 </section>
-<section id="bidirectional-search" class="slide level2 compact">
-<h2>Bidirectional Search</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec6/bidirectional-search.svg" alt="Bidirectional search from start and goal meeting in the middle"></p>
+<section id="test-the-goal-when-it-is-removed" class="slide level2 ucs-slide">
+<h2>Test the Goal When It Is Removed</h2>
+<div class="columns">
+<div class="column" style="width:56%;">
+<p><img data-src="imgs/drawio/lec6/goal-test.png" class="ucs-graph" alt="Directed graph: S to G costs 10, S to A costs 1, and A to G costs 1."></p>
+</div><div class="column" style="width:41%;">
+<p>Expanding <span class="math inline">S</span> discovers <span class="math inline">G</span> at cost <strong>10</strong>.</p>
+<p><strong>Should the search stop?</strong></p>
+<div class="fragment">
+<p>No.&nbsp;The frontier still contains <span class="math inline">A</span> at cost <strong>1</strong>.</p>
+<p>Expanding <span class="math inline">A</span> improves the route to <span class="math inline">G</span> to <span class="math inline">1+1=2</span>.</p>
 </div>
+<div class="fragment">
+<p>Return <span class="math inline">G</span> only when its <strong>current cheapest entry is removed</strong>.</p>
+</div>
+</div></div>
+<div class="takeaway">
+<p>For nonnegative costs, removal finalizes the cost; discovery only proposes a route.</p>
+</div>
+</section>
+<section id="keep-the-path-not-just-its-cost" class="slide level2 ucs-slide">
+<h2>Keep the Path, Not Just Its Cost</h2>
+<div class="columns">
+<div class="column" style="width:58%;">
+<p><img data-src="imgs/drawio/lec6/ucs-trace-6.png" class="ucs-graph" alt="The final route S to B to A to C to G highlighted in teal."></p>
+</div><div class="column" style="width:39%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Node</th>
+<th style="text-align: right;">Best cost</th>
+<th>Parent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">S</span></td>
+<td style="text-align: right;">0</td>
+<td>None</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">B</span></td>
+<td style="text-align: right;">2</td>
+<td><span class="math inline">S</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">A</span></td>
+<td style="text-align: right;">3</td>
+<td><span class="math inline">B</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">C</span></td>
+<td style="text-align: right;">4</td>
+<td><span class="math inline">A</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">G</span></td>
+<td style="text-align: right;">6</td>
+<td><span class="math inline">C</span></td>
+</tr>
+</tbody>
+</table>
+<p>Follow parents <strong>backward</strong> from <span class="math inline">G</span>, then reverse the result.</p>
+</div></div>
+<div class="takeaway fragment">
+<p>Backward: <span class="math inline">G \to C \to A \to B \to S</span>. Returned route: <span class="math inline">S \to B \to A \to C \to G</span>.</p>
+</div>
+</section>
+<section id="ucs-pseudocode-choose-a-node" class="slide level2 ucs-slide ucs-pseudocode">
+<h2>UCS Pseudocode: Choose a Node</h2>
+<p><code>cost</code>: the popped entry’s stored cost. <code>best[u]</code>: the cheapest cost found so far for <code>u</code>.</p>
+<div class="pseudo-code" aria-label="UCS main loop pseudocode">
+  <div class="pseudo-line"><span class="pseudo-fn">UCS</span>(<span class="pseudo-var">graph</span>, <span class="pseudo-var">start</span>, <span class="pseudo-var">goal</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-var">best</span> &lt;- <span class="pseudo-fn">default_map</span>(<span class="pseudo-lit">infinity</span>); <span class="pseudo-var">best</span>[<span class="pseudo-var">start</span>] &lt;- <span class="pseudo-num">0</span></div>
+  <div class="pseudo-line indent-1"><span class="pseudo-var">parent</span>[<span class="pseudo-var">start</span>] &lt;- <span class="pseudo-lit">None</span>; <span class="pseudo-var">Q</span> &lt;- <span class="pseudo-fn">min_priority_queue</span>()</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-fn">push</span>(<span class="pseudo-var">Q</span>, (<span class="pseudo-num">0</span>, <span class="pseudo-var">start</span>))</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="0"><span class="pseudo-kw">while</span> <span class="pseudo-var">Q</span> is not empty:</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="0">(<span class="pseudo-var">cost</span>, <span class="pseudo-var">u</span>) &lt;- <span class="pseudo-fn">pop_min</span>(<span class="pseudo-var">Q</span>)</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-kw">if</span> <span class="pseudo-var">cost</span> != <span class="pseudo-var">best</span>[<span class="pseudo-var">u</span>]:  <span class="pseudo-comment"># Skip an obsolete queue entry</span></div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="1"><span class="pseudo-kw">continue</span></div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="2"><span class="pseudo-kw">if</span> <span class="pseudo-var">u</span> == <span class="pseudo-var">goal</span>:</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="2"><span class="pseudo-kw">return</span> <span class="pseudo-fn">reconstruct</span>(<span class="pseudo-var">parent</span>, <span class="pseudo-var">goal</span>), <span class="pseudo-var">cost</span></div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="3"><span class="pseudo-fn">RELAX_NEIGHBORS</span>(<span class="pseudo-var">graph</span>, <span class="pseudo-var">u</span>, <span class="pseudo-var">cost</span>, <span class="pseudo-var">best</span>, <span class="pseudo-var">parent</span>, <span class="pseudo-var">Q</span>)</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="3"><span class="pseudo-kw">return</span> <span class="pseudo-lit">failure</span></div>
+</div>
+<div class="takeaway fragment" data-fragment-index="1">
+<p>Old entry <code>(6, A)</code> still records <strong>6</strong>, but <code>best[A]</code> is now <strong>3</strong>. Skip the old entry when it is removed.</p>
+</div>
+<aside class="notes">
+<p>Explain that best is a dictionary with infinity as its default in an implicit state space; no enumeration of all states is necessary. Parent stores the predecessor for reconstruction. This version inserts a new heap entry on a strict improvement rather than modifying an existing entry. Inserting (3, A) changes best[A] but does not edit or remove the older (6, A) entry. The cheaper entry is removed first; when the older one reaches the front, the cost mismatch identifies it as stale. Nonnegative costs and strict improvements ensure a current entry finalizes its node without needing a separate finalized set. The notebook uses an equally valid visited-on-pop variant instead. The later duplicate-handling slide explains that this particular check is an efficiency guard, not a universal requirement of UCS.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ucs-pseudocode-improve-its-neighbors" class="slide level2 ucs-slide ucs-pseudocode">
+<h2>UCS Pseudocode: Improve Its Neighbors</h2>
+<p>For each outgoing edge <span class="math inline">u\to v</span>, compare the new route against the stored cost.</p>
+<div class="pseudo-code" aria-label="Relaxation pseudocode">
+  <div class="pseudo-line"><span class="pseudo-fn">RELAX_NEIGHBORS</span>(<span class="pseudo-var">graph</span>, <span class="pseudo-var">u</span>, <span class="pseudo-var">cost</span>, <span class="pseudo-var">best</span>, <span class="pseudo-var">parent</span>, <span class="pseudo-var">Q</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">for</span> each edge (<span class="pseudo-var">u</span>, <span class="pseudo-var">v</span>) with weight <span class="pseudo-var">w</span> in <span class="pseudo-var">graph</span>:</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="0"><span class="pseudo-var">candidate</span> &lt;- <span class="pseudo-var">cost</span> + <span class="pseudo-var">w</span></div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-kw">if</span> <span class="pseudo-var">candidate</span> &lt; <span class="pseudo-var">best</span>[<span class="pseudo-var">v</span>]:</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="2"><span class="pseudo-var">best</span>[<span class="pseudo-var">v</span>] &lt;- <span class="pseudo-var">candidate</span></div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="2"><span class="pseudo-var">parent</span>[<span class="pseudo-var">v</span>] &lt;- <span class="pseudo-var">u</span></div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="3"><span class="pseudo-fn">push</span>(<span class="pseudo-var">Q</span>, (<span class="pseudo-var">candidate</span>, <span class="pseudo-var">v</span>))</div>
+</div>
+<div class="fragment">
+<p>At <span class="math inline">B</span>: the candidate for <span class="math inline">A</span> is <span class="math inline">2+1=3</span>. Replace <code>best[A] = 6</code> with <strong>3</strong>, set <code>parent[A] = B</code>, and insert <code>(3, A)</code>.</p>
+</div>
+<div class="takeaway">
+<p>The strict comparison avoids reinserting equal-cost routes, including around zero-cost cycles.</p>
+</div>
+</section>
+<section id="what-about-old-queue-entries" class="slide level2 ucs-slide">
+<h2>What About Old Queue Entries?</h2>
+<p>Inserting <code>(3, A)</code> does not remove the older <code>(6, A)</code>. After processing <span class="math inline">C</span>, the heap can still contain:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Entry, in removal order</th>
+<th style="text-align: right;">Current best cost</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>(6, A)</code></td>
+<td style="text-align: right;">3</td>
+<td><strong>Skip:</strong> superseded by a cheaper route</td>
+</tr>
+<tr class="even">
+<td><code>(6, C)</code></td>
+<td style="text-align: right;">4</td>
+<td><strong>Skip:</strong> superseded by a cheaper route</td>
+</tr>
+<tr class="odd">
+<td><code>(6, G)</code></td>
+<td style="text-align: right;">6</td>
+<td><strong>Accept:</strong> current entry for the goal</td>
+</tr>
+<tr class="even">
+<td><code>(10, G)</code>, <code>(12, G)</code></td>
+<td style="text-align: right;">6</td>
+<td>Never needed after UCS returns</td>
+</tr>
+</tbody>
+</table>
+<p>Equal costs are ordered alphabetically here. The table is sorted for explanation; a heap’s internal array is <strong>not fully sorted</strong>.</p>
+<div class="takeaway">
+<p>An obsolete entry is a <strong>stale entry</strong>. Removing one is not a new node expansion.</p>
+</div>
+<aside class="notes">
+<p>Contrast the logical frontier on the trace slide with physical heap contents. Right after C, the sorted entries are exactly A:6, C:6, G:6, G:10, G:12 for the strict-improvement implementation. The notebook pushes more candidate routes and skips any node already finalized; it need not have this exact heap.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="other-ways-to-handle-duplicate-entries" class="slide level2 ucs-slide">
+<h2>Other Ways to Handle Duplicate Entries</h2>
+<p>Assume <strong>nonnegative edge costs</strong>. The exact <code>cost != best[u]</code> check is not required in every UCS implementation.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>How repeated work is avoided</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Cost check</strong> (these slides)</td>
+<td>Insert improved entries; skip an entry whose stored cost differs from <code>best[u]</code>.</td>
+</tr>
+<tr class="even">
+<td><strong>Finalized set</strong> (notebook)</td>
+<td>On removal, skip a node already finalized; otherwise finalize it and test the goal.</td>
+</tr>
+<tr class="odd">
+<td><strong>Decrease-key</strong></td>
+<td>Keep one pending entry per node and lower its priority on improvement. No obsolete entry remains.</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>In this pseudocode, <strong>strict cost-improvement updates</strong> already make stale expansions redundant. Removing the check keeps the correct result, but can waste work.</p>
+</div>
+<div class="takeaway">
+<p>For UCS, finalize a node <strong>on removal</strong>, not when it is first discovered.</p>
+</div>
+<aside class="notes">
+<p>These are alternatives, not three checks that must all be used together. In the current pseudocode, (3, A) is removed before (6, A), and all outgoing edges of A have already been relaxed using cost 3. Relaxing them again from cost 6 cannot beat the recorded costs, because updates require a strict improvement. Thus skipping the stale entry avoids redundant neighbor scans; omitting this guard does not change the answer under the stated assumptions. This observation is specific to this strict-improvement implementation, not to arbitrary search code. A finalized set is correct with nonnegative costs only when nodes are finalized on removal. Marking A at its first discovery with cost 6 would incorrectly block the route of cost 3. Python’s heapq has no built-in decrease-key operation, which is why inserting a new entry and later skipping duplicates is convenient. The notebook’s visited set implements finalized-on-pop, and its goal test follows the duplicate check.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-cheapest-first-is-optimal" class="slide level2 ucs-slide scrollable">
+<h2>Why Cheapest-First Is Optimal</h2>
+<p>Assume <strong>all edge costs are nonnegative</strong>. Let the next current entry have cost <span class="math inline">k</span>.</p>
+<ol type="1">
+<li class="fragment">Every other current frontier entry has cost <strong>at least <span class="math inline">k</span></strong>.</li>
+<li class="fragment">Extending any such route cannot make it cheaper: added cost is <strong>at least zero</strong>.</li>
+<li class="fragment">Any not-yet-found cheaper route would have a frontier prefix with cost <strong>less than <span class="math inline">k</span></strong>, contradicting the minimum choice.</li>
+</ol>
+<div class="takeaway fragment">
+<p>The node’s cost is final when its current entry is removed. In particular, an accepted goal has optimal cost.</p>
+</div>
+<aside class="notes">
+<p>Use induction over finalized nodes. If a cheaper path to u existed, consider its first unfinalized node x. Its finalized predecessor would already have relaxed the edge to x, giving x a frontier entry no more expensive than that path’s prefix. Nonnegative edges bound this prefix below the alleged cheaper total, so x would have been removed before u. Do not claim every discovered cost is optimal.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="negative-edges-break-that-argument" class="slide level2 ucs-slide">
+<h2>Negative Edges Break That Argument</h2>
+<div class="columns">
+<div class="column" style="width:56%;">
+<p><img data-src="imgs/drawio/lec6/negative-edge.png" class="ucs-graph" alt="Counterexample with directed edges S to G of cost 2, S to A of cost 5, and A to G of cost negative 4."></p>
+</div><div class="column" style="width:41%;">
+<p>The queue first contains <span class="math inline">G:2</span> and <span class="math inline">A:5</span>.</p>
+<p>UCS removes the goal at cost <strong>2</strong>.</p>
+<div class="fragment">
+<p>But the route through <span class="math inline">A</span> costs</p>
+<p><span class="math display">5+(-4)=1.</span></p>
+<p>A more expensive prefix can now lead to a <strong>cheaper</strong> solution.</p>
+</div>
+</div></div>
+<div class="takeaway">
+<p>Nonnegative includes zero. Negative edges require a different shortest-path method, such as Bellman-Ford.</p>
+</div>
+<aside class="notes">
+<p>This is a directed acyclic graph, so the issue is not a negative cycle. Bellman-Ford can handle negative edges and detect reachable negative cycles; finite shortest paths require the relevant routes not to benefit from such cycles. Do not turn this into a second algorithm lesson.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="completeness-depends-on-the-search-space" class="slide level2 ucs-slide">
+<h2>Completeness Depends on the Search Space</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Search setting</th>
+<th>What ensures UCS eventually finishes?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Finite graph</strong></td>
+<td>Nonnegative costs and proper duplicate handling. Zero-cost edges are allowed.</td>
+</tr>
+<tr class="even">
+<td><strong>Potentially infinite search space</strong></td>
+<td>Finite branching and a positive lower bound <span class="math inline">c(u,v)\ge\epsilon&gt;0</span>, with a finite-cost goal.</td>
+</tr>
+</tbody>
+</table>
+<p>An infinite chain of zero-cost actions could keep UCS busy forever, while a goal with cost <strong>1</strong> waits in the frontier.</p>
+<div class="takeaway">
+<p>Optimality of a returned goal and eventual discovery of a goal are different guarantees.</p>
+</div>
+</section>
+<section id="what-does-ucs-spend-time-on" class="slide level2 ucs-slide">
+<h2>What Does UCS Spend Time On?</h2>
 <ul>
-<li>Run a forward search from the start.</li>
-<li>Run a backward search from the goal.</li>
-<li>Stop when the two frontiers meet.</li>
+<li>Exploring many low-cost alternatives before the goal becomes cheapest.</li>
+<li>Maintaining a priority queue, rather than a first-in, first-out (FIFO) queue.</li>
+<li>Remembering best costs, parents, and pending entries.</li>
+</ul>
+<h3 id="for-an-explicit-finite-graph">For an Explicit Finite Graph</h3>
+<p>Let <span class="math inline">V</span> be the number of vertices and <span class="math inline">E</span> the number of edges. For the <strong>duplicate-entry binary heap</strong> used in the pseudocode:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Resource</th>
+<th>Bound</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Time</td>
+<td><span class="math inline">O\big((V+E)\log(V+E)\big)</span></td>
+</tr>
+<tr class="even">
+<td>Extra storage</td>
+<td><span class="math inline">O(V+E)</span>, including stale heap entries</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Assume adjacency lists, nonnegative weights, constant-time dictionary access, and strict improvements. Each node is expanded at most once and each outgoing edge is checked once; each edge can cause at most one insertion during its source’s expansion. An indexed heap with decrease-key and one live entry per vertex instead yields O((V+E) log V) time and O(V) auxiliary storage. Avoid applying the explicit-graph bound to an exponentially large implicit state space.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ucs-and-dijkstra-the-same-engine" class="slide level2 ucs-slide">
+<h2>UCS and Dijkstra: The Same Engine</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<h3 id="one-target-ucs">One Target: UCS</h3>
+<p>Stop when a current goal entry is removed. Return its <strong>route and cost</strong>.</p>
+<h3 id="every-reachable-target-dijkstra">Every Reachable Target: Dijkstra</h3>
+<p>Remove the goal-return condition and continue until the queue is empty. Return <strong>all best distances and parents</strong>.</p>
+</div><div class="column" style="width:42%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Destination</th>
+<th style="text-align: right;">Distance from <span class="math inline">S</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">S</span></td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">B</span></td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">A</span></td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">C</span></td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">G</span></td>
+<td style="text-align: right;">6</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="takeaway">
+<p>This is <strong>single-source</strong> shortest paths, not shortest paths between every pair of nodes.</p>
+</div>
+<aside class="notes">
+<p>Dijkstra can also be implemented with early stopping for a target; the names do not imply fundamentally different algorithms. In this small graph G happens to be the last distinct node removed, so all displayed distances are finalized by then. In a larger graph, stopping at G can leave other nodes tentative or undiscovered. Replace the final failure return with best and parent when adapting the pseudocode to Dijkstra.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="your-turn-change-one-edge" class="slide level2 ucs-slide scrollable">
+<h2>Your Turn: Change One Edge</h2>
+<div class="columns">
+<div class="column" style="width:59%;">
+<p><img data-src="imgs/drawio/lec6/practice.png" class="ucs-graph" alt="The same directed weighted graph, now with S to A reduced from 6 to 1."></p>
+</div><div class="column" style="width:38%;">
+<p>Only <span class="math inline">c(S,A)</span> changes: <strong>6 becomes 1</strong>.</p>
+<ol type="1">
+<li>Which node is removed after <span class="math inline">S</span>?</li>
+<li>What is the frontier after expanding that node?</li>
+<li>What route and cost should UCS return?</li>
+</ol>
+<p>Break equal-cost ties alphabetically.</p>
+</div></div>
+<aside class="notes">
+<p>Allow students to trace for 2-3 minutes. Answers are on the next slide to keep the questions unobstructed: A:1 is first after S; the logical frontier after A is B:2, C:2, G:8. B does not improve A or C. C improves G to 4. Route S-A-C-G, cost 4.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="check-the-changed-route" class="slide level2 ucs-slide">
+<h2>Check the Changed Route</h2>
+<div class="columns">
+<div class="column" style="width:57%;">
+<p><img data-src="imgs/drawio/lec6/practice-answer.png" class="ucs-graph" alt="Changed graph with the new optimal route S to A to C to G highlighted."></p>
+</div><div class="column" style="width:40%;">
+<div class="fragment">
+<p>After <span class="math inline">S</span>: <span class="math inline">[A:1,\ B:2,\ G:12]</span>.</p>
+</div>
+<div class="fragment">
+<p>After <span class="math inline">A</span>: <span class="math inline">[B:2,\ C:2,\ G:8]</span>.</p>
+<p><span class="math inline">B</span> comes before <span class="math inline">C</span> only because of the tie rule.</p>
+</div>
+<div class="fragment">
+<p><span class="math inline">C</span> improves <span class="math inline">G</span> to <strong>4</strong>.</p>
+<p>Return <span class="math inline">S\to A\to C\to G</span>, cost <span class="math inline">1+1+2=4</span>.</p>
+</div>
+</div></div>
+<div class="takeaway">
+<p>Tie-breaking can change the expansion order, but not the optimal solution cost.</p>
+</div>
+</section>
+<section id="another-idea-search-from-both-ends" class="slide level2 ucs-slide">
+<h2>Another Idea: Search from Both Ends</h2>
+<p><img data-src="imgs/drawio/lec6/bidirectional.png" class="ucs-wide-graph" alt="Bidirectional search along a unit-cost chain: the forward layers from S reach M; backward layers from G also reach M."></p>
+<ul>
+<li>Search forward from the start and backward from the goal.</li>
+<li>The backward search generates <strong>predecessors</strong>: states that can lead to the current state.</li>
+<li>A connection gives a candidate route by joining the two paths.</li>
 </ul>
 <div class="takeaway">
-<p>Instead of roughly <span class="math inline">O(b^d)</span> nodes, bidirectional search can explore about <span class="math inline">O(b^{d/2})</span> nodes from each side.</p>
+<p>For unit costs, layer-by-layer bidirectional BFS can find a shortest route without searching all the way from one side.</p>
 </div>
+<aside class="notes">
+<p>The diagram is a unit-cost chain with undirected edges. Backward BFS traverses the same links; for directed graphs it must reverse the original transitions, not simply follow outgoing edges from the goal. Each side retains parent information for reconstruction. A correct layer-based bidirectional BFS checks intersections between the reached sets while controlling layer order; do not generalize an arbitrary first meeting to weighted search.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="when-does-two-ended-search-help" class="slide level2 ucs-slide">
+<h2>When Does Two-Ended Search Help?</h2>
+<p>With branching factor <span class="math inline">b</span> and solution depth <span class="math inline">d</span>, a balanced search suggests:</p>
+<p><span class="math display">\underbrace{b^d}_{\text{one direction}}
+\quad\text{versus}\quad
+\underbrace{2b^{d/2}}_{\text{two directions}}.</span></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Requirement</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A known goal, or manageable goal set</td>
+<td>The backward search needs a starting point.</td>
+</tr>
+<tr class="even">
+<td>Efficient predecessor generation</td>
+<td>Reversing actions may be difficult.</td>
+</tr>
+<tr class="odd">
+<td>Suitable stopping rule</td>
+<td>With weights, the first meeting need not be the cheapest route.</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>The savings are a useful tree-like estimate, not a guarantee for every graph.</p>
+</div>
+</section>
+<section id="from-the-diagram-to-the-notebook" class="slide level2 ucs-slide">
+<h2>From the Diagram to the Notebook</h2>
+<p><a href="../code_and_homework/search_UCS.html" target="_blank" rel="noopener">Uniform-cost search and Dijkstra notebook</a></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>In the slides</th>
+<th>In the notebook</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Directed worked graph</td>
+<td>Random <strong>undirected</strong> weighted graph</td>
+</tr>
+<tr class="even">
+<td>Best-cost updates; skip stale costs</td>
+<td>Insert candidates; skip already finalized nodes</td>
+</tr>
+<tr class="odd">
+<td>Parent changes on improvement</td>
+<td>Parent recorded on the first valid removal</td>
+</tr>
+<tr class="even">
+<td>Cheapest-first frontier</td>
+<td>Python’s <code>heapq</code> min-heap</td>
+</tr>
+</tbody>
+</table>
+<p>The notebook uses the same correctness principle: <strong>finalize on removal</strong>, never on first discovery.</p>
+<div class="question">
+<p>Compare the UCS route to node 3 with Dijkstra’s route from the same source. Do their costs agree?</p>
+</div>
+<aside class="notes">
+<p>Use the existing notebook, not pasted code. Run the prepared cells and pause at the frontier and finalized-node checks. In the saved seeded example the route is 0-7-2-3 with cost 6+2+5=13. The heap’s printed list is not sorted. Dijkstra returns routes to all reachable nodes; the target’s cost agrees with UCS. Reserve roughly 8 minutes for this, with remaining flexibility for HW1 questions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="check-your-understanding" class="slide level2 ucs-slide">
+<h2>Check Your Understanding</h2>
+<p><strong>A goal enters the queue with cost 20. Can we stop?</strong></p>
+<div class="fragment">
+<p>No.&nbsp;Another pending route may reach it more cheaply. Test the goal after removing its current entry.</p>
+</div>
+<p><strong>Are zero-cost edges forbidden?</strong></p>
+<div class="fragment">
+<p>No, not on a finite graph with proper duplicate handling. An infinite zero-cost region can prevent progress toward a positive-cost goal.</p>
+</div>
+<p><strong>If all edges cost 3, will UCS beat BFS in solution cost?</strong></p>
+<div class="fragment">
+<p>No.&nbsp;Every depth-<span class="math inline">d</span> route costs <span class="math inline">3d</span>, so both minimize the number of edges. Equal-cost routes can differ.</p>
+</div>
+</section>
+<section id="takeaways" class="slide level2 ucs-slide">
+<h2>Takeaways</h2>
+<ul>
+<li><strong>Priority:</strong> expand by cumulative path cost <span class="math inline">g</span>, not depth.</li>
+<li><strong>Updates:</strong> a discovered node can receive a cheaper route.</li>
+<li><strong>Stopping:</strong> accept the goal on its current cheapest removal.</li>
+<li><strong>Guarantee:</strong> nonnegative costs make finalized costs optimal.</li>
+<li><strong>Connection:</strong> Dijkstra continues the same search for all reachable destinations.</li>
+</ul>
+<div class="takeaway">
+<p>The frontier holds possibilities. Removal, not discovery, certifies the cheapest one.</p>
+</div>
+<p><a href="../code_and_homework/search_UCS.html" target="_blank" rel="noopener">Uniform-cost search notebook</a></p>
 <p><a class="asset-credit-link" href="../asset_credits.html#lec6" target="_blank" rel="noopener">Asset credits</a></p>
 
 

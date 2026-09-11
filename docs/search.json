@@ -1229,7 +1229,7 @@
     "href": "asset_credits.html#lec6",
     "title": "Visual Asset Credits",
     "section": "Lecture 6: Uniform-Cost Search",
-    "text": "Lecture 6: Uniform-Cost Search\nCarried-over assets needing source verification: car_navigation.png, eight_queens.png, fig2_2.png, maze.png, poker.png, puzzle_8.png, ripple.png, state_space.png. Also reuses ../lec4/car_navigation.png."
+    "text": "Lecture 6: Uniform-Cost Search\nThe weighted UCS graph and its animated steps, goal-test and negative-edge counterexamples, changed-edge practice graphs, and bidirectional-search diagram are original course illustrations by Peizhong Ju, assisted by Codex. The editable sources are ucs-trace.drawio, goal-test.drawio, practice.drawio, and bidirectional.drawio; their pages are exported from draw.io as PNG images for the slides. Search concepts and terminology follow Artificial Intelligence: A Modern Approach (AIMA), Chapter 3."
   },
   {
     "objectID": "asset_credits.html#lec7",
@@ -7915,5 +7915,159 @@
     "title": "Convolutional Neural Network Demo",
     "section": "Connect the Pieces",
     "text": "Connect the Pieces\n\nHow do shared convolutional kernels differ from connecting every input pixel to every hidden unit?\nWhy must the input size of fc1 change if the pooling layout changes?\nWhat happens to prediction variability if dropout is accidentally left in training mode?\nUse validation data, not the final test set, when choosing epochs or architecture changes.\n\n\n\nAnswers and discussion\n\n\nConvolutions combine locality with shared weights. A 3-by-3 kernel connects to a local patch and reuses the same weights at every spatial position. A dense layer assigns separate weights to each input-to-output connection. Sharing makes a feature detector usable across the image with fewer parameters than an unrestricted dense mapping to the same spatial outputs.\nPooling determines the flattened feature count. Currently the final feature map is 64 x 14 x 14, so fc1 expects 12,544 inputs per image. Adding another 2-by-2, stride-2 pooling stage would reduce it to 64 x 7 x 7, or 3,136 inputs. Both the flattening expression in forward and the input dimension of fc1 must match the new shape; otherwise the tensor operations or batch dimensions will be wrong.\nTraining-mode dropout makes predictions stochastic. Each forward pass samples a new mask, so repeated predictions for the same image can have different logits and sometimes different labels. model.eval() disables dropout for ordinary evaluation. torch.no_grad() alone does not disable it: gradient tracking and training/evaluation behavior are independent.\nValidation supports model selection; testing estimates generalization. Reserve part of the training data for comparing epoch counts, architectures, and other choices. After those choices are fixed, evaluate on the untouched test set. Repeatedly changing the model in response to test accuracy effectively uses the test set for tuning and weakens its role as an independent final check.\n\n\nTakeaway: a working training pipeline needs consistent shapes, the correct loss inputs, explicit gradient updates, and a separate evaluation mode."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#cheapest-not-shallowest",
+    "href": "slides/lec6_UCS.html#cheapest-not-shallowest",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Cheapest, Not Shallowest",
+    "text": "Cheapest, Not Shallowest\n\n\n\n\nBreadth-first search (BFS) minimizes the number of edges.\nThe direct route S \\to G has one edge, but costs 12.\n\nUniform-cost search (UCS) minimizes the sum of edge costs.\nS \\to B \\to A \\to C \\to G costs 2+1+1+2=6.\n\n\n\nFewer actions do not necessarily mean a cheaper solution.\n\n\nRecall the FIFO queue from Lecture 5. Ask which objective BFS optimizes before comparing the two routes. All arrows in this lecture’s worked graph are directed; only the eight drawn edges exist. Reserve about 8 minutes near the end for the existing UCS notebook and allow time for HW1 questions."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#the-priority-is-the-cost-so-far",
+    "href": "slides/lec6_UCS.html#the-priority-is-the-cost-so-far",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Priority Is the Cost So Far",
+    "text": "The Priority Is the Cost So Far\ng(n)=\\sum_{\\text{edges on the current path to }n} c(u,v)\n\ng(n) is the cost of a particular path found so far, not a guess of the remaining cost.\nA min-priority queue removes an entry with the smallest g.\nUCS is uninformed: it uses no estimate of distance to the goal.\n\n\n\n\nAfter expanding S\nPath cost g\nDepth\n\n\n\n\nS \\to B\n2\n1\n\n\nS \\to A\n6\n1\n\n\nS \\to G\n12\n1\n\n\n\n\nWith equal positive edge costs, ordering by cost is ordering by depth, as in BFS."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#ucs-frontier",
+    "href": "slides/lec6_UCS.html#ucs-frontier",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Follow the UCS Frontier",
+    "text": "Follow the UCS Frontier\n\nStart at S, seek G. Update the frontier and best costs after processing each node.\n\n\n  \n    \n      \n      \n      \n      \n      \n      \n      \n    \n    \n      Frontier\n      This step\n      Finalized\n    \n    Gold edges: improvements this step. Final frame: the least-cost route.\n  \n  \n    \n      Best costs: bestGold = updated\n      \n\n\n\nS\nA\nB\nC\nG\n\n\n\n\n0\n∞\n∞\n∞\n∞\n\n\n0\n6\n2\n∞\n12\n\n\n0\n3\n2\n6\n12\n\n\n0\n3\n2\n4\n10\n\n\n0\n3\n2\n4\n6\n\n\n0\n3\n2\n4\n6\n\n\n\n\n    \n    \n\n\n\n\n\n\n\nRemove\nCurrent frontier\n\n\n\n\nStart\n[S:0]\n\n\nS:0\n[B:2, A:6, G:12]\n\n\nB:2\n[A:3, C:6, G:12]\n\n\nA:3\n[C:4, G:10]\n\n\nC:4\n[G:6]\n\n\nG:6\nReturn goal, cost 6\n\n\n\n\n    Frontier: cheapest first, node:cost. Stale entries omitted.\n  \n\n\nFinal route: S \\to B \\to A \\to C \\to G. Its cost is 6, even though G was first discovered at cost 12.\n\n\nAllow 5-6 minutes for prediction and tracing. Before each reveal ask for the next node, its outgoing edges, and the resulting queue. The best-cost record starts at S:0 with infinity for every other node; infinity means no route has been found yet. Gold cells mark newly recorded or improved costs. Unlike the frontier, best retains the costs of finalized nodes: B remains at 2 after leaving the queue, for example. The goal is removed and accepted, not expanded. The frontier table shows only the best pending entry per node, not Python’s raw heap array. If a lazy heap breaks ties alphabetically, stale A:6 and C:6 are skipped before the valid G:6. These removals do not expand nodes; the old-entry slide makes them explicit."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#a-better-route-can-arrive-later",
+    "href": "slides/lec6_UCS.html#a-better-route-can-arrive-later",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Better Route Can Arrive Later",
+    "text": "A Better Route Can Arrive Later\n\n\n\n\nFirst discovery: S \\to A, cost 6.\nLater discovery: S \\to B \\to A, cost 3.\n\\begin{aligned}\n\\text{candidate} &= g(B)+c(B,A) \\\\\n&=2+1=3&lt;6.\n\\end{aligned}\n\nRelaxation: replace a recorded route when the candidate is cheaper. Update its cost and parent together.\n\n\n\nUnlike BFS with unit costs, UCS cannot finalize a node when it is first discovered."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#test-the-goal-when-it-is-removed",
+    "href": "slides/lec6_UCS.html#test-the-goal-when-it-is-removed",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Test the Goal When It Is Removed",
+    "text": "Test the Goal When It Is Removed\n\n\n\n\nExpanding S discovers G at cost 10.\nShould the search stop?\n\nNo. The frontier still contains A at cost 1.\nExpanding A improves the route to G to 1+1=2.\n\n\nReturn G only when its current cheapest entry is removed.\n\n\n\nFor nonnegative costs, removal finalizes the cost; discovery only proposes a route."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#keep-the-path-not-just-its-cost",
+    "href": "slides/lec6_UCS.html#keep-the-path-not-just-its-cost",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Keep the Path, Not Just Its Cost",
+    "text": "Keep the Path, Not Just Its Cost\n\n\n\n\n\n\n\nNode\nBest cost\nParent\n\n\n\n\nS\n0\nNone\n\n\nB\n2\nS\n\n\nA\n3\nB\n\n\nC\n4\nA\n\n\nG\n6\nC\n\n\n\nFollow parents backward from G, then reverse the result.\n\n\nBackward: G \\to C \\to A \\to B \\to S. Returned route: S \\to B \\to A \\to C \\to G."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#ucs-pseudocode-choose-a-node",
+    "href": "slides/lec6_UCS.html#ucs-pseudocode-choose-a-node",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "UCS Pseudocode: Choose a Node",
+    "text": "UCS Pseudocode: Choose a Node\ncost: the popped entry’s stored cost. best[u]: the cheapest cost found so far for u.\n\n  UCS(graph, start, goal)\n  best &lt;- default_map(infinity); best[start] &lt;- 0\n  parent[start] &lt;- None; Q &lt;- min_priority_queue()\n  push(Q, (0, start))\n  while Q is not empty:\n  (cost, u) &lt;- pop_min(Q)\n  if cost != best[u]:  # Skip an obsolete queue entry\n  continue\n  if u == goal:\n  return reconstruct(parent, goal), cost\n  RELAX_NEIGHBORS(graph, u, cost, best, parent, Q)\n  return failure\n\n\nOld entry (6, A) still records 6, but best[A] is now 3. Skip the old entry when it is removed.\n\n\nExplain that best is a dictionary with infinity as its default in an implicit state space; no enumeration of all states is necessary. Parent stores the predecessor for reconstruction. This version inserts a new heap entry on a strict improvement rather than modifying an existing entry. Inserting (3, A) changes best[A] but does not edit or remove the older (6, A) entry. The cheaper entry is removed first; when the older one reaches the front, the cost mismatch identifies it as stale. Nonnegative costs and strict improvements ensure a current entry finalizes its node without needing a separate finalized set. The notebook uses an equally valid visited-on-pop variant instead. The later duplicate-handling slide explains that this particular check is an efficiency guard, not a universal requirement of UCS."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#ucs-pseudocode-improve-its-neighbors",
+    "href": "slides/lec6_UCS.html#ucs-pseudocode-improve-its-neighbors",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "UCS Pseudocode: Improve Its Neighbors",
+    "text": "UCS Pseudocode: Improve Its Neighbors\nFor each outgoing edge u\\to v, compare the new route against the stored cost.\n\n  RELAX_NEIGHBORS(graph, u, cost, best, parent, Q)\n  for each edge (u, v) with weight w in graph:\n  candidate &lt;- cost + w\n  if candidate &lt; best[v]:\n  best[v] &lt;- candidate\n  parent[v] &lt;- u\n  push(Q, (candidate, v))\n\n\nAt B: the candidate for A is 2+1=3. Replace best[A] = 6 with 3, set parent[A] = B, and insert (3, A).\n\n\nThe strict comparison avoids reinserting equal-cost routes, including around zero-cost cycles."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#what-about-old-queue-entries",
+    "href": "slides/lec6_UCS.html#what-about-old-queue-entries",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "What About Old Queue Entries?",
+    "text": "What About Old Queue Entries?\nInserting (3, A) does not remove the older (6, A). After processing C, the heap can still contain:\n\n\n\nEntry, in removal order\nCurrent best cost\nAction\n\n\n\n\n(6, A)\n3\nSkip: superseded by a cheaper route\n\n\n(6, C)\n4\nSkip: superseded by a cheaper route\n\n\n(6, G)\n6\nAccept: current entry for the goal\n\n\n(10, G), (12, G)\n6\nNever needed after UCS returns\n\n\n\nEqual costs are ordered alphabetically here. The table is sorted for explanation; a heap’s internal array is not fully sorted.\n\nAn obsolete entry is a stale entry. Removing one is not a new node expansion.\n\n\nContrast the logical frontier on the trace slide with physical heap contents. Right after C, the sorted entries are exactly A:6, C:6, G:6, G:10, G:12 for the strict-improvement implementation. The notebook pushes more candidate routes and skips any node already finalized; it need not have this exact heap."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#why-cheapest-first-is-optimal",
+    "href": "slides/lec6_UCS.html#why-cheapest-first-is-optimal",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Why Cheapest-First Is Optimal",
+    "text": "Why Cheapest-First Is Optimal\nAssume all edge costs are nonnegative. Let the next current entry have cost k.\n\nEvery other current frontier entry has cost at least k.\nExtending any such route cannot make it cheaper: added cost is at least zero.\nAny not-yet-found cheaper route would have a frontier prefix with cost less than k, contradicting the minimum choice.\n\n\nThe node’s cost is final when its current entry is removed. In particular, an accepted goal has optimal cost.\n\n\nUse induction over finalized nodes. If a cheaper path to u existed, consider its first unfinalized node x. Its finalized predecessor would already have relaxed the edge to x, giving x a frontier entry no more expensive than that path’s prefix. Nonnegative edges bound this prefix below the alleged cheaper total, so x would have been removed before u. Do not claim every discovered cost is optimal."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#negative-edges-break-that-argument",
+    "href": "slides/lec6_UCS.html#negative-edges-break-that-argument",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Negative Edges Break That Argument",
+    "text": "Negative Edges Break That Argument\n\n\n\n\nThe queue first contains G:2 and A:5.\nUCS removes the goal at cost 2.\n\nBut the route through A costs\n5+(-4)=1.\nA more expensive prefix can now lead to a cheaper solution.\n\n\n\nNonnegative includes zero. Negative edges require a different shortest-path method, such as Bellman-Ford.\n\n\nThis is a directed acyclic graph, so the issue is not a negative cycle. Bellman-Ford can handle negative edges and detect reachable negative cycles; finite shortest paths require the relevant routes not to benefit from such cycles. Do not turn this into a second algorithm lesson."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#completeness-depends-on-the-search-space",
+    "href": "slides/lec6_UCS.html#completeness-depends-on-the-search-space",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Completeness Depends on the Search Space",
+    "text": "Completeness Depends on the Search Space\n\n\n\n\n\n\n\nSearch setting\nWhat ensures UCS eventually finishes?\n\n\n\n\nFinite graph\nNonnegative costs and proper duplicate handling. Zero-cost edges are allowed.\n\n\nPotentially infinite search space\nFinite branching and a positive lower bound c(u,v)\\ge\\epsilon&gt;0, with a finite-cost goal.\n\n\n\nAn infinite chain of zero-cost actions could keep UCS busy forever, while a goal with cost 1 waits in the frontier.\n\nOptimality of a returned goal and eventual discovery of a goal are different guarantees."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#what-does-ucs-spend-time-on",
+    "href": "slides/lec6_UCS.html#what-does-ucs-spend-time-on",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "What Does UCS Spend Time On?",
+    "text": "What Does UCS Spend Time On?\n\nExploring many low-cost alternatives before the goal becomes cheapest.\nMaintaining a priority queue, rather than a first-in, first-out (FIFO) queue.\nRemembering best costs, parents, and pending entries.\n\nFor an Explicit Finite Graph\nLet V be the number of vertices and E the number of edges. For the duplicate-entry binary heap used in the pseudocode:\n\n\n\nResource\nBound\n\n\n\n\nTime\nO\\big((V+E)\\log(V+E)\\big)\n\n\nExtra storage\nO(V+E), including stale heap entries\n\n\n\n\nAssume adjacency lists, nonnegative weights, constant-time dictionary access, and strict improvements. Each node is expanded at most once and each outgoing edge is checked once; each edge can cause at most one insertion during its source’s expansion. An indexed heap with decrease-key and one live entry per vertex instead yields O((V+E) log V) time and O(V) auxiliary storage. Avoid applying the explicit-graph bound to an exponentially large implicit state space."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#ucs-and-dijkstra-the-same-engine",
+    "href": "slides/lec6_UCS.html#ucs-and-dijkstra-the-same-engine",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "UCS and Dijkstra: The Same Engine",
+    "text": "UCS and Dijkstra: The Same Engine\n\n\nOne Target: UCS\nStop when a current goal entry is removed. Return its route and cost.\nEvery Reachable Target: Dijkstra\nRemove the goal-return condition and continue until the queue is empty. Return all best distances and parents.\n\n\n\n\nDestination\nDistance from S\n\n\n\n\nS\n0\n\n\nB\n2\n\n\nA\n3\n\n\nC\n4\n\n\nG\n6\n\n\n\n\n\nThis is single-source shortest paths, not shortest paths between every pair of nodes.\n\n\nDijkstra can also be implemented with early stopping for a target; the names do not imply fundamentally different algorithms. In this small graph G happens to be the last distinct node removed, so all displayed distances are finalized by then. In a larger graph, stopping at G can leave other nodes tentative or undiscovered. Replace the final failure return with best and parent when adapting the pseudocode to Dijkstra."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#your-turn-change-one-edge",
+    "href": "slides/lec6_UCS.html#your-turn-change-one-edge",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Your Turn: Change One Edge",
+    "text": "Your Turn: Change One Edge\n\n\n\n\nOnly c(S,A) changes: 6 becomes 1.\n\nWhich node is removed after S?\nWhat is the frontier after expanding that node?\nWhat route and cost should UCS return?\n\nBreak equal-cost ties alphabetically.\n\n\nAllow students to trace for 2-3 minutes. Answers are on the next slide to keep the questions unobstructed: A:1 is first after S; the logical frontier after A is B:2, C:2, G:8. B does not improve A or C. C improves G to 4. Route S-A-C-G, cost 4."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#check-the-changed-route",
+    "href": "slides/lec6_UCS.html#check-the-changed-route",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Check the Changed Route",
+    "text": "Check the Changed Route\n\n\n\n\n\nAfter S: [A:1,\\ B:2,\\ G:12].\n\n\nAfter A: [B:2,\\ C:2,\\ G:8].\nB comes before C only because of the tie rule.\n\n\nC improves G to 4.\nReturn S\\to A\\to C\\to G, cost 1+1+2=4.\n\n\n\nTie-breaking can change the expansion order, but not the optimal solution cost."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#another-idea-search-from-both-ends",
+    "href": "slides/lec6_UCS.html#another-idea-search-from-both-ends",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Another Idea: Search from Both Ends",
+    "text": "Another Idea: Search from Both Ends\n\n\nSearch forward from the start and backward from the goal.\nThe backward search generates predecessors: states that can lead to the current state.\nA connection gives a candidate route by joining the two paths.\n\n\nFor unit costs, layer-by-layer bidirectional BFS can find a shortest route without searching all the way from one side.\n\n\nThe diagram is a unit-cost chain with undirected edges. Backward BFS traverses the same links; for directed graphs it must reverse the original transitions, not simply follow outgoing edges from the goal. Each side retains parent information for reconstruction. A correct layer-based bidirectional BFS checks intersections between the reached sets while controlling layer order; do not generalize an arbitrary first meeting to weighted search."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#when-does-two-ended-search-help",
+    "href": "slides/lec6_UCS.html#when-does-two-ended-search-help",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "When Does Two-Ended Search Help?",
+    "text": "When Does Two-Ended Search Help?\nWith branching factor b and solution depth d, a balanced search suggests:\n\\underbrace{b^d}_{\\text{one direction}}\n\\quad\\text{versus}\\quad\n\\underbrace{2b^{d/2}}_{\\text{two directions}}.\n\n\n\n\n\n\n\nRequirement\nWhy it matters\n\n\n\n\nA known goal, or manageable goal set\nThe backward search needs a starting point.\n\n\nEfficient predecessor generation\nReversing actions may be difficult.\n\n\nSuitable stopping rule\nWith weights, the first meeting need not be the cheapest route.\n\n\n\n\nThe savings are a useful tree-like estimate, not a guarantee for every graph."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#from-the-diagram-to-the-notebook",
+    "href": "slides/lec6_UCS.html#from-the-diagram-to-the-notebook",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "From the Diagram to the Notebook",
+    "text": "From the Diagram to the Notebook\nUniform-cost search and Dijkstra notebook\n\n\n\n\n\n\n\nIn the slides\nIn the notebook\n\n\n\n\nDirected worked graph\nRandom undirected weighted graph\n\n\nBest-cost updates; skip stale costs\nInsert candidates; skip already finalized nodes\n\n\nParent changes on improvement\nParent recorded on the first valid removal\n\n\nCheapest-first frontier\nPython’s heapq min-heap\n\n\n\nThe notebook uses the same correctness principle: finalize on removal, never on first discovery.\n\nCompare the UCS route to node 3 with Dijkstra’s route from the same source. Do their costs agree?\n\n\nUse the existing notebook, not pasted code. Run the prepared cells and pause at the frontier and finalized-node checks. In the saved seeded example the route is 0-7-2-3 with cost 6+2+5=13. The heap’s printed list is not sorted. Dijkstra returns routes to all reachable nodes; the target’s cost agrees with UCS. Reserve roughly 8 minutes for this, with remaining flexibility for HW1 questions."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#check-your-understanding",
+    "href": "slides/lec6_UCS.html#check-your-understanding",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Check Your Understanding",
+    "text": "Check Your Understanding\nA goal enters the queue with cost 20. Can we stop?\n\nNo. Another pending route may reach it more cheaply. Test the goal after removing its current entry.\n\nAre zero-cost edges forbidden?\n\nNo, not on a finite graph with proper duplicate handling. An infinite zero-cost region can prevent progress toward a positive-cost goal.\n\nIf all edges cost 3, will UCS beat BFS in solution cost?\n\nNo. Every depth-d route costs 3d, so both minimize the number of edges. Equal-cost routes can differ."
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#takeaways",
+    "href": "slides/lec6_UCS.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nPriority: expand by cumulative path cost g, not depth.\nUpdates: a discovered node can receive a cheaper route.\nStopping: accept the goal on its current cheapest removal.\nGuarantee: nonnegative costs make finalized costs optimal.\nConnection: Dijkstra continues the same search for all reachable destinations.\n\n\nThe frontier holds possibilities. Removal, not discovery, certifies the cheapest one.\n\nUniform-cost search notebook\nAsset credits"
+  },
+  {
+    "objectID": "slides/lec6_UCS.html#other-ways-to-handle-duplicate-entries",
+    "href": "slides/lec6_UCS.html#other-ways-to-handle-duplicate-entries",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Other Ways to Handle Duplicate Entries",
+    "text": "Other Ways to Handle Duplicate Entries\nAssume nonnegative edge costs. The exact cost != best[u] check is not required in every UCS implementation.\n\n\n\n\n\n\n\nMethod\nHow repeated work is avoided\n\n\n\n\nCost check (these slides)\nInsert improved entries; skip an entry whose stored cost differs from best[u].\n\n\nFinalized set (notebook)\nOn removal, skip a node already finalized; otherwise finalize it and test the goal.\n\n\nDecrease-key\nKeep one pending entry per node and lower its priority on improvement. No obsolete entry remains.\n\n\n\n\nIn this pseudocode, strict cost-improvement updates already make stale expansions redundant. Removing the check keeps the correct result, but can waste work.\n\n\nFor UCS, finalize a node on removal, not when it is first discovered.\n\n\nThese are alternatives, not three checks that must all be used together. In the current pseudocode, (3, A) is removed before (6, A), and all outgoing edges of A have already been relaxed using cost 3. Relaxing them again from cost 6 cannot beat the recorded costs, because updates require a strict improvement. Thus skipping the stale entry avoids redundant neighbor scans; omitting this guard does not change the answer under the stated assumptions. This observation is specific to this strict-improvement implementation, not to arbitrary search code. A finalized set is correct with nonnegative costs only when nodes are finalized on removal. Marking A at its first discovery with cost 6 would incorrectly block the route of cost 3. Python’s heapq has no built-in decrease-key operation, which is why inserting a new entry and later skipping duplicates is convenient. The notebook’s visited set implements finalized-on-pop, and its goal test follows the duplicate check."
   }
 ]
