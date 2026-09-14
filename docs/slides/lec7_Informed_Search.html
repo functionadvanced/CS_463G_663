@@ -163,250 +163,811 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="informed-search" class="slide level2 section-slide compact">
-<h2>Informed Search</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:48%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec1/robot_openclipart.svg" class="cc0-icon"></p>
-<figcaption>Robot icon for blind search</figcaption>
-</figure>
-</div>
-<h3 id="uninformed-search">Uninformed Search</h3>
+<section id="cost-so-far-and-estimated-cost-remaining" class="slide level2 informed-slide">
+<h2>Cost So Far and Estimated Cost Remaining</h2>
+<div class="columns">
+<div class="column" style="width:74%;">
+<p><strong>Informed search</strong> uses a heuristic: an estimate of the remaining cost to a goal.</p>
 <ul>
-<li>Uses only the problem definition.</li>
-<li>Explores systematically.</li>
-<li>Examples: BFS, DFS, UCS.</li>
+<li><span class="math inline">g(n)</span>: cost of the current route from the start to <span class="math inline">n</span>.</li>
+<li><span class="math inline">h(n)</span>: estimated cost from <span class="math inline">n</span> to the goal.</li>
 </ul>
-</div><div class="column" style="width:48%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec3/puzzle_openclipart.svg" class="cc0-icon"></p>
-<figcaption>Puzzle icon for heuristic clues</figcaption>
-</figure>
-</div>
-<h3 id="informed-search-1">Informed Search</h3>
-<ul>
-<li>Uses heuristic information.</li>
-<li>Usually explores fewer nodes.</li>
-<li>Examples: Greedy Best-First Search, A*.</li>
-</ul>
-</div></div>
-</section>
-<section id="heuristics" class="slide level2">
-<h2>Heuristics</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:62%;">
-<p>A <strong>heuristic</strong> is a function <span class="math inline">h(n)</span> that estimates the remaining cost from node <span class="math inline">n</span> to the goal.</p>
-<ul>
-<li>It helps decide which frontier node deserves attention next.</li>
-<li>A good heuristic can greatly reduce search.</li>
-<li>A bad heuristic can waste work or mislead the search.</li>
-</ul>
-</div><div class="column" style="width:30%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec3/puzzle_head_openclipart.svg" class="cc0-icon"></p>
-<figcaption>Puzzle-head icon for heuristic guesses</figcaption>
-</figure>
-</div>
-</div></div>
-</section>
-<section id="heuristic-examples" class="slide level2">
-<h2>Heuristic Examples</h2>
 <table class="caption-top">
+<thead>
+<tr class="header">
+<th>Search</th>
+<th>Smallest priority first</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Uniform-cost search (UCS)</td>
+<td><span class="math inline">g(n)</span></td>
+</tr>
+<tr class="even">
+<td>Greedy best-first search</td>
+<td><span class="math inline">h(n)</span></td>
+</tr>
+<tr class="odd">
+<td>A* (“A-star”)</td>
+<td><span class="math inline">f(n)=g(n)+h(n)</span></td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:22%;">
+<p><img data-src="imgs/lec3/puzzle_head_openclipart.svg" class="cc0-icon" alt="Puzzle-head icon representing a heuristic estimate."></p>
+</div></div>
+<div class="takeaway">
+<p>All three can use a min-priority queue. The priority key determines which entry comes out next.</p>
+</div>
+<aside class="notes">
+<p>Keep approximately 30-33 minutes for the slides and 17-20 minutes for the existing A* notebook. The two animated searches share one graph, so the second trace should move more quickly. Recall that UCS is uninformed even though it uses edge costs. A heuristic adds goal-directed information; it does not guarantee a speedup on every problem. Search terminology follows AIMA Chapter 3 and the archived Lecture 7.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="grid-distance-as-a-heuristic" class="slide level2 informed-slide">
+<h2>Grid Distance as a Heuristic</h2>
+<div class="columns">
+<div class="column" style="width:51%;">
+<p><img data-src="imgs/drawio/lec7/grid-distance.png" class="informed-grid" alt="A grid with start at 0,0 and goal at 4,3. The straight-line distance is 5. A route with four horizontal and three vertical moves has length 7."></p>
+</div><div class="column" style="width:46%;">
+<h3 id="euclidean-distance">Euclidean distance</h3>
+<p><span class="math display">h_{\text{Euc}}=\sqrt{(x_g-x)^2+(y_g-y)^2}</span></p>
+<p>Here: <span class="math inline">\sqrt{4^2+3^2}=5</span>.</p>
+<h3 id="manhattan-distance">Manhattan distance</h3>
+<p><span class="math display">h_{\text{Man}}=|x_g-x|+|y_g-y|</span></p>
+<p>Here: <span class="math inline">4+3=7</span>.</p>
+</div></div>
+<div class="takeaway fragment">
+<p>With four-direction, unit-cost moves, <strong>7</strong> is the exact cost without walls. Walls can require extra moves.</p>
+</div>
+<aside class="notes">
+<p>The diagram uses Cartesian coordinates for the distance calculation. The notebook stores positions as (row, column), but the absolute-difference formula is identical. Diagonal moves are not allowed in this example. Both estimates are lower bounds under these movement rules, with Manhattan at least as informative as Euclidean. All distance diagrams are editable draw.io sources.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="designing-a-heuristic" class="slide level2 informed-slide">
+<h2>Designing a Heuristic</h2>
+<p>A <strong>relaxed problem</strong> removes a constraint. Its cheapest solution can provide a lower bound for the original problem.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Problem</th>
-<th>Possible heuristic</th>
+<th>Simplification</th>
+<th>Heuristic</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>8-puzzle</td>
-<td>Number of misplaced tiles</td>
+<td>Four-direction unit grid</td>
+<td>Ignore walls</td>
+<td>Manhattan distance</td>
 </tr>
 <tr class="even">
-<td>8-puzzle</td>
-<td>Sum of Manhattan distances of tiles</td>
+<td>Road routing by distance</td>
+<td>Allow a direct straight route</td>
+<td>Straight-line distance</td>
 </tr>
 <tr class="odd">
-<td>Map routing</td>
-<td>Straight-line distance to destination</td>
-</tr>
-<tr class="even">
-<td>Grid navigation</td>
-<td>Manhattan distance to destination</td>
+<td>8-puzzle, one slide costs 1</td>
+<td>Let each numbered tile move independently</td>
+<td>Sum of tile Manhattan distances</td>
 </tr>
 </tbody>
 </table>
-<div class="takeaway">
-<p>A heuristic is useful when it is cheaper to compute than solving the rest of the problem exactly.</p>
+<div class="fragment">
+<p>For the 8-puzzle, the <strong>number of misplaced numbered tiles</strong> is another lower bound. Exclude the blank from both estimates.</p>
 </div>
+<div class="takeaway">
+<p>The heuristic must match the allowed actions and the cost units. Kilometers cannot be added directly to minutes.</p>
+</div>
+<aside class="notes">
+<p>For the tile-distance heuristic, allowing tiles to move independently removes interference and the blank restriction. Every legal move changes the position of one numbered tile by one square, so the sum cannot exceed the number of moves required. With weighted grid moves, unscaled Manhattan distance is not automatically a valid cost estimate; a known minimum move cost can supply a scale factor. Relaxation and puzzle examples follow AIMA Chapter 3. See also https://inst.eecs.berkeley.edu/~cs188/textbook/search/informed.html#141-heuristics.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="euclidean-vs.-manhattan-distance" class="slide level2">
-<h2>Euclidean vs.&nbsp;Manhattan Distance</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="euclidean">Euclidean</h3>
-<p><span class="math display">
-d_{\text{Euc}} = \sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}
-</span></p>
-<p>Shortest straight-line distance.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="manhattan">Manhattan</h3>
-<p><span class="math display">
-d_{\text{Man}} = |x_2-x_1| + |y_2-y_1|
-</span></p>
-<p>Grid-walking distance.</p>
-</div></div>
-<svg viewbox="0 0 720 245" role="img" aria-label="Euclidean distance is a straight diagonal line; Manhattan distance follows a grid path." style="width: 100%; max-height: 225px;">
-<rect x="35" y="15" width="650" height="205" rx="8" fill="#f8fbfb" stroke="#d9e5e5"></rect> <g stroke="#d7e2e2" stroke-width="1"> <path d="M95 42V205 M155 42V205 M215 42V205 M275 42V205 M335 42V205 M395 42V205 M455 42V205 M515 42V205 M575 42V205 M635 42V205"></path> <path d="M70 62H650 M70 105H650 M70 148H650 M70 191H650"></path> </g> <circle cx="135" cy="190" r="10" fill="#007c89"></circle> <circle cx="565" cy="62" r="10" fill="#b8325f"></circle> <path d="M135 190 L565 62" stroke="#2d5a66" stroke-width="5" fill="none"></path> <path d="M135 190 H565 V62" stroke="#00a2b8" stroke-width="5" stroke-dasharray="14 10" fill="none"></path> <text x="108" y="218" font-size="18" fill="#234">start</text> <text x="545" y="42" font-size="18" fill="#234">goal</text> <text x="290" y="113" font-size="18" fill="#2d5a66">Euclidean</text> <text x="430" y="213" font-size="18" fill="#007c89">Manhattan</text>
-</svg>
-</section>
-<section id="greedy-best-first-search" class="slide level2">
+<section id="greedy-best-first-search" class="slide level2 informed-slide">
 <h2>Greedy Best-First Search</h2>
-<p>Greedy Best-First Search expands the node that appears closest to the goal.</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><img data-src="imgs/drawio/lec7/search-graph.png" class="informed-graph" alt="Directed graph with edge costs S-A 2, S-B 1, A-C 1, C-G 1, B-G 8. Heuristics are S 2, A 2, B 1, C 1, G 0."></p>
+</div><div class="column" style="width:37%;">
+<p><strong>Greedy chooses the smallest <span class="math inline">h</span>.</strong></p>
+<p>After expanding <span class="math inline">S</span>:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Quantity</th>
-<th>Used by Greedy?</th>
+<th>Node</th>
+<th style="text-align: right;"><span class="math inline">g</span></th>
+<th style="text-align: right;"><span class="math inline">h</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><span class="math inline">h(n)</span>: estimated remaining cost</td>
-<td>Yes</td>
+<td><span class="math inline">A</span></td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="even">
-<td><span class="math inline">g(n)</span>: cost already paid</td>
-<td>No</td>
+<td><span class="math inline">B</span></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;"><strong>1</strong></td>
 </tr>
 </tbody>
 </table>
-<div class="takeaway">
-<p>Greedy search can be fast, but it can also choose a cheap-looking path that becomes expensive later.</p>
-</div>
-</section>
-<section id="a-search" class="slide level2">
-<h2>A* Search</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:66%;">
-<p>A* combines the cost so far and the estimated cost remaining:</p>
-<p><span class="math display">
-f(n) = g(n) + h(n)
-</span></p>
-<ul>
-<li><span class="math inline">g(n)</span>: cost from the start to <span class="math inline">n</span>.</li>
-<li><span class="math inline">h(n)</span>: heuristic estimate from <span class="math inline">n</span> to the goal.</li>
-<li>Expand the node with the lowest <span class="math inline">f(n)</span>.</li>
-</ul>
-</div><div class="column" style="width:26%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec3/car_topview_openclipart.svg" class="cc0-icon"></p>
-<figcaption>Car icon for path planning</figcaption>
-</figure>
+<div class="fragment">
+<p>Choose <strong><span class="math inline">B</span></strong>: its estimate is <span class="math inline">h(B)=1</span>.</p>
 </div>
 </div></div>
-</section>
-<section id="admissible-heuristics" class="slide level2">
-<h2>Admissible Heuristics</h2>
-<div class="definition">
-<p>A heuristic <span class="math inline">h(n)</span> is <strong>admissible</strong> if it never overestimates the true cost to reach the goal:</p>
-<p><span class="math display">
-h(n) \le h^*(n)
-</span></p>
+<div class="takeaway">
+<p>Numbers beside arrows are actual edge costs. Blue <span class="math inline">h</span> labels are estimates, not extra edge costs.</p>
 </div>
-<ul>
-<li>If <span class="math inline">h</span> is admissible, A* can find an optimal solution.</li>
-<li>Intuitively, admissibility keeps the heuristic optimistic.</li>
-</ul>
+<aside class="notes">
+<p>Only the five directed edges shown exist. Coordinates are layout choices, not geographic distances. Heuristics are supplied values, not distances measured from the drawing. B looks close according to h even though its only outgoing edge to G costs 8. Greedy ignores g when ranking entries, although g is still needed to report the returned route’s cost.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="one-priority-queue-many-searches" class="slide level2">
-<h2>One Priority Queue, Many Searches</h2>
+<section id="greedy-frontier" class="slide level2 informed-slide search-trace ucs-trace">
+<h2>Greedy: Follow the Frontier</h2>
+<p class="trace-intro">
+Remove the smallest <strong>h</strong>. Each row shows the frontier <strong>after</strong> processing the selected node.
+</p>
+<div class="trace-layout">
+  <div class="trace-tree">
+    <div class="trace-tree-frames" role="img" aria-label="Greedy removes S, B, then G and returns S-B-G with cost 9. A remains on the frontier.">
+      <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec7/greedy-trace-0.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec7/greedy-trace-1.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec7/greedy-trace-2.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="3" src="imgs/drawio/lec7/greedy-trace-3.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="4" src="imgs/drawio/lec7/greedy-trace-4.png" alt="" aria-hidden="true">
+    </div>
+    <div class="trace-legend"><span class="trace-key-frontier">Frontier</span><span class="trace-key-current">This step</span><span class="trace-key-expanded">Processed</span></div>
+    <p class="trace-caption">Gold edges: routes just discovered. Final frame: returned route.</p>
+  </div>
+  <div class="trace-history">
+    
+<table class="trace-table caption-top" aria-label="Greedy frontier sorted by heuristic">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Remove</th>
+<th data-quarto-table-cell-role="th">Frontier: node:h</th>
+</tr>
+</thead>
+<tbody>
+<tr class="trace-start visible odd">
+<td>Start</td>
+<td><code>[S:2]</code></td>
+</tr>
+<tr class="fragment even" data-fragment-index="0">
+<td>S</td>
+<td><code>[B:1, A:2]</code></td>
+</tr>
+<tr class="fragment odd" data-fragment-index="1">
+<td>B</td>
+<td><code>[G:0, A:2]</code></td>
+</tr>
+<tr class="fragment even" data-fragment-index="2">
+<td>G</td>
+<td>Return goal, cost <strong>9</strong></td>
+</tr>
+</tbody>
+</table>
+
+    <p class="trace-caption">Estimated distance h determines the order, not route cost g.</p>
+  </div>
+</div>
+<div class="takeaway fragment" data-fragment-index="3">
+<p><span class="math inline">S\to B\to G</span> costs <span class="math inline">1+8=9</span>. The unexplored route <span class="math inline">S\to A\to C\to G</span> costs only <strong>4</strong>.</p>
+</div>
+<aside class="notes">
+<p>Ask which node comes out after B. Even a heuristic that never overestimates does not make greedy search optimal. Greedy can be complete on a finite graph with proper duplicate handling, but without that restriction it can loop or chase an infinite branch. Do not state unconditional incompleteness for every implementation. The graph and trace are original course examples.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-adds-the-cost-so-far" class="slide level2 informed-slide">
+<h2>A* Adds the Cost So Far</h2>
+<p><span class="math display">\underbrace{f(n)}_{\text{estimated total}}=\underbrace{g(n)}_{\text{cost so far}}+\underbrace{h(n)}_{\text{remaining estimate}}</span></p>
+<div class="columns">
+<div class="column" style="width:63%;">
+<p>The first choice is still <span class="math inline">B</span>: <span class="math inline">f(B)=1+1=2</span>, while <span class="math inline">f(A)=2+2=4</span>.</p>
+<div class="fragment">
+<p>But <strong>after expanding <span class="math inline">B</span></strong>, the decision changes:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Search strategy</th>
-<th style="text-align: right;">Priority key</th>
-<th>Intuition</th>
+<th>Frontier node</th>
+<th style="text-align: right;"><span class="math inline">g</span></th>
+<th style="text-align: right;"><span class="math inline">h</span></th>
+<th style="text-align: right;"><span class="math inline">f=g+h</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>BFS</td>
-<td style="text-align: right;"><span class="math inline">d</span></td>
-<td>Fewer steps first</td>
+<td><span class="math inline">A</span></td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;"><strong>4</strong></td>
 </tr>
 <tr class="even">
-<td>DFS</td>
-<td style="text-align: right;"><span class="math inline">-d</span></td>
-<td>Deeper nodes first</td>
-</tr>
-<tr class="odd">
-<td>UCS</td>
-<td style="text-align: right;"><span class="math inline">g</span></td>
-<td>Lower cost so far</td>
-</tr>
-<tr class="even">
-<td>Greedy</td>
-<td style="text-align: right;"><span class="math inline">h</span></td>
-<td>Lower estimated remaining cost</td>
-</tr>
-<tr class="odd">
-<td>A*</td>
-<td style="text-align: right;"><span class="math inline">g+h</span></td>
-<td>Lower estimated total cost</td>
+<td><span class="math inline">G</span>, via <span class="math inline">B</span></td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">9</td>
 </tr>
 </tbody>
 </table>
-<div class="question">
-<p>Changing the priority key changes the personality of the search.</p>
 </div>
+</div><div class="column" style="width:34%;">
+<p><img data-src="imgs/drawio/lec7/search-graph.png" class="informed-reference" alt="Reference graph: S to A costs 2, S to B costs 1, A to C costs 1, C to G costs 1, and B to G costs 8. Heuristics: S 2, A 2, B 1, C 1, G 0."></p>
+</div></div>
+<div class="takeaway fragment">
+<p>A* chooses <strong><span class="math inline">A</span> before <span class="math inline">G</span></strong>. A goal can have <span class="math inline">h=0</span> and still have an expensive total route.</p>
+</div>
+<aside class="notes">
+<p>Distinguish the goal’s zero remaining cost from the cost of reaching it. The priority uses the g value of this particular queued path. Setting every h to zero recovers UCS priorities. Definition follows the archived Lecture 7 and AIMA Chapter 3.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="a-without-a-visited-set" class="slide level2">
-<h2>A* Without a Visited Set?</h2>
-<p>If we treat the search space as a tree, is A* still complete and optimal?</p>
+<section id="astar-frontier" class="slide level2 informed-slide search-trace ucs-trace">
+<h2>A* Frontier Trace</h2>
+<p class="trace-intro">
+Remove the smallest <strong>f = g + h</strong>. Keep best <strong>g</strong> costs separately from queue priorities.
+</p>
+<div class="trace-layout">
+  <div class="trace-tree">
+    <div class="trace-tree-frames" role="img" aria-label="A* removes S, B, A, C, G. Best cost of G improves from 9 to 4. Returned route is S-A-C-G.">
+      <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec7/astar-trace-0.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec7/astar-trace-1.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec7/astar-trace-2.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="3" src="imgs/drawio/lec7/astar-trace-3.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="4" src="imgs/drawio/lec7/astar-trace-4.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="5" src="imgs/drawio/lec7/astar-trace-5.png" alt="" aria-hidden="true">
+      <img class="trace-frame" data-trace-step="6" src="imgs/drawio/lec7/astar-trace-6.png" alt="" aria-hidden="true">
+    </div>
+    <div class="trace-legend"><span class="trace-key-frontier">Frontier</span><span class="trace-key-current">This step</span><span class="trace-key-expanded">Processed</span></div>
+    <p class="trace-caption">Gold edges: new or improved routes. Final frame: returned route.</p>
+  </div>
+  <div class="trace-history">
+    <div class="ucs-best-record">
+      <div class="ucs-best-heading"><strong>Best path costs: g</strong><span>Gold = updated</span></div>
+      
+<table class="ucs-best-table caption-top" aria-label="Best g costs for S A B C G">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" scope="col">S</th>
+<th data-quarto-table-cell-role="th" scope="col">A</th>
+<th data-quarto-table-cell-role="th" scope="col">B</th>
+<th data-quarto-table-cell-role="th" scope="col">C</th>
+<th data-quarto-table-cell-role="th" scope="col">G</th>
+</tr>
+</thead>
+<tbody>
+<tr class="ucs-best-state odd" data-best-step="0">
+<td class="ucs-cost-update">0</td>
+<td>∞</td>
+<td>∞</td>
+<td>∞</td>
+<td>∞</td>
+</tr>
+<tr class="ucs-best-state even" data-best-step="1">
+<td>0</td>
+<td class="ucs-cost-update">2</td>
+<td class="ucs-cost-update">1</td>
+<td>∞</td>
+<td>∞</td>
+</tr>
+<tr class="ucs-best-state odd" data-best-step="2">
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>∞</td>
+<td class="ucs-cost-update">9</td>
+</tr>
+<tr class="ucs-best-state even" data-best-step="3">
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td class="ucs-cost-update">3</td>
+<td>9</td>
+</tr>
+<tr class="ucs-best-state odd" data-best-step="4">
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td class="ucs-cost-update">4</td>
+</tr>
+<tr class="ucs-best-state even" data-best-step="5">
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+
+    </div>
+    
+<table class="trace-table caption-top" aria-label="A* frontier sorted by f">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Remove</th>
+<th data-quarto-table-cell-role="th">Frontier: node:f</th>
+</tr>
+</thead>
+<tbody>
+<tr class="trace-start visible odd">
+<td>Start</td>
+<td><code>[S:2]</code></td>
+</tr>
+<tr class="fragment even" data-fragment-index="0">
+<td>S</td>
+<td><code>[B:2, A:4]</code></td>
+</tr>
+<tr class="fragment odd" data-fragment-index="1">
+<td>B</td>
+<td><code>[A:4, G:9]</code></td>
+</tr>
+<tr class="fragment even" data-fragment-index="2">
+<td>A</td>
+<td><code>[C:4, G:9]</code></td>
+</tr>
+<tr class="fragment odd" data-fragment-index="3">
+<td>C</td>
+<td><code>[G:4]</code></td>
+</tr>
+<tr class="fragment even" data-fragment-index="4">
+<td>G</td>
+<td>Return goal, cost <strong>4</strong></td>
+</tr>
+</tbody>
+</table>
+
+    <p class="trace-caption">Sorted by f. Stale G:9 omitted.</p>
+  </div>
+</div>
+<div class="takeaway fragment" data-fragment-index="5">
+<p>A* returns <span class="math inline">S\to A\to C\to G</span>, cost <strong>4</strong>. Greedy returned cost <strong>9</strong>.</p>
+</div>
+<aside class="notes">
+<p>The graph, frontier rows, and best-g record reveal together. The best table retains costs for processed nodes. The graph’s heuristic is consistent: h(S)=2, h(A)=2, h(B)=1, h(C)=1, h(G)=0. No reopenings occur in this example. Queue priorities remain 2,2,4,4,4 in removal order. A lazy heap still contains the old G entry at priority 9 when the algorithm returns. Parent[G] changes from B to C when C discovers the cheaper route. Goal removal is acceptance, not an expansion of outgoing edges.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="admissible-heuristics" class="slide level2 informed-slide">
+<h2>Admissible Heuristics</h2>
+<p>An <strong>admissible</strong> heuristic never overestimates the cheapest remaining cost <span class="math inline">h^*(n)</span>.</p>
+<div class="columns">
+<div class="column" style="width:39%;">
+<p><span class="math display">0\le h(n)\le h^*(n).</span></p>
+<p>At the goal, <span class="math inline">h(G)=0</span>.</p>
+<p><img data-src="imgs/drawio/lec7/search-graph.png" class="informed-reference" alt="Reference graph for the table: the cheapest remaining routes from S, A, B, C, and G cost 4, 2, 8, 1, and 0 respectively."></p>
+</div><div class="column" style="width:58%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Node</th>
+<th style="text-align: right;">Estimate <span class="math inline">h</span></th>
+<th style="text-align: right;">True remaining cost <span class="math inline">h^*</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">S</span></td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">A</span></td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">B</span></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">C</span></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">G</span></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="takeaway fragment">
+<p>The example’s heuristic is admissible, even though <span class="math inline">h(B)=1</span> is a poor estimate of <strong>8</strong>. Admissible does not mean exact.</p>
+</div>
+<aside class="notes">
+<p>h-star is the optimal remaining cost, not the best cost from the start. All five inequalities can be checked on the displayed graph. Computing exact remaining costs generally requires solving the problem, which defeats the purpose of a cheap heuristic. Admissibility alone does not guarantee optimality for a graph-search implementation that permanently closes states without allowing improvements. The following slides distinguish those cases. Definitions follow the archived Lecture 7 and AIMA Chapter 3.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="goal-discovery-is-only-a-proposal" class="slide level2 informed-slide">
+<h2>Goal Discovery Is Only a Proposal</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><img data-src="imgs/drawio/lec7/astar-trace-2.png" class="informed-graph" alt="After expanding B, G has a discovered path cost of 9 while A remains on the frontier with f equal to 4."></p>
+</div><div class="column" style="width:42%;">
+<p>After <span class="math inline">B</span>, a route to <span class="math inline">G</span> costs <strong>9</strong>.</p>
+<p>But <span class="math inline">A</span> is still waiting with <span class="math inline">f(A)=4</span>.</p>
+<div class="fragment">
+<p>A frontier path on an optimal route has</p>
+<p><span class="math display">f(n)\le C^*,</span></p>
+<p>where <span class="math inline">C^*</span> is the optimal solution cost.</p>
+</div>
+</div></div>
+<div class="takeaway fragment">
+<p>For nonnegative costs and admissible <span class="math inline">h</span>, preserve improved paths and test the goal <strong>on removal</strong>. A suboptimal goal cannot have the smallest <span class="math inline">f</span>.</p>
+</div>
+<aside class="notes">
+<p>Assume nonnegative edge costs and a finite graph for the graph-search argument here. Preserve a best frontier prefix of an optimal route by allowing improved paths. On that prefix g is its optimal-route prefix cost, so g+h is at most C-star. A suboptimal goal has h=0 and f=g greater than C-star, so it cannot precede that prefix. This is not a claim that every arbitrary path to n has f at most C-star. For infinite or path-tree spaces, sufficient termination conditions include a reachable goal of finite cost, finite branching, a fixed positive lower bound on edge costs, and a nonnegative admissible heuristic. Proof reference: https://inst.eecs.berkeley.edu/~cs188/textbook/search/informed.html#144-admissibility.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="consistency-and-finalized-states" class="slide level2 informed-slide">
+<h2>Consistency and Finalized States</h2>
+<div class="columns">
+<div class="column" style="width:63%;">
+<p>A <strong>consistent</strong> heuristic obeys this inequality for every edge <span class="math inline">u\to v</span> of cost <span class="math inline">c(u,v)</span>, with <span class="math inline">h(G)=0</span>:</p>
+<p><span class="math display">h(u)\le c(u,v)+h(v).</span></p>
+<p>The estimated cost cannot drop by more than the cost of one move.</p>
+</div><div class="column" style="width:34%;">
+<p><img data-src="imgs/drawio/lec7/search-graph.png" class="informed-reference" alt="Reference graph: h(A) is 2, edge A to C costs 1, and h(C) is 1, so the consistency inequality on that edge is 2 less than or equal to 1 plus 1."></p>
+</div></div>
+<div class="fragment">
+<p>In our graph, <span class="math inline">A\to C</span> satisfies <span class="math inline">2\le 1+1</span>. Therefore, along a path:</p>
+<p><span class="math display">g(u)+h(u)\le g(u)+c(u,v)+h(v)=f(v).</span></p>
+</div>
+<div class="takeaway fragment">
+<p>With a consistent heuristic, the first current entry removed for a state has its optimal <span class="math inline">g</span>. A finalized-on-removal set is safe.</p>
+</div>
+<aside class="notes">
+<p>Consistency implies admissibility for states with a route to a goal, by summing the edge inequalities to a goal with h=0. Nonnegative heuristic values and edge costs are the convention throughout. Manhattan distance on the notebook’s four-direction unit-cost grid is consistent because one move changes that distance by at most 1. The distinction matters when transferring UCS’s visited-on-pop implementation to A*. Reference: Poole and Mackworth, https://artint.info/3e/html/ArtInt3e.Ch3.S7.html, section 3.7.2.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-cheaper-path-can-reopen-a-state" class="slide level2 informed-slide">
+<h2>A Cheaper Path Can Reopen a State</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
+<p><img data-src="imgs/drawio/lec7/reopening.png" class="informed-graph" alt="Directed edges S-A 3, S-B 1, B-A 1, A-G 2. Heuristics S 0, A 0, B 3, G 0. Reopening A after expanding B improves the goal route from 5 to 4."></p>
+<p><span class="math inline">h(B)=3&gt;1+h(A)=1</span>.</p>
+<p>This heuristic is <strong>admissible but inconsistent</strong>.</p>
+</div><div class="column" style="width:45%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>What changes?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Remove <span class="math inline">A</span>, <span class="math inline">f=3</span></td>
+<td>Discover <span class="math inline">G</span> at cost 5</td>
+</tr>
+<tr class="even">
+<td>Remove <span class="math inline">B</span>, <span class="math inline">f=4</span></td>
+<td>Improve <span class="math inline">A</span>: <span class="math inline">g=3</span> becomes <span class="math inline">2</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><strong>Reopen <span class="math inline">A</span>:</strong> put its better route back on the frontier, even though <span class="math inline">A</span> was expanded before.</p>
+<p>Expanding it again improves <span class="math inline">G</span> to <strong>4</strong>.</p>
+</div>
+</div></div>
+<div class="takeaway fragment">
+<p>Permanently ignoring <span class="math inline">A</span> after its first expansion would return <strong>5</strong>. Admissibility alone does not justify a permanent closed set.</p>
+</div>
+<aside class="notes">
+<p>This is a separate four-node graph. Its true remaining costs are S:4, B:3, A:2, G:0, so all shown h values are admissible. After expanding S, A has f=3+0=3 and B has f=1+3=4. A expands first. B then improves A to g=2, whose new f is 2. Reopening yields S-B-A-G at cost4. A best-g implementation without a permanent closed set performs this naturally. The original example illustrates the reopening requirement described in https://artint.info/3e/html/ArtInt3e.Ch3.S7.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-pseudocode-select-a-path" class="slide level2 informed-slide informed-pseudocode">
+<h2>A* Pseudocode: Select a Path</h2>
+<p>Each entry stores <strong><span class="math inline">(f,g,u)</span></strong>. <code>best[u]</code> records a path cost <span class="math inline">g</span>, not a priority <span class="math inline">f</span>.</p>
+<div class="pseudo-code" aria-label="A* selection pseudocode">
+  <div class="pseudo-line"><span class="pseudo-var">best</span> &lt;- <span class="pseudo-fn">default_map</span>(<span class="pseudo-lit">infinity</span>); <span class="pseudo-var">best</span>[<span class="pseudo-var">start</span>] &lt;- <span class="pseudo-num">0</span></div>
+  <div class="pseudo-line"><span class="pseudo-var">parent</span>[<span class="pseudo-var">start</span>] &lt;- <span class="pseudo-lit">None</span>; <span class="pseudo-var">Q</span> &lt;- <span class="pseudo-fn">min_priority_queue</span>()</div>
+  <div class="pseudo-line"><span class="pseudo-fn">push</span>(<span class="pseudo-var">Q</span>, (<span class="pseudo-fn">h</span>(<span class="pseudo-var">start</span>), <span class="pseudo-num">0</span>, <span class="pseudo-var">start</span>))</div>
+  <div class="pseudo-line fragment" data-fragment-index="0"><span class="pseudo-kw">while</span> <span class="pseudo-var">Q</span> is not empty:</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="0">(<span class="pseudo-var">priority</span>, <span class="pseudo-var">cost</span>, <span class="pseudo-var">u</span>) &lt;- <span class="pseudo-fn">pop_min</span>(<span class="pseudo-var">Q</span>)</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="1"><span class="pseudo-kw">if</span> <span class="pseudo-var">cost</span> != <span class="pseudo-var">best</span>[<span class="pseudo-var">u</span>]: <span class="pseudo-comment"># Skip an obsolete g value</span></div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-kw">continue</span></div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="2"><span class="pseudo-kw">if</span> <span class="pseudo-var">u</span> == <span class="pseudo-var">goal</span>:</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="2"><span class="pseudo-kw">return</span> <span class="pseudo-fn">reconstruct</span>(<span class="pseudo-var">parent</span>, <span class="pseudo-var">goal</span>), <span class="pseudo-var">cost</span></div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="3"><span class="pseudo-fn">RELAX_NEIGHBORS</span>(<span class="pseudo-var">u</span>, <span class="pseudo-var">cost</span>)</div>
+  <div class="pseudo-line fragment" data-fragment-index="3"><span class="pseudo-kw">return</span> <span class="pseudo-lit">failure</span></div>
+</div>
+<div class="informed-example">
+<div class="takeaway fragment" data-fragment-index="1">
+<p>For <span class="math inline">A</span>: <span class="math inline">f=4</span>, <span class="math inline">g=2</span>, <code>best[A]=2</code>.</p>
+<p>Compare <strong><span class="math inline">g</span></strong>, not <strong><span class="math inline">f</span></strong>, with <code>best[A]</code>; otherwise this valid entry would be discarded.</p>
+</div>
+<p><img data-src="imgs/drawio/lec7/search-graph.png" class="informed-reference" alt="Reference graph: S reaches A with cost g equal to 2; A has h equal to 2, giving priority f equal to 4."></p>
+</div>
+<aside class="notes">
+<p>This is the best-g graph-search variant, not a transcription of the notebook. The queue compares the first field f; the stored second field g detects stale entries. The neighbor procedure on the next slide shares graph, h, best, parent, and Q with this loop. The heuristic is a fixed function of the state. A tie-breaking counter can be added for states without a natural ordering. Parent reconstruction is the same as Lecture 6. The goal test follows the stale-entry check.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-pseudocode-improve-a-route" class="slide level2 informed-slide informed-pseudocode">
+<h2>A* Pseudocode: Improve a Route</h2>
+<p>For each edge <span class="math inline">u\to v</span> with cost <span class="math inline">w</span>, compare <strong>path costs</strong>, then compute the new <strong>priority</strong>.</p>
+<div class="pseudo-code" aria-label="A* relaxation pseudocode">
+  <div class="pseudo-line"><span class="pseudo-fn">RELAX_NEIGHBORS</span>(<span class="pseudo-var">u</span>, <span class="pseudo-var">cost</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">for</span> each outgoing edge (<span class="pseudo-var">u</span>, <span class="pseudo-var">v</span>) with cost <span class="pseudo-var">w</span>:</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="0"><span class="pseudo-var">candidate</span> &lt;- <span class="pseudo-var">cost</span> + <span class="pseudo-var">w</span></div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-kw">if</span> <span class="pseudo-var">candidate</span> &lt; <span class="pseudo-var">best</span>[<span class="pseudo-var">v</span>]:</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="2"><span class="pseudo-var">best</span>[<span class="pseudo-var">v</span>] &lt;- <span class="pseudo-var">candidate</span></div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="2"><span class="pseudo-var">parent</span>[<span class="pseudo-var">v</span>] &lt;- <span class="pseudo-var">u</span></div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="3"><span class="pseudo-var">priority</span> &lt;- <span class="pseudo-var">candidate</span> + <span class="pseudo-fn">h</span>(<span class="pseudo-var">v</span>)</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="3"><span class="pseudo-fn">push</span>(<span class="pseudo-var">Q</span>, (<span class="pseudo-var">priority</span>, <span class="pseudo-var">candidate</span>, <span class="pseudo-var">v</span>))</div>
+</div>
+<div class="informed-example">
+<div class="informed-example-text">
+<div class="fragment" data-fragment-index="3">
+<p>At <span class="math inline">C</span>: <code>candidate = 3 + 1 = 4 &lt; best[G] = 9</code>.</p>
+<p>Set <code>parent[G] = C</code>; insert <strong><span class="math inline">(4,4,G)</span></strong>.</p>
+</div>
 <div class="takeaway">
-<p>Yes, under the usual A* assumptions, because <span class="math inline">g(n)</span> penalizes paths that keep looping.</p>
+<p>Keep only strict improvements. Better routes can reopen a state.</p>
 </div>
-<ul>
-<li>Many A* implementations still track explored states for efficiency.</li>
-<li>The important point is that repeated states are a performance issue and a modeling issue, not the core reason A* works.</li>
-</ul>
+</div>
+<p><img data-src="imgs/drawio/lec7/search-graph.png" class="informed-reference" alt="Reference graph: S-A-C reaches C at cost 3. C-G adds 1, improving the route to G from 9 via B to 4 via C."></p>
+</div>
+<aside class="notes">
+<p>The state space and its outgoing edges are available to the procedure. There is no permanent closed set, so an admissible inconsistent heuristic can trigger a reopening. As in Lecture 6, the push creates a new heap entry rather than changing the older one. The old G entry with g9 remains harmless. Distinguish this graph-search version from the notebook’s deliberately compact path-tree implementation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="designing-heuristics" class="slide level2">
-<h2>Designing Heuristics</h2>
-<div class="columns visual-pair">
+<section id="heuristic-quality-and-memory" class="slide level2 informed-slide">
+<h2>Heuristic Quality and Memory</h2>
+<div class="columns">
 <div class="column" style="width:48%;">
-<h3 id="more-accurate">More Accurate</h3>
+<h3 id="more-informative-estimates">More informative estimates</h3>
 <ul>
-<li>Fewer node expansions.</li>
-<li>Better guidance.</li>
-<li>Often more expensive to compute.</li>
+<li><span class="math inline">h=0</span> gives UCS priorities.</li>
+<li>If <span class="math inline">0\le h_1\le h_2\le h^*</span>, <span class="math inline">h_2</span> provides a tighter lower bound.</li>
+<li>A stronger estimate may cost more to compute.</li>
 </ul>
 </div><div class="column" style="width:48%;">
-<h3 id="faster-to-compute">Faster to Compute</h3>
+<h3 id="limited-memory">Limited memory</h3>
 <ul>
-<li>Cheaper per node.</li>
-<li>May expand many more nodes.</li>
-<li>Useful when estimates must be lightweight.</li>
+<li>A* stores frontier entries and search records.</li>
+<li><strong>Simplified Memory-Bounded A* (SMA*)</strong> can forget a worst leaf and retain its backed-up estimate.</li>
+<li>Forgotten branches may need to be generated again.</li>
 </ul>
 </div></div>
-</section>
-<section id="memory-bounded-a" class="slide level2">
-<h2>Memory-Bounded A*</h2>
-<ul>
-<li>Standard A* can require storing many frontier nodes.</li>
-<li>Memory-bounded A* limits frontier size.</li>
-<li>When memory fills, it removes the least promising node.</li>
-<li>The parent remembers the best forgotten child value.</li>
-</ul>
 <div class="takeaway">
-<p>Memory-bounded A* trades memory for time: it may need to re-explore forgotten parts of the search space.</p>
+<p>Search time depends on both the number of expansions and the cost per expansion. Saving memory can require repeated work.</p>
+</div>
+<aside class="notes">
+<p>This is a brief connection to the archived lecture’s memory-bounded search topic. A tighter admissible heuristic is more informative, but equal-f tie breaking and evaluation overhead mean elapsed time does not always improve. SMA* bounds stored search nodes, not merely an arbitrary truncated heap. It backs forgotten estimates up to parents and regenerates promising branches. Its completeness and optimality depend on having sufficient memory for the relevant solution path. Do not present dropping queue entries without bookkeeping as an optimal memory-bounded algorithm. Details follow AIMA Chapter 3 and the original Lecture 7.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-if-the-heuristic-overestimates" class="slide level2 informed-slide">
+<h2>What If the Heuristic Overestimates?</h2>
+<div class="columns">
+<div class="column" style="width:56%;">
+<p><img data-src="imgs/drawio/lec7/overestimate.png" class="informed-graph" alt="The original search graph, except A's heuristic is changed from 2 to 10, larger than its true remaining cost of 2."></p>
+</div><div class="column" style="width:41%;">
+<p>Change only <strong><span class="math inline">h(A)</span> from 2 to 10</strong>.</p>
+<p>After <span class="math inline">S</span>, which entry has smaller <span class="math inline">f</span>?</p>
+<p>After <span class="math inline">B</span>, does A* choose <span class="math inline">A</span> or <span class="math inline">G</span>?</p>
+<div class="fragment">
+<p>After <span class="math inline">S</span>: <span class="math inline">f(B)=2</span>, <span class="math inline">f(A)=12</span>.</p>
+<p>After <span class="math inline">B</span>: <span class="math inline">f(G)=9</span>, <span class="math inline">f(A)=12</span>.</p>
+</div>
+</div></div>
+<div class="takeaway fragment">
+<p>A* returns cost <strong>9</strong>, missing the cost-<strong>4</strong> route. Here <span class="math inline">h(A)=10&gt;h^*(A)=2</span>, so admissibility fails.</p>
+</div>
+<aside class="notes">
+<p>Pause for a prediction before revealing the arithmetic. The graph and edge costs have not changed. An overestimate does not force failure in every problem, but this counterexample shows that the optimality guarantee is lost. Even testing the goal on removal cannot repair an arbitrary overestimating heuristic.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-notebooks-grid-example" class="slide level2 informed-slide">
+<h2>The Notebook’s Grid Example</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p><img data-src="imgs/drawio/lec7/notebook-path.png" class="informed-notebook" alt="Saved A* notebook output showing the route through a 10-row, 15-column grid from row9 column8 to row2 column3."></p>
+</div><div class="column" style="width:49%;">
+<p>Start <strong><span class="math inline">(9,8)</span></strong>, goal <strong><span class="math inline">(2,3)</span></strong>; positions are <strong>(row, column)</strong>.</p>
+<p><span class="math display">h(\text{start})=|9-2|+|8-3|=12.</span></p>
+<p>The saved route has <strong>15 cells</strong>, so it uses <strong>14 moves</strong>. Walls require a detour.</p>
+<h3 id="reading-a-heap-entry">Reading a heap entry</h3>
+<p><code>(f, position, path)</code> stores the priority, current cell, and path prefix. The prefix excludes the current cell.</p>
+<p><a href="../code_and_homework/search_A_star.html" target="_blank" rel="noopener">A* search notebook</a></p>
+</div></div>
+<aside class="notes">
+<p>Use this slide to transition to the notebook rather than duplicating its Python code. Each printed line is the popped f, position, and path prefix. The initial start entry uses priority0 rather than h(start)=12, which is harmless because it is the sole entry. Subsequent priorities use g+h. len(new_path) equals the unit-cost route length to a neighbor because the stored old prefix excludes its current cell. The drawings occur before the next pop, so the green circle marks the previously selected position. The final saved route has14 moves, and the sample trace removes21 entries including the goal; three positions repeat. The image is the existing notebook’s final saved output, extracted unchanged.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="takeaways" class="slide level2 informed-slide">
+<h2>Takeaways</h2>
+<div class="columns">
+<div class="column" style="width:73%;">
+<ul>
+<li><strong>Greedy</strong> ranks by <span class="math inline">h</span>. <strong>A*</strong> ranks by <span class="math inline">g+h</span>.</li>
+<li><strong>Admissibility</strong> bounds the remaining-cost estimate. <strong>Consistency</strong> permits finalizing states on removal.</li>
+<li>Compare <strong><span class="math inline">g</span> costs</strong> when improving a route. Reopen states when necessary.</li>
+<li>A heuristic guides exploration. Duplicate handling determines how much repeated work remains.</li>
+</ul>
+</div><div class="column" style="width:23%;">
+<p><img data-src="imgs/lec3/puzzle_openclipart.svg" class="cc0-icon" alt="Puzzle icon."></p>
+</div></div>
+<div class="takeaway">
+<p>In the <a href="../code_and_homework/search_A_star.html" target="_blank" rel="noopener">A* notebook</a>, identify the heuristic, queue priority, goal test, and path representation.</p>
 </div>
 <p><a class="asset-credit-link" href="../asset_credits.html#lec7" target="_blank" rel="noopener">Asset credits</a></p>
 

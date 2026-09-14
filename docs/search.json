@@ -221,7 +221,7 @@
     "href": "slides/lec7_Informed_Search.html#greedy-best-first-search",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Greedy Best-First Search",
-    "text": "Greedy Best-First Search\nGreedy Best-First Search expands the node that appears closest to the goal.\n\n\n\nQuantity\nUsed by Greedy?\n\n\n\n\nh(n): estimated remaining cost\nYes\n\n\ng(n): cost already paid\nNo\n\n\n\n\nGreedy search can be fast, but it can also choose a cheap-looking path that becomes expensive later."
+    "text": "Greedy Best-First Search\n\n\n\n\nGreedy chooses the smallest h.\nAfter expanding S:\n\n\n\nNode\ng\nh\n\n\n\n\nA\n2\n2\n\n\nB\n1\n1\n\n\n\n\nChoose B: its estimate is h(B)=1.\n\n\n\nNumbers beside arrows are actual edge costs. Blue h labels are estimates, not extra edge costs.\n\n\nOnly the five directed edges shown exist. Coordinates are layout choices, not geographic distances. Heuristics are supplied values, not distances measured from the drawing. B looks close according to h even though its only outgoing edge to G costs 8. Greedy ignores g when ranking entries, although g is still needed to report the returned route’s cost."
   },
   {
     "objectID": "slides/lec7_Informed_Search.html#a-search",
@@ -235,7 +235,7 @@
     "href": "slides/lec7_Informed_Search.html#admissible-heuristics",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Admissible Heuristics",
-    "text": "Admissible Heuristics\n\nA heuristic h(n) is admissible if it never overestimates the true cost to reach the goal:\n\nh(n) \\le h^*(n)\n\n\n\nIf h is admissible, A* can find an optimal solution.\nIntuitively, admissibility keeps the heuristic optimistic."
+    "text": "Admissible Heuristics\nAn admissible heuristic never overestimates the cheapest remaining cost h^*(n).\n\n\n0\\le h(n)\\le h^*(n).\nAt the goal, h(G)=0.\n\n\n\n\n\nNode\nEstimate h\nTrue remaining cost h^*\n\n\n\n\nS\n2\n4\n\n\nA\n2\n2\n\n\nB\n1\n8\n\n\nC\n1\n1\n\n\nG\n0\n0\n\n\n\n\n\nThe example’s heuristic is admissible, even though h(B)=1 is a poor estimate of 8. Admissible does not mean exact.\n\n\nh-star is the optimal remaining cost, not the best cost from the start. All five inequalities can be checked on the displayed graph. Computing exact remaining costs generally requires solving the problem, which defeats the purpose of a cheap heuristic. Admissibility alone does not guarantee optimality for a graph-search implementation that permanently closes states without allowing improvements. The following slides distinguish those cases. Definitions follow the archived Lecture 7 and AIMA Chapter 3."
   },
   {
     "objectID": "slides/lec7_Informed_Search.html#one-priority-queue-many-searches",
@@ -1236,7 +1236,7 @@
     "href": "asset_credits.html#lec7",
     "title": "Visual Asset Credits",
     "section": "Lecture 7: Informed Search",
-    "text": "Lecture 7: Informed Search\nReused OpenClipart assets: robot, puzzle, puzzle head, and car top-view images from Lectures 1 and 3."
+    "text": "Lecture 7: Informed Search\nThe grid-distance diagram, weighted search graph, Greedy and A* animation frames, reopening example, and overestimation example are original course illustrations by Peizhong Ju, assisted by Codex. Editable draw.io sources are stored under slides/imgs/drawio/lec7/, with PNG exports for the slides. The grid route image is the unchanged final saved output of the course’s A* search notebook.\nReused public-domain OpenClipart assets: puzzle and puzzle head, from Lecture 3. Search concepts follow AIMA Chapter 3, with additional reference to the UC Berkeley informed-search notes and Poole and Mackworth’s discussion of repeated paths and consistency."
   },
   {
     "objectID": "asset_credits.html#lec8",
@@ -8069,5 +8069,124 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Other Ways to Handle Duplicate Entries",
     "text": "Other Ways to Handle Duplicate Entries\nAssume nonnegative edge costs. The exact cost != best[u] check is not required in every UCS implementation.\n\n\n\n\n\n\n\nMethod\nHow repeated work is avoided\n\n\n\n\nCost check (these slides)\nInsert improved entries; skip an entry whose stored cost differs from best[u].\n\n\nFinalized set (notebook)\nOn removal, skip a node already finalized; otherwise finalize it and test the goal.\n\n\nDecrease-key\nKeep one pending entry per node and lower its priority on improvement. No obsolete entry remains.\n\n\n\n\nIn this pseudocode, strict cost-improvement updates already make stale expansions redundant. Removing the check keeps the correct result, but can waste work.\n\n\nFor UCS, finalize a node on removal, not when it is first discovered.\n\n\nThese are alternatives, not three checks that must all be used together. In the current pseudocode, (3, A) is removed before (6, A), and all outgoing edges of A have already been relaxed using cost 3. Relaxing them again from cost 6 cannot beat the recorded costs, because updates require a strict improvement. Thus skipping the stale entry avoids redundant neighbor scans; omitting this guard does not change the answer under the stated assumptions. This observation is specific to this strict-improvement implementation, not to arbitrary search code. A finalized set is correct with nonnegative costs only when nodes are finalized on removal. Marking A at its first discovery with cost 6 would incorrectly block the route of cost 3. Python’s heapq has no built-in decrease-key operation, which is why inserting a new entry and later skipping duplicates is convenient. The notebook’s visited set implements finalized-on-pop, and its goal test follows the duplicate check."
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#cost-so-far-and-estimated-cost-remaining",
+    "href": "slides/lec7_Informed_Search.html#cost-so-far-and-estimated-cost-remaining",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Cost So Far and Estimated Cost Remaining",
+    "text": "Cost So Far and Estimated Cost Remaining\n\n\nInformed search uses a heuristic: an estimate of the remaining cost to a goal.\n\ng(n): cost of the current route from the start to n.\nh(n): estimated cost from n to the goal.\n\n\n\n\nSearch\nSmallest priority first\n\n\n\n\nUniform-cost search (UCS)\ng(n)\n\n\nGreedy best-first search\nh(n)\n\n\nA* (“A-star”)\nf(n)=g(n)+h(n)\n\n\n\n\n\n\n\nAll three can use a min-priority queue. The priority key determines which entry comes out next.\n\n\nKeep approximately 30-33 minutes for the slides and 17-20 minutes for the existing A* notebook. The two animated searches share one graph, so the second trace should move more quickly. Recall that UCS is uninformed even though it uses edge costs. A heuristic adds goal-directed information; it does not guarantee a speedup on every problem. Search terminology follows AIMA Chapter 3 and the archived Lecture 7."
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#grid-distance-as-a-heuristic",
+    "href": "slides/lec7_Informed_Search.html#grid-distance-as-a-heuristic",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Grid Distance as a Heuristic",
+    "text": "Grid Distance as a Heuristic\n\n\n\n\nEuclidean distance\nh_{\\text{Euc}}=\\sqrt{(x_g-x)^2+(y_g-y)^2}\nHere: \\sqrt{4^2+3^2}=5.\nManhattan distance\nh_{\\text{Man}}=|x_g-x|+|y_g-y|\nHere: 4+3=7.\n\n\nWith four-direction, unit-cost moves, 7 is the exact cost without walls. Walls can require extra moves.\n\n\nThe diagram uses Cartesian coordinates for the distance calculation. The notebook stores positions as (row, column), but the absolute-difference formula is identical. Diagonal moves are not allowed in this example. Both estimates are lower bounds under these movement rules, with Manhattan at least as informative as Euclidean. All distance diagrams are editable draw.io sources."
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#designing-a-heuristic",
+    "href": "slides/lec7_Informed_Search.html#designing-a-heuristic",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Designing a Heuristic",
+    "text": "Designing a Heuristic\nA relaxed problem removes a constraint. Its cheapest solution can provide a lower bound for the original problem.\n\n\n\n\n\n\n\n\nProblem\nSimplification\nHeuristic\n\n\n\n\nFour-direction unit grid\nIgnore walls\nManhattan distance\n\n\nRoad routing by distance\nAllow a direct straight route\nStraight-line distance\n\n\n8-puzzle, one slide costs 1\nLet each numbered tile move independently\nSum of tile Manhattan distances\n\n\n\n\nFor the 8-puzzle, the number of misplaced numbered tiles is another lower bound. Exclude the blank from both estimates.\n\n\nThe heuristic must match the allowed actions and the cost units. Kilometers cannot be added directly to minutes.\n\n\nFor the tile-distance heuristic, allowing tiles to move independently removes interference and the blank restriction. Every legal move changes the position of one numbered tile by one square, so the sum cannot exceed the number of moves required. With weighted grid moves, unscaled Manhattan distance is not automatically a valid cost estimate; a known minimum move cost can supply a scale factor. Relaxation and puzzle examples follow AIMA Chapter 3. See also https://inst.eecs.berkeley.edu/~cs188/textbook/search/informed.html#141-heuristics."
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#greedy-frontier",
+    "href": "slides/lec7_Informed_Search.html#greedy-frontier",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Greedy: Follow the Frontier",
+    "text": "Greedy: Follow the Frontier\n\nRemove the smallest h. Each row shows the frontier after processing the selected node.\n\n\n  \n    \n      \n      \n      \n      \n      \n    \n    FrontierThis stepProcessed\n    Gold edges: routes just discovered. Final frame: returned route.\n  \n  \n    \n\n\n\n\n\n\n\nRemove\nFrontier: node:h\n\n\n\n\nStart\n[S:2]\n\n\nS\n[B:1, A:2]\n\n\nB\n[G:0, A:2]\n\n\nG\nReturn goal, cost 9\n\n\n\n\n    Estimated distance h determines the order, not route cost g.\n  \n\n\nS\\to B\\to G costs 1+8=9. The unexplored route S\\to A\\to C\\to G costs only 4.\n\n\nAsk which node comes out after B. Even a heuristic that never overestimates does not make greedy search optimal. Greedy can be complete on a finite graph with proper duplicate handling, but without that restriction it can loop or chase an infinite branch. Do not state unconditional incompleteness for every implementation. The graph and trace are original course examples."
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#a-adds-the-cost-so-far",
+    "href": "slides/lec7_Informed_Search.html#a-adds-the-cost-so-far",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A* Adds the Cost So Far",
+    "text": "A* Adds the Cost So Far\n\\underbrace{f(n)}_{\\text{estimated total}}=\\underbrace{g(n)}_{\\text{cost so far}}+\\underbrace{h(n)}_{\\text{remaining estimate}}\n\n\nThe first choice is still B: f(B)=1+1=2, while f(A)=2+2=4.\n\nBut after expanding B, the decision changes:\n\n\n\nFrontier node\ng\nh\nf=g+h\n\n\n\n\nA\n2\n2\n4\n\n\nG, via B\n9\n0\n9\n\n\n\n\n\n\n\n\nA* chooses A before G. A goal can have h=0 and still have an expensive total route.\n\n\nDistinguish the goal’s zero remaining cost from the cost of reaching it. The priority uses the g value of this particular queued path. Setting every h to zero recovers UCS priorities. Definition follows the archived Lecture 7 and AIMA Chapter 3."
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#a-follow-the-frontier-astar-frontier-.informed-slide-.search-trace-.ucs-trace",
+    "href": "slides/lec7_Informed_Search.html#a-follow-the-frontier-astar-frontier-.informed-slide-.search-trace-.ucs-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A*: Follow the Frontier {#astar-frontier .informed-slide .search-trace .ucs-trace}",
+    "text": "A*: Follow the Frontier {#astar-frontier .informed-slide .search-trace .ucs-trace}\n\nRemove the smallest f = g + h. Keep best g costs separately from queue priorities.\n\n\n  \n    \n      \n      \n      \n      \n      \n      \n      \n    \n    FrontierThis stepProcessed\n    Gold edges: new or improved routes. Final frame: returned route.\n  \n  \n    \n      Best path costs: gGold = updated\n      \n\n\n\nS\nA\nB\nC\nG\n\n\n\n\n0\n∞\n∞\n∞\n∞\n\n\n0\n2\n1\n∞\n∞\n\n\n0\n2\n1\n∞\n9\n\n\n0\n2\n1\n3\n9\n\n\n0\n2\n1\n3\n4\n\n\n0\n2\n1\n3\n4\n\n\n\n\n    \n    \n\n\n\n\n\n\n\nRemove\nFrontier: node:f\n\n\n\n\nStart\n[S:2]\n\n\nS\n[B:2, A:4]\n\n\nB\n[A:4, G:9]\n\n\nA\n[C:4, G:9]\n\n\nC\n[G:4]\n\n\nG\nReturn goal, cost 4\n\n\n\n\n    Sorted for explanation. Old G:9 is omitted after its improvement.\n  \n\n\nA* returns S\\to A\\to C\\to G, cost 4. In this example it examines more nodes than Greedy to find the cheaper route.\n\n\nThe graph, frontier rows, and best-g record reveal together. The best table retains costs for processed nodes. The graph’s heuristic is consistent: h(S)=2, h(A)=2, h(B)=1, h(C)=1, h(G)=0. No reopenings occur in this example. Queue priorities remain 2,2,4,4,4 in removal order. A lazy heap still contains the old G entry at priority 9 when the algorithm returns. Parent[G] changes from B to C when C discovers the cheaper route. Goal removal is acceptance, not an expansion of outgoing edges."
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#goal-discovery-is-only-a-proposal",
+    "href": "slides/lec7_Informed_Search.html#goal-discovery-is-only-a-proposal",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Goal Discovery Is Only a Proposal",
+    "text": "Goal Discovery Is Only a Proposal\n\n\n\n\nAfter B, a route to G costs 9.\nBut A is still waiting with f(A)=4.\n\nA frontier path on an optimal route has\nf(n)\\le C^*,\nwhere C^* is the optimal solution cost.\n\n\n\nFor nonnegative costs and admissible h, preserve improved paths and test the goal on removal. A suboptimal goal cannot have the smallest f.\n\n\nAssume nonnegative edge costs and a finite graph for the graph-search argument here. Preserve a best frontier prefix of an optimal route by allowing improved paths. On that prefix g is its optimal-route prefix cost, so g+h is at most C-star. A suboptimal goal has h=0 and f=g greater than C-star, so it cannot precede that prefix. This is not a claim that every arbitrary path to n has f at most C-star. For infinite or path-tree spaces, sufficient termination conditions include a reachable goal of finite cost, finite branching, a fixed positive lower bound on edge costs, and a nonnegative admissible heuristic. Proof reference: https://inst.eecs.berkeley.edu/~cs188/textbook/search/informed.html#144-admissibility."
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#consistency-and-finalized-states",
+    "href": "slides/lec7_Informed_Search.html#consistency-and-finalized-states",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Consistency and Finalized States",
+    "text": "Consistency and Finalized States\n\n\nA consistent heuristic obeys this inequality for every edge u\\to v of cost c(u,v), with h(G)=0:\nh(u)\\le c(u,v)+h(v).\nThe estimated cost cannot drop by more than the cost of one move.\n\n\n\n\nIn our graph, A\\to C satisfies 2\\le 1+1. Therefore, along a path:\ng(u)+h(u)\\le g(u)+c(u,v)+h(v)=f(v).\n\n\nWith a consistent heuristic, the first current entry removed for a state has its optimal g. A finalized-on-removal set is safe.\n\n\nConsistency implies admissibility for states with a route to a goal, by summing the edge inequalities to a goal with h=0. Nonnegative heuristic values and edge costs are the convention throughout. Manhattan distance on the notebook’s four-direction unit-cost grid is consistent because one move changes that distance by at most 1. The distinction matters when transferring UCS’s visited-on-pop implementation to A*. Reference: Poole and Mackworth, https://artint.info/3e/html/ArtInt3e.Ch3.S7.html, section 3.7.2."
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#a-cheaper-path-can-reopen-a-state",
+    "href": "slides/lec7_Informed_Search.html#a-cheaper-path-can-reopen-a-state",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Cheaper Path Can Reopen a State",
+    "text": "A Cheaper Path Can Reopen a State\n\n\n\nh(B)=3&gt;1+h(A)=1.\nThis heuristic is admissible but inconsistent.\n\n\n\n\nStep\nWhat changes?\n\n\n\n\nRemove A, f=3\nDiscover G at cost 5\n\n\nRemove B, f=4\nImprove A: g=3 becomes 2\n\n\n\n\nReopen A: put its better route back on the frontier, even though A was expanded before.\nExpanding it again improves G to 4.\n\n\n\nPermanently ignoring A after its first expansion would return 5. Admissibility alone does not justify a permanent closed set.\n\n\nThis is a separate four-node graph. Its true remaining costs are S:4, B:3, A:2, G:0, so all shown h values are admissible. After expanding S, A has f=3+0=3 and B has f=1+3=4. A expands first. B then improves A to g=2, whose new f is 2. Reopening yields S-B-A-G at cost4. A best-g implementation without a permanent closed set performs this naturally. The original example illustrates the reopening requirement described in https://artint.info/3e/html/ArtInt3e.Ch3.S7.html."
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#a-pseudocode-select-a-path",
+    "href": "slides/lec7_Informed_Search.html#a-pseudocode-select-a-path",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A* Pseudocode: Select a Path",
+    "text": "A* Pseudocode: Select a Path\nEach entry stores (f,g,u). best[u] records a path cost g, not a priority f.\n\n  best &lt;- default_map(infinity); best[start] &lt;- 0\n  parent[start] &lt;- None; Q &lt;- min_priority_queue()\n  push(Q, (h(start), 0, start))\n  while Q is not empty:\n  (priority, cost, u) &lt;- pop_min(Q)\n  if cost != best[u]: # Skip an obsolete g value\n  continue\n  if u == goal:\n  return reconstruct(parent, goal), cost\n  RELAX_NEIGHBORS(u, cost)\n  return failure\n\n\n\nFor A: f=4, g=2, best[A]=2.\nCompare g, not f, with best[A]; otherwise this valid entry would be discarded.\n\n\n\n\nThis is the best-g graph-search variant, not a transcription of the notebook. The queue compares the first field f; the stored second field g detects stale entries. The neighbor procedure on the next slide shares graph, h, best, parent, and Q with this loop. The heuristic is a fixed function of the state. A tie-breaking counter can be added for states without a natural ordering. Parent reconstruction is the same as Lecture 6. The goal test follows the stale-entry check."
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#a-pseudocode-improve-a-route",
+    "href": "slides/lec7_Informed_Search.html#a-pseudocode-improve-a-route",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A* Pseudocode: Improve a Route",
+    "text": "A* Pseudocode: Improve a Route\nFor each edge u\\to v with cost w, compare path costs, then compute the new priority.\n\n  RELAX_NEIGHBORS(u, cost)\n  for each outgoing edge (u, v) with cost w:\n  candidate &lt;- cost + w\n  if candidate &lt; best[v]:\n  best[v] &lt;- candidate\n  parent[v] &lt;- u\n  priority &lt;- candidate + h(v)\n  push(Q, (priority, candidate, v))\n\n\n\n\nAt C: candidate = 3 + 1 = 4 &lt; best[G] = 9.\nSet parent[G] = C; insert (4,4,G).\n\n\nKeep only strict improvements. Better routes can reopen a state.\n\n\n\n\n\nThe state space and its outgoing edges are available to the procedure. There is no permanent closed set, so an admissible inconsistent heuristic can trigger a reopening. As in Lecture 6, the push creates a new heap entry rather than changing the older one. The old G entry with g9 remains harmless. Distinguish this graph-search version from the notebook’s deliberately compact path-tree implementation."
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#tree-search-in-the-notebook",
+    "href": "slides/lec7_Informed_Search.html#tree-search-in-the-notebook",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Tree Search in the Notebook",
+    "text": "Tree Search in the Notebook\nThe existing notebook stores paths. It has no best-cost dictionary or permanent visited set.\n\n\n\n\n\n\n\nQuestion\nConsequence\n\n\n\n\nCan the same cell appear again?\nYes, through another path or a cycle.\n\n\nDoes a larger g remove duplicates?\nNo. It changes priority but does not deduplicate.\n\n\nWhat if the goal is unreachable?\nA reachable cycle can create paths forever.\n\n\n\n\nWith a reachable goal, finite branching, edge costs c\\ge\\epsilon&gt;0, and admissible h\\ge0, A* tree search finds an optimal route.\n\n\nThe notebook’s unit-cost grid satisfies those assumptions when a route exists. Best-cost tracking avoids repeated inferior paths.\n\n\nEpsilon is a fixed positive lower bound on every edge cost, not merely a different positive number for each edge in an infinite graph. With an optimal route of finite cost C-star, only finitely many path nodes can have f at most C-star under finite branching and this bound. The notebook has branching at most four and edge cost1. The saved output shows 21 removals with three repeated positions. A finite state graph does not imply a finite path tree. Do not claim that g alone prevents revisiting states. The original Beamer statement has been qualified to reflect these distinctions. Source for sufficient A* conditions: Poole and Mackworth, https://artint.info/3e/html/ArtInt3e.Ch3.S6.html."
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#heuristic-quality-and-memory",
+    "href": "slides/lec7_Informed_Search.html#heuristic-quality-and-memory",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Heuristic Quality and Memory",
+    "text": "Heuristic Quality and Memory\n\n\nMore informative estimates\n\nh=0 gives UCS priorities.\nIf 0\\le h_1\\le h_2\\le h^*, h_2 provides a tighter lower bound.\nA stronger estimate may cost more to compute.\n\n\nLimited memory\n\nA* stores frontier entries and search records.\nSimplified Memory-Bounded A* (SMA*) can forget a worst leaf and retain its backed-up estimate.\nForgotten branches may need to be generated again.\n\n\n\nSearch time depends on both the number of expansions and the cost per expansion. Saving memory can require repeated work.\n\n\nThis is a brief connection to the archived lecture’s memory-bounded search topic. A tighter admissible heuristic is more informative, but equal-f tie breaking and evaluation overhead mean elapsed time does not always improve. SMA* bounds stored search nodes, not merely an arbitrary truncated heap. It backs forgotten estimates up to parents and regenerates promising branches. Its completeness and optimality depend on having sufficient memory for the relevant solution path. Do not present dropping queue entries without bookkeeping as an optimal memory-bounded algorithm. Details follow AIMA Chapter 3 and the original Lecture 7."
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#what-if-the-heuristic-overestimates",
+    "href": "slides/lec7_Informed_Search.html#what-if-the-heuristic-overestimates",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "What If the Heuristic Overestimates?",
+    "text": "What If the Heuristic Overestimates?\n\n\n\n\nChange only h(A) from 2 to 10.\nAfter S, which entry has smaller f?\nAfter B, does A* choose A or G?\n\nAfter S: f(B)=2, f(A)=12.\nAfter B: f(G)=9, f(A)=12.\n\n\n\nA* returns cost 9, missing the cost-4 route. Here h(A)=10&gt;h^*(A)=2, so admissibility fails.\n\n\nPause for a prediction before revealing the arithmetic. The graph and edge costs have not changed. An overestimate does not force failure in every problem, but this counterexample shows that the optimality guarantee is lost. Even testing the goal on removal cannot repair an arbitrary overestimating heuristic."
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#the-notebooks-grid-example",
+    "href": "slides/lec7_Informed_Search.html#the-notebooks-grid-example",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Notebook’s Grid Example",
+    "text": "The Notebook’s Grid Example\n\n\n\n\nStart (9,8), goal (2,3); positions are (row, column).\nh(\\text{start})=|9-2|+|8-3|=12.\nThe saved route has 15 cells, so it uses 14 moves. Walls require a detour.\nReading a heap entry\n(f, position, path) stores the priority, current cell, and path prefix. The prefix excludes the current cell.\nA* search notebook\n\n\nUse this slide to transition to the notebook rather than duplicating its Python code. Each printed line is the popped f, position, and path prefix. The initial start entry uses priority0 rather than h(start)=12, which is harmless because it is the sole entry. Subsequent priorities use g+h. len(new_path) equals the unit-cost route length to a neighbor because the stored old prefix excludes its current cell. The drawings occur before the next pop, so the green circle marks the previously selected position. The final saved route has14 moves, and the sample trace removes21 entries including the goal; three positions repeat. The image is the existing notebook’s final saved output, extracted unchanged."
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#takeaways",
+    "href": "slides/lec7_Informed_Search.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\n\n\nGreedy ranks by h. A* ranks by g+h.\nAdmissibility bounds the remaining-cost estimate. Consistency permits finalizing states on removal.\nCompare g costs when improving a route. Reopen states when necessary.\nA heuristic guides exploration. Duplicate handling determines how much repeated work remains.\n\n\n\n\n\nIn the A* notebook, identify the heuristic, queue priority, goal test, and path representation.\n\nAsset credits"
+  },
+  {
+    "objectID": "slides/lec7_Informed_Search.html#astar-frontier",
+    "href": "slides/lec7_Informed_Search.html#astar-frontier",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A* Frontier Trace",
+    "text": "A* Frontier Trace\n\nRemove the smallest f = g + h. Keep best g costs separately from queue priorities.\n\n\n  \n    \n      \n      \n      \n      \n      \n      \n      \n    \n    FrontierThis stepProcessed\n    Gold edges: new or improved routes. Final frame: returned route.\n  \n  \n    \n      Best path costs: gGold = updated\n      \n\n\n\nS\nA\nB\nC\nG\n\n\n\n\n0\n∞\n∞\n∞\n∞\n\n\n0\n2\n1\n∞\n∞\n\n\n0\n2\n1\n∞\n9\n\n\n0\n2\n1\n3\n9\n\n\n0\n2\n1\n3\n4\n\n\n0\n2\n1\n3\n4\n\n\n\n\n    \n    \n\n\n\n\n\n\n\nRemove\nFrontier: node:f\n\n\n\n\nStart\n[S:2]\n\n\nS\n[B:2, A:4]\n\n\nB\n[A:4, G:9]\n\n\nA\n[C:4, G:9]\n\n\nC\n[G:4]\n\n\nG\nReturn goal, cost 4\n\n\n\n\n    Sorted by f. Stale G:9 omitted.\n  \n\n\nA* returns S\\to A\\to C\\to G, cost 4. Greedy returned cost 9.\n\n\nThe graph, frontier rows, and best-g record reveal together. The best table retains costs for processed nodes. The graph’s heuristic is consistent: h(S)=2, h(A)=2, h(B)=1, h(C)=1, h(G)=0. No reopenings occur in this example. Queue priorities remain 2,2,4,4,4 in removal order. A lazy heap still contains the old G entry at priority 9 when the algorithm returns. Parent[G] changes from B to C when C discovers the cheaper route. Goal removal is acceptance, not an expansion of outgoing edges."
   }
 ]

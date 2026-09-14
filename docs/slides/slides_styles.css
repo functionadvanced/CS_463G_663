@@ -1274,6 +1274,68 @@
   line-height: 1.38;
 }
 
+/* Lecture 7 uses the same trace components with cost and heuristic labels. */
+.reveal section.informed-slide {
+  font-size: 0.88em;
+}
+
+.reveal section.informed-slide table {
+  font-size: 0.8em;
+  line-height: 1.25;
+}
+
+.reveal section.informed-slide th,
+.reveal section.informed-slide td {
+  padding: 0.44em 0.5em;
+}
+
+.reveal section.informed-slide .informed-graph,
+.reveal section.informed-slide .informed-grid,
+.reveal section.informed-slide .informed-notebook {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 345px;
+  object-fit: contain;
+  margin: 0.15em auto;
+}
+
+.reveal section.informed-slide .informed-notebook {
+  max-height: 385px;
+}
+
+.reveal section.informed-slide .informed-reference {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 245px;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+.reveal section.informed-slide .informed-example {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 24px;
+  align-items: center;
+  margin-top: 0.35em;
+}
+
+.reveal section.informed-slide .informed-example p,
+.reveal section.informed-slide .informed-example .takeaway {
+  margin: 0.25em 0;
+}
+
+.reveal section.informed-pseudocode .pseudo-code {
+  font-size: 0.72em;
+  line-height: 1.38;
+}
+
+.reveal section.informed-slide.ucs-trace .trace-table th,
+.reveal section.informed-slide.ucs-trace .trace-table td {
+  padding: 0.24em 0.4em;
+}
+
 .pseudo-code {
   background: #f3fbfb;
   border: 0;
