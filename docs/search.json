@@ -144,7 +144,7 @@
     "href": "slides/lec9_Adversarial_Search.html#tic-tac-toe-game-tree",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Tic-Tac-Toe Game Tree",
-    "text": "Tic-Tac-Toe Game Tree\n\nTic-tac-toe game tree\nFig. 6.1 of AIMA: each level corresponds to one player’s move."
+    "text": "Tic-Tac-Toe Game Tree\n\n\nEach edge is one player’s move, or one ply. Branches can end at different depths.\n\n\nAsk why the middle branch stops before O moves. Other branches continue even though their descendants are omitted in this sketch; they must not be treated as terminal. The top layer is MAX’s decision; a surviving child is MIN’s turn. A two-ply search includes one X move and one O reply, unless a terminal state is reached sooner. Tic-tac-toe ends after at most nine plies from the empty board. All board diagrams are original course drawings."
   },
   {
     "objectID": "slides/lec9_Adversarial_Search.html#utility",
@@ -1243,14 +1243,14 @@
     "href": "asset_credits.html#lec8",
     "title": "Visual Asset Credits",
     "section": "Lecture 8: Search Review",
-    "text": "Lecture 8: Search Review\nReuses ../lec1/tree_roots_openclipart.svg from OpenClipart.\nThe weighted search graph, spatial partitions, KD-tree pruning example, and growth-rate sketch are original course illustrations. The search traces and classroom exercises were written for this lecture. Search concepts follow AIMA Chapter 3 and the UC Berkeley CS 188 search notes."
+    "text": "Lecture 8: Search Review\nReuses ../lec1/tree_roots_openclipart.svg from OpenClipart.\nThe weighted search graph, spatial partitions, and KD-tree pruning example are original course illustrations by Peizhong Ju, assisted by Codex. Editable draw.io sources and PNG exports are stored under slides/imgs/drawio/lec8/. The growth-rate chart plots actual mathematical functions using NumPy and Matplotlib; its source is slides/imgs/lec8/plot_growth_rates.py, with a vector export for the slides.\nSearch concepts follow AIMA Chapter 3 and the UC Berkeley CS 188 search notes. The KD-tree explanation also references Carl Kingsford’s KD-tree lecture and the SciPy KDTree documentation. The worked graphs and exercises are original course examples."
   },
   {
     "objectID": "asset_credits.html#lec9",
     "href": "asset_credits.html#lec9",
     "title": "Visual Asset Credits",
     "section": "Lecture 9: Adversarial Search",
-    "text": "Lecture 9: Adversarial Search\nCarried-over assets needing source verification: TicTacToe.png, max_min_tree.png, min_max_tic_tac_toe.png. Reuses OpenClipart chessboard and poker-card images."
+    "text": "Lecture 9: Adversarial Search\nThe active lecture uses locally redrawn draw.io diagrams in slides/imgs/drawio/lec9/: the game state, game tree, terminal outcomes, minimax backup frames, and exercise/answer tree. Editable .drawio sources accompany the PNG exports. The older raster figures are retained as archived assets and are no longer used in this deck.\nThe numerical minimax example (leaf groups 3/12/8, 2/4/6, and 14/5/2) follows the standard AIMA example also shown in the UC Berkeley CS 188 minimax notes. Board drawings and the three-level exercise are original course material. The implementation discussion refers to the existing tic-tac-toe demo."
   },
   {
     "objectID": "asset_credits.html#lec10",
@@ -2447,14 +2447,14 @@
     "href": "slides/lec8_Search_Review.html#big-o-notation",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Big-O Notation",
-    "text": "Big-O Notation\n\n\n\nBig-O describes an upper bound on time or space growth.\nIt focuses on large inputs.\nIt hides constant factors and lower-order terms.\n\n\nA function f(n) is O(g(n)) if there exist positive constants c and n_0 such that\n\nf(n) \\le c \\cdot g(n), \\quad \\forall n \\ge n_0.\n\n\n\n\n\n\nTree roots icon for growth"
+    "text": "Big-O Notation\nBig-O ignores constant factors and lower-order terms as input size grows.\n\n\n\nA function f(n) is O(g(n)) if there exist positive constants c and n_0 such that\n\n0\\le f(n) \\le c \\cdot g(n)\n\nfor every n\\ge n_0.\n\n\n\n\n\nFor n\\ge1, 3n^2+5n+7\\le15n^2. Choose c=15 and n_0=1 to show O(n^2).\n\n\nState whether a bound describes the worst case, average case, or another case. Big-O alone does not specify which."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#common-growth-rates",
     "href": "slides/lec8_Search_Review.html#common-growth-rates",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Common Growth Rates",
-    "text": "Common Growth Rates\n\n\n\nComplexity\nInformal shape\nExample\n\n\n\n\nO(1)\nconstant\narray index access\n\n\nO(\\log n)\ngrows slowly\nbinary search\n\n\nO(n)\nlinear\nscan a list\n\n\nO(n \\log n)\nlog-linear\nmany efficient sorts\n\n\nO(n^2)\nquadratic\nnested pair checks\n\n\nO(2^n)\nexponential\nbrute-force subsets\n\n\nO(n!)\nfactorial\nbrute-force permutations"
+    "text": "Common Growth Rates\n\n\n\nComplexity\nInformal shape\nExample\n\n\n\n\nO(1)\nconstant\narray index access\n\n\nO(\\log n)\ngrows slowly\nbinary search\n\n\nO(n)\nlinear\nscan a list\n\n\nO(n \\log n)\nlog-linear\nmerge sort\n\n\nO(n^2)\nquadratic\nnested pair checks\n\n\nO(2^n)\nexponential\nbrute-force subsets\n\n\nO(n!)\nfactorial\nbrute-force permutations"
   },
   {
     "objectID": "slides/lec8_Search_Review.html#growth-rate-sketch",
@@ -2475,35 +2475,35 @@
     "href": "slides/lec8_Search_Review.html#kd-tree-nearest-neighbor",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "KD-Tree Nearest Neighbor",
-    "text": "KD-Tree Nearest Neighbor\nA KD-tree is useful when many queries ask: “Which stored point is closest to this query point?”\n\n\nSearch idea\n\nFollow the split decisions to a leaf.\nKeep the best point found so far.\nBacktrack only into regions that could contain a closer point.\n\n\nComplexity intuition\n\nFavorable low-dimensional data: queries are often near O(\\log n).\nWorst case: O(n), even with a balanced tree.\n\nHigh dimensions can weaken pruning.\n\n\nThe same “split and ignore irrelevant half” idea behind binary search becomes spatial pruning in a KD-tree."
+    "text": "KD-Tree Nearest Neighbor\nTask: among stored points P, find a point closest to a query q. In two dimensions, use Euclidean distance:\nd(q,p)=\\sqrt{(q_x-p_x)^2+(q_y-p_y)^2}.\n\n\nSearch idea\n\nSearch the side containing q first.\nKeep the nearest candidate p and its distance r.\nBacktrack if the other side could contain a closer point.\n\n\nComplexity intuition\n\nBalanced tree height: O(\\log n).\nA nearest-neighbor query may visit many leaves.\nWorst-case query: O(n).\n\n\n\nA region’s distance bound can rule out every point inside it. Tree balance alone does not guarantee effective pruning.\n\n\nHere n is the number of stored points and r=d(q,p). Efficient pruning often makes low-dimensional queries fast, but there is no universal logarithmic worst-case query bound. High dimensions and unfavorable point/query distributions can force nearly a full scan. Points kept at internal nodes must also be tested while traversing. Sources: Carl Kingsford’s kd-tree lecture, https://www.cs.cmu.edu/~ckingsf/bioinfo-lectures/kdtrees.pdf, and the SciPy KDTree documentation, https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.KDTree.html."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#graph-representation-matters",
     "href": "slides/lec8_Search_Review.html#graph-representation-matters",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Graph Representation Matters",
-    "text": "Graph Representation Matters\n\n\n\nRepresentation\nNeighbor lookup style\nCommon cost\n\n\n\n\nAdjacency list\niterate only actual neighbors\nO(V+E) traversal\n\n\nAdjacency matrix\nscan possible neighbors\nO(V^2) traversal\n\n\n\n\nWhen reviewing search complexity, always ask: “How is the graph represented?”"
+    "text": "Graph Representation Matters\nLet V be the number of vertices and E the number of edges in a finite graph.\n\n\n\nRepresentation\nStored graph\nFull BFS/DFS traversal\n\n\n\n\nAdjacency list\nO(V+E)\nO(V+E)\n\n\nAdjacency matrix\nO(V^2)\nO(V^2)\n\n\n\n\n\nFor A, a list stores just (C,2) and (G,9).\nA matrix row checks all five possible destinations, including absent edges.\nFor a sparse graph, most matrix entries describe no edge.\n\n\n\n\nBounds describe a traversal covering all vertices, starting additional traversals for disconnected components if necessary. In a single-source search, only reached vertices need their neighbors scanned. Absent matrix edges need a sentinel distinct from legitimate zero-cost edges. The graph’s adjacency lists contain 6 total entries. A 5 by 5 matrix has 25 entries. Graph storage is separate from additional search records."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#bfs-complexity",
     "href": "slides/lec8_Search_Review.html#bfs-complexity",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "BFS Complexity",
-    "text": "BFS Complexity\n\n\nTime\n\nExpands each reached vertex and scans its adjacency list.\nO(V+E) with adjacency lists.\nO(V^2) with adjacency matrices.\n\n\nSpace\n\nStores the frontier by layers.\nO(V) for general graphs.\nO(b^d) for trees with branching factor b and depth d."
+    "text": "BFS Complexity\nMark each state reached on insertion, so each vertex enters the queue at most once.\n\n\nTime\n\nExpands each reached vertex and scans its adjacency list.\nO(V+E) with adjacency lists.\nO(V^2) with adjacency matrices.\n\n\nAdditional search space\n\nQueue, reached set, and parents use O(V).\nThe queue can contain parts of two adjacent layers.\nA wide last layer can dominate memory.\n\n\n\nA complete tree with branching factor b&gt;1 and maximum depth d has b^d leaves. BFS may need O(b^d) frontier space on that tree.\n\n\nThese are worst-case traversal bounds and exclude the stored graph from additional search space. Here d is the maximum depth of a finite complete tree, not the solution-depth convention in an unbounded search tree. Goal testing on removal in an implicit tree can generate the next layer before stopping, so state that convention when comparing textbook b-to-the-d formulas. Reference: AIMA Chapter 3 and https://inst.eecs.berkeley.edu/~cs188/textbook/search/uninformed.html."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#dfs-complexity",
     "href": "slides/lec8_Search_Review.html#dfs-complexity",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "DFS Complexity",
-    "text": "DFS Complexity\n\n\nTime\n\nExpands each reached vertex and scans its adjacency list.\nO(V+E) with adjacency lists.\nO(V^2) with adjacency matrices.\n\n\nSpace\n\nStores the current path and pending alternatives.\nCan be O(V) in a long path.\nRecursion depth is O(\\log V) for a balanced tree."
+    "text": "DFS Complexity\nMark a vertex when entering it and skip already visited vertices.\n\n\nTime\n\nExpands each reached vertex and scans its adjacency list.\nO(V+E) with adjacency lists.\nO(V^2) with adjacency matrices.\n\n\nStack versus visited set\n\nA chain can require O(V) active calls.\nA balanced tree needs O(\\log V) active calls.\nA graph-search visited set still uses O(V).\n\n\n\nRecursive DFS uses O(V) additional space in a general graph. A shallow call stack alone does not make the entire search use O(\\log V) space.\n\n\nThe recursion-stack bound assumes adjacency-list iterators or equivalent DFS frames, so each level records its next neighbor rather than copying all remaining neighbors. A tree traversal needs no visited set when parent/child direction already prevents cycles. A node-stack implementation with repeated pending entries can have a different memory bound. Keep implementation assumptions explicit."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#ucs-greedy-and-a",
     "href": "slides/lec8_Search_Review.html#ucs-greedy-and-a",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "UCS, Greedy, and A*",
-    "text": "UCS, Greedy, and A*\nFor a finite explicit graph, let V be vertices and E be edges.\n\n\n\nAlgorithm\nPriority\nAssumption for the usual bound\n\n\n\n\nUCS\ng\nNonnegative edge costs\n\n\nGreedy\nh\nExpand each state at most once\n\n\nA*\ng+h\nConsistent heuristic, no re-expansion\n\n\n\nWith adjacency lists and a binary heap supporting decrease-key:\n\\text{Time}=O((V+E)\\log V),\\qquad \\text{storage}=O(V+E).\n\nThe bound includes the stored graph. Reopening states or generating a huge implicit state space changes the analysis."
+    "text": "UCS, Greedy, and A*\nFor a finite explicit graph, let V be vertices and E be edges.\n\n\n\nAlgorithm\nPriority\nAssumption for the usual bound\n\n\n\n\nUCS\ng\nNonnegative edge costs\n\n\nGreedy\nh\nExpand each state at most once\n\n\nA*\ng+h\nConsistent heuristic, no re-expansion\n\n\n\nWith adjacency lists and a binary heap holding one entry per frontier state:\n\\text{Time}=O((V+E)\\log V),\\qquad \\text{storage}=O(V+E).\nDecrease-key lowers an existing entry’s priority and restores heap order in O(\\log V), using an index to locate that entry.\n\nStorage includes the graph. Reopening states or retaining stale heap entries requires extra accounting.\n\n\nWith an indexed binary heap, insert, pop, and decrease-key cost O(log V). Up to V state removals and E examined edges give O((V+E)log V) time with constant-time edge/heuristic evaluation. The total O(V+E) space includes the graph; the heap, parent, and best arrays use O(V). A lazy heap can hold O(E) entries and gives O((V+E)log(V+E)) directly; on a simple graph this has the usual O((V+E)log V) form because E is at most V squared. A* with inconsistent heuristics can re-expand states, so those assumptions no longer suffice. Greedy’s bound here assumes duplicate control, not optimality."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#a-best-and-worst-cases",
@@ -2517,7 +2517,7 @@
     "href": "slides/lec8_Search_Review.html#review-checklist",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Review Checklist",
-    "text": "Review Checklist\n\nWhat counts as a state?\nWhat is the branching factor?\nIs the graph weighted?\nIs the search using a queue, stack, or priority queue?\nDoes the algorithm need to store many frontier nodes?\nIs the goal shortest path, lowest cost, or merely any solution?\n\nAsset credits"
+    "text": "Review Checklist\n\nWhat counts as a state?\nWhat is the branching factor?\nIs the graph weighted?\nIs the search using a queue, stack, or priority queue?\nDoes the algorithm need to store many frontier nodes?\nIs the goal shortest path, lowest cost, or merely any solution?\n\n\nCheck the priority rule, duplicate policy, and stopping rule together. Then state the graph representation and input-size variables for the complexity bound.\n\nAsset credits"
   },
   {
     "objectID": "code_and_homework/AC3.html",
@@ -6269,77 +6269,77 @@
     "href": "slides/lec8_Search_Review.html#which-search-fits-the-task",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Which Search Fits the Task?",
-    "text": "Which Search Fits the Task?\n\n\n\n\n\n\n\nTask\nWhat must the answer guarantee?\n\n\n\n\nFewest moves through an unweighted maze\nShortest path\n\n\nCheapest route with unequal nonnegative costs\nLowest total cost\n\n\nCheapest route with a useful lower-bound estimate\nLowest total cost with guidance\n\n\nAny exit in a finite maze\nA valid path, not necessarily the shortest\n\n\n\n\nChoose an algorithm for each row. Explain what information it uses.\n\n\nBreadth-first search (BFS), uniform-cost search (UCS), A*, and depth-first search (DFS) are suitable choices, respectively.\n\n\n50-minute plan: algorithm selection and the shared graph, 5 minutes; BFS/DFS and priority traces, 15; correctness and heuristic practice, 8; growth and graph complexity, 10; KD-tree pruning, 6; exit problems and discussion, 6. Ask students to predict the next frontier entry before revealing a trace. No separate code demonstration or homework introduction is scheduled today. The examples and SVG illustrations in this lecture are original course material. Search terminology follows AIMA Chapter 3. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/search/informed.html."
+    "text": "Which Search Fits the Task?\n\n\n\n\n\n\n\nTask\nWhat must the answer guarantee?\n\n\n\n\nFewest moves through an unweighted maze\nShortest path\n\n\nCheapest route with unequal nonnegative costs\nLowest total cost\n\n\nCheapest route with a useful lower-bound estimate\nLowest total cost with guidance\n\n\nAny exit in a finite maze\nA valid path, not necessarily the shortest\n\n\n\n\nChoose an algorithm for each row. Explain what information it uses.\n\n\nBreadth-first search (BFS), uniform-cost search (UCS), A*, and depth-first search (DFS) are suitable choices, respectively.\n\n\nThe four choices assume finite graphs and appropriate duplicate handling. For the A* choice, a consistent heuristic permits finalizing states on removal. An admissible but inconsistent heuristic requires reopening improved paths. DFS is one suitable choice when any route suffices, although BFS would also find a valid route. Search terminology follows AIMA Chapter 3 and https://inst.eecs.berkeley.edu/~cs188/textbook/search/informed.html."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#one-graph-several-search-orders",
     "href": "slides/lec8_Search_Review.html#one-graph-several-search-orders",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "One Graph, Several Search Orders",
-    "text": "One Graph, Several Search Orders\nEdges are directed. Labels are costs. Start at S and finish at G.\n\n\n\n\n\n142922\n\nSABCG\n\n\n\nVisit successors alphabetically. In DFS, visit A before B.\nTest for the goal when removing a node from the frontier.\nFor BFS, mark a state reached when adding it to the queue."
+    "text": "One Graph, Several Search Orders\nStart at S. Find a route to G. Edges are directed and labels are costs.\n\n\nThere are three S-to-G paths: S-A-G has two edges and cost 10, S-B-G has two edges and cost 6, and S-A-C-G has three edges and cost 5. The fewest-edge answer is not unique."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#bfs-trace-the-queue",
     "href": "slides/lec8_Search_Review.html#bfs-trace-the-queue",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "BFS: Trace the Queue",
-    "text": "BFS: Trace the Queue\nThe leftmost entry leaves the queue next. Keep the first parent of each state.\n\n\n\nRemoved\nQueue after expansion\nNew parent links\n\n\n\n\nS\n[A,B]\nA\\gets S, B\\gets S\n\n\nA\n[B,C,G]\nC\\gets A, G\\gets A\n\n\nB\n[C,G]\nG is already reached\n\n\nC\n[G]\nG is already reached\n\n\nG\nstop\nFollow parents backward\n\n\n\n\nReturned path: S\\to A\\to G. Two edges, but cost 1+9=10. BFS minimizes the number of edges, not arbitrary edge costs."
+    "text": "BFS: Trace the Queue\nAdd unreached successors alphabetically. Remove from the left and test for the goal.\n\n\n\n\n\nRemoved\nQueue after processing\nParent update\n\n\n\n\nS\n[A,B]\nA\\gets S, B\\gets S\n\n\nA\n[B,C,G]\nC\\gets A, G\\gets A\n\n\nB\n[C,G]\nKeep G\\gets A\n\n\nC\n[G]\nKeep G\\gets A\n\n\nG\nstop\nFollow parents backward\n\n\n\n\n\nInitial queue: [S].\nAn already reached state keeps its first parent.\n\n\nReturned path: S\\to A\\to G. Two edges, but cost 1+9=10. BFS minimizes the number of edges, not arbitrary edge costs."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#dfs-trace-the-current-path",
     "href": "slides/lec8_Search_Review.html#dfs-trace-the-current-path",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "DFS: Trace the Current Path",
-    "text": "DFS: Trace the Current Path\nChoose the alphabetically first unvisited successor at each step.\n\n[S]\\quad\\longrightarrow\\quad[S,A]\\quad\\longrightarrow\\quad\n[S,A,C]\\quad\\longrightarrow\\quad[S,A,C,G]\n\n\nDFS returns a path of cost 1+2+2=5. Does this establish that DFS is optimal?\n\n\nNo. If DFS explores G before C at A, it returns the cost-10 path. Its first answer depends on successor order.\n\nFor an iterative stack, push successors in reverse order to visit them alphabetically."
+    "text": "DFS: Trace the Current Path\nUse recursive-style DFS: enter the alphabetically first unvisited successor.\n\n\n\n\n\n\n\nEnter\nCurrent path\n\n\n\n\nS\n[S]\n\n\nA\n[S,A]\n\n\nC\n[S,A,C]\n\n\nG\n[S,A,C,G]\n\n\n\nNo backtracking is needed in this run.\n\n\nDFS returns a path of cost 1+2+2=5. Does this establish that DFS is optimal?\n\n\nNo. If DFS explores G before C at A, it returns the cost-10 path. Its first answer depends on successor order.\n\n\nAn explicit stack of DFS frames can reproduce this recursive order. For a simpler stack of nodes, reverse insertion order gives alphabetical removals only when duplicate handling permits it. Marking all siblings reached as soon as they are pushed can change the parent tree: marking G while expanding A could prevent C from later entering G. Distinguish the active path shown here from the entire pending-node stack."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#ucs-update-a-better-path",
     "href": "slides/lec8_Search_Review.html#ucs-update-a-better-path",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "UCS: Update a Better Path",
-    "text": "UCS: Update a Better Path\ng(n) is the cost of the best path found so far to n.\n\n\n\nRemoved\nLogical frontier, ordered by g\n\n\n\n\nS:0\nA:1,\\ B:4\n\n\nA:1\nC:3,\\ B:4,\\ G:10\n\n\nC:3\nB:4,\\ G:5\n\n\nB:4\nG:5 (the new candidate costs 6)\n\n\nG:5\nStop with S\\to A\\to C\\to G\n\n\n\n\nDiscovering G at cost 10 does not finish the search. Removing it at the minimum frontier cost does.\n\n\nThis table shows one best entry per state. A heap implementation may retain the old G:10 entry and skip it as stale later. Ask students to identify when the parent of G changes from A to C. Edge costs are nonnegative."
+    "text": "UCS: Update a Better Path\ng is the queued path’s cost. best[n] stores the cheapest cost found for state n.\n\n\n\n\n\nRemoved\nLogical frontier, ordered by g\n\n\n\n\nS:0\nA:1,\\ B:4\n\n\nA:1\nC:3,\\ B:4,\\ G:10\n\n\nC:3\nB:4,\\ G:5\n\n\nB:4\nG:5 (the new candidate costs 6)\n\n\nG:5\nStop with S\\to A\\to C\\to G\n\n\n\n\n\nAfter expanding C:\nbest[G]: 10\\to5.\nparent[G]: A\\to C.\n\n\nDiscovering G at cost 10 does not finish the search. Removing it at the minimum frontier cost does.\n\n\nThis table shows one best entry per state. A heap implementation may retain the old G:10 entry and skip it as stale later. Ask students to identify when the parent of G changes from A to C. Edge costs are nonnegative."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#greedy-search-versus-a",
     "href": "slides/lec8_Search_Review.html#greedy-search-versus-a",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Greedy Search Versus A*",
-    "text": "Greedy Search Versus A*\nh(n) estimates the remaining cost. Use these values on the same graph:\n\n\n\nState\nS\nA\nB\nC\nG\n\n\n\n\nh(n)\n5\n4\n2\n2\n0\n\n\n\n\n\nGreedy best-first search\nPriority: h(n).\nAfter S, choose B over A because 2&lt;4. Then choose G.\nPath cost: 4+2=6.\n\nA* search\nPriority: f(n)=g(n)+h(n).\nAfter S, f(A)=1+4=5, while f(B)=4+2=6.\nContinue through C to G. Path cost: 5."
+    "text": "Greedy Search Versus A*\nh(n) estimates the remaining cost. These values are consistent on this graph.\n\n\n\n\n\nState\nS\nA\nB\nC\nG\n\n\n\n\nh(n)\n5\n4\n2\n2\n0\n\n\n\nAfter expanding S, both searches have A and B on the frontier.\n\n\n\n\n\nGreedy best-first search\nPriority: h(n).\nChoose B: h(B)=2&lt;h(A)=4. Then choose G.\nPath cost: 4+2=6.\n\nA* search\nPriority: f(n)=g(n)+h(n).\nf(A)=1+4=5.\nf(B)=4+2=6.\nChoose A, then C and G. Path cost: 5."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#heuristic-check",
     "href": "slides/lec8_Search_Review.html#heuristic-check",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Heuristic Check",
-    "text": "Heuristic Check\nTrue remaining costs: h^*(A)=4, h^*(B)=2, h^*(C)=2.\n\n\nIs h(A)=4 admissible? What about h(A)=8?\nIf all heuristic values are zero, which algorithm does A* become?\nCan greedy search return a suboptimal path even with an admissible heuristic?\n\n\n\n\nYes for 4, no for 8: admissibility requires 0\\le h(n)\\le h^*(n).\nUCS, since f(n)=g(n).\nYes: our greedy path costs 6, while the optimum costs 5."
+    "text": "Heuristic Check\n\n\n\n\nIs h(A)=4 admissible? What about h(A)=8?\nIf all heuristic values are zero, which algorithm does A* become?\nCan greedy search return a suboptimal path even with an admissible heuristic?\n\n\n\n\nTrue remaining costs:\nh^*(A)=4, h^*(B)=2, h^*(C)=2.\n\n\n\nYes for 4, no for 8: admissibility requires 0\\le h(n)\\le h^*(n).\nUCS, since f(n)=g(n).\nYes: our greedy path costs 6, while the optimum costs 5."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#correctness-depends-on-the-implementation",
     "href": "slides/lec8_Search_Review.html#correctness-depends-on-the-implementation",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Correctness Depends on the Implementation",
-    "text": "Correctness Depends on the Implementation\n\n\n\n\n\n\n\nSituation\nWhat the implementation needs\n\n\n\n\nCycles in a finite graph\nDuplicate detection\n\n\nUCS finds a cheaper path\nUpdate the best cost and parent\n\n\nA* with a consistent heuristic\nAn expanded state need not reopen\n\n\nA* with an admissible but inconsistent heuristic\nAllow reopening when a better path appears\n\n\n\nConsistency: for every edge n\\to n' with cost c,\nh(n)\\le c+h(n'),\\qquad h(G)=0.\n\nFinite graph and nonnegative edge costs throughout this review. Admissibility suffices for A* tree search under standard termination conditions. Graph search that permanently closes states needs consistency, or it must support reopening. Consistency is stronger than simply being a lower bound."
+    "text": "Correctness Depends on the Implementation\nAssume a finite graph and nonnegative edge costs.\n\n\n\n\n\n\n\nSituation\nWhat the implementation needs\n\n\n\n\nCycles in a finite graph\nDuplicate detection\n\n\nUCS finds a cheaper path\nUpdate the best cost and parent\n\n\nA* with a consistent heuristic\nAn expanded state need not reopen\n\n\nA* with an admissible but inconsistent heuristic\nAllow reopening when a better path appears\n\n\n\nConsistency: for every edge n\\to n' with cost c,\nh(n)\\le c+h(n'),\\qquad h(G)=0.\n\nFor UCS and A*, retain improved routes and accept a goal when its current entry leaves the priority queue.\n\n\nFinite graph and nonnegative edge costs throughout this review. Admissibility suffices for A* tree search under standard termination conditions. Graph search that permanently closes states needs consistency, or it must support reopening. Consistency is stronger than simply being a lower bound."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#kd-tree-can-we-prune-this-region",
     "href": "slides/lec8_Search_Review.html#kd-tree-can-we-prune-this-region",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "KD-Tree: Can We Prune This Region?",
-    "text": "KD-Tree: Can We Prune This Region?\nQuery q=(4,3). Best point so far: p=(3,3), at distance 1.\n\n\n\n\n\n\n\npqx = 6Prune this regiondistance at least 2Current radius = 1\n\n\n\nThe split is |6-4|=2 units away, greater than 1. No point on the right can improve the answer.\n\n\nAsk what changes if the query moves to x=5.5 and the current best distance is still 1. The lower bound becomes 0.5, so this pruning test no longer rules out the right region. It does not guarantee that the right region contains a better point."
+    "text": "KD-Tree: Can We Prune This Region?\nGoal: find the stored point nearest to q=(4,3) in Euclidean distance. The diamond is the query; circles are stored points.\n\n\n\n\n\nA KD-tree node splits at x=6.\nThe unexplored right subtree contains only points with x\\ge6.\nSearching the left side found p=(3,3) with distance r=1.\n\nCan any point in the right subtree improve this answer?\n\n\nEvery right-side point is at least |6-4|=2&gt;r=1 away. Prune the right subtree without checking its points individually.\n\n\nThe stored set is P={(2,5),(3,3),(5,1),(7,2),(8,4),(7,5)}. The best point p has distance 1, and every other stored point is farther. For a right-side point z, d(q,z) is at least the horizontal distance |z_x-4|, which is at least 2. A lower bound above r rules out the entire region. Equality can also be pruned if any one nearest neighbor suffices, but ties matter if all nearest neighbors are requested. As a separate hypothetical query, if q_x=5.5 and a previously found candidate has distance 1, the split bound becomes 0.5 and this test cannot prune the right region. It does not prove there is a closer point there. Reference: https://www.cs.cmu.edu/~ckingsf/bioinfo-lectures/kdtrees.pdf."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#a-graph-bound-can-still-hide-exponential-work",
     "href": "slides/lec8_Search_Review.html#a-graph-bound-can-still-hide-exponential-work",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "A Graph Bound Can Still Hide Exponential Work",
-    "text": "A Graph Bound Can Still Hide Exponential Work\nSuppose a search tree has branching factor b=3 and depth d=10.\n\n\\text{Leaves}=3^{10}=59{,}049,\\qquad\n\\text{total nodes}=\\sum_{i=0}^{10}3^i=88{,}573.\n\n\nHow can traversal be linear in V+E and exponential in depth?\n\n\nThe number of vertices V itself grows exponentially with d. Always state what the input-size variable measures."
+    "text": "A Graph Bound Can Still Hide Exponential Work\nSuppose a complete search tree has branching factor b=3 and maximum depth d=10. The root has depth 0.\n\n\n\nDepth\n0\n1\n2\n3\n\\cdots\n10\n\n\n\n\nNodes in the layer\n1\n3\n9\n27\n\\cdots\n59,049\n\n\n\n\n\\text{Leaves}=3^{10}=59{,}049,\\qquad\n\\text{total nodes}=\\sum_{i=0}^{10}3^i=88{,}573.\n\n\nHow can traversal be linear in V+E and exponential in depth?\n\n\nThe number of vertices V itself grows exponentially with d. Always state what the input-size variable measures."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#complexity-practice",
     "href": "slides/lec8_Search_Review.html#complexity-practice",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Complexity Practice",
-    "text": "Complexity Practice\n\n\n\n\n\n\n\nQuestion\nYour estimate\n\n\n\n\nV=1{,}000, E=3{,}000: adjacency-list traversal?\nIn terms of V+E\n\n\nSame graph: adjacency-matrix traversal?\nIn terms of V^2\n\n\nDouble n: an O(n^2) leading term changes by what factor?\nIgnore lower-order terms\n\n\nA chain of V vertices: maximum recursive DFS depth?\nCount active calls\n\n\n\n\nAbout 4,000 vertex/edge visits versus 1,000,000 matrix entries, a factor of 4, and depth V. These are operation-scale estimates, not runtime measurements."
+    "text": "Complexity Practice\nAssume a full traversal of a directed graph with duplicate detection.\n\n\n\n\n\n\n\nQuestion\nYour estimate\n\n\n\n\nV=1{,}000, E=3{,}000: adjacency-list traversal?\nIn terms of V+E\n\n\nSame graph: adjacency-matrix traversal?\nIn terms of V^2\n\n\nDouble n: a leading term cn^2 changes by what factor?\nKeep c fixed\n\n\nA chain of V vertices: maximum recursive DFS depth?\nCount active calls\n\n\n\n\nAbout 4,000 vertex/edge visits versus 1,000,000 matrix entries, a factor of 4, and depth V. These are operation-scale estimates, not runtime measurements."
   },
   {
     "objectID": "slides/lec8_Search_Review.html#exit-problem-find-the-first-bug",
@@ -8188,5 +8188,166 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "A* Frontier Trace",
     "text": "A* Frontier Trace\n\nRemove the smallest f = g + h. Keep best g costs separately from queue priorities.\n\n\n  \n    \n      \n      \n      \n      \n      \n      \n      \n    \n    FrontierThis stepProcessed\n    Gold edges: new or improved routes. Final frame: returned route.\n  \n  \n    \n      Best path costs: gGold = updated\n      \n\n\n\nS\nA\nB\nC\nG\n\n\n\n\n0\n∞\n∞\n∞\n∞\n\n\n0\n2\n1\n∞\n∞\n\n\n0\n2\n1\n∞\n9\n\n\n0\n2\n1\n3\n9\n\n\n0\n2\n1\n3\n4\n\n\n0\n2\n1\n3\n4\n\n\n\n\n    \n    \n\n\n\n\n\n\n\nRemove\nFrontier: node:f\n\n\n\n\nStart\n[S:2]\n\n\nS\n[B:2, A:4]\n\n\nB\n[A:4, G:9]\n\n\nA\n[C:4, G:9]\n\n\nC\n[G:4]\n\n\nG\nReturn goal, cost 4\n\n\n\n\n    Sorted by f. Stale G:9 omitted.\n  \n\n\nA* returns S\\to A\\to C\\to G, cost 4. Greedy returned cost 9.\n\n\nThe graph, frontier rows, and best-g record reveal together. The best table retains costs for processed nodes. The graph’s heuristic is consistent: h(S)=2, h(A)=2, h(B)=1, h(C)=1, h(G)=0. No reopenings occur in this example. Queue priorities remain 2,2,4,4,4 in removal order. A lazy heap still contains the old G entry at priority 9 when the algorithm returns. Parent[G] changes from B to C when C discovers the cheaper route. Goal removal is acceptance, not an expansion of outgoing edges."
+  },
+  {
+    "objectID": "slides/lec8_Search_Review.html#growth-rates-on-a-numerical-scale",
+    "href": "slides/lec8_Search_Review.html#growth-rates-on-a-numerical-scale",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Growth Rates on a Numerical Scale",
+    "text": "Growth Rates on a Numerical Scale\nThe curves show the actual functions. Each major step up the vertical axis multiplies the value by 10.\n\n\nAt n=16, n^2=256 while 2^n=65{,}536. These are function values, not measured runtimes.\n\n\nA logarithmic vertical scale keeps all four functions visible. An exponential becomes a straight line on this scale. The functions n squared and 2 to the n intersect at n=2 and n=4. Big-O denotes a class of upper bounds, not one exact runtime curve. The chart compares representative functions rather than asserting a specific implementation’s running time. At n=16, log base 2 of n is 4, n is 16, n squared is 256, and 2 to the n is 65,536."
+  },
+  {
+    "objectID": "slides/lec8_Search_Review.html#binary-search-and-kd-trees",
+    "href": "slides/lec8_Search_Review.html#binary-search-and-kd-trees",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Binary Search and KD-Trees",
+    "text": "Binary Search and KD-Trees\nBinary search works because a sorted line can be split in half.\nA k-dimensional tree (KD-tree) partitions points using one coordinate at a time. Here k is the number of dimensions.\n\n\n\n\n\n\n\n\nSearch structure\nSplit rule\nGood for\n\n\n\n\nBinary search\none sorted dimension\nordered keys\n\n\nKD-tree\noften alternate axes and split near a median\nspatial points\n\n\n\n\n\nThis diagram shows region partitions rather than prescribing one exact storage convention. KD-trees may store points at internal nodes or use leaf buckets. Median-based splitting helps balance the tree; axis alternation alone does not guarantee balance. Spatial nearest-neighbor search may need to revisit both sides of a split. Reference: https://www.cs.cmu.edu/~ckingsf/bioinfo-lectures/kdtrees.pdf."
+  },
+  {
+    "objectID": "slides/lec8_Search_Review.html#a-and-heuristic-quality",
+    "href": "slides/lec8_Search_Review.html#a-and-heuristic-quality",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A* and Heuristic Quality",
+    "text": "A* and Heuristic Quality\nLet d be the solution depth and C^* the optimal total cost.\n\n\nWeak Heuristic\n\nh(n)=0 gives exactly UCS priorities.\nMany low-cost prefixes can look promising.\n\n\nStrong Heuristic\n\nA tighter lower bound can rule out more unpromising routes.\nEven an exact heuristic may leave many tied optimal paths.\n\n\n\nIf two different optimal routes have the same total cost C^*, what can their frontier priorities be when h=h^*?\n\n\nBoth can have f=C^*. Tie-breaking and heuristic evaluation cost still matter, so a perfect heuristic does not guarantee O(d) runtime."
+  },
+  {
+    "objectID": "slides/lec8_Search_Review.html#exit-problem-two-correctness-bugs",
+    "href": "slides/lec8_Search_Review.html#exit-problem-two-correctness-bugs",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Exit Problem: Two Correctness Bugs",
+    "text": "Exit Problem: Two Correctness Bugs\nA UCS implementation uses the shown graph but makes these choices:\n\n\n\nAdd a new state to a permanent visited set when generating it.\nIgnore every later path to that state.\nReturn immediately when generating a goal.\n\n\n\n\n\nWhich route does it return? If only the goal test is fixed, does the other bug remain?\n\n\nEarly goal test: expanding A returns cost 10 immediately.\nPermanent visited-on-generation: even with a goal test on removal, it rejects the later route through C costing 5."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#the-opponent-chooses-a-reply",
+    "href": "slides/lec9_Adversarial_Search.html#the-opponent-chooses-a-reply",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Opponent Chooses a Reply",
+    "text": "The Opponent Chooses a Reply\nUCS and A* choose a route through a state space. In a game, another player controls some of the choices.\n\n\n\nYour move\nOpponent’s possible replies\nWorst outcome for you\n\n\n\n\nA\nPayoffs 3, 12, or 8\n3\n\n\nB\nPayoffs 2, 4, or 6\n2\n\n\nC\nPayoffs 14, 5, or 2\n2\n\n\n\n\nWhich move would you choose if your opponent always selects your lowest payoff?\n\n\nChoose A: its worst outcome is the best available. The payoff 14 is possible, but you cannot force it.\n\n\nAim for 35 minutes of explanation and tracing, 5 minutes for the exercise, and 10 minutes with the existing tic-tac-toe code/demo. Ask for a choice before revealing the answer. These are terminal payoffs in a small abstract game, not edge costs or probabilities. The numerical example is the standard minimax tree used in AIMA and UC Berkeley CS188: https://inst.eecs.berkeley.edu/~cs188/textbook/games/minimax.html. Later slides reuse it so students can focus on the computation."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#which-games-fit-minimax",
+    "href": "slides/lec9_Adversarial_Search.html#which-games-fit-minimax",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Which Games Fit Minimax?",
+    "text": "Which Games Fit Minimax?\nOur model: two players take turns, each sees the full state, and each move has a known result.\n\n\n\n\n\n\n\n\nProperty\nMeaning\nOutside today’s model\n\n\n\n\nDeterministic\nNo random transition\nDice rolls\n\n\nPerfect information\nBoth players observe the state\nHidden cards\n\n\nZero-sum\nOne player’s gain is the other’s loss\nShared or independent rewards\n\n\nFinite game tree\nEvery line eventually ends\nPlay without a termination rule\n\n\n\n\nTic-tac-toe fits this model. MAX seeks high utility; MIN seeks low utility, measured from MAX’s viewpoint.\n\n\nFinite is an assumption for exact recursive minimax here, not a claim about all games. General games may include chance, hidden information, simultaneous moves, multiple players, or cycles. Game rules must resolve repetition or other termination conditions when those occur. Game theory is the broader study of strategic interaction. Source: course Lecture9 and AIMA adversarial search chapter."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#representing-a-game",
+    "href": "slides/lec9_Adversarial_Search.html#representing-a-game",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Representing a Game",
+    "text": "Representing a Game\n\n\n\nState = board + player to move.\n\n\n\n\nComponent\nIn this position\n\n\n\n\nPLAYER(s)\nX, our MAX player\n\n\nACTIONS(s)\nPlace X in 6, 7, or 8\n\n\nRESULT(s,a)\nNew board; O moves next unless play ends\n\n\nTERMINAL(s)\nWin or full board\n\n\nUTILITY(s)\nScore of a terminal position\n\n\n\n\n\nAn action is legal only in an empty square. A winning position ends the game immediately.\n\n\nSquare numbers run left-to-right, top-to-bottom, from 1 to9. Only empty squares are numbered in the picture. X starts, and the displayed state has three X and three O. It has no winner yet. Utility is defined for terminal states; a nonterminal estimate will be introduced separately. The diagrams use X as MAX throughout; the existing Python demo uses O as MAX, a difference made explicit on its slide."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#utility-from-maxs-viewpoint",
+    "href": "slides/lec9_Adversarial_Search.html#utility-from-maxs-viewpoint",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Utility from MAX’s Viewpoint",
+    "text": "Utility from MAX’s Viewpoint\n\n\nMAX = X: prefer +1 to 0 to -1.\nMIN = O: prefer -1 to 0 to +1.\nThe score’s meaning stays the same at every level.\n\n\nAt an O turn, choose the smallest X score. Do not change the sign just because the turn changes.\n\n\nIn a zero-sum model, O’s own utility is the negative of X’s. We can therefore store only X’s score. Terminal scores are stipulated by the rules; the values3,12,8 in the abstract example use a different utility scale. Do not add edge costs as in UCS or A*. A utility of0 here means an actual draw, not an unevaluated state."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#a-large-payoff-may-be-unreachable",
+    "href": "slides/lec9_Adversarial_Search.html#a-large-payoff-may-be-unreachable",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Large Payoff May Be Unreachable",
+    "text": "A Large Payoff May Be Unreachable\n\n\nThe largest leaf is 14. Which player chooses the final edge into that leaf?\n\n\nMIN chooses at C and can select 2. MAX chooses a branch, not an arbitrary leaf inside it.\n\n\nThis abstract game ends after two plies. All bottom values are exact terminal utilities, not a depth cutoff. Edge labels A/B/C identify MAX’s options; there are no edge costs. The standard numerical example follows AIMA and https://inst.eecs.berkeley.edu/~cs188/textbook/games/minimax.html. The image is redrawn locally in draw.io."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#minimax-values",
+    "href": "slides/lec9_Adversarial_Search.html#minimax-values",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Minimax Values",
+    "text": "Minimax Values\nLet V(s) be the outcome from state s when both players choose optimally.\n\nV(s)=\n\\begin{cases}\nU(s), & \\text{if }s\\text{ is terminal},\\\\[0.35em]\n\\max\\limits_{a\\in A(s)} V(\\operatorname{Result}(s,a)), & \\text{if MAX moves},\\\\[0.35em]\n\\min\\limits_{a\\in A(s)} V(\\operatorname{Result}(s,a)), & \\text{if MIN moves}.\n\\end{cases}\n\n\n\nAt a terminal state, read the outcome.\nAt a decision state, back up a child’s value using the player to move.\n\n\n\nSearch downward to discover outcomes; propagate values upward to compare moves.\n\n\nA(s) abbreviates ACTIONS(s), and U(s) abbreviates UTILITY(s). The same fixed MAX viewpoint is used in all three cases. This recurrence describes exact minimax on a finite game tree. Source: AIMA adversarial search chapter and Berkeley CS188 minimax notes."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#minimax-backup",
+    "href": "slides/lec9_Adversarial_Search.html#minimax-backup",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Back Up the Values",
+    "text": "Back Up the Values\n\nFirst evaluate the three MIN nodes. Then evaluate the MAX root.\n\n\n  \n  \n  \n\n\n\nMIN: V(A)=\\min(3,12,8)=3; V(B)=2; V(C)=2.\n\n\nMAX: V(R)=\\max(3,2,2)=3. Choose A.\n\n\n\nAllow 3-4 minutes. The first reveal fills all MIN values and highlights their selected leaves in gold; have students calculate each first. The second reveal selects A at the root in teal. Reversing a reveal restores the previous diagram. The picture explains bottom-up values; an implementation can compute each subtree in a depth-first traversal instead of processing whole layers at once. MIN’s choices at B and C still matter when comparing those branches even though optimal MAX does not choose them."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#return-a-move-not-just-a-value",
+    "href": "slides/lec9_Adversarial_Search.html#return-a-move-not-just-a-value",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Return a Move, Not Just a Value",
+    "text": "Return a Move, Not Just a Value\n\n\n\n\n\n\n\nResult\nMeaning\n\n\n\n\nValue: 3\nBest worst-case payoff\n\n\nAction: A\nMove to play now\n\n\n\nThe score tells us how good a position is. The selected action tells us what to do.\n\na^*\\in\\arg\\max_{a\\in A(s)}V(\\operatorname{Result}(s,a)).\n\nRecord the action whenever you find a better child value. If values tie, either tied move is minimax-optimal.\n\n\nThis root formula assumes it is MAX’s turn. At MIN’s root use argmin. A strict greater-than update keeps the first move among ties; the next pseudocode makes that rule explicit. The highlighted line is one possible continuation under optimal play, not a complete contingent strategy."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#a-strategy-handles-every-reply",
+    "href": "slides/lec9_Adversarial_Search.html#a-strategy-handles-every-reply",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Strategy Handles Every Reply",
+    "text": "A Strategy Handles Every Reply\nAfter choosing a move, MAX must respond to the move MIN actually makes.\n\n\n\nObject\nWhat it specifies\n\n\n\n\nFixed action sequence\nOne predetermined line of play\n\n\nStrategy\nA move for each MAX decision state that may arise\n\n\nMinimax decision\nThe next move at the current state\n\n\n\n\nIn our example, choosing A guarantees at least 3. If MIN instead chooses the leaf worth 12, MAX receives 12.\n\n\nMinimax protects against the strongest opponent. It does not assume every opponent will actually play optimally.\n\n\nWith perfect play by both sides the root value is exactly3. Against an arbitrary legal opponent, a minimax strategy guarantees at least3 in this example. It may not exploit a predictable weak opponent as aggressively as a model tailored to that opponent. For a longer game, one can compute an entire contingent strategy or recompute the best next action after every observed reply. A minimax guarantee is not a guarantee of winning; a position may have value0 or a negative value."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#minimax-pseudocode-evaluate-a-state",
+    "href": "slides/lec9_Adversarial_Search.html#minimax-pseudocode-evaluate-a-state",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Minimax Pseudocode: Evaluate a State",
+    "text": "Minimax Pseudocode: Evaluate a State\nRESULT returns a new state with the next player to move. This version searches to terminal states.\n\n  VALUE(s)\n  if TERMINAL(s): return UTILITY(s)\n  if PLAYER(s) == MAX:\n  v &lt;- -infinity\n  for a in ACTIONS(s):\n  v &lt;- max(v, VALUE(RESULT(s, a)))\n  else: # MIN moves\n  v &lt;- +infinity\n  for a in ACTIONS(s):\n  v &lt;- min(v, VALUE(RESULT(s, a)))\n  return v\n\n\nExplore children depth first. Return a value only after evaluating all legal alternatives at that node.\n\n\nNo depth parameter appears in exact VALUE: the stopping condition is terminal. The code assumes a finite game tree and at least one legal action in every nonterminal state. For a game with passing, a pass must be represented as a legal action. Terminal utility always refers to MAX. The loop accumulators use opposite infinities so they also handle all-negative MAX values or all-positive MIN values correctly. Source: standard minimax recurrence, rewritten as course pseudocode."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#minimax-pseudocode-choose-an-action",
+    "href": "slides/lec9_Adversarial_Search.html#minimax-pseudocode-choose-an-action",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Minimax Pseudocode: Choose an Action",
+    "text": "Minimax Pseudocode: Choose an Action\nPrecondition: the state is nonterminal and MAX moves next.\n\n  CHOOSE_MOVE(s)\n  best_value &lt;- -infinity; best_action &lt;- None\n  for a in ACTIONS(s):\n  value &lt;- VALUE(RESULT(s, a))\n  if value &gt; best_value:\n  best_value &lt;- value\n  best_action &lt;- a\n  return best_action\n\n\nAt the root: evaluate A:3, B:2, C:2. Keep A and return the action A.\n\n\nThe recursive function computes scores. The outer loop remembers the move that produced the best score.\n\n\nThe strict comparison retains the first action among equally valued alternatives. The successor of a MAX move normally belongs to MIN; the state carries that turn, so the caller need not toggle a separate flag. This is the counterpart of retaining a parent/action in UCS and A*: computing a numeric value alone is insufficient to act. Standard tic-tac-toe utilities are finite."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#why-minimax-is-correct",
+    "href": "slides/lec9_Adversarial_Search.html#why-minimax-is-correct",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Why Minimax Is Correct",
+    "text": "Why Minimax Is Correct\nAssume a finite tree, correct game rules, and exact terminal utilities.\n\nAt a leaf: the utility is the actual outcome.\nAt a MAX node: if the child values are correct, MAX can choose the largest.\nAt a MIN node: MIN can choose the smallest, so MAX cannot count on anything larger.\n\n\nApply this argument repeatedly from the leaves to the root. Each backed-up value is correct once its children are correct.\n\n\nThe chosen strategy guarantees MAX its minimax value. That value may represent a win, draw, or loss.\n\n\nThis is induction on subtree height. At MAX nodes there exists a maximizing action achieving the backed-up bound. At MIN nodes every legal reply has value at least the minimum, and an optimal MIN can choose a reply attaining that minimum. Hence exact minimax provides the best worst-case guarantee. The theorem relies on searching to actual terminal states; arbitrary heuristic cutoffs lose that guarantee."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#search-cost",
+    "href": "slides/lec9_Adversarial_Search.html#search-cost",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Search Cost",
+    "text": "Search Cost\nLet b be the branching factor and m the maximum number of remaining plies.\n\n\nTime\nA full tree has\n1+b+\\cdots+b^m=O(b^m).\nFor b=3, m=10: 59,049 leaves and 88,573 total nodes.\n\nMemory\nDepth-first evaluation keeps the active recursion path and pending siblings.\n\nO(bm) if each call stores its children.\nO(m) if successors are generated one at a time.\n\n\n\nYou can evaluate a tree without storing all of it. The number of positions examined still grows exponentially.\n\n\nThese are search-node/record counts with state representation costs treated as fixed. The O(m) version assumes a constant-size successor iterator and no table retaining prior states. Eagerly storing the entire tree would instead take exponential memory. The full-tree formula assumes b greater than1; b=3 is a constructed branching example, not a claim about all tic-tac-toe positions. Tic-tac-toe branching decreases as squares fill, and some games end early. Standard depth-first minimax complexity follows AIMA."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#terminal-utility-and-cutoff-evaluation",
+    "href": "slides/lec9_Adversarial_Search.html#terminal-utility-and-cutoff-evaluation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Terminal Utility and Cutoff Evaluation",
+    "text": "Terminal Utility and Cutoff Evaluation\nLarge games may require stopping before a terminal state. Let d count plies still available.\nVALUE_LIMITED(s, d):\n    if TERMINAL(s): return UTILITY(s)\n    if d == 0:     return EVAL(s)\n    # Otherwise use the same MAX / MIN recursion,\n    # calling VALUE_LIMITED(RESULT(s, a), d - 1).\n\n\n\n\n\n\n\nLeaf type\nReturned score\n\n\n\n\nTerminal position\nExact outcome U(s)\n\n\nNonterminal depth cutoff\nEstimated value \\operatorname{EVAL}(s)\n\n\n\n\nUnlike A*’s remaining-cost estimate, EVAL estimates game value. Heuristic errors can change the move; optimal play is no longer guaranteed.\n\n\nCheck TERMINAL before d==0 so a terminal state at the cutoff receives its exact utility. EVAL always uses the same MAX viewpoint. Minimax over heuristic leaves is exact for those supplied leaf scores but is not guaranteed optimal in the actual game. Unlike A*’s admissible remaining-cost heuristic, there is no admissibility condition introduced here that restores exact play. Keep this as a bridge; Lecture10 covers practical cutoff methods and alpha-beta. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/games/minimax.html#322-evaluation-functions."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#minimax-practice",
+    "href": "slides/lec9_Adversarial_Search.html#minimax-practice",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Your Turn: Three Decision Levels",
+    "text": "Your Turn: Three Decision Levels\n\nCompute C, D, E, F, then A, B, then the root. Which first move should MAX play?\n\n\n  \n  \n\n\nC=5,\\ D=9,\\ E=4,\\ F=6. Then A=5,\\ B=4. Root value 5; choose A.\n\n\nGive pairs 2-3 minutes before revealing. The bottom decision layer is MAX, not MIN. Ask students to name the controlling player before each calculation. Follow-up after the solution: change only C’s leaf5 to1. Then C=max(3,1)=3, A=min(3,9)=3, B remains4, and the root switches to B with4. This checks whether students can update only the affected ancestors. The leaf0 is a numeric terminal payoff; it is not missing data. This exercise is an original course example."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#tic-tac-toe-in-python",
+    "href": "slides/lec9_Adversarial_Search.html#tic-tac-toe-in-python",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Tic-Tac-Toe in Python",
+    "text": "Tic-Tac-Toe in Python\nThe existing demo and source use AI = O = MAX, while the human plays X = MIN.\nboard[i][j] = \"O\"           # Try an AI move\nscore = minimax(False)      # X chooses the next move\nboard[i][j] = \"\"            # Undo before trying another\nif score &gt; best_score:\n    best_score = score\n    best_move = (i, j)\n\nFind the three terminal returns: O wins +1, X wins -1, draw 0.\nExplain why the next call uses False.\nExplain what breaks if the trial move is never undone.\n\n\nMAX is a role, not a particular symbol. Keep the utility convention and the maximizing player consistent.\n\n\nOpen the existing code page. It contains a downloadable PySide6 desktop program, not an embedded browser game. The excerpt follows ai_move after a candidate empty square has been selected. minimax(False) models X’s reply after O’s trial move; each recursive call also restores the square it changed. The earlier pseudocode uses fresh RESULT states, while the demo mutates a board and undoes its changes. No new demo implementation is required. Use the code reading questions even if the desktop GUI is not running."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#check-your-understanding",
+    "href": "slides/lec9_Adversarial_Search.html#check-your-understanding",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Check Your Understanding",
+    "text": "Check Your Understanding\n1. A MAX node has child values -7,-2,-5. What is its value?\n\n-2. MAX chooses the largest value even when every outcome is negative.\n\n2. Can you stop after finding a winning leaf somewhere in the tree?\n\nNot in general. MIN may choose another reply before you reach that leaf.\n\n3. Does a minimax value of 0 mean the program did not finish?\n\nNo. With our tic-tac-toe utilities, exact minimax value 0 means a draw under optimal play.\n\n\nAllow about2 minutes. For question2, distinguish an arbitrary winning descendant from a root action whose backed-up value is the maximum possible utility. An implementation can stop once it has proved a maximum attainable root value, but merely seeing one winning leaf is insufficient. For question3, exact utility0 and an unfinished computation are different concepts. At a heuristic cutoff, a score0 is only an estimate."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#takeaways",
+    "href": "slides/lec9_Adversarial_Search.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nA game state includes whose turn it is.\nMAX takes the maximum; MIN takes the minimum, using one utility viewpoint.\nBack up values, then retain the action that achieves the root’s best value.\nExact minimax gives the best worst-case guarantee, but its time cost is exponential.\n\n\nCan we prove that some branches cannot affect the root’s decision before evaluating all their leaves?\n\n\nNext lecture: alpha-beta pruning preserves the minimax value while avoiding unnecessary search.\n\nAsset credits\n\nClose by returning to the distinction between choosing a high leaf and choosing a guaranteed branch value. Leave alpha-beta bounds and pruning traces for Lecture10. For ties, pruning may change which equally optimal move is returned depending on implementation and ordering; the minimax value is preserved."
+  },
+  {
+    "objectID": "slides/lec9_Adversarial_Search.html#a-large-payoff-is-not-guaranteed",
+    "href": "slides/lec9_Adversarial_Search.html#a-large-payoff-is-not-guaranteed",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Large Payoff Is Not Guaranteed",
+    "text": "A Large Payoff Is Not Guaranteed\n\n\nThe largest leaf is 14. Which player chooses the final edge into that leaf?\n\n\nMIN chooses at C and can select 2. MAX chooses a branch, not an arbitrary leaf inside it.\n\n\nThis abstract game ends after two plies. All bottom values are exact terminal utilities, not a depth cutoff. Edge labels A/B/C identify MAX’s options; there are no edge costs. The standard numerical example follows AIMA and https://inst.eecs.berkeley.edu/~cs188/textbook/games/minimax.html. The image is redrawn locally in draw.io."
   }
 ]

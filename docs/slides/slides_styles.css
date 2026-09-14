@@ -1414,3 +1414,73 @@
   color: #6b7280;
   font-style: italic;
 }
+
+/* Lecture 9 follows the worked-example scale of Lectures 6 and 7. */
+.reveal section.game-slide {
+  font-size: 0.88em;
+}
+
+.reveal section.game-slide table {
+  font-size: 0.8em;
+  line-height: 1.25;
+}
+
+.reveal section.game-slide th,
+.reveal section.game-slide td {
+  padding: 0.43em 0.5em;
+}
+
+.reveal section.game-slide .game-board,
+.reveal section.game-slide .game-tree-wide,
+.reveal section.game-slide .game-outcomes,
+.reveal section.game-slide .game-reference {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin: 0.15em auto;
+  border: 0;
+  box-shadow: none;
+}
+
+.reveal section.game-slide .game-board { max-height: 300px; }
+.reveal section.game-slide .game-tree-wide { max-height: 335px; }
+.reveal section.game-slide .game-outcomes { max-height: 250px; }
+.reveal section.game-slide .game-reference { max-height: 285px; }
+
+.reveal section.game-pseudocode .pseudo-code {
+  font-size: 0.72em;
+  line-height: 1.38;
+}
+
+.reveal section.game-slide pre.sourceCode {
+  font-size: 0.66em;
+  line-height: 1.35;
+  padding: 0.7em 0.95em;
+}
+
+.reveal section.game-trace .trace-intro {
+  font-size: 0.92em;
+  min-height: 0;
+  margin-bottom: 0.2em;
+}
+
+.reveal section.game-trace .trace-tree-frames {
+  aspect-ratio: 760 / 390;
+  width: 680px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.reveal section.game-trace .game-backup-steps {
+  font-size: 0.92em;
+}
+
+.reveal section.game-trace .game-backup-steps p {
+  margin: 0.3em 0;
+}
+
+.reveal section.game-trace .takeaway {
+  font-size: 1em;
+  margin-top: 0.3em;
+}

@@ -144,9 +144,21 @@
     }
   </style>
   <style>
-  .reveal table { font-size: 0.76em; line-height: 1.22; }
-  .reveal th, .reveal td { padding: 0.4em 0.48em; }
-  .reveal .review-figure svg { display: block; width: 100%; max-height: 310px; }
+  .reveal section.slide { font-size: 0.88em; }
+  .reveal table { font-size: 0.82em; line-height: 1.25; }
+  .reveal th, .reveal td { padding: 0.42em 0.48em; }
+  .reveal .review-graph, .reveal .review-chart,
+  .reveal .review-spatial, .reveal .review-bound {
+    display: block; width: 100%; height: auto;
+    object-fit: contain; margin: 0.2em auto;
+  }
+  .reveal .review-graph { max-height: 345px; }
+  .reveal .review-overview .review-graph { max-height: 440px; max-width: 740px; }
+  .reveal .review-reference .review-graph { max-height: 245px; }
+  .reveal .review-chart { max-height: 375px; }
+  .reveal .review-spatial { max-height: 285px; }
+  .reveal .review-bound { max-height: 330px; }
+  .reveal .review-trace table { font-size: 0.8em; }
   </style>
 </head>
 <body class="quarto-light">
@@ -207,7 +219,7 @@ Peizhong Ju
 <p><strong>Breadth-first search (BFS)</strong>, <strong>uniform-cost search (UCS)</strong>, <strong>A*</strong>, and <strong>depth-first search (DFS)</strong> are suitable choices, respectively.</p>
 </div>
 <aside class="notes">
-<p>50-minute plan: algorithm selection and the shared graph, 5 minutes; BFS/DFS and priority traces, 15; correctness and heuristic practice, 8; growth and graph complexity, 10; KD-tree pruning, 6; exit problems and discussion, 6. Ask students to predict the next frontier entry before revealing a trace. No separate code demonstration or homework introduction is scheduled today. The examples and SVG illustrations in this lecture are original course material. Search terminology follows AIMA Chapter 3. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/search/informed.html.</p>
+<p>The four choices assume finite graphs and appropriate duplicate handling. For the A* choice, a consistent heuristic permits finalizing states on removal. An admissible but inconsistent heuristic requires reopening improved paths. DFS is one suitable choice when any route suffices, although BFS would also find a valid route. Search terminology follows AIMA Chapter 3 and https://inst.eecs.berkeley.edu/~cs188/textbook/search/informed.html.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -220,34 +232,35 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="one-graph-several-search-orders" class="slide level2">
+<section id="one-graph-several-search-orders" class="slide level2 review-overview">
 <h2>One Graph, Several Search Orders</h2>
-<p>Edges are <strong>directed</strong>. Labels are costs. Start at <span class="math inline">S</span> and finish at <span class="math inline">G</span>.</p>
-<div class="review-figure">
-<svg viewbox="0 0 1000 310" role="img" aria-label="Directed graph: S to A costs 1, S to B costs 4, A to C costs 2, A to G costs 9, C to G costs 2, and B to G costs 2.">
-<defs><marker id="review-edge" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="9" markerheight="9" markerunits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#5d6470"></path></marker></defs>
-<g fill="none" stroke="#5d6470" stroke-width="3" marker-end="url(#review-edge)"><path d="M128 141L325 76"></path><path d="M128 169L325 234"></path><path d="M405 65H605"></path><path d="M405 80L865 151"></path><path d="M685 78L865 140"></path><path d="M405 242L865 169"></path></g>
-<g fill="#fbfaf7"><rect x="213" y="73" width="35" height="36"></rect><rect x="213" y="204" width="35" height="36"></rect><rect x="490" y="27" width="35" height="36"></rect><rect x="615" y="104" width="35" height="36"></rect><rect x="758" y="76" width="35" height="36"></rect><rect x="615" y="209" width="35" height="36"></rect></g>
-<g font-family="sans-serif" font-size="28" text-anchor="middle" fill="#202124"><text x="230" y="101">1</text><text x="230" y="232">4</text><text x="507" y="55">2</text><text x="632" y="132">9</text><text x="775" y="104">2</text><text x="632" y="237">2</text></g>
-<g stroke-width="2"><circle cx="90" cy="155" r="40" fill="#e8f6f5" stroke="#007c89"></circle><circle cx="365" cy="65" r="40" fill="#fff4db" stroke="#b7791f"></circle><circle cx="365" cy="245" r="40" fill="#fff4db" stroke="#b7791f"></circle><circle cx="645" cy="65" r="40" fill="#fff4db" stroke="#b7791f"></circle><circle cx="905" cy="155" r="40" fill="#fdecef" stroke="#b8325f"></circle></g>
-<g font-family="sans-serif" font-size="32" text-anchor="middle" fill="#202124"><text x="90" y="166">S</text><text x="365" y="76">A</text><text x="365" y="256">B</text><text x="645" y="76">C</text><text x="905" y="166">G</text></g>
-</svg>
-</div>
-<ul>
-<li>Visit successors alphabetically. In DFS, visit <span class="math inline">A</span> before <span class="math inline">B</span>.</li>
-<li>Test for the goal when removing a node from the frontier.</li>
-<li>For BFS, mark a state reached when adding it to the queue.</li>
-</ul>
+<p>Start at <span class="math inline">S</span>. Find a route to <span class="math inline">G</span>. Edges are <strong>directed</strong> and labels are <strong>costs</strong>.</p>
+<p><img data-src="imgs/drawio/lec8/search-graph.png" class="review-graph" alt="Directed graph: S-A costs 1, S-B costs 4, A-C costs 2, A-G costs 9, C-G costs 2, B-G costs 2. All cost labels sit away from their arrows."></p>
+<aside class="notes">
+<p>There are three S-to-G paths: S-A-G has two edges and cost 10, S-B-G has two edges and cost 6, and S-A-C-G has three edges and cost 5. The fewest-edge answer is not unique.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="bfs-trace-the-queue" class="slide level2">
+<section id="bfs-trace-the-queue" class="slide level2 review-trace">
 <h2>BFS: Trace the Queue</h2>
-<p>The leftmost entry leaves the queue next. Keep the first parent of each state.</p>
+<p>Add unreached successors <strong>alphabetically</strong>. Remove from the left and test for the goal.</p>
+<div class="columns">
+<div class="column" style="width:64%;">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th>Removed</th>
-<th>Queue after expansion</th>
-<th>New parent links</th>
+<th>Queue after processing</th>
+<th>Parent update</th>
 </tr>
 </thead>
 <tbody>
@@ -264,12 +277,12 @@ Peizhong Ju
 <tr class="odd">
 <td><span class="math inline">B</span></td>
 <td><span class="math inline">[C,G]</span></td>
-<td><span class="math inline">G</span> is already reached</td>
+<td>Keep <span class="math inline">G\gets A</span></td>
 </tr>
 <tr class="even">
 <td><span class="math inline">C</span></td>
 <td><span class="math inline">[G]</span></td>
-<td><span class="math inline">G</span> is already reached</td>
+<td>Keep <span class="math inline">G\gets A</span></td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">G</span></td>
@@ -278,28 +291,75 @@ Peizhong Ju
 </tr>
 </tbody>
 </table>
+</div><div class="column review-reference" style="width:33%;">
+<p><img data-src="imgs/drawio/lec8/search-graph.png" class="review-graph" alt="Reference graph for BFS. The two-edge path S-A-G costs 10; the three-edge path S-A-C-G costs 5."></p>
+<p>Initial queue: <span class="math inline">[S]</span>.</p>
+<p>An already reached state keeps its <strong>first parent</strong>.</p>
+</div></div>
 <div class="fragment takeaway">
 <p>Returned path: <span class="math inline">S\to A\to G</span>. Two edges, but cost <span class="math inline">1+9=10</span>. BFS minimizes the number of edges, not arbitrary edge costs.</p>
 </div>
 </section>
 <section id="dfs-trace-the-current-path" class="slide level2">
 <h2>DFS: Trace the Current Path</h2>
-<p>Choose the alphabetically first unvisited successor at each step.</p>
-<p><span class="math display">
-[S]\quad\longrightarrow\quad[S,A]\quad\longrightarrow\quad
-[S,A,C]\quad\longrightarrow\quad[S,A,C,G]
-</span></p>
+<p>Use recursive-style DFS: enter the <strong>alphabetically first</strong> unvisited successor.</p>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p><img data-src="imgs/drawio/lec8/search-graph.png" class="review-graph" alt="Reference graph for DFS. Alphabetical exploration follows S-A-C-G. Exploring G before C at A would instead give S-A-G."></p>
+</div><div class="column" style="width:49%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Enter</th>
+<th>Current path</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">S</span></td>
+<td><span class="math inline">[S]</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">A</span></td>
+<td><span class="math inline">[S,A]</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">C</span></td>
+<td><span class="math inline">[S,A,C]</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">G</span></td>
+<td><span class="math inline">[S,A,C,G]</span></td>
+</tr>
+</tbody>
+</table>
+<p>No backtracking is needed in this run.</p>
+</div></div>
 <div class="question">
 <p>DFS returns a path of cost <span class="math inline">1+2+2=5</span>. Does this establish that DFS is optimal?</p>
 </div>
 <div class="fragment">
 <p><strong>No.</strong> If DFS explores <span class="math inline">G</span> before <span class="math inline">C</span> at <span class="math inline">A</span>, it returns the cost-<span class="math inline">10</span> path. Its first answer depends on successor order.</p>
 </div>
-<p>For an iterative stack, push successors in reverse order to visit them alphabetically.</p>
+<aside class="notes">
+<p>An explicit stack of DFS frames can reproduce this recursive order. For a simpler stack of nodes, reverse insertion order gives alphabetical removals only when duplicate handling permits it. Marking all siblings reached as soon as they are pushed can change the parent tree: marking G while expanding A could prevent C from later entering G. Distinguish the active path shown here from the entire pending-node stack.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="ucs-update-a-better-path" class="slide level2">
+<section id="ucs-update-a-better-path" class="slide level2 review-trace">
 <h2>UCS: Update a Better Path</h2>
-<p><span class="math inline">g(n)</span> is the cost of the best path found so far to <span class="math inline">n</span>.</p>
+<p><span class="math inline">g</span> is the queued path’s cost. <code>best[n]</code> stores the cheapest cost found for state <span class="math inline">n</span>.</p>
+<div class="columns">
+<div class="column" style="width:64%;">
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -330,6 +390,12 @@ Peizhong Ju
 </tr>
 </tbody>
 </table>
+</div><div class="column review-reference" style="width:33%;">
+<p><img data-src="imgs/drawio/lec8/search-graph.png" class="review-graph" alt="Reference graph for UCS. A discovers G at cost 10, C improves G to 5, and B's candidate cost 6 is rejected."></p>
+<p>After expanding <span class="math inline">C</span>:</p>
+<p><code>best[G]</code>: <span class="math inline">10\to5</span>.</p>
+<p><code>parent[G]</code>: <span class="math inline">A\to C</span>.</p>
+</div></div>
 <div class="takeaway">
 <p>Discovering <span class="math inline">G</span> at cost <span class="math inline">10</span> does not finish the search. Removing it at the minimum frontier cost does.</p>
 </div>
@@ -349,7 +415,9 @@ Peizhong Ju
 </section>
 <section id="greedy-search-versus-a" class="slide level2">
 <h2>Greedy Search Versus A*</h2>
-<p><span class="math inline">h(n)</span> estimates the remaining cost. Use these values on the same graph:</p>
+<p><span class="math inline">h(n)</span> estimates the remaining cost. These values are <strong>consistent</strong> on this graph.</p>
+<div class="columns">
+<div class="column" style="width:61%;">
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -372,22 +440,28 @@ Peizhong Ju
 </tr>
 </tbody>
 </table>
+<p>After expanding <span class="math inline">S</span>, both searches have <span class="math inline">A</span> and <span class="math inline">B</span> on the frontier.</p>
+</div><div class="column review-reference" style="width:36%;">
+<p><img data-src="imgs/drawio/lec8/search-graph.png" class="review-graph" alt="Reference graph: S-B-G costs 6 and S-A-C-G costs 5. Greedy prefers B's smaller heuristic, whereas A-star prefers A's lower estimated total cost."></p>
+</div></div>
 <div class="columns">
 <div class="column" style="width:48%;">
 <h3 id="greedy-best-first-search">Greedy best-first search</h3>
 <p>Priority: <span class="math inline">h(n)</span>.</p>
-<p>After <span class="math inline">S</span>, choose <span class="math inline">B</span> over <span class="math inline">A</span> because <span class="math inline">2&lt;4</span>. Then choose <span class="math inline">G</span>.</p>
+<p>Choose <span class="math inline">B</span>: <span class="math inline">h(B)=2&lt;h(A)=4</span>. Then choose <span class="math inline">G</span>.</p>
 <p><strong>Path cost: <span class="math inline">4+2=6</span>.</strong></p>
 </div><div class="column" style="width:48%;">
 <h3 id="a-search">A* search</h3>
 <p>Priority: <span class="math inline">f(n)=g(n)+h(n)</span>.</p>
-<p>After <span class="math inline">S</span>, <span class="math inline">f(A)=1+4=5</span>, while <span class="math inline">f(B)=4+2=6</span>.</p>
-<p>Continue through <span class="math inline">C</span> to <span class="math inline">G</span>. <strong>Path cost: <span class="math inline">5</span>.</strong></p>
+<p><span class="math inline">f(A)=1+4=5</span>.<br>
+<span class="math inline">f(B)=4+2=6</span>.</p>
+<p>Choose <span class="math inline">A</span>, then <span class="math inline">C</span> and <span class="math inline">G</span>. <strong>Path cost: <span class="math inline">5</span>.</strong></p>
 </div></div>
 </section>
 <section id="heuristic-check" class="slide level2 scrollable">
 <h2>Heuristic Check</h2>
-<p>True remaining costs: <span class="math inline">h^*(A)=4</span>, <span class="math inline">h^*(B)=2</span>, <span class="math inline">h^*(C)=2</span>.</p>
+<div class="columns">
+<div class="column" style="width:64%;">
 <div class="question">
 <ol type="1">
 <li>Is <span class="math inline">h(A)=4</span> admissible? What about <span class="math inline">h(A)=8</span>?</li>
@@ -395,6 +469,11 @@ Peizhong Ju
 <li>Can greedy search return a suboptimal path even with an admissible heuristic?</li>
 </ol>
 </div>
+</div><div class="column review-reference" style="width:33%;">
+<p><img data-src="imgs/drawio/lec8/search-graph.png" class="review-graph" alt="Reference graph for checking heuristic bounds. The cheapest remaining costs from A, B, and C are 4, 2, and 2."></p>
+<p>True remaining costs:</p>
+<p><span class="math inline">h^*(A)=4</span>, <span class="math inline">h^*(B)=2</span>, <span class="math inline">h^*(C)=2</span>.</p>
+</div></div>
 <div class="fragment">
 <ol type="1">
 <li><strong>Yes</strong> for <span class="math inline">4</span>, <strong>no</strong> for <span class="math inline">8</span>: admissibility requires <span class="math inline">0\le h(n)\le h^*(n)</span>.</li>
@@ -405,6 +484,7 @@ Peizhong Ju
 </section>
 <section id="correctness-depends-on-the-implementation" class="slide level2">
 <h2>Correctness Depends on the Implementation</h2>
+<p>Assume a <strong>finite graph</strong> and <strong>nonnegative edge costs</strong>.</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
@@ -437,6 +517,9 @@ Peizhong Ju
 </table>
 <p><strong>Consistency:</strong> for every edge <span class="math inline">n\to n'</span> with cost <span class="math inline">c</span>,</p>
 <p><span class="math display">h(n)\le c+h(n'),\qquad h(G)=0.</span></p>
+<div class="takeaway">
+<p>For UCS and A*, retain improved routes and accept a goal when its current entry leaves the priority queue.</p>
+</div>
 <aside class="notes">
 <p>Finite graph and nonnegative edge costs throughout this review. Admissibility suffices for A* tree search under standard termination conditions. Graph search that permanently closes states needs consistency, or it must support reopening. Consistency is stronger than simply being a lower bound.</p>
 <style type="text/css">
@@ -453,27 +536,25 @@ Peizhong Ju
 </section>
 <section id="big-o-notation" class="slide level2">
 <h2>Big-O Notation</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:66%;">
-<ul>
-<li>Big-O describes an upper bound on time or space growth.</li>
-<li>It focuses on large inputs.</li>
-<li>It hides constant factors and lower-order terms.</li>
-</ul>
+<p>Big-O ignores constant factors and lower-order terms as input size grows.</p>
+<div class="columns">
+<div class="column" style="width:52%;">
 <div class="definition">
 <p>A function <span class="math inline">f(n)</span> is <span class="math inline">O(g(n))</span> if there exist positive constants <span class="math inline">c</span> and <span class="math inline">n_0</span> such that</p>
 <p><span class="math display">
-f(n) \le c \cdot g(n), \quad \forall n \ge n_0.
+0\le f(n) \le c \cdot g(n)
 </span></p>
+<p>for every <span class="math inline">n\ge n_0</span>.</p>
 </div>
-</div><div class="column" style="width:26%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec1/tree_roots_openclipart.svg" class="cc0-icon"></p>
-<figcaption>Tree roots icon for growth</figcaption>
-</figure>
-</div>
+</div><div class="column" style="width:45%;">
+<p><img data-src="imgs/lec8/big-o-bound.svg" class="review-bound" alt="Plot of f(n)=3n squared+5n+7 and the upper bound c g(n)=15n squared. They meet at n0=1. For all n at least1, f(n) stays below the upper bound; that region is shaded."></p>
 </div></div>
+<div class="fragment">
+<p>For <span class="math inline">n\ge1</span>, <span class="math inline">3n^2+5n+7\le15n^2</span>. Choose <span class="math inline">c=15</span> and <span class="math inline">n_0=1</span> to show <span class="math inline">O(n^2)</span>.</p>
+</div>
+<div class="takeaway">
+<p>State whether a bound describes the worst case, average case, or another case. Big-O alone does not specify which.</p>
+</div>
 </section>
 <section id="common-growth-rates" class="slide level2">
 <h2>Common Growth Rates</h2>
@@ -504,7 +585,7 @@ f(n) \le c \cdot g(n), \quad \forall n \ge n_0.
 <tr class="even">
 <td><span class="math inline">O(n \log n)</span></td>
 <td>log-linear</td>
-<td>many efficient sorts</td>
+<td>merge sort</td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">O(n^2)</span></td>
@@ -524,17 +605,37 @@ f(n) \le c \cdot g(n), \quad \forall n \ge n_0.
 </tbody>
 </table>
 </section>
-<section id="growth-rate-sketch" class="slide level2">
-<h2>Growth Rate Sketch</h2>
-<svg viewbox="0 0 760 300" role="img" aria-label="Growth rates chart comparing logarithmic, linear, quadratic, and exponential curves." style="width: 100%; max-height: 285px;">
-<rect x="50" y="18" width="655" height="240" rx="8" fill="#f8fbfb" stroke="#d9e5e5"></rect> <path d="M88 238H690 M88 238V42" stroke="#23343b" stroke-width="2.5"></path> <text x="610" y="282" font-size="18" fill="#23343b">input size n</text> <text x="18" y="38" font-size="18" fill="#23343b">growth</text> <path d="M96 226 C190 209 310 197 470 190 C560 186 625 184 678 183" stroke="#007c89" stroke-width="5" fill="none"></path> <path d="M96 232 L678 78" stroke="#2d5a66" stroke-width="5" fill="none"></path> <path d="M96 235 C250 232 390 204 500 144 C578 101 630 64 678 45" stroke="#7a5cff" stroke-width="5" fill="none"></path> <path d="M96 237 C260 236 386 229 490 200 C598 170 650 100 678 35" stroke="#b8325f" stroke-width="5" fill="none"></path> <text x="515" y="191" font-size="19" fill="#007c89">O(log n)</text> <text x="585" y="90" font-size="19" fill="#2d5a66">O(n)</text> <text x="442" y="136" font-size="19" fill="#7a5cff">O(n^2)</text> <text x="565" y="38" font-size="19" fill="#b8325f">O(2^n)</text>
-</svg>
+<section id="growth-rates-on-a-numerical-scale" class="slide level2">
+<h2>Growth Rates on a Numerical Scale</h2>
+<p>The curves show the <strong>actual functions</strong>. Each major step up the vertical axis multiplies the value by <strong>10</strong>.</p>
+<p><img data-src="imgs/lec8/growth-rates.svg" class="review-chart" alt="Plot of log base 2 of n, n, n squared, and 2 to the n for input sizes 2 through 16, with a base 10 logarithmic vertical axis. At n=16 their values are 4, 16, 256, and 65,536."></p>
+<div class="takeaway fragment">
+<p>At <span class="math inline">n=16</span>, <span class="math inline">n^2=256</span> while <span class="math inline">2^n=65{,}536</span>. These are function values, not measured runtimes.</p>
+</div>
+<aside class="notes">
+<p>A logarithmic vertical scale keeps all four functions visible. An exponential becomes a straight line on this scale. The functions n squared and 2 to the n intersect at n=2 and n=4. Big-O denotes a class of upper bounds, not one exact runtime curve. The chart compares representative functions rather than asserting a specific implementation’s running time. At n=16, log base 2 of n is 4, n is 16, n squared is 256, and 2 to the n is 65,536.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="from-binary-search-to-kd-trees" class="slide level2">
-<h2>From Binary Search to KD-Trees</h2>
+<section id="binary-search-and-kd-trees" class="slide level2">
+<h2>Binary Search and KD-Trees</h2>
 <p>Binary search works because a sorted line can be split in half.</p>
-<p>A <strong>k-dimensional tree (KD-tree)</strong> extends that idea to points in space:</p>
+<p>A <strong>k-dimensional tree (KD-tree)</strong> partitions points using one coordinate at a time. Here <span class="math inline">k</span> is the number of dimensions.</p>
 <table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Search structure</th>
@@ -550,65 +651,14 @@ f(n) \le c \cdot g(n), \quad \forall n \ge n_0.
 </tr>
 <tr class="even">
 <td>KD-tree</td>
-<td>alternate coordinate axes</td>
+<td>often alternate axes and split near a median</td>
 <td>spatial points</td>
 </tr>
 </tbody>
 </table>
-<div class="review-figure">
-<svg viewbox="0 0 1000 260" role="img" aria-label="On the left, binary search splits sorted points at a midpoint. On the right, a KD-tree partitions a rectangle vertically on x, then horizontally on y within each half.">
-<g font-family="sans-serif" font-size="28" fill="#202124" text-anchor="middle"><text x="235" y="38">One dimension</text><text x="750" y="38">Two dimensions</text></g>
-<path d="M40 145H440" stroke="#5d6470" stroke-width="3"></path>
-<g fill="#007c89"><circle cx="70" cy="145" r="9"></circle><circle cx="130" cy="145" r="9"></circle><circle cx="180" cy="145" r="9"></circle><circle cx="300" cy="145" r="9"></circle><circle cx="360" cy="145" r="9"></circle><circle cx="410" cy="145" r="9"></circle></g>
-<path d="M240 85V205" stroke="#b8325f" stroke-width="3"></path>
-<rect x="540" y="65" width="420" height="170" fill="#e8f6f5" stroke="#007c89" stroke-width="2"></rect>
-<path d="M750 65V235" stroke="#b8325f" stroke-width="3"></path><path d="M540 130H750M750 185H960" stroke="#b7791f" stroke-width="3"></path>
-<g fill="#007c89"><circle cx="590" cy="100" r="8"></circle><circle cx="665" cy="180" r="8"></circle><circle cx="810" cy="100" r="8"></circle><circle cx="890" cy="155" r="8"></circle><circle cx="850" cy="210" r="8"></circle></g>
-<g font-family="sans-serif" font-size="23" fill="#5d6470"><text x="173" y="244">midpoint</text><text x="759" y="89">x split</text><text x="553" y="122">y split</text></g>
-</svg>
-</div>
-</section>
-<section id="kd-tree-nearest-neighbor" class="slide level2 scrollable">
-<h2>KD-Tree Nearest Neighbor</h2>
-<p>A KD-tree is useful when many queries ask: “Which stored point is closest to this query point?”</p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="search-idea">Search idea</h3>
-<ol type="1">
-<li>Follow the split decisions to a leaf.</li>
-<li>Keep the best point found so far.</li>
-<li>Backtrack only into regions that could contain a closer point.</li>
-</ol>
-</div><div class="column" style="width:48%;">
-<h3 id="complexity-intuition">Complexity intuition</h3>
-<ul>
-<li>Favorable low-dimensional data: queries are often near <span class="math inline">O(\log n)</span>.</li>
-<li>Worst case: <span class="math inline">O(n)</span>, even with a balanced tree.</li>
-</ul>
-<p>High dimensions can weaken pruning.</p>
-</div></div>
-<div class="takeaway">
-<p>The same “split and ignore irrelevant half” idea behind binary search becomes spatial pruning in a KD-tree.</p>
-</div>
-</section>
-<section id="kd-tree-can-we-prune-this-region" class="slide level2">
-<h2>KD-Tree: Can We Prune This Region?</h2>
-<p>Query <span class="math inline">q=(4,3)</span>. Best point so far: <span class="math inline">p=(3,3)</span>, at distance <span class="math inline">1</span>.</p>
-<div class="review-figure">
-<svg viewbox="0 0 1000 290" role="img" aria-label="Query at x equals 4 and best point at x equals 3. A split at x equals 6 is two units from the query, so all points in the right region are farther than the current best distance of one.">
-<rect x="640" y="15" width="310" height="225" fill="#fdecef"></rect>
-<path d="M70 240H960M100 250V20" stroke="#5d6470" stroke-width="2"></path>
-<path d="M640 15V240" stroke="#b8325f" stroke-width="3" stroke-dasharray="8 7"></path>
-<circle cx="400" cy="140" r="120" fill="#e8f6f5" fill-opacity=".6" stroke="#007c89" stroke-width="2"></circle>
-<circle cx="280" cy="140" r="8" fill="#b7791f"></circle><circle cx="400" cy="140" r="8" fill="#007c89"></circle>
-<g font-family="sans-serif" font-size="28" fill="#202124"><text x="245" y="182">p</text><text x="405" y="183">q</text><text x="607" y="277">x = 6</text><text x="683" y="110">Prune this region</text><text x="683" y="153">distance at least 2</text><text x="140" y="45">Current radius = 1</text></g>
-</svg>
-</div>
-<div class="fragment">
-<p>The split is <span class="math inline">|6-4|=2</span> units away, greater than <span class="math inline">1</span>. No point on the right can improve the answer.</p>
-</div>
+<p><img data-src="imgs/drawio/lec8/spatial-splits.png" class="review-spatial" alt="Binary search compares with the middle key 8 in the sorted list 2, 4, 6, 8, 10, 12, 14. A two-dimensional KD-tree uses a vertical x split, then horizontal y splits in the resulting regions."></p>
 <aside class="notes">
-<p>Ask what changes if the query moves to x=5.5 and the current best distance is still 1. The lower bound becomes 0.5, so this pruning test no longer rules out the right region. It does not guarantee that the right region contains a better point.</p>
+<p>This diagram shows region partitions rather than prescribing one exact storage convention. KD-trees may store points at internal nodes or use leaf buckets. Median-based splitting helps balance the tree; axis alternation alone does not guarantee balance. Spatial nearest-neighbor search may need to revisit both sides of a split. Reference: https://www.cs.cmu.edu/~ckingsf/bioinfo-lectures/kdtrees.pdf.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -623,33 +673,53 @@ f(n) \le c \cdot g(n), \quad \forall n \ge n_0.
 </section>
 <section id="graph-representation-matters" class="slide level2">
 <h2>Graph Representation Matters</h2>
+<p>Let <span class="math inline">V</span> be the <strong>number of vertices</strong> and <span class="math inline">E</span> the <strong>number of edges</strong> in a finite graph.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th>Representation</th>
-<th>Neighbor lookup style</th>
-<th>Common cost</th>
+<th style="text-align: right;">Stored graph</th>
+<th style="text-align: right;">Full BFS/DFS traversal</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Adjacency list</td>
-<td>iterate only actual neighbors</td>
-<td><span class="math inline">O(V+E)</span> traversal</td>
+<td style="text-align: right;"><span class="math inline">O(V+E)</span></td>
+<td style="text-align: right;"><span class="math inline">O(V+E)</span></td>
 </tr>
 <tr class="even">
 <td>Adjacency matrix</td>
-<td>scan possible neighbors</td>
-<td><span class="math inline">O(V^2)</span> traversal</td>
+<td style="text-align: right;"><span class="math inline">O(V^2)</span></td>
+<td style="text-align: right;"><span class="math inline">O(V^2)</span></td>
 </tr>
 </tbody>
 </table>
-<div class="question">
-<p>When reviewing search complexity, always ask: “How is the graph represented?”</p>
-</div>
+<div class="columns">
+<div class="column" style="width:61%;">
+<p>For <span class="math inline">A</span>, a list stores just <strong><span class="math inline">(C,2)</span> and <span class="math inline">(G,9)</span></strong>.</p>
+<p>A matrix row checks all <strong>five</strong> possible destinations, including absent edges.</p>
+<p>For a sparse graph, most matrix entries describe <strong>no edge</strong>.</p>
+</div><div class="column review-reference" style="width:36%;">
+<p><img data-src="imgs/drawio/lec8/search-graph.png" class="review-graph" alt="Reference graph has 5 vertices and 6 directed edges. Only C and G are outgoing neighbors of A."></p>
+</div></div>
+<aside class="notes">
+<p>Bounds describe a traversal covering all vertices, starting additional traversals for disconnected components if necessary. In a single-source search, only reached vertices need their neighbors scanned. Absent matrix edges need a sentinel distinct from legitimate zero-cost edges. The graph’s adjacency lists contain 6 total entries. A 5 by 5 matrix has 25 entries. Graph storage is separate from additional search records.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="bfs-complexity" class="slide level2">
 <h2>BFS Complexity</h2>
+<p>Mark each state reached <strong>on insertion</strong>, so each vertex enters the queue at most once.</p>
 <div class="columns two-column-balance">
 <div class="column" style="width:48%;">
 <h3 id="time">Time</h3>
@@ -659,16 +729,33 @@ f(n) \le c \cdot g(n), \quad \forall n \ge n_0.
 <li><span class="math inline">O(V^2)</span> with adjacency matrices.</li>
 </ul>
 </div><div class="column" style="width:48%;">
-<h3 id="space">Space</h3>
+<h3 id="additional-search-space">Additional search space</h3>
 <ul>
-<li>Stores the frontier by layers.</li>
-<li><span class="math inline">O(V)</span> for general graphs.</li>
-<li><span class="math inline">O(b^d)</span> for trees with branching factor <span class="math inline">b</span> and depth <span class="math inline">d</span>.</li>
+<li>Queue, reached set, and parents use <span class="math inline">O(V)</span>.</li>
+<li>The queue can contain parts of two adjacent layers.</li>
+<li>A wide last layer can dominate memory.</li>
 </ul>
 </div></div>
+<div class="takeaway">
+<p>A complete tree with branching factor <span class="math inline">b&gt;1</span> and maximum depth <span class="math inline">d</span> has <span class="math inline">b^d</span> leaves. BFS may need <span class="math inline">O(b^d)</span> frontier space on that tree.</p>
+</div>
+<aside class="notes">
+<p>These are worst-case traversal bounds and exclude the stored graph from additional search space. Here d is the maximum depth of a finite complete tree, not the solution-depth convention in an unbounded search tree. Goal testing on removal in an implicit tree can generate the next layer before stopping, so state that convention when comparing textbook b-to-the-d formulas. Reference: AIMA Chapter 3 and https://inst.eecs.berkeley.edu/~cs188/textbook/search/uninformed.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="dfs-complexity" class="slide level2">
 <h2>DFS Complexity</h2>
+<p>Mark a vertex when entering it and skip already visited vertices.</p>
 <div class="columns two-column-balance">
 <div class="column" style="width:48%;">
 <h3 id="time-1">Time</h3>
@@ -678,13 +765,29 @@ f(n) \le c \cdot g(n), \quad \forall n \ge n_0.
 <li><span class="math inline">O(V^2)</span> with adjacency matrices.</li>
 </ul>
 </div><div class="column" style="width:48%;">
-<h3 id="space-1">Space</h3>
+<h3 id="stack-versus-visited-set">Stack versus visited set</h3>
 <ul>
-<li>Stores the current path and pending alternatives.</li>
-<li>Can be <span class="math inline">O(V)</span> in a long path.</li>
-<li>Recursion depth is <span class="math inline">O(\log V)</span> for a balanced tree.</li>
+<li>A chain can require <span class="math inline">O(V)</span> active calls.</li>
+<li>A balanced tree needs <span class="math inline">O(\log V)</span> active calls.</li>
+<li>A graph-search visited set still uses <span class="math inline">O(V)</span>.</li>
 </ul>
 </div></div>
+<div class="takeaway">
+<p>Recursive DFS uses <span class="math inline">O(V)</span> additional space in a general graph. A shallow call stack alone does not make the entire search use <span class="math inline">O(\log V)</span> space.</p>
+</div>
+<aside class="notes">
+<p>The recursion-stack bound assumes adjacency-list iterators or equivalent DFS frames, so each level records its next neighbor rather than copying all remaining neighbors. A tree traversal needs no visited set when parent/child direction already prevents cycles. A node-stack implementation with repeated pending entries can have a different memory bound. Keep implementation assumptions explicit.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="ucs-greedy-and-a" class="slide level2">
 <h2>UCS, Greedy, and A*</h2>
@@ -715,32 +818,77 @@ f(n) \le c \cdot g(n), \quad \forall n \ge n_0.
 </tr>
 </tbody>
 </table>
-<p>With adjacency lists and a binary heap supporting decrease-key:</p>
+<p>With adjacency lists and a binary heap holding <strong>one entry per frontier state</strong>:</p>
 <p><span class="math display">\text{Time}=O((V+E)\log V),\qquad \text{storage}=O(V+E).</span></p>
+<p><strong>Decrease-key</strong> lowers an existing entry’s priority and restores heap order in <span class="math inline">O(\log V)</span>, using an index to locate that entry.</p>
 <div class="takeaway">
-<p>The bound includes the stored graph. Reopening states or generating a huge implicit state space changes the analysis.</p>
+<p>Storage includes the graph. Reopening states or retaining stale heap entries requires extra accounting.</p>
 </div>
+<aside class="notes">
+<p>With an indexed binary heap, insert, pop, and decrease-key cost O(log V). Up to V state removals and E examined edges give O((V+E)log V) time with constant-time edge/heuristic evaluation. The total O(V+E) space includes the graph; the heap, parent, and best arrays use O(V). A lazy heap can hold O(E) entries and gives O((V+E)log(V+E)) directly; on a simple graph this has the usual O((V+E)log V) form because E is at most V squared. A* with inconsistent heuristics can re-expand states, so those assumptions no longer suffice. Greedy’s bound here assumes duplicate control, not optimality.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="a-best-and-worst-cases" class="slide level2">
-<h2>A* Best and Worst Cases</h2>
+<section id="a-and-heuristic-quality" class="slide level2">
+<h2>A* and Heuristic Quality</h2>
+<p>Let <span class="math inline">d</span> be the solution depth and <span class="math inline">C^*</span> the optimal total cost.</p>
 <div class="columns visual-pair">
 <div class="column" style="width:48%;">
 <h3 id="weak-heuristic">Weak Heuristic</h3>
 <ul>
-<li>If <span class="math inline">h(n)</span> gives little useful guidance, A* behaves much like UCS.</li>
-<li>It may expand many nodes.</li>
+<li><span class="math inline">h(n)=0</span> gives exactly UCS priorities.</li>
+<li>Many low-cost prefixes can look promising.</li>
 </ul>
 </div><div class="column" style="width:48%;">
 <h3 id="strong-heuristic">Strong Heuristic</h3>
 <ul>
-<li>If <span class="math inline">h(n)</span> is very accurate, A* can move almost directly toward the goal.</li>
-<li>Even an exact heuristic may leave many tied optimal paths to explore.</li>
+<li>A tighter lower bound can rule out more unpromising routes.</li>
+<li>Even an exact heuristic may leave many tied optimal paths.</li>
 </ul>
 </div></div>
+<div class="question">
+<p>If two different optimal routes have the same total cost <span class="math inline">C^*</span>, what can their frontier priorities be when <span class="math inline">h=h^*</span>?</p>
+</div>
+<div class="takeaway fragment">
+<p>Both can have <span class="math inline">f=C^*</span>. Tie-breaking and heuristic evaluation cost still matter, so a perfect heuristic does not guarantee <span class="math inline">O(d)</span> runtime.</p>
+</div>
 </section>
 <section id="a-graph-bound-can-still-hide-exponential-work" class="slide level2">
 <h2>A Graph Bound Can Still Hide Exponential Work</h2>
-<p>Suppose a search tree has branching factor <span class="math inline">b=3</span> and depth <span class="math inline">d=10</span>.</p>
+<p>Suppose a complete search tree has branching factor <span class="math inline">b=3</span> and maximum depth <span class="math inline">d=10</span>. The root has depth <span class="math inline">0</span>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Depth</th>
+<th style="text-align: right;">0</th>
+<th style="text-align: right;">1</th>
+<th style="text-align: right;">2</th>
+<th style="text-align: right;">3</th>
+<th style="text-align: right;"><span class="math inline">\cdots</span></th>
+<th style="text-align: right;">10</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Nodes in the layer</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;"><span class="math inline">\cdots</span></td>
+<td style="text-align: right;">59,049</td>
+</tr>
+</tbody>
+</table>
 <p><span class="math display">
 \text{Leaves}=3^{10}=59{,}049,\qquad
 \text{total nodes}=\sum_{i=0}^{10}3^i=88{,}573.
@@ -752,55 +900,25 @@ f(n) \le c \cdot g(n), \quad \forall n \ge n_0.
 <p>The number of vertices <span class="math inline">V</span> itself grows exponentially with <span class="math inline">d</span>. Always state what the input-size variable measures.</p>
 </div>
 </section>
-<section id="complexity-practice" class="slide level2">
-<h2>Complexity Practice</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Question</th>
-<th>Your estimate</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">V=1{,}000</span>, <span class="math inline">E=3{,}000</span>: adjacency-list traversal?</td>
-<td>In terms of <span class="math inline">V+E</span></td>
-</tr>
-<tr class="even">
-<td>Same graph: adjacency-matrix traversal?</td>
-<td>In terms of <span class="math inline">V^2</span></td>
-</tr>
-<tr class="odd">
-<td>Double <span class="math inline">n</span>: an <span class="math inline">O(n^2)</span> leading term changes by what factor?</td>
-<td>Ignore lower-order terms</td>
-</tr>
-<tr class="even">
-<td>A chain of <span class="math inline">V</span> vertices: maximum recursive DFS depth?</td>
-<td>Count active calls</td>
-</tr>
-</tbody>
-</table>
-<div class="fragment">
-<p>About <strong>4,000</strong> vertex/edge visits versus <strong>1,000,000</strong> matrix entries, a factor of <strong>4</strong>, and depth <strong><span class="math inline">V</span></strong>. These are operation-scale estimates, not runtime measurements.</p>
-</div>
-</section>
-<section id="exit-problem-find-the-first-bug" class="slide level2 scrollable">
-<h2>Exit Problem: Find the First Bug</h2>
-<p>A weighted-search implementation does this:</p>
+<section id="exit-problem-two-correctness-bugs" class="slide level2 scrollable">
+<h2>Exit Problem: Two Correctness Bugs</h2>
+<p>A UCS implementation uses the shown graph but makes these choices:</p>
+<div class="columns">
+<div class="column" style="width:61%;">
 <ol type="1">
 <li>Add a new state to a permanent visited set when generating it.</li>
 <li>Ignore every later path to that state.</li>
 <li>Return immediately when generating a goal.</li>
 </ol>
+</div><div class="column review-reference" style="width:36%;">
+<p><img data-src="imgs/drawio/lec8/search-graph.png" class="review-graph" alt="Reference graph for two UCS bugs. Expanding A first discovers S-A-G at cost 10. The optimal S-A-C-G route costs 5."></p>
+</div></div>
 <div class="question">
-<p>Use today’s graph to explain two ways this can lose the cheapest path.</p>
+<p>Which route does it return? If only the goal test is fixed, does the other bug remain?</p>
 </div>
 <div class="fragment">
-<p>It can freeze <span class="math inline">G</span> at cost <span class="math inline">10</span> and reject the later cost-<span class="math inline">5</span> route. It can also stop at cost <span class="math inline">10</span> before removing the cheapest goal from the priority queue.</p>
+<p><strong>Early goal test:</strong> expanding <span class="math inline">A</span> returns cost <strong>10</strong> immediately.</p>
+<p><strong>Permanent visited-on-generation:</strong> even with a goal test on removal, it rejects the later route through <span class="math inline">C</span> costing <strong>5</strong>.</p>
 </div>
 </section>
 <section id="review-checklist" class="slide level2">
@@ -813,6 +931,9 @@ f(n) \le c \cdot g(n), \quad \forall n \ge n_0.
 <li>Does the algorithm need to store many frontier nodes?</li>
 <li>Is the goal shortest path, lowest cost, or merely any solution?</li>
 </ul>
+<div class="takeaway">
+<p>Check the priority rule, duplicate policy, and stopping rule together. Then state the graph representation and input-size variables for the complexity bound.</p>
+</div>
 <p><a class="asset-credit-link" href="../asset_credits.html#lec8" target="_blank" rel="noopener">Asset credits</a></p>
 
 
