@@ -229,43 +229,27 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="the-opponent-chooses-a-reply" class="slide level2 game-slide">
-<h2>The Opponent Chooses a Reply</h2>
-<p>UCS and A* choose a route through a state space. In a game, <strong>another player controls some of the choices</strong>.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Your move</th>
-<th>Opponent’s possible replies</th>
-<th style="text-align: right;">Worst outcome for you</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">A</span></td>
-<td>Payoffs 3, 12, or 8</td>
-<td style="text-align: right;"><strong>3</strong></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">B</span></td>
-<td>Payoffs 2, 4, or 6</td>
-<td style="text-align: right;"><strong>2</strong></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">C</span></td>
-<td>Payoffs 14, 5, or 2</td>
-<td style="text-align: right;"><strong>2</strong></td>
-</tr>
-</tbody>
-</table>
+<section id="tic-tac-toe" class="slide level2 game-slide">
+<h2>Tic-Tac-Toe</h2>
+<p><strong>Tic-tac-toe</strong> is a two-player game on a <strong><span class="math inline">3\times3</span> board</strong>.</p>
+<div class="columns">
+<div class="column" style="width:35%;">
+<p><img data-src="imgs/drawio/lec9/tic-tac-toe-state.png" class="game-board" alt="A tic-tac-toe position on a three-by-three board. X and O occupy six squares, and X moves next."></p>
+</div><div class="column" style="width:62%;">
+<ul>
+<li><strong>X starts.</strong> Players alternate, marking one empty square per turn.</li>
+<li>The first player with <strong>three marks in a row, column, or diagonal wins</strong>.</li>
+<li>A full board with no winner is a <strong>draw</strong>.</li>
+</ul>
+</div></div>
 <div class="question">
-<p>Which move would you choose if your opponent always selects your lowest payoff?</p>
+<p>We choose X’s moves. Who chooses O’s replies?</p>
 </div>
 <div class="takeaway fragment">
-<p>Choose <strong><span class="math inline">A</span></strong>: its worst outcome is the best available. The payoff <strong>14</strong> is possible, but you cannot force it.</p>
+<p>The opponent controls O. Our plan must account for <strong>their choices</strong>, including moves that block our win.</p>
 </div>
 <aside class="notes">
-<p>Aim for 35 minutes of explanation and tracing, 5 minutes for the exercise, and 10 minutes with the existing tic-tac-toe code/demo. Ask for a choice before revealing the answer. These are terminal payoffs in a small abstract game, not edge costs or probabilities. The numerical example is the standard minimax tree used in AIMA and UC Berkeley CS188: https://inst.eecs.berkeley.edu/~cs188/textbook/games/minimax.html. Later slides reuse it so students can focus on the computation.</p>
+<p>Explain the rules before analyzing the position. Each player keeps the same symbol throughout the game. The board shown is a position partway through play; the small numbers label its empty squares and are not scores. A winning line ends the game immediately. Contrast with UCS and A*: in deterministic route finding, the agent controls every action along its chosen plan. Here we choose X’s moves but cannot choose O’s replies. A sequence that leads to a win is useful only if the opponent cannot avoid it. The next slide introduces the decision rule for handling those replies. Source: AIMA adversarial search chapter.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -278,50 +262,20 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="which-games-fit-minimax" class="slide level2 game-slide">
-<h2>Which Games Fit Minimax?</h2>
-<p>Our model: <strong>two players take turns</strong>, each sees the full state, and each move has a known result.</p>
-<table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Property</th>
-<th>Meaning</th>
-<th>Outside today’s model</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Deterministic</td>
-<td>No random transition</td>
-<td>Dice rolls</td>
-</tr>
-<tr class="even">
-<td>Perfect information</td>
-<td>Both players observe the state</td>
-<td>Hidden cards</td>
-</tr>
-<tr class="odd">
-<td>Zero-sum</td>
-<td>One player’s gain is the other’s loss</td>
-<td>Shared or independent rewards</td>
-</tr>
-<tr class="even">
-<td>Finite game tree</td>
-<td>Every line eventually ends</td>
-<td>Play without a termination rule</td>
-</tr>
-</tbody>
-</table>
+<section id="minimax-the-basic-idea" class="slide level2 game-slide">
+<h2>Minimax: The Basic Idea</h2>
+<p><strong>Minimax</strong> chooses the move with the <strong>best worst-case outcome</strong>, accounting for an opponent who tries to make our outcome as bad as possible.</p>
+<p>Give each outcome a <strong>utility</strong>, a numerical score from our viewpoint:</p>
+<ul>
+<li><strong>MAX</strong> is our player, seeking the <strong>highest</strong> score.</li>
+<li><strong>MIN</strong> is the opponent, seeking the <strong>lowest</strong> score for us.</li>
+</ul>
+<p>For now, both players see the entire state, moves have no random effects, and every game eventually ends.</p>
 <div class="takeaway">
-<p>Tic-tac-toe fits this model. <strong>MAX</strong> seeks high utility; <strong>MIN</strong> seeks low utility, measured from MAX’s viewpoint.</p>
+<p>For each candidate move, consider the <strong>worst reply</strong>. Then choose the move whose worst outcome is <strong>best</strong>.</p>
 </div>
 <aside class="notes">
-<p>Finite is an assumption for exact recursive minimax here, not a claim about all games. General games may include chance, hidden information, simultaneous moves, multiple players, or cycles. Game rules must resolve repetition or other termination conditions when those occur. Game theory is the broader study of strategic interaction. Source: course Lecture9 and AIMA adversarial search chapter.</p>
+<p>MAX and MIN abbreviate maximizing and minimizing. We use one numerical utility measured from MAX’s viewpoint; MIN wants the opposite outcome. This is a zero-sum model. Seeing the entire state is called perfect information, and known move results without randomness are deterministic. The rule considers replies throughout the remaining game, not just the opponent’s next move. Exact recursive minimax here assumes a finite game tree with two alternating players. Games with dice, hidden information, or shared objectives require extensions. Source: AIMA adversarial search chapter.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -376,27 +330,7 @@ Peizhong Ju
 <p>An action is legal only in an empty square. A winning position ends the game immediately.</p>
 </div>
 <aside class="notes">
-<p>Square numbers run left-to-right, top-to-bottom, from 1 to9. Only empty squares are numbered in the picture. X starts, and the displayed state has three X and three O. It has no winner yet. Utility is defined for terminal states; a nonterminal estimate will be introduced separately. The diagrams use X as MAX throughout; the existing Python demo uses O as MAX, a difference made explicit on its slide.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="tic-tac-toe-game-tree" class="slide level2 game-slide">
-<h2>Tic-Tac-Toe Game Tree</h2>
-<p><img data-src="imgs/drawio/lec9/tic-tac-toe-tree.png" class="game-tree-wide" alt="X can play square 6, 7, or 8. Playing 7 completes X's diagonal and ends with utility plus1. The other two branches are nonterminal positions with O to move."></p>
-<div class="takeaway">
-<p>Each edge is <strong>one player’s move</strong>, or one <strong>ply</strong>. Branches can end at different depths.</p>
-</div>
-<aside class="notes">
-<p>Ask why the middle branch stops before O moves. Other branches continue even though their descendants are omitted in this sketch; they must not be treated as terminal. The top layer is MAX’s decision; a surviving child is MIN’s turn. A two-ply search includes one X move and one O reply, unless a terminal state is reached sooner. Tic-tac-toe ends after at most nine plies from the empty board. All board diagrams are original course drawings.</p>
+<p>Square numbers run left-to-right, top-to-bottom, from 1 to9. Only empty squares are numbered in the picture. X starts, and the displayed state has three X and three O. It has no winner yet. Utility is defined for terminal states; a nonterminal estimate will be introduced separately. The diagrams use X as MAX throughout.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -434,51 +368,14 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="a-large-payoff-is-not-guaranteed" class="slide level2 game-slide">
-<h2>A Large Payoff Is Not Guaranteed</h2>
-<p><img data-src="imgs/drawio/lec9/minimax-example-0.png" class="game-tree-wide" alt="MAX root R chooses MIN node A, B, or C. A has terminal utilities3,12,8; B has2,4,6; C has14,5,2. Internal values are unknown."></p>
-<div class="question">
-<p>The largest leaf is <strong>14</strong>. Which player chooses the final edge into that leaf?</p>
-</div>
-<div class="takeaway fragment">
-<p><strong>MIN</strong> chooses at <span class="math inline">C</span> and can select <strong>2</strong>. MAX chooses a branch, not an arbitrary leaf inside it.</p>
-</div>
-<aside class="notes">
-<p>This abstract game ends after two plies. All bottom values are exact terminal utilities, not a depth cutoff. Edge labels A/B/C identify MAX’s options; there are no edge costs. The standard numerical example follows AIMA and https://inst.eecs.berkeley.edu/~cs188/textbook/games/minimax.html. The image is redrawn locally in draw.io.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="minimax-values" class="slide level2 game-slide">
-<h2>Minimax Values</h2>
-<p>Let <span class="math inline">V(s)</span> be the outcome from state <span class="math inline">s</span> when both players choose optimally.</p>
-<p><span class="math display">
-V(s)=
-\begin{cases}
-U(s), &amp; \text{if }s\text{ is terminal},\\[0.35em]
-\max\limits_{a\in A(s)} V(\operatorname{Result}(s,a)), &amp; \text{if MAX moves},\\[0.35em]
-\min\limits_{a\in A(s)} V(\operatorname{Result}(s,a)), &amp; \text{if MIN moves}.
-\end{cases}
-</span></p>
-<div class="fragment">
-<ul>
-<li>At a <strong>terminal state</strong>, read the outcome.</li>
-<li>At a <strong>decision state</strong>, back up a child’s value using the player to move.</li>
-</ul>
-</div>
+<section id="tic-tac-toe-game-tree" class="slide level2 game-slide">
+<h2>Tic-Tac-Toe Game Tree</h2>
+<p><img data-src="imgs/drawio/lec9/tic-tac-toe-tree.png" class="game-tree-wide" alt="X can play square 6, 7, or 8. Playing 7 completes X's diagonal and ends with utility plus1. The other two branches are nonterminal positions with O to move."></p>
 <div class="takeaway">
-<p>Search downward to discover outcomes; propagate values <strong>upward</strong> to compare moves.</p>
+<p>Each edge is <strong>one player’s move</strong>, or one <strong>ply</strong>. A terminal branch has a score. Other branches continue with the opponent’s turn.</p>
 </div>
 <aside class="notes">
-<p>A(s) abbreviates ACTIONS(s), and U(s) abbreviates UTILITY(s). The same fixed MAX viewpoint is used in all three cases. This recurrence describes exact minimax on a finite game tree. Source: AIMA adversarial search chapter and Berkeley CS188 minimax notes.</p>
+<p>Ask why the middle branch stops before O moves. Other branches continue even though their descendants are omitted in this sketch; they must not be treated as terminal. The top layer is MAX’s decision; a surviving child is MIN’s turn. Branches can end at different depths. A two-ply search includes one X move and one O reply, unless a terminal state is reached sooner. Tic-tac-toe ends after at most nine plies from the empty board. Transition: if there is no immediate win, how do the eventual leaf scores tell us which move to play now? All board diagrams are original course drawings.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -494,7 +391,7 @@ U(s), &amp; \text{if }s\text{ is terminal},\\[0.35em]
 <section id="minimax-backup" class="slide level2 game-slide search-trace game-trace">
 <h2>Back Up the Values</h2>
 <p class="trace-intro">
-First evaluate the three <strong>MIN</strong> nodes. Then evaluate the <strong>MAX</strong> root.
+MAX chooses <strong>A, B, or C</strong>, then MIN chooses a payoff. <strong>Backing up values</strong> means computing each parent’s score from its children’s scores.
 </p>
 <div class="trace-tree-frames" role="img" aria-label="Minimax backup: MIN nodes A B C become3,2,2; then MAX root R becomes3 and chooses A.">
   <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec9/minimax-example-0.png" alt="" aria-hidden="true">
@@ -503,14 +400,14 @@ First evaluate the three <strong>MIN</strong> nodes. Then evaluate the <strong>M
 </div>
 <div class="game-backup-steps">
 <div class="fragment" data-fragment-index="0">
-<p><strong>MIN:</strong> <span class="math inline">V(A)=\min(3,12,8)=3</span>; <span class="math inline">V(B)=2</span>; <span class="math inline">V(C)=2</span>.</p>
+<p><strong>MIN:</strong> At <span class="math inline">A</span>, <span class="math inline">\min(3,12,8)=3</span>. Likewise, <span class="math inline">B=2</span> and <span class="math inline">C=2</span>.</p>
 </div>
 <div class="takeaway fragment" data-fragment-index="1">
-<p><strong>MAX:</strong> <span class="math inline">V(R)=\max(3,2,2)=3</span>. Choose <strong><span class="math inline">A</span></strong>.</p>
+<p><strong>MAX:</strong> <span class="math inline">\max(3,2,2)=3</span> at the root. Choose <strong><span class="math inline">A</span></strong>.</p>
 </div>
 </div>
 <aside class="notes">
-<p>Allow 3-4 minutes. The first reveal fills all MIN values and highlights their selected leaves in gold; have students calculate each first. The second reveal selects A at the root in teal. Reversing a reveal restores the previous diagram. The picture explains bottom-up values; an implementation can compute each subtree in a depth-first traversal instead of processing whole layers at once. MIN’s choices at B and C still matter when comparing those branches even though optimal MAX does not choose them.</p>
+<p>All bottom values are exact terminal utilities in a different game, not tic-tac-toe scores, edge costs, or probabilities. Before the first reveal, ask whether MAX can force the largest leaf, 14. MIN controls that final choice and can instead take 2. Then compute the minimum under each candidate move. The first reveal fills A=3, B=2, C=2 and highlights the selected leaves in gold. The second reveal chooses A at the root in teal. Reversing a reveal restores the previous diagram. The picture explains bottom-up values; an implementation can compute each subtree depth first instead of processing whole layers at once. Source: the standard AIMA example, also in https://inst.eecs.berkeley.edu/~cs188/textbook/games/minimax.html. Redrawn locally in draw.io.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -523,8 +420,8 @@ First evaluate the three <strong>MIN</strong> nodes. Then evaluate the <strong>M
           display:block!important;
       }</style></aside>
 </section>
-<section id="return-a-move-not-just-a-value" class="slide level2 game-slide">
-<h2>Return a Move, Not Just a Value</h2>
+<section id="the-chosen-move-and-its-guarantee" class="slide level2 game-slide">
+<h2>The Chosen Move and Its Guarantee</h2>
 <div class="columns">
 <div class="column" style="width:56%;">
 <p><img data-src="imgs/drawio/lec9/minimax-example-2.png" class="game-reference" alt="Completed minimax tree: A3, B2, C2 and root3, with moveA highlighted."></p>
@@ -547,14 +444,13 @@ First evaluate the three <strong>MIN</strong> nodes. Then evaluate the <strong>M
 </tr>
 </tbody>
 </table>
-<p>The score tells us how good a position is. The selected action tells us what to do.</p>
+<p>Choosing <span class="math inline">A</span> guarantees <strong>at least 3</strong>. If MIN selects 12 instead, MAX gets 12.</p>
 </div></div>
-<p><span class="math display">a^*\in\arg\max_{a\in A(s)}V(\operatorname{Result}(s,a)).</span></p>
 <div class="takeaway">
-<p>Record the action whenever you find a better child value. If values tie, either tied move is minimax-optimal.</p>
+<p>After each opponent reply, choose again from the resulting state. A <strong>strategy</strong> specifies how to act in every position that may arise.</p>
 </div>
 <aside class="notes">
-<p>This root formula assumes it is MAX’s turn. At MIN’s root use argmin. A strict greater-than update keeps the first move among ties; the next pseudocode makes that rule explicit. The highlighted line is one possible continuation under optimal play, not a complete contingent strategy.</p>
+<p>With perfect play by both players the outcome is exactly 3. Against any legal opponent, MAX can guarantee at least 3 by following a minimax strategy. Minimax protects against the strongest replies without predicting that every real opponent will be optimal. The highlighted line is one possible optimal continuation, not a fixed plan the opponent must follow. In a longer game, recompute after each observed reply or store a contingent strategy. If child values tie, either action is optimal; the pseudocode will retain the first.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -567,105 +463,27 @@ First evaluate the three <strong>MIN</strong> nodes. Then evaluate the <strong>M
           display:block!important;
       }</style></aside>
 </section>
-<section id="a-strategy-handles-every-reply" class="slide level2 game-slide">
-<h2>A Strategy Handles Every Reply</h2>
-<p>After choosing a move, MAX must respond to <strong>the move MIN actually makes</strong>.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Object</th>
-<th>What it specifies</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Fixed action sequence</td>
-<td>One predetermined line of play</td>
-</tr>
-<tr class="even">
-<td>Strategy</td>
-<td>A move for each MAX decision state that may arise</td>
-</tr>
-<tr class="odd">
-<td>Minimax decision</td>
-<td>The next move at the current state</td>
-</tr>
-</tbody>
-</table>
+<section id="the-minimax-rule" class="slide level2 game-slide">
+<h2>The Minimax Rule</h2>
+<ul>
+<li><span class="math inline">s</span>: a state; <span class="math inline">a</span>: an action; <span class="math inline">A(s)</span>: the legal actions in <span class="math inline">s</span>.</li>
+<li><span class="math inline">\operatorname{Result}(s,a)</span>: the next state after action <span class="math inline">a</span> in state <span class="math inline">s</span>.</li>
+<li><span class="math inline">U(s)</span>: terminal score; <span class="math inline">V(s)</span>: score from <span class="math inline">s</span> under optimal play.</li>
+</ul>
+<p><span class="math display">
+V(s)=
+\begin{cases}
+U(s), &amp; \text{if }s\text{ is terminal},\\[0.35em]
+\max\limits_{a\in A(s)} V(\operatorname{Result}(s,a)), &amp; \text{if MAX moves},\\[0.35em]
+\min\limits_{a\in A(s)} V(\operatorname{Result}(s,a)), &amp; \text{if MIN moves}.
+\end{cases}
+</span></p>
 <div class="fragment">
-<p>In our example, choosing <span class="math inline">A</span> guarantees <strong>at least 3</strong>. If MIN instead chooses the leaf worth 12, MAX receives <strong>12</strong>.</p>
-</div>
-<div class="takeaway">
-<p>Minimax protects against the strongest opponent. It does <strong>not</strong> assume every opponent will actually play optimally.</p>
+<p><strong>For MAX:</strong> <span class="math inline">\arg\max</span> gives the action(s) with the largest child value. Choose one, <span class="math inline">a^*</span>:</p>
+<p><span class="math display">a^*\in\arg\max_{a\in A(s)}V(\operatorname{Result}(s,a)).</span></p>
 </div>
 <aside class="notes">
-<p>With perfect play by both sides the root value is exactly3. Against an arbitrary legal opponent, a minimax strategy guarantees at least3 in this example. It may not exploit a predictable weak opponent as aggressively as a model tailored to that opponent. For a longer game, one can compute an entire contingent strategy or recompute the best next action after every observed reply. A minimax guarantee is not a guarantee of winning; a position may have value0 or a negative value.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="minimax-pseudocode-evaluate-a-state" class="slide level2 game-slide game-pseudocode">
-<h2>Minimax Pseudocode: Evaluate a State</h2>
-<p><code>RESULT</code> returns a new state with the next player to move. This version searches to <strong>terminal states</strong>.</p>
-<div class="pseudo-code" aria-label="Exact minimax state-value pseudocode">
-  <div class="pseudo-line"><span class="pseudo-fn">VALUE</span>(s)</div>
-  <div class="pseudo-line indent-1"><span class="pseudo-kw">if</span> <span class="pseudo-fn">TERMINAL</span>(s): <span class="pseudo-kw">return</span> <span class="pseudo-fn">UTILITY</span>(s)</div>
-  <div class="pseudo-line indent-1 fragment" data-fragment-index="0"><span class="pseudo-kw">if</span> <span class="pseudo-fn">PLAYER</span>(s) == <span class="pseudo-lit">MAX</span>:</div>
-  <div class="pseudo-line indent-2 fragment" data-fragment-index="0">v &lt;- <span class="pseudo-lit">-infinity</span></div>
-  <div class="pseudo-line indent-2 fragment" data-fragment-index="0"><span class="pseudo-kw">for</span> a <span class="pseudo-kw">in</span> <span class="pseudo-fn">ACTIONS</span>(s):</div>
-  <div class="pseudo-line indent-3 fragment" data-fragment-index="0">v &lt;- <span class="pseudo-fn">max</span>(v, <span class="pseudo-fn">VALUE</span>(<span class="pseudo-fn">RESULT</span>(s, a)))</div>
-  <div class="pseudo-line indent-1 fragment" data-fragment-index="1"><span class="pseudo-kw">else</span>: <span class="pseudo-comment"># MIN moves</span></div>
-  <div class="pseudo-line indent-2 fragment" data-fragment-index="1">v &lt;- <span class="pseudo-lit">+infinity</span></div>
-  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-kw">for</span> a <span class="pseudo-kw">in</span> <span class="pseudo-fn">ACTIONS</span>(s):</div>
-  <div class="pseudo-line indent-3 fragment" data-fragment-index="1">v &lt;- <span class="pseudo-fn">min</span>(v, <span class="pseudo-fn">VALUE</span>(<span class="pseudo-fn">RESULT</span>(s, a)))</div>
-  <div class="pseudo-line indent-1"><span class="pseudo-kw">return</span> v</div>
-</div>
-<div class="takeaway fragment" data-fragment-index="1">
-<p>Explore children <strong>depth first</strong>. Return a value only after evaluating all legal alternatives at that node.</p>
-</div>
-<aside class="notes">
-<p>No depth parameter appears in exact VALUE: the stopping condition is terminal. The code assumes a finite game tree and at least one legal action in every nonterminal state. For a game with passing, a pass must be represented as a legal action. Terminal utility always refers to MAX. The loop accumulators use opposite infinities so they also handle all-negative MAX values or all-positive MIN values correctly. Source: standard minimax recurrence, rewritten as course pseudocode.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="minimax-pseudocode-choose-an-action" class="slide level2 game-slide game-pseudocode">
-<h2>Minimax Pseudocode: Choose an Action</h2>
-<p>Precondition: the state is <strong>nonterminal</strong> and <strong>MAX moves next</strong>.</p>
-<div class="pseudo-code" aria-label="Choose a minimax action at a MAX root">
-  <div class="pseudo-line"><span class="pseudo-fn">CHOOSE_MOVE</span>(s)</div>
-  <div class="pseudo-line indent-1">best_value &lt;- <span class="pseudo-lit">-infinity</span>; best_action &lt;- <span class="pseudo-lit">None</span></div>
-  <div class="pseudo-line indent-1 fragment" data-fragment-index="0"><span class="pseudo-kw">for</span> a <span class="pseudo-kw">in</span> <span class="pseudo-fn">ACTIONS</span>(s):</div>
-  <div class="pseudo-line indent-2 fragment" data-fragment-index="0">value &lt;- <span class="pseudo-fn">VALUE</span>(<span class="pseudo-fn">RESULT</span>(s, a))</div>
-  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-kw">if</span> value &gt; best_value:</div>
-  <div class="pseudo-line indent-3 fragment" data-fragment-index="1">best_value &lt;- value</div>
-  <div class="pseudo-line indent-3 fragment" data-fragment-index="1">best_action &lt;- a</div>
-  <div class="pseudo-line indent-1"><span class="pseudo-kw">return</span> best_action</div>
-</div>
-<div class="fragment" data-fragment-index="1">
-<p>At the root: evaluate <strong><span class="math inline">A:3</span></strong>, <strong><span class="math inline">B:2</span></strong>, <strong><span class="math inline">C:2</span></strong>. Keep <span class="math inline">A</span> and return the action <strong><span class="math inline">A</span></strong>.</p>
-</div>
-<div class="takeaway">
-<p>The recursive function computes scores. The outer loop remembers the move that produced the best score.</p>
-</div>
-<aside class="notes">
-<p>The strict comparison retains the first action among equally valued alternatives. The successor of a MAX move normally belongs to MIN; the state carries that turn, so the caller need not toggle a separate flag. This is the counterpart of retaining a parent/action in UCS and A*: computing a numeric value alone is insufficient to act. Standard tic-tac-toe utilities are finite.</p>
+<p>Read Result(s,a) as “the state reached after taking action a in state s.” It is the same operation as RESULT in the game representation and pseudocode. A(s) abbreviates ACTIONS(s), and U(s) abbreviates UTILITY(s). V(Result(s,a)) is therefore the value of a child state. The recurrence computes the score, whereas arg max identifies actions achieving the largest score. The symbol in between a* and arg max means “is one of,” allowing multiple equally good actions. The action-selection formula assumes MAX moves; use arg min at MIN’s turn. The same fixed MAX viewpoint applies throughout. Quick check: MAX with children -7, -2, -5 has value -2. Source: AIMA adversarial search chapter and Berkeley CS188 minimax notes.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -687,13 +505,105 @@ First evaluate the three <strong>MIN</strong> nodes. Then evaluate the <strong>M
 <li><strong>At a MIN node:</strong> MIN can choose the smallest, so MAX cannot count on anything larger.</li>
 </ol>
 <div class="fragment">
-<p>Apply this argument repeatedly from the leaves to the root. Each backed-up value is correct once its children are correct.</p>
+<p>Repeat the argument from the leaves to the root. Each backed-up value is correct once its children are correct.</p>
 </div>
 <div class="takeaway">
-<p>The chosen strategy guarantees MAX its minimax value. That value may represent a <strong>win, draw, or loss</strong>.</p>
+<p>Following minimax guarantees MAX <strong>at least</strong> the root value. This may still mean a win, draw, or loss against optimal play.</p>
 </div>
 <aside class="notes">
-<p>This is induction on subtree height. At MAX nodes there exists a maximizing action achieving the backed-up bound. At MIN nodes every legal reply has value at least the minimum, and an optimal MIN can choose a reply attaining that minimum. Hence exact minimax provides the best worst-case guarantee. The theorem relies on searching to actual terminal states; arbitrary heuristic cutoffs lose that guarantee.</p>
+<p>This is induction on subtree height. At MAX nodes there exists an action achieving the backed-up bound. At MIN nodes every legal reply has value at least the minimum, and an optimal MIN can attain that minimum. With perfect play by both sides the outcome equals the root value. For tic-tac-toe, exact value 0 means a draw under optimal play, not an unfinished calculation. The theorem relies on actual terminal utilities; arbitrary heuristic cutoffs lose the guarantee.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="minimax-practice" class="slide level2 game-slide search-trace game-trace">
+<h2>Your Turn: Three Decision Levels</h2>
+<p class="trace-intro">
+Compute <strong>C, D, E, F</strong>, then <strong>A, B</strong>, then the root. Which first move should MAX play?
+</p>
+<div class="trace-tree-frames" role="img" aria-label="Exercise: MAX root, MIN children A B, MAX grandchildren C D E F. Leaf pairs are3,5;2,9;0,4;1,6. Reveal: C5 D9 E4 F6, A5 B4, root5 chooses A.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec9/practice.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec9/practice-answer.png" alt="" aria-hidden="true">
+</div>
+<div class="takeaway fragment" data-fragment-index="0">
+<p><span class="math inline">C=5,\ D=9,\ E=4,\ F=6</span>. Then <span class="math inline">A=5,\ B=4</span>. Root value <strong>5</strong>; choose <strong><span class="math inline">A</span></strong>.</p>
+</div>
+<aside class="notes">
+<p>Give pairs 2-3 minutes before revealing. The bottom decision layer is MAX, not MIN. Ask students to name the controlling player before each calculation. Follow-up after the solution: change only C’s leaf 5 to 1. Then C=max(3,1)=3, A=min(3,9)=3, B remains 4, and the root switches to B with 4. This checks whether students can update only the affected ancestors. The leaf 0 is a terminal payoff, not missing data. Transition: the recursive algorithm performs these same backups automatically. This exercise is an original course example.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="minimax-pseudocode-evaluate-a-state" class="slide level2 game-slide game-pseudocode">
+<h2>Minimax Pseudocode: Evaluate a State</h2>
+<p><code>VALUE(s)</code> evaluates the child states, then returns their <strong>maximum</strong> if MAX moves or <strong>minimum</strong> if MIN moves.</p>
+<div class="pseudo-code" aria-label="Exact minimax state-value pseudocode">
+  <div class="pseudo-line"><span class="pseudo-fn">VALUE</span>(<span class="pseudo-var">s</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">if</span> <span class="pseudo-fn">TERMINAL</span>(<span class="pseudo-var">s</span>): <span class="pseudo-kw">return</span> <span class="pseudo-fn">UTILITY</span>(<span class="pseudo-var">s</span>)</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="0"><span class="pseudo-kw">if</span> <span class="pseudo-fn">PLAYER</span>(<span class="pseudo-var">s</span>) == <span class="pseudo-lit">MAX</span>:</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="0"><span class="pseudo-var">v</span> &lt;- <span class="pseudo-lit">-infinity</span></div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="0"><span class="pseudo-kw">for</span> <span class="pseudo-var">a</span> <span class="pseudo-kw">in</span> <span class="pseudo-fn">ACTIONS</span>(<span class="pseudo-var">s</span>):</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="0"><span class="pseudo-var">v</span> &lt;- <span class="pseudo-fn">max</span>(<span class="pseudo-var">v</span>, <span class="pseudo-fn">VALUE</span>(<span class="pseudo-fn">RESULT</span>(<span class="pseudo-var">s</span>, <span class="pseudo-var">a</span>)))</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="1"><span class="pseudo-kw">else</span>: <span class="pseudo-comment"># MIN moves</span></div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-var">v</span> &lt;- <span class="pseudo-lit">+infinity</span></div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-kw">for</span> <span class="pseudo-var">a</span> <span class="pseudo-kw">in</span> <span class="pseudo-fn">ACTIONS</span>(<span class="pseudo-var">s</span>):</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="1"><span class="pseudo-var">v</span> &lt;- <span class="pseudo-fn">min</span>(<span class="pseudo-var">v</span>, <span class="pseudo-fn">VALUE</span>(<span class="pseudo-fn">RESULT</span>(<span class="pseudo-var">s</span>, <span class="pseudo-var">a</span>)))</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">return</span> <span class="pseudo-var">v</span></div>
+</div>
+<div class="takeaway fragment" data-fragment-index="1">
+<p>This child-to-parent calculation is a <strong>value backup</strong>. Search depth first, then return the parent’s value.</p>
+</div>
+<aside class="notes">
+<p>No depth parameter appears in exact VALUE: the stopping condition is terminal. The code assumes a finite game tree and at least one legal action in every nonterminal state. For a game with passing, a pass must be represented as a legal action. Terminal utility always refers to MAX. The loop accumulators use opposite infinities so they also handle all-negative MAX values or all-positive MIN values correctly. Source: standard minimax recurrence, rewritten as course pseudocode.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="minimax-pseudocode-choose-an-action" class="slide level2 game-slide game-pseudocode">
+<h2>Minimax Pseudocode: Choose an Action</h2>
+<p>Precondition: the state is <strong>nonterminal</strong> and <strong>MAX moves next</strong>.</p>
+<div class="pseudo-code" aria-label="Choose a minimax action at a MAX root">
+  <div class="pseudo-line"><span class="pseudo-fn">CHOOSE_MOVE</span>(<span class="pseudo-var">s</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-var">best_value</span> &lt;- <span class="pseudo-lit">-infinity</span>; <span class="pseudo-var">best_action</span> &lt;- <span class="pseudo-lit">None</span></div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="0"><span class="pseudo-kw">for</span> <span class="pseudo-var">a</span> <span class="pseudo-kw">in</span> <span class="pseudo-fn">ACTIONS</span>(<span class="pseudo-var">s</span>):</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="0"><span class="pseudo-var">value</span> &lt;- <span class="pseudo-fn">VALUE</span>(<span class="pseudo-fn">RESULT</span>(<span class="pseudo-var">s</span>, <span class="pseudo-var">a</span>))</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-kw">if</span> <span class="pseudo-var">value</span> &gt; <span class="pseudo-var">best_value</span>:</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="1"><span class="pseudo-var">best_value</span> &lt;- <span class="pseudo-var">value</span></div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="1"><span class="pseudo-var">best_action</span> &lt;- <span class="pseudo-var">a</span></div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">return</span> <span class="pseudo-var">best_action</span></div>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p>Whenever a better score appears, store its <strong>action</strong> too. With <code>&gt;</code>, a tie keeps the first move found.</p>
+</div>
+<div class="takeaway">
+<p>The recursive function computes scores. The outer loop remembers the move that produced the best score.</p>
+</div>
+<aside class="notes">
+<p>The strict comparison retains the first action among equally valued alternatives. The successor of a MAX move normally belongs to MIN; the state carries that turn, so the caller need not toggle a separate flag. This is the counterpart of retaining a parent/action in UCS and A*: computing a numeric value alone is insufficient to act. Standard tic-tac-toe utilities are finite.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -708,7 +618,7 @@ First evaluate the three <strong>MIN</strong> nodes. Then evaluate the <strong>M
 </section>
 <section id="search-cost" class="slide level2 game-slide">
 <h2>Search Cost</h2>
-<p>Let <span class="math inline">b</span> be the branching factor and <span class="math inline">m</span> the maximum number of remaining <strong>plies</strong>.</p>
+<p>Exact search works for tic-tac-toe. For larger games, let <span class="math inline">b</span> be the branching factor and <span class="math inline">m</span> the maximum remaining <strong>plies</strong>.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <h3 id="time">Time</h3>
@@ -775,91 +685,6 @@ First evaluate the three <strong>MIN</strong> nodes. Then evaluate the <strong>M
 </div>
 <aside class="notes">
 <p>Check TERMINAL before d==0 so a terminal state at the cutoff receives its exact utility. EVAL always uses the same MAX viewpoint. Minimax over heuristic leaves is exact for those supplied leaf scores but is not guaranteed optimal in the actual game. Unlike A*’s admissible remaining-cost heuristic, there is no admissibility condition introduced here that restores exact play. Keep this as a bridge; Lecture10 covers practical cutoff methods and alpha-beta. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/games/minimax.html#322-evaluation-functions.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="minimax-practice" class="slide level2 game-slide search-trace game-trace">
-<h2>Your Turn: Three Decision Levels</h2>
-<p class="trace-intro">
-Compute <strong>C, D, E, F</strong>, then <strong>A, B</strong>, then the root. Which first move should MAX play?
-</p>
-<div class="trace-tree-frames" role="img" aria-label="Exercise: MAX root, MIN children A B, MAX grandchildren C D E F. Leaf pairs are3,5;2,9;0,4;1,6. Reveal: C5 D9 E4 F6, A5 B4, root5 chooses A.">
-  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec9/practice.png" alt="" aria-hidden="true">
-  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec9/practice-answer.png" alt="" aria-hidden="true">
-</div>
-<div class="takeaway fragment" data-fragment-index="0">
-<p><span class="math inline">C=5,\ D=9,\ E=4,\ F=6</span>. Then <span class="math inline">A=5,\ B=4</span>. Root value <strong>5</strong>; choose <strong><span class="math inline">A</span></strong>.</p>
-</div>
-<aside class="notes">
-<p>Give pairs 2-3 minutes before revealing. The bottom decision layer is MAX, not MIN. Ask students to name the controlling player before each calculation. Follow-up after the solution: change only C’s leaf5 to1. Then C=max(3,1)=3, A=min(3,9)=3, B remains4, and the root switches to B with4. This checks whether students can update only the affected ancestors. The leaf0 is a numeric terminal payoff; it is not missing data. This exercise is an original course example.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="tic-tac-toe-in-python" class="slide level2 game-slide game-pseudocode">
-<h2>Tic-Tac-Toe in Python</h2>
-<p>The <a href="../code_and_homework/tic_tac_toe.html" target="_blank" rel="noopener">existing demo and source</a> use <strong>AI = O = MAX</strong>, while the human plays <strong>X = MIN</strong>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>board[i][j] <span class="op">=</span> <span class="st">"O"</span>           <span class="co"># Try an AI move</span></span>
-<span id="cb2-2"><a></a>score <span class="op">=</span> minimax(<span class="va">False</span>)      <span class="co"># X chooses the next move</span></span>
-<span id="cb2-3"><a></a>board[i][j] <span class="op">=</span> <span class="st">""</span>            <span class="co"># Undo before trying another</span></span>
-<span id="cb2-4"><a></a><span class="cf">if</span> score <span class="op">&gt;</span> best_score:</span>
-<span id="cb2-5"><a></a>    best_score <span class="op">=</span> score</span>
-<span id="cb2-6"><a></a>    best_move <span class="op">=</span> (i, j)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ul>
-<li>Find the three terminal returns: <strong>O wins <span class="math inline">+1</span></strong>, <strong>X wins <span class="math inline">-1</span></strong>, <strong>draw <span class="math inline">0</span></strong>.</li>
-<li>Explain why the next call uses <code>False</code>.</li>
-<li>Explain what breaks if the trial move is never undone.</li>
-</ul>
-<div class="takeaway">
-<p>MAX is a <strong>role</strong>, not a particular symbol. Keep the utility convention and the maximizing player consistent.</p>
-</div>
-<aside class="notes">
-<p>Open the existing code page. It contains a downloadable PySide6 desktop program, not an embedded browser game. The excerpt follows ai_move after a candidate empty square has been selected. minimax(False) models X’s reply after O’s trial move; each recursive call also restores the square it changed. The earlier pseudocode uses fresh RESULT states, while the demo mutates a board and undoes its changes. No new demo implementation is required. Use the code reading questions even if the desktop GUI is not running.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="check-your-understanding" class="slide level2 game-slide">
-<h2>Check Your Understanding</h2>
-<p><strong>1. A MAX node has child values <span class="math inline">-7,-2,-5</span>. What is its value?</strong></p>
-<div class="fragment" data-fragment-index="0">
-<p><strong><span class="math inline">-2</span></strong>. MAX chooses the largest value even when every outcome is negative.</p>
-</div>
-<p><strong>2. Can you stop after finding a winning leaf somewhere in the tree?</strong></p>
-<div class="fragment" data-fragment-index="1">
-<p>Not in general. MIN may choose another reply before you reach that leaf.</p>
-</div>
-<p><strong>3. Does a minimax value of <span class="math inline">0</span> mean the program did not finish?</strong></p>
-<div class="fragment" data-fragment-index="2">
-<p>No.&nbsp;With our tic-tac-toe utilities, exact minimax value <strong>0</strong> means a draw under optimal play.</p>
-</div>
-<aside class="notes">
-<p>Allow about2 minutes. For question2, distinguish an arbitrary winning descendant from a root action whose backed-up value is the maximum possible utility. An implementation can stop once it has proved a maximum attainable root value, but merely seeing one winning leaf is insufficient. For question3, exact utility0 and an unfinished computation are different concepts. At a heuristic cutoff, a score0 is only an estimate.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
