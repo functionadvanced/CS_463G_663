@@ -178,7 +178,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Homework 2 Starter Files</h1>
-<p class="subtitle lead">Reversi Agents</p>
+<p class="subtitle lead">PySide6 Reversi Game</p>
 </div>
 
 <div>
@@ -209,373 +209,679 @@ Select a filename below to show its complete contents. These are the same files 
 </div>
 </div>
 <div class="tabset-margin-container"></div><div class="panel-tabset starter-file-tabs">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href=""><code>README.md</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href=""><code>ai.py</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href=""><code>reversi.py</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false" href=""><code>check_ai.py</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false" href=""><code>tournament.py</code></a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href=""><code>README.md</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href=""><code>ai.py</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href=""><code>main.py</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false" href=""><code>main_window.py</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false" href=""><code>setting_window.py</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false" href=""><code>board_widget.py</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-7" role="tab" aria-controls="tabset-1-7" aria-selected="false" href=""><code>info_widget.py</code></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-8" role="tab" aria-controls="tabset-1-8" aria-selected="false" href=""><code>game_logic.py</code></a></li></ul>
 <div class="tab-content starter-file-tabs">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu"># Homework 2 starter</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a></span>
-<span id="cb1-3"><a href="#cb1-3"></a>This package is a self-contained, console-based Reversi environment. It uses only the Python standard library.</span>
+<span id="cb1-3"><a href="#cb1-3"></a>This is the PySide6 Reversi game from Spring 2025 Homework 2.</span>
 <span id="cb1-4"><a href="#cb1-4"></a></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">## Files</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">## First steps</span></span>
 <span id="cb1-6"><a href="#cb1-6"></a></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="ss">- </span><span class="in">`ai.py`</span>: helper functions plus the four functions you must complete.</span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="ss">- </span><span class="in">`reversi.py`</span>: game rules, board rendering, and a random-vs-random demo.</span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="ss">- </span><span class="in">`check_ai.py`</span>: public interface and mutation checks.</span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="ss">- </span><span class="in">`tournament.py`</span>: runs all 16 ordered pairings and saves results.</span>
-<span id="cb1-11"><a href="#cb1-11"></a></span>
-<span id="cb1-12"><a href="#cb1-12"></a><span class="fu">## First steps</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>Install PySide6, then run the game from this folder:</span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="in">```bash</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="ex">python</span> <span class="at">-m</span> pip install PySide6</span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="ex">python</span> main.py</span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="in">```</span></span>
 <span id="cb1-13"><a href="#cb1-13"></a></span>
-<span id="cb1-14"><a href="#cb1-14"></a><span class="in">```bash</span></span>
-<span id="cb1-15"><a href="#cb1-15"></a><span class="ex">python</span> reversi.py</span>
-<span id="cb1-16"><a href="#cb1-16"></a><span class="ex">python</span> check_ai.py</span>
-<span id="cb1-17"><a href="#cb1-17"></a><span class="in">```</span></span>
-<span id="cb1-18"><a href="#cb1-18"></a></span>
-<span id="cb1-19"><a href="#cb1-19"></a>After implementing <span class="in">`ai.py`</span>, run:</span>
-<span id="cb1-20"><a href="#cb1-20"></a></span>
-<span id="cb1-21"><a href="#cb1-21"></a><span class="in">```bash</span></span>
-<span id="cb1-22"><a href="#cb1-22"></a><span class="ex">python</span> tournament.py</span>
-<span id="cb1-23"><a href="#cb1-23"></a><span class="in">```</span></span>
-<span id="cb1-24"><a href="#cb1-24"></a></span>
-<span id="cb1-25"><a href="#cb1-25"></a>The tournament runner writes <span class="in">`tournament_results.csv`</span> and one representative final board for each ordered pairing in <span class="in">`final_boards/`</span>. These files can be used to build the report tables and screenshots.</span>
-<span id="cb1-26"><a href="#cb1-26"></a></span>
-<span id="cb1-27"><a href="#cb1-27"></a>Upload only <span class="in">`hw2submission.pdf`</span> to Canvas.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-14"><a href="#cb1-14"></a>The settings window lets you choose a human or AI player for each side. You can use human and random players before completing the assignment.</span>
+<span id="cb1-15"><a href="#cb1-15"></a></span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="fu">## Files</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a></span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="ss">- </span><span class="in">`ai.py`</span>: the original unfinished AI starter, with <span class="in">`utility`</span>, <span class="in">`greedy_ai`</span>, <span class="in">`minimax_ai`</span>, and <span class="in">`alpha_beta_ai`</span> to complete.</span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="ss">- </span><span class="in">`main.py`</span>: launches the PySide6 application.</span>
+<span id="cb1-20"><a href="#cb1-20"></a><span class="ss">- </span><span class="in">`main_window.py`</span>: connects the game, player settings, and AI agents.</span>
+<span id="cb1-21"><a href="#cb1-21"></a><span class="ss">- </span><span class="in">`setting_window.py`</span>: player selection window.</span>
+<span id="cb1-22"><a href="#cb1-22"></a><span class="ss">- </span><span class="in">`board_widget.py`</span>: board drawing, mouse input, and piece animations.</span>
+<span id="cb1-23"><a href="#cb1-23"></a><span class="ss">- </span><span class="in">`info_widget.py`</span>: score and move history display.</span>
+<span id="cb1-24"><a href="#cb1-24"></a><span class="ss">- </span><span class="in">`game_logic.py`</span>: Reversi game rules.</span>
+<span id="cb1-25"><a href="#cb1-25"></a></span>
+<span id="cb1-26"><a href="#cb1-26"></a>Complete the four functions in <span class="in">`ai.py`</span> before selecting their corresponding AI players. Follow the Homework 2 assignment for the experiments and report requirements.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">import</span> random</span>
-<span id="cb2-2"><a href="#cb2-2"></a></span>
-<span id="cb2-3"><a href="#cb2-3"></a>DIRECTIONS <span class="op">=</span> (</span>
-<span id="cb2-4"><a href="#cb2-4"></a>    (<span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb2-5"><a href="#cb2-5"></a>    (<span class="dv">1</span>, <span class="dv">0</span>),</span>
-<span id="cb2-6"><a href="#cb2-6"></a>    (<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>),</span>
-<span id="cb2-7"><a href="#cb2-7"></a>    (<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>),</span>
-<span id="cb2-8"><a href="#cb2-8"></a>    (<span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb2-9"><a href="#cb2-9"></a>    (<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>),</span>
-<span id="cb2-10"><a href="#cb2-10"></a>    (<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>),</span>
-<span id="cb2-11"><a href="#cb2-11"></a>    (<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb2-12"><a href="#cb2-12"></a>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">def</span> is_valid_move(row, col, board, player):</span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="cf">if</span> board[row][col] <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb2-4"><a href="#cb2-4"></a>        <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a></span>
+<span id="cb2-6"><a href="#cb2-6"></a>    opponent <span class="op">=</span> <span class="st">"black"</span> <span class="cf">if</span> player <span class="op">==</span> <span class="st">"white"</span> <span class="cf">else</span> <span class="st">"white"</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>    directions <span class="op">=</span> [(<span class="dv">0</span>, <span class="dv">1</span>), (<span class="dv">1</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>), (<span class="dv">1</span>, <span class="dv">1</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>), (<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)]</span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a>    <span class="cf">for</span> d_row, d_col <span class="kw">in</span> directions:</span>
+<span id="cb2-10"><a href="#cb2-10"></a>        r, c <span class="op">=</span> row <span class="op">+</span> d_row, col <span class="op">+</span> d_col</span>
+<span id="cb2-11"><a href="#cb2-11"></a>        <span class="cf">if</span> <span class="kw">not</span> (<span class="dv">0</span> <span class="op">&lt;=</span> r <span class="op">&lt;</span> <span class="bu">len</span>(board) <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> c <span class="op">&lt;</span> <span class="bu">len</span>(board)) <span class="kw">or</span> board[r][c] <span class="op">!=</span> opponent:</span>
+<span id="cb2-12"><a href="#cb2-12"></a>            <span class="cf">continue</span></span>
 <span id="cb2-13"><a href="#cb2-13"></a></span>
-<span id="cb2-14"><a href="#cb2-14"></a></span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="kw">def</span> opponent_of(player):</span>
-<span id="cb2-16"><a href="#cb2-16"></a>    <span class="cf">return</span> <span class="st">"white"</span> <span class="cf">if</span> player <span class="op">==</span> <span class="st">"black"</span> <span class="cf">else</span> <span class="st">"black"</span></span>
-<span id="cb2-17"><a href="#cb2-17"></a></span>
-<span id="cb2-18"><a href="#cb2-18"></a></span>
-<span id="cb2-19"><a href="#cb2-19"></a><span class="kw">def</span> is_valid_move(row, col, board, player):</span>
-<span id="cb2-20"><a href="#cb2-20"></a>    size <span class="op">=</span> <span class="bu">len</span>(board)</span>
-<span id="cb2-21"><a href="#cb2-21"></a>    <span class="cf">if</span> <span class="kw">not</span> (<span class="dv">0</span> <span class="op">&lt;=</span> row <span class="op">&lt;</span> size <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> col <span class="op">&lt;</span> size):</span>
-<span id="cb2-22"><a href="#cb2-22"></a>        <span class="cf">return</span> <span class="va">False</span></span>
-<span id="cb2-23"><a href="#cb2-23"></a>    <span class="cf">if</span> board[row][col] <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb2-24"><a href="#cb2-24"></a>        <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>        r <span class="op">+=</span> d_row</span>
+<span id="cb2-15"><a href="#cb2-15"></a>        c <span class="op">+=</span> d_col</span>
+<span id="cb2-16"><a href="#cb2-16"></a>        <span class="cf">while</span> <span class="dv">0</span> <span class="op">&lt;=</span> r <span class="op">&lt;</span> <span class="bu">len</span>(board) <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> c <span class="op">&lt;</span> <span class="bu">len</span>(board):</span>
+<span id="cb2-17"><a href="#cb2-17"></a>            <span class="cf">if</span> board[r][c] <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb2-18"><a href="#cb2-18"></a>                <span class="cf">break</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>            <span class="cf">if</span> board[r][c] <span class="op">==</span> player:</span>
+<span id="cb2-20"><a href="#cb2-20"></a>                <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>            r <span class="op">+=</span> d_row</span>
+<span id="cb2-22"><a href="#cb2-22"></a>            c <span class="op">+=</span> d_col</span>
+<span id="cb2-23"><a href="#cb2-23"></a></span>
+<span id="cb2-24"><a href="#cb2-24"></a>    <span class="cf">return</span> <span class="va">False</span></span>
 <span id="cb2-25"><a href="#cb2-25"></a></span>
-<span id="cb2-26"><a href="#cb2-26"></a>    opponent <span class="op">=</span> opponent_of(player)</span>
-<span id="cb2-27"><a href="#cb2-27"></a>    <span class="cf">for</span> d_row, d_col <span class="kw">in</span> DIRECTIONS:</span>
-<span id="cb2-28"><a href="#cb2-28"></a>        r, c <span class="op">=</span> row <span class="op">+</span> d_row, col <span class="op">+</span> d_col</span>
-<span id="cb2-29"><a href="#cb2-29"></a>        <span class="cf">if</span> <span class="kw">not</span> (<span class="dv">0</span> <span class="op">&lt;=</span> r <span class="op">&lt;</span> size <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> c <span class="op">&lt;</span> size):</span>
-<span id="cb2-30"><a href="#cb2-30"></a>            <span class="cf">continue</span></span>
-<span id="cb2-31"><a href="#cb2-31"></a>        <span class="cf">if</span> board[r][c] <span class="op">!=</span> opponent:</span>
-<span id="cb2-32"><a href="#cb2-32"></a>            <span class="cf">continue</span></span>
-<span id="cb2-33"><a href="#cb2-33"></a></span>
-<span id="cb2-34"><a href="#cb2-34"></a>        r <span class="op">+=</span> d_row</span>
-<span id="cb2-35"><a href="#cb2-35"></a>        c <span class="op">+=</span> d_col</span>
-<span id="cb2-36"><a href="#cb2-36"></a>        <span class="cf">while</span> <span class="dv">0</span> <span class="op">&lt;=</span> r <span class="op">&lt;</span> size <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> c <span class="op">&lt;</span> size:</span>
-<span id="cb2-37"><a href="#cb2-37"></a>            <span class="cf">if</span> board[r][c] <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb2-38"><a href="#cb2-38"></a>                <span class="cf">break</span></span>
-<span id="cb2-39"><a href="#cb2-39"></a>            <span class="cf">if</span> board[r][c] <span class="op">==</span> player:</span>
-<span id="cb2-40"><a href="#cb2-40"></a>                <span class="cf">return</span> <span class="va">True</span></span>
-<span id="cb2-41"><a href="#cb2-41"></a>            r <span class="op">+=</span> d_row</span>
-<span id="cb2-42"><a href="#cb2-42"></a>            c <span class="op">+=</span> d_col</span>
-<span id="cb2-43"><a href="#cb2-43"></a>    <span class="cf">return</span> <span class="va">False</span></span>
-<span id="cb2-44"><a href="#cb2-44"></a></span>
-<span id="cb2-45"><a href="#cb2-45"></a></span>
-<span id="cb2-46"><a href="#cb2-46"></a><span class="kw">def</span> change_pieces(row, col, board, player):</span>
-<span id="cb2-47"><a href="#cb2-47"></a>    <span class="co">"""Flip captured discs in a board that already contains the new disc."""</span></span>
-<span id="cb2-48"><a href="#cb2-48"></a>    opponent <span class="op">=</span> opponent_of(player)</span>
-<span id="cb2-49"><a href="#cb2-49"></a>    size <span class="op">=</span> <span class="bu">len</span>(board)</span>
-<span id="cb2-50"><a href="#cb2-50"></a>    <span class="cf">for</span> d_row, d_col <span class="kw">in</span> DIRECTIONS:</span>
-<span id="cb2-51"><a href="#cb2-51"></a>        r, c <span class="op">=</span> row <span class="op">+</span> d_row, col <span class="op">+</span> d_col</span>
-<span id="cb2-52"><a href="#cb2-52"></a>        captured <span class="op">=</span> []</span>
-<span id="cb2-53"><a href="#cb2-53"></a>        <span class="cf">while</span> (</span>
-<span id="cb2-54"><a href="#cb2-54"></a>            <span class="dv">0</span> <span class="op">&lt;=</span> r <span class="op">&lt;</span> size</span>
-<span id="cb2-55"><a href="#cb2-55"></a>            <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> c <span class="op">&lt;</span> size</span>
-<span id="cb2-56"><a href="#cb2-56"></a>            <span class="kw">and</span> board[r][c] <span class="op">==</span> opponent</span>
-<span id="cb2-57"><a href="#cb2-57"></a>        ):</span>
-<span id="cb2-58"><a href="#cb2-58"></a>            captured.append((r, c))</span>
-<span id="cb2-59"><a href="#cb2-59"></a>            r <span class="op">+=</span> d_row</span>
-<span id="cb2-60"><a href="#cb2-60"></a>            c <span class="op">+=</span> d_col</span>
-<span id="cb2-61"><a href="#cb2-61"></a></span>
-<span id="cb2-62"><a href="#cb2-62"></a>        <span class="cf">if</span> (</span>
-<span id="cb2-63"><a href="#cb2-63"></a>            captured</span>
-<span id="cb2-64"><a href="#cb2-64"></a>            <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> r <span class="op">&lt;</span> size</span>
-<span id="cb2-65"><a href="#cb2-65"></a>            <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> c <span class="op">&lt;</span> size</span>
-<span id="cb2-66"><a href="#cb2-66"></a>            <span class="kw">and</span> board[r][c] <span class="op">==</span> player</span>
-<span id="cb2-67"><a href="#cb2-67"></a>        ):</span>
-<span id="cb2-68"><a href="#cb2-68"></a>            <span class="cf">for</span> captured_row, captured_col <span class="kw">in</span> captured:</span>
-<span id="cb2-69"><a href="#cb2-69"></a>                board[captured_row][captured_col] <span class="op">=</span> player</span>
-<span id="cb2-70"><a href="#cb2-70"></a></span>
-<span id="cb2-71"><a href="#cb2-71"></a></span>
-<span id="cb2-72"><a href="#cb2-72"></a><span class="kw">def</span> legal_moves(board, player):</span>
-<span id="cb2-73"><a href="#cb2-73"></a>    <span class="cf">return</span> [</span>
-<span id="cb2-74"><a href="#cb2-74"></a>        (row, col)</span>
-<span id="cb2-75"><a href="#cb2-75"></a>        <span class="cf">for</span> row <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(board))</span>
-<span id="cb2-76"><a href="#cb2-76"></a>        <span class="cf">for</span> col <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(board[row]))</span>
-<span id="cb2-77"><a href="#cb2-77"></a>        <span class="cf">if</span> is_valid_move(row, col, board, player)</span>
-<span id="cb2-78"><a href="#cb2-78"></a>    ]</span>
-<span id="cb2-79"><a href="#cb2-79"></a></span>
-<span id="cb2-80"><a href="#cb2-80"></a></span>
-<span id="cb2-81"><a href="#cb2-81"></a><span class="kw">def</span> board_after_move(board, player, move):</span>
-<span id="cb2-82"><a href="#cb2-82"></a>    row, col <span class="op">=</span> move</span>
-<span id="cb2-83"><a href="#cb2-83"></a>    <span class="cf">if</span> <span class="kw">not</span> is_valid_move(row, col, board, player):</span>
-<span id="cb2-84"><a href="#cb2-84"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"illegal move for </span><span class="sc">{</span>player<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>move<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb2-85"><a href="#cb2-85"></a>    next_board <span class="op">=</span> [values[:] <span class="cf">for</span> values <span class="kw">in</span> board]</span>
-<span id="cb2-86"><a href="#cb2-86"></a>    next_board[row][col] <span class="op">=</span> player</span>
-<span id="cb2-87"><a href="#cb2-87"></a>    change_pieces(row, col, next_board, player)</span>
-<span id="cb2-88"><a href="#cb2-88"></a>    <span class="cf">return</span> next_board</span>
-<span id="cb2-89"><a href="#cb2-89"></a></span>
-<span id="cb2-90"><a href="#cb2-90"></a></span>
-<span id="cb2-91"><a href="#cb2-91"></a><span class="kw">def</span> is_terminal(board):</span>
-<span id="cb2-92"><a href="#cb2-92"></a>    <span class="cf">return</span> <span class="kw">not</span> legal_moves(board, <span class="st">"black"</span>) <span class="kw">and</span> <span class="kw">not</span> legal_moves(</span>
-<span id="cb2-93"><a href="#cb2-93"></a>        board, <span class="st">"white"</span></span>
-<span id="cb2-94"><a href="#cb2-94"></a>    )</span>
-<span id="cb2-95"><a href="#cb2-95"></a></span>
-<span id="cb2-96"><a href="#cb2-96"></a></span>
-<span id="cb2-97"><a href="#cb2-97"></a><span class="kw">def</span> random_ai(board, player):</span>
-<span id="cb2-98"><a href="#cb2-98"></a>    moves <span class="op">=</span> legal_moves(board, player)</span>
-<span id="cb2-99"><a href="#cb2-99"></a>    <span class="cf">return</span> random.choice(moves) <span class="cf">if</span> moves <span class="cf">else</span> <span class="va">None</span></span>
-<span id="cb2-100"><a href="#cb2-100"></a></span>
-<span id="cb2-101"><a href="#cb2-101"></a></span>
-<span id="cb2-102"><a href="#cb2-102"></a><span class="kw">def</span> utility(board, player):</span>
-<span id="cb2-103"><a href="#cb2-103"></a>    <span class="co">"""Evaluate board from player's perspective."""</span></span>
-<span id="cb2-104"><a href="#cb2-104"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Implement utility"</span>)</span>
-<span id="cb2-105"><a href="#cb2-105"></a></span>
-<span id="cb2-106"><a href="#cb2-106"></a></span>
-<span id="cb2-107"><a href="#cb2-107"></a><span class="kw">def</span> greedy_ai(board, player):</span>
-<span id="cb2-108"><a href="#cb2-108"></a>    <span class="co">"""Return a legal immediate-gain move, or None for a forced pass."""</span></span>
-<span id="cb2-109"><a href="#cb2-109"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Implement greedy_ai"</span>)</span>
-<span id="cb2-110"><a href="#cb2-110"></a></span>
-<span id="cb2-111"><a href="#cb2-111"></a></span>
-<span id="cb2-112"><a href="#cb2-112"></a><span class="kw">def</span> minimax_ai(board, player, depth):</span>
-<span id="cb2-113"><a href="#cb2-113"></a>    <span class="co">"""Return a legal depth-limited minimax move."""</span></span>
-<span id="cb2-114"><a href="#cb2-114"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Implement minimax_ai"</span>)</span>
-<span id="cb2-115"><a href="#cb2-115"></a></span>
-<span id="cb2-116"><a href="#cb2-116"></a></span>
-<span id="cb2-117"><a href="#cb2-117"></a><span class="kw">def</span> alpha_beta_ai(board, player, depth):</span>
-<span id="cb2-118"><a href="#cb2-118"></a>    <span class="co">"""Return a legal minimax move using alpha-beta pruning."""</span></span>
-<span id="cb2-119"><a href="#cb2-119"></a>    <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Implement alpha_beta_ai"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-26"><a href="#cb2-26"></a></span>
+<span id="cb2-27"><a href="#cb2-27"></a><span class="kw">def</span> change_pieces(row, col, board, player):</span>
+<span id="cb2-28"><a href="#cb2-28"></a>    opponent <span class="op">=</span> <span class="st">"black"</span> <span class="cf">if</span> player <span class="op">==</span> <span class="st">"white"</span> <span class="cf">else</span> <span class="st">"white"</span></span>
+<span id="cb2-29"><a href="#cb2-29"></a>    directions <span class="op">=</span> [(<span class="dv">0</span>, <span class="dv">1</span>), (<span class="dv">1</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>), (<span class="dv">1</span>, <span class="dv">1</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>), (<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)]</span>
+<span id="cb2-30"><a href="#cb2-30"></a></span>
+<span id="cb2-31"><a href="#cb2-31"></a>    <span class="cf">for</span> d_row, d_col <span class="kw">in</span> directions:</span>
+<span id="cb2-32"><a href="#cb2-32"></a>        r, c <span class="op">=</span> row <span class="op">+</span> d_row, col <span class="op">+</span> d_col</span>
+<span id="cb2-33"><a href="#cb2-33"></a>        <span class="cf">if</span> <span class="kw">not</span> (<span class="dv">0</span> <span class="op">&lt;=</span> r <span class="op">&lt;</span> <span class="bu">len</span>(board) <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> c <span class="op">&lt;</span> <span class="bu">len</span>(board)) <span class="kw">or</span> board[r][c] <span class="op">!=</span> opponent:</span>
+<span id="cb2-34"><a href="#cb2-34"></a>            <span class="cf">continue</span></span>
+<span id="cb2-35"><a href="#cb2-35"></a></span>
+<span id="cb2-36"><a href="#cb2-36"></a>        r <span class="op">+=</span> d_row</span>
+<span id="cb2-37"><a href="#cb2-37"></a>        c <span class="op">+=</span> d_col</span>
+<span id="cb2-38"><a href="#cb2-38"></a>        <span class="cf">while</span> <span class="dv">0</span> <span class="op">&lt;=</span> r <span class="op">&lt;</span> <span class="bu">len</span>(board) <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> c <span class="op">&lt;</span> <span class="bu">len</span>(board):</span>
+<span id="cb2-39"><a href="#cb2-39"></a>            <span class="cf">if</span> board[r][c] <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb2-40"><a href="#cb2-40"></a>                <span class="cf">break</span></span>
+<span id="cb2-41"><a href="#cb2-41"></a>            <span class="cf">if</span> board[r][c] <span class="op">==</span> player:</span>
+<span id="cb2-42"><a href="#cb2-42"></a>                r, c <span class="op">=</span> row <span class="op">+</span> d_row, col <span class="op">+</span> d_col</span>
+<span id="cb2-43"><a href="#cb2-43"></a>                <span class="cf">while</span> board[r][c] <span class="op">==</span> opponent:</span>
+<span id="cb2-44"><a href="#cb2-44"></a>                    board[r][c] <span class="op">=</span> player</span>
+<span id="cb2-45"><a href="#cb2-45"></a>                    r <span class="op">+=</span> d_row</span>
+<span id="cb2-46"><a href="#cb2-46"></a>                    c <span class="op">+=</span> d_col</span>
+<span id="cb2-47"><a href="#cb2-47"></a>                <span class="cf">break</span></span>
+<span id="cb2-48"><a href="#cb2-48"></a>            r <span class="op">+=</span> d_row</span>
+<span id="cb2-49"><a href="#cb2-49"></a>            c <span class="op">+=</span> d_col</span>
+<span id="cb2-50"><a href="#cb2-50"></a></span>
+<span id="cb2-51"><a href="#cb2-51"></a></span>
+<span id="cb2-52"><a href="#cb2-52"></a></span>
+<span id="cb2-53"><a href="#cb2-53"></a></span>
+<span id="cb2-54"><a href="#cb2-54"></a><span class="kw">def</span> random_ai(board, player):</span>
+<span id="cb2-55"><a href="#cb2-55"></a>    valid_moves <span class="op">=</span> []</span>
+<span id="cb2-56"><a href="#cb2-56"></a>    <span class="cf">for</span> row <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(board)):</span>
+<span id="cb2-57"><a href="#cb2-57"></a>        <span class="cf">for</span> col <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(board)):</span>
+<span id="cb2-58"><a href="#cb2-58"></a>            <span class="cf">if</span> is_valid_move(row, col, board, player):</span>
+<span id="cb2-59"><a href="#cb2-59"></a>                valid_moves.append((row, col))</span>
+<span id="cb2-60"><a href="#cb2-60"></a></span>
+<span id="cb2-61"><a href="#cb2-61"></a>    <span class="cf">if</span> <span class="kw">not</span> valid_moves:</span>
+<span id="cb2-62"><a href="#cb2-62"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb2-63"><a href="#cb2-63"></a></span>
+<span id="cb2-64"><a href="#cb2-64"></a>    <span class="cf">return</span> random.choice(valid_moves)</span>
+<span id="cb2-65"><a href="#cb2-65"></a></span>
+<span id="cb2-66"><a href="#cb2-66"></a><span class="kw">def</span> utility(board, player):</span>
+<span id="cb2-67"><a href="#cb2-67"></a>    <span class="co"># Your code here</span></span>
+<span id="cb2-68"><a href="#cb2-68"></a>    <span class="cf">pass</span></span>
+<span id="cb2-69"><a href="#cb2-69"></a></span>
+<span id="cb2-70"><a href="#cb2-70"></a><span class="kw">def</span> greedy_ai(board, player):</span>
+<span id="cb2-71"><a href="#cb2-71"></a>    <span class="co"># Your code here</span></span>
+<span id="cb2-72"><a href="#cb2-72"></a>    <span class="cf">pass</span></span>
+<span id="cb2-73"><a href="#cb2-73"></a></span>
+<span id="cb2-74"><a href="#cb2-74"></a><span class="kw">def</span> minimax_ai(board, player, depth):</span>
+<span id="cb2-75"><a href="#cb2-75"></a>    <span class="co"># Your code here</span></span>
+<span id="cb2-76"><a href="#cb2-76"></a>    <span class="cf">pass</span></span>
+<span id="cb2-77"><a href="#cb2-77"></a></span>
+<span id="cb2-78"><a href="#cb2-78"></a><span class="kw">def</span> alpha_beta_ai(board, player, depth):</span>
+<span id="cb2-79"><a href="#cb2-79"></a>    <span class="co"># Your code here</span></span>
+<span id="cb2-80"><a href="#cb2-80"></a>    <span class="cf">pass</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="im">from</span> ai <span class="im">import</span> board_after_move, legal_moves, opponent_of, random_ai</span>
-<span id="cb3-2"><a href="#cb3-2"></a></span>
-<span id="cb3-3"><a href="#cb3-3"></a>BLACK <span class="op">=</span> <span class="st">"black"</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>WHITE <span class="op">=</span> <span class="st">"white"</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="im">import</span> sys</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="im">from</span> PySide6.QtWidgets <span class="im">import</span> QApplication</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="im">from</span> main_window <span class="im">import</span> MainWindow</span>
+<span id="cb3-4"><a href="#cb3-4"></a></span>
 <span id="cb3-5"><a href="#cb3-5"></a></span>
-<span id="cb3-6"><a href="#cb3-6"></a></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="kw">def</span> initial_board():</span>
-<span id="cb3-8"><a href="#cb3-8"></a>    board <span class="op">=</span> [[<span class="va">None</span> <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">8</span>)] <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">8</span>)]</span>
-<span id="cb3-9"><a href="#cb3-9"></a>    board[<span class="dv">3</span>][<span class="dv">3</span>] <span class="op">=</span> WHITE</span>
-<span id="cb3-10"><a href="#cb3-10"></a>    board[<span class="dv">4</span>][<span class="dv">4</span>] <span class="op">=</span> WHITE</span>
-<span id="cb3-11"><a href="#cb3-11"></a>    board[<span class="dv">3</span>][<span class="dv">4</span>] <span class="op">=</span> BLACK</span>
-<span id="cb3-12"><a href="#cb3-12"></a>    board[<span class="dv">4</span>][<span class="dv">3</span>] <span class="op">=</span> BLACK</span>
-<span id="cb3-13"><a href="#cb3-13"></a>    <span class="cf">return</span> board</span>
-<span id="cb3-14"><a href="#cb3-14"></a></span>
-<span id="cb3-15"><a href="#cb3-15"></a></span>
-<span id="cb3-16"><a href="#cb3-16"></a><span class="kw">def</span> score(board):</span>
-<span id="cb3-17"><a href="#cb3-17"></a>    <span class="cf">return</span> {</span>
-<span id="cb3-18"><a href="#cb3-18"></a>        BLACK: <span class="bu">sum</span>(row.count(BLACK) <span class="cf">for</span> row <span class="kw">in</span> board),</span>
-<span id="cb3-19"><a href="#cb3-19"></a>        WHITE: <span class="bu">sum</span>(row.count(WHITE) <span class="cf">for</span> row <span class="kw">in</span> board),</span>
-<span id="cb3-20"><a href="#cb3-20"></a>    }</span>
-<span id="cb3-21"><a href="#cb3-21"></a></span>
-<span id="cb3-22"><a href="#cb3-22"></a></span>
-<span id="cb3-23"><a href="#cb3-23"></a><span class="kw">def</span> render_board(board):</span>
-<span id="cb3-24"><a href="#cb3-24"></a>    symbols <span class="op">=</span> {<span class="va">None</span>: <span class="st">"."</span>, BLACK: <span class="st">"B"</span>, WHITE: <span class="st">"W"</span>}</span>
-<span id="cb3-25"><a href="#cb3-25"></a>    lines <span class="op">=</span> [<span class="st">"  0 1 2 3 4 5 6 7"</span>]</span>
-<span id="cb3-26"><a href="#cb3-26"></a>    <span class="cf">for</span> row, values <span class="kw">in</span> <span class="bu">enumerate</span>(board):</span>
-<span id="cb3-27"><a href="#cb3-27"></a>        lines.append(<span class="ss">f"</span><span class="sc">{</span>row<span class="sc">}</span><span class="ss"> "</span> <span class="op">+</span> <span class="st">" "</span>.join(symbols[value] <span class="cf">for</span> value <span class="kw">in</span> values))</span>
-<span id="cb3-28"><a href="#cb3-28"></a>    counts <span class="op">=</span> score(board)</span>
-<span id="cb3-29"><a href="#cb3-29"></a>    lines.append(<span class="ss">f"Black: </span><span class="sc">{</span>counts[BLACK]<span class="sc">}</span><span class="ss">  White: </span><span class="sc">{</span>counts[WHITE]<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-30"><a href="#cb3-30"></a>    <span class="cf">return</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(lines)</span>
-<span id="cb3-31"><a href="#cb3-31"></a></span>
-<span id="cb3-32"><a href="#cb3-32"></a></span>
-<span id="cb3-33"><a href="#cb3-33"></a><span class="kw">def</span> run_game(black_agent, white_agent, verbose<span class="op">=</span><span class="va">False</span>):</span>
-<span id="cb3-34"><a href="#cb3-34"></a>    <span class="co">"""Run one complete game and return its board, scores, and winner."""</span></span>
-<span id="cb3-35"><a href="#cb3-35"></a>    agents <span class="op">=</span> {BLACK: black_agent, WHITE: white_agent}</span>
-<span id="cb3-36"><a href="#cb3-36"></a>    board <span class="op">=</span> initial_board()</span>
-<span id="cb3-37"><a href="#cb3-37"></a>    player <span class="op">=</span> BLACK</span>
-<span id="cb3-38"><a href="#cb3-38"></a>    consecutive_passes <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb3-39"><a href="#cb3-39"></a></span>
-<span id="cb3-40"><a href="#cb3-40"></a>    <span class="cf">while</span> consecutive_passes <span class="op">&lt;</span> <span class="dv">2</span>:</span>
-<span id="cb3-41"><a href="#cb3-41"></a>        moves <span class="op">=</span> legal_moves(board, player)</span>
-<span id="cb3-42"><a href="#cb3-42"></a>        <span class="cf">if</span> <span class="kw">not</span> moves:</span>
-<span id="cb3-43"><a href="#cb3-43"></a>            consecutive_passes <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb3-44"><a href="#cb3-44"></a>            <span class="cf">if</span> verbose:</span>
-<span id="cb3-45"><a href="#cb3-45"></a>                <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>player<span class="sc">}</span><span class="ss"> passes"</span>)</span>
-<span id="cb3-46"><a href="#cb3-46"></a>            player <span class="op">=</span> opponent_of(player)</span>
-<span id="cb3-47"><a href="#cb3-47"></a>            <span class="cf">continue</span></span>
-<span id="cb3-48"><a href="#cb3-48"></a></span>
-<span id="cb3-49"><a href="#cb3-49"></a>        consecutive_passes <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb3-50"><a href="#cb3-50"></a>        board_before <span class="op">=</span> [row[:] <span class="cf">for</span> row <span class="kw">in</span> board]</span>
-<span id="cb3-51"><a href="#cb3-51"></a>        move <span class="op">=</span> agents[player](board_before, player)</span>
-<span id="cb3-52"><a href="#cb3-52"></a>        <span class="cf">if</span> board_before <span class="op">!=</span> board:</span>
-<span id="cb3-53"><a href="#cb3-53"></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"</span><span class="sc">{</span>player<span class="sc">}</span><span class="ss"> agent mutated its input board"</span>)</span>
-<span id="cb3-54"><a href="#cb3-54"></a>        <span class="cf">if</span> move <span class="kw">not</span> <span class="kw">in</span> moves:</span>
-<span id="cb3-55"><a href="#cb3-55"></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"</span><span class="sc">{</span>player<span class="sc">}</span><span class="ss"> agent returned illegal move </span><span class="sc">{</span>move<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-56"><a href="#cb3-56"></a></span>
-<span id="cb3-57"><a href="#cb3-57"></a>        board <span class="op">=</span> board_after_move(board, player, move)</span>
-<span id="cb3-58"><a href="#cb3-58"></a>        <span class="cf">if</span> verbose:</span>
-<span id="cb3-59"><a href="#cb3-59"></a>            <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>player<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>move<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-60"><a href="#cb3-60"></a>            <span class="bu">print</span>(render_board(board), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb3-61"><a href="#cb3-61"></a>        player <span class="op">=</span> opponent_of(player)</span>
-<span id="cb3-62"><a href="#cb3-62"></a></span>
-<span id="cb3-63"><a href="#cb3-63"></a>    counts <span class="op">=</span> score(board)</span>
-<span id="cb3-64"><a href="#cb3-64"></a>    <span class="cf">if</span> counts[BLACK] <span class="op">&gt;</span> counts[WHITE]:</span>
-<span id="cb3-65"><a href="#cb3-65"></a>        winner <span class="op">=</span> BLACK</span>
-<span id="cb3-66"><a href="#cb3-66"></a>    <span class="cf">elif</span> counts[WHITE] <span class="op">&gt;</span> counts[BLACK]:</span>
-<span id="cb3-67"><a href="#cb3-67"></a>        winner <span class="op">=</span> WHITE</span>
-<span id="cb3-68"><a href="#cb3-68"></a>    <span class="cf">else</span>:</span>
-<span id="cb3-69"><a href="#cb3-69"></a>        winner <span class="op">=</span> <span class="st">"tie"</span></span>
-<span id="cb3-70"><a href="#cb3-70"></a>    <span class="cf">return</span> {<span class="st">"board"</span>: board, <span class="st">"black"</span>: counts[BLACK], <span class="st">"white"</span>: counts[WHITE], <span class="st">"winner"</span>: winner}</span>
-<span id="cb3-71"><a href="#cb3-71"></a></span>
-<span id="cb3-72"><a href="#cb3-72"></a></span>
-<span id="cb3-73"><a href="#cb3-73"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb3-74"><a href="#cb3-74"></a>    result <span class="op">=</span> run_game(random_ai, random_ai)</span>
-<span id="cb3-75"><a href="#cb3-75"></a>    <span class="bu">print</span>(render_board(result[<span class="st">"board"</span>]))</span>
-<span id="cb3-76"><a href="#cb3-76"></a>    <span class="bu">print</span>(<span class="ss">f"Winner: </span><span class="sc">{</span>result[<span class="st">'winner'</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="kw">def</span> main():</span>
+<span id="cb3-7"><a href="#cb3-7"></a>    app <span class="op">=</span> QApplication(sys.argv)</span>
+<span id="cb3-8"><a href="#cb3-8"></a>    window <span class="op">=</span> MainWindow()</span>
+<span id="cb3-9"><a href="#cb3-9"></a>    window.show()</span>
+<span id="cb3-10"><a href="#cb3-10"></a>    sys.exit(app.<span class="bu">exec</span>())</span>
+<span id="cb3-11"><a href="#cb3-11"></a></span>
+<span id="cb3-12"><a href="#cb3-12"></a></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb3-14"><a href="#cb3-14"></a>    main()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="im">from</span> ai <span class="im">import</span> (</span>
-<span id="cb4-2"><a href="#cb4-2"></a>    alpha_beta_ai,</span>
-<span id="cb4-3"><a href="#cb4-3"></a>    board_after_move,</span>
-<span id="cb4-4"><a href="#cb4-4"></a>    greedy_ai,</span>
-<span id="cb4-5"><a href="#cb4-5"></a>    legal_moves,</span>
-<span id="cb4-6"><a href="#cb4-6"></a>    minimax_ai,</span>
-<span id="cb4-7"><a href="#cb4-7"></a>    random_ai,</span>
-<span id="cb4-8"><a href="#cb4-8"></a>    utility,</span>
-<span id="cb4-9"><a href="#cb4-9"></a>)</span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="im">from</span> reversi <span class="im">import</span> initial_board</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="im">from</span> PySide6.QtWidgets <span class="im">import</span> QMainWindow</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="im">from</span> board_widget <span class="im">import</span> BoardWidget</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="im">from</span> setting_window <span class="im">import</span> SettingWindow</span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="im">from</span> game_logic <span class="im">import</span> ReversiGame</span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="im">from</span> info_widget <span class="im">import</span> InfoWidget</span>
+<span id="cb4-6"><a href="#cb4-6"></a></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="im">from</span> ai <span class="im">import</span> greedy_ai, random_ai, minimax_ai, alpha_beta_ai</span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="im">from</span> PySide6.QtWidgets <span class="im">import</span> QHBoxLayout, QWidget</span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="im">import</span> time</span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="im">from</span> concurrent.futures <span class="im">import</span> ThreadPoolExecutor, <span class="pp">TimeoutError</span></span>
 <span id="cb4-11"><a href="#cb4-11"></a></span>
 <span id="cb4-12"><a href="#cb4-12"></a></span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="kw">def</span> check_move_function(name, function, board, player, <span class="op">*</span>extra):</span>
-<span id="cb4-14"><a href="#cb4-14"></a>    before <span class="op">=</span> [row[:] <span class="cf">for</span> row <span class="kw">in</span> board]</span>
-<span id="cb4-15"><a href="#cb4-15"></a>    <span class="cf">try</span>:</span>
-<span id="cb4-16"><a href="#cb4-16"></a>        move <span class="op">=</span> function(board, player, <span class="op">*</span>extra)</span>
-<span id="cb4-17"><a href="#cb4-17"></a>    <span class="cf">except</span> <span class="pp">NotImplementedError</span>:</span>
-<span id="cb4-18"><a href="#cb4-18"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">: TODO"</span>)</span>
-<span id="cb4-19"><a href="#cb4-19"></a>        <span class="cf">return</span></span>
-<span id="cb4-20"><a href="#cb4-20"></a>    <span class="cf">assert</span> board <span class="op">==</span> before, <span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> mutated the input board"</span></span>
-<span id="cb4-21"><a href="#cb4-21"></a>    <span class="cf">assert</span> move <span class="kw">in</span> legal_moves(board, player), <span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> returned </span><span class="sc">{</span>move<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb4-22"><a href="#cb4-22"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">: interface check passed"</span>)</span>
-<span id="cb4-23"><a href="#cb4-23"></a></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="kw">class</span> MainWindow(QMainWindow):</span>
+<span id="cb4-14"><a href="#cb4-14"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb4-15"><a href="#cb4-15"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb4-16"><a href="#cb4-16"></a>        <span class="va">self</span>.setWindowTitle(<span class="st">"Reversi Game"</span>)</span>
+<span id="cb4-17"><a href="#cb4-17"></a>        <span class="va">self</span>.setGeometry(<span class="dv">100</span>, <span class="dv">100</span>, <span class="dv">600</span>, <span class="dv">600</span>)</span>
+<span id="cb4-18"><a href="#cb4-18"></a></span>
+<span id="cb4-19"><a href="#cb4-19"></a>        <span class="co"># call the setting window</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a>        <span class="va">self</span>.handle_settings()</span>
+<span id="cb4-21"><a href="#cb4-21"></a></span>
+<span id="cb4-22"><a href="#cb4-22"></a>        <span class="co"># status bar</span></span>
+<span id="cb4-23"><a href="#cb4-23"></a>        <span class="va">self</span>.statusBar().showMessage(<span class="st">"Welcome to Reversi Game"</span>)</span>
 <span id="cb4-24"><a href="#cb4-24"></a></span>
-<span id="cb4-25"><a href="#cb4-25"></a><span class="kw">def</span> main():</span>
-<span id="cb4-26"><a href="#cb4-26"></a>    board <span class="op">=</span> initial_board()</span>
-<span id="cb4-27"><a href="#cb4-27"></a>    expected <span class="op">=</span> {(<span class="dv">2</span>, <span class="dv">3</span>), (<span class="dv">3</span>, <span class="dv">2</span>), (<span class="dv">4</span>, <span class="dv">5</span>), (<span class="dv">5</span>, <span class="dv">4</span>)}</span>
-<span id="cb4-28"><a href="#cb4-28"></a>    <span class="cf">assert</span> <span class="bu">set</span>(legal_moves(board, <span class="st">"black"</span>)) <span class="op">==</span> expected</span>
-<span id="cb4-29"><a href="#cb4-29"></a></span>
-<span id="cb4-30"><a href="#cb4-30"></a>    before <span class="op">=</span> [row[:] <span class="cf">for</span> row <span class="kw">in</span> board]</span>
-<span id="cb4-31"><a href="#cb4-31"></a>    moved <span class="op">=</span> board_after_move(board, <span class="st">"black"</span>, (<span class="dv">2</span>, <span class="dv">3</span>))</span>
-<span id="cb4-32"><a href="#cb4-32"></a>    <span class="cf">assert</span> board <span class="op">==</span> before</span>
-<span id="cb4-33"><a href="#cb4-33"></a>    <span class="cf">assert</span> moved[<span class="dv">2</span>][<span class="dv">3</span>] <span class="op">==</span> <span class="st">"black"</span> <span class="kw">and</span> moved[<span class="dv">3</span>][<span class="dv">3</span>] <span class="op">==</span> <span class="st">"black"</span></span>
-<span id="cb4-34"><a href="#cb4-34"></a>    <span class="cf">assert</span> random_ai(board, <span class="st">"black"</span>) <span class="kw">in</span> expected</span>
-<span id="cb4-35"><a href="#cb4-35"></a>    <span class="bu">print</span>(<span class="st">"starter helpers: passed"</span>)</span>
+<span id="cb4-25"><a href="#cb4-25"></a>        <span class="co"># menu bar</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a>        <span class="va">self</span>.menu <span class="op">=</span> <span class="va">self</span>.menuBar()</span>
+<span id="cb4-27"><a href="#cb4-27"></a>        <span class="va">self</span>.game_menu <span class="op">=</span> <span class="va">self</span>.menu.addMenu(<span class="st">"Game"</span>)</span>
+<span id="cb4-28"><a href="#cb4-28"></a>        <span class="va">self</span>.new_game_action <span class="op">=</span> <span class="va">self</span>.game_menu.addAction(<span class="st">"New Game"</span>)</span>
+<span id="cb4-29"><a href="#cb4-29"></a>        <span class="va">self</span>.new_game_action.triggered.<span class="ex">connect</span>(<span class="va">self</span>.handle_settings)</span>
+<span id="cb4-30"><a href="#cb4-30"></a>        <span class="va">self</span>.undo_action <span class="op">=</span> <span class="va">self</span>.game_menu.addAction(<span class="st">"Undo"</span>)</span>
+<span id="cb4-31"><a href="#cb4-31"></a>        <span class="va">self</span>.undo_action.triggered.<span class="ex">connect</span>(<span class="va">self</span>.handle_undo)</span>
+<span id="cb4-32"><a href="#cb4-32"></a></span>
+<span id="cb4-33"><a href="#cb4-33"></a>    <span class="kw">def</span> create_new_game(<span class="va">self</span>):</span>
+<span id="cb4-34"><a href="#cb4-34"></a>        <span class="co"># create the game logic</span></span>
+<span id="cb4-35"><a href="#cb4-35"></a>        <span class="va">self</span>.game <span class="op">=</span> ReversiGame()</span>
 <span id="cb4-36"><a href="#cb4-36"></a></span>
-<span id="cb4-37"><a href="#cb4-37"></a>    <span class="cf">try</span>:</span>
-<span id="cb4-38"><a href="#cb4-38"></a>        value <span class="op">=</span> utility(board, <span class="st">"black"</span>)</span>
-<span id="cb4-39"><a href="#cb4-39"></a>    <span class="cf">except</span> <span class="pp">NotImplementedError</span>:</span>
-<span id="cb4-40"><a href="#cb4-40"></a>        <span class="bu">print</span>(<span class="st">"utility: TODO"</span>)</span>
-<span id="cb4-41"><a href="#cb4-41"></a>    <span class="cf">else</span>:</span>
-<span id="cb4-42"><a href="#cb4-42"></a>        <span class="cf">assert</span> <span class="bu">isinstance</span>(value, (<span class="bu">int</span>, <span class="bu">float</span>))</span>
-<span id="cb4-43"><a href="#cb4-43"></a>        <span class="bu">print</span>(<span class="st">"utility: interface check passed"</span>)</span>
-<span id="cb4-44"><a href="#cb4-44"></a></span>
-<span id="cb4-45"><a href="#cb4-45"></a>    check_move_function(<span class="st">"greedy_ai"</span>, greedy_ai, board, <span class="st">"black"</span>)</span>
-<span id="cb4-46"><a href="#cb4-46"></a>    check_move_function(<span class="st">"minimax_ai"</span>, minimax_ai, board, <span class="st">"black"</span>, <span class="dv">2</span>)</span>
-<span id="cb4-47"><a href="#cb4-47"></a>    check_move_function(<span class="st">"alpha_beta_ai"</span>, alpha_beta_ai, board, <span class="st">"black"</span>, <span class="dv">2</span>)</span>
-<span id="cb4-48"><a href="#cb4-48"></a></span>
+<span id="cb4-37"><a href="#cb4-37"></a>        <span class="co"># Create a central widget and set the layout</span></span>
+<span id="cb4-38"><a href="#cb4-38"></a>        central_widget <span class="op">=</span> QWidget()</span>
+<span id="cb4-39"><a href="#cb4-39"></a>        <span class="va">self</span>.setCentralWidget(central_widget)</span>
+<span id="cb4-40"><a href="#cb4-40"></a>        layout <span class="op">=</span> QHBoxLayout(central_widget)</span>
+<span id="cb4-41"><a href="#cb4-41"></a></span>
+<span id="cb4-42"><a href="#cb4-42"></a>        <span class="co"># Create and add the board widget to the layout</span></span>
+<span id="cb4-43"><a href="#cb4-43"></a>        <span class="va">self</span>.board <span class="op">=</span> BoardWidget(<span class="va">self</span>)</span>
+<span id="cb4-44"><a href="#cb4-44"></a>        layout.addWidget(<span class="va">self</span>.board)</span>
+<span id="cb4-45"><a href="#cb4-45"></a></span>
+<span id="cb4-46"><a href="#cb4-46"></a>        <span class="co"># Create and add the info widget to the layout</span></span>
+<span id="cb4-47"><a href="#cb4-47"></a>        <span class="va">self</span>.info_widget <span class="op">=</span> InfoWidget()</span>
+<span id="cb4-48"><a href="#cb4-48"></a>        layout.addWidget(<span class="va">self</span>.info_widget)</span>
 <span id="cb4-49"><a href="#cb4-49"></a></span>
-<span id="cb4-50"><a href="#cb4-50"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb4-51"><a href="#cb4-51"></a>    main()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-50"><a href="#cb4-50"></a>        <span class="co"># calibrate the window size</span></span>
+<span id="cb4-51"><a href="#cb4-51"></a>        <span class="va">self</span>.board_size <span class="op">=</span> <span class="va">self</span>.board.board_size</span>
+<span id="cb4-52"><a href="#cb4-52"></a>        <span class="va">self</span>.cell_size <span class="op">=</span> <span class="va">self</span>.board.cell_size</span>
+<span id="cb4-53"><a href="#cb4-53"></a>        <span class="va">self</span>.resize(<span class="va">self</span>.board_size <span class="op">*</span> <span class="va">self</span>.cell_size, <span class="va">self</span>.board_size <span class="op">*</span> <span class="va">self</span>.cell_size)</span>
+<span id="cb4-54"><a href="#cb4-54"></a></span>
+<span id="cb4-55"><a href="#cb4-55"></a>        <span class="va">self</span>.board.animationFinished.<span class="ex">connect</span>(<span class="va">self</span>.handle_animation_finished)</span>
+<span id="cb4-56"><a href="#cb4-56"></a></span>
+<span id="cb4-57"><a href="#cb4-57"></a>    <span class="kw">def</span> handle_settings(<span class="va">self</span>):</span>
+<span id="cb4-58"><a href="#cb4-58"></a>        <span class="co"># create a setting window and move it to the top</span></span>
+<span id="cb4-59"><a href="#cb4-59"></a>        <span class="va">self</span>.setting_window <span class="op">=</span> SettingWindow()</span>
+<span id="cb4-60"><a href="#cb4-60"></a>        <span class="va">self</span>.setting_window.settings_applied.<span class="ex">connect</span>(<span class="va">self</span>.apply_settings)</span>
+<span id="cb4-61"><a href="#cb4-61"></a>        <span class="va">self</span>.setting_window.show()</span>
+<span id="cb4-62"><a href="#cb4-62"></a></span>
+<span id="cb4-63"><a href="#cb4-63"></a>    <span class="kw">def</span> apply_settings(<span class="va">self</span>, player1, player2):</span>
+<span id="cb4-64"><a href="#cb4-64"></a>        <span class="va">self</span>.players <span class="op">=</span> {<span class="st">"black"</span>: player1, <span class="st">"white"</span>: player2}</span>
+<span id="cb4-65"><a href="#cb4-65"></a>        <span class="bu">print</span>(<span class="va">self</span>.players)</span>
+<span id="cb4-66"><a href="#cb4-66"></a>        <span class="va">self</span>.human_player <span class="op">=</span> []</span>
+<span id="cb4-67"><a href="#cb4-67"></a>        <span class="cf">if</span> player1 <span class="op">==</span> <span class="st">"human"</span>:</span>
+<span id="cb4-68"><a href="#cb4-68"></a>            <span class="va">self</span>.human_player.append(<span class="st">"black"</span>)</span>
+<span id="cb4-69"><a href="#cb4-69"></a>        <span class="cf">if</span> player2 <span class="op">==</span> <span class="st">"human"</span>:</span>
+<span id="cb4-70"><a href="#cb4-70"></a>            <span class="va">self</span>.human_player.append(<span class="st">"white"</span>)</span>
+<span id="cb4-71"><a href="#cb4-71"></a>        <span class="va">self</span>.create_new_game()</span>
+<span id="cb4-72"><a href="#cb4-72"></a>        <span class="va">self</span>.handle_animation_finished()</span>
+<span id="cb4-73"><a href="#cb4-73"></a></span>
+<span id="cb4-74"><a href="#cb4-74"></a>    <span class="kw">def</span> handle_undo(<span class="va">self</span>):</span>
+<span id="cb4-75"><a href="#cb4-75"></a>        <span class="co"># undo the last move</span></span>
+<span id="cb4-76"><a href="#cb4-76"></a>        <span class="cf">pass</span></span>
+<span id="cb4-77"><a href="#cb4-77"></a></span>
+<span id="cb4-78"><a href="#cb4-78"></a>    <span class="kw">def</span> handle_animation_finished(<span class="va">self</span>):</span>
+<span id="cb4-79"><a href="#cb4-79"></a>        <span class="co"># update the info widget</span></span>
+<span id="cb4-80"><a href="#cb4-80"></a>        black_score, white_score <span class="op">=</span> <span class="va">self</span>.game.get_score()</span>
+<span id="cb4-81"><a href="#cb4-81"></a>        <span class="va">self</span>.info_widget.update_score(black_score, white_score)</span>
+<span id="cb4-82"><a href="#cb4-82"></a>        <span class="cf">if</span> <span class="va">self</span>.game.history_moves:</span>
+<span id="cb4-83"><a href="#cb4-83"></a>            p, r, c <span class="op">=</span> <span class="va">self</span>.game.history_moves[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb4-84"><a href="#cb4-84"></a>            <span class="va">self</span>.info_widget.update_history(<span class="ss">f"</span><span class="sc">{</span>p<span class="sc">.</span>capitalize()<span class="sc">}</span><span class="ss">: (</span><span class="sc">{</span>r<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>c<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb4-85"><a href="#cb4-85"></a></span>
+<span id="cb4-86"><a href="#cb4-86"></a>        <span class="cf">if</span> <span class="va">self</span>.game.is_game_over():</span>
+<span id="cb4-87"><a href="#cb4-87"></a>            <span class="bu">print</span>(<span class="st">"Game Over"</span>)</span>
+<span id="cb4-88"><a href="#cb4-88"></a>            <span class="cf">return</span></span>
+<span id="cb4-89"><a href="#cb4-89"></a>        <span class="co"># check whether there is a valid move for the current player</span></span>
+<span id="cb4-90"><a href="#cb4-90"></a>        <span class="cf">if</span> <span class="va">self</span>.game.get_valid_moves(<span class="va">self</span>.game.board, <span class="va">self</span>.game.current_player) <span class="op">==</span> []:</span>
+<span id="cb4-91"><a href="#cb4-91"></a>            <span class="va">self</span>.game.switch_player()</span>
+<span id="cb4-92"><a href="#cb4-92"></a>            <span class="va">self</span>.board.update_drawing()</span>
+<span id="cb4-93"><a href="#cb4-93"></a>        <span class="cf">if</span> <span class="va">self</span>.players[<span class="va">self</span>.game.current_player] <span class="op">==</span> <span class="st">"human"</span>:</span>
+<span id="cb4-94"><a href="#cb4-94"></a>            <span class="va">self</span>.board.user_click_permit <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb4-95"><a href="#cb4-95"></a>        <span class="cf">elif</span> <span class="va">self</span>.players[<span class="va">self</span>.game.current_player] <span class="op">==</span> <span class="st">"greedy"</span>:</span>
+<span id="cb4-96"><a href="#cb4-96"></a>            row, col <span class="op">=</span> greedy_ai(<span class="va">self</span>.game.board, <span class="va">self</span>.game.current_player)</span>
+<span id="cb4-97"><a href="#cb4-97"></a>            <span class="va">self</span>.board.place_piece(row, col)</span>
+<span id="cb4-98"><a href="#cb4-98"></a>        <span class="cf">elif</span> <span class="va">self</span>.players[<span class="va">self</span>.game.current_player] <span class="op">==</span> <span class="st">"random"</span>:</span>
+<span id="cb4-99"><a href="#cb4-99"></a>            row, col <span class="op">=</span> random_ai(<span class="va">self</span>.game.board, <span class="va">self</span>.game.current_player)</span>
+<span id="cb4-100"><a href="#cb4-100"></a>            <span class="va">self</span>.board.place_piece(row, col)</span>
+<span id="cb4-101"><a href="#cb4-101"></a>        <span class="cf">elif</span> <span class="va">self</span>.players[<span class="va">self</span>.game.current_player] <span class="op">==</span> <span class="st">"minimax"</span> <span class="kw">or</span> <span class="va">self</span>.players[<span class="va">self</span>.game.current_player] <span class="op">==</span> <span class="st">"alpha_beta"</span>:</span>
+<span id="cb4-102"><a href="#cb4-102"></a>            <span class="co"># '''</span></span>
+<span id="cb4-103"><a href="#cb4-103"></a>            <span class="kw">def</span> minimax_with_timeout(board, player, depth):</span>
+<span id="cb4-104"><a href="#cb4-104"></a>                <span class="cf">try</span>:</span>
+<span id="cb4-105"><a href="#cb4-105"></a>                    <span class="cf">if</span> <span class="va">self</span>.players[player] <span class="op">==</span> <span class="st">"minimax"</span>:</span>
+<span id="cb4-106"><a href="#cb4-106"></a>                        <span class="cf">return</span> minimax_ai(board, player, depth)</span>
+<span id="cb4-107"><a href="#cb4-107"></a>                    <span class="cf">else</span>:</span>
+<span id="cb4-108"><a href="#cb4-108"></a>                        <span class="co"># Implement alpha-beta pruning</span></span>
+<span id="cb4-109"><a href="#cb4-109"></a>                        <span class="cf">return</span> alpha_beta_ai(board, player, depth)</span>
+<span id="cb4-110"><a href="#cb4-110"></a>                <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb4-111"><a href="#cb4-111"></a>                    <span class="bu">print</span>(<span class="ss">f"Error during minimax execution: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-112"><a href="#cb4-112"></a>                    <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb4-113"><a href="#cb4-113"></a></span>
+<span id="cb4-114"><a href="#cb4-114"></a>            best_move <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb4-115"><a href="#cb4-115"></a>            depth <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb4-116"><a href="#cb4-116"></a>            start_time <span class="op">=</span> time.time()</span>
+<span id="cb4-117"><a href="#cb4-117"></a>            time_limit <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb4-118"><a href="#cb4-118"></a>            <span class="cf">with</span> ThreadPoolExecutor(max_workers<span class="op">=</span><span class="dv">1</span>) <span class="im">as</span> executor:</span>
+<span id="cb4-119"><a href="#cb4-119"></a>                <span class="cf">while</span> time.time() <span class="op">-</span> start_time <span class="op">&lt;</span> time_limit:</span>
+<span id="cb4-120"><a href="#cb4-120"></a>                    future <span class="op">=</span> executor.submit(minimax_with_timeout, <span class="va">self</span>.game.board, <span class="va">self</span>.game.current_player, depth)</span>
+<span id="cb4-121"><a href="#cb4-121"></a>                    <span class="cf">try</span>:</span>
+<span id="cb4-122"><a href="#cb4-122"></a>                        move <span class="op">=</span> future.result(timeout<span class="op">=</span>time_limit <span class="op">-</span> (time.time() <span class="op">-</span> start_time))  <span class="co"># Adjust timeout to ensure total time is within 1 second</span></span>
+<span id="cb4-123"><a href="#cb4-123"></a>                        <span class="cf">if</span> move:</span>
+<span id="cb4-124"><a href="#cb4-124"></a>                            best_move <span class="op">=</span> move</span>
+<span id="cb4-125"><a href="#cb4-125"></a>                        <span class="co"># count how many empty squares are left</span></span>
+<span id="cb4-126"><a href="#cb4-126"></a>                        empty_squares <span class="op">=</span> <span class="bu">sum</span>(row.count(<span class="va">None</span>) <span class="cf">for</span> row <span class="kw">in</span> <span class="va">self</span>.game.board)</span>
+<span id="cb4-127"><a href="#cb4-127"></a>                        <span class="cf">if</span> depth <span class="op">&gt;=</span> empty_squares:</span>
+<span id="cb4-128"><a href="#cb4-128"></a>                            <span class="bu">print</span>(<span class="st">"Reached maximum depth"</span>)</span>
+<span id="cb4-129"><a href="#cb4-129"></a>                            <span class="cf">break</span></span>
+<span id="cb4-130"><a href="#cb4-130"></a>                        depth <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb4-131"><a href="#cb4-131"></a>                    <span class="cf">except</span> <span class="pp">TimeoutError</span>:</span>
+<span id="cb4-132"><a href="#cb4-132"></a>                        <span class="co"># terminate the thread</span></span>
+<span id="cb4-133"><a href="#cb4-133"></a>                        executor._threads.clear()</span>
+<span id="cb4-134"><a href="#cb4-134"></a>                        <span class="cf">break</span></span>
+<span id="cb4-135"><a href="#cb4-135"></a>            <span class="bu">print</span>(<span class="ss">f"depth: </span><span class="sc">{</span>depth<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-136"><a href="#cb4-136"></a>            <span class="cf">if</span> best_move:</span>
+<span id="cb4-137"><a href="#cb4-137"></a>                row, col <span class="op">=</span> best_move</span>
+<span id="cb4-138"><a href="#cb4-138"></a>            <span class="cf">else</span>:</span>
+<span id="cb4-139"><a href="#cb4-139"></a>                <span class="bu">print</span>(<span class="st">"No valid move found within the time limit"</span>)</span>
+<span id="cb4-140"><a href="#cb4-140"></a>                row, col <span class="op">=</span> <span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>  <span class="co"># Indicate no valid move found</span></span>
+<span id="cb4-141"><a href="#cb4-141"></a>            <span class="va">self</span>.board.place_piece(row, col)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="im">import</span> csv</span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="im">import</span> random</span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
-<span id="cb5-4"><a href="#cb5-4"></a></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="im">from</span> ai <span class="im">import</span> alpha_beta_ai, greedy_ai, minimax_ai, random_ai</span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="im">from</span> reversi <span class="im">import</span> render_board, run_game</span>
-<span id="cb5-7"><a href="#cb5-7"></a></span>
-<span id="cb5-8"><a href="#cb5-8"></a>SEARCH_DEPTH <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a>TRIALS_PER_PAIRING <span class="op">=</span> <span class="dv">10</span></span>
-<span id="cb5-10"><a href="#cb5-10"></a>RANDOM_SEED <span class="op">=</span> <span class="dv">42</span></span>
-<span id="cb5-11"><a href="#cb5-11"></a></span>
-<span id="cb5-12"><a href="#cb5-12"></a></span>
-<span id="cb5-13"><a href="#cb5-13"></a><span class="kw">def</span> minimax_player(board, player):</span>
-<span id="cb5-14"><a href="#cb5-14"></a>    <span class="cf">return</span> minimax_ai(board, player, SEARCH_DEPTH)</span>
-<span id="cb5-15"><a href="#cb5-15"></a></span>
-<span id="cb5-16"><a href="#cb5-16"></a></span>
-<span id="cb5-17"><a href="#cb5-17"></a><span class="kw">def</span> alpha_beta_player(board, player):</span>
-<span id="cb5-18"><a href="#cb5-18"></a>    <span class="cf">return</span> alpha_beta_ai(board, player, SEARCH_DEPTH)</span>
-<span id="cb5-19"><a href="#cb5-19"></a></span>
-<span id="cb5-20"><a href="#cb5-20"></a></span>
-<span id="cb5-21"><a href="#cb5-21"></a>AGENTS <span class="op">=</span> {</span>
-<span id="cb5-22"><a href="#cb5-22"></a>    <span class="st">"random"</span>: random_ai,</span>
-<span id="cb5-23"><a href="#cb5-23"></a>    <span class="st">"greedy"</span>: greedy_ai,</span>
-<span id="cb5-24"><a href="#cb5-24"></a>    <span class="st">"minimax"</span>: minimax_player,</span>
-<span id="cb5-25"><a href="#cb5-25"></a>    <span class="st">"alpha_beta"</span>: alpha_beta_player,</span>
-<span id="cb5-26"><a href="#cb5-26"></a>}</span>
-<span id="cb5-27"><a href="#cb5-27"></a></span>
-<span id="cb5-28"><a href="#cb5-28"></a></span>
-<span id="cb5-29"><a href="#cb5-29"></a><span class="kw">def</span> run_tournament():</span>
-<span id="cb5-30"><a href="#cb5-30"></a>    random.seed(RANDOM_SEED)</span>
-<span id="cb5-31"><a href="#cb5-31"></a>    rows <span class="op">=</span> []</span>
-<span id="cb5-32"><a href="#cb5-32"></a>    board_dir <span class="op">=</span> Path(<span class="st">"final_boards"</span>)</span>
-<span id="cb5-33"><a href="#cb5-33"></a>    board_dir.mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb5-34"><a href="#cb5-34"></a></span>
-<span id="cb5-35"><a href="#cb5-35"></a>    <span class="cf">for</span> black_name, black_agent <span class="kw">in</span> AGENTS.items():</span>
-<span id="cb5-36"><a href="#cb5-36"></a>        <span class="cf">for</span> white_name, white_agent <span class="kw">in</span> AGENTS.items():</span>
-<span id="cb5-37"><a href="#cb5-37"></a>            black_wins <span class="op">=</span> white_wins <span class="op">=</span> ties <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb5-38"><a href="#cb5-38"></a>            black_total <span class="op">=</span> white_total <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb5-39"><a href="#cb5-39"></a>            representative <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb5-40"><a href="#cb5-40"></a></span>
-<span id="cb5-41"><a href="#cb5-41"></a>            <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(TRIALS_PER_PAIRING):</span>
-<span id="cb5-42"><a href="#cb5-42"></a>                result <span class="op">=</span> run_game(black_agent, white_agent)</span>
-<span id="cb5-43"><a href="#cb5-43"></a>                representative <span class="op">=</span> result</span>
-<span id="cb5-44"><a href="#cb5-44"></a>                black_total <span class="op">+=</span> result[<span class="st">"black"</span>]</span>
-<span id="cb5-45"><a href="#cb5-45"></a>                white_total <span class="op">+=</span> result[<span class="st">"white"</span>]</span>
-<span id="cb5-46"><a href="#cb5-46"></a>                <span class="cf">if</span> result[<span class="st">"winner"</span>] <span class="op">==</span> <span class="st">"black"</span>:</span>
-<span id="cb5-47"><a href="#cb5-47"></a>                    black_wins <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb5-48"><a href="#cb5-48"></a>                <span class="cf">elif</span> result[<span class="st">"winner"</span>] <span class="op">==</span> <span class="st">"white"</span>:</span>
-<span id="cb5-49"><a href="#cb5-49"></a>                    white_wins <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb5-50"><a href="#cb5-50"></a>                <span class="cf">else</span>:</span>
-<span id="cb5-51"><a href="#cb5-51"></a>                    ties <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb5-52"><a href="#cb5-52"></a></span>
-<span id="cb5-53"><a href="#cb5-53"></a>            board_path <span class="op">=</span> board_dir <span class="op">/</span> <span class="ss">f"</span><span class="sc">{</span>black_name<span class="sc">}</span><span class="ss">_vs_</span><span class="sc">{</span>white_name<span class="sc">}</span><span class="ss">.txt"</span></span>
-<span id="cb5-54"><a href="#cb5-54"></a>            board_path.write_text(render_board(representative[<span class="st">"board"</span>]) <span class="op">+</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb5-55"><a href="#cb5-55"></a>            rows.append(</span>
-<span id="cb5-56"><a href="#cb5-56"></a>                {</span>
-<span id="cb5-57"><a href="#cb5-57"></a>                    <span class="st">"black_agent"</span>: black_name,</span>
-<span id="cb5-58"><a href="#cb5-58"></a>                    <span class="st">"white_agent"</span>: white_name,</span>
-<span id="cb5-59"><a href="#cb5-59"></a>                    <span class="st">"trials"</span>: TRIALS_PER_PAIRING,</span>
-<span id="cb5-60"><a href="#cb5-60"></a>                    <span class="st">"black_wins"</span>: black_wins,</span>
-<span id="cb5-61"><a href="#cb5-61"></a>                    <span class="st">"white_wins"</span>: white_wins,</span>
-<span id="cb5-62"><a href="#cb5-62"></a>                    <span class="st">"ties"</span>: ties,</span>
-<span id="cb5-63"><a href="#cb5-63"></a>                    <span class="st">"mean_black_discs"</span>: black_total <span class="op">/</span> TRIALS_PER_PAIRING,</span>
-<span id="cb5-64"><a href="#cb5-64"></a>                    <span class="st">"mean_white_discs"</span>: white_total <span class="op">/</span> TRIALS_PER_PAIRING,</span>
-<span id="cb5-65"><a href="#cb5-65"></a>                    <span class="st">"representative_board"</span>: <span class="bu">str</span>(board_path),</span>
-<span id="cb5-66"><a href="#cb5-66"></a>                }</span>
-<span id="cb5-67"><a href="#cb5-67"></a>            )</span>
-<span id="cb5-68"><a href="#cb5-68"></a></span>
-<span id="cb5-69"><a href="#cb5-69"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="st">"tournament_results.csv"</span>, <span class="st">"w"</span>, newline<span class="op">=</span><span class="st">""</span>) <span class="im">as</span> output:</span>
-<span id="cb5-70"><a href="#cb5-70"></a>        writer <span class="op">=</span> csv.DictWriter(output, fieldnames<span class="op">=</span>rows[<span class="dv">0</span>].keys())</span>
-<span id="cb5-71"><a href="#cb5-71"></a>        writer.writeheader()</span>
-<span id="cb5-72"><a href="#cb5-72"></a>        writer.writerows(rows)</span>
-<span id="cb5-73"><a href="#cb5-73"></a></span>
-<span id="cb5-74"><a href="#cb5-74"></a>    <span class="cf">for</span> row <span class="kw">in</span> rows:</span>
-<span id="cb5-75"><a href="#cb5-75"></a>        <span class="bu">print</span>(</span>
-<span id="cb5-76"><a href="#cb5-76"></a>            <span class="ss">f"</span><span class="sc">{</span>row[<span class="st">'black_agent'</span>]<span class="sc">:&gt;10}</span><span class="ss"> vs </span><span class="sc">{</span>row[<span class="st">'white_agent'</span>]<span class="sc">:&lt;10}</span><span class="ss"> "</span></span>
-<span id="cb5-77"><a href="#cb5-77"></a>            <span class="ss">f"W-L-T </span><span class="sc">{</span>row[<span class="st">'black_wins'</span>]<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>row[<span class="st">'white_wins'</span>]<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>row[<span class="st">'ties'</span>]<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb5-78"><a href="#cb5-78"></a>        )</span>
-<span id="cb5-79"><a href="#cb5-79"></a>    <span class="bu">print</span>(<span class="st">"wrote tournament_results.csv and final_boards/"</span>)</span>
-<span id="cb5-80"><a href="#cb5-80"></a></span>
-<span id="cb5-81"><a href="#cb5-81"></a></span>
-<span id="cb5-82"><a href="#cb5-82"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb5-83"><a href="#cb5-83"></a>    run_tournament()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="im">from</span> PySide6.QtWidgets <span class="im">import</span> (</span>
+<span id="cb5-2"><a href="#cb5-2"></a>    QApplication,</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    QMainWindow,</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    QComboBox,</span>
+<span id="cb5-5"><a href="#cb5-5"></a>    QLabel,</span>
+<span id="cb5-6"><a href="#cb5-6"></a>    QVBoxLayout,</span>
+<span id="cb5-7"><a href="#cb5-7"></a>    QWidget,</span>
+<span id="cb5-8"><a href="#cb5-8"></a>    QPushButton,</span>
+<span id="cb5-9"><a href="#cb5-9"></a>    QMessageBox,</span>
+<span id="cb5-10"><a href="#cb5-10"></a>)</span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="im">from</span> PySide6.QtCore <span class="im">import</span> Signal</span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="im">from</span> PySide6.QtCore <span class="im">import</span> Qt</span>
+<span id="cb5-13"><a href="#cb5-13"></a></span>
+<span id="cb5-14"><a href="#cb5-14"></a></span>
+<span id="cb5-15"><a href="#cb5-15"></a><span class="kw">class</span> SettingWindow(QMainWindow):</span>
+<span id="cb5-16"><a href="#cb5-16"></a>    settings_applied <span class="op">=</span> Signal(<span class="bu">str</span>, <span class="bu">str</span>)</span>
+<span id="cb5-17"><a href="#cb5-17"></a></span>
+<span id="cb5-18"><a href="#cb5-18"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb5-19"><a href="#cb5-19"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb5-20"><a href="#cb5-20"></a>        <span class="va">self</span>.setWindowTitle(<span class="st">"Settings"</span>)</span>
+<span id="cb5-21"><a href="#cb5-21"></a>        <span class="va">self</span>.setGeometry(<span class="dv">200</span>, <span class="dv">200</span>, <span class="dv">300</span>, <span class="dv">300</span>)</span>
+<span id="cb5-22"><a href="#cb5-22"></a>        <span class="co"># always put the window on top</span></span>
+<span id="cb5-23"><a href="#cb5-23"></a>        <span class="va">self</span>.setWindowFlag(Qt.WindowStaysOnTopHint)</span>
+<span id="cb5-24"><a href="#cb5-24"></a></span>
+<span id="cb5-25"><a href="#cb5-25"></a>        <span class="va">self</span>.initUI()</span>
+<span id="cb5-26"><a href="#cb5-26"></a>        <span class="co"># resize the window to fit the content</span></span>
+<span id="cb5-27"><a href="#cb5-27"></a>        <span class="co"># set minimum width to prevent resizing</span></span>
+<span id="cb5-28"><a href="#cb5-28"></a>        <span class="va">self</span>.setMinimumWidth(<span class="dv">300</span>)</span>
+<span id="cb5-29"><a href="#cb5-29"></a>        <span class="va">self</span>.adjustSize()</span>
+<span id="cb5-30"><a href="#cb5-30"></a></span>
+<span id="cb5-31"><a href="#cb5-31"></a>    <span class="kw">def</span> initUI(<span class="va">self</span>):</span>
+<span id="cb5-32"><a href="#cb5-32"></a>        layout <span class="op">=</span> QVBoxLayout()</span>
+<span id="cb5-33"><a href="#cb5-33"></a></span>
+<span id="cb5-34"><a href="#cb5-34"></a>        <span class="va">self</span>.player1_label <span class="op">=</span> QLabel(<span class="st">"Player 1 (Black):"</span>)</span>
+<span id="cb5-35"><a href="#cb5-35"></a>        layout.addWidget(<span class="va">self</span>.player1_label)</span>
+<span id="cb5-36"><a href="#cb5-36"></a></span>
+<span id="cb5-37"><a href="#cb5-37"></a>        all_players <span class="op">=</span> [<span class="st">'human'</span>, <span class="st">'greedy'</span>, <span class="st">'random'</span>, <span class="st">'minimax'</span>, <span class="st">'alpha_beta'</span>]</span>
+<span id="cb5-38"><a href="#cb5-38"></a></span>
+<span id="cb5-39"><a href="#cb5-39"></a>        <span class="va">self</span>.player1_combo <span class="op">=</span> QComboBox()</span>
+<span id="cb5-40"><a href="#cb5-40"></a>        <span class="va">self</span>.player1_combo.addItems(all_players)</span>
+<span id="cb5-41"><a href="#cb5-41"></a>        layout.addWidget(<span class="va">self</span>.player1_combo)</span>
+<span id="cb5-42"><a href="#cb5-42"></a></span>
+<span id="cb5-43"><a href="#cb5-43"></a>        <span class="va">self</span>.player2_label <span class="op">=</span> QLabel(<span class="st">"Player 2 (White):"</span>)</span>
+<span id="cb5-44"><a href="#cb5-44"></a>        layout.addWidget(<span class="va">self</span>.player2_label)</span>
+<span id="cb5-45"><a href="#cb5-45"></a></span>
+<span id="cb5-46"><a href="#cb5-46"></a>        <span class="va">self</span>.player2_combo <span class="op">=</span> QComboBox()</span>
+<span id="cb5-47"><a href="#cb5-47"></a>        <span class="va">self</span>.player2_combo.addItems(all_players)</span>
+<span id="cb5-48"><a href="#cb5-48"></a>        layout.addWidget(<span class="va">self</span>.player2_combo)</span>
+<span id="cb5-49"><a href="#cb5-49"></a></span>
+<span id="cb5-50"><a href="#cb5-50"></a>        <span class="va">self</span>.save_btn <span class="op">=</span> QPushButton(<span class="st">"Save Settings"</span>)</span>
+<span id="cb5-51"><a href="#cb5-51"></a>        <span class="va">self</span>.save_btn.clicked.<span class="ex">connect</span>(<span class="va">self</span>.save_settings)</span>
+<span id="cb5-52"><a href="#cb5-52"></a>        layout.addWidget(<span class="va">self</span>.save_btn)</span>
+<span id="cb5-53"><a href="#cb5-53"></a></span>
+<span id="cb5-54"><a href="#cb5-54"></a>        container <span class="op">=</span> QWidget()</span>
+<span id="cb5-55"><a href="#cb5-55"></a>        container.setLayout(layout)</span>
+<span id="cb5-56"><a href="#cb5-56"></a>        <span class="va">self</span>.setCentralWidget(container)</span>
+<span id="cb5-57"><a href="#cb5-57"></a></span>
+<span id="cb5-58"><a href="#cb5-58"></a>    <span class="kw">def</span> save_settings(<span class="va">self</span>):</span>
+<span id="cb5-59"><a href="#cb5-59"></a>        player1 <span class="op">=</span> <span class="va">self</span>.player1_combo.currentText()</span>
+<span id="cb5-60"><a href="#cb5-60"></a>        player2 <span class="op">=</span> <span class="va">self</span>.player2_combo.currentText()</span>
+<span id="cb5-61"><a href="#cb5-61"></a></span>
+<span id="cb5-62"><a href="#cb5-62"></a>        <span class="co"># emit a signal to the main window to apply the settings</span></span>
+<span id="cb5-63"><a href="#cb5-63"></a>        <span class="va">self</span>.settings_applied.emit(player1, player2)</span>
+<span id="cb5-64"><a href="#cb5-64"></a>        <span class="va">self</span>.close()</span>
+<span id="cb5-65"><a href="#cb5-65"></a></span>
+<span id="cb5-66"><a href="#cb5-66"></a></span>
+<span id="cb5-67"><a href="#cb5-67"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:  <span class="co"># test the SettingWindow class</span></span>
+<span id="cb5-68"><a href="#cb5-68"></a>    app <span class="op">=</span> QApplication([])</span>
+<span id="cb5-69"><a href="#cb5-69"></a>    window <span class="op">=</span> SettingWindow()</span>
+<span id="cb5-70"><a href="#cb5-70"></a>    window.show()</span>
+<span id="cb5-71"><a href="#cb5-71"></a>    app.<span class="bu">exec</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="im">from</span> PySide6.QtWidgets <span class="im">import</span> QWidget</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="im">from</span> PySide6.QtGui <span class="im">import</span> QPainter, QColor, QMouseEvent</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="im">from</span> PySide6.QtCore <span class="im">import</span> QThread</span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="im">from</span> PySide6.QtCore <span class="im">import</span> Qt</span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="im">from</span> PySide6.QtCore <span class="im">import</span> Signal</span>
+<span id="cb6-6"><a href="#cb6-6"></a></span>
+<span id="cb6-7"><a href="#cb6-7"></a></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="kw">class</span> BoardWidget(QWidget):</span>
+<span id="cb6-9"><a href="#cb6-9"></a>    animationFinished <span class="op">=</span> Signal()</span>
+<span id="cb6-10"><a href="#cb6-10"></a></span>
+<span id="cb6-11"><a href="#cb6-11"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, parent<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb6-12"><a href="#cb6-12"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(parent)</span>
+<span id="cb6-13"><a href="#cb6-13"></a>        <span class="va">self</span>.board_size <span class="op">=</span> parent.game.board_size</span>
+<span id="cb6-14"><a href="#cb6-14"></a>        <span class="va">self</span>.cell_size <span class="op">=</span> <span class="dv">70</span>  <span class="co"># Cell size in pixels</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>        <span class="va">self</span>.padding_size <span class="op">=</span> <span class="va">self</span>.cell_size <span class="op">//</span> <span class="dv">7</span>  <span class="co"># Padding size of each cell in pixels</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a>        <span class="va">self</span>.hint_size <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a>        <span class="va">self</span>.setMinimumSize(</span>
+<span id="cb6-18"><a href="#cb6-18"></a>            <span class="va">self</span>.board_size <span class="op">*</span> <span class="va">self</span>.cell_size, <span class="va">self</span>.board_size <span class="op">*</span> <span class="va">self</span>.cell_size</span>
+<span id="cb6-19"><a href="#cb6-19"></a>        )</span>
+<span id="cb6-20"><a href="#cb6-20"></a>        <span class="va">self</span>.game <span class="op">=</span> parent.game</span>
+<span id="cb6-21"><a href="#cb6-21"></a>        <span class="va">self</span>.human_player <span class="op">=</span> parent.human_player</span>
+<span id="cb6-22"><a href="#cb6-22"></a>        <span class="va">self</span>.parent <span class="op">=</span> parent</span>
+<span id="cb6-23"><a href="#cb6-23"></a>        <span class="va">self</span>.changed_pieces <span class="op">=</span> []</span>
+<span id="cb6-24"><a href="#cb6-24"></a>        <span class="va">self</span>.animation_frames <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb6-25"><a href="#cb6-25"></a>        <span class="va">self</span>.animation_step <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-26"><a href="#cb6-26"></a>        <span class="va">self</span>.old_board <span class="op">=</span> [row[:] <span class="cf">for</span> row <span class="kw">in</span> <span class="va">self</span>.game.board]</span>
+<span id="cb6-27"><a href="#cb6-27"></a>        <span class="va">self</span>.current_move <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb6-28"><a href="#cb6-28"></a>        <span class="va">self</span>.user_click_permit <span class="op">=</span> <span class="va">False</span>  <span class="co"># Permit user to click on the board</span></span>
+<span id="cb6-29"><a href="#cb6-29"></a></span>
+<span id="cb6-30"><a href="#cb6-30"></a>    <span class="kw">def</span> paintEvent(<span class="va">self</span>, event):</span>
+<span id="cb6-31"><a href="#cb6-31"></a>        painter <span class="op">=</span> QPainter(<span class="va">self</span>)</span>
+<span id="cb6-32"><a href="#cb6-32"></a>        painter.setRenderHint(QPainter.Antialiasing)</span>
+<span id="cb6-33"><a href="#cb6-33"></a>        painter.setPen(Qt.NoPen)</span>
+<span id="cb6-34"><a href="#cb6-34"></a>        cell_color <span class="op">=</span> [QColor(<span class="st">"green"</span>), QColor(<span class="st">"darkgreen"</span>)]</span>
+<span id="cb6-35"><a href="#cb6-35"></a></span>
+<span id="cb6-36"><a href="#cb6-36"></a>        <span class="co"># Draw the old board</span></span>
+<span id="cb6-37"><a href="#cb6-37"></a>        <span class="cf">for</span> row <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.board_size):</span>
+<span id="cb6-38"><a href="#cb6-38"></a>            <span class="cf">for</span> col <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.board_size):</span>
+<span id="cb6-39"><a href="#cb6-39"></a>                color <span class="op">=</span> cell_color[(row <span class="op">+</span> col) <span class="op">%</span> <span class="dv">2</span>]</span>
+<span id="cb6-40"><a href="#cb6-40"></a>                painter.fillRect(</span>
+<span id="cb6-41"><a href="#cb6-41"></a>                    col <span class="op">*</span> <span class="va">self</span>.cell_size,</span>
+<span id="cb6-42"><a href="#cb6-42"></a>                    row <span class="op">*</span> <span class="va">self</span>.cell_size,</span>
+<span id="cb6-43"><a href="#cb6-43"></a>                    <span class="va">self</span>.cell_size,</span>
+<span id="cb6-44"><a href="#cb6-44"></a>                    <span class="va">self</span>.cell_size,</span>
+<span id="cb6-45"><a href="#cb6-45"></a>                    color,</span>
+<span id="cb6-46"><a href="#cb6-46"></a>                )</span>
+<span id="cb6-47"><a href="#cb6-47"></a></span>
+<span id="cb6-48"><a href="#cb6-48"></a>                <span class="cf">if</span> (row, col) <span class="kw">in</span> <span class="va">self</span>.changed_pieces:</span>
+<span id="cb6-49"><a href="#cb6-49"></a>                    <span class="cf">continue</span></span>
+<span id="cb6-50"><a href="#cb6-50"></a></span>
+<span id="cb6-51"><a href="#cb6-51"></a>                <span class="cf">if</span> <span class="va">self</span>.old_board[row][col] <span class="op">==</span> <span class="st">"black"</span>:</span>
+<span id="cb6-52"><a href="#cb6-52"></a>                    color <span class="op">=</span> QColor(<span class="st">"black"</span>)</span>
+<span id="cb6-53"><a href="#cb6-53"></a>                <span class="cf">elif</span> <span class="va">self</span>.old_board[row][col] <span class="op">==</span> <span class="st">"white"</span>:</span>
+<span id="cb6-54"><a href="#cb6-54"></a>                    color <span class="op">=</span> QColor(<span class="st">"white"</span>)</span>
+<span id="cb6-55"><a href="#cb6-55"></a>                <span class="cf">if</span> <span class="va">self</span>.old_board[row][col] <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb6-56"><a href="#cb6-56"></a>                    painter.setBrush(color)</span>
+<span id="cb6-57"><a href="#cb6-57"></a>                    painter.drawEllipse(</span>
+<span id="cb6-58"><a href="#cb6-58"></a>                        col <span class="op">*</span> <span class="va">self</span>.cell_size <span class="op">+</span> <span class="va">self</span>.padding_size,</span>
+<span id="cb6-59"><a href="#cb6-59"></a>                        row <span class="op">*</span> <span class="va">self</span>.cell_size <span class="op">+</span> <span class="va">self</span>.padding_size,</span>
+<span id="cb6-60"><a href="#cb6-60"></a>                        <span class="va">self</span>.cell_size <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> <span class="va">self</span>.padding_size,</span>
+<span id="cb6-61"><a href="#cb6-61"></a>                        <span class="va">self</span>.cell_size <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> <span class="va">self</span>.padding_size,</span>
+<span id="cb6-62"><a href="#cb6-62"></a>                    )</span>
+<span id="cb6-63"><a href="#cb6-63"></a></span>
+<span id="cb6-64"><a href="#cb6-64"></a></span>
+<span id="cb6-65"><a href="#cb6-65"></a></span>
+<span id="cb6-66"><a href="#cb6-66"></a>        <span class="co"># Highlight all possible moves</span></span>
+<span id="cb6-67"><a href="#cb6-67"></a>        possible_moves <span class="op">=</span> <span class="va">self</span>.game.get_valid_moves(</span>
+<span id="cb6-68"><a href="#cb6-68"></a>            <span class="va">self</span>.game.board, <span class="va">self</span>.game.current_player</span>
+<span id="cb6-69"><a href="#cb6-69"></a>        )</span>
+<span id="cb6-70"><a href="#cb6-70"></a>        <span class="cf">for</span> move <span class="kw">in</span> possible_moves:</span>
+<span id="cb6-71"><a href="#cb6-71"></a>            row, col <span class="op">=</span> move</span>
+<span id="cb6-72"><a href="#cb6-72"></a>            painter.setBrush(QColor(<span class="st">"red"</span>))</span>
+<span id="cb6-73"><a href="#cb6-73"></a>            painter.drawEllipse(</span>
+<span id="cb6-74"><a href="#cb6-74"></a>                col <span class="op">*</span> <span class="va">self</span>.cell_size <span class="op">+</span> <span class="va">self</span>.cell_size <span class="op">//</span> <span class="dv">2</span> <span class="op">-</span> <span class="va">self</span>.hint_size <span class="op">//</span> <span class="dv">2</span>,</span>
+<span id="cb6-75"><a href="#cb6-75"></a>                row <span class="op">*</span> <span class="va">self</span>.cell_size <span class="op">+</span> <span class="va">self</span>.cell_size <span class="op">//</span> <span class="dv">2</span> <span class="op">-</span> <span class="va">self</span>.hint_size <span class="op">//</span> <span class="dv">2</span>,</span>
+<span id="cb6-76"><a href="#cb6-76"></a>                <span class="va">self</span>.hint_size,</span>
+<span id="cb6-77"><a href="#cb6-77"></a>                <span class="va">self</span>.hint_size,</span>
+<span id="cb6-78"><a href="#cb6-78"></a>            )</span>
+<span id="cb6-79"><a href="#cb6-79"></a></span>
+<span id="cb6-80"><a href="#cb6-80"></a>        <span class="cf">if</span> <span class="va">self</span>.current_move:</span>
+<span id="cb6-81"><a href="#cb6-81"></a>            row, col <span class="op">=</span> <span class="va">self</span>.current_move</span>
+<span id="cb6-82"><a href="#cb6-82"></a>            painter.setBrush(QColor(<span class="va">self</span>.game.board[row][col]))</span>
+<span id="cb6-83"><a href="#cb6-83"></a>            painter.drawEllipse(</span>
+<span id="cb6-84"><a href="#cb6-84"></a>                col <span class="op">*</span> <span class="va">self</span>.cell_size <span class="op">+</span> <span class="va">self</span>.padding_size,</span>
+<span id="cb6-85"><a href="#cb6-85"></a>                row <span class="op">*</span> <span class="va">self</span>.cell_size <span class="op">+</span> <span class="va">self</span>.padding_size,</span>
+<span id="cb6-86"><a href="#cb6-86"></a>                <span class="va">self</span>.cell_size <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> <span class="va">self</span>.padding_size,</span>
+<span id="cb6-87"><a href="#cb6-87"></a>                <span class="va">self</span>.cell_size <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> <span class="va">self</span>.padding_size,</span>
+<span id="cb6-88"><a href="#cb6-88"></a>            )</span>
+<span id="cb6-89"><a href="#cb6-89"></a>            <span class="co"># highlight the current move</span></span>
+<span id="cb6-90"><a href="#cb6-90"></a>            painter.setBrush(QColor(<span class="st">"blue"</span>))</span>
+<span id="cb6-91"><a href="#cb6-91"></a>            painter.drawEllipse(</span>
+<span id="cb6-92"><a href="#cb6-92"></a>                col <span class="op">*</span> <span class="va">self</span>.cell_size <span class="op">+</span> <span class="va">self</span>.cell_size <span class="op">//</span> <span class="dv">2</span> <span class="op">-</span> <span class="va">self</span>.hint_size <span class="op">//</span> <span class="dv">2</span>,</span>
+<span id="cb6-93"><a href="#cb6-93"></a>                row <span class="op">*</span> <span class="va">self</span>.cell_size <span class="op">+</span> <span class="va">self</span>.cell_size <span class="op">//</span> <span class="dv">2</span> <span class="op">-</span> <span class="va">self</span>.hint_size <span class="op">//</span> <span class="dv">2</span>,</span>
+<span id="cb6-94"><a href="#cb6-94"></a>                <span class="va">self</span>.hint_size,</span>
+<span id="cb6-95"><a href="#cb6-95"></a>                <span class="va">self</span>.hint_size,</span>
+<span id="cb6-96"><a href="#cb6-96"></a>            )</span>
+<span id="cb6-97"><a href="#cb6-97"></a>        painter.end()</span>
+<span id="cb6-98"><a href="#cb6-98"></a>        <span class="co"># Start the animation for changed pieces</span></span>
+<span id="cb6-99"><a href="#cb6-99"></a>        <span class="cf">if</span> <span class="va">self</span>.changed_pieces:</span>
+<span id="cb6-100"><a href="#cb6-100"></a></span>
+<span id="cb6-101"><a href="#cb6-101"></a>            duration <span class="op">=</span> <span class="dv">500</span>  <span class="co"># Duration in milliseconds</span></span>
+<span id="cb6-102"><a href="#cb6-102"></a>            interval <span class="op">=</span> duration <span class="op">//</span> <span class="va">self</span>.animation_frames</span>
+<span id="cb6-103"><a href="#cb6-103"></a>            step <span class="op">=</span> <span class="va">self</span>.animation_step</span>
+<span id="cb6-104"><a href="#cb6-104"></a>            painter <span class="op">=</span> QPainter(<span class="va">self</span>)</span>
+<span id="cb6-105"><a href="#cb6-105"></a>            painter.setRenderHint(QPainter.Antialiasing)</span>
+<span id="cb6-106"><a href="#cb6-106"></a>            painter.setPen(Qt.NoPen)</span>
+<span id="cb6-107"><a href="#cb6-107"></a>            alpha <span class="op">=</span> <span class="bu">min</span>(<span class="dv">255</span>, <span class="bu">int</span>(<span class="dv">255</span> <span class="op">*</span> (step <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> <span class="va">self</span>.animation_frames))</span>
+<span id="cb6-108"><a href="#cb6-108"></a>            <span class="cf">for</span> row, col <span class="kw">in</span> <span class="va">self</span>.changed_pieces:</span>
+<span id="cb6-109"><a href="#cb6-109"></a>                new_color <span class="op">=</span> <span class="va">self</span>.game.board[row][col]</span>
+<span id="cb6-110"><a href="#cb6-110"></a>                color <span class="op">=</span> QColor(<span class="st">"black"</span>) <span class="cf">if</span> new_color <span class="op">==</span> <span class="st">"black"</span> <span class="cf">else</span> QColor(<span class="st">"white"</span>)</span>
+<span id="cb6-111"><a href="#cb6-111"></a>                color.setAlpha(alpha)</span>
+<span id="cb6-112"><a href="#cb6-112"></a>                painter.setBrush(color)</span>
+<span id="cb6-113"><a href="#cb6-113"></a>                painter.drawEllipse(</span>
+<span id="cb6-114"><a href="#cb6-114"></a>                    col <span class="op">*</span> <span class="va">self</span>.cell_size <span class="op">+</span> <span class="va">self</span>.padding_size,</span>
+<span id="cb6-115"><a href="#cb6-115"></a>                    row <span class="op">*</span> <span class="va">self</span>.cell_size <span class="op">+</span> <span class="va">self</span>.padding_size,</span>
+<span id="cb6-116"><a href="#cb6-116"></a>                    <span class="va">self</span>.cell_size <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> <span class="va">self</span>.padding_size,</span>
+<span id="cb6-117"><a href="#cb6-117"></a>                    <span class="va">self</span>.cell_size <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> <span class="va">self</span>.padding_size,</span>
+<span id="cb6-118"><a href="#cb6-118"></a>                )</span>
+<span id="cb6-119"><a href="#cb6-119"></a>            painter.end()</span>
+<span id="cb6-120"><a href="#cb6-120"></a></span>
+<span id="cb6-121"><a href="#cb6-121"></a>            <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.animation_step <span class="op">&gt;=</span> <span class="va">self</span>.animation_frames:</span>
+<span id="cb6-122"><a href="#cb6-122"></a>                <span class="va">self</span>.animation_step <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb6-123"><a href="#cb6-123"></a>                <span class="va">self</span>.update()</span>
+<span id="cb6-124"><a href="#cb6-124"></a>                QThread.msleep(interval)</span>
+<span id="cb6-125"><a href="#cb6-125"></a>            <span class="cf">else</span>:</span>
+<span id="cb6-126"><a href="#cb6-126"></a>                <span class="co"># Update old board after animation ends</span></span>
+<span id="cb6-127"><a href="#cb6-127"></a>                <span class="va">self</span>.old_board <span class="op">=</span> [row[:] <span class="cf">for</span> row <span class="kw">in</span> <span class="va">self</span>.game.board]</span>
+<span id="cb6-128"><a href="#cb6-128"></a>                <span class="va">self</span>.animation_step <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-129"><a href="#cb6-129"></a>                <span class="va">self</span>.changed_pieces <span class="op">=</span> []</span>
+<span id="cb6-130"><a href="#cb6-130"></a>                <span class="va">self</span>.animationFinished.emit()  <span class="co"># emit a signal showing the animation is finished</span></span>
+<span id="cb6-131"><a href="#cb6-131"></a></span>
+<span id="cb6-132"><a href="#cb6-132"></a>    <span class="kw">def</span> update_drawing(<span class="va">self</span>):</span>
+<span id="cb6-133"><a href="#cb6-133"></a>        <span class="va">self</span>.update()</span>
+<span id="cb6-134"><a href="#cb6-134"></a>        <span class="co"># emit a signal to the main window to update the status bar</span></span>
+<span id="cb6-135"><a href="#cb6-135"></a>        black_score, white_score <span class="op">=</span> <span class="va">self</span>.game.get_score()</span>
+<span id="cb6-136"><a href="#cb6-136"></a>        <span class="va">self</span>.parent.statusBar().showMessage(</span>
+<span id="cb6-137"><a href="#cb6-137"></a>            <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>game<span class="sc">.</span>current_player<span class="sc">.</span>capitalize()<span class="sc">}</span><span class="ss">'s Turn - Black: </span><span class="sc">{</span>black_score<span class="sc">}</span><span class="ss">, White: </span><span class="sc">{</span>white_score<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb6-138"><a href="#cb6-138"></a>        )</span>
+<span id="cb6-139"><a href="#cb6-139"></a></span>
+<span id="cb6-140"><a href="#cb6-140"></a>    <span class="kw">def</span> place_piece(<span class="va">self</span>, row, col):</span>
+<span id="cb6-141"><a href="#cb6-141"></a>        <span class="va">self</span>.changed_pieces <span class="op">=</span> <span class="va">self</span>.game.place_piece(row, col)</span>
+<span id="cb6-142"><a href="#cb6-142"></a>        <span class="va">self</span>.current_move <span class="op">=</span> (row, col)</span>
+<span id="cb6-143"><a href="#cb6-143"></a>        <span class="va">self</span>.update_drawing()</span>
+<span id="cb6-144"><a href="#cb6-144"></a></span>
+<span id="cb6-145"><a href="#cb6-145"></a>    <span class="kw">def</span> mousePressEvent(<span class="va">self</span>, event: QMouseEvent):</span>
+<span id="cb6-146"><a href="#cb6-146"></a>        <span class="co"># if not the player's turn, do nothing</span></span>
+<span id="cb6-147"><a href="#cb6-147"></a>        <span class="cf">if</span> <span class="va">self</span>.game.current_player <span class="kw">not</span> <span class="kw">in</span> <span class="va">self</span>.human_player <span class="kw">or</span> <span class="kw">not</span> <span class="va">self</span>.user_click_permit:</span>
+<span id="cb6-148"><a href="#cb6-148"></a>            <span class="cf">return</span></span>
+<span id="cb6-149"><a href="#cb6-149"></a>        col <span class="op">=</span> event.x() <span class="op">//</span> <span class="va">self</span>.cell_size</span>
+<span id="cb6-150"><a href="#cb6-150"></a>        row <span class="op">=</span> event.y() <span class="op">//</span> <span class="va">self</span>.cell_size</span>
+<span id="cb6-151"><a href="#cb6-151"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.game.is_valid_move(</span>
+<span id="cb6-152"><a href="#cb6-152"></a>            row, col, <span class="va">self</span>.game.board, <span class="va">self</span>.game.current_player</span>
+<span id="cb6-153"><a href="#cb6-153"></a>        ):</span>
+<span id="cb6-154"><a href="#cb6-154"></a>            <span class="cf">return</span></span>
+<span id="cb6-155"><a href="#cb6-155"></a>        <span class="va">self</span>.user_click_permit <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-156"><a href="#cb6-156"></a>        <span class="va">self</span>.place_piece(row, col)</span>
+<span id="cb6-157"><a href="#cb6-157"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-1-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-7-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="im">from</span> PySide6.QtWidgets <span class="im">import</span> QApplication, QWidget, QVBoxLayout, QLabel, QListWidget</span>
+<span id="cb7-2"><a href="#cb7-2"></a></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="kw">class</span> InfoWidget(QWidget):</span>
+<span id="cb7-4"><a href="#cb7-4"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb7-5"><a href="#cb7-5"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb7-6"><a href="#cb7-6"></a>        <span class="va">self</span>.history_moves <span class="op">=</span> []</span>
+<span id="cb7-7"><a href="#cb7-7"></a>        <span class="va">self</span>.current_score <span class="op">=</span> {<span class="st">'Black'</span>: <span class="dv">0</span>, <span class="st">'White'</span>: <span class="dv">0</span>}</span>
+<span id="cb7-8"><a href="#cb7-8"></a></span>
+<span id="cb7-9"><a href="#cb7-9"></a>        <span class="va">self</span>.layout <span class="op">=</span> QVBoxLayout(<span class="va">self</span>)</span>
+<span id="cb7-10"><a href="#cb7-10"></a></span>
+<span id="cb7-11"><a href="#cb7-11"></a>        <span class="va">self</span>.history_label <span class="op">=</span> QLabel(<span class="st">"History Moves"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12"></a>        <span class="va">self</span>.layout.addWidget(<span class="va">self</span>.history_label)</span>
+<span id="cb7-13"><a href="#cb7-13"></a></span>
+<span id="cb7-14"><a href="#cb7-14"></a>        <span class="va">self</span>.history_listbox <span class="op">=</span> QListWidget()</span>
+<span id="cb7-15"><a href="#cb7-15"></a>        <span class="va">self</span>.layout.addWidget(<span class="va">self</span>.history_listbox)</span>
+<span id="cb7-16"><a href="#cb7-16"></a></span>
+<span id="cb7-17"><a href="#cb7-17"></a>        <span class="va">self</span>.score_label <span class="op">=</span> QLabel(<span class="st">"Current Score"</span>)</span>
+<span id="cb7-18"><a href="#cb7-18"></a>        <span class="va">self</span>.layout.addWidget(<span class="va">self</span>.score_label)</span>
+<span id="cb7-19"><a href="#cb7-19"></a></span>
+<span id="cb7-20"><a href="#cb7-20"></a>        <span class="va">self</span>.score_text <span class="op">=</span> QLabel(<span class="ss">f"Black: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>current_score[<span class="st">'Black'</span>]<span class="sc">}</span><span class="ss">  White: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>current_score[<span class="st">'White'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-21"><a href="#cb7-21"></a>        <span class="va">self</span>.layout.addWidget(<span class="va">self</span>.score_text)</span>
+<span id="cb7-22"><a href="#cb7-22"></a></span>
+<span id="cb7-23"><a href="#cb7-23"></a>    <span class="kw">def</span> update_history(<span class="va">self</span>, move):</span>
+<span id="cb7-24"><a href="#cb7-24"></a>        <span class="va">self</span>.history_moves.append(move)</span>
+<span id="cb7-25"><a href="#cb7-25"></a>        <span class="va">self</span>.history_listbox.addItem(move)</span>
+<span id="cb7-26"><a href="#cb7-26"></a></span>
+<span id="cb7-27"><a href="#cb7-27"></a>    <span class="kw">def</span> update_score(<span class="va">self</span>, black_score, white_score):</span>
+<span id="cb7-28"><a href="#cb7-28"></a>        <span class="va">self</span>.current_score[<span class="st">'Black'</span>] <span class="op">=</span> black_score</span>
+<span id="cb7-29"><a href="#cb7-29"></a>        <span class="va">self</span>.current_score[<span class="st">'White'</span>] <span class="op">=</span> white_score</span>
+<span id="cb7-30"><a href="#cb7-30"></a>        <span class="va">self</span>.score_text.setText(<span class="ss">f"Black: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>current_score[<span class="st">'Black'</span>]<span class="sc">}</span><span class="ss">  White: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>current_score[<span class="st">'White'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-31"><a href="#cb7-31"></a></span>
+<span id="cb7-32"><a href="#cb7-32"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb7-33"><a href="#cb7-33"></a>    app <span class="op">=</span> QApplication([])</span>
+<span id="cb7-34"><a href="#cb7-34"></a></span>
+<span id="cb7-35"><a href="#cb7-35"></a>    info_widget <span class="op">=</span> InfoWidget()</span>
+<span id="cb7-36"><a href="#cb7-36"></a>    info_widget.setWindowTitle(<span class="st">"Info Widget"</span>)</span>
+<span id="cb7-37"><a href="#cb7-37"></a>    info_widget.show()</span>
+<span id="cb7-38"><a href="#cb7-38"></a></span>
+<span id="cb7-39"><a href="#cb7-39"></a>    app.<span class="bu">exec</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-1-8" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-8-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">class</span> ReversiGame:</span>
+<span id="cb8-2"><a href="#cb8-2"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb8-3"><a href="#cb8-3"></a>        <span class="va">self</span>.board_size <span class="op">=</span> <span class="dv">8</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>        <span class="va">self</span>.board <span class="op">=</span> [</span>
+<span id="cb8-5"><a href="#cb8-5"></a>            [<span class="va">None</span> <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.board_size)] <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.board_size)</span>
+<span id="cb8-6"><a href="#cb8-6"></a>        ]</span>
+<span id="cb8-7"><a href="#cb8-7"></a>        <span class="va">self</span>.current_player <span class="op">=</span> <span class="st">"black"</span> <span class="co"># black always starts first</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>        <span class="va">self</span>.history_boards <span class="op">=</span> []</span>
+<span id="cb8-9"><a href="#cb8-9"></a>        <span class="va">self</span>.history_moves <span class="op">=</span> []</span>
+<span id="cb8-10"><a href="#cb8-10"></a>        <span class="va">self</span>.initialize_board()</span>
+<span id="cb8-11"><a href="#cb8-11"></a></span>
+<span id="cb8-12"><a href="#cb8-12"></a>    <span class="kw">def</span> initialize_board(<span class="va">self</span>):</span>
+<span id="cb8-13"><a href="#cb8-13"></a>        mid <span class="op">=</span> <span class="va">self</span>.board_size <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a>        <span class="va">self</span>.board[mid <span class="op">-</span> <span class="dv">1</span>][mid <span class="op">-</span> <span class="dv">1</span>] <span class="op">=</span> <span class="st">"white"</span></span>
+<span id="cb8-15"><a href="#cb8-15"></a>        <span class="va">self</span>.board[mid][mid] <span class="op">=</span> <span class="st">"white"</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a>        <span class="va">self</span>.board[mid <span class="op">-</span> <span class="dv">1</span>][mid] <span class="op">=</span> <span class="st">"black"</span></span>
+<span id="cb8-17"><a href="#cb8-17"></a>        <span class="va">self</span>.board[mid][mid <span class="op">-</span> <span class="dv">1</span>] <span class="op">=</span> <span class="st">"black"</span></span>
+<span id="cb8-18"><a href="#cb8-18"></a></span>
+<span id="cb8-19"><a href="#cb8-19"></a>    <span class="kw">def</span> switch_player(<span class="va">self</span>):</span>
+<span id="cb8-20"><a href="#cb8-20"></a>        <span class="va">self</span>.current_player <span class="op">=</span> <span class="st">"white"</span> <span class="cf">if</span> <span class="va">self</span>.current_player <span class="op">==</span> <span class="st">"black"</span> <span class="cf">else</span> <span class="st">"black"</span></span>
+<span id="cb8-21"><a href="#cb8-21"></a></span>
+<span id="cb8-22"><a href="#cb8-22"></a>    <span class="kw">def</span> is_valid_move(<span class="va">self</span>, row, col, board, player):</span>
+<span id="cb8-23"><a href="#cb8-23"></a>        <span class="cf">if</span> board[row][col] <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb8-24"><a href="#cb8-24"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb8-25"><a href="#cb8-25"></a></span>
+<span id="cb8-26"><a href="#cb8-26"></a>        opponent <span class="op">=</span> <span class="st">"black"</span> <span class="cf">if</span> player <span class="op">==</span> <span class="st">"white"</span> <span class="cf">else</span> <span class="st">"white"</span></span>
+<span id="cb8-27"><a href="#cb8-27"></a>        directions <span class="op">=</span> [</span>
+<span id="cb8-28"><a href="#cb8-28"></a>            (<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb8-29"><a href="#cb8-29"></a>            (<span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb8-30"><a href="#cb8-30"></a>            (<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb8-31"><a href="#cb8-31"></a>            (<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb8-32"><a href="#cb8-32"></a>            (<span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb8-33"><a href="#cb8-33"></a>            (<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb8-34"><a href="#cb8-34"></a>            (<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb8-35"><a href="#cb8-35"></a>            (<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb8-36"><a href="#cb8-36"></a>        ]</span>
+<span id="cb8-37"><a href="#cb8-37"></a></span>
+<span id="cb8-38"><a href="#cb8-38"></a>        <span class="cf">for</span> d_row, d_col <span class="kw">in</span> directions:</span>
+<span id="cb8-39"><a href="#cb8-39"></a>            r, c <span class="op">=</span> row <span class="op">+</span> d_row, col <span class="op">+</span> d_col</span>
+<span id="cb8-40"><a href="#cb8-40"></a>            <span class="cf">if</span> (</span>
+<span id="cb8-41"><a href="#cb8-41"></a>                <span class="kw">not</span> (<span class="dv">0</span> <span class="op">&lt;=</span> r <span class="op">&lt;</span> <span class="va">self</span>.board_size <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> c <span class="op">&lt;</span> <span class="va">self</span>.board_size)</span>
+<span id="cb8-42"><a href="#cb8-42"></a>                <span class="kw">or</span> board[r][c] <span class="op">!=</span> opponent</span>
+<span id="cb8-43"><a href="#cb8-43"></a>            ):</span>
+<span id="cb8-44"><a href="#cb8-44"></a>                <span class="cf">continue</span></span>
+<span id="cb8-45"><a href="#cb8-45"></a></span>
+<span id="cb8-46"><a href="#cb8-46"></a>            r <span class="op">+=</span> d_row</span>
+<span id="cb8-47"><a href="#cb8-47"></a>            c <span class="op">+=</span> d_col</span>
+<span id="cb8-48"><a href="#cb8-48"></a>            <span class="cf">while</span> <span class="dv">0</span> <span class="op">&lt;=</span> r <span class="op">&lt;</span> <span class="va">self</span>.board_size <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> c <span class="op">&lt;</span> <span class="va">self</span>.board_size:</span>
+<span id="cb8-49"><a href="#cb8-49"></a>                <span class="cf">if</span> board[r][c] <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb8-50"><a href="#cb8-50"></a>                    <span class="cf">break</span></span>
+<span id="cb8-51"><a href="#cb8-51"></a>                <span class="cf">if</span> board[r][c] <span class="op">==</span> player:</span>
+<span id="cb8-52"><a href="#cb8-52"></a>                    <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb8-53"><a href="#cb8-53"></a>                r <span class="op">+=</span> d_row</span>
+<span id="cb8-54"><a href="#cb8-54"></a>                c <span class="op">+=</span> d_col</span>
+<span id="cb8-55"><a href="#cb8-55"></a></span>
+<span id="cb8-56"><a href="#cb8-56"></a>        <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb8-57"><a href="#cb8-57"></a></span>
+<span id="cb8-58"><a href="#cb8-58"></a>    <span class="kw">def</span> get_valid_moves(<span class="va">self</span>, board, player):</span>
+<span id="cb8-59"><a href="#cb8-59"></a>        valid_moves <span class="op">=</span> []</span>
+<span id="cb8-60"><a href="#cb8-60"></a>        <span class="cf">for</span> row <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.board_size):</span>
+<span id="cb8-61"><a href="#cb8-61"></a>            <span class="cf">for</span> col <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.board_size):</span>
+<span id="cb8-62"><a href="#cb8-62"></a>                <span class="cf">if</span> <span class="va">self</span>.is_valid_move(row, col, board, player):</span>
+<span id="cb8-63"><a href="#cb8-63"></a>                    valid_moves.append((row, col))</span>
+<span id="cb8-64"><a href="#cb8-64"></a>        <span class="cf">return</span> valid_moves</span>
+<span id="cb8-65"><a href="#cb8-65"></a></span>
+<span id="cb8-66"><a href="#cb8-66"></a>    <span class="kw">def</span> change_pieces(<span class="va">self</span>, row, col, board, player):</span>
+<span id="cb8-67"><a href="#cb8-67"></a>        changed_pieces <span class="op">=</span> []</span>
+<span id="cb8-68"><a href="#cb8-68"></a>        opponent <span class="op">=</span> <span class="st">"black"</span> <span class="cf">if</span> player <span class="op">==</span> <span class="st">"white"</span> <span class="cf">else</span> <span class="st">"white"</span></span>
+<span id="cb8-69"><a href="#cb8-69"></a>        directions <span class="op">=</span> [</span>
+<span id="cb8-70"><a href="#cb8-70"></a>            (<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb8-71"><a href="#cb8-71"></a>            (<span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb8-72"><a href="#cb8-72"></a>            (<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb8-73"><a href="#cb8-73"></a>            (<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb8-74"><a href="#cb8-74"></a>            (<span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb8-75"><a href="#cb8-75"></a>            (<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb8-76"><a href="#cb8-76"></a>            (<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb8-77"><a href="#cb8-77"></a>            (<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb8-78"><a href="#cb8-78"></a>        ]</span>
+<span id="cb8-79"><a href="#cb8-79"></a>        <span class="cf">for</span> d_row, d_col <span class="kw">in</span> directions:</span>
+<span id="cb8-80"><a href="#cb8-80"></a>            r, c <span class="op">=</span> row <span class="op">+</span> d_row, col <span class="op">+</span> d_col</span>
+<span id="cb8-81"><a href="#cb8-81"></a>            <span class="cf">if</span> (</span>
+<span id="cb8-82"><a href="#cb8-82"></a>                <span class="kw">not</span> (<span class="dv">0</span> <span class="op">&lt;=</span> r <span class="op">&lt;</span> <span class="va">self</span>.board_size <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> c <span class="op">&lt;</span> <span class="va">self</span>.board_size)</span>
+<span id="cb8-83"><a href="#cb8-83"></a>                <span class="kw">or</span> board[r][c] <span class="op">!=</span> opponent</span>
+<span id="cb8-84"><a href="#cb8-84"></a>            ):</span>
+<span id="cb8-85"><a href="#cb8-85"></a>                <span class="cf">continue</span></span>
+<span id="cb8-86"><a href="#cb8-86"></a></span>
+<span id="cb8-87"><a href="#cb8-87"></a>            r <span class="op">+=</span> d_row</span>
+<span id="cb8-88"><a href="#cb8-88"></a>            c <span class="op">+=</span> d_col</span>
+<span id="cb8-89"><a href="#cb8-89"></a>            <span class="cf">while</span> <span class="dv">0</span> <span class="op">&lt;=</span> r <span class="op">&lt;</span> <span class="va">self</span>.board_size <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> c <span class="op">&lt;</span> <span class="va">self</span>.board_size:</span>
+<span id="cb8-90"><a href="#cb8-90"></a>                <span class="cf">if</span> board[r][c] <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb8-91"><a href="#cb8-91"></a>                    <span class="cf">break</span></span>
+<span id="cb8-92"><a href="#cb8-92"></a>                <span class="cf">if</span> board[r][c] <span class="op">==</span> player:</span>
+<span id="cb8-93"><a href="#cb8-93"></a>                    r, c <span class="op">=</span> row <span class="op">+</span> d_row, col <span class="op">+</span> d_col</span>
+<span id="cb8-94"><a href="#cb8-94"></a>                    <span class="cf">while</span> board[r][c] <span class="op">==</span> opponent:</span>
+<span id="cb8-95"><a href="#cb8-95"></a>                        changed_pieces.append((r, c))</span>
+<span id="cb8-96"><a href="#cb8-96"></a>                        board[r][c] <span class="op">=</span> player</span>
+<span id="cb8-97"><a href="#cb8-97"></a>                        r <span class="op">+=</span> d_row</span>
+<span id="cb8-98"><a href="#cb8-98"></a>                        c <span class="op">+=</span> d_col</span>
+<span id="cb8-99"><a href="#cb8-99"></a>                    <span class="cf">break</span></span>
+<span id="cb8-100"><a href="#cb8-100"></a>                r <span class="op">+=</span> d_row</span>
+<span id="cb8-101"><a href="#cb8-101"></a>                c <span class="op">+=</span> d_col</span>
+<span id="cb8-102"><a href="#cb8-102"></a>        <span class="cf">return</span> changed_pieces</span>
+<span id="cb8-103"><a href="#cb8-103"></a></span>
+<span id="cb8-104"><a href="#cb8-104"></a>    <span class="kw">def</span> is_game_over(<span class="va">self</span>):</span>
+<span id="cb8-105"><a href="#cb8-105"></a>        <span class="cf">for</span> row <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.board_size):</span>
+<span id="cb8-106"><a href="#cb8-106"></a>            <span class="cf">for</span> col <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.board_size):</span>
+<span id="cb8-107"><a href="#cb8-107"></a>                <span class="cf">if</span> <span class="va">self</span>.is_valid_move(</span>
+<span id="cb8-108"><a href="#cb8-108"></a>                    row, col, <span class="va">self</span>.board, <span class="st">"black"</span></span>
+<span id="cb8-109"><a href="#cb8-109"></a>                ) <span class="kw">or</span> <span class="va">self</span>.is_valid_move(row, col, <span class="va">self</span>.board, <span class="st">"white"</span>):</span>
+<span id="cb8-110"><a href="#cb8-110"></a>                    <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb8-111"><a href="#cb8-111"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb8-112"><a href="#cb8-112"></a></span>
+<span id="cb8-113"><a href="#cb8-113"></a>    <span class="kw">def</span> get_score(<span class="va">self</span>):</span>
+<span id="cb8-114"><a href="#cb8-114"></a>        black_score <span class="op">=</span> <span class="bu">sum</span>(row.count(<span class="st">"black"</span>) <span class="cf">for</span> row <span class="kw">in</span> <span class="va">self</span>.board)</span>
+<span id="cb8-115"><a href="#cb8-115"></a>        white_score <span class="op">=</span> <span class="bu">sum</span>(row.count(<span class="st">"white"</span>) <span class="cf">for</span> row <span class="kw">in</span> <span class="va">self</span>.board)</span>
+<span id="cb8-116"><a href="#cb8-116"></a>        <span class="cf">return</span> black_score, white_score</span>
+<span id="cb8-117"><a href="#cb8-117"></a></span>
+<span id="cb8-118"><a href="#cb8-118"></a>    <span class="kw">def</span> place_piece(<span class="va">self</span>, row, col):</span>
+<span id="cb8-119"><a href="#cb8-119"></a>        changed_pieces <span class="op">=</span> []</span>
+<span id="cb8-120"><a href="#cb8-120"></a>        <span class="cf">if</span> <span class="va">self</span>.is_valid_move(row, col, <span class="va">self</span>.board, <span class="va">self</span>.current_player):</span>
+<span id="cb8-121"><a href="#cb8-121"></a>            <span class="va">self</span>.history_boards.append([row[:] <span class="cf">for</span> row <span class="kw">in</span> <span class="va">self</span>.board]) <span class="co"># deep copy the board to save the state</span></span>
+<span id="cb8-122"><a href="#cb8-122"></a>            <span class="va">self</span>.history_moves.append((<span class="va">self</span>.current_player, row, col))</span>
+<span id="cb8-123"><a href="#cb8-123"></a>            <span class="va">self</span>.board[row][col] <span class="op">=</span> <span class="va">self</span>.current_player</span>
+<span id="cb8-124"><a href="#cb8-124"></a>            changed_pieces <span class="op">=</span> <span class="va">self</span>.change_pieces(</span>
+<span id="cb8-125"><a href="#cb8-125"></a>                row, col, <span class="va">self</span>.board, <span class="va">self</span>.current_player</span>
+<span id="cb8-126"><a href="#cb8-126"></a>            )</span>
+<span id="cb8-127"><a href="#cb8-127"></a>            <span class="va">self</span>.switch_player()</span>
+<span id="cb8-128"><a href="#cb8-128"></a>        <span class="cf">return</span> changed_pieces</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>

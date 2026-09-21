@@ -1,27 +1,26 @@
 # Homework 2 starter
 
-This package is a self-contained, console-based Reversi environment. It uses only the Python standard library.
-
-## Files
-
-- `ai.py`: helper functions plus the four functions you must complete.
-- `reversi.py`: game rules, board rendering, and a random-vs-random demo.
-- `check_ai.py`: public interface and mutation checks.
-- `tournament.py`: runs all 16 ordered pairings and saves results.
+This is the PySide6 Reversi game from Spring 2025 Homework 2.
 
 ## First steps
 
-```bash
-python reversi.py
-python check_ai.py
-```
-
-After implementing `ai.py`, run:
+Install PySide6, then run the game from this folder:
 
 ```bash
-python tournament.py
+python -m pip install PySide6
+python main.py
 ```
 
-The tournament runner writes `tournament_results.csv` and one representative final board for each ordered pairing in `final_boards/`. These files can be used to build the report tables and screenshots.
+The settings window lets you choose a human or AI player for each side. You can use human and random players before completing the assignment.
 
-Upload only `hw2submission.pdf` to Canvas.
+## Files
+
+- `ai.py`: the original unfinished AI starter, with `utility`, `greedy_ai`, `minimax_ai`, and `alpha_beta_ai` to complete.
+- `main.py`: launches the PySide6 application.
+- `main_window.py`: connects the game, player settings, and AI agents.
+- `setting_window.py`: player selection window.
+- `board_widget.py`: board drawing, mouse input, and piece animations.
+- `info_widget.py`: score and move history display.
+- `game_logic.py`: Reversi game rules.
+
+Complete the four functions in `ai.py` before selecting their corresponding AI players. Follow the Homework 2 assignment for the experiments and report requirements.

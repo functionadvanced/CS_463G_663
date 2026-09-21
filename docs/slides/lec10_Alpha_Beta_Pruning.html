@@ -439,7 +439,7 @@ MAX already has <strong>4</strong> from A. At MIN node B, the first leaf gives <
 <p>With identical cutoffs and scores, alpha-beta matches <strong>depth-limited minimax</strong>. The heuristic estimate may still miss the best move in the full game.</p>
 </div>
 <aside class="notes">
-<p>Always check terminal before the depth cutoff. Alpha-beta is exact relative to the leaf scores supplied to it; it does not make inaccurate heuristic scores accurate. The demo notebook has explicitly supplied terminal leaves and no depth parameter. HW2 uses a function named utility for its board evaluation at both terminal and depth-limited states, so its name alone does not imply the position is terminal. For Reversi, follow the assignment’s consistent depth convention for completed moves and handle a forced pass explicitly. Source: AIMA imperfect decision making and the current Homework 2 specification.</p>
+<p>Always check terminal before the depth cutoff. Alpha-beta is exact relative to the leaf scores supplied to it; it does not make inaccurate heuristic scores accurate. The demo notebook has explicitly supplied terminal leaves and no depth parameter. HW2 uses a function named utility for board evaluation in its search methods, so its name alone does not imply the position is terminal. In Reversi search, use a consistent depth convention and handle a forced pass explicitly. Source: AIMA imperfect decision making and Homework 2.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -462,7 +462,7 @@ MAX already has <strong>4</strong> from A. At MIN node B, the first leaf gives <
 <p><strong>Forward pruning</strong> skips moves because a heuristic judges them unpromising. Unlike alpha-beta’s bound test, it can change the minimax answer.</p>
 </div>
 <aside class="notes">
-<p>If depth 1 chooses A, depth 2 chooses B, and depth 3 is interrupted, use B from the completed depth-2 search. A partial deeper search has not compared every relevant root alternative. An implementation also needs a legal fallback if even the first iteration cannot finish. Quiescence addresses the horizon effect: a depth boundary may hide a forcing reply that reverses a seemingly good score. It usually extends a limited set of tactical moves and needs its own limits; it is not an instruction to search indefinitely until all play is calm. These are practical extensions, not extra HW2 requirements. Source: original Lecture 10 topics and AIMA adversarial search.</p>
+<p>If depth 1 chooses A, depth 2 chooses B, and depth 3 is interrupted, use B from the completed depth-2 search. A partial deeper search has not compared every relevant root alternative. An implementation also needs a legal fallback if even the first iteration cannot finish. Quiescence addresses the horizon effect: a depth boundary may hide a forcing reply that reverses a seemingly good score. It usually extends a limited set of tactical moves and needs its own limits; it is not an instruction to search indefinitely until all play is calm. The HW2 GUI already supplies iterative deepening; implementing quiescence search is not part of HW2. Source: original Lecture 10 topics and AIMA adversarial search.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -484,13 +484,13 @@ MAX already has <strong>4</strong> from A. At MIN node B, the first leaf gives <
 <li>A depth cutoff needs a <strong>heuristic estimate</strong> and a consistent score viewpoint.</li>
 </ul>
 <div class="takeaway">
-<p>For <strong>HW2</strong>, compare minimax and alpha-beta at the same depth. Keep the input board unchanged, and distinguish a <strong>forced pass</strong> from game over.</p>
+<p>For <strong>HW2</strong>, use the <strong>PySide6 Reversi GUI</strong> to run all <strong>16 AI match types</strong>, including self-play.</p>
 </div>
 <p><strong>Demo:</strong> <a href="../code_and_homework/alpha_beta.html" target="_blank" rel="noopener">Alpha-beta notebook</a><br>
 <strong>Assignment:</strong> <a href="../homeworks/hw2.html" target="_blank" rel="noopener">Homework 2: Reversi Agents</a></p>
 <p><a class="asset-credit-link" href="../asset_credits.html#lec10" target="_blank" rel="noopener">Asset credits</a></p>
 <aside class="notes">
-<p>The notebook’s smaller example has MAX root A, MIN children B and C, leaves D=3,E=5,F=2,G=9. Expected call order is A,B,D,E,C,F, skipping G, and the returned root score is 3. That notebook uses different node names from the slide example. For HW2, Reversi is an 8 by 8 disc-flipping game. A legal placement brackets and flips opponent discs. One player with no legal move must pass; the game ends only when neither can move. Open the existing assignment page for the rules, implementation contract, and tournament requirements. The root player stays the maximizing viewpoint throughout recursion. A useful comparison records identical root values and the number of evaluated nodes, not only wall-clock time.</p>
+<p>The notebook’s smaller example has MAX root A, MIN children B and C, leaves D=3,E=5,F=2,G=9. Expected call order is A,B,D,E,C,F, skipping G, and the returned root score is 3. That notebook uses different node names from the slide example. For HW2, Reversi is an 8 by 8 disc-flipping game. A legal placement brackets and flips opponent discs. One player with no legal move must pass; the game ends only when neither can move. Open the assignment page for the implementation and submission requirements. Play all 16 ordered pairings of random, greedy, minimax, and alpha-beta in the PySide6 GUI. Multiple trials are suggested; each trial needs final black and white piece counts and a screenshot of the final board in hw2submission.pdf, followed by the ai.py code appendix. When checking the search algorithms, keep the input board unchanged and the root player as the maximizing viewpoint. Comparing minimax and alpha-beta at the same depth is useful for checking their agreement, but is not an additional reporting requirement.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
