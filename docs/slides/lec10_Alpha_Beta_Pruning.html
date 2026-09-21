@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec10_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,273 +164,344 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="alpha-beta-pruning" class="slide level2 section-slide">
-<h2>Alpha-Beta Pruning</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:58%;">
-<h3 id="same-minimax-answer-less-search">Same minimax answer, less search</h3>
-<p>Alpha-beta pruning avoids branches that cannot affect the final minimax decision.</p>
-<div class="takeaway">
-<p>It changes the amount of work, not the optimal move.</p>
-</div>
-</div><div class="column" style="width:34%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec10/pruning.png" class="cc0-icon"></p>
-<figcaption>Pruning illustration</figcaption>
-</figure>
-</div>
-</div></div>
-</section>
-<section id="why-minimax-is-expensive" class="slide level2">
-<h2>Why Minimax Is Expensive</h2>
-<ul>
-<li>Minimax explores the game tree.</li>
-<li>With branching factor <span class="math inline">b</span> and depth <span class="math inline">d</span>, the full tree can contain <span class="math inline">O(b^d)</span> nodes.</li>
-<li>For chess-like games, even a modest search depth can be too large.</li>
-</ul>
+<section id="same-minimax-value-less-search" class="slide level2 game-slide">
+<h2>Same Minimax Value, Less Search</h2>
+<p><strong>Pruning</strong> means skipping unexplored branches once we can prove they cannot improve the root’s decision.</p>
+<p><img data-src="imgs/drawio/lec9/minimax-example-2.png" class="game-tree-wide" alt="Lecture 9's tree: MAX chooses A with value 3 over B and C with value 2. The three MIN branches have nine terminal leaves in total."></p>
 <div class="question">
-<p>Can we get the minimax decision without evaluating every node?</p>
+<p>Minimax checked all <strong>9 leaves</strong>. Can we establish the same root value, <strong>3</strong>, with less work?</p>
 </div>
+<aside class="notes">
+<p>Recall that MAX seeks the highest score and MIN the lowest, always using MAX’s viewpoint. This is exactly the example from Lecture 9, not a new game. Alpha-beta pruning preserves the minimax root value for the same tree and leaf evaluations. Equally optimal root moves can differ when move ordering or tie-breaking changes. Source: AIMA adversarial search chapter and the original Lecture 10 Beamer source.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="pruning-intuition" class="slide level2">
-<h2>Pruning Intuition</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="maxs-view">Max’s View</h3>
-<p>If Max already has a move worth <span class="math inline">v</span>, Max will not choose a branch that can only become worse than <span class="math inline">v</span>.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="mins-view">Min’s View</h3>
-<p>If Min already has a move worth <span class="math inline">w</span>, Min will not allow a branch that can only become better for Max.</p>
+<section id="ab-trace" class="slide level2 game-slide search-trace game-trace ab-trace">
+<h2>A Branch We Can Stop Searching</h2>
+<p class="trace-intro">
+Search <strong>depth first, left to right</strong>. Leaf numbers are terminal scores, measured from MAX’s viewpoint.
+</p>
+<div class="trace-tree-frames" role="img" aria-label="Alpha-beta trace: A establishes 3. B's first leaf gives 2, so its two remaining leaves are skipped. C evaluates 14, 5, and 2. The root chooses A with value 3 after seven leaf evaluations.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec10/trace-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec10/trace-1.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec10/trace-2.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="3" src="imgs/drawio/lec10/trace-3.png" alt="" aria-hidden="true">
+</div>
+<div class="ab-steps">
+<div class="fragment" data-fragment-index="0">
+<p><strong>At A:</strong> <span class="math inline">\min(3,12,8)=3</span>. MAX already has an option worth <strong>3</strong>.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>At B:</strong> seeing <strong>2</strong> proves <span class="math inline">B\le2</span>. Skip its remaining leaves: MAX can choose A.</p>
+</div>
+<div class="takeaway fragment" data-fragment-index="2">
+<p><strong>At C:</strong> check 14, 5, then 2. Root value <strong>3</strong>, move <strong>A</strong>, only <strong>7 of 9 leaves</strong> evaluated.</p>
+</div>
+</div>
+<aside class="notes">
+<p>Before revealing each step, ask which player controls the node. After inspecting B’s first leaf, its eventual minimum can only stay at 2 or decrease. Therefore it cannot beat A’s exact value 3. Only the unvisited children of B are pruned; C must still be searched. At C, neither 14 nor 5 is low enough to stop, and the final 2 arrives after all its leaves have been examined. Crosses replace unevaluated leaf values. We know only B &lt;= 2 from this search, even though the fully specified example’s true B value is 2. The returned bound is sufficient to reject B. Source: AIMA minimax example, extended with an alpha-beta trace.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="alpha-and-beta-options-already-available" class="slide level2 game-slide">
+<h2>Alpha and Beta: Options Already Available</h2>
+<ul>
+<li><strong><span class="math inline">\alpha</span> (alpha):</strong> MAX’s best lower bound so far along the search path.</li>
+<li><strong><span class="math inline">\beta</span> (beta):</strong> MIN’s best upper bound so far along the search path.</li>
+<li>Start at the root with <span class="math inline">\alpha=-\infty</span>, <span class="math inline">\beta=+\infty</span>. Pass the current bounds to each child.</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:53%;">
+<p><img data-src="imgs/drawio/lec10/trace-2.png" class="game-reference" alt="MAX can choose A for 3. MIN at B has found 2, so B is at most 2 and the remaining B leaves are skipped."></p>
+</div><div class="column" style="width:44%;">
+<p>At <strong>B</strong>, MAX already has <strong>3</strong> elsewhere, so <span class="math inline">\alpha=3</span>.</p>
+<p>MIN finds a reply worth <strong>2</strong>, lowering <span class="math inline">\beta</span> to <strong>2</strong>.</p>
+<p><strong>Prune when <span class="math inline">\alpha\ge\beta</span>.</strong></p>
 </div></div>
 <div class="takeaway">
-<p>Once a branch cannot change the ancestor’s decision, stop searching it.</p>
+<p>A cutoff can return a <strong>bound</strong>, not an exact subtree value. Here, knowing <span class="math inline">B\le2</span> is enough.</p>
 </div>
+<aside class="notes">
+<p>Alpha and beta describe alternatives on the active path, not the global largest and smallest leaves. At a MAX node the current best child raises alpha. At a MIN node the current best child lowers beta. The bounds are passed downward by value; they are not reset at every node. Alpha can only increase and beta can only decrease during one call. If the interval closes, an ancestor already has an option at least as good, so remaining siblings cannot improve its decision. Equality also permits pruning when seeking one optimal root action. On a cutoff, a MIN return is an upper bound and a MAX return is a lower bound on that subtree’s true minimax value. Only the full-window root result is necessarily exact. Source: AIMA alpha-beta algorithm.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="example-of-pruning" class="slide level2">
-<h2>Example of Pruning</h2>
-
-<img data-src="imgs/lec10/ab_tree.png" class="cc0-figure r-stretch quarto-figure-center"><p class="caption">Alpha-beta pruning tree</p><div class="takeaway">
-<p>The right Min branch can be pruned once it produces a value lower than Max’s already available option.</p>
+<section id="ab-max-cutoff" class="slide level2 game-slide search-trace game-trace">
+<h2>A Cutoff at a MAX Node</h2>
+<p class="trace-intro">
+Now the root is <strong>MIN</strong>. It can already choose A for <strong>5</strong>. At B, MAX discovers a child worth <strong>8</strong>.
+</p>
+<div class="trace-tree-frames" role="img" aria-label="MIN root has a completed option A worth 5. MAX node B finds 8, making B at least 8, so its remaining child is skipped. MIN keeps A and the root value is 5.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec10/max-cutoff-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec10/max-cutoff-1.png" alt="" aria-hidden="true">
 </div>
+<div class="question">
+<p>Could B’s remaining child make MAX’s choice smaller than 5?</p>
+</div>
+<div class="takeaway fragment" data-fragment-index="0">
+<p>No.&nbsp;<span class="math inline">B\ge8</span>, but MIN can keep <strong>5</strong>. At B, <span class="math inline">\alpha=8\ge\beta=5</span>, so skip the remaining child.</p>
+</div>
+<aside class="notes">
+<p>Emphasize the swapped root role. A is a MAX node with leaves 1 and 5, so its exact value is 5. That completed option provides the inherited beta bound for B. No matter what B’s unseen child contains, MAX at B can keep at least 8. MIN above will avoid it. This is the symmetric counterpart of the earlier MIN-node cutoff. All utilities still use MAX’s viewpoint. Original course example.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="alpha-and-beta" class="slide level2">
-<h2>Alpha and Beta</h2>
+<section id="alpha-beta-pseudocode-max" class="slide level2 game-slide game-pseudocode">
+<h2>Alpha-Beta Pseudocode: MAX</h2>
+<p><code>AB</code> searches state <code>s</code>; <code>a</code> is a legal action. Start with <code>AB(root, -infinity, +infinity)</code>. This is the <strong>MAX case</strong>.</p>
+<div class="pseudo-code" aria-label="Alpha-beta recursion, MAX-to-move case">
+  <div class="pseudo-line"><span class="pseudo-fn">AB</span>(<span class="pseudo-var">s</span>, <span class="pseudo-var">alpha</span>, <span class="pseudo-var">beta</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">if</span> <span class="pseudo-fn">TERMINAL</span>(<span class="pseudo-var">s</span>): <span class="pseudo-kw">return</span> <span class="pseudo-fn">UTILITY</span>(<span class="pseudo-var">s</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">if</span> <span class="pseudo-fn">PLAYER</span>(<span class="pseudo-var">s</span>) == <span class="pseudo-lit">MAX</span>:</div>
+  <div class="pseudo-line indent-2"><span class="pseudo-var">v</span> &lt;- <span class="pseudo-lit">-infinity</span></div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="0"><span class="pseudo-kw">for</span> <span class="pseudo-var">a</span> <span class="pseudo-kw">in</span> <span class="pseudo-fn">ACTIONS</span>(<span class="pseudo-var">s</span>):</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="0"><span class="pseudo-var">child</span> &lt;- <span class="pseudo-fn">RESULT</span>(<span class="pseudo-var">s</span>, <span class="pseudo-var">a</span>)</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="0"><span class="pseudo-var">v</span> &lt;- <span class="pseudo-fn">max</span>(<span class="pseudo-var">v</span>, <span class="pseudo-fn">AB</span>(<span class="pseudo-var">child</span>, <span class="pseudo-var">alpha</span>, <span class="pseudo-var">beta</span>))</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="1"><span class="pseudo-var">alpha</span> &lt;- <span class="pseudo-fn">max</span>(<span class="pseudo-var">alpha</span>, <span class="pseudo-var">v</span>)</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="2"><span class="pseudo-kw">if</span> <span class="pseudo-var">alpha</span> &gt;= <span class="pseudo-var">beta</span>: <span class="pseudo-kw">break</span></div>
+  <div class="pseudo-line indent-2"><span class="pseudo-kw">return</span> <span class="pseudo-var">v</span></div>
+</div>
+<div class="takeaway fragment" data-fragment-index="2">
+<p>MAX raises <strong>alpha</strong>. <code>break</code> skips the remaining actions <strong>at this node</strong>, then returns to the parent.</p>
+</div>
+<aside class="notes">
+<p>This is the MAX case of the same AB function whose MIN case follows. TERMINAL asks whether the game is finished, UTILITY gives the terminal score, PLAYER gives the side to move, ACTIONS lists legal actions, and RESULT produces the successor state including its player. The state carries the turn, so no separate Boolean flag is needed. The local variable v is the best returned child score so far. Each child receives the current bounds. Values are passed by value, not through shared global variables. At the root, additionally retain the action when a child strictly improves the best score, as in Lecture 9. This slide searches to terminal states; a later slide adds a depth cutoff. Source: AIMA algorithm, rewritten in the notation of Lecture 9.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="alpha-beta-pseudocode-min" class="slide level2 game-slide game-pseudocode">
+<h2>Alpha-Beta Pseudocode: MIN</h2>
+<p>The <strong>MIN case of the same function</strong>. <code>RESULT(s, a)</code> is the state reached by taking action <code>a</code> in state <code>s</code>.</p>
+<div class="pseudo-code" aria-label="Alpha-beta recursion, MIN-to-move case">
+  <div class="pseudo-line"><span class="pseudo-fn">AB</span>(<span class="pseudo-var">s</span>, <span class="pseudo-var">alpha</span>, <span class="pseudo-var">beta</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">if</span> <span class="pseudo-fn">TERMINAL</span>(<span class="pseudo-var">s</span>): <span class="pseudo-kw">return</span> <span class="pseudo-fn">UTILITY</span>(<span class="pseudo-var">s</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">if</span> <span class="pseudo-fn">PLAYER</span>(<span class="pseudo-var">s</span>) == <span class="pseudo-lit">MIN</span>:</div>
+  <div class="pseudo-line indent-2"><span class="pseudo-var">v</span> &lt;- <span class="pseudo-lit">+infinity</span></div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="0"><span class="pseudo-kw">for</span> <span class="pseudo-var">a</span> <span class="pseudo-kw">in</span> <span class="pseudo-fn">ACTIONS</span>(<span class="pseudo-var">s</span>):</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="0"><span class="pseudo-var">child</span> &lt;- <span class="pseudo-fn">RESULT</span>(<span class="pseudo-var">s</span>, <span class="pseudo-var">a</span>)</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="0"><span class="pseudo-var">v</span> &lt;- <span class="pseudo-fn">min</span>(<span class="pseudo-var">v</span>, <span class="pseudo-fn">AB</span>(<span class="pseudo-var">child</span>, <span class="pseudo-var">alpha</span>, <span class="pseudo-var">beta</span>))</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="1"><span class="pseudo-var">beta</span> &lt;- <span class="pseudo-fn">min</span>(<span class="pseudo-var">beta</span>, <span class="pseudo-var">v</span>)</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="2"><span class="pseudo-kw">if</span> <span class="pseudo-var">alpha</span> &gt;= <span class="pseudo-var">beta</span>: <span class="pseudo-kw">break</span></div>
+  <div class="pseudo-line indent-2"><span class="pseudo-kw">return</span> <span class="pseudo-var">v</span></div>
+</div>
+<div class="takeaway fragment" data-fragment-index="2">
+<p>MIN lowers <strong>beta</strong>. Both branches use the same stopping test: <strong><span class="math inline">\alpha\ge\beta</span></strong>.</p>
+</div>
+<aside class="notes">
+<p>Compare the two cases: infinity, min/max, and the updated bound change; recursion and the stopping test stay the same. A cutoff return can be a bound rather than an exact value, which the calling algorithm handles through its own bounds. A nonterminal position must have a successor, including a legal pass where the rules require one. In HW2, neither player having a legal move is terminal; one player having no move is a pass. Keep the score from a fixed root-player viewpoint rather than switching perspective with every recursive call.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ab-practice" class="slide level2 game-slide search-trace game-trace">
+<h2>Quick Check: When Can We Stop?</h2>
+<p class="trace-intro">
+MAX already has <strong>4</strong> from A. At MIN node B, the first leaf gives <strong>6</strong>. Can we stop? What if the next leaf gives <strong>3</strong>?
+</p>
+<div class="trace-tree-frames" role="img" aria-label="Practice tree: MAX can choose A for 4. MIN node B first sees 6, then 3, with one remaining leaf 9. After 6 keep searching; after 3 skip the last leaf and keep root move A.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec10/practice-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec10/practice-1.png" alt="" aria-hidden="true">
+</div>
+<div class="takeaway fragment" data-fragment-index="0">
+<p>After <strong>6</strong>, continue: <span class="math inline">4&lt;6</span>. After <strong>3</strong>, prune: <span class="math inline">\alpha=4\ge\beta=3</span>. MAX keeps <strong>A</strong>, worth <strong>4</strong>.</p>
+</div>
+<aside class="notes">
+<p>The values printed at untouched leaves are given problem data, not evaluations already performed. Ask for the comparison before revealing the answer. If the second leaf were exactly 4, equality would also allow pruning. If it were 5, we would still need the final leaf. Changing the skipped leaf to any number cannot make B exceed 3. The exact value of B could decrease further, but MAX’s root choice stays A. Original course exercise.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="move-ordering-changes-the-work" class="slide level2 game-slide">
+<h2>Move Ordering Changes the Work</h2>
+<p><strong>Move ordering</strong> means trying promising moves first: high scores at MAX, low scores at MIN.</p>
+<div class="columns">
+<div class="column" style="width:56%;">
+<p><img data-src="imgs/drawio/lec10/ordered.png" class="game-reference" alt="With A still searched first, B's first reply is 2 and C's replies are reordered to try 2 first. Both B and C prune two leaves. Only five of nine leaves are evaluated, and root move A still has value 3."></p>
+</div><div class="column" style="width:41%;">
+<p>At C, try <strong>2 before 14 and 5</strong>.</p>
 <table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Symbol</th>
-<th>Meaning</th>
+<th>Search</th>
+<th style="text-align: right;">Leaves checked</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><span class="math inline">\alpha</span></td>
-<td>Best value Max can guarantee so far along the current path</td>
+<td>Plain minimax</td>
+<td style="text-align: right;">9</td>
 </tr>
 <tr class="even">
-<td><span class="math inline">\beta</span></td>
-<td>Best value Min can guarantee so far along the current path</td>
+<td>Original order</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr class="odd">
+<td>Better reply order</td>
+<td style="text-align: right;"><strong>5</strong></td>
 </tr>
 </tbody>
 </table>
-<div class="definition">
-<p>Prune when <span class="math inline">\alpha \ge \beta</span>.</p>
-</div>
-</section>
-<section id="step-by-step" class="slide level2 scrollable">
-<h2>Step-by-Step</h2>
-<ol type="1">
-<li>Initialize <span class="math inline">\alpha = -\infty</span> and <span class="math inline">\beta = +\infty</span>.</li>
-<li>Traverse the game tree depth first.</li>
-<li>At Max nodes, update <span class="math inline">\alpha = \max(\alpha, \text{current value})</span>.</li>
-<li>At Min nodes, update <span class="math inline">\beta = \min(\beta, \text{current value})</span>.</li>
-<li>Stop exploring a branch when <span class="math inline">\alpha \ge \beta</span>.</li>
-<li>Continue until every relevant branch is evaluated or pruned.</li>
-</ol>
-</section>
-<section id="alpha-beta-in-short" class="slide level2">
-<h2>Alpha-Beta in Short</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:48%;">
-<h3 id="at-max-nodes">At Max Nodes</h3>
-<ul>
-<li>Max wants high values.</li>
-<li>If a child value reaches or exceeds <span class="math inline">\beta</span>, Min will avoid this branch.</li>
-<li>Stop searching the remaining children.</li>
-</ul>
-</div><div class="column" style="width:48%;">
-<h3 id="at-min-nodes">At Min Nodes</h3>
-<ul>
-<li>Min wants low values.</li>
-<li>If a child value reaches or falls below <span class="math inline">\alpha</span>, Max will avoid this branch.</li>
-<li>Stop searching the remaining children.</li>
-</ul>
 </div></div>
-</section>
-<section id="alpha-beta-pseudocode-max-branch" class="slide level2 compact">
-<h2>Alpha-Beta Pseudocode: Max Branch</h2>
-<div class="pseudo-code" role="img" aria-label="Animated pseudocode for alpha-beta pruning">
-<div class="pseudo-line fragment" data-fragment-index="1">
-<span class="pseudo-fn">AlphaBeta</span>(<span class="pseudo-var">node</span>, <span class="pseudo-var">depth</span>, <span class="pseudo-var">alpha</span>, <span class="pseudo-var">beta</span>, <span class="pseudo-var">maximizingPlayer</span>):
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="2">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">depth</span> <span class="pseudo-op">==</span> <span class="pseudo-num">0</span> <span class="pseudo-kw">or</span> <span class="pseudo-var">node</span> <span class="pseudo-kw">is</span> terminal:
-</div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="2">
-<span class="pseudo-kw">return</span> <span class="pseudo-fn">utility</span>(<span class="pseudo-var">node</span>)
-</div>
-<div class="pseudo-line">
-&nbsp;
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="3">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">maximizingPlayer</span>:
-</div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="3">
-<span class="pseudo-var">value</span> <span class="pseudo-op">=</span> <span class="pseudo-op">-</span><span class="pseudo-num">infinity</span>
-</div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="4">
-<span class="pseudo-kw">for</span> each <span class="pseudo-var">child</span> <span class="pseudo-kw">in</span> <span class="pseudo-var">node.children</span>:
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="4">
-<span class="pseudo-var">value</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">max</span>(<span class="pseudo-var">value</span>, <span class="pseudo-fn">AlphaBeta</span>(<span class="pseudo-var">child</span>, <span class="pseudo-var">depth</span> <span class="pseudo-op">-</span> <span class="pseudo-num">1</span>, <span class="pseudo-var">alpha</span>, <span class="pseudo-var">beta</span>, <span class="pseudo-lit">false</span>))
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="5">
-<span class="pseudo-var">alpha</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">max</span>(<span class="pseudo-var">alpha</span>, <span class="pseudo-var">value</span>)
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="6">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">alpha</span> <span class="pseudo-op">&gt;=</span> <span class="pseudo-var">beta</span>:
-</div>
-<div class="pseudo-line indent-4 fragment" data-fragment-index="6">
-<span class="pseudo-kw">break</span> <span class="pseudo-comment"># prune branch</span>
-</div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="7">
-<span class="pseudo-kw">return</span> <span class="pseudo-var">value</span>
-</div>
-</div>
+<p>With branching factor <span class="math inline">b</span> and depth <span class="math inline">d</span>, worst-case time is still <strong><span class="math inline">O(b^d)</span></strong>. Ideal ordering can reduce it to <strong><span class="math inline">O(b^{d/2})</span></strong>.</p>
 <div class="takeaway">
-<p>At a Max node, update <span class="math inline">\alpha</span>; prune as soon as <span class="math inline">\alpha \ge \beta</span>.</p>
+<p>Ordering changes which move we try <strong>first</strong>. Alpha-beta decides which remaining moves can safely be skipped.</p>
 </div>
+<aside class="notes">
+<p>Keep root order A, B, C and A’s replies unchanged. B still visits 2 first. Reorder C’s original replies 14,5,2 to 2,14,5, so C’s first reply closes the window. The visited leaf count is 3+1+1=5. We do not know exact child values in advance in real games; heuristics or earlier search results suggest an ordering. Best-case complexity describes balanced trees with ideal ordering, not a guaranteed practical runtime. Worst ordering can give little or no pruning. The root value remains 3; ties may change which equally optimal move is selected. Source: AIMA alpha-beta analysis.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="alpha-beta-pseudocode-min-branch" class="slide level2 compact">
-<h2>Alpha-Beta Pseudocode: Min Branch</h2>
-<div class="pseudo-code" role="img" aria-label="Animated pseudocode for the minimizing branch of alpha-beta pruning">
-<div class="pseudo-line fragment" data-fragment-index="1">
-<span class="pseudo-fn">AlphaBeta</span>(<span class="pseudo-var">node</span>, <span class="pseudo-var">depth</span>, <span class="pseudo-var">alpha</span>, <span class="pseudo-var">beta</span>, <span class="pseudo-var">maximizingPlayer</span>):
+<section id="a-depth-limit-changes-the-leaf-scores" class="slide level2 game-slide game-pseudocode">
+<h2>A Depth Limit Changes the Leaf Scores</h2>
+<p>Let <strong><span class="math inline">d</span></strong> count the remaining <strong>plies</strong>, where one ply is one player’s move. At a depth limit, the game may still be unfinished.</p>
+<div class="pseudo-code" aria-label="Stopping conditions for depth-limited alpha-beta search">
+  <div class="pseudo-line"><span class="pseudo-fn">AB</span>(<span class="pseudo-var">s</span>, <span class="pseudo-var">d</span>, <span class="pseudo-var">alpha</span>, <span class="pseudo-var">beta</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">if</span> <span class="pseudo-fn">TERMINAL</span>(<span class="pseudo-var">s</span>): <span class="pseudo-kw">return</span> <span class="pseudo-fn">UTILITY</span>(<span class="pseudo-var">s</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">if</span> <span class="pseudo-var">d</span> == <span class="pseudo-num">0</span>: <span class="pseudo-kw">return</span> <span class="pseudo-fn">EVAL</span>(<span class="pseudo-var">s</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-comment"># Otherwise use the same MAX / MIN branches.</span></div>
+  <div class="pseudo-line indent-1"><span class="pseudo-comment"># Each move calls AB(child, d - 1, alpha, beta).</span></div>
 </div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="2">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">depth</span> <span class="pseudo-op">==</span> <span class="pseudo-num">0</span> <span class="pseudo-kw">or</span> <span class="pseudo-var">node</span> <span class="pseudo-kw">is</span> terminal:
-</div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="2">
-<span class="pseudo-kw">return</span> <span class="pseudo-fn">utility</span>(<span class="pseudo-var">node</span>)
-</div>
-<div class="pseudo-line">
-&nbsp;
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="3">
-<span class="pseudo-kw">else</span>: <span class="pseudo-comment"># minimizing player</span>
-</div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="3">
-<span class="pseudo-var">value</span> <span class="pseudo-op">=</span> <span class="pseudo-op">+</span><span class="pseudo-num">infinity</span>
-</div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="4">
-<span class="pseudo-kw">for</span> each <span class="pseudo-var">child</span> <span class="pseudo-kw">in</span> <span class="pseudo-var">node.children</span>:
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="4">
-<span class="pseudo-var">value</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">min</span>(<span class="pseudo-var">value</span>, <span class="pseudo-fn">AlphaBeta</span>(<span class="pseudo-var">child</span>, <span class="pseudo-var">depth</span> <span class="pseudo-op">-</span> <span class="pseudo-num">1</span>, <span class="pseudo-var">alpha</span>, <span class="pseudo-var">beta</span>, <span class="pseudo-lit">true</span>))
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="5">
-<span class="pseudo-var">beta</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">min</span>(<span class="pseudo-var">beta</span>, <span class="pseudo-var">value</span>)
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="6">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">alpha</span> <span class="pseudo-op">&gt;=</span> <span class="pseudo-var">beta</span>:
-</div>
-<div class="pseudo-line indent-4 fragment" data-fragment-index="6">
-<span class="pseudo-kw">break</span> <span class="pseudo-comment"># prune branch</span>
-</div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="7">
-<span class="pseudo-kw">return</span> <span class="pseudo-var">value</span>
-</div>
-</div>
-<div class="takeaway">
-<p>At a Min node, update <span class="math inline">\beta</span>; the same prune test <span class="math inline">\alpha \ge \beta</span> applies.</p>
-</div>
-</section>
-<section id="imperfect-decision-making" class="slide level2">
-<h2>Imperfect Decision Making</h2>
-<p>Real games are often too large to search to terminal states.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Technique</th>
-<th>Idea</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Cutoff search</td>
-<td>Stop at a fixed depth or time limit</td>
-</tr>
-<tr class="even">
-<td>Evaluation function</td>
-<td>Estimate utility of a non-terminal state</td>
-</tr>
-<tr class="odd">
-<td>Heuristics</td>
-<td>Use domain knowledge to evaluate promising states</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="forward-pruning" class="slide level2">
-<h2>Forward Pruning</h2>
 <ul>
-<li>Expand only the most promising moves instead of all legal moves.</li>
-<li>This can reduce the effective branching factor.</li>
-<li>It is risky: a pruned move might have been important.</li>
+<li><strong><code>UTILITY(s)</code></strong>: exact score of a finished game.</li>
+<li><strong><code>EVAL(s)</code></strong>: an estimate for an unfinished position, using the same player’s viewpoint.</li>
 </ul>
 <div class="takeaway">
-<p>Alpha-beta pruning is safe; forward pruning is a heuristic compromise.</p>
+<p>With identical cutoffs and scores, alpha-beta matches <strong>depth-limited minimax</strong>. The heuristic estimate may still miss the best move in the full game.</p>
 </div>
+<aside class="notes">
+<p>Always check terminal before the depth cutoff. Alpha-beta is exact relative to the leaf scores supplied to it; it does not make inaccurate heuristic scores accurate. The demo notebook has explicitly supplied terminal leaves and no depth parameter. HW2 uses a function named utility for its board evaluation at both terminal and depth-limited states, so its name alone does not imply the position is terminal. For Reversi, follow the assignment’s consistent depth convention for completed moves and handle a forced pass explicitly. Source: AIMA imperfect decision making and the current Homework 2 specification.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="iterative-deepening" class="slide level2">
-<h2>Iterative Deepening</h2>
-<ul>
-<li>Search shallowly first, then increase the depth.</li>
-<li>Example: search 2 plies, then 4 plies, then 6 plies.</li>
-<li>Keep the best completed result.</li>
-<li>Do not trust an incomplete final search.</li>
-</ul>
-<div class="question">
-<p>Why is this useful when a game engine has a strict time limit?</p>
+<section id="time-limits-and-unstable-positions" class="slide level2 game-slide">
+<h2>Time Limits and Unstable Positions</h2>
+<h3 id="iterative-deepening">Iterative deepening</h3>
+<p>Search depths <strong>1, 2, 3, …</strong>. Keep the best move from the <strong>last completed search</strong> if time runs out. Its move ordering can help the next search.</p>
+<h3 id="quiescence-search">Quiescence search</h3>
+<p>“Quiescent” means <strong>quiet or stable</strong>. Near a cutoff, extend selected forcing moves, such as a capture and immediate recapture, before evaluating.</p>
+<div class="takeaway">
+<p><strong>Forward pruning</strong> skips moves because a heuristic judges them unpromising. Unlike alpha-beta’s bound test, it can change the minimax answer.</p>
 </div>
+<aside class="notes">
+<p>If depth 1 chooses A, depth 2 chooses B, and depth 3 is interrupted, use B from the completed depth-2 search. A partial deeper search has not compared every relevant root alternative. An implementation also needs a legal fallback if even the first iteration cannot finish. Quiescence addresses the horizon effect: a depth boundary may hide a forcing reply that reverses a seemingly good score. It usually extends a limited set of tactical moves and needs its own limits; it is not an instruction to search indefinitely until all play is calm. These are practical extensions, not extra HW2 requirements. Source: original Lecture 10 topics and AIMA adversarial search.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="move-ordering" class="slide level2">
-<h2>Move Ordering</h2>
+<section id="takeaways" class="slide level2 game-slide">
+<h2>Takeaways</h2>
 <ul>
-<li>Alpha-beta pruning works best when strong moves are searched early.</li>
-<li>Earlier extreme values make more branches eligible for pruning.</li>
-<li>In chess-style games, captures and checks are often considered early.</li>
+<li>Alpha-beta uses <strong>bounds</strong> to skip work while preserving the minimax root value.</li>
+<li><strong>MAX raises <span class="math inline">\alpha</span>; MIN lowers <span class="math inline">\beta</span>.</strong> Stop remaining siblings when <span class="math inline">\alpha\ge\beta</span>.</li>
+<li>Better move ordering can produce <strong>more pruning</strong>.</li>
+<li>A depth cutoff needs a <strong>heuristic estimate</strong> and a consistent score viewpoint.</li>
 </ul>
 <div class="takeaway">
-<p>Better move ordering does not change the answer, but it can dramatically change runtime.</p>
+<p>For <strong>HW2</strong>, compare minimax and alpha-beta at the same depth. Keep the input board unchanged, and distinguish a <strong>forced pass</strong> from game over.</p>
 </div>
-</section>
-<section id="quiescence" class="slide level2">
-<h2>Quiescence</h2>
-<ul>
-<li>A fixed depth cutoff can stop at an unstable position.</li>
-<li>Quiescence search continues until the position is relatively calm.</li>
-<li>Example: avoid cutting off immediately before or after a major capture.</li>
-</ul>
-<div class="takeaway">
-<p>Cut off when the evaluation is meaningful, not merely when the depth counter says stop.</p>
-</div>
+<p><strong>Demo:</strong> <a href="../code_and_homework/alpha_beta.html" target="_blank" rel="noopener">Alpha-beta notebook</a><br>
+<strong>Assignment:</strong> <a href="../homeworks/hw2.html" target="_blank" rel="noopener">Homework 2: Reversi Agents</a></p>
 <p><a class="asset-credit-link" href="../asset_credits.html#lec10" target="_blank" rel="noopener">Asset credits</a></p>
+<aside class="notes">
+<p>The notebook’s smaller example has MAX root A, MIN children B and C, leaves D=3,E=5,F=2,G=9. Expected call order is A,B,D,E,C,F, skipping G, and the returned root score is 3. That notebook uses different node names from the slide example. For HW2, Reversi is an 8 by 8 disc-flipping game. A legal placement brackets and flips opponent discs. One player with no legal move must pass; the game ends only when neither can move. Open the existing assignment page for the rules, implementation contract, and tournament requirements. The root player stays the maximizing viewpoint throughout recursion. A useful comparison records identical root values and the number of evaluated nodes, not only wall-clock time.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 </section>

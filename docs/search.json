@@ -1243,7 +1243,7 @@
     "href": "asset_credits.html#lec8",
     "title": "Visual Asset Credits",
     "section": "Lecture 8: Search Review",
-    "text": "Lecture 8: Search Review\nReuses ../lec1/tree_roots_openclipart.svg from OpenClipart.\nThe weighted search graph, spatial partitions, and KD-tree pruning example are original course illustrations by Peizhong Ju, assisted by Codex. Editable draw.io sources and PNG exports are stored under slides/imgs/drawio/lec8/. The growth-rate chart plots actual mathematical functions using NumPy and Matplotlib; its source is slides/imgs/lec8/plot_growth_rates.py, with a vector export for the slides.\nSearch concepts follow AIMA Chapter 3 and the UC Berkeley CS 188 search notes. The KD-tree explanation also references Carl Kingsford’s KD-tree lecture and the SciPy KDTree documentation. The worked graphs and exercises are original course examples."
+    "text": "Lecture 8: Search Review\nThe weighted search graph and spatial partitions are original course illustrations by Peizhong Ju, assisted by Codex. Editable draw.io sources and PNG exports are stored under slides/imgs/drawio/lec8/. The Big-O upper-bound illustration and growth-rate chart plot actual mathematical functions using NumPy and Matplotlib. Their sources are slides/imgs/lec8/plot_big_o_bound.py and slides/imgs/lec8/plot_growth_rates.py, with vector exports for the slides.\nSearch concepts follow AIMA Chapter 3 and the UC Berkeley CS 188 search notes. The brief KD-tree introduction also references Carl Kingsford’s KD-tree lecture. The worked graphs and exercises are original course examples."
   },
   {
     "objectID": "asset_credits.html#lec9",
@@ -1257,7 +1257,7 @@
     "href": "asset_credits.html#lec10",
     "title": "Visual Asset Credits",
     "section": "Lecture 10: Alpha-Beta Pruning",
-    "text": "Lecture 10: Alpha-Beta Pruning\nCarried-over assets needing source verification: TicTacToe.png, ab_tree.png, max_min_tree.png, min_max_tic_tac_toe.png, pruning.png."
+    "text": "Lecture 10: Alpha-Beta Pruning\nThe lecture uses editable draw.io diagrams in slides/imgs/drawio/lec10/alpha-beta.drawio, with PNG exports for the pruning animation, the symmetric MAX-node cutoff, move ordering, and the practice question. These diagrams follow the visual style of Lecture 9 and keep the original AIMA example’s leaf groups (3/12/8, 2/4/6, and 14/5/2). The MAX-node cutoff and practice tree are original course examples.\nThe opening slide reuses the completed minimax diagram from Lecture 9. The older raster images from the Spring 2025 project are archived and no longer appear in this deck. The lecture links to the existing alpha-beta notebook and Homework 2."
   },
   {
     "objectID": "asset_credits.html#lec11",
@@ -1587,104 +1587,6 @@
     "title": "Lecture Viewer",
     "section": "",
     "text": "Lecture Slides\n    Open printable slides\n  \n  \n    \n      Deck\n      \n    \n    \n      \n    \n  \n  Unable to load this lecture deck."
-  },
-  {
-    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#alpha-beta-pruning",
-    "href": "slides/lec10_Alpha_Beta_Pruning.html#alpha-beta-pruning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Alpha-Beta Pruning",
-    "text": "Alpha-Beta Pruning\n\n\nSame minimax answer, less search\nAlpha-beta pruning avoids branches that cannot affect the final minimax decision.\n\nIt changes the amount of work, not the optimal move.\n\n\n\n\n\nPruning illustration"
-  },
-  {
-    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#why-minimax-is-expensive",
-    "href": "slides/lec10_Alpha_Beta_Pruning.html#why-minimax-is-expensive",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why Minimax Is Expensive",
-    "text": "Why Minimax Is Expensive\n\nMinimax explores the game tree.\nWith branching factor b and depth d, the full tree can contain O(b^d) nodes.\nFor chess-like games, even a modest search depth can be too large.\n\n\nCan we get the minimax decision without evaluating every node?"
-  },
-  {
-    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#pruning-intuition",
-    "href": "slides/lec10_Alpha_Beta_Pruning.html#pruning-intuition",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Pruning Intuition",
-    "text": "Pruning Intuition\n\n\nMax’s View\nIf Max already has a move worth v, Max will not choose a branch that can only become worse than v.\n\nMin’s View\nIf Min already has a move worth w, Min will not allow a branch that can only become better for Max.\n\n\nOnce a branch cannot change the ancestor’s decision, stop searching it."
-  },
-  {
-    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#example-of-pruning",
-    "href": "slides/lec10_Alpha_Beta_Pruning.html#example-of-pruning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Example of Pruning",
-    "text": "Example of Pruning\n\nAlpha-beta pruning tree\nThe right Min branch can be pruned once it produces a value lower than Max’s already available option."
-  },
-  {
-    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#alpha-and-beta",
-    "href": "slides/lec10_Alpha_Beta_Pruning.html#alpha-and-beta",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Alpha and Beta",
-    "text": "Alpha and Beta\n\n\n\n\n\n\n\nSymbol\nMeaning\n\n\n\n\n\\alpha\nBest value Max can guarantee so far along the current path\n\n\n\\beta\nBest value Min can guarantee so far along the current path\n\n\n\n\nPrune when \\alpha \\ge \\beta."
-  },
-  {
-    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#step-by-step",
-    "href": "slides/lec10_Alpha_Beta_Pruning.html#step-by-step",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Step-by-Step",
-    "text": "Step-by-Step\n\nInitialize \\alpha = -\\infty and \\beta = +\\infty.\nTraverse the game tree depth first.\nAt Max nodes, update \\alpha = \\max(\\alpha, \\text{current value}).\nAt Min nodes, update \\beta = \\min(\\beta, \\text{current value}).\nStop exploring a branch when \\alpha \\ge \\beta.\nContinue until every relevant branch is evaluated or pruned."
-  },
-  {
-    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#alpha-beta-in-short",
-    "href": "slides/lec10_Alpha_Beta_Pruning.html#alpha-beta-in-short",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Alpha-Beta in Short",
-    "text": "Alpha-Beta in Short\n\n\nAt Max Nodes\n\nMax wants high values.\nIf a child value reaches or exceeds \\beta, Min will avoid this branch.\nStop searching the remaining children.\n\n\nAt Min Nodes\n\nMin wants low values.\nIf a child value reaches or falls below \\alpha, Max will avoid this branch.\nStop searching the remaining children."
-  },
-  {
-    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#alpha-beta-pseudocode-max-branch",
-    "href": "slides/lec10_Alpha_Beta_Pruning.html#alpha-beta-pseudocode-max-branch",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Alpha-Beta Pseudocode: Max Branch",
-    "text": "Alpha-Beta Pseudocode: Max Branch\n\n\nAlphaBeta(node, depth, alpha, beta, maximizingPlayer):\n\n\nif depth == 0 or node is terminal:\n\n\nreturn utility(node)\n\n\n \n\n\nif maximizingPlayer:\n\n\nvalue = -infinity\n\n\nfor each child in node.children:\n\n\nvalue = max(value, AlphaBeta(child, depth - 1, alpha, beta, false))\n\n\nalpha = max(alpha, value)\n\n\nif alpha &gt;= beta:\n\n\nbreak # prune branch\n\n\nreturn value\n\n\n\nAt a Max node, update \\alpha; prune as soon as \\alpha \\ge \\beta."
-  },
-  {
-    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#alpha-beta-pseudocode-min-branch",
-    "href": "slides/lec10_Alpha_Beta_Pruning.html#alpha-beta-pseudocode-min-branch",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Alpha-Beta Pseudocode: Min Branch",
-    "text": "Alpha-Beta Pseudocode: Min Branch\n\n\nAlphaBeta(node, depth, alpha, beta, maximizingPlayer):\n\n\nif depth == 0 or node is terminal:\n\n\nreturn utility(node)\n\n\n \n\n\nelse: # minimizing player\n\n\nvalue = +infinity\n\n\nfor each child in node.children:\n\n\nvalue = min(value, AlphaBeta(child, depth - 1, alpha, beta, true))\n\n\nbeta = min(beta, value)\n\n\nif alpha &gt;= beta:\n\n\nbreak # prune branch\n\n\nreturn value\n\n\n\nAt a Min node, update \\beta; the same prune test \\alpha \\ge \\beta applies."
-  },
-  {
-    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#imperfect-decision-making",
-    "href": "slides/lec10_Alpha_Beta_Pruning.html#imperfect-decision-making",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Imperfect Decision Making",
-    "text": "Imperfect Decision Making\nReal games are often too large to search to terminal states.\n\n\n\nTechnique\nIdea\n\n\n\n\nCutoff search\nStop at a fixed depth or time limit\n\n\nEvaluation function\nEstimate utility of a non-terminal state\n\n\nHeuristics\nUse domain knowledge to evaluate promising states"
-  },
-  {
-    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#forward-pruning",
-    "href": "slides/lec10_Alpha_Beta_Pruning.html#forward-pruning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Forward Pruning",
-    "text": "Forward Pruning\n\nExpand only the most promising moves instead of all legal moves.\nThis can reduce the effective branching factor.\nIt is risky: a pruned move might have been important.\n\n\nAlpha-beta pruning is safe; forward pruning is a heuristic compromise."
-  },
-  {
-    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#iterative-deepening",
-    "href": "slides/lec10_Alpha_Beta_Pruning.html#iterative-deepening",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Iterative Deepening",
-    "text": "Iterative Deepening\n\nSearch shallowly first, then increase the depth.\nExample: search 2 plies, then 4 plies, then 6 plies.\nKeep the best completed result.\nDo not trust an incomplete final search.\n\n\nWhy is this useful when a game engine has a strict time limit?"
-  },
-  {
-    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#move-ordering",
-    "href": "slides/lec10_Alpha_Beta_Pruning.html#move-ordering",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Move Ordering",
-    "text": "Move Ordering\n\nAlpha-beta pruning works best when strong moves are searched early.\nEarlier extreme values make more branches eligible for pruning.\nIn chess-style games, captures and checks are often considered early.\n\n\nBetter move ordering does not change the answer, but it can dramatically change runtime."
-  },
-  {
-    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#quiescence",
-    "href": "slides/lec10_Alpha_Beta_Pruning.html#quiescence",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Quiescence",
-    "text": "Quiescence\n\nA fixed depth cutoff can stop at an unstable position.\nQuiescence search continues until the position is relatively calm.\nExample: avoid cutting off immediately before or after a major capture.\n\n\nCut off when the evaluation is meaningful, not merely when the depth counter says stop.\n\nAsset credits"
   },
   {
     "objectID": "slides/lec12_Genetic_Algorithm.html#genetic-algorithms",
@@ -8321,5 +8223,82 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Minimax: The Basic Idea",
     "text": "Minimax: The Basic Idea\nMinimax chooses the move with the best worst-case outcome, accounting for an opponent who tries to make our outcome as bad as possible.\nGive each outcome a utility, a numerical score from our viewpoint:\n\nMAX is our player, seeking the highest score.\nMIN is the opponent, seeking the lowest score for us.\n\nFor now, both players see the entire state, moves have no random effects, and every game eventually ends.\n\nFor each candidate move, consider the worst reply. Then choose the move whose worst outcome is best.\n\n\nMAX and MIN abbreviate maximizing and minimizing. We use one numerical utility measured from MAX’s viewpoint; MIN wants the opposite outcome. This is a zero-sum model. Seeing the entire state is called perfect information, and known move results without randomness are deterministic. The rule considers replies throughout the remaining game, not just the opponent’s next move. Exact recursive minimax here assumes a finite game tree with two alternating players. Games with dice, hidden information, or shared objectives require extensions. Source: AIMA adversarial search chapter."
+  },
+  {
+    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#same-minimax-value-less-search",
+    "href": "slides/lec10_Alpha_Beta_Pruning.html#same-minimax-value-less-search",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Same Minimax Value, Less Search",
+    "text": "Same Minimax Value, Less Search\nPruning means skipping unexplored branches once we can prove they cannot improve the root’s decision.\n\n\nMinimax checked all 9 leaves. Can we establish the same root value, 3, with less work?\n\n\nRecall that MAX seeks the highest score and MIN the lowest, always using MAX’s viewpoint. This is exactly the example from Lecture 9, not a new game. Alpha-beta pruning preserves the minimax root value for the same tree and leaf evaluations. Equally optimal root moves can differ when move ordering or tie-breaking changes. Source: AIMA adversarial search chapter and the original Lecture 10 Beamer source."
+  },
+  {
+    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#ab-trace",
+    "href": "slides/lec10_Alpha_Beta_Pruning.html#ab-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Branch We Can Stop Searching",
+    "text": "A Branch We Can Stop Searching\n\nSearch depth first, left to right. Leaf numbers are terminal scores, measured from MAX’s viewpoint.\n\n\n  \n  \n  \n  \n\n\n\nAt A: \\min(3,12,8)=3. MAX already has an option worth 3.\n\n\nAt B: seeing 2 proves B\\le2. Skip its remaining leaves: MAX can choose A.\n\n\nAt C: check 14, 5, then 2. Root value 3, move A, only 7 of 9 leaves evaluated.\n\n\n\nBefore revealing each step, ask which player controls the node. After inspecting B’s first leaf, its eventual minimum can only stay at 2 or decrease. Therefore it cannot beat A’s exact value 3. Only the unvisited children of B are pruned; C must still be searched. At C, neither 14 nor 5 is low enough to stop, and the final 2 arrives after all its leaves have been examined. Crosses replace unevaluated leaf values. We know only B &lt;= 2 from this search, even though the fully specified example’s true B value is 2. The returned bound is sufficient to reject B. Source: AIMA minimax example, extended with an alpha-beta trace."
+  },
+  {
+    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#alpha-and-beta-options-already-available",
+    "href": "slides/lec10_Alpha_Beta_Pruning.html#alpha-and-beta-options-already-available",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Alpha and Beta: Options Already Available",
+    "text": "Alpha and Beta: Options Already Available\n\n\\alpha (alpha): MAX’s best lower bound so far along the search path.\n\\beta (beta): MIN’s best upper bound so far along the search path.\nStart at the root with \\alpha=-\\infty, \\beta=+\\infty. Pass the current bounds to each child.\n\n\n\n\n\nAt B, MAX already has 3 elsewhere, so \\alpha=3.\nMIN finds a reply worth 2, lowering \\beta to 2.\nPrune when \\alpha\\ge\\beta.\n\n\nA cutoff can return a bound, not an exact subtree value. Here, knowing B\\le2 is enough.\n\n\nAlpha and beta describe alternatives on the active path, not the global largest and smallest leaves. At a MAX node the current best child raises alpha. At a MIN node the current best child lowers beta. The bounds are passed downward by value; they are not reset at every node. Alpha can only increase and beta can only decrease during one call. If the interval closes, an ancestor already has an option at least as good, so remaining siblings cannot improve its decision. Equality also permits pruning when seeking one optimal root action. On a cutoff, a MIN return is an upper bound and a MAX return is a lower bound on that subtree’s true minimax value. Only the full-window root result is necessarily exact. Source: AIMA alpha-beta algorithm."
+  },
+  {
+    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#ab-max-cutoff",
+    "href": "slides/lec10_Alpha_Beta_Pruning.html#ab-max-cutoff",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Cutoff at a MAX Node",
+    "text": "A Cutoff at a MAX Node\n\nNow the root is MIN. It can already choose A for 5. At B, MAX discovers a child worth 8.\n\n\n  \n  \n\n\nCould B’s remaining child make MAX’s choice smaller than 5?\n\n\nNo. B\\ge8, but MIN can keep 5. At B, \\alpha=8\\ge\\beta=5, so skip the remaining child.\n\n\nEmphasize the swapped root role. A is a MAX node with leaves 1 and 5, so its exact value is 5. That completed option provides the inherited beta bound for B. No matter what B’s unseen child contains, MAX at B can keep at least 8. MIN above will avoid it. This is the symmetric counterpart of the earlier MIN-node cutoff. All utilities still use MAX’s viewpoint. Original course example."
+  },
+  {
+    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#alpha-beta-pseudocode-max",
+    "href": "slides/lec10_Alpha_Beta_Pruning.html#alpha-beta-pseudocode-max",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Alpha-Beta Pseudocode: MAX",
+    "text": "Alpha-Beta Pseudocode: MAX\nAB searches state s; a is a legal action. Start with AB(root, -infinity, +infinity). This is the MAX case.\n\n  AB(s, alpha, beta)\n  if TERMINAL(s): return UTILITY(s)\n  if PLAYER(s) == MAX:\n  v &lt;- -infinity\n  for a in ACTIONS(s):\n  child &lt;- RESULT(s, a)\n  v &lt;- max(v, AB(child, alpha, beta))\n  alpha &lt;- max(alpha, v)\n  if alpha &gt;= beta: break\n  return v\n\n\nMAX raises alpha. break skips the remaining actions at this node, then returns to the parent.\n\n\nThis is the MAX case of the same AB function whose MIN case follows. TERMINAL asks whether the game is finished, UTILITY gives the terminal score, PLAYER gives the side to move, ACTIONS lists legal actions, and RESULT produces the successor state including its player. The state carries the turn, so no separate Boolean flag is needed. The local variable v is the best returned child score so far. Each child receives the current bounds. Values are passed by value, not through shared global variables. At the root, additionally retain the action when a child strictly improves the best score, as in Lecture 9. This slide searches to terminal states; a later slide adds a depth cutoff. Source: AIMA algorithm, rewritten in the notation of Lecture 9."
+  },
+  {
+    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#alpha-beta-pseudocode-min",
+    "href": "slides/lec10_Alpha_Beta_Pruning.html#alpha-beta-pseudocode-min",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Alpha-Beta Pseudocode: MIN",
+    "text": "Alpha-Beta Pseudocode: MIN\nThe MIN case of the same function. RESULT(s, a) is the state reached by taking action a in state s.\n\n  AB(s, alpha, beta)\n  if TERMINAL(s): return UTILITY(s)\n  if PLAYER(s) == MIN:\n  v &lt;- +infinity\n  for a in ACTIONS(s):\n  child &lt;- RESULT(s, a)\n  v &lt;- min(v, AB(child, alpha, beta))\n  beta &lt;- min(beta, v)\n  if alpha &gt;= beta: break\n  return v\n\n\nMIN lowers beta. Both branches use the same stopping test: \\alpha\\ge\\beta.\n\n\nCompare the two cases: infinity, min/max, and the updated bound change; recursion and the stopping test stay the same. A cutoff return can be a bound rather than an exact value, which the calling algorithm handles through its own bounds. A nonterminal position must have a successor, including a legal pass where the rules require one. In HW2, neither player having a legal move is terminal; one player having no move is a pass. Keep the score from a fixed root-player viewpoint rather than switching perspective with every recursive call."
+  },
+  {
+    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#ab-practice",
+    "href": "slides/lec10_Alpha_Beta_Pruning.html#ab-practice",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Quick Check: When Can We Stop?",
+    "text": "Quick Check: When Can We Stop?\n\nMAX already has 4 from A. At MIN node B, the first leaf gives 6. Can we stop? What if the next leaf gives 3?\n\n\n  \n  \n\n\nAfter 6, continue: 4&lt;6. After 3, prune: \\alpha=4\\ge\\beta=3. MAX keeps A, worth 4.\n\n\nThe values printed at untouched leaves are given problem data, not evaluations already performed. Ask for the comparison before revealing the answer. If the second leaf were exactly 4, equality would also allow pruning. If it were 5, we would still need the final leaf. Changing the skipped leaf to any number cannot make B exceed 3. The exact value of B could decrease further, but MAX’s root choice stays A. Original course exercise."
+  },
+  {
+    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#move-ordering-changes-the-work",
+    "href": "slides/lec10_Alpha_Beta_Pruning.html#move-ordering-changes-the-work",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Move Ordering Changes the Work",
+    "text": "Move Ordering Changes the Work\nMove ordering means trying promising moves first: high scores at MAX, low scores at MIN.\n\n\n\n\nAt C, try 2 before 14 and 5.\n\n\n\nSearch\nLeaves checked\n\n\n\n\nPlain minimax\n9\n\n\nOriginal order\n7\n\n\nBetter reply order\n5\n\n\n\n\nWith branching factor b and depth d, worst-case time is still O(b^d). Ideal ordering can reduce it to O(b^{d/2}).\n\nOrdering changes which move we try first. Alpha-beta decides which remaining moves can safely be skipped.\n\n\nKeep root order A, B, C and A’s replies unchanged. B still visits 2 first. Reorder C’s original replies 14,5,2 to 2,14,5, so C’s first reply closes the window. The visited leaf count is 3+1+1=5. We do not know exact child values in advance in real games; heuristics or earlier search results suggest an ordering. Best-case complexity describes balanced trees with ideal ordering, not a guaranteed practical runtime. Worst ordering can give little or no pruning. The root value remains 3; ties may change which equally optimal move is selected. Source: AIMA alpha-beta analysis."
+  },
+  {
+    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#a-depth-limit-changes-the-leaf-scores",
+    "href": "slides/lec10_Alpha_Beta_Pruning.html#a-depth-limit-changes-the-leaf-scores",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Depth Limit Changes the Leaf Scores",
+    "text": "A Depth Limit Changes the Leaf Scores\nLet d count the remaining plies, where one ply is one player’s move. At a depth limit, the game may still be unfinished.\n\n  AB(s, d, alpha, beta)\n  if TERMINAL(s): return UTILITY(s)\n  if d == 0: return EVAL(s)\n  # Otherwise use the same MAX / MIN branches.\n  # Each move calls AB(child, d - 1, alpha, beta).\n\n\nUTILITY(s): exact score of a finished game.\nEVAL(s): an estimate for an unfinished position, using the same player’s viewpoint.\n\n\nWith identical cutoffs and scores, alpha-beta matches depth-limited minimax. The heuristic estimate may still miss the best move in the full game.\n\n\nAlways check terminal before the depth cutoff. Alpha-beta is exact relative to the leaf scores supplied to it; it does not make inaccurate heuristic scores accurate. The demo notebook has explicitly supplied terminal leaves and no depth parameter. HW2 uses a function named utility for its board evaluation at both terminal and depth-limited states, so its name alone does not imply the position is terminal. For Reversi, follow the assignment’s consistent depth convention for completed moves and handle a forced pass explicitly. Source: AIMA imperfect decision making and the current Homework 2 specification."
+  },
+  {
+    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#time-limits-and-unstable-positions",
+    "href": "slides/lec10_Alpha_Beta_Pruning.html#time-limits-and-unstable-positions",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Time Limits and Unstable Positions",
+    "text": "Time Limits and Unstable Positions\nIterative deepening\nSearch depths 1, 2, 3, …. Keep the best move from the last completed search if time runs out. Its move ordering can help the next search.\nQuiescence search\n“Quiescent” means quiet or stable. Near a cutoff, extend selected forcing moves, such as a capture and immediate recapture, before evaluating.\n\nForward pruning skips moves because a heuristic judges them unpromising. Unlike alpha-beta’s bound test, it can change the minimax answer.\n\n\nIf depth 1 chooses A, depth 2 chooses B, and depth 3 is interrupted, use B from the completed depth-2 search. A partial deeper search has not compared every relevant root alternative. An implementation also needs a legal fallback if even the first iteration cannot finish. Quiescence addresses the horizon effect: a depth boundary may hide a forcing reply that reverses a seemingly good score. It usually extends a limited set of tactical moves and needs its own limits; it is not an instruction to search indefinitely until all play is calm. These are practical extensions, not extra HW2 requirements. Source: original Lecture 10 topics and AIMA adversarial search."
+  },
+  {
+    "objectID": "slides/lec10_Alpha_Beta_Pruning.html#takeaways",
+    "href": "slides/lec10_Alpha_Beta_Pruning.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nAlpha-beta uses bounds to skip work while preserving the minimax root value.\nMAX raises \\alpha; MIN lowers \\beta. Stop remaining siblings when \\alpha\\ge\\beta.\nBetter move ordering can produce more pruning.\nA depth cutoff needs a heuristic estimate and a consistent score viewpoint.\n\n\nFor HW2, compare minimax and alpha-beta at the same depth. Keep the input board unchanged, and distinguish a forced pass from game over.\n\nDemo: Alpha-beta notebook\nAssignment: Homework 2: Reversi Agents\nAsset credits\n\nThe notebook’s smaller example has MAX root A, MIN children B and C, leaves D=3,E=5,F=2,G=9. Expected call order is A,B,D,E,C,F, skipping G, and the returned root score is 3. That notebook uses different node names from the slide example. For HW2, Reversi is an 8 by 8 disc-flipping game. A legal placement brackets and flips opponent discs. One player with no legal move must pass; the game ends only when neither can move. Open the existing assignment page for the rules, implementation contract, and tournament requirements. The root player stays the maximizing viewpoint throughout recursion. A useful comparison records identical root values and the number of evaluated nodes, not only wall-clock time."
   }
 ]

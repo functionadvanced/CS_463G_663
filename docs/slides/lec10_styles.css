@@ -1,0 +1,17 @@
+/* Keep the three trace explanations below a fixed-size diagram. */
+.reveal section.ab-trace .trace-tree-frames {
+  width: 610px;
+}
+
+.reveal section.ab-trace .ab-steps {
+  font-size: 0.86em;
+}
+
+.reveal section.ab-trace .ab-steps p {
+  margin: 0.26em 0;
+}
+
+.reveal section.ab-trace .ab-steps .takeaway {
+  padding-top: 0.45em;
+  padding-bottom: 0.45em;
+}
