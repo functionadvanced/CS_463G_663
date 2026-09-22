@@ -32,75 +32,10 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-    /* CSS for syntax highlighting */
-    html { -webkit-text-size-adjust: 100%; }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec11_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -229,228 +164,337 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="local-search" class="slide level2 section-slide">
-<h2>Local Search</h2>
-<ul>
-<li>Local search improves one candidate solution at a time.</li>
-<li>It does not try to enumerate all paths through the search space.</li>
-<li>It is useful when the solution is a <strong>state</strong>, not a sequence of actions.</li>
-<li>It is often used for optimization problems.</li>
-</ul>
+<section id="searching-for-a-configuration" class="slide level2 local-slide">
+<h2>Searching for a Configuration</h2>
+<p><strong>Local search</strong> keeps a current candidate and moves among nearby candidates. The goal is often a good final configuration.</p>
+<p><img data-src="imgs/drawio/lec11/configuration-or-path.png" class="local-wide" alt="A solved four-queens board illustrates a final configuration. Two sliding-puzzle boards show a legal tile move, illustrating a problem where the path also matters."></p>
 <div class="takeaway">
-<p>Systematic search asks “How did I get here?” Local search mostly asks “Is this state better than nearby states?”</p>
+<p>An <strong>objective function</strong> scores each candidate. We will minimize a cost <span class="math inline">c(s)</span>: <strong>lower is better</strong>.</p>
 </div>
+<aside class="notes">
+<p>In systematic search we kept a frontier of alternatives and often stored parent links to recover a path. The single-state local methods here keep one current candidate, sometimes with a best-so-far record. They can use little memory, but they may stop without finding a goal or global optimum. A complete candidate may violate constraints. It is not necessarily a valid solution. Four queens is the smaller version of eight queens. Queens attack along rows, columns, and diagonals. The sliding puzzle remains a path-finding task, and the scheduled GUI demonstrates legal moves rather than implementing a local-search solver. Source: AIMA local search section and the original Lecture 11 Beamer source.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="systematic-vs.-local-search" class="slide level2">
-<h2>Systematic vs.&nbsp;Local Search</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:48%;">
-<h3 id="systematic-search">Systematic Search</h3>
+<section id="queens-state-cost-and-neighborhood" class="slide level2 local-slide">
+<h2>Queens: State, Cost, and Neighborhood</h2>
 <ul>
-<li>Explores a tree or graph.</li>
-<li>Tracks paths from an initial state.</li>
-<li>Can guarantee optimality under the right conditions.</li>
-<li>Can require large memory and time.</li>
+<li><strong>State <span class="math inline">s</span>:</strong> one queen per column. Each list entry gives that queen’s row.</li>
+<li><strong>Cost <span class="math inline">c(s)</span>:</strong> pairs sharing a row or diagonal, counting each pair once. A solution has <span class="math inline">c(s)=0</span>.</li>
+<li><strong>Neighborhood <span class="math inline">N(s)</span>:</strong> move one queen to a different row in its column.</li>
 </ul>
-</div><div class="column" style="width:48%;">
-<h3 id="local-search-1">Local Search</h3>
-<ul>
-<li>Moves between complete candidate states.</li>
-<li>Uses a neighborhood relation.</li>
-<li>Often finds good solutions quickly.</li>
-<li>May get stuck before finding the best solution.</li>
-</ul>
-</div></div>
-</section>
-<section id="queens-two-views" class="slide level2">
-<h2>8-Queens: Two Views</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:36%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec11/eight_queens.png" class="cc0-figure"></p>
-<figcaption>Eight queens puzzle</figcaption>
-</figure>
-</div>
-<p><a href="https://en.wikipedia.org/wiki/Eight_queens_puzzle">Wikipedia: eight queens puzzle</a></p>
-</div><div class="column" style="width:58%;">
-<h3 id="systematic-search-1">Systematic Search</h3>
-<ul>
-<li>Place queens row by row.</li>
-<li>Backtrack when constraints fail.</li>
-<li>Can enumerate all solutions.</li>
-</ul>
-<h3 id="local-search-2">Local Search</h3>
-<ul>
-<li>Start with a complete board.</li>
-<li>Move queens to reduce conflicts.</li>
-<li>Usually seeks one good solution quickly.</li>
-</ul>
-</div></div>
-</section>
-<section id="neighborhoods" class="slide level2">
-<h2>Neighborhoods</h2>
-<p>A <strong>neighborhood</strong> is the set of states reachable by a small change.</p>
-<p>For 8-queens:</p>
-<ul>
-<li>state: a complete board with one queen per column</li>
-<li>neighbor: move one queen to another row in the same column</li>
-<li>score: number of attacking pairs or non-attacking pairs</li>
-</ul>
+<p><img data-src="imgs/drawio/lec11/queens-0.png" class="local-queens" alt="Four queens all occupy row 1: s equals [1,1,1,1]. The six distinct pairs all attack, so the cost is 6. Rows increase downward."></p>
 <div class="question">
-<p>Changing the neighborhood changes the search landscape.</p>
+<p>With 4 queens, how many neighbors? With 8 queens? <span class="fragment"> <strong><span class="math inline">4\times3=12</span></strong> and <strong><span class="math inline">8\times7=56</span></strong>.</span></p>
 </div>
+<aside class="notes">
+<p>Rows are numbered top to bottom, columns left to right. Q denotes a queen. Starting with all queens present makes every state a complete assignment, even when queens attack. A pair attacks if it shares a row or if its row difference equals its column difference in absolute value. Sharing a column is impossible in this representation. There are six distinct pairs among four queens, so this starting cost is 6, not 12. Each of n queens has n-1 alternative rows, giving n(n-1) distinct neighbors. A systematic construction can instead add queens one at a time and backtrack when constraints fail. We use four queens to make the same eight-queens representation visible at a readable size. Source: AIMA n-queens local-search formulation. Worked boards are original course examples.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="generic-local-search" class="slide level2">
-<h2>Generic Local Search</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>LocalSearch(S):</span>
-<span id="cb1-2"><a></a>    <span class="cf">while</span> termination condition <span class="kw">is</span> <span class="kw">not</span> met:</span>
-<span id="cb1-3"><a></a>        <span class="cf">if</span> S <span class="kw">is</span> a valid solution <span class="kw">or</span> time <span class="kw">is</span> exhausted:</span>
-<span id="cb1-4"><a></a>            <span class="cf">return</span> S</span>
-<span id="cb1-5"><a></a></span>
-<span id="cb1-6"><a></a>        generate neighbors of S</span>
-<span id="cb1-7"><a></a>        choose one neighbor N</span>
-<span id="cb1-8"><a></a>        replace S <span class="cf">with</span> N</span>
-<span id="cb1-9"><a></a></span>
-<span id="cb1-10"><a></a>    <span class="cf">return</span> S</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="hill-climbing" class="slide level2">
-<h2>Hill Climbing</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:50%;">
-<ul>
-<li>Always choose the best immediate neighbor.</li>
-<li>Fast and simple.</li>
-<li>Can get stuck at local maxima, plateaus, or ridges.</li>
-</ul>
-</div><div class="column" style="width:42%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec11/local_search.png" class="cc0-figure"></p>
-<figcaption>Hill climbing landscape</figcaption>
-</figure>
+<section id="queens-trace" class="slide level2 local-slide search-trace local-trace">
+<h2>A Greedy Queen-Move Trace</h2>
+<p><strong>Hill climbing</strong> chooses a best immediate neighbor. For our cost, it moves <strong>downhill</strong> and accepts only a strict decrease.</p>
+<div class="trace-tree-frames" role="img" aria-label="Four-queens trace: [1,1,1,1] has cost 6. Move column 2 to row 4 for cost 3, column 1 to row 2 for cost 1, then column 4 to row 3 for cost 0. The moved queen is gold.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec11/queens-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec11/queens-1.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec11/queens-2.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="3" src="imgs/drawio/lec11/queens-3.png" alt="" aria-hidden="true">
 </div>
+<div class="local-steps">
+<div class="fragment" data-fragment-index="0">
+<p>Move column <strong>2</strong>: cost <strong>6 to 3</strong>. Choose one of the best moves if tied.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p>Move column <strong>1</strong>: cost <strong>3 to 1</strong>. Recompute neighbors from the new board.</p>
+</div>
+<div class="takeaway fragment" data-fragment-index="2">
+<p>Move column <strong>4</strong>: cost <strong>1 to 0</strong>. This run succeeds, but other starting states can get stuck.</p>
+</div>
+</div>
+<aside class="notes">
+<p>At each step, consider all 12 neighbors, not just the selected queen. The chosen successor has minimum neighbor cost: 3, then 1, then 0. Equal best neighbors exist, so this is one valid greedy trace rather than a uniquely prescribed path. The gold queen marks the queen just moved. After the first move the three attacking pairs are columns (1,3), (1,4), and (3,4). After the second move only columns 3 and 4 attack. The last board [2,4,1,3] solves four queens. Source: original course example using the AIMA neighborhood.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="hill-climbing-pseudocode" class="slide level2 local-slide local-pseudocode">
+<h2>Hill-Climbing Pseudocode</h2>
+<p><code>s</code> is the current state, <code>N(s)</code> its neighbors, and <code>K</code> a move budget. <code>LOWEST_COST</code> chooses a neighbor with smallest <span class="math inline">c</span>.</p>
+<div class="pseudo-code" aria-label="Steepest-descent hill climbing with a move budget">
+  <div class="pseudo-line"><span class="pseudo-fn">HILL_CLIMB</span>(<span class="pseudo-var">s</span>, <span class="pseudo-var">K</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">for</span> <span class="pseudo-var">step</span> <span class="pseudo-kw">in</span> <span class="pseudo-num">1</span> .. <span class="pseudo-var">K</span>:</div>
+  <div class="pseudo-line indent-2"><span class="pseudo-kw">if</span> <span class="pseudo-fn">EMPTY</span>(<span class="pseudo-fn">N</span>(<span class="pseudo-var">s</span>)): <span class="pseudo-kw">return</span> <span class="pseudo-var">s</span></div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="0"><span class="pseudo-var">n</span> &lt;- <span class="pseudo-fn">LOWEST_COST</span>(<span class="pseudo-fn">N</span>(<span class="pseudo-var">s</span>))</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-kw">if</span> <span class="pseudo-fn">c</span>(<span class="pseudo-var">n</span>) &gt;= <span class="pseudo-fn">c</span>(<span class="pseudo-var">s</span>): <span class="pseudo-kw">return</span> <span class="pseudo-var">s</span></div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="2"><span class="pseudo-var">s</span> &lt;- <span class="pseudo-var">n</span></div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">return</span> <span class="pseudo-var">s</span></div>
+</div>
+<div class="takeaway fragment" data-fragment-index="2">
+<p>Stopping means <strong>no strict local improvement</strong> or <strong>budget exhausted</strong>. Check the returned cost before calling it a solution.</p>
+</div>
+<aside class="notes">
+<p>This is steepest-ascent hill climbing expressed as cost minimization, also called steepest descent. It scans the neighborhood and chooses a best candidate. A streaming scan can retain only the best neighbor rather than materializing the whole set. Memory savings are therefore implementation dependent. Ties between equally good successors may be broken arbitrarily. The &gt;= test prevents sideways moves, so a finite state space cannot cycle through accepted states. A known goal cost such as zero in n-queens permits an additional early stop. For general optimization, a low cost does not certify a global optimum. Source: AIMA hill-climbing algorithm, adapted to a cost and finite budget.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="minimum-trace" class="slide level2 local-slide search-trace local-trace">
+<h2>A Local Minimum Can Stop the Search</h2>
+<p>A <strong>local minimum</strong> is no worse than its neighbors. A <strong>global minimum</strong> has the lowest cost in the entire state space below.</p>
+<div class="trace-tree-frames" role="img" aria-label="A chain with state costs A8, B5, C2, D4, E3, F1, G0. Starting at A, strict hill climbing goes to B then C and stops. Both neighbors of C are worse, but G is globally best.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec11/minimum-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec11/minimum-1.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec11/minimum-2.png" alt="" aria-hidden="true">
+</div>
+<div class="local-steps">
+<div class="fragment" data-fragment-index="0">
+<p>From <strong>A</strong>, move to <strong>B</strong>: cost <strong>8 to 5</strong>.</p>
+</div>
+<div class="takeaway fragment" data-fragment-index="1">
+<p>From <strong>B</strong>, move to <strong>C</strong>, cost <strong>2</strong>. Then stop: B costs <strong>5</strong>, D costs <strong>4</strong>. The better state <strong>G</strong> is beyond a worsening move.</p>
+</div>
+</div>
+<aside class="notes">
+<p>The graph is the whole state space for this toy problem. Edges define neighbors, and the numbers inside circles are state costs, not edge costs. The vertical placement only helps show lower and higher cost. C is a strict local minimum because both its neighbors have higher cost. G is the global minimum. If the goal were cost 0, hill climbing from A would fail to find an existing solution. With a score to maximize, the equivalent trap is a local maximum. Source: original course illustration of the AIMA landscape concept.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="plateaus-and-restricted-moves" class="slide level2 local-slide">
+<h2>Plateaus and Restricted Moves</h2>
+<p>A <strong>plateau</strong> has equal-cost neighbors. A <strong>ridge</strong> for a score, or <strong>narrow valley</strong> for a cost, may point between the allowed move directions.</p>
+<p><img data-src="imgs/drawio/lec11/plateau-and-valley.png" class="local-wide" alt="A plateau chain has costs 2,2,2,1 and requires sideways moves to improve. A cost grid has a diagonal low-cost valley; from cost 3, both allowed orthogonal neighbors cost 5 while a forbidden diagonal neighbor costs 2."></p>
 <div class="takeaway">
-<p>AIMA Fig. 4.1.</p>
+<p>Limited <strong>sideways moves</strong> can cross a plateau but may cycle. A different neighborhood can help, when the problem permits it.</p>
 </div>
-</div></div>
+<aside class="notes">
+<p>In the left graph, the current state is the first 2. Strict improvement halts immediately. Two equal-cost moves would reach the third 2, which has a lower-cost neighbor. A sideways-move budget or cycle detection prevents indefinite wandering, but does not guarantee success. In the right grid, lower numbers are better. From the bottom-right 3, up and left both give 5. A diagonal move would give 2, but it is outside this chosen neighborhood. This demonstrates how an apparently favorable direction may not be an available step. A narrow valley can produce slow zigzag progress or traps in a discrete neighborhood. We cannot arbitrarily introduce illegal puzzle moves. Source: AIMA plateaus and ridges, with original discrete course examples.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="hill-climbing-failure-modes" class="slide level2">
-<h2>Hill Climbing Failure Modes</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Issue</th>
-<th>What happens</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Local maximum</td>
-<td>Nearby states are worse, but a better global state exists elsewhere</td>
-</tr>
-<tr class="even">
-<td>Plateau</td>
-<td>Many neighboring states have similar value</td>
-</tr>
-<tr class="odd">
-<td>Ridge</td>
-<td>Progress requires a sequence of sideways or indirect moves</td>
-</tr>
-</tbody>
-</table>
-<div class="takeaway">
-<p>Pure greed can be fast, but it has no patience for temporarily worse moves.</p>
-</div>
-</section>
-<section id="random-restarts" class="slide level2">
+<section id="random-restarts" class="slide level2 local-slide">
 <h2>Random Restarts</h2>
-<ul>
-<li>Run local search many times from different random starting states.</li>
-<li>Keep the best solution found.</li>
-<li>This helps escape poor local maxima.</li>
-<li>Downside: time is spent restarting from scratch.</li>
-</ul>
-<div class="question">
-<p>Random restarts are simple, but how many restarts are enough?</p>
+<p>Start again from a new random candidate, run hill climbing, and keep the <strong>best result across runs</strong>.</p>
+<p><img data-src="imgs/drawio/lec11/restarts.png" class="local-wide" alt="In the same chain, a start at A descends to local minimum C with cost 2, while a new start at E descends through F to G with cost 0."></p>
+<div class="takeaway">
+<p>A restart changes the starting region. Use a <strong>time or restart budget</strong>: finite attempts do not guarantee success.</p>
 </div>
+<aside class="notes">
+<p>A start at C repeats the same failure under the same strict rule. A restart samples a new state, which may lie in a different basin of attraction. In this chain, E descends to F then G. There is still no guarantee that a random restart picks E or another successful start. If independent runs each succeed with probability p, k runs succeed at least once with probability 1-(1-p)^k. This estimate depends on independence and a common success probability. It is not necessary to compute p in practice to apply a budget. Source: AIMA random-restart hill climbing.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="what-is-annealing" class="slide level2">
-<h2>What Is Annealing?</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:58%;">
-<ul>
-<li>Annealing heats a material and then cools it slowly.</li>
-<li>Slow cooling can help the material settle into a stable low-energy structure.</li>
-<li>Simulated annealing borrows this idea for optimization.</li>
-</ul>
-</div><div class="column" style="width:36%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec11/annealing.jpeg" class="cc0-figure"></p>
-<figcaption>Annealing process image</figcaption>
-</figure>
+<section id="annealing-trace" class="slide level2 local-slide search-trace local-trace">
+<h2>Simulated Annealing: Crossing a Cost Barrier</h2>
+<p><strong>Annealing</strong> heats a material and cools it. <strong>Simulated annealing</strong> borrows the temperature idea: it sometimes accepts a worse candidate.</p>
+<div class="trace-tree-frames" role="img" aria-label="One possible annealing trace starts at C with cost 2. It accepts D with cost 4, then improves through E3, F1, and G0. The best-so-far cost stays 2 until F, then becomes 1 and finally 0.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec11/anneal-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec11/anneal-1.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec11/anneal-2.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="3" src="imgs/drawio/lec11/anneal-3.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="4" src="imgs/drawio/lec11/anneal-4.png" alt="" aria-hidden="true">
 </div>
-<p><a href="https://baike.baidu.com/item/%E5%86%B7%E9%80%81%E9%80%80%E7%81%AB/22720943">Fig from web</a></p>
-</div></div>
+<div class="local-steps">
+<div class="fragment" data-fragment-index="0">
+<p>Suppose we accept <strong>C to D</strong>: cost rises from <strong>2 to 4</strong>.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p>Then propose <strong>E</strong>, cost <strong>3</strong>. It improves on D, though C was better.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p>Then <strong>F</strong>, cost <strong>1</strong>, improves the best record.</p>
+</div>
+<div class="takeaway fragment" data-fragment-index="3">
+<p>Then <strong>G</strong>, cost <strong>0</strong>. This is one possible random trajectory, not a guaranteed route.</p>
+</div>
+</div>
+<aside class="notes">
+<p>All comparisons use the current state, not the best state previously seen. E3 improves on current D4 and is accepted even though the earlier C2 was better. The gold circles mark previously visited states, and teal marks the current state. At C, the move to D is worsening and requires a probabilistic acceptance decision. Later steps also depend on which neighbor is proposed. The next slide quantifies the acceptance probability. The physical analogy is settling into low-energy configurations; avoid claiming that annealing always increases a material’s strength. Source: original Lecture 11 annealing motivation and AIMA simulated annealing. Graph and trajectory are original course examples.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="simulated-annealing" class="slide level2">
-<h2>Simulated Annealing</h2>
-<ul>
-<li>Usually accepts better moves.</li>
-<li>Sometimes accepts worse moves.</li>
-<li>The probability of accepting worse moves decreases as temperature decreases.</li>
-</ul>
+<section id="the-annealing-acceptance-rule" class="slide level2 local-slide acceptance-slide">
+<h2>The Annealing Acceptance Rule</h2>
+<p>For current state <span class="math inline">s</span> and proposed neighbor <span class="math inline">n</span>, let <span class="math inline">\Delta=c(n)-c(s)</span>. Temperature <strong><span class="math inline">T&gt;0</span></strong> controls acceptance of a cost increase.</p>
+<p><span class="math display">
+P(\text{accept})=
+\begin{cases}
+1, &amp; \Delta\le0,\\
+\exp(-\Delta/T), &amp; \Delta&gt;0.
+\end{cases}
+</span></p>
+<p>For a proposed cost increase from <strong>2 to 4</strong>, <span class="math inline">\Delta=2</span>. Draw <span class="math inline">u</span> uniformly from <span class="math inline">[0,1)</span> and accept if <span class="math inline">u&lt;P(\text{accept})</span>.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Component</th>
-<th>Meaning</th>
+<th>Temperature <span class="math inline">T</span></th>
+<th style="text-align: right;">Probability for <span class="math inline">\Delta=2</span></th>
+<th>With <span class="math inline">u=0.30</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Temperature <span class="math inline">T</span></td>
-<td>Controls willingness to accept worse moves</td>
+<td>4</td>
+<td style="text-align: right;"><span class="math inline">e^{-0.5}\approx0.607</span></td>
+<td>Accept</td>
 </tr>
 <tr class="even">
-<td>Cooling schedule</td>
-<td>Determines how <span class="math inline">T</span> decreases</td>
+<td>1</td>
+<td style="text-align: right;"><span class="math inline">e^{-2}\approx0.135</span></td>
+<td>Reject</td>
 </tr>
 <tr class="odd">
-<td>Neighbor generator</td>
-<td>Proposes the next candidate state</td>
+<td>0.25</td>
+<td style="text-align: right;"><span class="math inline">e^{-8}\approx0.000335</span></td>
+<td>Reject</td>
 </tr>
 </tbody>
 </table>
+<aside class="notes">
+<p>P denotes probability. exp(z) is the exponential function e to the power z. The uniform random number is a fresh draw for each proposal; the fixed u=0.30 only illustrates how temperature changes the decision for the same draw. Improvements and equal-cost moves have probability one under this rule. As T decreases, a fixed positive delta has smaller acceptance probability. Larger cost increases are also less likely at a fixed temperature. The argument -delta/T is negative for worsening moves. If T is zero or negative, stop before evaluating the exponential. Source: AIMA simulated-annealing acceptance rule. Numerical probabilities are rounded.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="simulated-annealing-pseudocode" class="slide level2">
-<h2>Simulated Annealing Pseudocode</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>SimulatedAnnealing(S0, T0, coolingSchedule):</span>
-<span id="cb2-2"><a></a>    S <span class="op">=</span> S0</span>
-<span id="cb2-3"><a></a>    T <span class="op">=</span> T0</span>
-<span id="cb2-4"><a></a></span>
-<span id="cb2-5"><a></a>    <span class="cf">while</span> termination condition <span class="kw">is</span> <span class="kw">not</span> met:</span>
-<span id="cb2-6"><a></a>        S_next <span class="op">=</span> random neighbor of S</span>
-<span id="cb2-7"><a></a>        delta <span class="op">=</span> cost(S_next) <span class="op">-</span> cost(S)</span>
-<span id="cb2-8"><a></a></span>
-<span id="cb2-9"><a></a>        <span class="cf">if</span> delta <span class="op">&lt;</span> <span class="dv">0</span>:</span>
-<span id="cb2-10"><a></a>            S <span class="op">=</span> S_next</span>
-<span id="cb2-11"><a></a>        <span class="cf">else</span>:</span>
-<span id="cb2-12"><a></a>            r <span class="op">=</span> random number <span class="kw">in</span> [<span class="dv">0</span>, <span class="dv">1</span>]</span>
-<span id="cb2-13"><a></a>            <span class="cf">if</span> exp(<span class="op">-</span>delta <span class="op">/</span> T) <span class="op">&gt;</span> r:</span>
-<span id="cb2-14"><a></a>                S <span class="op">=</span> S_next</span>
-<span id="cb2-15"><a></a></span>
-<span id="cb2-16"><a></a>        T <span class="op">=</span> coolingSchedule(T)</span>
-<span id="cb2-17"><a></a></span>
-<span id="cb2-18"><a></a>    <span class="cf">return</span> best solution found</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="simulated-annealing-pseudocode" class="slide level2 local-slide local-pseudocode">
+<h2>Simulated-Annealing Pseudocode</h2>
+<p><code>K</code> limits proposals. <code>schedule(t)</code> gives temperature at iteration <code>t</code>. <code>COPY</code> preserves a separate best-state snapshot.</p>
+<div class="pseudo-code" aria-label="Simulated annealing with a positive temperature guard and explicit best-state record">
+  <div class="pseudo-line"><span class="pseudo-fn">ANNEAL</span>(<span class="pseudo-var">s</span>, <span class="pseudo-var">K</span>, <span class="pseudo-var">schedule</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-var">best</span> &lt;- <span class="pseudo-fn">COPY</span>(<span class="pseudo-var">s</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">for</span> <span class="pseudo-var">t</span> <span class="pseudo-kw">in</span> <span class="pseudo-num">0</span> .. <span class="pseudo-var">K</span> - <span class="pseudo-num">1</span>:</div>
+  <div class="pseudo-line indent-2"><span class="pseudo-var">T</span> &lt;- <span class="pseudo-fn">schedule</span>(<span class="pseudo-var">t</span>)</div>
+  <div class="pseudo-line indent-2"><span class="pseudo-kw">if</span> <span class="pseudo-var">T</span> &lt;= <span class="pseudo-num">0</span>: <span class="pseudo-kw">break</span></div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="0"><span class="pseudo-var">n</span> &lt;- <span class="pseudo-fn">RANDOM_NEIGHBOR</span>(<span class="pseudo-var">s</span>)</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="0"><span class="pseudo-var">delta</span> &lt;- <span class="pseudo-fn">c</span>(<span class="pseudo-var">n</span>) - <span class="pseudo-fn">c</span>(<span class="pseudo-var">s</span>)</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-var">p</span> &lt;- <span class="pseudo-num">1</span> <span class="pseudo-kw">if</span> <span class="pseudo-var">delta</span> &lt;= <span class="pseudo-num">0</span> <span class="pseudo-kw">else</span> <span class="pseudo-fn">EXP</span>(-<span class="pseudo-var">delta</span> / <span class="pseudo-var">T</span>)</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-kw">if</span> <span class="pseudo-fn">UNIFORM</span>(<span class="pseudo-num">0</span>, <span class="pseudo-num">1</span>) &lt; <span class="pseudo-var">p</span>:</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="1"><span class="pseudo-var">s</span> &lt;- <span class="pseudo-var">n</span></div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="2"><span class="pseudo-kw">if</span> <span class="pseudo-fn">c</span>(<span class="pseudo-var">s</span>) &lt; <span class="pseudo-fn">c</span>(<span class="pseudo-var">best</span>): <span class="pseudo-var">best</span> &lt;- <span class="pseudo-fn">COPY</span>(<span class="pseudo-var">s</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">return</span> <span class="pseudo-var">best</span></div>
+</div>
+<div class="takeaway fragment" data-fragment-index="2">
+<p>The <strong>current state</strong> may get worse. Update <strong>best</strong> only when its cost improves.</p>
+</div>
+<aside class="notes">
+<p>RANDOM_NEIGHBOR returns one valid candidate without mutating the current state, and UNIFORM(0,1) returns a sample in [0,1). This pseudocode assumes a nonempty neighborhood, as in n-queens; a general implementation should stop if no proposal is available. The conditional assignment evaluates EXP only for positive delta. Rejected proposals leave s unchanged but still consume one iteration and cool the schedule. A known optimal target cost permits early stopping. COPY is essential when a mutable board might otherwise share storage with best. The output is the best state observed within the budget, not a guaranteed global optimum. Source: AIMA acceptance rule, with explicit best-state tracking and budget added for the course.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="local-search-menu" class="slide level2">
-<h2>Local Search Menu</h2>
+<section id="cooling-and-the-best-state-record" class="slide level2 local-slide">
+<h2>Cooling and the Best-State Record</h2>
+<p>A <strong>cooling schedule</strong> lowers temperature: <span class="math inline">T(t)=T_0\rho^t</span>, with starting temperature <span class="math inline">T_0&gt;0</span> and cooling factor <span class="math inline">0&lt;\rho&lt;1</span>.</p>
+<p><img data-src="imgs/drawio/lec11/current-and-best.png" class="local-history" alt="Illustrative accepted-state costs are 6,3,5,2,4,1. The best-so-far costs are 6,3,3,2,2,1. Current cost can rise while the best record never rises."></p>
+<ul>
+<li>Cooling too fast can freeze the search near a local minimum.</li>
+<li>Cooling slowly spends more of the budget exploring. Test several random seeds.</li>
+</ul>
+<div class="question">
+<p>Current cost <strong>4</strong>, best seen <strong>2</strong>. Which state should we return? <span class="fragment"> <strong>The saved state with cost 2.</strong></span></p>
+</div>
+<aside class="notes">
+<p>T0 is the starting temperature, rho the multiplicative cooling factor, and t the iteration count starting at zero. A rho closer to 1 cools more slowly for a fixed starting temperature and iteration count. Temperature has to be interpreted relative to the scale of cost differences. Multiplying the objective by 100 while keeping T fixed greatly reduces acceptance of worsening moves. The plotted sequence is an illustrative accepted-state history, not output from the notebook. At accepted move 4, current cost is 4 but best cost is 2. Save the state, not just its numeric score. Finite practical schedules do not guarantee the global optimum. Source: AIMA cooling discussion and original course trace.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="takeaways" class="slide level2 local-slide">
+<h2>Takeaways</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -460,29 +504,47 @@ Peizhong Ju
 <thead>
 <tr class="header">
 <th>Method</th>
-<th>Main idea</th>
-<th>Main risk</th>
+<th>Move rule</th>
+<th>Main limitation</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Hill climbing</td>
-<td>Always improve locally</td>
-<td>Local maxima</td>
+<td>Take a best strictly improving neighbor</td>
+<td>Can stop above the global minimum</td>
 </tr>
 <tr class="even">
 <td>Random restarts</td>
-<td>Try many starting states</td>
-<td>Wasted repeated work</td>
+<td>Try new starts, keep the best result</td>
+<td>Repeated work, limited attempts</td>
 </tr>
 <tr class="odd">
 <td>Simulated annealing</td>
-<td>Allow some worse moves early</td>
-<td>Cooling schedule matters</td>
+<td>Sometimes accept a worse candidate</td>
+<td>Depends on proposals and cooling</td>
 </tr>
 </tbody>
 </table>
+<div class="takeaway">
+<p>Define the <strong>state</strong>, <strong>cost</strong>, and <strong>neighborhood</strong> precisely. Check whether an algorithm returns the current state or the best state it has seen.</p>
+</div>
+<p><strong>Code:</strong> <a href="../code_and_homework/annealing.html" target="_blank" rel="noopener">Simulated annealing notebook</a><br>
+<strong>Demo:</strong> <a href="../code_and_homework/num_slide_puzzle.html" target="_blank" rel="noopener">Sliding puzzle</a></p>
 <p><a class="asset-credit-link" href="../asset_credits.html#lec11" target="_blank" rel="noopener">Asset credits</a></p>
+<aside class="notes">
+<p>The GUI is a graphical user interface written with PySide6. It shuffles a solved puzzle by legal moves and lets a player slide tiles. It does not contain a hill-climbing or annealing solver. Use it to revisit which moves define a neighborhood and why a sliding-puzzle solution needs a legal path. For the annealing notebook, compare global proposals with small local proposals as an experiment without changing the acceptance rule. These links remain separate from the slides so the code can be discussed on its existing page. Local search often sacrifices completeness or optimality guarantees in exchange for modest memory and useful solutions under a budget.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 </section>

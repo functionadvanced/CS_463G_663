@@ -700,88 +700,18 @@
     "text": "Why CSPs Help\n\nCSPs separate what the problem is from how we search.\nGeneral CSP algorithms can use domain-independent structure.\nConstraints allow pruning before a full assignment is attempted.\n\n\nThe next lecture formalizes consistency: how much pruning can we do before search?\n\nAsset credits"
   },
   {
-    "objectID": "slides/lec11_Local_Search.html#local-search",
-    "href": "slides/lec11_Local_Search.html#local-search",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Local Search",
-    "text": "Local Search\n\nLocal search improves one candidate solution at a time.\nIt does not try to enumerate all paths through the search space.\nIt is useful when the solution is a state, not a sequence of actions.\nIt is often used for optimization problems.\n\n\nSystematic search asks “How did I get here?” Local search mostly asks “Is this state better than nearby states?”"
-  },
-  {
-    "objectID": "slides/lec11_Local_Search.html#systematic-vs.-local-search",
-    "href": "slides/lec11_Local_Search.html#systematic-vs.-local-search",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Systematic vs. Local Search",
-    "text": "Systematic vs. Local Search\n\n\nSystematic Search\n\nExplores a tree or graph.\nTracks paths from an initial state.\nCan guarantee optimality under the right conditions.\nCan require large memory and time.\n\n\nLocal Search\n\nMoves between complete candidate states.\nUses a neighborhood relation.\nOften finds good solutions quickly.\nMay get stuck before finding the best solution."
-  },
-  {
-    "objectID": "slides/lec11_Local_Search.html#queens-two-views",
-    "href": "slides/lec11_Local_Search.html#queens-two-views",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "8-Queens: Two Views",
-    "text": "8-Queens: Two Views\n\n\n\n\n\nEight queens puzzle\n\n\nWikipedia: eight queens puzzle\n\nSystematic Search\n\nPlace queens row by row.\nBacktrack when constraints fail.\nCan enumerate all solutions.\n\nLocal Search\n\nStart with a complete board.\nMove queens to reduce conflicts.\nUsually seeks one good solution quickly."
-  },
-  {
-    "objectID": "slides/lec11_Local_Search.html#neighborhoods",
-    "href": "slides/lec11_Local_Search.html#neighborhoods",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Neighborhoods",
-    "text": "Neighborhoods\nA neighborhood is the set of states reachable by a small change.\nFor 8-queens:\n\nstate: a complete board with one queen per column\nneighbor: move one queen to another row in the same column\nscore: number of attacking pairs or non-attacking pairs\n\n\nChanging the neighborhood changes the search landscape."
-  },
-  {
-    "objectID": "slides/lec11_Local_Search.html#generic-local-search",
-    "href": "slides/lec11_Local_Search.html#generic-local-search",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Generic Local Search",
-    "text": "Generic Local Search\nLocalSearch(S):\n    while termination condition is not met:\n        if S is a valid solution or time is exhausted:\n            return S\n\n        generate neighbors of S\n        choose one neighbor N\n        replace S with N\n\n    return S"
-  },
-  {
-    "objectID": "slides/lec11_Local_Search.html#hill-climbing",
-    "href": "slides/lec11_Local_Search.html#hill-climbing",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Hill Climbing",
-    "text": "Hill Climbing\n\n\n\nAlways choose the best immediate neighbor.\nFast and simple.\nCan get stuck at local maxima, plateaus, or ridges.\n\n\n\n\n\nHill climbing landscape\n\n\n\nAIMA Fig. 4.1."
-  },
-  {
-    "objectID": "slides/lec11_Local_Search.html#hill-climbing-failure-modes",
-    "href": "slides/lec11_Local_Search.html#hill-climbing-failure-modes",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Hill Climbing Failure Modes",
-    "text": "Hill Climbing Failure Modes\n\n\n\n\n\n\n\nIssue\nWhat happens\n\n\n\n\nLocal maximum\nNearby states are worse, but a better global state exists elsewhere\n\n\nPlateau\nMany neighboring states have similar value\n\n\nRidge\nProgress requires a sequence of sideways or indirect moves\n\n\n\n\nPure greed can be fast, but it has no patience for temporarily worse moves."
-  },
-  {
     "objectID": "slides/lec11_Local_Search.html#random-restarts",
     "href": "slides/lec11_Local_Search.html#random-restarts",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Random Restarts",
-    "text": "Random Restarts\n\nRun local search many times from different random starting states.\nKeep the best solution found.\nThis helps escape poor local maxima.\nDownside: time is spent restarting from scratch.\n\n\nRandom restarts are simple, but how many restarts are enough?"
-  },
-  {
-    "objectID": "slides/lec11_Local_Search.html#what-is-annealing",
-    "href": "slides/lec11_Local_Search.html#what-is-annealing",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What Is Annealing?",
-    "text": "What Is Annealing?\n\n\n\nAnnealing heats a material and then cools it slowly.\nSlow cooling can help the material settle into a stable low-energy structure.\nSimulated annealing borrows this idea for optimization.\n\n\n\n\n\nAnnealing process image\n\n\nFig from web"
-  },
-  {
-    "objectID": "slides/lec11_Local_Search.html#simulated-annealing",
-    "href": "slides/lec11_Local_Search.html#simulated-annealing",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Simulated Annealing",
-    "text": "Simulated Annealing\n\nUsually accepts better moves.\nSometimes accepts worse moves.\nThe probability of accepting worse moves decreases as temperature decreases.\n\n\n\n\nComponent\nMeaning\n\n\n\n\nTemperature T\nControls willingness to accept worse moves\n\n\nCooling schedule\nDetermines how T decreases\n\n\nNeighbor generator\nProposes the next candidate state"
+    "text": "Random Restarts\nStart again from a new random candidate, run hill climbing, and keep the best result across runs.\n\n\nA restart changes the starting region. Use a time or restart budget: finite attempts do not guarantee success.\n\n\nA start at C repeats the same failure under the same strict rule. A restart samples a new state, which may lie in a different basin of attraction. In this chain, E descends to F then G. There is still no guarantee that a random restart picks E or another successful start. If independent runs each succeed with probability p, k runs succeed at least once with probability 1-(1-p)^k. This estimate depends on independence and a common success probability. It is not necessary to compute p in practice to apply a budget. Source: AIMA random-restart hill climbing."
   },
   {
     "objectID": "slides/lec11_Local_Search.html#simulated-annealing-pseudocode",
     "href": "slides/lec11_Local_Search.html#simulated-annealing-pseudocode",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Simulated Annealing Pseudocode",
-    "text": "Simulated Annealing Pseudocode\nSimulatedAnnealing(S0, T0, coolingSchedule):\n    S = S0\n    T = T0\n\n    while termination condition is not met:\n        S_next = random neighbor of S\n        delta = cost(S_next) - cost(S)\n\n        if delta &lt; 0:\n            S = S_next\n        else:\n            r = random number in [0, 1]\n            if exp(-delta / T) &gt; r:\n                S = S_next\n\n        T = coolingSchedule(T)\n\n    return best solution found"
-  },
-  {
-    "objectID": "slides/lec11_Local_Search.html#local-search-menu",
-    "href": "slides/lec11_Local_Search.html#local-search-menu",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Local Search Menu",
-    "text": "Local Search Menu\n\n\n\n\n\n\n\n\nMethod\nMain idea\nMain risk\n\n\n\n\nHill climbing\nAlways improve locally\nLocal maxima\n\n\nRandom restarts\nTry many starting states\nWasted repeated work\n\n\nSimulated annealing\nAllow some worse moves early\nCooling schedule matters\n\n\n\nAsset credits"
+    "section": "Simulated-Annealing Pseudocode",
+    "text": "Simulated-Annealing Pseudocode\nK limits proposals. schedule(t) gives temperature at iteration t. COPY preserves a separate best-state snapshot.\n\n  ANNEAL(s, K, schedule)\n  best &lt;- COPY(s)\n  for t in 0 .. K - 1:\n  T &lt;- schedule(t)\n  if T &lt;= 0: break\n  n &lt;- RANDOM_NEIGHBOR(s)\n  delta &lt;- c(n) - c(s)\n  p &lt;- 1 if delta &lt;= 0 else EXP(-delta / T)\n  if UNIFORM(0, 1) &lt; p:\n  s &lt;- n\n  if c(s) &lt; c(best): best &lt;- COPY(s)\n  return best\n\n\nThe current state may get worse. Update best only when its cost improves.\n\n\nRANDOM_NEIGHBOR returns one valid candidate without mutating the current state, and UNIFORM(0,1) returns a sample in [0,1). This pseudocode assumes a nonempty neighborhood, as in n-queens; a general implementation should stop if no proposal is available. The conditional assignment evaluates EXP only for positive delta. Rejected proposals leave s unchanged but still consume one iteration and cool the schedule. A known optimal target cost permits early stopping. COPY is essential when a mutable board might otherwise share storage with best. The output is the best state observed within the budget, not a guaranteed global optimum. Source: AIMA acceptance rule, with explicit best-state tracking and budget added for the course."
   },
   {
     "objectID": "slides/lec0_Language_Tools.html#python-brings-the-essential-ai-toolkit-together",
@@ -1264,7 +1194,7 @@
     "href": "asset_credits.html#lec11",
     "title": "Visual Asset Credits",
     "section": "Lecture 11: Local Search",
-    "text": "Lecture 11: Local Search\nCarried-over assets needing source verification: annealing.jpeg, eight_queens.png, local_search.png."
+    "text": "Lecture 11: Local Search\nThe active lecture uses original course diagrams by Peizhong Ju, assisted by Codex, in slides/imgs/drawio/lec11/local-search.drawio. Editable pages and PNG exports illustrate the configuration-versus-path distinction, four-queens moves, local minima, plateaus, a restricted-move valley, random restarts, an annealing trajectory, and current-versus-best costs. The concepts follow AIMA’s local search and simulated annealing sections.\nThe older raster images from the Spring 2025 project are retained as archived assets and no longer appear in this deck."
   },
   {
     "objectID": "asset_credits.html#lec12",
@@ -8314,5 +8244,75 @@
     "title": "Homework 2: Reversi Agents",
     "section": "Task",
     "text": "Task\n\nDownload and extract the starter package and install the necessary Python libraries, such as PySide6.\nFrom a terminal in the extracted starter folder, install PySide6 and launch the game:\npython -m pip install PySide6\npython main.py\nIn the Settings window, select the black and white players, then click Save Settings. You can try human or random before completing the remaining AI methods. Use Game → New Game to select another match.\nImplement the required functions in ai.py. Do not import any libraries in ai.py except for import random. Specifically, implement the following four functions:\ndef utility(board, player):\n    # Utility function used in the following search methods\n\ndef greedy_ai(board, player):\n    # Greedy search algorithm\n\ndef minimax_ai(board, player, depth):\n    # Minimax search without pruning\n\ndef alpha_beta_ai(board, player, depth):\n    # Minimax search with alpha-beta pruning\nRun the complete program and conduct matches between the implemented AI methods (random, greedy, minimax, alpha_beta). There are 16 different match types (\\(4 \\times 4\\)), including self-play matches (e.g., random (black) vs. random (white)). Consider running multiple trials for each match type.\nReport the match results in your submission file, hw2submission.pdf. For each trial of each match, the report should include at least the final count of black and white pieces and a screenshot of the board at the end of the game.\nAppend your ai.py code at the end of hw2submission.pdf.\nSubmit hw2submission.pdf on Canvas.\n\n\n← Homework 1Homework 3 →"
+  },
+  {
+    "objectID": "slides/lec11_Local_Search.html#searching-for-a-configuration",
+    "href": "slides/lec11_Local_Search.html#searching-for-a-configuration",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Searching for a Configuration",
+    "text": "Searching for a Configuration\nLocal search keeps a current candidate and moves among nearby candidates. The goal is often a good final configuration.\n\n\nAn objective function scores each candidate. We will minimize a cost c(s): lower is better.\n\n\nIn systematic search we kept a frontier of alternatives and often stored parent links to recover a path. The single-state local methods here keep one current candidate, sometimes with a best-so-far record. They can use little memory, but they may stop without finding a goal or global optimum. A complete candidate may violate constraints. It is not necessarily a valid solution. Four queens is the smaller version of eight queens. Queens attack along rows, columns, and diagonals. The sliding puzzle remains a path-finding task, and the scheduled GUI demonstrates legal moves rather than implementing a local-search solver. Source: AIMA local search section and the original Lecture 11 Beamer source."
+  },
+  {
+    "objectID": "slides/lec11_Local_Search.html#queens-state-cost-and-neighborhood",
+    "href": "slides/lec11_Local_Search.html#queens-state-cost-and-neighborhood",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Queens: State, Cost, and Neighborhood",
+    "text": "Queens: State, Cost, and Neighborhood\n\nState s: one queen per column. Each list entry gives that queen’s row.\nCost c(s): pairs sharing a row or diagonal, counting each pair once. A solution has c(s)=0.\nNeighborhood N(s): move one queen to a different row in its column.\n\n\n\nWith 4 queens, how many neighbors? With 8 queens?  4\\times3=12 and 8\\times7=56.\n\n\nRows are numbered top to bottom, columns left to right. Q denotes a queen. Starting with all queens present makes every state a complete assignment, even when queens attack. A pair attacks if it shares a row or if its row difference equals its column difference in absolute value. Sharing a column is impossible in this representation. There are six distinct pairs among four queens, so this starting cost is 6, not 12. Each of n queens has n-1 alternative rows, giving n(n-1) distinct neighbors. A systematic construction can instead add queens one at a time and backtrack when constraints fail. We use four queens to make the same eight-queens representation visible at a readable size. Source: AIMA n-queens local-search formulation. Worked boards are original course examples."
+  },
+  {
+    "objectID": "slides/lec11_Local_Search.html#queens-trace",
+    "href": "slides/lec11_Local_Search.html#queens-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Greedy Queen-Move Trace",
+    "text": "A Greedy Queen-Move Trace\nHill climbing chooses a best immediate neighbor. For our cost, it moves downhill and accepts only a strict decrease.\n\n  \n  \n  \n  \n\n\n\nMove column 2: cost 6 to 3. Choose one of the best moves if tied.\n\n\nMove column 1: cost 3 to 1. Recompute neighbors from the new board.\n\n\nMove column 4: cost 1 to 0. This run succeeds, but other starting states can get stuck.\n\n\n\nAt each step, consider all 12 neighbors, not just the selected queen. The chosen successor has minimum neighbor cost: 3, then 1, then 0. Equal best neighbors exist, so this is one valid greedy trace rather than a uniquely prescribed path. The gold queen marks the queen just moved. After the first move the three attacking pairs are columns (1,3), (1,4), and (3,4). After the second move only columns 3 and 4 attack. The last board [2,4,1,3] solves four queens. Source: original course example using the AIMA neighborhood."
+  },
+  {
+    "objectID": "slides/lec11_Local_Search.html#hill-climbing-pseudocode",
+    "href": "slides/lec11_Local_Search.html#hill-climbing-pseudocode",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Hill-Climbing Pseudocode",
+    "text": "Hill-Climbing Pseudocode\ns is the current state, N(s) its neighbors, and K a move budget. LOWEST_COST chooses a neighbor with smallest c.\n\n  HILL_CLIMB(s, K)\n  for step in 1 .. K:\n  if EMPTY(N(s)): return s\n  n &lt;- LOWEST_COST(N(s))\n  if c(n) &gt;= c(s): return s\n  s &lt;- n\n  return s\n\n\nStopping means no strict local improvement or budget exhausted. Check the returned cost before calling it a solution.\n\n\nThis is steepest-ascent hill climbing expressed as cost minimization, also called steepest descent. It scans the neighborhood and chooses a best candidate. A streaming scan can retain only the best neighbor rather than materializing the whole set. Memory savings are therefore implementation dependent. Ties between equally good successors may be broken arbitrarily. The &gt;= test prevents sideways moves, so a finite state space cannot cycle through accepted states. A known goal cost such as zero in n-queens permits an additional early stop. For general optimization, a low cost does not certify a global optimum. Source: AIMA hill-climbing algorithm, adapted to a cost and finite budget."
+  },
+  {
+    "objectID": "slides/lec11_Local_Search.html#minimum-trace",
+    "href": "slides/lec11_Local_Search.html#minimum-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Local Minimum Can Stop the Search",
+    "text": "A Local Minimum Can Stop the Search\nA local minimum is no worse than its neighbors. A global minimum has the lowest cost in the entire state space below.\n\n  \n  \n  \n\n\n\nFrom A, move to B: cost 8 to 5.\n\n\nFrom B, move to C, cost 2. Then stop: B costs 5, D costs 4. The better state G is beyond a worsening move.\n\n\n\nThe graph is the whole state space for this toy problem. Edges define neighbors, and the numbers inside circles are state costs, not edge costs. The vertical placement only helps show lower and higher cost. C is a strict local minimum because both its neighbors have higher cost. G is the global minimum. If the goal were cost 0, hill climbing from A would fail to find an existing solution. With a score to maximize, the equivalent trap is a local maximum. Source: original course illustration of the AIMA landscape concept."
+  },
+  {
+    "objectID": "slides/lec11_Local_Search.html#plateaus-and-restricted-moves",
+    "href": "slides/lec11_Local_Search.html#plateaus-and-restricted-moves",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Plateaus and Restricted Moves",
+    "text": "Plateaus and Restricted Moves\nA plateau has equal-cost neighbors. A ridge for a score, or narrow valley for a cost, may point between the allowed move directions.\n\n\nLimited sideways moves can cross a plateau but may cycle. A different neighborhood can help, when the problem permits it.\n\n\nIn the left graph, the current state is the first 2. Strict improvement halts immediately. Two equal-cost moves would reach the third 2, which has a lower-cost neighbor. A sideways-move budget or cycle detection prevents indefinite wandering, but does not guarantee success. In the right grid, lower numbers are better. From the bottom-right 3, up and left both give 5. A diagonal move would give 2, but it is outside this chosen neighborhood. This demonstrates how an apparently favorable direction may not be an available step. A narrow valley can produce slow zigzag progress or traps in a discrete neighborhood. We cannot arbitrarily introduce illegal puzzle moves. Source: AIMA plateaus and ridges, with original discrete course examples."
+  },
+  {
+    "objectID": "slides/lec11_Local_Search.html#annealing-trace",
+    "href": "slides/lec11_Local_Search.html#annealing-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Simulated Annealing: Crossing a Cost Barrier",
+    "text": "Simulated Annealing: Crossing a Cost Barrier\nAnnealing heats a material and cools it. Simulated annealing borrows the temperature idea: it sometimes accepts a worse candidate.\n\n  \n  \n  \n  \n  \n\n\n\nSuppose we accept C to D: cost rises from 2 to 4.\n\n\nThen propose E, cost 3. It improves on D, though C was better.\n\n\nThen F, cost 1, improves the best record.\n\n\nThen G, cost 0. This is one possible random trajectory, not a guaranteed route.\n\n\n\nAll comparisons use the current state, not the best state previously seen. E3 improves on current D4 and is accepted even though the earlier C2 was better. The gold circles mark previously visited states, and teal marks the current state. At C, the move to D is worsening and requires a probabilistic acceptance decision. Later steps also depend on which neighbor is proposed. The next slide quantifies the acceptance probability. The physical analogy is settling into low-energy configurations; avoid claiming that annealing always increases a material’s strength. Source: original Lecture 11 annealing motivation and AIMA simulated annealing. Graph and trajectory are original course examples."
+  },
+  {
+    "objectID": "slides/lec11_Local_Search.html#the-annealing-acceptance-rule",
+    "href": "slides/lec11_Local_Search.html#the-annealing-acceptance-rule",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Annealing Acceptance Rule",
+    "text": "The Annealing Acceptance Rule\nFor current state s and proposed neighbor n, let \\Delta=c(n)-c(s). Temperature T&gt;0 controls acceptance of a cost increase.\n\nP(\\text{accept})=\n\\begin{cases}\n1, & \\Delta\\le0,\\\\\n\\exp(-\\Delta/T), & \\Delta&gt;0.\n\\end{cases}\n\nFor a proposed cost increase from 2 to 4, \\Delta=2. Draw u uniformly from [0,1) and accept if u&lt;P(\\text{accept}).\n\n\n\nTemperature T\nProbability for \\Delta=2\nWith u=0.30\n\n\n\n\n4\ne^{-0.5}\\approx0.607\nAccept\n\n\n1\ne^{-2}\\approx0.135\nReject\n\n\n0.25\ne^{-8}\\approx0.000335\nReject\n\n\n\n\nP denotes probability. exp(z) is the exponential function e to the power z. The uniform random number is a fresh draw for each proposal; the fixed u=0.30 only illustrates how temperature changes the decision for the same draw. Improvements and equal-cost moves have probability one under this rule. As T decreases, a fixed positive delta has smaller acceptance probability. Larger cost increases are also less likely at a fixed temperature. The argument -delta/T is negative for worsening moves. If T is zero or negative, stop before evaluating the exponential. Source: AIMA simulated-annealing acceptance rule. Numerical probabilities are rounded."
+  },
+  {
+    "objectID": "slides/lec11_Local_Search.html#cooling-and-the-best-state-record",
+    "href": "slides/lec11_Local_Search.html#cooling-and-the-best-state-record",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Cooling and the Best-State Record",
+    "text": "Cooling and the Best-State Record\nA cooling schedule lowers temperature: T(t)=T_0\\rho^t, with starting temperature T_0&gt;0 and cooling factor 0&lt;\\rho&lt;1.\n\n\nCooling too fast can freeze the search near a local minimum.\nCooling slowly spends more of the budget exploring. Test several random seeds.\n\n\nCurrent cost 4, best seen 2. Which state should we return?  The saved state with cost 2.\n\n\nT0 is the starting temperature, rho the multiplicative cooling factor, and t the iteration count starting at zero. A rho closer to 1 cools more slowly for a fixed starting temperature and iteration count. Temperature has to be interpreted relative to the scale of cost differences. Multiplying the objective by 100 while keeping T fixed greatly reduces acceptance of worsening moves. The plotted sequence is an illustrative accepted-state history, not output from the notebook. At accepted move 4, current cost is 4 but best cost is 2. Save the state, not just its numeric score. Finite practical schedules do not guarantee the global optimum. Source: AIMA cooling discussion and original course trace."
+  },
+  {
+    "objectID": "slides/lec11_Local_Search.html#takeaways",
+    "href": "slides/lec11_Local_Search.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\n\n\n\n\n\n\n\nMethod\nMove rule\nMain limitation\n\n\n\n\nHill climbing\nTake a best strictly improving neighbor\nCan stop above the global minimum\n\n\nRandom restarts\nTry new starts, keep the best result\nRepeated work, limited attempts\n\n\nSimulated annealing\nSometimes accept a worse candidate\nDepends on proposals and cooling\n\n\n\n\nDefine the state, cost, and neighborhood precisely. Check whether an algorithm returns the current state or the best state it has seen.\n\nCode: Simulated annealing notebook\nDemo: Sliding puzzle\nAsset credits\n\nThe GUI is a graphical user interface written with PySide6. It shuffles a solved puzzle by legal moves and lets a player slide tiles. It does not contain a hill-climbing or annealing solver. Use it to revisit which moves define a neighborhood and why a sliding-puzzle solution needs a legal path. For the annealing notebook, compare global proposals with small local proposals as an experiment without changing the acceptance rule. These links remain separate from the slides so the code can be discussed on its existing page. Local search often sacrifices completeness or optimality guarantees in exchange for modest memory and useful solutions under a budget."
   }
 ]

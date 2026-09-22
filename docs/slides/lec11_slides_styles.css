@@ -1,0 +1,67 @@
+/* The slides_styles filename also lets the viewer load this deck's sizing. */
+.reveal section.local-slide {
+  font-size: 0.88em;
+}
+
+.reveal section.local-slide h2 {
+  margin-top: 0;
+}
+
+.reveal section.local-slide table {
+  font-size: 0.8em;
+  line-height: 1.25;
+}
+
+.reveal section.local-slide th,
+.reveal section.local-slide td {
+  padding: 0.43em 0.5em;
+}
+
+.reveal section.local-slide img.local-wide,
+.reveal section.local-slide img.local-queens,
+.reveal section.local-slide img.local-history,
+.reveal section.local-slide img.local-notebook-plot {
+  border: 0;
+  box-shadow: none;
+  display: block;
+  height: auto;
+  margin: 0.15em auto;
+  object-fit: contain;
+  width: 100%;
+}
+
+.reveal section.local-slide img.local-wide { max-height: 310px; }
+.reveal section.local-slide img.local-queens { max-height: 240px; }
+.reveal section.local-slide img.local-history { max-height: 245px; }
+.reveal section.local-slide img.local-notebook-plot { max-height: 275px; }
+
+.reveal section.local-pseudocode .pseudo-code {
+  font-size: 0.72em;
+  line-height: 1.38;
+}
+
+.reveal section.local-trace .trace-tree-frames {
+  aspect-ratio: 900 / 350;
+  margin: 0.15em auto;
+  max-width: 100%;
+  width: 860px;
+}
+
+.reveal section.local-trace .local-steps {
+  font-size: 0.89em;
+}
+
+.reveal section.local-trace .local-steps p {
+  margin: 0.32em 0;
+}
+
+.reveal section.local-trace .takeaway {
+  font-size: 1em;
+  margin-top: 0.4em;
+  padding-top: 0.42em;
+  padding-bottom: 0.42em;
+}
+
+.reveal section#annealing-trace .trace-tree-frames { width: 800px; }
+.reveal section#annealing-trace .local-steps { font-size: 0.85em; }
+.reveal section.acceptance-slide .math.display { font-size: 0.86em; }
