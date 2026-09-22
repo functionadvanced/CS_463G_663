@@ -1,0 +1,30 @@
+pre.sourceCode,
+pre.sourceCode code {
+  white-space: normal;
+}
+
+pre.sourceCode code > span {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+pre.sourceCode code,
+pre.numberSource code > span {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (max-width: 600px) {
+  pre.sourceCode {
+    padding: 0.7rem 0.45rem;
+  }
+
+  pre.numberSource code > span {
+    padding-left: 2.8rem;
+  }
+
+  pre.numberSource code > span > a:first-child::before {
+    width: 2.4rem;
+  }
+}
