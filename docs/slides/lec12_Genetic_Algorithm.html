@@ -32,75 +32,10 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-    /* CSS for syntax highlighting */
-    html { -webkit-text-size-adjust: 100%; }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec12_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -229,311 +164,438 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="genetic-algorithms" class="slide level2 section-slide">
-<h2>Genetic Algorithms</h2>
+<section id="population-based-search" class="slide level2 ga-slide">
+<h2>Population-Based Search</h2>
+<p>A <strong>genetic algorithm (GA)</strong> searches with a <strong>population</strong> of candidate solutions. A <strong>generation</strong> is one round of reproduction and replacement.</p>
+<p><img data-src="imgs/drawio/lec12/population-cycle.png" class="ga-cycle" alt="A population evolves through choosing parents, crossover, mutation, and evaluation. Replacing the population begins a new generation."></p>
 <ul>
-<li>Genetic algorithms are population-based local search methods.</li>
-<li>They evolve many candidate solutions over generations.</li>
-<li>Better candidates are more likely to contribute to the next generation.</li>
-<li>Variation comes from crossover and mutation.</li>
+<li><strong>Selection</strong> chooses parents using solution quality.</li>
+<li><strong>Crossover</strong> combines parents; <strong>mutation</strong> introduces random changes.</li>
 </ul>
 <div class="takeaway">
-<p>Local search improves one state; genetic algorithms evolve a population of states.</p>
+<p>Unlike the single-state methods in Lecture 11, a GA keeps several candidates. More candidates do <strong>not</strong> guarantee a solution.</p>
 </div>
+<aside class="notes">
+<p>A candidate is often called an individual. The analogy to biological evolution motivates inheritance, selection, and variation, but a GA is a designed optimization procedure, not a literal model of natural evolution. Fitness is the task-specific score, introduced explicitly on the next two slides. The population is a collection that may contain duplicate candidates, not necessarily a mathematical set. This lecture develops one eight-queens example before connecting to the permutation representation used by the existing notebook. Source: AIMA genetic algorithms and the original Lecture 12 Beamer material.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="from-evolution-to-optimization" class="slide level2">
-<h2>From Evolution to Optimization</h2>
+<section id="encoding-an-8-queens-board" class="slide level2 ga-slide">
+<h2>Encoding an 8-Queens Board</h2>
+<p>Place <strong>eight queens</strong> so that no pair shares a row, column, or diagonal. Let <span class="math inline">x_i</span> be the row of the queen in column <span class="math inline">i</span>.</p>
+<p><img data-src="imgs/drawio/lec12/board-encoding.png" class="ga-board" alt="Eight-queens board and chromosome 24748552. Each position is a column; the sixth gene, value 5, places its queen in row 5 of column 6."></p>
+<p>A <strong>gene</strong> is one entry <span class="math inline">x_i</span>; a <strong>chromosome</strong> is the full candidate <span class="math inline">x=(x_1,\ldots,x_8)</span>.</p>
+<div class="takeaway">
+<p>One queen per column is automatic. <strong>Repeated rows are allowed</strong> in a candidate.</p>
+</div>
+<aside class="notes">
+<p>Rows and columns are numbered 1 through 8, with row 1 at the top. Every sequence of eight legal row values represents a board with one queen per column, even when the board is not a solution. There are 8^8 such encodings. The gene at column 6 has value 5; the entry is a row number, not a fitness value or tile label. Later we will impose a permutation constraint, which changes both the set of valid chromosomes and the operators. Source: the AIMA chromosome 24748552 carried over from the Spring 2025 lecture. Board redrawn for the course.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="fitness-count-non-attacking-pairs" class="slide level2 ga-slide">
+<h2>Fitness: Count Non-Attacking Pairs</h2>
+<p>There are <span class="math inline">\binom{8}{2}=28</span> unordered queen pairs. Let <span class="math inline">c(x)</span> count attacking pairs; maximize <strong>fitness</strong> <span class="math inline">F(x)=28-c(x)</span>.</p>
+<p><img data-src="imgs/drawio/lec12/fitness-pairs.png" class="ga-board" alt="For chromosome 24748552, lines mark attacking column pairs (1,8), (2,4), (3,8), and (6,7). Four conflicts leave fitness 24 out of 28."></p>
+<div class="question">
+<p>Is <span class="math inline">F(x)=24</span> a solution? <span class="fragment"> <strong>No.</strong> All 28 pairs must be non-attacking.</span></p>
+</div>
+<aside class="notes">
+<p>For columns i&lt;j, queens attack when x_i=x_j or |x_i-x_j|=j-i. Column conflicts are impossible under this encoding. The four attacking pairs in this example are (1,8), (2,4), (3,8), and (6,7), so the fitness is 24. Fitness counts pairs, not the number of correctly placed queens. A board can have high fitness without any queen being in an independently correct final location. Minimizing conflict count and maximizing non-attacking pairs rank these boards identically. For n queens, the target is n(n-1)/2. Source: AIMA’s eight-queens genetic algorithm example; pair enumeration checked for this diagram.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="selection-trace" class="slide level2 ga-slide search-trace ga-selection">
+<h2>Selecting Parents</h2>
+<p>Select parents with probability proportional to <strong>fitness</strong>.</p>
 <div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="in-nature">In Nature</h3>
-<ul>
-<li>Better-adapted individuals are more likely to survive and reproduce.</li>
-<li>Traits can be passed to future generations.</li>
-</ul>
-</div><div class="column" style="width:48%;">
-<h3 id="in-search">In Search</h3>
-<ul>
-<li>Higher-fitness solutions are more likely to be selected.</li>
-<li>Poor candidates are less likely to shape the next generation.</li>
-</ul>
-</div></div>
-</section>
-<section id="genes-and-chromosomes" class="slide level2">
-<h2>Genes and Chromosomes</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:46%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec12/gene.jpeg" class="cc0-figure"></p>
-<figcaption>Gene illustration</figcaption>
-</figure>
-</div>
-</div><div class="column" style="width:46%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec12/chromesome.jpeg" class="cc0-figure"></p>
-<figcaption>Chromosome illustration</figcaption>
-</figure>
-</div>
-</div></div>
+<div class="column" style="width:55%;">
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Biology term</th>
-<th>Genetic algorithm term</th>
+<th style="text-align: left;">Candidate</th>
+<th style="text-align: left;">Chromosome</th>
+<th style="text-align: right;"><span class="math inline">F</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Gene</td>
-<td>One encoded part of a candidate solution</td>
-</tr>
-<tr class="even">
-<td>Chromosome</td>
-<td>Full encoded candidate solution</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="core-components" class="slide level2">
-<h2>Core Components</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Component</th>
-<th>Role</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Population</td>
-<td>Set of candidate solutions</td>
-</tr>
-<tr class="even">
-<td>Representation</td>
-<td>Encoding of each candidate as a chromosome</td>
-</tr>
-<tr class="odd">
-<td>Fitness function</td>
-<td>Scores solution quality</td>
-</tr>
-<tr class="even">
-<td>Selection</td>
-<td>Chooses parents based on fitness</td>
-</tr>
-<tr class="odd">
-<td>Crossover</td>
-<td>Combines parents into offspring</td>
-</tr>
-<tr class="even">
-<td>Mutation</td>
-<td>Adds small random changes</td>
-</tr>
-<tr class="odd">
-<td>Termination</td>
-<td>Decides when to stop</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="genetic-algorithm-pseudocode" class="slide level2">
-<h2>Genetic Algorithm Pseudocode</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>GeneticAlgorithm(N, mutationProb, crossoverProb):</span>
-<span id="cb1-2"><a></a>    initialize population P <span class="cf">with</span> N random individuals</span>
-<span id="cb1-3"><a></a></span>
-<span id="cb1-4"><a></a>    <span class="cf">while</span> stopping criterion <span class="kw">is</span> <span class="kw">not</span> met:</span>
-<span id="cb1-5"><a></a>        compute fitness <span class="cf">for</span> every individual <span class="kw">in</span> P</span>
-<span id="cb1-6"><a></a>        newPopulation <span class="op">=</span> []</span>
-<span id="cb1-7"><a></a></span>
-<span id="cb1-8"><a></a>        <span class="cf">while</span> newPopulation <span class="kw">is</span> <span class="kw">not</span> full:</span>
-<span id="cb1-9"><a></a>            select two parents <span class="im">from</span> P based on fitness</span>
-<span id="cb1-10"><a></a>            create offspring by crossover <span class="cf">with</span> probability crossoverProb</span>
-<span id="cb1-11"><a></a>            mutate offspring <span class="cf">with</span> probability mutationProb</span>
-<span id="cb1-12"><a></a>            add offspring to newPopulation</span>
-<span id="cb1-13"><a></a></span>
-<span id="cb1-14"><a></a>        P <span class="op">=</span> newPopulation</span>
-<span id="cb1-15"><a></a></span>
-<span id="cb1-16"><a></a>    <span class="cf">return</span> best individual found</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="queens-representation" class="slide level2">
-<h2>8-Queens Representation</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:50%;">
-<ul>
-<li>Encode a board as 8 integers.</li>
-<li>Each integer gives the row position of a queen in one column.</li>
-<li>Example chromosome: <span class="math inline">2\ 4\ 7\ 4\ 8\ 5\ 5\ 2</span>.</li>
-</ul>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: right;">Column</th>
-<th style="text-align: right;">1</th>
-<th style="text-align: right;">2</th>
-<th style="text-align: right;">3</th>
-<th style="text-align: right;">4</th>
-<th style="text-align: right;">5</th>
-<th style="text-align: right;">6</th>
-<th style="text-align: right;">7</th>
-<th style="text-align: right;">8</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">Row</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">2</td>
-</tr>
-</tbody>
-</table>
-</div><div class="column" style="width:46%;">
-<ul>
-<li>A valid solution has 28 non-attacking queen pairs.</li>
-<li>Fitness can be the number of non-attacking pairs.</li>
-<li>Example fitness: 24, or <span class="math inline">24/28</span> normalized.</li>
-</ul>
-<div class="takeaway">
-<p>Representation and fitness define what evolution can discover.</p>
-</div>
-</div></div>
-</section>
-<section id="initial-population" class="slide level2">
-<h2>Initial Population</h2>
-<p>Step 1: generate candidate chromosomes.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: right;">Individual</th>
-<th>Chromosome</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td>24748552</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2</td>
-<td>32752411</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">3</td>
-<td>24415124</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">4</td>
-<td>32543213</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="fitness-weights" class="slide level2">
-<h2>Fitness Weights</h2>
-<p>Step 2: no individual is already a solution, so compute selection weights.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Chromosome</th>
-<th style="text-align: right;">Non-attacking pairs</th>
-<th style="text-align: right;">Selection weight</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>24748552</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: left;">24748552</td>
 <td style="text-align: right;">24</td>
-<td style="text-align: right;"><span class="math inline">24/(24+23+20+11)</span></td>
 </tr>
 <tr class="even">
-<td>32752411</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: left;">32752411</td>
 <td style="text-align: right;">23</td>
-<td style="text-align: right;"><span class="math inline">23/(24+23+20+11)</span></td>
 </tr>
 <tr class="odd">
-<td>24415124</td>
+<td style="text-align: left;">C</td>
+<td style="text-align: left;">24415124</td>
 <td style="text-align: right;">20</td>
-<td style="text-align: right;"><span class="math inline">20/(24+23+20+11)</span></td>
 </tr>
 <tr class="even">
-<td>32543213</td>
+<td style="text-align: left;">D</td>
+<td style="text-align: left;">32543213</td>
 <td style="text-align: right;">11</td>
-<td style="text-align: right;"><span class="math inline">11/(24+23+20+11)</span></td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="selection" class="slide level2">
-<h2>Selection</h2>
-<p>Step 3: select the next generation based on fitness weights.</p>
-
-<img data-src="imgs/lec12/genetic_selection.png" class="cc0-figure r-stretch quarto-figure-center"><p class="caption">Genetic selection example</p><div class="takeaway">
-<p>Higher fitness means higher probability, not a guarantee.</p>
-</div>
-</section>
-<section id="crossover" class="slide level2">
-<h2>Crossover</h2>
-<p>Step 4: pair selected parents and exchange chromosome segments.</p>
-<div class="columns visual-pair">
-<div class="column" style="width:42%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec12/genetic_crossover.png" class="cc0-figure"></p>
-<figcaption>Genetic crossover pairing</figcaption>
-</figure>
-</div>
-</div><div class="column" style="width:52%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec12/crossover.png" class="cc0-figure"></p>
-<figcaption>Crossover example</figcaption>
-</figure>
-</div>
+</div><div class="column" style="width:41%;">
+<h3 id="candidate-is-fitness-f_i">Candidate <span class="math inline">i</span>’s fitness: <span class="math inline">F_i</span></h3>
+<p><span class="math inline">P(\text{choose }i)=F_i/78</span>.</p>
+<p>Total fitness: <strong>78</strong>. For B: <span class="math inline">23/78\approx29.5\%</span>.</p>
+<p>Draw <span class="math inline">u</span> uniformly in <span class="math inline">[0,1)</span>.</p>
 </div></div>
-</section>
-<section id="mutation" class="slide level2">
-<h2>Mutation</h2>
-<p>Step 5: randomly change genes with a small probability.</p>
-<div class="columns visual-pair">
-<div class="column" style="width:54%;">
-<ul>
-<li>Example mutation probability: 10%.</li>
-<li>A mutated gene is replaced by another legal row number from 1 to 8.</li>
-<li>Mutation helps maintain diversity.</li>
-<li>Replace the population with the offspring and loop.</li>
-</ul>
-</div><div class="column" style="width:36%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec12/genetic_mutation.png" class="cc0-figure"></p>
-<figcaption>Genetic mutation example</figcaption>
-</figure>
+<div class="trace-tree-frames" role="img" aria-label="A weighted interval contains A, B, C, D in proportions 24, 23, 20, 11. A draw of 0.40 selects B. Four draws 0.40, 0.10, 0.50, 0.75 select B, A, B, C.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec12/selection-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec12/selection-1.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec12/selection-2.png" alt="" aria-hidden="true">
 </div>
-</div></div>
+<div class="ga-steps">
+<div class="fragment" data-fragment-index="0">
+<p>First draw: <strong>B</strong>. Keep B available for later draws.</p>
+</div>
+<div class="takeaway fragment" data-fragment-index="1">
+<p>Selected parents: <strong>B, A, B, C</strong>; next, form two pairs.</p>
+</div>
+</div>
+<aside class="notes">
+<p>Fitness-proportionate selection is also called roulette-wheel selection. The cumulative boundaries are 24/78, 47/78, 67/78, and 1. The four fixed draws are an illustrative sample, not an output claimed from the notebook. Selection copies or references parents for reproduction; the sampled parent list is not yet the final new generation. If all fitness values are zero, use a defined fallback such as uniform sampling rather than dividing by zero. This formula requires nonnegative weights. The notebook instead uses tournament selection, explained on the permutation slide. Source: the original AIMA population and scores, with explicit uniform draws added for the course.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="whole-process" class="slide level2">
-<h2>Whole Process</h2>
-
-<img data-src="imgs/lec12/genetic_8_queen.png" class="cc0-figure r-stretch quarto-figure-center"><p class="caption">Genetic algorithm process for 8 queens</p></section>
-<section id="representation-matters" class="slide level2">
-<h2>Representation Matters</h2>
+<section id="crossover-trace" class="slide level2 ga-slide search-trace ga-trace">
+<h2>One-Point Crossover</h2>
+<p>For the first selected pair <strong>B and A</strong>, choose a cut after gene 3. A <strong>child</strong>, or offspring, inherits a prefix from one parent and a suffix from the other.</p>
+<div class="trace-tree-frames" role="img" aria-label="Parents B 32752411 and A 24748552 are cut after gene 3. The children are 32748552 with fitness 23 and 24752411 with fitness 22. Colors show which parent supplies each segment.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec12/crossover-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec12/crossover-1.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec12/crossover-2.png" alt="" aria-hidden="true">
+</div>
+<div class="ga-steps">
+<div class="fragment" data-fragment-index="0">
+<p>Child 1: <strong>B’s prefix + A’s suffix</strong>.</p>
+</div>
+<div class="takeaway fragment" data-fragment-index="1">
+<p>Child 2 uses the other two segments. A valid encoding is preserved, but <strong>fitness need not improve</strong>.</p>
+</div>
+</div>
+<aside class="notes">
+<p>One-point crossover chooses a boundary between genes. We fix the boundary after column 3 to make the inheritance visible. Pink genes come from B; teal genes come from A. B has fitness 23, A has 24, and the children have 23 and 22. Every gene remains a legal row value, so both children are valid chromosomes under the unrestricted row-vector encoding, even though neither solves the queens problem. The second pair B,C at the same cut produces 32715124 and 24452411, with fitness 22 and 18. These four children feed the replacement example. The pseudocode later creates one child per parent draw rather than requiring pairs of children; both are standard design choices. Source: AIMA one-point crossover, with these child scores independently calculated.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="mutation-trace" class="slide level2 ga-slide search-trace ga-mutation">
+<h2>Mutation: Change a Gene</h2>
+<p>In this encoding, each gene may independently change to another row. For example, use mutation probability <span class="math inline">p_{\text{gene}}=0.10</span>.</p>
+<div class="trace-tree-frames" role="img" aria-label="Child 32748552 has fitness 23. Mutating gene 6 from row 5 to row 6 produces 32748652 with fitness 21. The board and chromosome highlight the changed queen.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec12/mutation-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec12/mutation-1.png" alt="" aria-hidden="true">
+</div>
+<div class="takeaway fragment" data-fragment-index="0">
+<p>This mutation makes the child <strong>worse</strong>. Mutation introduces variation; it does not promise improvement.</p>
+</div>
+<aside class="notes">
+<p>The example changes only gene 6 in child 1 from row 5 to row 6. All other genes and the other three children remain unchanged in our worked generation. The chromosome becomes 32748652 and fitness drops from 23 to 21. Choosing a different replacement row would produce a different score; mutation samples a change instead of testing all changes and taking the best. With independent probability 0.10 per gene, a child may have zero, one, or multiple mutations. This is different from a probability of mutating the child once. Select the new row from the other seven values if a triggered mutation is required to actually change the gene. Source: original Lecture 12 mutation mechanism, with a course example chosen to demonstrate a fitness decrease.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="replacement-and-elitism" class="slide level2 ga-slide">
+<h2>Replacement and Elitism</h2>
+<p>Cross <strong>B and C</strong> at the same cut. Of the four children, mutate only <strong>child 1 from B and A</strong>.</p>
+<p><img data-src="imgs/drawio/lec12/replacement.png" class="ga-replacement" alt="The old population has fitness values 24,23,20,11. Our four children after mutation have fitness 21,22,22,18. Replacing the whole population lowers its best fitness from 24 to 22."></p>
+<div class="question">
+<p>How can we keep the best fitness from dropping? <span class="fragment"> <strong>Elitism:</strong> copy the best candidate unchanged, then fill the remaining slots with children.</span></p>
+</div>
+<div class="takeaway fragment">
+<p>Keeping one elite protects the <strong>best score</strong>, not the average. Keep the population size fixed.</p>
+</div>
+<aside class="notes">
+<p>This figure completes the same generation used on the selection, crossover, and mutation slides. The selected pairs B,A and B,C are both cut after gene 3. Only child 32748552 mutates, becoming 32748652. The offspring fitness values are consequently 21,22,22,18. The original best chromosome A has fitness 24 and is absent from those four children. In a size-four population with one elite, copy A unchanged and generate or retain only three children. This is a variant of full generational replacement, not an extra fifth individual. Protect an independent copy from later mutation. A separate best-ever record can preserve the returned answer even when the population itself loses it; elitism additionally keeps that candidate in the population. Source: original course continuation of the AIMA example and the notebook’s one-elite policy.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ga-pseudocode" class="slide level2 ga-slide ga-pseudocode">
+<h2>Genetic Algorithm Pseudocode</h2>
+<p><span class="math inline">N</span> is population size; <span class="math inline">G</span> is the generation budget. <code>EVALUATE</code> assigns fitness <span class="math inline">F</span>. This version keeps <strong>one elite</strong>.</p>
+<div class="pseudo-code" aria-label="A genetic algorithm with one elite, explicit evaluation of each new population, a best-ever record, and a generation budget">
+  <div class="pseudo-line"><span class="pseudo-fn">GENETIC</span>(<span class="pseudo-var">N</span>, <span class="pseudo-var">G</span>, <span class="pseudo-var">target</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-var">P</span> &lt;- <span class="pseudo-fn">RANDOM_POP</span>(<span class="pseudo-var">N</span>); <span class="pseudo-fn">EVALUATE</span>(<span class="pseudo-var">P</span>)</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-var">best</span> &lt;- <span class="pseudo-fn">COPY</span>(<span class="pseudo-fn">ARGMAX_F</span>(<span class="pseudo-var">P</span>))</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">for</span> <span class="pseudo-var">generation</span> <span class="pseudo-kw">in</span> <span class="pseudo-num">1</span> .. <span class="pseudo-var">G</span>:</div>
+  <div class="pseudo-line indent-2"><span class="pseudo-kw">if</span> <span class="pseudo-fn">F</span>(<span class="pseudo-var">best</span>) = <span class="pseudo-var">target</span>: <span class="pseudo-kw">break</span></div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="0"><span class="pseudo-var">next</span> &lt;- [<span class="pseudo-fn">COPY</span>(<span class="pseudo-fn">ARGMAX_F</span>(<span class="pseudo-var">P</span>))]</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-kw">while</span> <span class="pseudo-fn">SIZE</span>(<span class="pseudo-var">next</span>) &lt; <span class="pseudo-var">N</span>:</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="1"><span class="pseudo-var">a</span>, <span class="pseudo-var">b</span> &lt;- <span class="pseudo-fn">SELECT</span>(<span class="pseudo-var">P</span>), <span class="pseudo-fn">SELECT</span>(<span class="pseudo-var">P</span>)</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="1"><span class="pseudo-var">child</span> &lt;- <span class="pseudo-fn">MUTATE</span>(<span class="pseudo-fn">CROSSOVER</span>(<span class="pseudo-var">a</span>, <span class="pseudo-var">b</span>))</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="1"><span class="pseudo-fn">APPEND</span>(<span class="pseudo-var">next</span>, <span class="pseudo-var">child</span>)</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="2"><span class="pseudo-var">P</span> &lt;- <span class="pseudo-var">next</span>; <span class="pseudo-fn">EVALUATE</span>(<span class="pseudo-var">P</span>)</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="2"><span class="pseudo-kw">if</span> <span class="pseudo-fn">MAX_F</span>(<span class="pseudo-var">P</span>) &gt; <span class="pseudo-fn">F</span>(<span class="pseudo-var">best</span>): <span class="pseudo-var">best</span> &lt;- <span class="pseudo-fn">COPY</span>(<span class="pseudo-fn">ARGMAX_F</span>(<span class="pseudo-var">P</span>))</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">return</span> <span class="pseudo-var">best</span></div>
+</div>
+<div class="ga-caption">
+<p><code>ARGMAX_F</code> returns a highest-fitness candidate; <code>MAX_F</code> returns its score. For eight queens, <code>target = 28</code>.</p>
+</div>
+<aside class="notes">
+<p>P and next are populations; a and b are parents; child is a newly created chromosome. COPY makes an independent snapshot. N should be at least two for one-elite reproduction to produce new candidates. SELECT implements a stated selection rule, and CROSSOVER and MUTATE must preserve the chosen encoding without altering the parents. Mutation parameters can be passed to MUTATE or stored as configuration. All individuals are evaluated before comparison, including those produced in the last allowed generation. Returning best does not mean target was reached. With valid elitism, the best in P is already a best-ever candidate; the explicit best variable makes the return contract clear and remains useful in variants without elitism. Source: course pseudocode based on AIMA and the existing notebook, not a transcription of its implementation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-different-encoding-permutations" class="slide level2 ga-slide">
+<h2>A Different Encoding: Permutations</h2>
+<p>Require each row number to appear <strong>exactly once</strong>. A permutation then prevents both row and column conflicts; only diagonals remain.</p>
+<p><img data-src="imgs/drawio/lec12/permutation-constraint.png" class="ga-constraint" alt="Four-gene permutations 1234 and 3412 produce naive one-point child 1212 at a cut after gene 2. This duplicates 1 and 2 and loses 3 and 4, violating the permutation encoding."></p>
+<div class="takeaway">
+<p>Operators must preserve the encoding. The notebook uses a <strong>permutation-preserving crossover</strong>, not ordinary one-point crossover.</p>
+</div>
+<aside class="notes">
+<p>The four-gene example is only an encoding check, not a claimed four-queens solution. Repeated rows were allowed under the earlier row-vector encoding, so 1212 was an encodable candidate there; it is invalid specifically under the permutation encoding. For eight queens there are 8! permutations instead of 8^8 unrestricted row vectors. The existing genetic_8_queen notebook uses random.sample(range(n),n) to create permutations and currently sets n=30. It also changes selection: tournament selection samples a group and chooses its highest-fitness member. The notebook samples ten candidates per tournament. That rule does not divide fitness by the population’s total. Source: existing genetic_8_queen.ipynb and standard representation constraints.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="permutation-trace" class="slide level2 ga-slide search-trace ga-permutation">
+<h2>Permutation-Preserving Crossover</h2>
+<p>Copy a segment from A, then fill the gaps using <strong>unused values in B’s order</strong>.</p>
+<div class="trace-tree-frames" role="img" aria-label="From parent A 24718536, copy columns 3 through 5, values 7,1,8. Read parent B 32758416 and skip those values, leaving 3,2,5,4,6. Fill gaps left to right to obtain child 32718546.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec12/permutation-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec12/permutation-1.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec12/permutation-2.png" alt="" aria-hidden="true">
+</div>
+<div class="ga-steps">
+<div class="fragment" data-fragment-index="0">
+<p>Keep <strong>7, 1, 8</strong> fixed. B contributes <strong>3, 2, 5, 4, 6</strong>.</p>
+</div>
+<div class="takeaway fragment" data-fragment-index="1">
+<p>The child is a permutation, but its fitness is <strong>25</strong>, below A’s <strong>27</strong>.</p>
+</div>
+</div>
+<aside class="notes">
+<p>This example follows the supplied notebook’s implementation exactly: copy parent1[start:end], take unused values from parent2 in left-to-right order, then fill the child’s empty positions from left to right. With human column labels 3 through 5, the zero-based Python slice is [2:5]. The notebook’s comment calls this Order Crossover (OX), but its implementation does not use the cyclic fill order of some textbook OX definitions; describe the actual operation rather than relying on that abbreviation. In the figures, rows use labels 1 through 8. Subtract one from every row value when comparing with the notebook’s zero-based encoding; pairwise conflicts do not change. Source: genetic_8_queen.ipynb crossover function. These illustrative parents and scores are original course examples.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="mutation-depends-on-the-encoding" class="slide level2 ga-slide">
+<h2>Mutation Depends on the Encoding</h2>
+<p>A permutation cannot freely replace one value: it could create a duplicate. <strong>Swap mutation</strong> exchanges two positions instead.</p>
+<p><img data-src="imgs/drawio/lec12/swap-mutation.png" class="ga-swap" alt="Swapping columns 2 and 6 changes permutation 32718546 to 35718246. The values 2 and 5 exchange places; fitness changes from 25 to 26 and every row value still occurs once."></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Row-vector example</th>
+<th style="text-align: left;">Permutation notebook</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">0.10</span> chance <strong>per gene</strong> to replace its row</td>
+<td style="text-align: left;"><span class="math inline">0.30</span> chance <strong>per child</strong> to swap two entries</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Several genes may change independently</td>
+<td style="text-align: left;">At most one swap per child</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>These rates describe <strong>different events</strong>. A swap preserves the permutation, but may improve or worsen fitness.</p>
+</div>
+<aside class="notes">
+<p>For this child, swapping the values at human columns 2 and 6 changes fitness from 25 to 26. Both positions must be distinct. The notebook’s mutate function draws one random value to decide whether to swap, then samples two positions. Thus mutation_rate=0.3 does not mean that each queen mutates with probability 0.3. By contrast, independent per-gene probability 0.1 on eight genes gives probability 1-0.9^8 of at least one triggered change, about 0.57. Parameter values cannot be compared meaningfully without knowing their events. Source: original lecture’s per-gene mutation and existing notebook’s swap mutation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="diversity-and-stopping" class="slide level2 ga-slide">
+<h2>Diversity and Stopping</h2>
+<p><strong>Diversity</strong> means having different chromosomes in the population. Strong selection can make the population increasingly similar.</p>
+<p><img data-src="imgs/drawio/lec12/identical-parents.png" class="ga-diversity" alt="Two identical parent chromosomes 24718536 produce the same chromosome under crossover when mutation is absent."></p>
+<div class="question">
+<p>Can crossover alone create a new chromosome from identical parents? <span class="fragment"> <strong>No.</strong> Mutation can introduce variation that is missing from the population.</span></p>
+</div>
 <ul>
-<li>Chromosome design strongly affects search quality.</li>
-<li>Fitness design determines what the algorithm rewards.</li>
-<li>Poor representation can make good solutions hard to reach.</li>
+<li>Stop at the target fitness or a time / generation budget.</li>
+<li>Keep the best candidate; report whether it actually reached the target.</li>
+<li>Compare several random seeds, including unsuccessful runs.</li>
 </ul>
-<p>Example application: circuit layout optimization.</p>
-<ul>
-<li>Place integrated-circuit components efficiently.</li>
-<li>Minimize space and power consumption.</li>
-<li>Improve performance.</li>
-</ul>
+<aside class="notes">
+<p>Premature convergence means losing diversity and concentrating around candidates before finding a sufficiently good solution. Mutation can help, but does not guarantee escape or success in a finite run. Excessive mutation can also disrupt useful combinations. Elitism preserves a maximum score but does not force average fitness to increase. Tournament size and fitness scaling affect selection pressure; larger tournaments generally favor the strongest candidates more aggressively. A generation limit is a resource limit, not evidence that the problem has no solution. Source: AIMA discussion of genetic search and the notebook’s exploration questions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="takeaways" class="slide level2 ga-slide">
+<h2>Takeaways</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Design choice</th>
+<th style="text-align: left;">Worked example</th>
+<th style="text-align: left;">Existing notebook</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Encoding</td>
+<td style="text-align: left;">Row vector; repeats allowed</td>
+<td style="text-align: left;">Permutation of rows</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Parent selection</td>
+<td style="text-align: left;">Fitness-weighted sampling</td>
+<td style="text-align: left;">Tournament: best of 10 random candidates</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Crossover</td>
+<td style="text-align: left;">Exchange tails at one cut</td>
+<td style="text-align: left;">Copy a segment, fill unused values</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mutation</td>
+<td style="text-align: left;">Replace individual genes</td>
+<td style="text-align: left;">Swap two positions</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Replacement</td>
+<td style="text-align: left;">Full replacement can lose the best</td>
+<td style="text-align: left;">Keep one elite</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>Define the encoding and fitness first. <strong>Selection favors</strong>, <strong>crossover combines</strong>, and <strong>mutation varies</strong> candidates; none alone guarantees a solution.</p>
+</div>
+<p><strong>Code:</strong> <a href="../code_and_homework/genetic_8_queen.html" target="_blank" rel="noopener">Genetic N-Queens notebook</a><br>
+Notebook defaults: <span class="math inline">n=30</span>, target fitness <strong>435</strong>, row indices <strong>0 to 29</strong>.</p>
 <p><a class="asset-credit-link" href="../asset_credits.html#lec12" target="_blank" rel="noopener">Asset credits</a></p>
+<aside class="notes">
+<p>A tournament selects the highest-fitness member of a randomly sampled group, not necessarily the best individual in the entire population. The notebook’s tournament size is ten, so its population must have at least ten candidates. Its default population size and generation limit are each 1000; these are experiment settings, not requirements of a GA. The file name retains eight queens even though the current experiment uses thirty. Slides explain the operators; runnable code remains on its own page. Source: genetic_8_queen.ipynb and original Lecture 12. The broader lesson applies beyond queens: representations should enforce structural constraints, while fitness measures the remaining objective.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 </section>

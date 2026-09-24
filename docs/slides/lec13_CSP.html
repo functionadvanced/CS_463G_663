@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec13_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -143,12 +144,6 @@
       margin-right: 0; 
     }
   </style>
-  <style>
-  .reveal table { font-size: 0.76em; line-height: 1.22; }
-  .reveal th, .reveal td { padding: 0.4em 0.48em; }
-  .reveal .csp-figure svg { display: block; width: 100%; max-height: 300px; }
-  .reveal img.csp-puzzle { height: 330px; width: 100%; object-fit: contain; }
-  </style>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -169,285 +164,71 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="constraint-satisfaction-problems" class="slide level2">
+<section id="constraint-satisfaction-problems" class="slide level2 csp-slide">
 <h2>Constraint Satisfaction Problems</h2>
-<p>A <strong>constraint satisfaction problem (CSP)</strong> consists of:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Piece</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Variables</td>
-<td><span class="math inline">X = \{X_1, X_2, \ldots, X_n\}</span></td>
-</tr>
-<tr class="even">
-<td>Domains</td>
-<td>Each <span class="math inline">X_i</span> has possible values <span class="math inline">D_i</span></td>
-</tr>
-<tr class="odd">
-<td>Constraints</td>
-<td>Rules for allowable combinations of values</td>
-</tr>
-</tbody>
-</table>
-<div class="takeaway">
-<p>Goal: assign values to all variables so every constraint is satisfied.</p>
-</div>
-<aside class="notes">
-<p>50-minute plan: CSP vocabulary, 6 minutes; scheduling formulation and checks, 13; pruning and infeasibility activity, 9; Sudoku representation, 9; search-space and alternative-model exercises, 8; exit discussion, 5. Pause at question slides before showing their answers. This lecture emphasizes modeling. Detailed consistency algorithms and backtracking heuristics belong to Lectures 14 and 15. Conceptual reference: AIMA, constraint satisfaction chapter; https://inst.eecs.berkeley.edu/~cs188/textbook/csp/csps.html. Scheduling examples and inline SVG diagrams are original course material.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="assignments-and-solutions" class="slide level2">
-<h2>Assignments and Solutions</h2>
+<p>A <strong>constraint satisfaction problem (CSP)</strong> describes what a solution must satisfy, separately from how we find it.</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Term</th>
-<th>Meaning</th>
+<th style="text-align: left;">Piece</th>
+<th style="text-align: left;">Meaning</th>
+<th style="text-align: left;">Exam-scheduling example</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Assignment</td>
-<td>Choose a domain value for a variable</td>
+<td style="text-align: left;"><strong>Variable</strong> <span class="math inline">X_i</span></td>
+<td style="text-align: left;">A decision to make</td>
+<td style="text-align: left;">The time slot for exam <span class="math inline">i</span></td>
 </tr>
 <tr class="even">
-<td>Partial assignment</td>
-<td>Some variables still have no value</td>
+<td style="text-align: left;"><strong>Domain</strong> <span class="math inline">D_i</span></td>
+<td style="text-align: left;">Allowed values for <span class="math inline">X_i</span></td>
+<td style="text-align: left;">Slots <span class="math inline">\{1,2,3\}</span></td>
 </tr>
 <tr class="odd">
-<td>Complete assignment</td>
-<td>Every variable has a value</td>
-</tr>
-<tr class="even">
-<td>Consistent partial assignment</td>
-<td>No constraint among assigned values is violated</td>
-</tr>
-<tr class="odd">
-<td>Solution</td>
-<td>A complete assignment satisfying every constraint</td>
+<td style="text-align: left;"><strong>Constraint</strong></td>
+<td style="text-align: left;">A rule on allowed combinations</td>
+<td style="text-align: left;">Conflicting exams use different slots</td>
 </tr>
 </tbody>
 </table>
 <div class="takeaway">
-<p>A consistent partial assignment can still lead to a dead end. A complete assignment can still violate a rule.</p>
+<p>A <strong>solution</strong> assigns a domain value to every variable and satisfies <strong>every constraint</strong>.</p>
 </div>
+<p>The same framework describes Sudoku digits, map colors, and queen positions.</p>
+<aside class="notes">
+<p>Connect to Lectures 11 and 12: a queens candidate can be scored by conflicts, but here we state the non-attack requirements directly. A basic CSP is a feasibility problem, not necessarily an optimization problem. Source: original Lecture 13 Beamer material and AIMA’s constraint satisfaction chapter. Suggested pacing for the 50-minute meeting: exam modeling and propagation about 18 minutes; types, feasibility, and the triangle example about 8; Sudoku about 13; lab activity and queens connection about 8; summary about 3. Detailed consistency algorithms and backtracking heuristics are reserved for Lectures 14 and 15.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="csp-examples" class="slide level2">
-<h2>CSP Examples</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:32%;">
-<h3 id="sudoku">Sudoku</h3>
-<p>Cells are variables; digits are values; rows, columns, and blocks impose constraints.</p>
-</div><div class="column" style="width:32%;">
-<h3 id="map-coloring">Map Coloring</h3>
-<p>Regions are variables; colors are values; neighboring regions must differ.</p>
-</div><div class="column" style="width:32%;">
-<h3 id="scheduling">Scheduling</h3>
-<p>Events are variables; times/rooms are values; conflicts become constraints.</p>
-</div></div>
-</section>
-<section id="a-small-exam-schedule" class="slide level2">
+<section id="a-small-exam-schedule" class="slide level2 csp-slide">
 <h2>A Small Exam Schedule</h2>
-<p>Four exams <span class="math inline">A,B,C,D</span> need slots <span class="math inline">1,2,3</span>. Each exam lasts one slot.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Requirement</th>
-<th>Given information</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Availability</td>
-<td><span class="math inline">A</span> must use slot <span class="math inline">1</span></td>
-</tr>
-<tr class="even">
-<td>Availability</td>
-<td><span class="math inline">B</span> cannot use slot <span class="math inline">3</span>; <span class="math inline">D</span> cannot use slot <span class="math inline">1</span></td>
-</tr>
-<tr class="odd">
-<td>Shared students</td>
-<td>Pairs <span class="math inline">AB</span>, <span class="math inline">AC</span>, <span class="math inline">BD</span>, <span class="math inline">CD</span> cannot overlap</td>
-</tr>
-<tr class="even">
-<td>Rooms</td>
-<td>Enough rooms for all nonconflicting exams</td>
-</tr>
-</tbody>
-</table>
-<div class="question">
-<p>What are the variables, domains, and constraints? Do we need to represent rooms?</p>
-</div>
-</section>
-<section id="scheduling-variables-and-domains" class="slide level2">
-<h2>Scheduling Variables and Domains</h2>
-<p>Let <span class="math inline">X_A</span> be the slot assigned to exam <span class="math inline">A</span>, and similarly for the others.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Variable</th>
-<th>Domain after availability restrictions</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">X_A</span></td>
-<td><span class="math inline">\{1\}</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">X_B</span></td>
-<td><span class="math inline">\{1,2\}</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">X_C</span></td>
-<td><span class="math inline">\{1,2,3\}</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">X_D</span></td>
-<td><span class="math inline">\{2,3\}</span></td>
-</tr>
-</tbody>
-</table>
-<p><span class="math display">X_A\ne X_B,\quad X_A\ne X_C,\quad X_B\ne X_D,\quad X_C\ne X_D.</span></p>
-<p>Rooms need no variables <strong>under the stated unlimited-room assumption</strong>.</p>
-</section>
-<section id="the-constraint-graph" class="slide level2">
-<h2>The Constraint Graph</h2>
-<p>Each node is a <strong>variable</strong>. Each edge represents a binary constraint.</p>
-<div class="csp-figure">
-<svg viewbox="0 0 1000 290" role="img" aria-label="Exam constraint graph: A conflicts with B and C, D conflicts with B and C. B and C have no edge and may share a slot.">
-<g stroke="#5d6470" stroke-width="3"><path d="M225 65H775M225 225H775M225 65V225M775 65V225"></path></g>
-<g fill="#e8f6f5" stroke="#007c89" stroke-width="2"><circle cx="225" cy="65" r="42"></circle><circle cx="775" cy="65" r="42"></circle><circle cx="225" cy="225" r="42"></circle><circle cx="775" cy="225" r="42"></circle></g>
-<g font-family="sans-serif" fill="#202124" text-anchor="middle"><g font-size="32"><text x="225" y="76">A</text><text x="775" y="76">B</text><text x="225" y="236">C</text><text x="775" y="236">D</text></g><g font-size="27"><text x="500" y="53">different slots</text><text x="500" y="212">different slots</text><text x="500" y="142">No B-C conflict</text></g></g>
-</svg>
-</div>
-<div class="takeaway">
-<p>These edges describe incompatible assignments, not physical travel routes or a search path.</p>
-</div>
-</section>
-<section id="which-assignments-are-valid" class="slide level2 scrollable">
-<h2>Which Assignments Are Valid?</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Assignment</th>
-<th>Complete?</th>
-<th>Consistent?</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">X_A=1,\ X_B=2</span></td>
-<td>?</td>
-<td>?</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">X_A=1,\ X_B=1</span></td>
-<td>?</td>
-<td>?</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">(X_A,X_B,X_C,X_D)=(1,2,2,2)</span></td>
-<td>?</td>
-<td>?</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">(X_A,X_B,X_C,X_D)=(1,2,2,3)</span></td>
-<td>?</td>
-<td>?</td>
-</tr>
-</tbody>
-</table>
-<div class="fragment">
-<ol type="1">
-<li>Partial and consistent.</li>
-<li>Partial and inconsistent: <span class="math inline">A</span> conflicts with <span class="math inline">B</span>.</li>
-<li>Complete but inconsistent: <span class="math inline">D</span> conflicts with both <span class="math inline">B</span> and <span class="math inline">C</span>.</li>
-<li>Complete and consistent: <strong>a solution</strong>.</li>
-</ol>
-</div>
-</section>
-<section id="a-domain-reduction-trace" class="slide level2">
-<h2>A Domain-Reduction Trace</h2>
-<p>Start with the availability domains. Apply the four conflict rules.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Step</th>
-<th>Consequence</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">X_A=1</span></td>
-<td>Remove <span class="math inline">1</span> from <span class="math inline">D_B</span> and <span class="math inline">D_C</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">D_B=\{2\}</span></td>
-<td><span class="math inline">X_B=2</span> forces <span class="math inline">D_D=\{3\}</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">X_D=3</span></td>
-<td>Remove <span class="math inline">3</span> from <span class="math inline">D_C</span>, leaving <span class="math inline">\{2\}</span></td>
-</tr>
-<tr class="even">
-<td>All domains are singletons</td>
-<td><span class="math inline">(X_A,X_B,X_C,X_D)=(1,2,2,3)</span></td>
-</tr>
-</tbody>
-</table>
-<div class="takeaway">
-<p>The constraints force this schedule without trying all complete assignments.</p>
-</div>
-<aside class="notes">
-<p>Work through the domain changes on the board before revealing the table rows verbally. This is a small propagation example, not yet a presentation of AC-3. Domain D_B names the remaining values for X_B; D_D names the domain of X_D.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="one-new-requirement-can-make-it-impossible" class="slide level2">
-<h2>One New Requirement Can Make It Impossible</h2>
-<p>A new student takes both <span class="math inline">B</span> and <span class="math inline">C</span>. Add <span class="math inline">X_B\ne X_C</span>.</p>
-<div class="question">
-<p>Can the schedule still use the same availability restrictions and three slots?</p>
-</div>
-<div class="fragment">
+<p>Exams <strong>A, B, C, D</strong> each take one of three nonoverlapping slots.</p>
+<p><img data-src="imgs/drawio/lec13/exam-availability.png" class="csp-availability" alt="Availability by exam and slot. A allows only slot 1; B allows 1 or 2; C allows 1, 2, or 3; D allows 2 or 3."></p>
 <ul>
-<li>Existing rules force <span class="math inline">X_A=1</span>, <span class="math inline">X_B=2</span>, and <span class="math inline">X_D=3</span>.</li>
-<li><span class="math inline">C</span> conflicts with <span class="math inline">A</span>, <span class="math inline">B</span>, and <span class="math inline">D</span>.</li>
-<li>No slot remains for <span class="math inline">C</span>: its domain becomes <span class="math inline">\varnothing</span>.</li>
+<li>Shared students prevent these pairs from overlapping: <strong>AB, AC, BD, CD</strong>.</li>
+<li>Assume enough rooms for any exams that may run together.</li>
 </ul>
-<p><strong>No satisfying assignment exists under these requirements.</strong></p>
+<div class="question">
+<p>Which decisions need variables? Do rooms need to be represented?</p>
 </div>
 <aside class="notes">
-<p>Give students two minutes. Ask for an explanation of infeasibility, not just a failed guess. Possible repairs require changing a stated requirement, for example allowing a fourth slot for C. A solver must not silently drop a conflict.</p>
+<p>Answer: one variable per exam, whose value is its time slot. Rooms do not need variables under this explicit capacity assumption. A uses only slot 1; B cannot use 3; C has no availability restriction; D cannot use 1. Enough rooms does not remove shared-student conflicts. Source: original course scheduling example from the existing Lecture 13.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -460,7 +241,152 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="unary-binary-and-global-constraints" class="slide level2">
+<section id="variables-domains-and-the-graph" class="slide level2 csp-slide">
+<h2>Variables, Domains, and the Graph</h2>
+<p>Let <span class="math inline">X_A</span> be A’s slot, with remaining domain <span class="math inline">D_A</span>; use the same notation for B, C, and D.</p>
+<p><img data-src="imgs/drawio/lec13/schedule-0.png" class="csp-graph" alt="Constraint graph with edges AB, AC, BD, CD. Domains are A:1, B:1 or 2, C:1 or 2 or 3, D:2 or 3. Every edge requires unequal slots."></p>
+<p>A <strong>constraint graph</strong> has one node per variable. An edge joins two variables constrained together; here, each edge means <strong>different slots</strong>.</p>
+<div class="takeaway">
+<p>There is <strong>no B-C edge</strong>: B and C may share a slot. This is not a search tree or a travel map.</p>
+</div>
+<aside class="notes">
+<p>The graph encodes X_A != X_B, X_A != X_C, X_B != X_D, X_C != X_D. Node labels abbreviate the variables. Unary availability restrictions are stored in domains and need no graph edge. There is also no A-D edge. This simple graph view applies to binary constraints; constraints involving more variables need an additional representation or a decomposition. Source: AIMA constraint graphs and the course exam model.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="complete-and-consistent" class="slide level2 csp-slide csp-assignment">
+<h2>Complete and Consistent</h2>
+<p><strong>Complete:</strong> all variables have values. <strong>Consistent:</strong> assigned values are in their domains and violate no constraint among them.</p>
+<p>Tuples below list <span class="math inline">(X_A,X_B,X_C,X_D)</span> in that order.</p>
+<div class="columns two-column-balance">
+<div class="column" style="width:72%;">
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Assignment</th>
+<th style="text-align: left;">Complete?</th>
+<th style="text-align: left;">Consistent?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">X_A=1,\ X_B=2</span></td>
+<td style="text-align: left;"><span class="fragment" data-fragment-index="0">No</span></td>
+<td style="text-align: left;"><span class="fragment" data-fragment-index="0">Yes</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">X_A=1,\ X_B=1</span></td>
+<td style="text-align: left;"><span class="fragment" data-fragment-index="1">No</span></td>
+<td style="text-align: left;"><span class="fragment" data-fragment-index="1">No: AB</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">(1,2,2,2)</span></td>
+<td style="text-align: left;"><span class="fragment" data-fragment-index="2">Yes</span></td>
+<td style="text-align: left;"><span class="fragment" data-fragment-index="2">No: BD, CD</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">(1,2,2,3)</span></td>
+<td style="text-align: left;"><span class="fragment" data-fragment-index="3">Yes</span></td>
+<td style="text-align: left;"><span class="fragment" data-fragment-index="3">Yes</span></td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:25%;">
+<p><img data-src="imgs/drawio/lec13/exam-reference.png" class="csp-reference" alt="Reference graph with edges AB, AC, BD, CD, all requiring different slots."></p>
+</div></div>
+<div class="takeaway fragment" data-fragment-index="3">
+<p>Only the last row is a <strong>solution</strong>. A consistent <strong>partial assignment</strong> is not yet a solution.</p>
+</div>
+<aside class="notes">
+<p>Reveal answers one row at a time. Partial means at least one variable remains unassigned. In the third row, B and C sharing 2 is allowed; D sharing their value violates both incident constraints. Consistency of a partial assignment does not assert that a completion exists; the later triangle gives a counterexample. Source: course exam example and standard CSP terminology.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="schedule-trace" class="slide level2 csp-slide search-trace csp-graph-trace">
+<h2>A Domain-Reduction Trace</h2>
+<p><strong>Constraint propagation</strong> removes values ruled out by the constraints. A <strong>singleton domain</strong> contains just one value, so that value is forced.</p>
+<div class="trace-tree-frames" role="img" aria-label="Start with availability domains. A equals 1 removes 1 from B and C. B equals 2 removes 2 from D. D equals 3 removes 3 from C. The solution is A1 B2 C2 D3.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec13/schedule-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec13/schedule-1.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec13/schedule-2.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="3" src="imgs/drawio/lec13/schedule-3.png" alt="" aria-hidden="true">
+</div>
+<div class="csp-steps">
+<div class="fragment" data-fragment-index="0">
+<p><span class="math inline">X_A=1</span> removes <span class="math inline">1</span> from <span class="math inline">D_B</span> and <span class="math inline">D_C</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><span class="math inline">X_B=2</span> removes <span class="math inline">2</span> from <span class="math inline">D_D</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p><span class="math inline">X_D=3</span> removes <span class="math inline">3</span> from <span class="math inline">D_C</span>. <strong>Solution:</strong> <span class="math inline">(1,2,2,3)</span>.</p>
+</div>
+</div>
+<aside class="notes">
+<p>Gold marks the variable causing the current reduction; teal marks affected neighbors. Initially: {1}, {1,2}, {1,2,3}, {2,3}. After A: {1}, {2}, {2,3}, {2,3}. After B: {1}, {2}, {2,3}, {3}. After D: {1}, {2}, {2}, {3}. All four inequalities hold at the end. Every deduction was forced by the original requirements, and this example has a unique solution. Propagation does not solve every CSP. Lecture 14 formalizes consistency. Source: course scheduling model.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="extra-conflict" class="slide level2 csp-slide search-trace csp-graph-trace">
+<h2>One More Conflict</h2>
+<p>A student now takes both <strong>B and C</strong>. Add the rule <span class="math inline">X_B\ne X_C</span>, keeping the same availability restrictions.</p>
+<div class="trace-tree-frames" role="img" aria-label="A new B-C edge adds an inequality. Original deductions force A1 B2 D3; C conflicts with all three, leaving its domain empty.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec13/conflict-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec13/conflict-1.png" alt="" aria-hidden="true">
+</div>
+<div class="question">
+<p>Can all requirements still be satisfied?</p>
+</div>
+<div class="takeaway fragment" data-fragment-index="0">
+<p><strong>No.</strong> A, B, and D force slots 1, 2, and 3. C has no remaining value: <span class="math inline">D_C=\varnothing</span>.</p>
+</div>
+<aside class="notes">
+<p>The new diagonal B-C edge is pink. The previous deductions forcing A=1, B=2, D=3 remain valid after adding a constraint. C must now differ from all three. This proves infeasibility, not just a failed attempt. A fourth slot for C, with C allowed to use it, would repair the model; ignoring the new shared student would not. If an empty domain instead follows a tentative search choice, it rules out that branch, not automatically the entire original problem. Source: course exam example.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="unary-binary-and-global-constraints" class="slide level2 csp-slide">
 <h2>Unary, Binary, and Global Constraints</h2>
 <p>The <strong>arity</strong> of a constraint is the number of variables it involves.</p>
 <table class="caption-top">
@@ -471,33 +397,36 @@ Peizhong Ju
 </colgroup>
 <thead>
 <tr class="header">
-<th>Kind</th>
-<th>Example</th>
-<th>Interpretation</th>
+<th style="text-align: left;">Kind</th>
+<th style="text-align: left;">Example</th>
+<th style="text-align: left;">Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Unary</td>
-<td><span class="math inline">X_A=1</span></td>
-<td>Restricts one exam</td>
+<td style="text-align: left;"><strong>Unary</strong></td>
+<td style="text-align: left;"><span class="math inline">X_A=1</span></td>
+<td style="text-align: left;">A rule on one variable</td>
 </tr>
 <tr class="even">
-<td>Binary</td>
-<td><span class="math inline">X_A\ne X_B</span></td>
-<td>Relates two exams</td>
+<td style="text-align: left;"><strong>Binary</strong></td>
+<td style="text-align: left;"><span class="math inline">X_A\ne X_B</span></td>
+<td style="text-align: left;">A rule on two variables</td>
 </tr>
 <tr class="odd">
-<td>Global</td>
-<td><span class="math inline">\operatorname{AllDifferent}(X_1,\ldots,X_9)</span></td>
-<td>All nine values must differ</td>
+<td style="text-align: left;"><strong>Global</strong></td>
+<td style="text-align: left;"><span class="math inline">\operatorname{AllDifferent}(X_1,\ldots,X_9)</span></td>
+<td style="text-align: left;">A structured rule on a collection</td>
 </tr>
 </tbody>
 </table>
-<p>For three variables, <span class="math inline">\operatorname{AllDifferent}(X,Y,Z)</span> means</p>
-<p><span class="math display">X\ne Y\ \land\ X\ne Z\ \land\ Y\ne Z.</span></p>
+<p><span class="math inline">\operatorname{AllDifferent}(X,Y,Z)</span> requires <strong>every pair</strong> to differ:</p>
+<p><span class="math display">X\ne Y\quad\land\quad X\ne Z\quad\land\quad Y\ne Z.</span></p>
+<div class="question">
+<p>Do <span class="math inline">X\ne Y</span> and <span class="math inline">Y\ne Z</span> alone imply all three are different? <span class="fragment"> <strong>No:</strong> <span class="math inline">(X,Y,Z)=(1,2,1)</span> satisfies both.</span></p>
+</div>
 <aside class="notes">
-<p>Global constraints describe a collection of variables together. AllDifferent has a pairwise-inequality logical encoding, but specialized propagation can exploit the global structure more effectively. Save that algorithmic detail for the consistency lecture.</p>
+<p>The symbol land means logical AND. Global is not simply an arity of three; it names a structured constraint over a collection, potentially of varying size. AllDifferent is logically equivalent to all pairwise inequalities, but a specialized propagation algorithm may use its global structure more effectively. Source: AIMA CSP formulations.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -510,211 +439,154 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="feasibility-versus-preference" class="slide level2">
-<h2>Feasibility Versus Preference</h2>
-<ul>
-<li><strong>Hard constraint:</strong> a shared student cannot take two exams at once.</li>
-<li><strong>Soft preference:</strong> fewer students should have exams in the last slot.</li>
-</ul>
-<div class="definition">
-<p>A basic CSP asks for any feasible assignment. A constraint optimization problem also scores feasible assignments.</p>
+<section id="triangle-trace" class="slide level2 csp-slide search-trace csp-triangle">
+<h2>Consistent Does Not Mean Extendable</h2>
+<p>A <strong>separate example</strong> has three exams, all conflicting with each other, and only slots <span class="math inline">1</span> and <span class="math inline">2</span>. Assign <span class="math inline">X_A=1</span>.</p>
+<div class="trace-tree-frames" role="img" aria-label="A triangle of inequality constraints. With A assigned 1 and both B and C initially allowing 1 or 2, the partial assignment is consistent. Propagation forces B2 and C2, violating the B-C edge.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec13/triangle-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec13/triangle-1.png" alt="" aria-hidden="true">
 </div>
-<p>For example, with <span class="math inline">n_i</span> students in exam <span class="math inline">i</span>:</p>
-<p><span class="math display">\min_X\sum_i n_i\,\mathbf{1}\{X_i=3\}\quad\text{subject to all hard constraints}.</span></p>
-<p>The indicator <span class="math inline">\mathbf{1}\{X_i=3\}</span> equals <span class="math inline">1</span> if exam <span class="math inline">i</span> uses slot <span class="math inline">3</span>, and <span class="math inline">0</span> otherwise.</p>
+<div class="question">
+<p><span class="math inline">X_A=1</span> violates no constraint among assigned values. Can it be completed?</p>
+</div>
+<div class="takeaway fragment" data-fragment-index="0">
+<p><strong>No.</strong> B and C would both need slot 2, but they conflict. Starting with <span class="math inline">X_A=2</span> fails symmetrically.</p>
+</div>
+<aside class="notes">
+<p>This is a new three-variable model, not a modification of the four-exam example. Each initial domain is {1,2}. With only A assigned, no binary constraint has two assigned endpoints, so the partial assignment is consistent. There is nevertheless no extension. At the completely unassigned state, each value even has support on each individual edge, yet there is no joint solution; leave formal arc consistency to Lecture 14. Source: course triangle example.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="sudoku-rules" class="slide level2">
-<h2>Sudoku Rules</h2>
-<ul>
-<li>Fill a <span class="math inline">9 \times 9</span> grid with digits 1 through 9.</li>
-<li>Each row must contain each digit exactly once.</li>
-<li>Each column must contain each digit exactly once.</li>
-<li>Each <span class="math inline">3 \times 3</span> subgrid must contain each digit exactly once.</li>
-</ul>
-<div class="takeaway">
-<p>Sudoku is useful because the rules are simple, but the constraints interact strongly.</p>
-</div>
-</section>
-<section id="sudoku-example" class="slide level2">
-<h2>Sudoku Example</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:46%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec13/Sudoku.png" class="csp-puzzle"></p>
-<figcaption>Sudoku puzzle</figcaption>
-</figure>
-</div>
-</div><div class="column" style="width:46%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec13/SudokuSolution.png" class="csp-puzzle"></p>
-<figcaption>Sudoku solution</figcaption>
-</figure>
-</div>
-</div></div>
-<div class="takeaway">
-<p>The puzzle is a partial assignment. The solution is a complete satisfying assignment.</p>
-</div>
-</section>
-<section id="sudoku-variables" class="slide level2">
-<h2>Sudoku Variables</h2>
+<section id="feasibility-and-preferences" class="slide level2 csp-slide">
+<h2>Feasibility and Preferences</h2>
 <table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>Row &nbsp;Column</th>
-<th style="text-align: right;">1</th>
-<th style="text-align: right;">2</th>
-<th style="text-align: right;">3</th>
-<th style="text-align: right;">…</th>
-<th style="text-align: right;">9</th>
+<th style="text-align: left;">Kind</th>
+<th style="text-align: left;">Meaning</th>
+<th style="text-align: left;">Scheduling example</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>A</td>
-<td style="text-align: right;">A1</td>
-<td style="text-align: right;">A2</td>
-<td style="text-align: right;">A3</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">A9</td>
+<td style="text-align: left;"><strong>Hard constraint</strong></td>
+<td style="text-align: left;">Must be satisfied</td>
+<td style="text-align: left;">No simultaneous exams for a shared student</td>
 </tr>
 <tr class="even">
-<td>B</td>
-<td style="text-align: right;">B1</td>
-<td style="text-align: right;">B2</td>
-<td style="text-align: right;">B3</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">B9</td>
-</tr>
-<tr class="odd">
-<td>C</td>
-<td style="text-align: right;">C1</td>
-<td style="text-align: right;">C2</td>
-<td style="text-align: right;">C3</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">C9</td>
-</tr>
-<tr class="even">
-<td>…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-</tr>
-<tr class="odd">
-<td>I</td>
-<td style="text-align: right;">I1</td>
-<td style="text-align: right;">I2</td>
-<td style="text-align: right;">I3</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">I9</td>
+<td style="text-align: left;"><strong>Soft preference</strong></td>
+<td style="text-align: left;">Ranks feasible assignments</td>
+<td style="text-align: left;">Prefer fewer exams in slot 3</td>
 </tr>
 </tbody>
 </table>
-<ul>
-<li>Variables: A1 through I9.</li>
-<li>Domain for each variable: <span class="math inline">\{1,2,\ldots,9\}</span>.</li>
-</ul>
+<p>For <span class="math inline">n</span> exams with slots <span class="math inline">X_1,\ldots,X_n</span>, one possible objective is</p>
+<p><span class="math display">\min_X \sum_{i=1}^{n}\mathbf{1}\{X_i=3\}\quad\text{subject to all hard constraints}.</span></p>
+<p>The <strong>indicator</strong> is <span class="math inline">1</span> when exam <span class="math inline">i</span> uses slot 3, and <span class="math inline">0</span> otherwise.</p>
+<div class="takeaway">
+<p>A basic CSP seeks feasibility. Constraint optimization also compares <strong>feasible assignments</strong>.</p>
+</div>
+<aside class="notes">
+<p>The objective counts exams, not unique students. X denotes the vector of exam slots. This is a general scheduling extension; our four-exam instance has only one feasible assignment, so a preference cannot select a different solution without changing that model. A lower objective never excuses a hard-constraint violation. Source: existing lecture’s feasibility-versus-preference distinction.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="sudoku-constraints" class="slide level2">
-<h2>Sudoku Constraints</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:32%;">
-<h3 id="row">Row</h3>
-<p>Example: A1, A2, …, A9 must all differ.</p>
-</div><div class="column" style="width:32%;">
-<h3 id="column">Column</h3>
-<p>Example: A4, B4, …, I4 must all differ.</p>
-</div><div class="column" style="width:32%;">
-<h3 id="block">Block</h3>
-<p>Example: D4, D5, D6, E4, E5, E6, F4, F5, F6 must all differ.</p>
-</div></div>
-</section>
-<section id="sudoku-as-a-csp" class="slide level2">
+<section id="sudoku-as-a-csp" class="slide level2 csp-slide csp-sudoku-model">
 <h2>Sudoku as a CSP</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>CSP piece</th>
-<th>Sudoku formulation</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Variables</td>
-<td>A1, A2, …, I9</td>
-</tr>
-<tr class="even">
-<td>Domain</td>
-<td><span class="math inline">\{1,2,\ldots,9\}</span> for each cell</td>
-</tr>
-<tr class="odd">
-<td>Row constraints</td>
-<td>Cells in the same row must differ</td>
-</tr>
-<tr class="even">
-<td>Column constraints</td>
-<td>Cells in the same column must differ</td>
-</tr>
-<tr class="odd">
-<td>Block constraints</td>
-<td>Cells in the same <span class="math inline">3 \times 3</span> block must differ</td>
-</tr>
-<tr class="even">
-<td>Given cells</td>
-<td>Pre-filled cells have fixed values</td>
-</tr>
-</tbody>
-</table>
+<p>Fill the <span class="math inline">9\times9</span> grid with digits <strong>1 through 9</strong>, preserving the given clues.</p>
+<div class="columns two-column-balance">
+<div class="column" style="width:45%;">
+<p><img data-src="imgs/drawio/lec13/sudoku-puzzle.png" class="csp-grid" alt="The course Sudoku puzzle, with rows A through I and columns 1 through 9. A1 is the given digit 5 and A3 is blank."></p>
+</div><div class="column" style="width:51%;">
+<ul>
+<li><strong>Variables:</strong> the 81 cells, named A1 through I9.</li>
+<li><strong>Domains:</strong> <span class="math inline">\{1,\ldots,9\}</span> for blanks; a singleton for each clue, such as <span class="math inline">D_{\mathrm{A1}}=\{5\}</span>.</li>
+<li><strong>Constraints:</strong> each row, column, and <span class="math inline">3\times3</span> block contains all nine digits exactly once.</li>
+</ul>
+</div></div>
+<div class="takeaway">
+<p>Clues are fixed values, not suggestions. The initial puzzle is a <strong>partial assignment</strong>.</p>
+</div>
+<aside class="notes">
+<p>The puzzle is the same as the original Wikipedia-derived course image and the existing Sudoku notebook. The notebook uses zero-based indices. We include all 81 cells and use singleton clue domains. An equivalent formulation can make only blanks variables and treat clues as constants. There are 30 clues and 51 blanks. With nine cells and domain 1 through 9, AllDifferent implies that every digit occurs exactly once. Source: original Lecture 13 Beamer Sudoku example and sudoku.ipynb.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="candidate-values-for-one-cell" class="slide level2">
-<h2>Candidate Values for One Cell</h2>
-<p>For an empty Sudoku cell, suppose the existing digits are:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Related cells</th>
-<th>Digits already present</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Same row</td>
-<td><span class="math inline">\{1,3,5,7\}</span></td>
-</tr>
-<tr class="even">
-<td>Same column</td>
-<td><span class="math inline">\{2,3,8\}</span></td>
-</tr>
-<tr class="odd">
-<td>Same block</td>
-<td><span class="math inline">\{1,4,8\}</span></td>
-</tr>
-</tbody>
-</table>
+<section id="sudoku-units" class="slide level2 csp-slide search-trace csp-sudoku-trace">
+<h2>Rows, Columns, and Blocks</h2>
+<p>A Sudoku <strong>unit</strong> is a row, column, or block. Each unit has an <span class="math inline">\operatorname{AllDifferent}</span> constraint.</p>
+<div class="trace-tree-frames" role="img" aria-label="The same A3 cell belongs to row A, column 3, and the upper-left block. The highlighted unit changes from row to column to block.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec13/sudoku-row.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec13/sudoku-column.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec13/sudoku-block.png" alt="" aria-hidden="true">
+</div>
+<div class="csp-steps">
+<div class="fragment" data-fragment-index="0">
+<p>The same cell also participates in its <strong>column</strong> constraint.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p>And its <strong>block</strong> constraint. There are <strong>27 units</strong>: 9 rows, 9 columns, 9 blocks.</p>
+</div>
+</div>
+<aside class="notes">
+<p>A3 is gold throughout. Other cells in the displayed unit are teal. Each peer’s given digit forbids that same digit at A3. A peer is another cell sharing at least one unit; overlapping memberships are not separate variables. A cell has 20 distinct peers in standard Sudoku. The unit view avoids an unreadably dense graph. Source: original Lecture 13 row, column, and subgrid diagrams, consolidated into an animated draw.io figure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="candidate-values-for-a3" class="slide level2 csp-slide">
+<h2>Candidate Values for A3</h2>
+<p>Exclude digits assigned to A3’s <strong>peers</strong>: its row, column, or block.</p>
+<p><img data-src="imgs/drawio/lec13/sudoku-candidates.png" class="csp-sudoku-wide" alt="A3 and all its peers highlighted on the actual Sudoku puzzle. Existing row digits are 3,5,7; column digits are 8; block digits are 3,5,6,8,9."></p>
 <div class="question">
-<p>Which values remain in this cell’s domain?</p>
+<p>Which values remain in <span class="math inline">D_{\mathrm{A3}}</span>?</p>
 </div>
 <div class="fragment">
-<p><span class="math display">\{1,\ldots,9\}\setminus\{1,2,3,4,5,7,8\}=\{6,9\}.</span> Two candidates remain. The current constraints do not justify choosing one yet.</p>
+<p><span class="math inline">D_{\mathrm{A3}}=\{1,\ldots,9\}\setminus\{3,5,6,7,8,9\}=\{1,2,4\}</span>.</p>
+<p>Remaining candidates are <strong>not guaranteed to extend to a solution</strong>.</p>
 </div>
-</section>
-<section id="naive-sudoku-search" class="slide level2 scrollable">
-<h2>Naive Sudoku Search</h2>
-<p>Naive backtracking:</p>
-<ol type="1">
-<li>Choose an unassigned variable.</li>
-<li>Try a value.</li>
-<li>Backtrack if a constraint is violated.</li>
-</ol>
-<div class="definition">
-<p>With <span class="math inline">m</span> empty cells and at most <span class="math inline">9</span> candidate values per cell, there are at most <span class="math inline">9^m</span> complete fillings before checking constraints.</p>
-</div>
-<p>Using a fixed variable order avoids exploring many orders of the same assignments.</p>
 <aside class="notes">
-<p>This is a count of candidate complete assignments, not a tight running-time claim for a solver. Fixed givens and constraint checks reduce the actual search. Check cost and propagation cost also contribute to runtime.</p>
+<p>Row A excludes 3,5,7. Column 3 excludes 8. The upper-left block excludes 3,5,6,8,9. Repeated excluded digits are removed once. Set-minus means remove the listed values. Do not insert the known solution’s 4 simply because the puzzle is familiar; this local test leaves three candidates. Source: original puzzle and the candidate example in sudoku.ipynb.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -727,45 +599,21 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="constraint-propagation" class="slide level2">
-<h2>Constraint Propagation</h2>
-<ul>
-<li>Enforce constraints before committing to deeper choices.</li>
-<li>When a value is assigned, eliminate inconsistent values from neighboring variables.</li>
-<li>If a cell has only one possible value left, it must take that value.</li>
-<li>If a domain becomes empty, the current partial assignment cannot work.</li>
-</ul>
-<div class="takeaway">
-<p>Constraint propagation reduces the effective branching factor and detects failure earlier.</p>
+<section id="forced-values" class="slide level2 csp-slide search-trace csp-sudoku-trace">
+<h2>Forced Values and Propagation</h2>
+<p>Using the same clues, the center cell <strong>E5</strong> has only candidate <span class="math inline">5</span>.</p>
+<div class="trace-tree-frames" role="img" aria-label="Before propagation E5 has candidate 5 and E2 has candidates 2 and 5. Assigning E5 to 5 removes 5 from its row peer E2, leaving only 2.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec13/sudoku-forced-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec13/sudoku-forced-1.png" alt="" aria-hidden="true">
 </div>
-</section>
-<section id="consistent-so-far-does-not-mean-solvable" class="slide level2">
-<h2>Consistent So Far Does Not Mean Solvable</h2>
-<p>Three exams conflict pairwise, but only slots <span class="math inline">1</span> and <span class="math inline">2</span> are available.</p>
-<p><span class="math display">D_A=D_B=D_C=\{1,2\},\qquad X_A\ne X_B,\ X_B\ne X_C,\ X_A\ne X_C.</span></p>
 <div class="question">
-<p>The partial assignment <span class="math inline">X_A=1</span> violates no constraint. Can it be completed?</p>
+<p>E2 shares E5’s row and currently allows <span class="math inline">\{2,5\}</span>. What follows?</p>
 </div>
-<div class="fragment">
-<p>No.&nbsp;Both <span class="math inline">X_B</span> and <span class="math inline">X_C</span> must be <span class="math inline">2</span>, violating <span class="math inline">X_B\ne X_C</span>. Starting with <span class="math inline">X_A=2</span> gives the same problem.</p>
-</div>
-<div class="takeaway">
-<p>Checking the current assignment and proving that a completion exists are different tasks.</p>
-</div>
-</section>
-<section id="modeling-practice-a-small-lab-schedule" class="slide level2">
-<h2>Modeling Practice: A Small Lab Schedule</h2>
-<p>Experiments <span class="math inline">P,Q,R</span> each take one slot from <span class="math inline">\{1,2,3\}</span>.</p>
-<ul>
-<li><span class="math inline">P</span> must finish before <span class="math inline">Q</span> starts.</li>
-<li><span class="math inline">Q</span> and <span class="math inline">R</span> share equipment and cannot run together.</li>
-<li><span class="math inline">R</span> cannot run in slot <span class="math inline">1</span>.</li>
-</ul>
-<div class="question">
-<p>Write the variables, domains, and constraints. Give one valid schedule and one invalid schedule with a reason.</p>
+<div class="takeaway fragment" data-fragment-index="0">
+<p>Set <strong>E5 = 5</strong>, remove 5 from its peers, then <strong>E2 = 2</strong> is forced. A deduction can trigger another deduction.</p>
 </div>
 <aside class="notes">
-<p>Allow three minutes in pairs. Slots are equal length and nonoverlapping, so the precedence relation is a strict inequality on slot indices. There is no P-R equipment conflict unless the specification says so.</p>
+<p>E5’s row excludes 1,3,4,8; its column excludes 1,2,6,7,8,9; its center block excludes 2,3,6,8. Their union leaves only 5. E2 originally allows 2 or 5. The figure highlights these two cells and their shared row; a full propagation operation also updates E5’s other column and block peers. These are forced deductions, not guesses. An unresolved empty domain signals contradiction; a singleton is forced. Source: original course Sudoku puzzle.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -778,56 +626,80 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="lab-schedule-one-formulation" class="slide level2">
-<h2>Lab Schedule: One Formulation</h2>
-<p><span class="math display">D_P=D_Q=\{1,2,3\},\qquad D_R=\{2,3\}.</span></p>
-<p><span class="math display">X_P&lt;X_Q,\qquad X_Q\ne X_R.</span></p>
+<section id="search-and-propagation" class="slide level2 csp-slide">
+<h2>Search and Propagation</h2>
+<p>If propagation stalls, search may choose a variable and try a remaining value. A3’s local candidates illustrate possible branches:</p>
+<p><img data-src="imgs/drawio/lec13/sudoku-branches.png" class="csp-branches" alt="A partial Sudoku assignment branches into tentative choices A3 equals 1, 2, or 4. Each branch needs further propagation and search; none is labeled solved."></p>
+<ul>
+<li><strong>Propagate:</strong> make deductions forced by current constraints.</li>
+<li><strong>Backtrack:</strong> undo a tentative choice if its branch fails, then try another.</li>
+</ul>
+<div class="takeaway">
+<p>For <span class="math inline">m</span> blanks, there are at most <span class="math inline">9^m</span> complete fillings before constraints are used. This puzzle has <span class="math inline">m=51</span>; pruning avoids exploring many of them.</p>
+</div>
+<aside class="notes">
+<p>The branches are alternatives, not simultaneous assignments or solved puzzles. Another variable may be a better choice; ordering heuristics belong to Lecture 15. The 9^m count is a loose count of complete fillings, not measured runtime or a tight solver bound. Fixed variable order gives at most nine value branches per level; do not multiply by the remaining variable count and explore many orders of identical assignments. Backtracking must restore all branch-specific domain changes. Source: original Beamer search and propagation content, with the assignment-count distinction made explicit.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="modeling-practice-a-lab-schedule" class="slide level2 csp-slide">
+<h2>Modeling Practice: A Lab Schedule</h2>
+<p>Experiments <strong>P, Q, R</strong> each take one of three equal, nonoverlapping slots <span class="math inline">\{1,2,3\}</span>.</p>
+<p><img data-src="imgs/drawio/lec13/lab-rules.png" class="csp-lab-rules" alt="P must finish before Q starts. Q and R share equipment and cannot overlap. R is unavailable in slot 1."></p>
+<div class="question">
+<p>Write the variables, domains, and constraints. Give one valid schedule and one invalid schedule, with a reason.</p>
+</div>
+<aside class="notes">
+<p>Let students formulate the model before revealing the next slide. Each experiment lasts exactly one slot. Equal, nonoverlapping slots make precedence a strict inequality on slot indices. Nothing says P and R share equipment; do not invent that constraint. Source: existing Lecture 13 lab-scheduling practice.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lab-schedule-a-formulation" class="slide level2 csp-slide">
+<h2>Lab Schedule: A Formulation</h2>
+<p><span class="math inline">X_P,X_Q,X_R</span> are the slots. <span class="math inline">D_P=D_Q=\{1,2,3\}</span> and <span class="math inline">D_R=\{2,3\}</span>.</p>
+<p>Constraints: <span class="math inline">X_P&lt;X_Q</span> and <span class="math inline">X_Q\ne X_R</span>.</p>
+<p><img data-src="imgs/drawio/lec13/lab-solution.png" class="csp-lab-solution" alt="Two valid lab schedules on aligned timelines. Schedule one has P in slot 1, Q in 2, R in 3. Schedule two has P in 1, R in 2, Q in 3."></p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Assignment <span class="math inline">(X_P,X_Q,X_R)</span></th>
-<th>Check</th>
+<th style="text-align: left;">Assignment <span class="math inline">(X_P,X_Q,X_R)</span></th>
+<th style="text-align: left;">Why invalid?</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><span class="math inline">(1,2,3)</span></td>
-<td>Valid</td>
+<td style="text-align: left;"><span class="math inline">(2,1,3)</span></td>
+<td style="text-align: left;">P does not finish before Q starts</td>
 </tr>
 <tr class="even">
-<td><span class="math inline">(1,3,2)</span></td>
-<td>Also valid</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">(2,1,3)</span></td>
-<td>Violates precedence</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">(1,2,2)</span></td>
-<td>Violates the equipment constraint</td>
+<td style="text-align: left;"><span class="math inline">(1,2,2)</span></td>
+<td style="text-align: left;">Q and R need the shared equipment together</td>
 </tr>
 </tbody>
 </table>
 <div class="takeaway">
-<p>Multiple solutions are allowed. Include every stated requirement, but do not invent extra ones.</p>
-</div>
-</section>
-<section id="another-representation-n-queens" class="slide level2">
-<h2>Another Representation: N-Queens</h2>
-<p>Use one variable <span class="math inline">Q_i</span> per column. Its value is the queen’s row.</p>
-<p><span class="math display">D_i=\{1,\ldots,N\}.</span></p>
-<p>For each pair of distinct columns <span class="math inline">i,j</span>:</p>
-<p><span class="math display">Q_i\ne Q_j,\qquad |Q_i-Q_j|\ne |i-j|.</span></p>
-<ul>
-<li>One variable per column already guarantees one queen in each column.</li>
-<li>The first constraint prevents a shared row.</li>
-<li>The second prevents a shared diagonal.</li>
-</ul>
-<div class="question">
-<p>Why would using one Boolean variable per square require additional constraints?</p>
+<p>Multiple solutions are allowed; do not invent additional constraints.</p>
 </div>
 <aside class="notes">
-<p>Answer: square occupancy alone does not guarantee exactly N queens or one in each row/column. This slide connects to local search and illustrates that representation can build some requirements into the variables. Do not spend time solving N-queens here.</p>
+<p>The figure shows two valid schedules, not every solution. (2,3,2) is also valid because P and R may coincide: the only equipment conflict is Q-R. This catches an unstated AllDifferent assumption. Domains encode R’s unary restriction directly. Source: original course lab activity.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -840,17 +712,89 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="why-csps-help" class="slide level2">
-<h2>Why CSPs Help</h2>
+<section id="n-queens-as-a-csp" class="slide level2 csp-slide">
+<h2>N-Queens as a CSP</h2>
+<p>As in Lecture 12, let <span class="math inline">Q_i</span> be the queen’s row in column <span class="math inline">i</span>, with domain <span class="math inline">D_i=\{1,\ldots,N\}</span>.</p>
+<div class="columns two-column-balance">
+<div class="column" style="width:39%;">
+<p><img data-src="imgs/drawio/lec13/queens-model.png" class="csp-queens" alt="A four-queens solution with Q1=2, Q2=4, Q3=1, Q4=3. Row and column labels make the encoding explicit."></p>
+</div><div class="column" style="width:57%;">
+<p>For each pair of columns <span class="math inline">i&lt;j</span>:</p>
+<p>Different rows: <span class="math inline">Q_i\ne Q_j</span>.</p>
+<p>No diagonal attack: <span class="math inline">|Q_i-Q_j|\ne|i-j|</span>.</p>
+<p>One variable per column already enforces <strong>one queen in each column</strong>.</p>
+</div></div>
+<div class="takeaway">
+<p>Same encoding, different formulation: instead of rewarding fewer conflicts, the CSP requires <strong>zero conflicts</strong>.</p>
+</div>
+<aside class="notes">
+<p>The figure uses N=4 for readability; equations apply to general N. It is a satisfying example, not the conflicted eight-queens chromosome from Lecture 12. Diagonal attack means the absolute row difference equals the absolute column difference. The unrestricted row-vector encoding needs row inequalities; a permutation enforces distinct rows structurally. A Boolean variable per square would need additional cardinality constraints such as exactly one queen per column. Source: AIMA N-queens CSP formulation and the previous lecture’s representation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="takeaways" class="slide level2 csp-slide">
+<h2>Takeaways</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Modeling question</th>
+<th style="text-align: left;">What to specify</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">What decisions must be made?</td>
+<td style="text-align: left;">Variables</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">What values may each decision take?</td>
+<td style="text-align: left;">Domains, including fixed values</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Which combinations are allowed?</td>
+<td style="text-align: left;">Every required constraint</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">What counts as success?</td>
+<td style="text-align: left;">A complete assignment satisfying all constraints</td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li>CSPs separate <strong>what the problem is</strong> from <strong>how we search</strong>.</li>
-<li>General CSP algorithms can use domain-independent structure.</li>
-<li>Constraints allow pruning before a full assignment is attempted.</li>
+<li><strong>Consistency so far</strong> does not guarantee a valid completion.</li>
+<li><strong>Propagation</strong> removes impossible values; search handles unresolved choices.</li>
+<li>A solver answers the model we give it, including its assumptions.</li>
 </ul>
 <div class="takeaway">
-<p>The next lecture formalizes consistency: how much pruning can we do before search?</p>
+<p>Next: how consistency checks prune domains systematically, and how to combine them with search.</p>
 </div>
 <p><a class="asset-credit-link" href="../asset_credits.html#lec13" target="_blank" rel="noopener">Asset credits</a></p>
+<aside class="notes">
+<p>An exit question: if the lab model returns (2,3,2), is the solver wrong? No, because P and R have no stated equipment conflict. A real-world mismatch may require changing the model rather than the search algorithm. Lecture 14 covers consistency and Lecture 15 covers CSP search with the Sudoku notebook. Source: AIMA and this lecture’s worked models.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 </section>

@@ -1,0 +1,87 @@
+/* The viewer also loads deck-specific files named slides_styles. */
+.reveal section.ga-slide {
+  font-size: 0.9em;
+}
+
+.reveal section.ga-slide h2 {
+  margin-top: 0;
+}
+
+.reveal section.ga-slide table {
+  font-size: 0.8em;
+  line-height: 1.24;
+}
+
+.reveal section.ga-slide th,
+.reveal section.ga-slide td {
+  padding: 0.45em 0.5em;
+}
+
+.reveal section.ga-slide img:not(.trace-frame) {
+  border: 0;
+  box-shadow: none;
+  display: block;
+  height: auto;
+  margin: 0.15em auto;
+  max-width: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+
+.reveal section.ga-slide .ga-cycle { max-height: 255px; }
+.reveal section.ga-slide .ga-board { max-height: 325px; }
+.reveal section.ga-slide .ga-replacement { max-height: 280px; }
+.reveal section.ga-slide .ga-constraint { max-height: 275px; }
+.reveal section.ga-slide .ga-swap { max-height: 225px; }
+.reveal section.ga-slide .ga-diversity { max-height: 195px; }
+
+.reveal section.ga-slide .trace-tree-frames {
+  margin: 0.15em auto;
+  max-width: 100%;
+  width: 880px;
+}
+
+.reveal section.ga-selection .trace-tree-frames { aspect-ratio: 900 / 180; }
+.reveal section.ga-trace .trace-tree-frames { aspect-ratio: 900 / 340; }
+.reveal section.ga-mutation .trace-tree-frames { aspect-ratio: 900 / 340; }
+.reveal section.ga-permutation .trace-tree-frames { aspect-ratio: 900 / 330; }
+
+.reveal section.ga-selection .column p {
+  font-size: 0.91em;
+  margin: 0.35em 0;
+}
+
+.reveal section.ga-selection h3 {
+  margin-top: 0;
+}
+
+.reveal section.ga-selection th,
+.reveal section.ga-selection td {
+  padding-top: 0.33em;
+  padding-bottom: 0.33em;
+}
+
+.reveal section.ga-slide#takeaways th:first-child {
+  width: 23%;
+}
+
+.reveal section.ga-slide .ga-steps p {
+  margin: 0.28em 0;
+}
+
+.reveal section.ga-slide .takeaway,
+.reveal section.ga-slide .question {
+  margin-top: 0.45em;
+  padding-top: 0.45em;
+  padding-bottom: 0.45em;
+}
+
+.reveal section.ga-pseudocode .pseudo-code {
+  font-size: 0.72em;
+  line-height: 1.4;
+}
+
+.reveal section.ga-slide .ga-caption {
+  color: var(--cs-muted);
+  font-size: 0.83em;
+}

@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec14_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,263 +164,427 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="constraint-propagation" class="slide level2 section-slide">
-<h2>Constraint Propagation</h2>
+<section id="pruning-candidate-values" class="slide level2 ac-slide">
+<h2>Pruning Candidate Values</h2>
+<p>In a <strong>constraint satisfaction problem (CSP)</strong>, propagation removes domain values that cannot belong to a solution.</p>
+<p><img data-src="imgs/drawio/lec13/schedule-3.png" class="ac-recap" alt="Previous exam example: edges AB, AC, BD, CD require different slots. Propagation forces A1, B2, C2, D3."></p>
 <ul>
-<li>Enforce constraints before making deeper search choices.</li>
-<li>Remove values that cannot participate in any valid solution.</li>
-<li>Detect impossible partial assignments early.</li>
+<li>Last time, forced exam slots triggered further deletions.</li>
+<li>Today: check <strong>supports</strong> systematically, even before a variable is forced.</li>
+<li><strong>AC-3 (Arc Consistency Algorithm 3)</strong> manages these checks for <strong>binary constraints</strong>, which involve two variables.</li>
+</ul>
+<aside class="notes">
+<p>Connect to the four-exam model from Lecture 13. Its final domains are all singleton, but this is not guaranteed for every problem. Domain consistency describes properties of the remaining candidate sets, not just whether the currently assigned variables conflict. The 3 in AC-3 identifies an algorithm, not 3-consistency. Unary restrictions are handled first. Suggested pacing: foundations and REVISE about 10 minutes; AC-3 and queue trace about 12; limits, stronger consistency, and cost about 8; notebook bridge and summary about 3; leave roughly 15 minutes for the AC-3 notebook. Sources: original Lecture 14 Beamer and AIMA, Figure 6.3.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="node-trace" class="slide level2 ac-slide search-trace ac-node-trace">
+<h2>Node Consistency</h2>
+<p>A <strong>unary constraint</strong> restricts one variable. <strong>Node consistency</strong> means <strong>every remaining value</strong> satisfies all its unary constraints.</p>
+<p>Let <span class="math inline">D_X</span> denote the domain of age <span class="math inline">X</span>, with the rule <span class="math inline">X\ge18</span>.</p>
+<div class="trace-tree-frames" role="img" aria-label="Age domain initially contains 10, 15, 20, 25, 30. The unary constraint age at least 18 deletes 10 and 15, leaving 20, 25, 30.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec14/node-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec14/node-1.png" alt="" aria-hidden="true">
+</div>
+<div class="takeaway fragment" data-fragment-index="0">
+<p>Keep <span class="math inline">D_X=\{20,25,30\}</span>. Having just <strong>one</strong> valid value is not enough if invalid values remain.</p>
+</div>
+<p>If filtering empties a domain, the current problem or search branch has no solution.</p>
+<aside class="notes">
+<p>Node consistency is also called 1-consistency. Filtering deletes every value that violates a unary constraint; it does not select a single age. An empty domain after an optional search choice rules out that branch. An empty domain using only the original restrictions rules out the original CSP. Definition checked against the CS50 AI constraint satisfaction notes: https://cs50.harvard.edu/extension/ai/2020/fall/notes/3/ .</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="support-trace" class="slide level2 ac-slide search-trace ac-support-trace">
+<h2>Supports for a Binary Constraint</h2>
+<p>For <span class="math inline">X&lt;Y</span>, a <strong>support</strong> for <span class="math inline">x\in D_X</span> is a value <span class="math inline">y\in D_Y</span> that makes the constraint true. Lines below join allowed pairs.</p>
+<div class="trace-tree-frames" role="img" aria-label="X has 1,2,3,4 and Y has 2,3,4. X1 supports Y2,Y3,Y4; X2 supports Y3,Y4; X3 supports Y4. X4 has no support and is deleted.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec14/support-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec14/support-1.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec14/support-2.png" alt="" aria-hidden="true">
+</div>
+<div class="ac-steps">
+<div class="fragment" data-fragment-index="0">
+<p><span class="math inline">X=3</span> stays: <span class="math inline">Y=4</span> is a support because <span class="math inline">3&lt;4</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><span class="math inline">X=4</span> goes: no value in <span class="math inline">D_Y</span> is greater than <span class="math inline">4</span>.</p>
+</div>
+</div>
+<aside class="notes">
+<p>Original Beamer example. Initial domains: X={1,2,3,4}, Y={2,3,4}. There are six allowed pairs. Every remaining X value needs at least one support, not a distinct support and not compatibility with every Y value. Several X values may use Y=4 as support. A support is a local witness for this one constraint, not a proof that x belongs to a complete solution.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="direction-matters" class="slide level2 ac-slide">
+<h2>Direction Matters</h2>
+<p>An <strong>arc</strong> <span class="math inline">(X,Y)</span> asks whether each value of <strong>X</strong> has support in <strong>Y</strong>. Revising it can shrink <strong>X’s domain only</strong>.</p>
+<p><img data-src="imgs/drawio/lec14/directions.png" class="ac-direction" alt="Two directed checks for X less than Y. X to Y prunes X using Y. Y to X prunes Y using X. Both checks use the same constraint X less than Y."></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Directed check</th>
+<th style="text-align: left;">After removing <span class="math inline">4</span> from <span class="math inline">D_X</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">(X,Y)</span></td>
+<td style="text-align: left;">Each <span class="math inline">x\in\{1,2,3\}</span> has a larger <span class="math inline">y</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">(Y,X)</span></td>
+<td style="text-align: left;">Each <span class="math inline">y\in\{2,3,4\}</span> has a smaller <span class="math inline">x</span></td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>A binary CSP is <strong>arc-consistent</strong> when every directed arc passes. Reverse the <strong>check</strong>, not the rule: it is still <span class="math inline">X&lt;Y</span>.</p>
+</div>
+<aside class="notes">
+<p>Node-consistent binary CSPs that satisfy both directions have 2-consistency. Treat multiple constraints on a pair as their combined allowed-pair relation. In the reverse check, C_YX(y,x) expresses x&lt;y, not y&lt;x. Y=2 can use X=1; Y=3 can use X=1 or 2; Y=4 can use X=1,2,3. No Y value is deleted in this example. See https://inst.eecs.berkeley.edu/~cs188/textbook/csp/filtering.html .</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="revise-pseudocode" class="slide level2 ac-slide ac-code">
+<h2>REVISE: Remove Unsupported Values</h2>
+<p><span class="math inline">D[i]</span> is the current domain of <span class="math inline">X_i</span>; <span class="math inline">C_{ij}(x,y)</span> is true exactly when the pair is allowed.</p>
+<div class="pseudo-code" role="group" aria-label="REVISE pseudocode">
+  <div class="pseudo-line"><span class="pseudo-fn">REVISE</span>(<span class="pseudo-var">i</span>, <span class="pseudo-var">j</span>, <span class="pseudo-var">D</span>, <span class="pseudo-var">C</span>):</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-var">changed</span> ← <span class="pseudo-lit">false</span></div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="0"><span class="pseudo-kw">for</span> <span class="pseudo-var">x</span> <span class="pseudo-kw">in</span> <span class="pseudo-fn">COPY</span>(<span class="pseudo-var">D</span>[<span class="pseudo-var">i</span>]):</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="0"><span class="pseudo-var">supported</span> ← <span class="pseudo-kw">EXISTS</span> <span class="pseudo-var">y</span> <span class="pseudo-kw">in</span> <span class="pseudo-var">D</span>[<span class="pseudo-var">j</span>] <span class="pseudo-kw">with</span> <span class="pseudo-var">C</span>[<span class="pseudo-var">i</span>,<span class="pseudo-var">j</span>](<span class="pseudo-var">x</span>,<span class="pseudo-var">y</span>)</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-kw">if not</span> <span class="pseudo-var">supported</span>:</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="1"><span class="pseudo-fn">REMOVE</span>(<span class="pseudo-var">D</span>[<span class="pseudo-var">i</span>], <span class="pseudo-var">x</span>)</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="1"><span class="pseudo-var">changed</span> ← <span class="pseudo-lit">true</span></div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="2"><span class="pseudo-kw">return</span> <span class="pseudo-var">changed</span></div>
+</div>
+<ul>
+<li><strong>COPY</strong> lets us delete safely without skipping values during iteration.</li>
+<li>The return value means <strong>“a deletion occurred,”</strong> not “a solution exists.”</li>
+</ul>
+<aside class="notes">
+<p>REVISE mutates D[i], leaves D[j] unchanged, and returns a Boolean change flag. EXISTS stops once one supporting y is found. For the preceding example, REVISE(X,Y) deletes 4 and returns true; an immediate second call makes no change and returns false. The notebook collects values to delete in a separate list, an equally valid way to avoid changing a set during iteration. Pseudocode adapted from the supplied Beamer and AIMA Figure 6.3: https://aima.cs.berkeley.edu/algorithms.pdf .</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ac3-pseudocode" class="slide level2 ac-slide ac-code">
+<h2>AC-3: Manage the Pending Checks</h2>
+<p><span class="math inline">Q</span> stores directed arcs awaiting revision. <strong>NEIGHBORS(i)</strong> lists variables constrained with <span class="math inline">X_i</span>.</p>
+<div class="pseudo-code" role="group" aria-label="AC-3 pseudocode with a deduplicated FIFO queue">
+  <div class="pseudo-line"><span class="pseudo-fn">AC3</span>(<span class="pseudo-var">D</span>, <span class="pseudo-var">C</span>):</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">if any</span> <span class="pseudo-var">D</span>[<span class="pseudo-var">i</span>] <span class="pseudo-kw">is</span> empty: <span class="pseudo-kw">return</span> <span class="pseudo-lit">false</span></div>
+  <div class="pseudo-line indent-1"><span class="pseudo-var">Q</span> ← queue of all directed arcs (both directions)</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="0"><span class="pseudo-kw">while</span> <span class="pseudo-var">Q</span> <span class="pseudo-kw">is not</span> empty:</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="0">(<span class="pseudo-var">i</span>, <span class="pseudo-var">j</span>) ← <span class="pseudo-fn">POP_FRONT</span>(<span class="pseudo-var">Q</span>)</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-kw">if</span> <span class="pseudo-fn">REVISE</span>(<span class="pseudo-var">i</span>, <span class="pseudo-var">j</span>, <span class="pseudo-var">D</span>, <span class="pseudo-var">C</span>):</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="1"><span class="pseudo-kw">if</span> <span class="pseudo-var">D</span>[<span class="pseudo-var">i</span>] <span class="pseudo-kw">is</span> empty: <span class="pseudo-kw">return</span> <span class="pseudo-lit">false</span></div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="2"><span class="pseudo-kw">for</span> <span class="pseudo-var">k</span> <span class="pseudo-kw">in</span> <span class="pseudo-fn">NEIGHBORS</span>(<span class="pseudo-var">i</span>) <span class="pseudo-kw">except</span> <span class="pseudo-var">j</span>:</div>
+  <div class="pseudo-line indent-4 fragment" data-fragment-index="2"><span class="pseudo-fn">ENQUEUE_IF_ABSENT</span>(<span class="pseudo-var">Q</span>, (<span class="pseudo-var">k</span>, <span class="pseudo-var">i</span>))</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="3"><span class="pseudo-kw">return</span> <span class="pseudo-lit">true</span></div>
+</div>
+<div class="takeaway">
+<p>A deletion may invalidate neighbors’ supports. <strong>true</strong> means <strong>no empty domain was found</strong>, not that a solution was found.</p>
+</div>
+<aside class="notes">
+<p>Use a first-in, first-out (FIFO) queue for the trace. Any fair worklist order works; FIFO is not essential for correctness. ENQUEUE_IF_ABSENT avoids duplicate pending arcs, with a set of pending pairs as one implementation. The notebook allows duplicate pending arcs, which can do extra work but does not invalidate propagation. All domains change in place. Initialize with both directions for each combined binary constraint. Skip j on requeue: a removed value in D[i] had no support in D[j], so it could not have been the supporting value for any value in D[j]. This assumes the reverse arc checks the same relation with swapped argument positions. AIMA Figure 6.3 and Berkeley CS188 filtering notes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="queue-first" class="slide level2 ac-slide search-trace ac-queue-trace">
+<h2>AC-3 Trace: First Pass</h2>
+<p>Rules: <span class="math inline">A&lt;B</span> and <span class="math inline">B&lt;C</span>. The queue front is on the <strong>left</strong>; add an arc only if it is not already pending.</p>
+<div class="trace-tree-frames" role="img" aria-label="FIFO AC-3 on A less than B less than C. Initial domains A123 B123 C23. Queue AB, BA, BC, CB. Revise AB deletes A3; BA deletes B1; BC deletes B3 and requeues AB. Remaining domains A12 B2 C23; queue CB, AB.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec14/queue-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec14/queue-1.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec14/queue-2.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="3" src="imgs/drawio/lec14/queue-3.png" alt="" aria-hidden="true">
+</div>
+<div class="ac-steps">
+<div class="fragment" data-fragment-index="0">
+<p><strong>1.</strong> <span class="math inline">(A,B)</span> deletes <span class="math inline">3</span> from <span class="math inline">D_A</span>: no larger <span class="math inline">B</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>2.</strong> <span class="math inline">(B,A)</span> deletes <span class="math inline">1</span> from <span class="math inline">D_B</span>: no smaller <span class="math inline">A</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p><strong>3.</strong> <span class="math inline">(B,C)</span> deletes <span class="math inline">3</span> from <span class="math inline">D_B</span>; put <span class="math inline">(A,B)</span> back.</p>
+</div>
+</div>
+<aside class="notes">
+<p>The initial domains are A={1,2,3}, B={1,2,3}, C={2,3}. Initially Q=[(A,B),(B,A),(B,C),(C,B)]. After step1 Q=[(B,A),(B,C),(C,B)], domains A12 B123 C23. After step2 Q=[(B,C),(C,B)], domains A12 B23 C23; (C,B) is already pending. After step3 Q=[(C,B),(A,B)], domains A12 B2 C23. Ask why A=2, which had support earlier, now needs another check. The figures show the most recently checked arc in teal, its first variable’s reduced domain in gold, and the queue after that check.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="queue-return" class="slide level2 ac-slide search-trace ac-queue-trace">
+<h2>AC-3 Trace: Rechecking</h2>
+<p>Continue the <strong>same problem and queue</strong>. A previously consistent arc may need checking again when its supporting domain shrinks.</p>
+<div class="trace-tree-frames" role="img" aria-label="Continue with A12 B2 C23 and queue CB, AB. Revise CB deletes C2. Revise AB deletes A2. Final domains A1 B2 C3, queue empty.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec14/queue-3.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec14/queue-4.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec14/queue-5.png" alt="" aria-hidden="true">
+</div>
+<div class="ac-steps">
+<div class="fragment" data-fragment-index="0">
+<p><strong>4.</strong> <span class="math inline">(C,B)</span> deletes <span class="math inline">2</span> from <span class="math inline">D_C</span>: <span class="math inline">B=2</span> requires <span class="math inline">C&gt;2</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>5.</strong> <span class="math inline">(A,B)</span> deletes <span class="math inline">2</span> from <span class="math inline">D_A</span>: its old support <span class="math inline">B=3</span> is gone.</p>
+</div>
+</div>
+<div class="takeaway fragment" data-fragment-index="1">
+<p>The queue is empty. Here we obtain a solution: <span class="math inline">A=1,\ B=2,\ C=3</span>, and both inequalities hold.</p>
+</div>
+<aside class="notes">
+<p>After step4, Q=[(A,B)], domains A12 B2 C3. After step5, Q=[], domains A1 B2 C3. This instance happens to become fully solved. Checking (A,B) only once would leave the unsupported value A=2 behind. Domain values never reappear during this run; backtracking, which can restore saved domains, is a separate operation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-incoming-arcs-return" class="slide level2 ac-slide">
+<h2>Why Incoming Arcs Return</h2>
+<p>When checking <span class="math inline">(B,C)</span> removes <span class="math inline">3</span> from <span class="math inline">D_B</span>, <strong>A may lose a support</strong>.</p>
+<p><img data-src="imgs/drawio/lec14/incoming.png" class="ac-incoming" alt="A domain 1,2 points to B domain 2 with a recheck A,B arrow. B domain 2 points to C domain 2,3, the check that just removed B3. A2 had B3 as its only support."></p>
+<ul>
+<li>Recheck <strong><span class="math inline">(A,B)</span></strong>: it asks whether A’s values still have support in B.</li>
+<li>Checking <strong><span class="math inline">(B,A)</span></strong> would prune B instead, missing the effect on A.</li>
+<li>If an affected arc is already in <span class="math inline">Q</span>, one pending copy is enough.</li>
 </ul>
 <div class="takeaway">
-<p>Search decides what to try; propagation decides what is no longer worth trying.</p>
+<p>When <span class="math inline">D_i</span> shrinks, reconsider arcs <strong>into <span class="math inline">X_i</span></strong>: neighbors were relying on its old values.</p>
 </div>
+<aside class="notes">
+<p>Why exclude the immediate reverse (C,B) from new enqueues after REVISE(B,C)? The deleted value B=3 had no compatible C value, so no C value was relying on it. In our trace (C,B) was already pending from initialization, so it is still checked when it reaches the front. Do not remove an existing queue item merely because the requeue rule would not newly add it. The relation is unchanged throughout: B&lt;C.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="consistency" class="slide level2">
-<h2>Consistency</h2>
-<p>A variable assignment is <strong>consistent</strong> when it satisfies the relevant constraints.</p>
+<section id="limits-trace" class="slide level2 ac-slide search-trace ac-limits-trace">
+<h2>Arc Consistency Has Limits</h2>
+<p>Three variables have domains <span class="math inline">\{1,2\}</span>. <strong>Every pair must differ:</strong> <span class="math inline">A\ne B</span>, <span class="math inline">A\ne C</span>, and <span class="math inline">B\ne C</span>.</p>
+<div class="trace-tree-frames" role="img" aria-label="Initially A, B, C each have domain 1,2 and every edge requires different values. Each value has support along every arc. Trying A1 forces B2 and C2, violating the B-C inequality.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec14/triangle-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec14/triangle-1.png" alt="" aria-hidden="true">
+</div>
+<p><strong>Before any choice</strong>, every arc is consistent: <span class="math inline">1</span> has support <span class="math inline">2</span>, and <span class="math inline">2</span> has support <span class="math inline">1</span>.</p>
+<div class="takeaway fragment" data-fragment-index="0">
+<p>Yet there is <strong>no solution</strong>. Choosing <span class="math inline">A=1</span> forces <span class="math inline">B=C=2</span>; choosing <span class="math inline">A=2</span> fails symmetrically.</p>
+</div>
+<aside class="notes">
+<p>This is the two-value triangle, not the earlier chain. AC-3 on the original domains makes no deletions and returns true despite unsatisfiability. Different neighbor checks can use supports that cannot coexist globally. Once A is assigned, propagation would eventually produce an empty domain; the highlighted equal B and C values show the contradiction before that final deletion. The original graph is node- and arc-consistent, but not path-consistent. Source: AIMA and standard CSP consistency examples.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="stronger-consistency" class="slide level2 ac-slide">
+<h2>Stronger Consistency</h2>
+<p><strong>Path consistency (3-consistency):</strong> every consistent assignment to two variables can be extended to <strong>any third variable</strong>.</p>
+<p><img data-src="imgs/drawio/lec14/path-consistency.png" class="ac-path" alt="Triangle inequalities with A1 and B2. C must differ from 1 and from 2, leaving no possible value. The consistent pair A1,B2 cannot extend to C."></p>
+<ul>
+<li><strong><span class="math inline">k</span>-consistency:</strong> every consistent <span class="math inline">k-1</span>-variable assignment extends to any other variable.</li>
+<li><strong>Strong <span class="math inline">k</span>-consistency:</strong> all levels <span class="math inline">1,2,\ldots,k</span> hold.</li>
+</ul>
+<div class="takeaway">
+<p>Stronger checks detect more contradictions, but cost more.</p>
+</div>
+<aside class="notes">
+<p>The pair A=1, B=2 satisfies its own inequality but has no extension to C. Path-consistency algorithms can remove allowed pairs, not just individual domain values. For binary CSPs this is the usual 3-consistency interpretation. Strong n-consistency, where n is the number of variables, permits successive extension without backtracking, but enforcing it is generally too expensive. Do not call every level above 2 path consistency. Source: original Beamer k-consistency definition and https://inst.eecs.berkeley.edu/~cs188/textbook/csp/filtering.html .</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="work-and-termination" class="slide level2 ac-slide">
+<h2>Work and Termination</h2>
+<p>Domains are finite and <strong>only shrink</strong>. New queue entries are added only after a deletion, so the process eventually stops.</p>
+<p>Let <span class="math inline">e</span> be the number of <strong>directed arcs</strong>, and <span class="math inline">d</span> the largest initial domain size.</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 50%">
+<col style="width: 50%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Level</th>
-<th>Also called</th>
-<th>Requirement</th>
+<th style="text-align: left;">Work</th>
+<th style="text-align: left;">Basic AC-3 bound</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>1-consistency</td>
-<td>Node consistency</td>
-<td>Each variable satisfies unary constraints</td>
+<td style="text-align: left;">One <strong>REVISE</strong>: try up to <span class="math inline">d</span> supports for each of <span class="math inline">d</span> values</td>
+<td style="text-align: left;"><span class="math inline">O(d^2)</span></td>
 </tr>
 <tr class="even">
-<td>2-consistency</td>
-<td>Arc consistency</td>
-<td>Each value has support in each connected variable</td>
+<td style="text-align: left;">Rechecks of one arc as its supporting domain shrinks</td>
+<td style="text-align: left;"><span class="math inline">O(d)</span></td>
 </tr>
 <tr class="odd">
-<td>3-consistency</td>
-<td>Path consistency</td>
-<td>Any consistent pair can be extended to a third variable</td>
-</tr>
-<tr class="even">
-<td>k-consistency</td>
-<td>General form</td>
-<td>Any consistent <span class="math inline">k-1</span> assignment can be extended</td>
+<td style="text-align: left;">All directed arcs, with duplicate pending entries avoided</td>
+<td style="text-align: left;"><strong><span class="math inline">O(ed^3)</span></strong></td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="consistency-1" class="slide level2">
-<h2>1-Consistency</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:50%;">
-<h3 id="definition">Definition</h3>
-<ul>
-<li>A unary constraint applies to one variable.</li>
-<li>A problem is 1-consistent if every variable has at least one valid value satisfying unary constraints.</li>
-</ul>
-</div><div class="column" style="width:46%;">
-<h3 id="example">Example</h3>
-<ul>
-<li>Variable: age <span class="math inline">X</span>.</li>
-<li>Domain: <span class="math inline">\{10,15,20,25,30\}</span>.</li>
-<li>Constraint: <span class="math inline">X \ge 18</span>.</li>
-<li>Reduced domain: <span class="math inline">\{20,25,30\}</span>.</li>
-</ul>
-</div></div>
-</section>
-<section id="consistency-2" class="slide level2">
-<h2>2-Consistency</h2>
-<ul>
-<li>A binary constraint applies to a pair of variables.</li>
-<li>A problem is 2-consistent if every value of one variable has a supporting value in each connected variable.</li>
-</ul>
-<div class="definition">
-<p>For each value <span class="math inline">x \in D(X_i)</span>, there must exist a value <span class="math inline">y \in D(X_j)</span> such that the constraint between <span class="math inline">X_i</span> and <span class="math inline">X_j</span> is satisfied.</p>
-</div>
-</section>
-<section id="k-consistency" class="slide level2">
-<h2>k-Consistency</h2>
-<ul>
-<li>A CSP is <strong>k-consistent</strong> if any consistent assignment to <span class="math inline">k-1</span> variables can be extended to any <span class="math inline">k</span>-th variable.</li>
-<li>A CSP is <strong>strongly k-consistent</strong> if it is j-consistent for all <span class="math inline">j \le k</span>.</li>
-<li>Higher levels of consistency can prune more values.</li>
-<li>But computing them becomes expensive quickly.</li>
-</ul>
-<div class="takeaway">
-<p>In practice, algorithms often enforce 2-consistency and sometimes 3-consistency, but rarely much higher.</p>
-</div>
-</section>
-<section id="example-2-consistency" class="slide level2 compact">
-<h2>Example: 2-Consistency</h2>
-<p>Consider variables <span class="math inline">X,Y</span>:</p>
-<p><span class="math display">
-D(X)=\{1,2,3,4\}, \quad D(Y)=\{2,3,4\}
-</span></p>
-<p>Constraint: <span class="math inline">X &lt; Y</span>.</p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="values-of-x">Values of X</h3>
-<ul>
-<li><span class="math inline">X=1</span> supported by <span class="math inline">Y=2,3,4</span>.</li>
-<li><span class="math inline">X=2</span> supported by <span class="math inline">Y=3,4</span>.</li>
-<li><span class="math inline">X=3</span> supported by <span class="math inline">Y=4</span>.</li>
-<li><span class="math inline">X=4</span> has no support.</li>
-</ul>
-</div><div class="column" style="width:48%;">
-<h3 id="values-of-y">Values of Y</h3>
-<ul>
-<li><span class="math inline">Y=2</span> supported by <span class="math inline">X=1</span>.</li>
-<li><span class="math inline">Y=3</span> supported by <span class="math inline">X=1,2</span>.</li>
-<li><span class="math inline">Y=4</span> supported by <span class="math inline">X=1,2,3</span>.</li>
-</ul>
-</div></div>
-<div class="takeaway">
-<p>Remove 4 from <span class="math inline">D(X)</span>; then the arc is consistent.</p>
-</div>
-</section>
-<section id="arc-consistency" class="slide level2">
-<h2>Arc Consistency</h2>
-<p>A variable <span class="math inline">X_i</span> is arc-consistent with <span class="math inline">X_j</span> if every value in <span class="math inline">D(X_i)</span> has at least one supporting value in <span class="math inline">D(X_j)</span>.</p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec14/arc-consistency.svg" alt="Arc consistency from Xi domain one two three four to Xj domain two three four with constraint Xi less than Xj"></p>
-</div>
+<p><img data-src="imgs/drawio/lec14/chain-reference.png" class="ac-chain-reference" alt="Reference chain A less than B less than C, with two directed arcs per constraint. Initial domains A and B are 1,2,3; C is 2,3."></p>
 <div class="question">
-<p>Arc consistency is directional: checking <span class="math inline">(X_i,X_j)</span> asks whether values in <span class="math inline">X_i</span> have support in <span class="math inline">X_j</span>.</p>
+<p>For this chain, what are <span class="math inline">e</span> and <span class="math inline">d</span>? <span class="fragment" data-fragment-index="0"><strong><span class="math inline">e=4</span>, <span class="math inline">d=3</span>.</strong></span></p>
 </div>
+<aside class="notes">
+<p>Each supporting domain can lose values on at most d separate occasions, and an arc is initially present once. Duplicate suppression keeps at most e arcs pending; queue storage is O(e), in addition to the domains and constraint representation. The simple REVISE implementation scans up to d squared pairs assuming an O(1) constraint test. This analysis is for basic AC-3, not an optimal arc-consistency algorithm. In our worked trace there are five REVISE calls, not e*d^3 calls. Reference: Berkeley CS188 filtering notes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="ac-3-algorithm" class="slide level2 compact">
-<h2>AC-3 Algorithm</h2>
-<div class="pseudo-code" role="img" aria-label="Animated pseudocode for AC-3">
-<div class="pseudo-line fragment" data-fragment-index="1">
-<span class="pseudo-fn">AC3</span>(<span class="pseudo-var">CSP</span>):
+<section id="the-notebooks-sum-constraints" class="slide level2 ac-slide">
+<h2>The Notebook’s Sum Constraints</h2>
+<p>All four variables initially allow digits <span class="math inline">\{0,1,\ldots,9\}</span>. Each edge requires the indicated <strong>sum</strong>.</p>
+<p><img data-src="imgs/drawio/lec14/notebook-sums.png" class="ac-notebook" alt="Cycle constraints a+b=3, b+c=4, c+d=2, d+a=1. Propagation leaves a:0,1; b:2,3; c:1,2; d:0,1."></p>
+<div class="question">
+<p>Can we freely combine values? <strong>No:</strong> <span class="math inline">a=0, b=2</span> violates <span class="math inline">a+b=3</span>.</p>
 </div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="2">
-<span class="pseudo-var">Q</span> <span class="pseudo-op">=</span> all arcs (<span class="pseudo-var">Xi</span>, <span class="pseudo-var">Xj</span>) connected by a constraint
-</div>
-<div class="pseudo-line">
-&nbsp;
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="3">
-<span class="pseudo-kw">while</span> <span class="pseudo-var">Q</span> <span class="pseudo-kw">is not</span> empty:
-</div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="3">
-remove an arc (<span class="pseudo-var">Xi</span>, <span class="pseudo-var">Xj</span>) from <span class="pseudo-var">Q</span>
-</div>
-<div class="pseudo-line">
-&nbsp;
-</div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="4">
-<span class="pseudo-kw">if</span> <span class="pseudo-fn">Revise</span>(<span class="pseudo-var">Xi</span>, <span class="pseudo-var">Xj</span>) removed values from <span class="pseudo-var">D(Xi)</span>:
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="5">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">D(Xi)</span> <span class="pseudo-kw">is</span> empty:
-</div>
-<div class="pseudo-line indent-4 fragment" data-fragment-index="5">
-<span class="pseudo-kw">return</span> failure
-</div>
-<div class="pseudo-line">
-&nbsp;
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="6">
-<span class="pseudo-kw">for</span> each <span class="pseudo-var">Xk</span> <span class="pseudo-kw">in</span> <span class="pseudo-fn">Neighbors</span>(<span class="pseudo-var">Xi</span>), except <span class="pseudo-var">Xj</span>:
-</div>
-<div class="pseudo-line indent-4 fragment" data-fragment-index="6">
-add (<span class="pseudo-var">Xk</span>, <span class="pseudo-var">Xi</span>) to <span class="pseudo-var">Q</span>
-</div>
-<div class="pseudo-line">
-&nbsp;
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="7">
-<span class="pseudo-kw">return</span> reduced domains
-</div>
-</div>
+<p>The notebook starts with <strong>4 directed checks</strong>. Full AC-3 uses <strong>8</strong>, including each reverse check. Both give these domains <strong>for this example</strong>.</p>
+<aside class="notes">
+<p>Use the linked AC-3 notebook, keeping implementation details there. The supplied directed constraint triples are (a,b,3), (b,c,4), (c,d,2), (d,a,1); add (b,a,3), (c,b,4), (d,c,2), (a,d,1) for a standard bidirectional initialization. The notebook’s existing explanation discusses this distinction. Final domains with either list for this particular system: a={0,1}, b={2,3}, c={1,2}, d={0,1}. Exactly two solutions, in (a,b,c,d) order: (0,3,1,1) and (1,2,2,0). Fix a=0 and run ac3 again on those restricted domains to force b3,c1,d1. Calling solve again would recreate full initial domains. The four-check behavior must not be presented as generally equivalent to full AC-3.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="ac-3-what-each-part-does" class="slide level2">
-<h2>AC-3: What Each Part Does</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Step</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Initialize queue</td>
-<td>Every arc may need checking</td>
-</tr>
-<tr class="even">
-<td>Remove an arc</td>
-<td>Focus on one directional constraint</td>
-</tr>
-<tr class="odd">
-<td>Revise</td>
-<td>Delete unsupported values</td>
-</tr>
-<tr class="even">
-<td>Empty domain</td>
-<td>No solution can satisfy current constraints</td>
-</tr>
-<tr class="odd">
-<td>Re-add neighbors</td>
-<td>A deletion can make nearby arcs inconsistent</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="revise-function" class="slide level2 compact">
-<h2>Revise Function</h2>
-<div class="pseudo-code" role="img" aria-label="Animated pseudocode for Revise in AC-3">
-<div class="pseudo-line fragment" data-fragment-index="1">
-<span class="pseudo-fn">Revise</span>(<span class="pseudo-var">Xi</span>, <span class="pseudo-var">Xj</span>):
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="2">
-<span class="pseudo-var">removed</span> <span class="pseudo-op">=</span> <span class="pseudo-lit">false</span>
-</div>
-<div class="pseudo-line">
-&nbsp;
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="3">
-<span class="pseudo-kw">for</span> each <span class="pseudo-var">x</span> <span class="pseudo-kw">in</span> <span class="pseudo-var">D(Xi)</span>:
-</div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="4">
-<span class="pseudo-kw">if</span> no <span class="pseudo-var">y</span> <span class="pseudo-kw">in</span> <span class="pseudo-var">D(Xj)</span> satisfies the constraint:
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="5">
-remove <span class="pseudo-var">x</span> from <span class="pseudo-var">D(Xi)</span>
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="5">
-<span class="pseudo-var">removed</span> <span class="pseudo-op">=</span> <span class="pseudo-lit">true</span>
-</div>
-<div class="pseudo-line">
-&nbsp;
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="6">
-<span class="pseudo-kw">return</span> <span class="pseudo-var">removed</span>
-</div>
-</div>
-<div class="takeaway">
-<p>Revise is the pruning operation; AC-3 is the scheduler that decides which arcs to revisit.</p>
-</div>
-</section>
-<section id="why-consistency-matters" class="slide level2">
-<h2>Why Consistency Matters</h2>
+<section id="takeaways" class="slide level2 ac-slide">
+<h2>Takeaways</h2>
 <ul>
-<li>CSP structure gives us domain-independent pruning methods.</li>
-<li>Consistency computation is the core of constraint propagation.</li>
-<li>Stronger consistency can reduce more search.</li>
-<li>But stronger consistency can itself become expensive.</li>
+<li><strong>Node consistency:</strong> remove values that fail a unary constraint.</li>
+<li><strong>Arc consistency:</strong> each remaining value has support across each binary constraint.</li>
+<li><strong>REVISE:</strong> prune the first variable’s domain.</li>
+<li><strong>AC-3:</strong> revisit affected incoming arcs after deletions.</li>
+<li><strong>Nonempty domains are not a proof of a solution.</strong></li>
 </ul>
 <div class="takeaway">
-<p>The goal is not to eliminate search completely; it is to make the remaining search much smaller.</p>
+<p>Propagation removes impossible candidates. Search may still be needed to choose values that work <strong>together</strong>.</p>
 </div>
+<p><a href="../code_and_homework/AC3.html" target="_blank" rel="noopener">Open the AC-3 notebook</a></p>
 <p><a class="asset-credit-link" href="../asset_credits.html#lec14" target="_blank" rel="noopener">Asset credits</a></p>
+<aside class="notes">
+<p>In the notebook, follow the domain changes, inspect why each removed value lacks support, compare the original queue with both directions, and then restrict a to 0 and propagate again. Keep the actual Python functions and their answers in the notebook, rather than duplicating them here. Lecture 15 adds search and variable/value ordering.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 </section>

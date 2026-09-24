@@ -1,0 +1,46 @@
+/* Shared by the deck and the lecture viewer's thumbnails. */
+.reveal section.ac-slide { font-size: 0.9em; }
+.reveal section.ac-slide h2,
+.reveal section.ac-slide h3 { margin-top: 0; }
+.reveal section.ac-slide table { font-size: 0.83em; line-height: 1.3; }
+.reveal section.ac-slide th,
+.reveal section.ac-slide td { padding: 0.45em 0.5em; }
+.reveal section.ac-slide img:not(.trace-frame) {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  border: 0;
+  box-shadow: none;
+  margin: 0.15em auto;
+}
+.reveal section.ac-slide .ac-recap { max-height: 285px; }
+.reveal section.ac-slide .ac-direction { max-height: 180px; }
+.reveal section.ac-slide .ac-incoming { max-height: 225px; }
+.reveal section.ac-slide .ac-path { max-height: 255px; }
+.reveal section.ac-slide .ac-notebook { max-height: 285px; }
+.reveal section.ac-slide .ac-chain-reference { max-height: 115px; }
+.reveal section.ac-slide .trace-tree-frames { width: 840px; max-width: 100%; margin: 0.15em auto; }
+.reveal section.ac-node-trace .trace-tree-frames { aspect-ratio: 900 / 195; }
+.reveal section.ac-support-trace .trace-tree-frames { aspect-ratio: 900 / 330; }
+.reveal section.ac-queue-trace .trace-tree-frames { aspect-ratio: 900 / 305; }
+.reveal section.ac-limits-trace .trace-tree-frames { aspect-ratio: 900 / 300; }
+.reveal section.ac-slide .ac-steps p { margin: 0.25em 0; }
+.reveal section.ac-slide .takeaway,
+.reveal section.ac-slide .question {
+  margin-top: 0.45em;
+  padding-top: 0.45em;
+  padding-bottom: 0.45em;
+}
+.reveal section.ac-code .pseudo-code {
+  font-size: 0.76em;
+  line-height: 1.42;
+  margin: 0.4em 0;
+  padding: 0.5em 0.65em;
+  white-space: normal;
+}
+.reveal section.ac-code .pseudo-line { min-height: 1.42em; white-space: nowrap; }
+.reveal section.ac-code .pseudo-line.fragment.visible { opacity: 1; }
+.reveal section#work-and-termination th:first-child,
+.reveal section#work-and-termination td:first-child { width: 68%; }

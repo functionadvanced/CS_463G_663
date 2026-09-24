@@ -634,70 +634,14 @@
     "href": "slides/lec13_CSP.html#constraint-satisfaction-problems",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Constraint Satisfaction Problems",
-    "text": "Constraint Satisfaction Problems\nA constraint satisfaction problem (CSP) consists of:\n\n\n\nPiece\nMeaning\n\n\n\n\nVariables\nX = \\{X_1, X_2, \\ldots, X_n\\}\n\n\nDomains\nEach X_i has possible values D_i\n\n\nConstraints\nRules for allowable combinations of values\n\n\n\n\nGoal: assign values to all variables so every constraint is satisfied.\n\n\n50-minute plan: CSP vocabulary, 6 minutes; scheduling formulation and checks, 13; pruning and infeasibility activity, 9; Sudoku representation, 9; search-space and alternative-model exercises, 8; exit discussion, 5. Pause at question slides before showing their answers. This lecture emphasizes modeling. Detailed consistency algorithms and backtracking heuristics belong to Lectures 14 and 15. Conceptual reference: AIMA, constraint satisfaction chapter; https://inst.eecs.berkeley.edu/~cs188/textbook/csp/csps.html. Scheduling examples and inline SVG diagrams are original course material."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#csp-examples",
-    "href": "slides/lec13_CSP.html#csp-examples",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "CSP Examples",
-    "text": "CSP Examples\n\n\nSudoku\nCells are variables; digits are values; rows, columns, and blocks impose constraints.\n\nMap Coloring\nRegions are variables; colors are values; neighboring regions must differ.\n\nScheduling\nEvents are variables; times/rooms are values; conflicts become constraints."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#sudoku-rules",
-    "href": "slides/lec13_CSP.html#sudoku-rules",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Sudoku Rules",
-    "text": "Sudoku Rules\n\nFill a 9 \\times 9 grid with digits 1 through 9.\nEach row must contain each digit exactly once.\nEach column must contain each digit exactly once.\nEach 3 \\times 3 subgrid must contain each digit exactly once.\n\n\nSudoku is useful because the rules are simple, but the constraints interact strongly."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#sudoku-example",
-    "href": "slides/lec13_CSP.html#sudoku-example",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Sudoku Example",
-    "text": "Sudoku Example\n\n\n\n\n\nSudoku puzzle\n\n\n\n\n\n\nSudoku solution\n\n\n\n\nThe puzzle is a partial assignment. The solution is a complete satisfying assignment."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#sudoku-variables",
-    "href": "slides/lec13_CSP.html#sudoku-variables",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Sudoku Variables",
-    "text": "Sudoku Variables\n\n\n\nRow  Column\n1\n2\n3\n…\n9\n\n\n\n\nA\nA1\nA2\nA3\n…\nA9\n\n\nB\nB1\nB2\nB3\n…\nB9\n\n\nC\nC1\nC2\nC3\n…\nC9\n\n\n…\n…\n…\n…\n…\n…\n\n\nI\nI1\nI2\nI3\n…\nI9\n\n\n\n\nVariables: A1 through I9.\nDomain for each variable: \\{1,2,\\ldots,9\\}."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#sudoku-constraints",
-    "href": "slides/lec13_CSP.html#sudoku-constraints",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Sudoku Constraints",
-    "text": "Sudoku Constraints\n\n\nRow\nExample: A1, A2, …, A9 must all differ.\n\nColumn\nExample: A4, B4, …, I4 must all differ.\n\nBlock\nExample: D4, D5, D6, E4, E5, E6, F4, F5, F6 must all differ."
+    "text": "Constraint Satisfaction Problems\nA constraint satisfaction problem (CSP) describes what a solution must satisfy, separately from how we find it.\n\n\n\n\n\n\n\n\nPiece\nMeaning\nExam-scheduling example\n\n\n\n\nVariable X_i\nA decision to make\nThe time slot for exam i\n\n\nDomain D_i\nAllowed values for X_i\nSlots \\{1,2,3\\}\n\n\nConstraint\nA rule on allowed combinations\nConflicting exams use different slots\n\n\n\n\nA solution assigns a domain value to every variable and satisfies every constraint.\n\nThe same framework describes Sudoku digits, map colors, and queen positions.\n\nConnect to Lectures 11 and 12: a queens candidate can be scored by conflicts, but here we state the non-attack requirements directly. A basic CSP is a feasibility problem, not necessarily an optimization problem. Source: original Lecture 13 Beamer material and AIMA’s constraint satisfaction chapter. Suggested pacing for the 50-minute meeting: exam modeling and propagation about 18 minutes; types, feasibility, and the triangle example about 8; Sudoku about 13; lab activity and queens connection about 8; summary about 3. Detailed consistency algorithms and backtracking heuristics are reserved for Lectures 14 and 15."
   },
   {
     "objectID": "slides/lec13_CSP.html#sudoku-as-a-csp",
     "href": "slides/lec13_CSP.html#sudoku-as-a-csp",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Sudoku as a CSP",
-    "text": "Sudoku as a CSP\n\n\n\nCSP piece\nSudoku formulation\n\n\n\n\nVariables\nA1, A2, …, I9\n\n\nDomain\n\\{1,2,\\ldots,9\\} for each cell\n\n\nRow constraints\nCells in the same row must differ\n\n\nColumn constraints\nCells in the same column must differ\n\n\nBlock constraints\nCells in the same 3 \\times 3 block must differ\n\n\nGiven cells\nPre-filled cells have fixed values"
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#naive-sudoku-search",
-    "href": "slides/lec13_CSP.html#naive-sudoku-search",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Naive Sudoku Search",
-    "text": "Naive Sudoku Search\nNaive backtracking:\n\nChoose an unassigned variable.\nTry a value.\nBacktrack if a constraint is violated.\n\n\nWith m empty cells and at most 9 candidate values per cell, there are at most 9^m complete fillings before checking constraints.\n\nUsing a fixed variable order avoids exploring many orders of the same assignments.\n\nThis is a count of candidate complete assignments, not a tight running-time claim for a solver. Fixed givens and constraint checks reduce the actual search. Check cost and propagation cost also contribute to runtime."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#constraint-propagation",
-    "href": "slides/lec13_CSP.html#constraint-propagation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Constraint Propagation",
-    "text": "Constraint Propagation\n\nEnforce constraints before committing to deeper choices.\nWhen a value is assigned, eliminate inconsistent values from neighboring variables.\nIf a cell has only one possible value left, it must take that value.\nIf a domain becomes empty, the current partial assignment cannot work.\n\n\nConstraint propagation reduces the effective branching factor and detects failure earlier."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#why-csps-help",
-    "href": "slides/lec13_CSP.html#why-csps-help",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why CSPs Help",
-    "text": "Why CSPs Help\n\nCSPs separate what the problem is from how we search.\nGeneral CSP algorithms can use domain-independent structure.\nConstraints allow pruning before a full assignment is attempted.\n\n\nThe next lecture formalizes consistency: how much pruning can we do before search?\n\nAsset credits"
+    "text": "Sudoku as a CSP\nFill the 9\\times9 grid with digits 1 through 9, preserving the given clues.\n\n\n\n\n\nVariables: the 81 cells, named A1 through I9.\nDomains: \\{1,\\ldots,9\\} for blanks; a singleton for each clue, such as D_{\\mathrm{A1}}=\\{5\\}.\nConstraints: each row, column, and 3\\times3 block contains all nine digits exactly once.\n\n\n\nClues are fixed values, not suggestions. The initial puzzle is a partial assignment.\n\n\nThe puzzle is the same as the original Wikipedia-derived course image and the existing Sudoku notebook. The notebook uses zero-based indices. We include all 81 cells and use singleton clue domains. An equivalent formulation can make only blanks variables and treat clues as constants. There are 30 clues and 51 blanks. With nine cells and domain 1 through 9, AllDifferent implies that every digit occurs exactly once. Source: original Lecture 13 Beamer Sudoku example and sudoku.ipynb."
   },
   {
     "objectID": "slides/lec11_Local_Search.html#random-restarts",
@@ -1201,21 +1145,21 @@
     "href": "asset_credits.html#lec12",
     "title": "Visual Asset Credits",
     "section": "Lecture 12: Genetic Algorithm",
-    "text": "Lecture 12: Genetic Algorithm\nCarried-over assets needing source verification: chromesome.jpeg, crossover.png, gene.jpeg, genetic_8_queen.png, genetic_crossover.png, genetic_mutation.png, genetic_selection.png."
+    "text": "Lecture 12: Genetic Algorithm\nThe active lecture uses editable draw.io diagrams in slides/imgs/drawio/lec12/genetic-algorithms.drawio, with PNG exports for board encodings, fitness conflicts, weighted selection, crossover, mutation, replacement, permutation constraints, swap mutation, and diversity. The initial four chromosomes and fitness scores follow the AIMA example also used in the Spring 2025 lecture. The explicit draws, continuation of the worked generation, and permutation examples are course illustrations by Peizhong Ju, assisted by Codex.\nThe permutation operators and tournament selection discussion follow the existing genetic N-queens notebook. Older raster assets from the Spring 2025 project, sourced from AIMA or Wikipedia, are retained as archived assets and no longer appear in this deck."
   },
   {
     "objectID": "asset_credits.html#lec13",
     "href": "asset_credits.html#lec13",
     "title": "Visual Asset Credits",
     "section": "Lecture 13: Constraint Satisfaction Problems",
-    "text": "Lecture 13: Constraint Satisfaction Problems\nCarried-over assets needing source verification: Sudoku.png, SudokuSolution.png.\nThe exam constraint graph, scheduling examples, and classroom exercises are original course material. Concepts follow the AIMA constraint satisfaction chapter and the UC Berkeley CS 188 CSP notes."
+    "text": "Lecture 13: Constraint Satisfaction Problems\nThe active lecture uses editable draw.io diagrams in slides/imgs/drawio/lec13/constraint-models.drawio, with PNG exports for exam availability, constraint graphs, domain-reduction traces, Sudoku units and candidates, search branches, lab schedules, and the four-queens formulation. These diagrams are course illustrations by Peizhong Ju, assisted by Codex. The CSP concepts and queens formulation follow AIMA; the scheduling examples are original course material.\nThe Sudoku clue pattern is the Wikipedia-derived puzzle credited in the original Spring 2025 Beamer lecture and used in the existing Sudoku notebook. The new draw.io grids preserve those clues and add cell labels and deduction highlights. The older Sudoku.png and SudokuSolution.png assets are retained in the project but no longer appear in this deck.\nThe exam constraint graph, scheduling examples, and classroom exercises are original course material. Concepts follow the AIMA constraint satisfaction chapter and the UC Berkeley CS 188 CSP notes."
   },
   {
     "objectID": "asset_credits.html#lec14",
     "href": "asset_credits.html#lec14",
     "title": "Visual Asset Credits",
     "section": "Lecture 14: CSP Consistency",
-    "text": "Lecture 14: CSP Consistency\nCarried-over assets needing source verification: Sudoku.png, SudokuSolution.png."
+    "text": "Lecture 14: CSP Consistency\nThe age-domain filtering, binary supports, directed-arc checks, AC-3 queue trace, triangle counterexample, and sum-constraint diagrams were drawn for this course in draw.io. The editable source is arc-consistency-traces.drawio; the slides use PNG exports. The opening exam-schedule diagram is reused from Lecture 13.\nThe age and binary-support examples follow the original course material. The sum-constraint graph follows the course’s AC-3 notebook. Definitions and pseudocode draw on Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig, especially Figure 6.3 in the AIMA algorithms, the UC Berkeley CS 188 filtering notes, and the CS50 AI constraint satisfaction notes."
   },
   {
     "objectID": "asset_credits.html#lec15",
@@ -1510,174 +1454,6 @@
     "title": "Lecture Viewer",
     "section": "",
     "text": "Lecture Slides\n    Open printable slides\n  \n  \n    \n      Deck\n      \n    \n    \n      \n    \n  \n  Unable to load this lecture deck."
-  },
-  {
-    "objectID": "slides/lec12_Genetic_Algorithm.html#genetic-algorithms",
-    "href": "slides/lec12_Genetic_Algorithm.html#genetic-algorithms",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Genetic Algorithms",
-    "text": "Genetic Algorithms\n\nGenetic algorithms are population-based local search methods.\nThey evolve many candidate solutions over generations.\nBetter candidates are more likely to contribute to the next generation.\nVariation comes from crossover and mutation.\n\n\nLocal search improves one state; genetic algorithms evolve a population of states."
-  },
-  {
-    "objectID": "slides/lec12_Genetic_Algorithm.html#from-evolution-to-optimization",
-    "href": "slides/lec12_Genetic_Algorithm.html#from-evolution-to-optimization",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "From Evolution to Optimization",
-    "text": "From Evolution to Optimization\n\n\nIn Nature\n\nBetter-adapted individuals are more likely to survive and reproduce.\nTraits can be passed to future generations.\n\n\nIn Search\n\nHigher-fitness solutions are more likely to be selected.\nPoor candidates are less likely to shape the next generation."
-  },
-  {
-    "objectID": "slides/lec12_Genetic_Algorithm.html#genes-and-chromosomes",
-    "href": "slides/lec12_Genetic_Algorithm.html#genes-and-chromosomes",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Genes and Chromosomes",
-    "text": "Genes and Chromosomes\n\n\n\n\n\nGene illustration\n\n\n\n\n\n\nChromosome illustration\n\n\n\n\n\n\nBiology term\nGenetic algorithm term\n\n\n\n\nGene\nOne encoded part of a candidate solution\n\n\nChromosome\nFull encoded candidate solution"
-  },
-  {
-    "objectID": "slides/lec12_Genetic_Algorithm.html#core-components",
-    "href": "slides/lec12_Genetic_Algorithm.html#core-components",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Core Components",
-    "text": "Core Components\n\n\n\nComponent\nRole\n\n\n\n\nPopulation\nSet of candidate solutions\n\n\nRepresentation\nEncoding of each candidate as a chromosome\n\n\nFitness function\nScores solution quality\n\n\nSelection\nChooses parents based on fitness\n\n\nCrossover\nCombines parents into offspring\n\n\nMutation\nAdds small random changes\n\n\nTermination\nDecides when to stop"
-  },
-  {
-    "objectID": "slides/lec12_Genetic_Algorithm.html#genetic-algorithm-pseudocode",
-    "href": "slides/lec12_Genetic_Algorithm.html#genetic-algorithm-pseudocode",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Genetic Algorithm Pseudocode",
-    "text": "Genetic Algorithm Pseudocode\nGeneticAlgorithm(N, mutationProb, crossoverProb):\n    initialize population P with N random individuals\n\n    while stopping criterion is not met:\n        compute fitness for every individual in P\n        newPopulation = []\n\n        while newPopulation is not full:\n            select two parents from P based on fitness\n            create offspring by crossover with probability crossoverProb\n            mutate offspring with probability mutationProb\n            add offspring to newPopulation\n\n        P = newPopulation\n\n    return best individual found"
-  },
-  {
-    "objectID": "slides/lec12_Genetic_Algorithm.html#queens-representation",
-    "href": "slides/lec12_Genetic_Algorithm.html#queens-representation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "8-Queens Representation",
-    "text": "8-Queens Representation\n\n\n\nEncode a board as 8 integers.\nEach integer gives the row position of a queen in one column.\nExample chromosome: 2\\ 4\\ 7\\ 4\\ 8\\ 5\\ 5\\ 2.\n\n\n\n\nColumn\n1\n2\n3\n4\n5\n6\n7\n8\n\n\n\n\nRow\n2\n4\n7\n4\n8\n5\n5\n2\n\n\n\n\n\nA valid solution has 28 non-attacking queen pairs.\nFitness can be the number of non-attacking pairs.\nExample fitness: 24, or 24/28 normalized.\n\n\nRepresentation and fitness define what evolution can discover."
-  },
-  {
-    "objectID": "slides/lec12_Genetic_Algorithm.html#initial-population",
-    "href": "slides/lec12_Genetic_Algorithm.html#initial-population",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Initial Population",
-    "text": "Initial Population\nStep 1: generate candidate chromosomes.\n\n\n\nIndividual\nChromosome\n\n\n\n\n1\n24748552\n\n\n2\n32752411\n\n\n3\n24415124\n\n\n4\n32543213"
-  },
-  {
-    "objectID": "slides/lec12_Genetic_Algorithm.html#fitness-weights",
-    "href": "slides/lec12_Genetic_Algorithm.html#fitness-weights",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Fitness Weights",
-    "text": "Fitness Weights\nStep 2: no individual is already a solution, so compute selection weights.\n\n\n\nChromosome\nNon-attacking pairs\nSelection weight\n\n\n\n\n24748552\n24\n24/(24+23+20+11)\n\n\n32752411\n23\n23/(24+23+20+11)\n\n\n24415124\n20\n20/(24+23+20+11)\n\n\n32543213\n11\n11/(24+23+20+11)"
-  },
-  {
-    "objectID": "slides/lec12_Genetic_Algorithm.html#selection",
-    "href": "slides/lec12_Genetic_Algorithm.html#selection",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Selection",
-    "text": "Selection\nStep 3: select the next generation based on fitness weights.\n\nGenetic selection example\nHigher fitness means higher probability, not a guarantee."
-  },
-  {
-    "objectID": "slides/lec12_Genetic_Algorithm.html#crossover",
-    "href": "slides/lec12_Genetic_Algorithm.html#crossover",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Crossover",
-    "text": "Crossover\nStep 4: pair selected parents and exchange chromosome segments.\n\n\n\n\n\nGenetic crossover pairing\n\n\n\n\n\n\nCrossover example"
-  },
-  {
-    "objectID": "slides/lec12_Genetic_Algorithm.html#mutation",
-    "href": "slides/lec12_Genetic_Algorithm.html#mutation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Mutation",
-    "text": "Mutation\nStep 5: randomly change genes with a small probability.\n\n\n\nExample mutation probability: 10%.\nA mutated gene is replaced by another legal row number from 1 to 8.\nMutation helps maintain diversity.\nReplace the population with the offspring and loop.\n\n\n\n\n\nGenetic mutation example"
-  },
-  {
-    "objectID": "slides/lec12_Genetic_Algorithm.html#whole-process",
-    "href": "slides/lec12_Genetic_Algorithm.html#whole-process",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Whole Process",
-    "text": "Whole Process\n\nGenetic algorithm process for 8 queens"
-  },
-  {
-    "objectID": "slides/lec12_Genetic_Algorithm.html#representation-matters",
-    "href": "slides/lec12_Genetic_Algorithm.html#representation-matters",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Representation Matters",
-    "text": "Representation Matters\n\nChromosome design strongly affects search quality.\nFitness design determines what the algorithm rewards.\nPoor representation can make good solutions hard to reach.\n\nExample application: circuit layout optimization.\n\nPlace integrated-circuit components efficiently.\nMinimize space and power consumption.\nImprove performance.\n\nAsset credits"
-  },
-  {
-    "objectID": "slides/lec14_CSP_Consistency.html#constraint-propagation",
-    "href": "slides/lec14_CSP_Consistency.html#constraint-propagation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Constraint Propagation",
-    "text": "Constraint Propagation\n\nEnforce constraints before making deeper search choices.\nRemove values that cannot participate in any valid solution.\nDetect impossible partial assignments early.\n\n\nSearch decides what to try; propagation decides what is no longer worth trying."
-  },
-  {
-    "objectID": "slides/lec14_CSP_Consistency.html#consistency",
-    "href": "slides/lec14_CSP_Consistency.html#consistency",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Consistency",
-    "text": "Consistency\nA variable assignment is consistent when it satisfies the relevant constraints.\n\n\n\n\n\n\n\n\nLevel\nAlso called\nRequirement\n\n\n\n\n1-consistency\nNode consistency\nEach variable satisfies unary constraints\n\n\n2-consistency\nArc consistency\nEach value has support in each connected variable\n\n\n3-consistency\nPath consistency\nAny consistent pair can be extended to a third variable\n\n\nk-consistency\nGeneral form\nAny consistent k-1 assignment can be extended"
-  },
-  {
-    "objectID": "slides/lec14_CSP_Consistency.html#consistency-1",
-    "href": "slides/lec14_CSP_Consistency.html#consistency-1",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "1-Consistency",
-    "text": "1-Consistency\n\n\nDefinition\n\nA unary constraint applies to one variable.\nA problem is 1-consistent if every variable has at least one valid value satisfying unary constraints.\n\n\nExample\n\nVariable: age X.\nDomain: \\{10,15,20,25,30\\}.\nConstraint: X \\ge 18.\nReduced domain: \\{20,25,30\\}."
-  },
-  {
-    "objectID": "slides/lec14_CSP_Consistency.html#consistency-2",
-    "href": "slides/lec14_CSP_Consistency.html#consistency-2",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "2-Consistency",
-    "text": "2-Consistency\n\nA binary constraint applies to a pair of variables.\nA problem is 2-consistent if every value of one variable has a supporting value in each connected variable.\n\n\nFor each value x \\in D(X_i), there must exist a value y \\in D(X_j) such that the constraint between X_i and X_j is satisfied."
-  },
-  {
-    "objectID": "slides/lec14_CSP_Consistency.html#k-consistency",
-    "href": "slides/lec14_CSP_Consistency.html#k-consistency",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "k-Consistency",
-    "text": "k-Consistency\n\nA CSP is k-consistent if any consistent assignment to k-1 variables can be extended to any k-th variable.\nA CSP is strongly k-consistent if it is j-consistent for all j \\le k.\nHigher levels of consistency can prune more values.\nBut computing them becomes expensive quickly.\n\n\nIn practice, algorithms often enforce 2-consistency and sometimes 3-consistency, but rarely much higher."
-  },
-  {
-    "objectID": "slides/lec14_CSP_Consistency.html#example-2-consistency",
-    "href": "slides/lec14_CSP_Consistency.html#example-2-consistency",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Example: 2-Consistency",
-    "text": "Example: 2-Consistency\nConsider variables X,Y:\n\nD(X)=\\{1,2,3,4\\}, \\quad D(Y)=\\{2,3,4\\}\n\nConstraint: X &lt; Y.\n\n\nValues of X\n\nX=1 supported by Y=2,3,4.\nX=2 supported by Y=3,4.\nX=3 supported by Y=4.\nX=4 has no support.\n\n\nValues of Y\n\nY=2 supported by X=1.\nY=3 supported by X=1,2.\nY=4 supported by X=1,2,3.\n\n\n\nRemove 4 from D(X); then the arc is consistent."
-  },
-  {
-    "objectID": "slides/lec14_CSP_Consistency.html#arc-consistency",
-    "href": "slides/lec14_CSP_Consistency.html#arc-consistency",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Arc Consistency",
-    "text": "Arc Consistency\nA variable X_i is arc-consistent with X_j if every value in D(X_i) has at least one supporting value in D(X_j).\n\n\n\n\nArc consistency is directional: checking (X_i,X_j) asks whether values in X_i have support in X_j."
-  },
-  {
-    "objectID": "slides/lec14_CSP_Consistency.html#ac-3-algorithm",
-    "href": "slides/lec14_CSP_Consistency.html#ac-3-algorithm",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "AC-3 Algorithm",
-    "text": "AC-3 Algorithm\n\n\nAC3(CSP):\n\n\nQ = all arcs (Xi, Xj) connected by a constraint\n\n\n \n\n\nwhile Q is not empty:\n\n\nremove an arc (Xi, Xj) from Q\n\n\n \n\n\nif Revise(Xi, Xj) removed values from D(Xi):\n\n\nif D(Xi) is empty:\n\n\nreturn failure\n\n\n \n\n\nfor each Xk in Neighbors(Xi), except Xj:\n\n\nadd (Xk, Xi) to Q\n\n\n \n\n\nreturn reduced domains"
-  },
-  {
-    "objectID": "slides/lec14_CSP_Consistency.html#ac-3-what-each-part-does",
-    "href": "slides/lec14_CSP_Consistency.html#ac-3-what-each-part-does",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "AC-3: What Each Part Does",
-    "text": "AC-3: What Each Part Does\n\n\n\nStep\nMeaning\n\n\n\n\nInitialize queue\nEvery arc may need checking\n\n\nRemove an arc\nFocus on one directional constraint\n\n\nRevise\nDelete unsupported values\n\n\nEmpty domain\nNo solution can satisfy current constraints\n\n\nRe-add neighbors\nA deletion can make nearby arcs inconsistent"
-  },
-  {
-    "objectID": "slides/lec14_CSP_Consistency.html#revise-function",
-    "href": "slides/lec14_CSP_Consistency.html#revise-function",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Revise Function",
-    "text": "Revise Function\n\n\nRevise(Xi, Xj):\n\n\nremoved = false\n\n\n \n\n\nfor each x in D(Xi):\n\n\nif no y in D(Xj) satisfies the constraint:\n\n\nremove x from D(Xi)\n\n\nremoved = true\n\n\n \n\n\nreturn removed\n\n\n\nRevise is the pruning operation; AC-3 is the scheduler that decides which arcs to revisit."
-  },
-  {
-    "objectID": "slides/lec14_CSP_Consistency.html#why-consistency-matters",
-    "href": "slides/lec14_CSP_Consistency.html#why-consistency-matters",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why Consistency Matters",
-    "text": "Why Consistency Matters\n\nCSP structure gives us domain-independent pruning methods.\nConsistency computation is the core of constraint propagation.\nStronger consistency can reduce more search.\nBut stronger consistency can itself become expensive.\n\n\nThe goal is not to eliminate search completely; it is to make the remaining search much smaller.\n\nAsset credits"
   },
   {
     "objectID": "slides/lec16_Logic.html#logic",
@@ -6174,102 +5950,18 @@
     "text": "Exit Problem: Find the First Bug\nA weighted-search implementation does this:\n\nAdd a new state to a permanent visited set when generating it.\nIgnore every later path to that state.\nReturn immediately when generating a goal.\n\n\nUse today’s graph to explain two ways this can lose the cheapest path.\n\n\nIt can freeze G at cost 10 and reject the later cost-5 route. It can also stop at cost 10 before removing the cheapest goal from the priority queue."
   },
   {
-    "objectID": "slides/lec13_CSP.html#assignments-and-solutions",
-    "href": "slides/lec13_CSP.html#assignments-and-solutions",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Assignments and Solutions",
-    "text": "Assignments and Solutions\n\n\n\n\n\n\n\nTerm\nMeaning\n\n\n\n\nAssignment\nChoose a domain value for a variable\n\n\nPartial assignment\nSome variables still have no value\n\n\nComplete assignment\nEvery variable has a value\n\n\nConsistent partial assignment\nNo constraint among assigned values is violated\n\n\nSolution\nA complete assignment satisfying every constraint\n\n\n\n\nA consistent partial assignment can still lead to a dead end. A complete assignment can still violate a rule."
-  },
-  {
     "objectID": "slides/lec13_CSP.html#a-small-exam-schedule",
     "href": "slides/lec13_CSP.html#a-small-exam-schedule",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "A Small Exam Schedule",
-    "text": "A Small Exam Schedule\nFour exams A,B,C,D need slots 1,2,3. Each exam lasts one slot.\n\n\n\nRequirement\nGiven information\n\n\n\n\nAvailability\nA must use slot 1\n\n\nAvailability\nB cannot use slot 3; D cannot use slot 1\n\n\nShared students\nPairs AB, AC, BD, CD cannot overlap\n\n\nRooms\nEnough rooms for all nonconflicting exams\n\n\n\n\nWhat are the variables, domains, and constraints? Do we need to represent rooms?"
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#scheduling-variables-and-domains",
-    "href": "slides/lec13_CSP.html#scheduling-variables-and-domains",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Scheduling Variables and Domains",
-    "text": "Scheduling Variables and Domains\nLet X_A be the slot assigned to exam A, and similarly for the others.\n\n\n\nVariable\nDomain after availability restrictions\n\n\n\n\nX_A\n\\{1\\}\n\n\nX_B\n\\{1,2\\}\n\n\nX_C\n\\{1,2,3\\}\n\n\nX_D\n\\{2,3\\}\n\n\n\nX_A\\ne X_B,\\quad X_A\\ne X_C,\\quad X_B\\ne X_D,\\quad X_C\\ne X_D.\nRooms need no variables under the stated unlimited-room assumption."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#the-constraint-graph",
-    "href": "slides/lec13_CSP.html#the-constraint-graph",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "The Constraint Graph",
-    "text": "The Constraint Graph\nEach node is a variable. Each edge represents a binary constraint.\n\n\n\n\nABCDdifferent slotsdifferent slotsNo B-C conflict\n\n\n\nThese edges describe incompatible assignments, not physical travel routes or a search path."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#which-assignments-are-valid",
-    "href": "slides/lec13_CSP.html#which-assignments-are-valid",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Which Assignments Are Valid?",
-    "text": "Which Assignments Are Valid?\n\n\n\nAssignment\nComplete?\nConsistent?\n\n\n\n\nX_A=1,\\ X_B=2\n?\n?\n\n\nX_A=1,\\ X_B=1\n?\n?\n\n\n(X_A,X_B,X_C,X_D)=(1,2,2,2)\n?\n?\n\n\n(X_A,X_B,X_C,X_D)=(1,2,2,3)\n?\n?\n\n\n\n\n\nPartial and consistent.\nPartial and inconsistent: A conflicts with B.\nComplete but inconsistent: D conflicts with both B and C.\nComplete and consistent: a solution."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#a-domain-reduction-trace",
-    "href": "slides/lec13_CSP.html#a-domain-reduction-trace",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "A Domain-Reduction Trace",
-    "text": "A Domain-Reduction Trace\nStart with the availability domains. Apply the four conflict rules.\n\n\n\nStep\nConsequence\n\n\n\n\nX_A=1\nRemove 1 from D_B and D_C\n\n\nD_B=\\{2\\}\nX_B=2 forces D_D=\\{3\\}\n\n\nX_D=3\nRemove 3 from D_C, leaving \\{2\\}\n\n\nAll domains are singletons\n(X_A,X_B,X_C,X_D)=(1,2,2,3)\n\n\n\n\nThe constraints force this schedule without trying all complete assignments.\n\n\nWork through the domain changes on the board before revealing the table rows verbally. This is a small propagation example, not yet a presentation of AC-3. Domain D_B names the remaining values for X_B; D_D names the domain of X_D."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#one-new-requirement-can-make-it-impossible",
-    "href": "slides/lec13_CSP.html#one-new-requirement-can-make-it-impossible",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "One New Requirement Can Make It Impossible",
-    "text": "One New Requirement Can Make It Impossible\nA new student takes both B and C. Add X_B\\ne X_C.\n\nCan the schedule still use the same availability restrictions and three slots?\n\n\n\nExisting rules force X_A=1, X_B=2, and X_D=3.\nC conflicts with A, B, and D.\nNo slot remains for C: its domain becomes \\varnothing.\n\nNo satisfying assignment exists under these requirements.\n\n\nGive students two minutes. Ask for an explanation of infeasibility, not just a failed guess. Possible repairs require changing a stated requirement, for example allowing a fourth slot for C. A solver must not silently drop a conflict."
+    "text": "A Small Exam Schedule\nExams A, B, C, D each take one of three nonoverlapping slots.\n\n\nShared students prevent these pairs from overlapping: AB, AC, BD, CD.\nAssume enough rooms for any exams that may run together.\n\n\nWhich decisions need variables? Do rooms need to be represented?\n\n\nAnswer: one variable per exam, whose value is its time slot. Rooms do not need variables under this explicit capacity assumption. A uses only slot 1; B cannot use 3; C has no availability restriction; D cannot use 1. Enough rooms does not remove shared-student conflicts. Source: original course scheduling example from the existing Lecture 13."
   },
   {
     "objectID": "slides/lec13_CSP.html#unary-binary-and-global-constraints",
     "href": "slides/lec13_CSP.html#unary-binary-and-global-constraints",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Unary, Binary, and Global Constraints",
-    "text": "Unary, Binary, and Global Constraints\nThe arity of a constraint is the number of variables it involves.\n\n\n\n\n\n\n\n\nKind\nExample\nInterpretation\n\n\n\n\nUnary\nX_A=1\nRestricts one exam\n\n\nBinary\nX_A\\ne X_B\nRelates two exams\n\n\nGlobal\n\\operatorname{AllDifferent}(X_1,\\ldots,X_9)\nAll nine values must differ\n\n\n\nFor three variables, \\operatorname{AllDifferent}(X,Y,Z) means\nX\\ne Y\\ \\land\\ X\\ne Z\\ \\land\\ Y\\ne Z.\n\nGlobal constraints describe a collection of variables together. AllDifferent has a pairwise-inequality logical encoding, but specialized propagation can exploit the global structure more effectively. Save that algorithmic detail for the consistency lecture."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#feasibility-versus-preference",
-    "href": "slides/lec13_CSP.html#feasibility-versus-preference",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Feasibility Versus Preference",
-    "text": "Feasibility Versus Preference\n\nHard constraint: a shared student cannot take two exams at once.\nSoft preference: fewer students should have exams in the last slot.\n\n\nA basic CSP asks for any feasible assignment. A constraint optimization problem also scores feasible assignments.\n\nFor example, with n_i students in exam i:\n\\min_X\\sum_i n_i\\,\\mathbf{1}\\{X_i=3\\}\\quad\\text{subject to all hard constraints}.\nThe indicator \\mathbf{1}\\{X_i=3\\} equals 1 if exam i uses slot 3, and 0 otherwise."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#candidate-values-for-one-cell",
-    "href": "slides/lec13_CSP.html#candidate-values-for-one-cell",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Candidate Values for One Cell",
-    "text": "Candidate Values for One Cell\nFor an empty Sudoku cell, suppose the existing digits are:\n\n\n\nRelated cells\nDigits already present\n\n\n\n\nSame row\n\\{1,3,5,7\\}\n\n\nSame column\n\\{2,3,8\\}\n\n\nSame block\n\\{1,4,8\\}\n\n\n\n\nWhich values remain in this cell’s domain?\n\n\n\\{1,\\ldots,9\\}\\setminus\\{1,2,3,4,5,7,8\\}=\\{6,9\\}. Two candidates remain. The current constraints do not justify choosing one yet."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#consistent-so-far-does-not-mean-solvable",
-    "href": "slides/lec13_CSP.html#consistent-so-far-does-not-mean-solvable",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Consistent So Far Does Not Mean Solvable",
-    "text": "Consistent So Far Does Not Mean Solvable\nThree exams conflict pairwise, but only slots 1 and 2 are available.\nD_A=D_B=D_C=\\{1,2\\},\\qquad X_A\\ne X_B,\\ X_B\\ne X_C,\\ X_A\\ne X_C.\n\nThe partial assignment X_A=1 violates no constraint. Can it be completed?\n\n\nNo. Both X_B and X_C must be 2, violating X_B\\ne X_C. Starting with X_A=2 gives the same problem.\n\n\nChecking the current assignment and proving that a completion exists are different tasks."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#modeling-practice-a-small-lab-schedule",
-    "href": "slides/lec13_CSP.html#modeling-practice-a-small-lab-schedule",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Modeling Practice: A Small Lab Schedule",
-    "text": "Modeling Practice: A Small Lab Schedule\nExperiments P,Q,R each take one slot from \\{1,2,3\\}.\n\nP must finish before Q starts.\nQ and R share equipment and cannot run together.\nR cannot run in slot 1.\n\n\nWrite the variables, domains, and constraints. Give one valid schedule and one invalid schedule with a reason.\n\n\nAllow three minutes in pairs. Slots are equal length and nonoverlapping, so the precedence relation is a strict inequality on slot indices. There is no P-R equipment conflict unless the specification says so."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#lab-schedule-one-formulation",
-    "href": "slides/lec13_CSP.html#lab-schedule-one-formulation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Lab Schedule: One Formulation",
-    "text": "Lab Schedule: One Formulation\nD_P=D_Q=\\{1,2,3\\},\\qquad D_R=\\{2,3\\}.\nX_P&lt;X_Q,\\qquad X_Q\\ne X_R.\n\n\n\nAssignment (X_P,X_Q,X_R)\nCheck\n\n\n\n\n(1,2,3)\nValid\n\n\n(1,3,2)\nAlso valid\n\n\n(2,1,3)\nViolates precedence\n\n\n(1,2,2)\nViolates the equipment constraint\n\n\n\n\nMultiple solutions are allowed. Include every stated requirement, but do not invent extra ones."
-  },
-  {
-    "objectID": "slides/lec13_CSP.html#another-representation-n-queens",
-    "href": "slides/lec13_CSP.html#another-representation-n-queens",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Another Representation: N-Queens",
-    "text": "Another Representation: N-Queens\nUse one variable Q_i per column. Its value is the queen’s row.\nD_i=\\{1,\\ldots,N\\}.\nFor each pair of distinct columns i,j:\nQ_i\\ne Q_j,\\qquad |Q_i-Q_j|\\ne |i-j|.\n\nOne variable per column already guarantees one queen in each column.\nThe first constraint prevents a shared row.\nThe second prevents a shared diagonal.\n\n\nWhy would using one Boolean variable per square require additional constraints?\n\n\nAnswer: square occupancy alone does not guarantee exactly N queens or one in each row/column. This slide connects to local search and illustrates that representation can build some requirements into the variables. Do not spend time solving N-queens here."
+    "text": "Unary, Binary, and Global Constraints\nThe arity of a constraint is the number of variables it involves.\n\n\n\n\n\n\n\n\nKind\nExample\nMeaning\n\n\n\n\nUnary\nX_A=1\nA rule on one variable\n\n\nBinary\nX_A\\ne X_B\nA rule on two variables\n\n\nGlobal\n\\operatorname{AllDifferent}(X_1,\\ldots,X_9)\nA structured rule on a collection\n\n\n\n\\operatorname{AllDifferent}(X,Y,Z) requires every pair to differ:\nX\\ne Y\\quad\\land\\quad X\\ne Z\\quad\\land\\quad Y\\ne Z.\n\nDo X\\ne Y and Y\\ne Z alone imply all three are different?  No: (X,Y,Z)=(1,2,1) satisfies both.\n\n\nThe symbol land means logical AND. Global is not simply an arity of three; it names a structured constraint over a collection, potentially of varying size. AllDifferent is logically equivalent to all pairwise inequalities, but a specialized propagation algorithm may use its global structure more effectively. Source: AIMA CSP formulations."
   },
   {
     "objectID": "slides/lec22_Probabilistic_Inference.html#what-does-an-observation-tell-us",
@@ -8356,5 +8048,292 @@
     "title": "Sliding Puzzle: Local Search and A*",
     "section": "GUI Implementation",
     "text": "GUI Implementation\nThe remaining sections draw the interface, schedule animation, and export results. They do not change the algorithms above.\n\nImports\nImports\nimport heapq\nimport json\nimport math\nimport random\nimport sys\nfrom dataclasses import asdict, dataclass\nfrom itertools import count\n\nfrom PySide6.QtCore import QPointF, Qt, QTimer\nfrom PySide6.QtGui import QColor, QFont, QPainter, QPen, QPolygonF\nfrom PySide6.QtWidgets import (\n    QApplication, QComboBox, QDoubleSpinBox, QFileDialog, QGridLayout,\n    QHBoxLayout, QHeaderView, QLabel, QMainWindow, QMessageBox,\n    QPlainTextEdit, QPushButton, QRadioButton, QSpinBox, QStyle,\n    QTableWidget, QTableWidgetItem, QToolButton, QVBoxLayout, QWidget,\n)\n\n\n\nDistance Plot\nCurrent and best distance plot\nclass CostChart(QWidget):\n    def __init__(self):\n        super().__init__()\n        self.current, self.best = [0], [0]\n        self.setMinimumHeight(120)\n\n    def paintEvent(self, event):\n        painter = QPainter(self)\n        painter.setRenderHint(QPainter.RenderHint.Antialiasing)\n        left, top, right, bottom = 38, 25, self.width() - 12, self.height() - 27\n        maximum = max(2, max(self.current))\n        painter.setPen(QColor(\"#58636b\"))\n        painter.drawText(left, 16, \"Manhattan distance: current (blue), best (green)\")\n        painter.drawLine(left, bottom, right, bottom)\n        painter.drawLine(left, top, left, bottom)\n        painter.drawText(8, top + 5, str(maximum))\n        painter.drawText(20, bottom + 4, \"0\")\n        painter.drawText(left, self.height() - 5, \"0\")\n        painter.drawText(right - 135, self.height() - 5,\n                         f\"Step {len(self.current) - 1}\")\n        for values, color in ((self.current, \"#2463a5\"), (self.best, \"#18764d\")):\n            points = QPolygonF([\n                QPointF(left + i / max(1, len(values) - 1) * (right - left),\n                        bottom - value / maximum * (bottom - top))\n                for i, value in enumerate(values)\n            ])\n            painter.setPen(QPen(QColor(color), 2))\n            painter.drawPolyline(points)\n            painter.drawEllipse(points[-1], 3, 3)\n\n\n\nWindow and Controls\nBuild the GUI\nclass SlidingPuzzle(QMainWindow):\n    def __init__(self):\n        super().__init__()\n        self.setWindowTitle(\"Sliding Puzzle | Local Search and A*\")\n        self.resize(1160, 760)\n        self.initial = TRAP\n        self.mode = \"Hill climbing\"\n        self.timer = QTimer(self)\n        self.timer.timeout.connect(self.advance)\n        self.build_ui()\n        self.reset_run()\n\n    def icon_button(self, icon, title, callback):\n        button = QToolButton()\n        button.setIcon(self.style().standardIcon(icon))\n        button.setToolTip(title)\n        button.setAccessibleName(title)\n        button.setFixedSize(36, 34)\n        button.clicked.connect(callback)\n        return button\n\n    def build_ui(self):\n        root = QWidget()\n        self.setCentralWidget(root)\n        layout = QVBoxLayout(root)\n        layout.setContentsMargins(20, 12, 20, 12)\n        layout.setSpacing(8)\n        title = QLabel(\"Sliding Puzzle: Local Search and A*\")\n        title.setFont(QFont(\"Arial\", 21, QFont.Weight.Bold))\n        layout.addWidget(title)\n\n        toolbar = QHBoxLayout()\n        self.preset = QComboBox()\n        self.preset.addItems([\"Greedy trap\", \"Two moves from goal\", \"Shuffled puzzle\"])\n        self.preset.currentIndexChanged.connect(self.load_preset)\n        toolbar.addWidget(QLabel(\"Starting board\"))\n        toolbar.addWidget(self.preset)\n        new_puzzle = QPushButton(\"New shuffle\")\n        new_puzzle.clicked.connect(self.new_shuffle)\n        toolbar.addWidget(new_puzzle)\n        toolbar.addStretch()\n        self.play = self.icon_button(QStyle.StandardPixmap.SP_MediaPlay,\n                                     \"Run / pause\", self.toggle_run)\n        self.step = self.icon_button(QStyle.StandardPixmap.SP_MediaSkipForward,\n                                     \"One step\", self.single_step)\n        self.reset_button = self.icon_button(QStyle.StandardPixmap.SP_BrowserReload,\n                                             \"Reset to the same starting board\", self.reset_run)\n        save = self.icon_button(QStyle.StandardPixmap.SP_DialogSaveButton,\n                                \"Export complete run (.json)\", self.export_run)\n        for button in (self.play, self.step, self.reset_button, save):\n            toolbar.addWidget(button)\n        layout.addLayout(toolbar)\n\n        modes = QHBoxLayout()\n        for mode in MODES:\n            radio = QRadioButton(mode)\n            radio.setChecked(mode == self.mode)\n            radio.toggled.connect(lambda checked, name=mode:\n                                  self.change_mode(name) if checked else None)\n            modes.addWidget(radio)\n        modes.addStretch()\n        layout.addLayout(modes)\n\n        settings = QHBoxLayout()\n        self.seed = QSpinBox()\n        self.seed.setRange(0, 999999)\n        self.seed.setValue(42)\n        self.t0 = QDoubleSpinBox()\n        self.t0.setRange(0.05, 10)\n        self.t0.setValue(2)\n        self.cooling = QDoubleSpinBox()\n        self.cooling.setDecimals(4)\n        self.cooling.setRange(0.9, 1)\n        self.cooling.setSingleStep(0.001)\n        self.cooling.setValue(0.997)\n        self.budget = QSpinBox()\n        self.budget.setRange(1, 20000)\n        self.budget.setValue(2000)\n        self.delay = QSpinBox()\n        self.delay.setRange(1, 2000)\n        self.delay.setValue(150)\n        self.delay.setSuffix(\" ms\")\n        for label, control in ((\"Search seed\", self.seed), (\"Initial T\", self.t0),\n                               (\"Cooling\", self.cooling), (\"Proposals\", self.budget),\n                               (\"Delay\", self.delay)):\n            settings.addWidget(QLabel(label))\n            settings.addWidget(control)\n            if control is not self.delay:\n                control.valueChanged.connect(self.reset_run)\n        self.delay.valueChanged.connect(self.timer.setInterval)\n        layout.addLayout(settings)\n\n        middle = QHBoxLayout()\n        board_column = QVBoxLayout()\n        self.board_title = QLabel(\"Current board\")\n        board_column.addWidget(self.board_title)\n        board = QWidget()\n        board.setFixedSize(264, 264)\n        grid = QGridLayout(board)\n        grid.setContentsMargins(0, 0, 0, 0)\n        grid.setSpacing(6)\n        self.tiles = []\n        for index in range(9):\n            button = QPushButton()\n            button.setFixedSize(84, 84)\n            button.clicked.connect(lambda checked=False, i=index: self.manual_move(i))\n            grid.addWidget(button, index // 3, index % 3)\n            self.tiles.append(button)\n        board_column.addWidget(board)\n        board_column.addWidget(QLabel(\"Goal: 1 2 3 / 4 5 6 / 7 8 blank\"))\n        board_column.addStretch()\n        middle.addLayout(board_column)\n        middle.addSpacing(20)\n        info = QVBoxLayout()\n        self.metrics = QLabel()\n        self.metrics.setFont(QFont(\"Arial\", 15, QFont.Weight.Bold))\n        self.metrics.setWordWrap(True)\n        self.status = QLabel()\n        self.status.setWordWrap(True)\n        self.status.setMinimumHeight(44)\n        self.candidates = QLabel()\n        self.candidates.setWordWrap(True)\n        self.candidates.setMinimumHeight(36)\n        self.search_info = QLabel()\n        self.search_info.setWordWrap(True)\n        self.chart = CostChart()\n        for widget in (self.metrics, self.status, self.candidates, self.search_info):\n            info.addWidget(widget)\n        info.addWidget(self.chart, 1)\n        middle.addLayout(info, 1)\n        layout.addLayout(middle)\n\n        layout.addWidget(QLabel(\"Move / proposal trace (latest 500 rows)\"))\n        self.trace = QTableWidget(0, 10)\n        self.trace.setHorizontalHeaderLabels([\n            \"Step\", \"Tile\", \"h before\", \"h proposed\", \"Change\", \"T used\",\n            \"P(accept)\", \"Draw u\", \"Decision\", \"h after\",\n        ])\n        self.trace.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)\n        self.trace.verticalHeader().hide()\n        self.trace.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)\n        self.trace.setMinimumHeight(120)\n        layout.addWidget(self.trace, 1)\n        self.path_label = QLabel()\n        layout.addWidget(self.path_label)\n        self.path_text = QPlainTextEdit()\n        self.path_text.setReadOnly(True)\n        self.path_text.setMaximumHeight(46)\n        layout.addWidget(self.path_text)\n\n\n\nAnimation and Trace\nRun, pause, reset, step, and trace\n    def load_preset(self, index):\n        self.initial = (TRAP if index == 0 else EASY if index == 1\n                        else shuffled_board(random.SystemRandom()))\n        self.reset_run()\n\n    def new_shuffle(self):\n        self.preset.blockSignals(True)\n        self.preset.setCurrentIndex(2)\n        self.preset.blockSignals(False)\n        self.load_preset(2)\n\n    def change_mode(self, mode):\n        self.mode = mode\n        self.reset_run()\n\n    def reset_run(self):\n        self.timer.stop()\n        self.run = SearchRun(self.initial, self.mode, self.seed.value(),\n                             self.t0.value(), self.cooling.value(), self.budget.value())\n        self.trace.setRowCount(0)\n        self.refresh()\n\n    def toggle_run(self):\n        if self.timer.isActive():\n            self.timer.stop()\n        elif not self.run.finished:\n            self.timer.start(self.delay.value())\n        self.refresh()\n\n    def single_step(self):\n        self.timer.stop()\n        self.advance()\n\n    def advance(self):\n        # A* planning is batched while running, but One step expands one state.\n        planning = self.run.planner and not self.run.planner.done\n        batch = 100 if planning and self.timer.isActive() else 1\n        for _ in range(batch):\n            proposal = self.run.advance()\n            if proposal:\n                self.append_row(proposal)\n            if self.run.finished or (planning and self.run.planner.done):\n                break\n        if self.run.finished:\n            self.timer.stop()\n        self.refresh()\n\n    def manual_move(self, index):\n        if self.mode == \"Manual\":\n            proposal = self.run.advance(self.run.state[index])\n            if proposal:\n                self.append_row(proposal)\n            self.refresh()\n\n    def append_row(self, proposal):\n        if self.trace.rowCount() == 500:\n            self.trace.removeRow(0)\n        row = self.trace.rowCount()\n        self.trace.insertRow(row)\n        values = [proposal.step, proposal.tile, proposal.h_before,\n                  proposal.h_candidate, f\"{proposal.delta:+d}\",\n                  \"-\" if proposal.temperature is None else f\"{proposal.temperature:.3f}\",\n                  f\"{proposal.probability:.3f}\",\n                  \"-\" if proposal.draw is None else f\"{proposal.draw:.3f}\",\n                  \"Accept\" if proposal.accepted else \"Reject\", manhattan(proposal.after)]\n        color = \"#a44b18\" if proposal.accepted and proposal.delta &gt; 0 else \"#1d6248\"\n        if not proposal.accepted:\n            color = \"#69747a\"\n        for column, value in enumerate(values):\n            item = QTableWidgetItem(str(value))\n            item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)\n            item.setForeground(QColor(color))\n            self.trace.setItem(row, column, item)\n        self.trace.scrollToBottom()\n\n\n\nDisplay State\nRefresh the board and metrics\n    def refresh(self):\n        run = self.run\n        last = run.records[-1] if run.records else None\n        for index, button in enumerate(self.tiles):\n            tile = run.state[index]\n            highlighted = last and last.accepted and tile == last.tile\n            background = \"#e4e9ed\" if not tile else \"#d9eee4\" if highlighted else \"#dfeafb\"\n            button.setText(str(tile) if tile else \"\")\n            button.setStyleSheet(\n                f\"background: {background}; color: #183042; font: bold 30px Arial;\"\n                \"border: none; border-radius: 6px;\"\n            )\n            button.setEnabled(self.mode == \"Manual\" and not run.finished and bool(tile))\n            button.setAccessibleName(f\"Tile {tile}\" if tile else \"Blank\")\n        self.metrics.setText(\n            f\"Distance h: {manhattan(run.state)}    Best h: {run.best_costs[-1]}\\n\"\n            f\"Steps: {len(run.records)}    Accepted moves: {len(run.moved_tiles)}\"\n        )\n        messages = {\n            \"ready\": \"Ready.\",\n            \"planning\": \"A* is planning. The board stays at the start until a route is found.\",\n            \"replay\": \"A* found a shortest route. Playing its legal moves.\",\n            \"stuck\": \"Hill climbing is stuck: every legal move increases the distance.\",\n            \"budget\": \"Proposal budget exhausted without reaching the goal. This is not a solution.\",\n            \"unsolvable\": \"This board cannot reach the goal (inversion parity).\",\n            \"solved\": (\"Solved: shortest route (A*).\" if self.mode == \"A*\"\n                       else \"Solved. This move sequence is not guaranteed shortest.\"),\n        }\n        message = messages[run.status]\n        if last and run.status == \"ready\":\n            decision = \"Accepted\" if last.accepted else \"Rejected\"\n            message = f\"{decision} tile {last.tile}: h {last.h_before} -&gt; {last.h_candidate}.\"\n            if last.temperature is not None:\n                message += (f\" P = {last.probability:.3f}, u = {last.draw:.3f}; \"\n                            f\"accept when u &lt; P.\")\n        self.status.setText(message)\n        color = \"#a44b18\" if run.status in {\"stuck\", \"budget\"} else \"#185b42\"\n        self.status.setStyleSheet(f\"color: {color}; font-weight: 600;\")\n        options = \";  \".join(f\"tile {tile}: h = {manhattan(board)}\"\n                              for tile, board in neighbors(run.state))\n        self.candidates.setText(f\"Legal neighbors of this board:\\n{options}\")\n        if run.planner:\n            self.search_info.setText(\n                f\"A* expanded: {run.planner.expanded}    \"\n                f\"Frontier entries: {len(run.planner.frontier)}\"\n            )\n        elif self.mode == \"Simulated annealing\":\n            self.search_info.setText(f\"Next T: {run.temperature:.4f}    \"\n                                     f\"Cooling: {run.cooling:g}    Minimum T: 0.05\")\n        else:\n            self.search_info.setText(\"\")\n        self.board_title.setText(\"Initial board (A* planning)\" if run.status == \"planning\"\n                                 else \"Current board\")\n        self.chart.current, self.chart.best = run.costs, run.best_costs\n        self.chart.update()\n        self.path_label.setText(\"Solution: tiles moved into the blank\" if run.status == \"solved\"\n                                else \"Accepted moves: tiles moved into the blank\")\n        self.path_text.setPlainText(\"  \".join(map(str, run.moved_tiles)) or \"(none)\")\n        self.path_text.verticalScrollBar().setValue(self.path_text.verticalScrollBar().maximum())\n        automated = self.mode != \"Manual\" and not run.finished\n        self.play.setEnabled(automated)\n        self.step.setEnabled(automated)\n        playing = self.timer.isActive()\n        icon = QStyle.StandardPixmap.SP_MediaPause if playing else QStyle.StandardPixmap.SP_MediaPlay\n        self.play.setIcon(self.style().standardIcon(icon))\n        self.play.setToolTip(\"Pause\" if playing else \"Run\")\n        for control in (self.t0, self.cooling, self.budget):\n            control.setEnabled(self.mode == \"Simulated annealing\")\n        self.seed.setEnabled(self.mode in {\"Hill climbing\", \"Simulated annealing\"})\n\n\n\nExport the Full Run\nExport JSON\n    def export_run(self):\n        self.timer.stop()\n        self.refresh()\n        filename, _ = QFileDialog.getSaveFileName(\n            self, \"Export run\", \"sliding-puzzle-run.json\", \"JSON files (*.json)\",\n        )\n        if not filename:\n            return\n        run = self.run\n        data = {\n            \"algorithm\": run.mode, \"status\": run.status, \"initial\": run.initial,\n            \"seed\": run.seed, \"initial_temperature\": run.start_temperature,\n            \"cooling\": run.cooling, \"minimum_temperature\": 0.05, \"budget\": run.budget,\n            \"accepted_path\": run.path, \"moved_tiles\": run.moved_tiles,\n            \"best_path\": run.best_path, \"proposals\": [asdict(p) for p in run.records],\n            \"astar_expanded\": run.planner.expanded if run.planner else None,\n            \"astar_route\": run.planner.route if run.planner else None,\n        }\n        try:\n            with open(filename, \"w\", encoding=\"utf-8\") as file:\n                json.dump(data, file, indent=2)\n        except OSError as error:\n            QMessageBox.warning(self, \"Could not export\", str(error))\n\n\n\nLaunch\nStart the application\nif __name__ == \"__main__\":\n    app = QApplication(sys.argv)\n    app.setStyle(\"Fusion\")\n    app.setFont(QFont(\"Arial\", 11))\n    window = SlidingPuzzle()\n    window.show()\n    sys.exit(app.exec())"
+  },
+  {
+    "objectID": "slides/lec12_Genetic_Algorithm.html#population-based-search",
+    "href": "slides/lec12_Genetic_Algorithm.html#population-based-search",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Population-Based Search",
+    "text": "Population-Based Search\nA genetic algorithm (GA) searches with a population of candidate solutions. A generation is one round of reproduction and replacement.\n\n\nSelection chooses parents using solution quality.\nCrossover combines parents; mutation introduces random changes.\n\n\nUnlike the single-state methods in Lecture 11, a GA keeps several candidates. More candidates do not guarantee a solution.\n\n\nA candidate is often called an individual. The analogy to biological evolution motivates inheritance, selection, and variation, but a GA is a designed optimization procedure, not a literal model of natural evolution. Fitness is the task-specific score, introduced explicitly on the next two slides. The population is a collection that may contain duplicate candidates, not necessarily a mathematical set. This lecture develops one eight-queens example before connecting to the permutation representation used by the existing notebook. Source: AIMA genetic algorithms and the original Lecture 12 Beamer material."
+  },
+  {
+    "objectID": "slides/lec12_Genetic_Algorithm.html#encoding-an-8-queens-board",
+    "href": "slides/lec12_Genetic_Algorithm.html#encoding-an-8-queens-board",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Encoding an 8-Queens Board",
+    "text": "Encoding an 8-Queens Board\nPlace eight queens so that no pair shares a row, column, or diagonal. Let x_i be the row of the queen in column i.\n\nA gene is one entry x_i; a chromosome is the full candidate x=(x_1,\\ldots,x_8).\n\nOne queen per column is automatic. Repeated rows are allowed in a candidate.\n\n\nRows and columns are numbered 1 through 8, with row 1 at the top. Every sequence of eight legal row values represents a board with one queen per column, even when the board is not a solution. There are 8^8 such encodings. The gene at column 6 has value 5; the entry is a row number, not a fitness value or tile label. Later we will impose a permutation constraint, which changes both the set of valid chromosomes and the operators. Source: the AIMA chromosome 24748552 carried over from the Spring 2025 lecture. Board redrawn for the course."
+  },
+  {
+    "objectID": "slides/lec12_Genetic_Algorithm.html#fitness-count-non-attacking-pairs",
+    "href": "slides/lec12_Genetic_Algorithm.html#fitness-count-non-attacking-pairs",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Fitness: Count Non-Attacking Pairs",
+    "text": "Fitness: Count Non-Attacking Pairs\nThere are \\binom{8}{2}=28 unordered queen pairs. Let c(x) count attacking pairs; maximize fitness F(x)=28-c(x).\n\n\nIs F(x)=24 a solution?  No. All 28 pairs must be non-attacking.\n\n\nFor columns i&lt;j, queens attack when x_i=x_j or |x_i-x_j|=j-i. Column conflicts are impossible under this encoding. The four attacking pairs in this example are (1,8), (2,4), (3,8), and (6,7), so the fitness is 24. Fitness counts pairs, not the number of correctly placed queens. A board can have high fitness without any queen being in an independently correct final location. Minimizing conflict count and maximizing non-attacking pairs rank these boards identically. For n queens, the target is n(n-1)/2. Source: AIMA’s eight-queens genetic algorithm example; pair enumeration checked for this diagram."
+  },
+  {
+    "objectID": "slides/lec12_Genetic_Algorithm.html#selection-trace",
+    "href": "slides/lec12_Genetic_Algorithm.html#selection-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Selecting Parents",
+    "text": "Selecting Parents\nSelect parents with probability proportional to fitness.\n\n\n\n\n\nCandidate\nChromosome\nF\n\n\n\n\nA\n24748552\n24\n\n\nB\n32752411\n23\n\n\nC\n24415124\n20\n\n\nD\n32543213\n11\n\n\n\n\nCandidate i’s fitness: F_i\nP(\\text{choose }i)=F_i/78.\nTotal fitness: 78. For B: 23/78\\approx29.5\\%.\nDraw u uniformly in [0,1).\n\n\n  \n  \n  \n\n\n\nFirst draw: B. Keep B available for later draws.\n\n\nSelected parents: B, A, B, C; next, form two pairs.\n\n\n\nFitness-proportionate selection is also called roulette-wheel selection. The cumulative boundaries are 24/78, 47/78, 67/78, and 1. The four fixed draws are an illustrative sample, not an output claimed from the notebook. Selection copies or references parents for reproduction; the sampled parent list is not yet the final new generation. If all fitness values are zero, use a defined fallback such as uniform sampling rather than dividing by zero. This formula requires nonnegative weights. The notebook instead uses tournament selection, explained on the permutation slide. Source: the original AIMA population and scores, with explicit uniform draws added for the course."
+  },
+  {
+    "objectID": "slides/lec12_Genetic_Algorithm.html#crossover-trace",
+    "href": "slides/lec12_Genetic_Algorithm.html#crossover-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "One-Point Crossover",
+    "text": "One-Point Crossover\nFor the first selected pair B and A, choose a cut after gene 3. A child, or offspring, inherits a prefix from one parent and a suffix from the other.\n\n  \n  \n  \n\n\n\nChild 1: B’s prefix + A’s suffix.\n\n\nChild 2 uses the other two segments. A valid encoding is preserved, but fitness need not improve.\n\n\n\nOne-point crossover chooses a boundary between genes. We fix the boundary after column 3 to make the inheritance visible. Pink genes come from B; teal genes come from A. B has fitness 23, A has 24, and the children have 23 and 22. Every gene remains a legal row value, so both children are valid chromosomes under the unrestricted row-vector encoding, even though neither solves the queens problem. The second pair B,C at the same cut produces 32715124 and 24452411, with fitness 22 and 18. These four children feed the replacement example. The pseudocode later creates one child per parent draw rather than requiring pairs of children; both are standard design choices. Source: AIMA one-point crossover, with these child scores independently calculated."
+  },
+  {
+    "objectID": "slides/lec12_Genetic_Algorithm.html#mutation-trace",
+    "href": "slides/lec12_Genetic_Algorithm.html#mutation-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Mutation: Change a Gene",
+    "text": "Mutation: Change a Gene\nIn this encoding, each gene may independently change to another row. For example, use mutation probability p_{\\text{gene}}=0.10.\n\n  \n  \n\n\nThis mutation makes the child worse. Mutation introduces variation; it does not promise improvement.\n\n\nThe example changes only gene 6 in child 1 from row 5 to row 6. All other genes and the other three children remain unchanged in our worked generation. The chromosome becomes 32748652 and fitness drops from 23 to 21. Choosing a different replacement row would produce a different score; mutation samples a change instead of testing all changes and taking the best. With independent probability 0.10 per gene, a child may have zero, one, or multiple mutations. This is different from a probability of mutating the child once. Select the new row from the other seven values if a triggered mutation is required to actually change the gene. Source: original Lecture 12 mutation mechanism, with a course example chosen to demonstrate a fitness decrease."
+  },
+  {
+    "objectID": "slides/lec12_Genetic_Algorithm.html#replacement-and-elitism",
+    "href": "slides/lec12_Genetic_Algorithm.html#replacement-and-elitism",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Replacement and Elitism",
+    "text": "Replacement and Elitism\nCross B and C at the same cut. Of the four children, mutate only child 1 from B and A.\n\n\nHow can we keep the best fitness from dropping?  Elitism: copy the best candidate unchanged, then fill the remaining slots with children.\n\n\nKeeping one elite protects the best score, not the average. Keep the population size fixed.\n\n\nThis figure completes the same generation used on the selection, crossover, and mutation slides. The selected pairs B,A and B,C are both cut after gene 3. Only child 32748552 mutates, becoming 32748652. The offspring fitness values are consequently 21,22,22,18. The original best chromosome A has fitness 24 and is absent from those four children. In a size-four population with one elite, copy A unchanged and generate or retain only three children. This is a variant of full generational replacement, not an extra fifth individual. Protect an independent copy from later mutation. A separate best-ever record can preserve the returned answer even when the population itself loses it; elitism additionally keeps that candidate in the population. Source: original course continuation of the AIMA example and the notebook’s one-elite policy."
+  },
+  {
+    "objectID": "slides/lec12_Genetic_Algorithm.html#ga-pseudocode",
+    "href": "slides/lec12_Genetic_Algorithm.html#ga-pseudocode",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Genetic Algorithm Pseudocode",
+    "text": "Genetic Algorithm Pseudocode\nN is population size; G is the generation budget. EVALUATE assigns fitness F. This version keeps one elite.\n\n  GENETIC(N, G, target)\n  P &lt;- RANDOM_POP(N); EVALUATE(P)\n  best &lt;- COPY(ARGMAX_F(P))\n  for generation in 1 .. G:\n  if F(best) = target: break\n  next &lt;- [COPY(ARGMAX_F(P))]\n  while SIZE(next) &lt; N:\n  a, b &lt;- SELECT(P), SELECT(P)\n  child &lt;- MUTATE(CROSSOVER(a, b))\n  APPEND(next, child)\n  P &lt;- next; EVALUATE(P)\n  if MAX_F(P) &gt; F(best): best &lt;- COPY(ARGMAX_F(P))\n  return best\n\n\nARGMAX_F returns a highest-fitness candidate; MAX_F returns its score. For eight queens, target = 28.\n\n\nP and next are populations; a and b are parents; child is a newly created chromosome. COPY makes an independent snapshot. N should be at least two for one-elite reproduction to produce new candidates. SELECT implements a stated selection rule, and CROSSOVER and MUTATE must preserve the chosen encoding without altering the parents. Mutation parameters can be passed to MUTATE or stored as configuration. All individuals are evaluated before comparison, including those produced in the last allowed generation. Returning best does not mean target was reached. With valid elitism, the best in P is already a best-ever candidate; the explicit best variable makes the return contract clear and remains useful in variants without elitism. Source: course pseudocode based on AIMA and the existing notebook, not a transcription of its implementation."
+  },
+  {
+    "objectID": "slides/lec12_Genetic_Algorithm.html#a-different-encoding-permutations",
+    "href": "slides/lec12_Genetic_Algorithm.html#a-different-encoding-permutations",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Different Encoding: Permutations",
+    "text": "A Different Encoding: Permutations\nRequire each row number to appear exactly once. A permutation then prevents both row and column conflicts; only diagonals remain.\n\n\nOperators must preserve the encoding. The notebook uses a permutation-preserving crossover, not ordinary one-point crossover.\n\n\nThe four-gene example is only an encoding check, not a claimed four-queens solution. Repeated rows were allowed under the earlier row-vector encoding, so 1212 was an encodable candidate there; it is invalid specifically under the permutation encoding. For eight queens there are 8! permutations instead of 8^8 unrestricted row vectors. The existing genetic_8_queen notebook uses random.sample(range(n),n) to create permutations and currently sets n=30. It also changes selection: tournament selection samples a group and chooses its highest-fitness member. The notebook samples ten candidates per tournament. That rule does not divide fitness by the population’s total. Source: existing genetic_8_queen.ipynb and standard representation constraints."
+  },
+  {
+    "objectID": "slides/lec12_Genetic_Algorithm.html#permutation-trace",
+    "href": "slides/lec12_Genetic_Algorithm.html#permutation-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Permutation-Preserving Crossover",
+    "text": "Permutation-Preserving Crossover\nCopy a segment from A, then fill the gaps using unused values in B’s order.\n\n  \n  \n  \n\n\n\nKeep 7, 1, 8 fixed. B contributes 3, 2, 5, 4, 6.\n\n\nThe child is a permutation, but its fitness is 25, below A’s 27.\n\n\n\nThis example follows the supplied notebook’s implementation exactly: copy parent1[start:end], take unused values from parent2 in left-to-right order, then fill the child’s empty positions from left to right. With human column labels 3 through 5, the zero-based Python slice is [2:5]. The notebook’s comment calls this Order Crossover (OX), but its implementation does not use the cyclic fill order of some textbook OX definitions; describe the actual operation rather than relying on that abbreviation. In the figures, rows use labels 1 through 8. Subtract one from every row value when comparing with the notebook’s zero-based encoding; pairwise conflicts do not change. Source: genetic_8_queen.ipynb crossover function. These illustrative parents and scores are original course examples."
+  },
+  {
+    "objectID": "slides/lec12_Genetic_Algorithm.html#mutation-depends-on-the-encoding",
+    "href": "slides/lec12_Genetic_Algorithm.html#mutation-depends-on-the-encoding",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Mutation Depends on the Encoding",
+    "text": "Mutation Depends on the Encoding\nA permutation cannot freely replace one value: it could create a duplicate. Swap mutation exchanges two positions instead.\n\n\n\n\n\n\n\n\nRow-vector example\nPermutation notebook\n\n\n\n\n0.10 chance per gene to replace its row\n0.30 chance per child to swap two entries\n\n\nSeveral genes may change independently\nAt most one swap per child\n\n\n\n\nThese rates describe different events. A swap preserves the permutation, but may improve or worsen fitness.\n\n\nFor this child, swapping the values at human columns 2 and 6 changes fitness from 25 to 26. Both positions must be distinct. The notebook’s mutate function draws one random value to decide whether to swap, then samples two positions. Thus mutation_rate=0.3 does not mean that each queen mutates with probability 0.3. By contrast, independent per-gene probability 0.1 on eight genes gives probability 1-0.9^8 of at least one triggered change, about 0.57. Parameter values cannot be compared meaningfully without knowing their events. Source: original lecture’s per-gene mutation and existing notebook’s swap mutation."
+  },
+  {
+    "objectID": "slides/lec12_Genetic_Algorithm.html#diversity-and-stopping",
+    "href": "slides/lec12_Genetic_Algorithm.html#diversity-and-stopping",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Diversity and Stopping",
+    "text": "Diversity and Stopping\nDiversity means having different chromosomes in the population. Strong selection can make the population increasingly similar.\n\n\nCan crossover alone create a new chromosome from identical parents?  No. Mutation can introduce variation that is missing from the population.\n\n\nStop at the target fitness or a time / generation budget.\nKeep the best candidate; report whether it actually reached the target.\nCompare several random seeds, including unsuccessful runs.\n\n\nPremature convergence means losing diversity and concentrating around candidates before finding a sufficiently good solution. Mutation can help, but does not guarantee escape or success in a finite run. Excessive mutation can also disrupt useful combinations. Elitism preserves a maximum score but does not force average fitness to increase. Tournament size and fitness scaling affect selection pressure; larger tournaments generally favor the strongest candidates more aggressively. A generation limit is a resource limit, not evidence that the problem has no solution. Source: AIMA discussion of genetic search and the notebook’s exploration questions."
+  },
+  {
+    "objectID": "slides/lec12_Genetic_Algorithm.html#takeaways",
+    "href": "slides/lec12_Genetic_Algorithm.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\n\n\n\n\n\n\n\nDesign choice\nWorked example\nExisting notebook\n\n\n\n\nEncoding\nRow vector; repeats allowed\nPermutation of rows\n\n\nParent selection\nFitness-weighted sampling\nTournament: best of 10 random candidates\n\n\nCrossover\nExchange tails at one cut\nCopy a segment, fill unused values\n\n\nMutation\nReplace individual genes\nSwap two positions\n\n\nReplacement\nFull replacement can lose the best\nKeep one elite\n\n\n\n\nDefine the encoding and fitness first. Selection favors, crossover combines, and mutation varies candidates; none alone guarantees a solution.\n\nCode: Genetic N-Queens notebook\nNotebook defaults: n=30, target fitness 435, row indices 0 to 29.\nAsset credits\n\nA tournament selects the highest-fitness member of a randomly sampled group, not necessarily the best individual in the entire population. The notebook’s tournament size is ten, so its population must have at least ten candidates. Its default population size and generation limit are each 1000; these are experiment settings, not requirements of a GA. The file name retains eight queens even though the current experiment uses thirty. Slides explain the operators; runnable code remains on its own page. Source: genetic_8_queen.ipynb and original Lecture 12. The broader lesson applies beyond queens: representations should enforce structural constraints, while fitness measures the remaining objective."
+  },
+  {
+    "objectID": "slides/lec13_CSP.html#variables-domains-and-the-graph",
+    "href": "slides/lec13_CSP.html#variables-domains-and-the-graph",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Variables, Domains, and the Graph",
+    "text": "Variables, Domains, and the Graph\nLet X_A be A’s slot, with remaining domain D_A; use the same notation for B, C, and D.\n\nA constraint graph has one node per variable. An edge joins two variables constrained together; here, each edge means different slots.\n\nThere is no B-C edge: B and C may share a slot. This is not a search tree or a travel map.\n\n\nThe graph encodes X_A != X_B, X_A != X_C, X_B != X_D, X_C != X_D. Node labels abbreviate the variables. Unary availability restrictions are stored in domains and need no graph edge. There is also no A-D edge. This simple graph view applies to binary constraints; constraints involving more variables need an additional representation or a decomposition. Source: AIMA constraint graphs and the course exam model."
+  },
+  {
+    "objectID": "slides/lec13_CSP.html#complete-and-consistent",
+    "href": "slides/lec13_CSP.html#complete-and-consistent",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Complete and Consistent",
+    "text": "Complete and Consistent\nComplete: all variables have values. Consistent: assigned values are in their domains and violate no constraint among them.\nTuples below list (X_A,X_B,X_C,X_D) in that order.\n\n\n\n\n\n\n\n\n\n\nAssignment\nComplete?\nConsistent?\n\n\n\n\nX_A=1,\\ X_B=2\nNo\nYes\n\n\nX_A=1,\\ X_B=1\nNo\nNo: AB\n\n\n(1,2,2,2)\nYes\nNo: BD, CD\n\n\n(1,2,2,3)\nYes\nYes\n\n\n\n\n\n\n\nOnly the last row is a solution. A consistent partial assignment is not yet a solution.\n\n\nReveal answers one row at a time. Partial means at least one variable remains unassigned. In the third row, B and C sharing 2 is allowed; D sharing their value violates both incident constraints. Consistency of a partial assignment does not assert that a completion exists; the later triangle gives a counterexample. Source: course exam example and standard CSP terminology."
+  },
+  {
+    "objectID": "slides/lec13_CSP.html#schedule-trace",
+    "href": "slides/lec13_CSP.html#schedule-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Domain-Reduction Trace",
+    "text": "A Domain-Reduction Trace\nConstraint propagation removes values ruled out by the constraints. A singleton domain contains just one value, so that value is forced.\n\n  \n  \n  \n  \n\n\n\nX_A=1 removes 1 from D_B and D_C.\n\n\nX_B=2 removes 2 from D_D.\n\n\nX_D=3 removes 3 from D_C. Solution: (1,2,2,3).\n\n\n\nGold marks the variable causing the current reduction; teal marks affected neighbors. Initially: {1}, {1,2}, {1,2,3}, {2,3}. After A: {1}, {2}, {2,3}, {2,3}. After B: {1}, {2}, {2,3}, {3}. After D: {1}, {2}, {2}, {3}. All four inequalities hold at the end. Every deduction was forced by the original requirements, and this example has a unique solution. Propagation does not solve every CSP. Lecture 14 formalizes consistency. Source: course scheduling model."
+  },
+  {
+    "objectID": "slides/lec13_CSP.html#extra-conflict",
+    "href": "slides/lec13_CSP.html#extra-conflict",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "One More Conflict",
+    "text": "One More Conflict\nA student now takes both B and C. Add the rule X_B\\ne X_C, keeping the same availability restrictions.\n\n  \n  \n\n\nCan all requirements still be satisfied?\n\n\nNo. A, B, and D force slots 1, 2, and 3. C has no remaining value: D_C=\\varnothing.\n\n\nThe new diagonal B-C edge is pink. The previous deductions forcing A=1, B=2, D=3 remain valid after adding a constraint. C must now differ from all three. This proves infeasibility, not just a failed attempt. A fourth slot for C, with C allowed to use it, would repair the model; ignoring the new shared student would not. If an empty domain instead follows a tentative search choice, it rules out that branch, not automatically the entire original problem. Source: course exam example."
+  },
+  {
+    "objectID": "slides/lec13_CSP.html#triangle-trace",
+    "href": "slides/lec13_CSP.html#triangle-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Consistent Does Not Mean Extendable",
+    "text": "Consistent Does Not Mean Extendable\nA separate example has three exams, all conflicting with each other, and only slots 1 and 2. Assign X_A=1.\n\n  \n  \n\n\nX_A=1 violates no constraint among assigned values. Can it be completed?\n\n\nNo. B and C would both need slot 2, but they conflict. Starting with X_A=2 fails symmetrically.\n\n\nThis is a new three-variable model, not a modification of the four-exam example. Each initial domain is {1,2}. With only A assigned, no binary constraint has two assigned endpoints, so the partial assignment is consistent. There is nevertheless no extension. At the completely unassigned state, each value even has support on each individual edge, yet there is no joint solution; leave formal arc consistency to Lecture 14. Source: course triangle example."
+  },
+  {
+    "objectID": "slides/lec13_CSP.html#feasibility-and-preferences",
+    "href": "slides/lec13_CSP.html#feasibility-and-preferences",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Feasibility and Preferences",
+    "text": "Feasibility and Preferences\n\n\n\n\n\n\n\n\nKind\nMeaning\nScheduling example\n\n\n\n\nHard constraint\nMust be satisfied\nNo simultaneous exams for a shared student\n\n\nSoft preference\nRanks feasible assignments\nPrefer fewer exams in slot 3\n\n\n\nFor n exams with slots X_1,\\ldots,X_n, one possible objective is\n\\min_X \\sum_{i=1}^{n}\\mathbf{1}\\{X_i=3\\}\\quad\\text{subject to all hard constraints}.\nThe indicator is 1 when exam i uses slot 3, and 0 otherwise.\n\nA basic CSP seeks feasibility. Constraint optimization also compares feasible assignments.\n\n\nThe objective counts exams, not unique students. X denotes the vector of exam slots. This is a general scheduling extension; our four-exam instance has only one feasible assignment, so a preference cannot select a different solution without changing that model. A lower objective never excuses a hard-constraint violation. Source: existing lecture’s feasibility-versus-preference distinction."
+  },
+  {
+    "objectID": "slides/lec13_CSP.html#sudoku-units",
+    "href": "slides/lec13_CSP.html#sudoku-units",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Rows, Columns, and Blocks",
+    "text": "Rows, Columns, and Blocks\nA Sudoku unit is a row, column, or block. Each unit has an \\operatorname{AllDifferent} constraint.\n\n  \n  \n  \n\n\n\nThe same cell also participates in its column constraint.\n\n\nAnd its block constraint. There are 27 units: 9 rows, 9 columns, 9 blocks.\n\n\n\nA3 is gold throughout. Other cells in the displayed unit are teal. Each peer’s given digit forbids that same digit at A3. A peer is another cell sharing at least one unit; overlapping memberships are not separate variables. A cell has 20 distinct peers in standard Sudoku. The unit view avoids an unreadably dense graph. Source: original Lecture 13 row, column, and subgrid diagrams, consolidated into an animated draw.io figure."
+  },
+  {
+    "objectID": "slides/lec13_CSP.html#candidate-values-for-a3",
+    "href": "slides/lec13_CSP.html#candidate-values-for-a3",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Candidate Values for A3",
+    "text": "Candidate Values for A3\nExclude digits assigned to A3’s peers: its row, column, or block.\n\n\nWhich values remain in D_{\\mathrm{A3}}?\n\n\nD_{\\mathrm{A3}}=\\{1,\\ldots,9\\}\\setminus\\{3,5,6,7,8,9\\}=\\{1,2,4\\}.\nRemaining candidates are not guaranteed to extend to a solution.\n\n\nRow A excludes 3,5,7. Column 3 excludes 8. The upper-left block excludes 3,5,6,8,9. Repeated excluded digits are removed once. Set-minus means remove the listed values. Do not insert the known solution’s 4 simply because the puzzle is familiar; this local test leaves three candidates. Source: original puzzle and the candidate example in sudoku.ipynb."
+  },
+  {
+    "objectID": "slides/lec13_CSP.html#forced-values",
+    "href": "slides/lec13_CSP.html#forced-values",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Forced Values and Propagation",
+    "text": "Forced Values and Propagation\nUsing the same clues, the center cell E5 has only candidate 5.\n\n  \n  \n\n\nE2 shares E5’s row and currently allows \\{2,5\\}. What follows?\n\n\nSet E5 = 5, remove 5 from its peers, then E2 = 2 is forced. A deduction can trigger another deduction.\n\n\nE5’s row excludes 1,3,4,8; its column excludes 1,2,6,7,8,9; its center block excludes 2,3,6,8. Their union leaves only 5. E2 originally allows 2 or 5. The figure highlights these two cells and their shared row; a full propagation operation also updates E5’s other column and block peers. These are forced deductions, not guesses. An unresolved empty domain signals contradiction; a singleton is forced. Source: original course Sudoku puzzle."
+  },
+  {
+    "objectID": "slides/lec13_CSP.html#search-and-propagation",
+    "href": "slides/lec13_CSP.html#search-and-propagation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Search and Propagation",
+    "text": "Search and Propagation\nIf propagation stalls, search may choose a variable and try a remaining value. A3’s local candidates illustrate possible branches:\n\n\nPropagate: make deductions forced by current constraints.\nBacktrack: undo a tentative choice if its branch fails, then try another.\n\n\nFor m blanks, there are at most 9^m complete fillings before constraints are used. This puzzle has m=51; pruning avoids exploring many of them.\n\n\nThe branches are alternatives, not simultaneous assignments or solved puzzles. Another variable may be a better choice; ordering heuristics belong to Lecture 15. The 9^m count is a loose count of complete fillings, not measured runtime or a tight solver bound. Fixed variable order gives at most nine value branches per level; do not multiply by the remaining variable count and explore many orders of identical assignments. Backtracking must restore all branch-specific domain changes. Source: original Beamer search and propagation content, with the assignment-count distinction made explicit."
+  },
+  {
+    "objectID": "slides/lec13_CSP.html#modeling-practice-a-lab-schedule",
+    "href": "slides/lec13_CSP.html#modeling-practice-a-lab-schedule",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Modeling Practice: A Lab Schedule",
+    "text": "Modeling Practice: A Lab Schedule\nExperiments P, Q, R each take one of three equal, nonoverlapping slots \\{1,2,3\\}.\n\n\nWrite the variables, domains, and constraints. Give one valid schedule and one invalid schedule, with a reason.\n\n\nLet students formulate the model before revealing the next slide. Each experiment lasts exactly one slot. Equal, nonoverlapping slots make precedence a strict inequality on slot indices. Nothing says P and R share equipment; do not invent that constraint. Source: existing Lecture 13 lab-scheduling practice."
+  },
+  {
+    "objectID": "slides/lec13_CSP.html#lab-schedule-a-formulation",
+    "href": "slides/lec13_CSP.html#lab-schedule-a-formulation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Lab Schedule: A Formulation",
+    "text": "Lab Schedule: A Formulation\nX_P,X_Q,X_R are the slots. D_P=D_Q=\\{1,2,3\\} and D_R=\\{2,3\\}.\nConstraints: X_P&lt;X_Q and X_Q\\ne X_R.\n\n\n\n\nAssignment (X_P,X_Q,X_R)\nWhy invalid?\n\n\n\n\n(2,1,3)\nP does not finish before Q starts\n\n\n(1,2,2)\nQ and R need the shared equipment together\n\n\n\n\nMultiple solutions are allowed; do not invent additional constraints.\n\n\nThe figure shows two valid schedules, not every solution. (2,3,2) is also valid because P and R may coincide: the only equipment conflict is Q-R. This catches an unstated AllDifferent assumption. Domains encode R’s unary restriction directly. Source: original course lab activity."
+  },
+  {
+    "objectID": "slides/lec13_CSP.html#n-queens-as-a-csp",
+    "href": "slides/lec13_CSP.html#n-queens-as-a-csp",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "N-Queens as a CSP",
+    "text": "N-Queens as a CSP\nAs in Lecture 12, let Q_i be the queen’s row in column i, with domain D_i=\\{1,\\ldots,N\\}.\n\n\n\n\nFor each pair of columns i&lt;j:\nDifferent rows: Q_i\\ne Q_j.\nNo diagonal attack: |Q_i-Q_j|\\ne|i-j|.\nOne variable per column already enforces one queen in each column.\n\n\nSame encoding, different formulation: instead of rewarding fewer conflicts, the CSP requires zero conflicts.\n\n\nThe figure uses N=4 for readability; equations apply to general N. It is a satisfying example, not the conflicted eight-queens chromosome from Lecture 12. Diagonal attack means the absolute row difference equals the absolute column difference. The unrestricted row-vector encoding needs row inequalities; a permutation enforces distinct rows structurally. A Boolean variable per square would need additional cardinality constraints such as exactly one queen per column. Source: AIMA N-queens CSP formulation and the previous lecture’s representation."
+  },
+  {
+    "objectID": "slides/lec13_CSP.html#takeaways",
+    "href": "slides/lec13_CSP.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\n\n\n\n\n\n\nModeling question\nWhat to specify\n\n\n\n\nWhat decisions must be made?\nVariables\n\n\nWhat values may each decision take?\nDomains, including fixed values\n\n\nWhich combinations are allowed?\nEvery required constraint\n\n\nWhat counts as success?\nA complete assignment satisfying all constraints\n\n\n\n\nConsistency so far does not guarantee a valid completion.\nPropagation removes impossible values; search handles unresolved choices.\nA solver answers the model we give it, including its assumptions.\n\n\nNext: how consistency checks prune domains systematically, and how to combine them with search.\n\nAsset credits\n\nAn exit question: if the lab model returns (2,3,2), is the solver wrong? No, because P and R have no stated equipment conflict. A real-world mismatch may require changing the model rather than the search algorithm. Lecture 14 covers consistency and Lecture 15 covers CSP search with the Sudoku notebook. Source: AIMA and this lecture’s worked models."
+  },
+  {
+    "objectID": "slides/lec14_CSP_Consistency.html#pruning-candidate-values",
+    "href": "slides/lec14_CSP_Consistency.html#pruning-candidate-values",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Pruning Candidate Values",
+    "text": "Pruning Candidate Values\nIn a constraint satisfaction problem (CSP), propagation removes domain values that cannot belong to a solution.\n\n\nLast time, forced exam slots triggered further deletions.\nToday: check supports systematically, even before a variable is forced.\nAC-3 (Arc Consistency Algorithm 3) manages these checks for binary constraints, which involve two variables.\n\n\nConnect to the four-exam model from Lecture 13. Its final domains are all singleton, but this is not guaranteed for every problem. Domain consistency describes properties of the remaining candidate sets, not just whether the currently assigned variables conflict. The 3 in AC-3 identifies an algorithm, not 3-consistency. Unary restrictions are handled first. Suggested pacing: foundations and REVISE about 10 minutes; AC-3 and queue trace about 12; limits, stronger consistency, and cost about 8; notebook bridge and summary about 3; leave roughly 15 minutes for the AC-3 notebook. Sources: original Lecture 14 Beamer and AIMA, Figure 6.3."
+  },
+  {
+    "objectID": "slides/lec14_CSP_Consistency.html#node-trace",
+    "href": "slides/lec14_CSP_Consistency.html#node-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Node Consistency",
+    "text": "Node Consistency\nA unary constraint restricts one variable. Node consistency means every remaining value satisfies all its unary constraints.\nLet D_X denote the domain of age X, with the rule X\\ge18.\n\n  \n  \n\n\nKeep D_X=\\{20,25,30\\}. Having just one valid value is not enough if invalid values remain.\n\nIf filtering empties a domain, the current problem or search branch has no solution.\n\nNode consistency is also called 1-consistency. Filtering deletes every value that violates a unary constraint; it does not select a single age. An empty domain after an optional search choice rules out that branch. An empty domain using only the original restrictions rules out the original CSP. Definition checked against the CS50 AI constraint satisfaction notes: https://cs50.harvard.edu/extension/ai/2020/fall/notes/3/ ."
+  },
+  {
+    "objectID": "slides/lec14_CSP_Consistency.html#support-trace",
+    "href": "slides/lec14_CSP_Consistency.html#support-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Supports for a Binary Constraint",
+    "text": "Supports for a Binary Constraint\nFor X&lt;Y, a support for x\\in D_X is a value y\\in D_Y that makes the constraint true. Lines below join allowed pairs.\n\n  \n  \n  \n\n\n\nX=3 stays: Y=4 is a support because 3&lt;4.\n\n\nX=4 goes: no value in D_Y is greater than 4.\n\n\n\nOriginal Beamer example. Initial domains: X={1,2,3,4}, Y={2,3,4}. There are six allowed pairs. Every remaining X value needs at least one support, not a distinct support and not compatibility with every Y value. Several X values may use Y=4 as support. A support is a local witness for this one constraint, not a proof that x belongs to a complete solution."
+  },
+  {
+    "objectID": "slides/lec14_CSP_Consistency.html#direction-matters",
+    "href": "slides/lec14_CSP_Consistency.html#direction-matters",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Direction Matters",
+    "text": "Direction Matters\nAn arc (X,Y) asks whether each value of X has support in Y. Revising it can shrink X’s domain only.\n\n\n\n\nDirected check\nAfter removing 4 from D_X\n\n\n\n\n(X,Y)\nEach x\\in\\{1,2,3\\} has a larger y\n\n\n(Y,X)\nEach y\\in\\{2,3,4\\} has a smaller x\n\n\n\n\nA binary CSP is arc-consistent when every directed arc passes. Reverse the check, not the rule: it is still X&lt;Y.\n\n\nNode-consistent binary CSPs that satisfy both directions have 2-consistency. Treat multiple constraints on a pair as their combined allowed-pair relation. In the reverse check, C_YX(y,x) expresses x&lt;y, not y&lt;x. Y=2 can use X=1; Y=3 can use X=1 or 2; Y=4 can use X=1,2,3. No Y value is deleted in this example. See https://inst.eecs.berkeley.edu/~cs188/textbook/csp/filtering.html ."
+  },
+  {
+    "objectID": "slides/lec14_CSP_Consistency.html#revise-pseudocode",
+    "href": "slides/lec14_CSP_Consistency.html#revise-pseudocode",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "REVISE: Remove Unsupported Values",
+    "text": "REVISE: Remove Unsupported Values\nD[i] is the current domain of X_i; C_{ij}(x,y) is true exactly when the pair is allowed.\n\n  REVISE(i, j, D, C):\n  changed ← false\n  for x in COPY(D[i]):\n  supported ← EXISTS y in D[j] with C[i,j](x,y)\n  if not supported:\n  REMOVE(D[i], x)\n  changed ← true\n  return changed\n\n\nCOPY lets us delete safely without skipping values during iteration.\nThe return value means “a deletion occurred,” not “a solution exists.”\n\n\nREVISE mutates D[i], leaves D[j] unchanged, and returns a Boolean change flag. EXISTS stops once one supporting y is found. For the preceding example, REVISE(X,Y) deletes 4 and returns true; an immediate second call makes no change and returns false. The notebook collects values to delete in a separate list, an equally valid way to avoid changing a set during iteration. Pseudocode adapted from the supplied Beamer and AIMA Figure 6.3: https://aima.cs.berkeley.edu/algorithms.pdf ."
+  },
+  {
+    "objectID": "slides/lec14_CSP_Consistency.html#ac3-pseudocode",
+    "href": "slides/lec14_CSP_Consistency.html#ac3-pseudocode",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "AC-3: Manage the Pending Checks",
+    "text": "AC-3: Manage the Pending Checks\nQ stores directed arcs awaiting revision. NEIGHBORS(i) lists variables constrained with X_i.\n\n  AC3(D, C):\n  if any D[i] is empty: return false\n  Q ← queue of all directed arcs (both directions)\n  while Q is not empty:\n  (i, j) ← POP_FRONT(Q)\n  if REVISE(i, j, D, C):\n  if D[i] is empty: return false\n  for k in NEIGHBORS(i) except j:\n  ENQUEUE_IF_ABSENT(Q, (k, i))\n  return true\n\n\nA deletion may invalidate neighbors’ supports. true means no empty domain was found, not that a solution was found.\n\n\nUse a first-in, first-out (FIFO) queue for the trace. Any fair worklist order works; FIFO is not essential for correctness. ENQUEUE_IF_ABSENT avoids duplicate pending arcs, with a set of pending pairs as one implementation. The notebook allows duplicate pending arcs, which can do extra work but does not invalidate propagation. All domains change in place. Initialize with both directions for each combined binary constraint. Skip j on requeue: a removed value in D[i] had no support in D[j], so it could not have been the supporting value for any value in D[j]. This assumes the reverse arc checks the same relation with swapped argument positions. AIMA Figure 6.3 and Berkeley CS188 filtering notes."
+  },
+  {
+    "objectID": "slides/lec14_CSP_Consistency.html#queue-first",
+    "href": "slides/lec14_CSP_Consistency.html#queue-first",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "AC-3 Trace: First Pass",
+    "text": "AC-3 Trace: First Pass\nRules: A&lt;B and B&lt;C. The queue front is on the left; add an arc only if it is not already pending.\n\n  \n  \n  \n  \n\n\n\n1. (A,B) deletes 3 from D_A: no larger B.\n\n\n2. (B,A) deletes 1 from D_B: no smaller A.\n\n\n3. (B,C) deletes 3 from D_B; put (A,B) back.\n\n\n\nThe initial domains are A={1,2,3}, B={1,2,3}, C={2,3}. Initially Q=[(A,B),(B,A),(B,C),(C,B)]. After step1 Q=[(B,A),(B,C),(C,B)], domains A12 B123 C23. After step2 Q=[(B,C),(C,B)], domains A12 B23 C23; (C,B) is already pending. After step3 Q=[(C,B),(A,B)], domains A12 B2 C23. Ask why A=2, which had support earlier, now needs another check. The figures show the most recently checked arc in teal, its first variable’s reduced domain in gold, and the queue after that check."
+  },
+  {
+    "objectID": "slides/lec14_CSP_Consistency.html#queue-return",
+    "href": "slides/lec14_CSP_Consistency.html#queue-return",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "AC-3 Trace: Rechecking",
+    "text": "AC-3 Trace: Rechecking\nContinue the same problem and queue. A previously consistent arc may need checking again when its supporting domain shrinks.\n\n  \n  \n  \n\n\n\n4. (C,B) deletes 2 from D_C: B=2 requires C&gt;2.\n\n\n5. (A,B) deletes 2 from D_A: its old support B=3 is gone.\n\n\n\nThe queue is empty. Here we obtain a solution: A=1,\\ B=2,\\ C=3, and both inequalities hold.\n\n\nAfter step4, Q=[(A,B)], domains A12 B2 C3. After step5, Q=[], domains A1 B2 C3. This instance happens to become fully solved. Checking (A,B) only once would leave the unsupported value A=2 behind. Domain values never reappear during this run; backtracking, which can restore saved domains, is a separate operation."
+  },
+  {
+    "objectID": "slides/lec14_CSP_Consistency.html#why-incoming-arcs-return",
+    "href": "slides/lec14_CSP_Consistency.html#why-incoming-arcs-return",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Why Incoming Arcs Return",
+    "text": "Why Incoming Arcs Return\nWhen checking (B,C) removes 3 from D_B, A may lose a support.\n\n\nRecheck (A,B): it asks whether A’s values still have support in B.\nChecking (B,A) would prune B instead, missing the effect on A.\nIf an affected arc is already in Q, one pending copy is enough.\n\n\nWhen D_i shrinks, reconsider arcs into X_i: neighbors were relying on its old values.\n\n\nWhy exclude the immediate reverse (C,B) from new enqueues after REVISE(B,C)? The deleted value B=3 had no compatible C value, so no C value was relying on it. In our trace (C,B) was already pending from initialization, so it is still checked when it reaches the front. Do not remove an existing queue item merely because the requeue rule would not newly add it. The relation is unchanged throughout: B&lt;C."
+  },
+  {
+    "objectID": "slides/lec14_CSP_Consistency.html#limits-trace",
+    "href": "slides/lec14_CSP_Consistency.html#limits-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Arc Consistency Has Limits",
+    "text": "Arc Consistency Has Limits\nThree variables have domains \\{1,2\\}. Every pair must differ: A\\ne B, A\\ne C, and B\\ne C.\n\n  \n  \n\nBefore any choice, every arc is consistent: 1 has support 2, and 2 has support 1.\n\nYet there is no solution. Choosing A=1 forces B=C=2; choosing A=2 fails symmetrically.\n\n\nThis is the two-value triangle, not the earlier chain. AC-3 on the original domains makes no deletions and returns true despite unsatisfiability. Different neighbor checks can use supports that cannot coexist globally. Once A is assigned, propagation would eventually produce an empty domain; the highlighted equal B and C values show the contradiction before that final deletion. The original graph is node- and arc-consistent, but not path-consistent. Source: AIMA and standard CSP consistency examples."
+  },
+  {
+    "objectID": "slides/lec14_CSP_Consistency.html#stronger-consistency",
+    "href": "slides/lec14_CSP_Consistency.html#stronger-consistency",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Stronger Consistency",
+    "text": "Stronger Consistency\nPath consistency (3-consistency): every consistent assignment to two variables can be extended to any third variable.\n\n\nk-consistency: every consistent k-1-variable assignment extends to any other variable.\nStrong k-consistency: all levels 1,2,\\ldots,k hold.\n\n\nStronger checks detect more contradictions, but cost more.\n\n\nThe pair A=1, B=2 satisfies its own inequality but has no extension to C. Path-consistency algorithms can remove allowed pairs, not just individual domain values. For binary CSPs this is the usual 3-consistency interpretation. Strong n-consistency, where n is the number of variables, permits successive extension without backtracking, but enforcing it is generally too expensive. Do not call every level above 2 path consistency. Source: original Beamer k-consistency definition and https://inst.eecs.berkeley.edu/~cs188/textbook/csp/filtering.html ."
+  },
+  {
+    "objectID": "slides/lec14_CSP_Consistency.html#work-and-termination",
+    "href": "slides/lec14_CSP_Consistency.html#work-and-termination",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Work and Termination",
+    "text": "Work and Termination\nDomains are finite and only shrink. New queue entries are added only after a deletion, so the process eventually stops.\nLet e be the number of directed arcs, and d the largest initial domain size.\n\n\n\n\n\n\n\nWork\nBasic AC-3 bound\n\n\n\n\nOne REVISE: try up to d supports for each of d values\nO(d^2)\n\n\nRechecks of one arc as its supporting domain shrinks\nO(d)\n\n\nAll directed arcs, with duplicate pending entries avoided\nO(ed^3)\n\n\n\n\n\nFor this chain, what are e and d? e=4, d=3.\n\n\nEach supporting domain can lose values on at most d separate occasions, and an arc is initially present once. Duplicate suppression keeps at most e arcs pending; queue storage is O(e), in addition to the domains and constraint representation. The simple REVISE implementation scans up to d squared pairs assuming an O(1) constraint test. This analysis is for basic AC-3, not an optimal arc-consistency algorithm. In our worked trace there are five REVISE calls, not e*d^3 calls. Reference: Berkeley CS188 filtering notes."
+  },
+  {
+    "objectID": "slides/lec14_CSP_Consistency.html#the-notebooks-sum-constraints",
+    "href": "slides/lec14_CSP_Consistency.html#the-notebooks-sum-constraints",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Notebook’s Sum Constraints",
+    "text": "The Notebook’s Sum Constraints\nAll four variables initially allow digits \\{0,1,\\ldots,9\\}. Each edge requires the indicated sum.\n\n\nCan we freely combine values? No: a=0, b=2 violates a+b=3.\n\nThe notebook starts with 4 directed checks. Full AC-3 uses 8, including each reverse check. Both give these domains for this example.\n\nUse the linked AC-3 notebook, keeping implementation details there. The supplied directed constraint triples are (a,b,3), (b,c,4), (c,d,2), (d,a,1); add (b,a,3), (c,b,4), (d,c,2), (a,d,1) for a standard bidirectional initialization. The notebook’s existing explanation discusses this distinction. Final domains with either list for this particular system: a={0,1}, b={2,3}, c={1,2}, d={0,1}. Exactly two solutions, in (a,b,c,d) order: (0,3,1,1) and (1,2,2,0). Fix a=0 and run ac3 again on those restricted domains to force b3,c1,d1. Calling solve again would recreate full initial domains. The four-check behavior must not be presented as generally equivalent to full AC-3."
+  },
+  {
+    "objectID": "slides/lec14_CSP_Consistency.html#takeaways",
+    "href": "slides/lec14_CSP_Consistency.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nNode consistency: remove values that fail a unary constraint.\nArc consistency: each remaining value has support across each binary constraint.\nREVISE: prune the first variable’s domain.\nAC-3: revisit affected incoming arcs after deletions.\nNonempty domains are not a proof of a solution.\n\n\nPropagation removes impossible candidates. Search may still be needed to choose values that work together.\n\nOpen the AC-3 notebook\nAsset credits\n\nIn the notebook, follow the domain changes, inspect why each removed value lacks support, compare the original queue with both directions, and then restrict a to 0 and propagate again. Keep the actual Python functions and their answers in the notebook, rather than duplicating them here. Lecture 15 adds search and variable/value ordering."
   }
 ]
