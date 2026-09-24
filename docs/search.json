@@ -8172,8 +8172,8 @@
     "objectID": "slides/lec13_CSP.html#triangle-trace",
     "href": "slides/lec13_CSP.html#triangle-trace",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Consistent Does Not Mean Extendable",
-    "text": "Consistent Does Not Mean Extendable\nA separate example has three exams, all conflicting with each other, and only slots 1 and 2. Assign X_A=1.\n\n  \n  \n\n\nX_A=1 violates no constraint among assigned values. Can it be completed?\n\n\nNo. B and C would both need slot 2, but they conflict. Starting with X_A=2 fails symmetrically.\n\n\nThis is a new three-variable model, not a modification of the four-exam example. Each initial domain is {1,2}. With only A assigned, no binary constraint has two assigned endpoints, so the partial assignment is consistent. There is nevertheless no extension. At the completely unassigned state, each value even has support on each individual edge, yet there is no joint solution; leave formal arc consistency to Lecture 14. Source: course triangle example."
+    "section": "A Consistent Start Can Still Fail",
+    "text": "A Consistent Start Can Still Fail\nA separate example has three exams, all conflicting with each other, and only slots 1 and 2. Assign X_A=1.\n\n  \n  \n\n\nConsistent so far: X_A=1 violates no constraint among assigned exams. Can we assign B and C too, while satisfying every constraint?\n\n\nNo. B and C would both need slot 2, but they conflict. Starting with X_A=2 fails symmetrically.\n\n\nThis is a new three-variable model, not a modification of the four-exam example. Each initial domain is {1,2}. With only A assigned, no binary constraint has two assigned endpoints, so the partial assignment is consistent. There is nevertheless no extension. At the completely unassigned state, each value even has support on each individual edge, yet there is no joint solution; leave formal arc consistency to Lecture 14. Source: course triangle example."
   },
   {
     "objectID": "slides/lec13_CSP.html#feasibility-and-preferences",

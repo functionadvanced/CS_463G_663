@@ -440,14 +440,14 @@ Peizhong Ju
       }</style></aside>
 </section>
 <section id="triangle-trace" class="slide level2 csp-slide search-trace csp-triangle">
-<h2>Consistent Does Not Mean Extendable</h2>
+<h2>A Consistent Start Can Still Fail</h2>
 <p>A <strong>separate example</strong> has three exams, all conflicting with each other, and only slots <span class="math inline">1</span> and <span class="math inline">2</span>. Assign <span class="math inline">X_A=1</span>.</p>
 <div class="trace-tree-frames" role="img" aria-label="A triangle of inequality constraints. With A assigned 1 and both B and C initially allowing 1 or 2, the partial assignment is consistent. Propagation forces B2 and C2, violating the B-C edge.">
   <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec13/triangle-0.png" alt="" aria-hidden="true">
   <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec13/triangle-1.png" alt="" aria-hidden="true">
 </div>
 <div class="question">
-<p><span class="math inline">X_A=1</span> violates no constraint among assigned values. Can it be completed?</p>
+<p><strong>Consistent so far:</strong> <span class="math inline">X_A=1</span> violates no constraint among assigned exams. Can we assign B and C too, while satisfying every constraint?</p>
 </div>
 <div class="takeaway fragment" data-fragment-index="0">
 <p><strong>No.</strong> B and C would both need slot 2, but they conflict. Starting with <span class="math inline">X_A=2</span> fails symmetrically.</p>
