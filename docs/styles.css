@@ -167,6 +167,20 @@ body > * {
   font-weight: 800;
 }
 
+#course-schedule tr:has(.course-schedule-notice) > td {
+  background-color: #fff7df;
+  box-shadow: none;
+}
+
+#course-schedule tr:has(.course-schedule-notice) > td:first-child {
+  border-left: 4px solid #c2413a;
+}
+
+.course-schedule-notice {
+  color: #a12622;
+  font-weight: 800;
+}
+
 /* Assignment collection and handouts */
 
 .assignment-intro {
