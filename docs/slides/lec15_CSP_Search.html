@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec15_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,133 +164,9 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="csp-search" class="slide level2 section-slide">
-<h2>CSP Search</h2>
-<ul>
-<li>Constraint propagation can reduce domains.</li>
-<li>Sometimes propagation alone solves the problem.</li>
-<li>Sometimes it proves failure.</li>
-<li>Often it only makes the remaining search easier.</li>
-</ul>
-<div class="takeaway">
-<p>CSP solvers usually combine propagation with backtracking search.</p>
-</div>
-</section>
-<section id="after-propagation" class="slide level2">
-<h2>After Propagation</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Domain state</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Every variable has one value</td>
-<td>Problem solved</td>
-</tr>
-<tr class="even">
-<td>Some variable has no values</td>
-<td>Current path fails</td>
-</tr>
-<tr class="odd">
-<td>Some domains are smaller</td>
-<td>Search is easier, but not done</td>
-</tr>
-</tbody>
-</table>
-<div class="question">
-<p>When propagation stops, what should the solver try next?</p>
-</div>
-</section>
-<section id="backtracking-search" class="slide level2">
-<h2>Backtracking Search</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:64%;">
-<ul>
-<li>Choose an unassigned variable.</li>
-<li>Try a value from its domain.</li>
-<li>Continue recursively.</li>
-<li>Undo the choice if it leads to failure.</li>
-</ul>
-</div><div class="column" style="width:28%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec15/Sudoku.png" class="cc0-figure"></p>
-<figcaption>Sudoku puzzle as a CSP search example</figcaption>
-</figure>
-</div>
-</div></div>
-</section>
-<section id="commutativity" class="slide level2">
-<h2>Commutativity</h2>
-<p>In CSPs, the final assignment does not depend on the order in which variables were assigned.</p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="naive-view">Naive View</h3>
-<p>If there are <span class="math inline">x</span> variables and each has <span class="math inline">y</span> values, a naive action choice has branching factor <span class="math inline">xy</span>.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="csp-view">CSP View</h3>
-<p>Choose one variable first; then branch only over its values. Branching factor becomes <span class="math inline">y</span>.</p>
-</div></div>
-<div class="takeaway">
-<p>Commutativity lets us search assignments, not action permutations.</p>
-</div>
-</section>
-<section id="basic-backtracking" class="slide level2 compact">
-<h2>Basic Backtracking</h2>
-<div class="pseudo-code" role="img" aria-label="Animated pseudocode for basic CSP backtracking">
-<div class="pseudo-line fragment" data-fragment-index="1">
-<span class="pseudo-fn">Backtrack</span>(<span class="pseudo-var">assignment</span>):
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="2">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">assignment</span> <span class="pseudo-kw">is</span> complete:
-</div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="2">
-<span class="pseudo-kw">return</span> <span class="pseudo-var">assignment</span>
-</div>
-<div class="pseudo-line">
-&nbsp;
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="3">
-<span class="pseudo-var">X</span> <span class="pseudo-op">=</span> select an unassigned variable
-</div>
-<div class="pseudo-line">
-&nbsp;
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="4">
-<span class="pseudo-kw">for</span> each <span class="pseudo-var">v</span> <span class="pseudo-kw">in</span> <span class="pseudo-fn">Domain</span>(<span class="pseudo-var">X</span>):
-</div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="5">
-<span class="pseudo-kw">if</span> assigning <span class="pseudo-var">X</span> <span class="pseudo-op">=</span> <span class="pseudo-var">v</span> is consistent:
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="5">
-add <span class="pseudo-var">X</span> <span class="pseudo-op">=</span> <span class="pseudo-var">v</span> to <span class="pseudo-var">assignment</span>
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="6">
-<span class="pseudo-var">result</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">Backtrack</span>(<span class="pseudo-var">assignment</span>)
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="7">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">result</span> <span class="pseudo-kw">is not</span> failure:
-</div>
-<div class="pseudo-line indent-4 fragment" data-fragment-index="7">
-<span class="pseudo-kw">return</span> <span class="pseudo-var">result</span>
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="8">
-remove <span class="pseudo-var">X</span> <span class="pseudo-op">=</span> <span class="pseudo-var">v</span> from <span class="pseudo-var">assignment</span>
-</div>
-<div class="pseudo-line">
-&nbsp;
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="9">
-<span class="pseudo-kw">return</span> failure
-</div>
-</div>
-</section>
-<section id="improving-csp-search" class="slide level2">
-<h2>Improving CSP Search</h2>
-<p>Because CSPs share common structure, we can improve search in domain-independent ways.</p>
+<section id="after-constraint-propagation" class="slide level2 csps-slide">
+<h2>After Constraint Propagation</h2>
+<p>A <strong>constraint satisfaction problem (CSP)</strong> asks for values that satisfy every constraint. Propagation reduces domains, but may leave choices.</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
@@ -297,176 +174,518 @@ remove <span class="pseudo-var">X</span> <span class="pseudo-op">=</span> <span 
 </colgroup>
 <thead>
 <tr class="header">
-<th>Improvement</th>
-<th>Question</th>
+<th style="text-align: left;">Remaining domains</th>
+<th style="text-align: left;">Next step</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Inference</td>
-<td>What values can be pruned after a choice?</td>
+<td style="text-align: left;">Any domain is empty</td>
+<td style="text-align: left;">Reject the current branch</td>
 </tr>
 <tr class="even">
-<td>Variable ordering</td>
-<td>Which variable should be assigned next?</td>
+<td style="text-align: left;">Every domain is a <strong>singleton</strong> (one value)</td>
+<td style="text-align: left;">Verify the complete assignment against every constraint</td>
 </tr>
 <tr class="odd">
-<td>Value ordering</td>
-<td>Which value should be tried first?</td>
-</tr>
-<tr class="even">
-<td>Backjumping / learning</td>
-<td>What caused failure, and can we avoid repeating it?</td>
+<td style="text-align: left;">Some domains have multiple values</td>
+<td style="text-align: left;">Choose a variable and try a value</td>
 </tr>
 </tbody>
 </table>
+<div class="takeaway">
+<p><strong>Backtracking search</strong> tries a choice, continues recursively, and undoes the choice if the branch fails.</p>
+</div>
+<p>An empty domain after a tentative choice rules out that branch. Search can still try other choices.</p>
+<aside class="notes">
+<p>Bridge from Lecture 14: AC-3 can return true without finding a solution. For node-consistent binary CSPs, if arc consistency has left every domain singleton, those values satisfy every binary constraint. The general solver should still validate all original constraints, especially when propagation handles only a subset. Start from a valid set of domains and fixed clues. Suggested pacing: worked search and basic pseudocode about 9 minutes, inference and restoration about 8, ordering and improved search about 10, advanced overview and notebook bridge about 6, leaving roughly 15 minutes for Sudoku. Sources: original Lecture 15 Beamer and AIMA’s CSP chapter.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="search-and-inference" class="slide level2">
-<h2>Search and Inference</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="search">Search</h3>
-<p>Assign values to variables and backtrack when constraints fail.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="inference">Inference</h3>
-<p>Reduce domains by enforcing consistency before making more assignments.</p>
-</div></div>
-<p>Two options after assigning variable <span class="math inline">v</span>:</p>
+<section id="a-three-exam-search-problem" class="slide level2 csps-slide">
+<h2>A Three-Exam Search Problem</h2>
+<p>Exams <strong>A, B, C</strong> all share students, so every pair must use different slots.</p>
+<p><span class="math display">D_A=D_B=\{1,2\},\qquad D_C=\{2,3\}.</span></p>
+<p><img data-src="imgs/drawio/lec15/exam-problem.png" class="csps-problem" alt="Triangle graph for exams A, B, C. Every edge requires different slots. Initial domains A:1,2; B:1,2; C:2,3."></p>
+<div class="question">
+<p>If we try <span class="math inline">C=2</span>, have we violated a constraint among assigned exams? <span class="fragment" data-fragment-index="0"><strong>No.</strong> A and B are still unassigned.</span></p>
+</div>
+<aside class="notes">
+<p>This is a separate three-exam example, with C allowed slots 2 and 3. Its two solutions, in (A,B,C) order, are (1,2,3) and (2,1,3). The initial domains are arc-consistent. C=2 is locally legal as a partial assignment but has no completion. We intentionally start with C and try 2 first to show how backtracking recovers. A different ordering can find the solution sooner.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="backtrack-trace" class="slide level2 csps-slide search-trace csps-backtrack-trace">
+<h2>A Backtracking Trace</h2>
+<p>Choose variables in the order <strong>C, A, B</strong>, trying smaller values first. The tree records choices; the triangle records constraints.</p>
+<div class="trace-tree-frames" role="img" aria-label="Backtracking on three mutually conflicting exams. Try C2. A1 then leaves no legal value for B, and A2 conflicts with C2. Undo the failed branch and try C3. A1 and B2 complete a valid schedule.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec15/backtrack-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec15/backtrack-1.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec15/backtrack-2.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="3" src="imgs/drawio/lec15/backtrack-3.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="4" src="imgs/drawio/lec15/backtrack-4.png" alt="" aria-hidden="true">
+</div>
+<div class="csps-steps">
+<div class="fragment" data-fragment-index="0">
+<p><strong>1.</strong> Try <span class="math inline">C=2</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>2.</strong> <span class="math inline">A=1</span> leaves B no legal value. <span class="math inline">A=2</span> also conflicts with C.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p><strong>3.</strong> Undo A and C, then try <span class="math inline">C=3</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="3">
+<p><strong>4.</strong> <span class="math inline">A=1,\ B=2,\ C=3</span> satisfies every constraint.</p>
+</div>
+</div>
+<aside class="notes">
+<p>No propagation is used in this first trace. At C=2, A=1 is the first legal value. B=1 violates A!=B, and B=2 violates B!=C. Return to A, undo A=1, and test A=2, which violates A!=C. A’s values are exhausted, so return to C, undo C=2, and try C=3. A=1 is legal; B=1 fails against A, while B=2 succeeds. A rejected candidate is never added to the assignment. The pink branch summarizes the failed checks; gold marks the current choice, and teal marks the successful path.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="assignment-order-and-commutativity" class="slide level2 csps-slide">
+<h2>Assignment Order and Commutativity</h2>
+<p>Assigning <span class="math inline">A=1</span> then <span class="math inline">B=2</span> gives the same partial assignment as assigning them in the opposite order.</p>
+<p><img data-src="imgs/drawio/lec15/commutativity.png" class="csps-orders" alt="Two assignment sequences. Empty assignment to A1 to A1 B2, and empty assignment to B2 to A1 B2. Both reach the same values."></p>
+<p>Let <span class="math inline">n</span> count variables and <span class="math inline">d</span> be the largest domain size. After <span class="math inline">k</span> assignments, <span class="math inline">n-k</span> variables remain.</p>
 <ul>
-<li>Check only constraints involving <span class="math inline">v</span>.</li>
-<li>Run fuller propagation starting from constraints involving <span class="math inline">v</span>.</li>
+<li>Branching over <strong>variable-value pairs</strong> gives up to <span class="math inline">(n-k)d</span> choices.</li>
+<li>Selecting <strong>one variable</strong> first gives up to <span class="math inline">d</span> value choices.</li>
 </ul>
+<div class="takeaway">
+<p>One variable per level avoids repeated assignment orders.</p>
+</div>
+<aside class="notes">
+<p>Commutativity concerns the resulting assignment for distinct variables, not an assertion that every ordering produces the same search effort or the same first solution. Before constraint pruning, an unconstrained n-variable problem with d values has d^n full assignments; considering every assignment order duplicates each one n! times. Standard CSP backtracking selects one variable at a node. A dynamic variable-selection rule is also valid. Source: supplied Lecture 15 Beamer and AIMA backtracking formulation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="inference-tradeoff" class="slide level2">
-<h2>Inference Tradeoff</h2>
+<section id="basic-pseudocode" class="slide level2 csps-slide csps-code">
+<h2>Basic Backtracking</h2>
+<p><span class="math inline">a</span> is a consistent partial assignment, <span class="math inline">D</span> stores domains, and <span class="math inline">C</span> stores constraints. Start with <span class="math inline">a=\{\}</span>.</p>
+<div class="pseudo-code" role="group" aria-label="Basic CSP backtracking pseudocode">
+  <div class="pseudo-line"><span class="pseudo-fn">BACKTRACK</span>(<span class="pseudo-var">a</span>, <span class="pseudo-var">D</span>, <span class="pseudo-var">C</span>):</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">if</span> <span class="pseudo-var">a</span> <span class="pseudo-kw">is</span> complete: <span class="pseudo-kw">return</span> <span class="pseudo-fn">COPY</span>(<span class="pseudo-var">a</span>)</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="0"><span class="pseudo-var">X</span> ← <span class="pseudo-fn">SELECT_UNASSIGNED</span>(<span class="pseudo-var">a</span>)</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="0"><span class="pseudo-kw">for</span> <span class="pseudo-var">v</span> <span class="pseudo-kw">in</span> <span class="pseudo-var">D</span>[<span class="pseudo-var">X</span>]:</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-kw">if</span> <span class="pseudo-fn">CONSISTENT</span>(<span class="pseudo-var">X</span>, <span class="pseudo-var">v</span>, <span class="pseudo-var">a</span>, <span class="pseudo-var">C</span>):</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="1"><span class="pseudo-var">a</span>[<span class="pseudo-var">X</span>] ← <span class="pseudo-var">v</span></div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="2"><span class="pseudo-var">result</span> ← <span class="pseudo-fn">BACKTRACK</span>(<span class="pseudo-var">a</span>, <span class="pseudo-var">D</span>, <span class="pseudo-var">C</span>)</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="2"><span class="pseudo-kw">if</span> <span class="pseudo-var">result</span> != <span class="pseudo-lit">FAILURE</span>: <span class="pseudo-kw">return</span> <span class="pseudo-var">result</span></div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="3"><span class="pseudo-fn">REMOVE</span>(<span class="pseudo-var">a</span>, <span class="pseudo-var">X</span>)</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="4"><span class="pseudo-kw">return</span> <span class="pseudo-lit">FAILURE</span></div>
+</div>
+<p><strong>CONSISTENT</strong> checks constraints whose variables have all received values. <strong>REMOVE</strong> undoes <span class="math inline">X</span>’s tentative assignment.</p>
+<aside class="notes">
+<p>This is depth-first search over partial assignments. Each recursive call removes its own failed choice before returning failure. Domains are unchanged in this basic version. The invariant is that the current assignment violates no fully instantiated constraint; thus a complete assignment is a solution. COPY protects the returned dictionary from later mutations. If every value for X fails, return to the caller’s choice. Source: original course algorithm and AIMA Figure 6.5, https://aima.cs.berkeley.edu/algorithms.pdf .</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="search-with-inference" class="slide level2 csps-slide">
+<h2>Search with Inference</h2>
+<p>After trying <span class="math inline">X=v</span>, restrict <span class="math inline">D_X</span> to <span class="math inline">\{v\}</span>, then remove values ruled out by the constraints.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Check</th>
+<th style="text-align: left;">What it does after a choice</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Check assigned values</td>
+<td style="text-align: left;">Reject an immediate conflict with earlier assignments</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Forward checking</strong></td>
+<td style="text-align: left;">Delete incompatible values from unassigned neighbors</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Maintaining arc consistency (MAC)</strong></td>
+<td style="text-align: left;">Propagate deletions through the remaining constraint graph</td>
+</tr>
+</tbody>
+</table>
+<p><strong>AC-3 (Arc Consistency Algorithm 3)</strong> can implement MAC by continuing to recheck affected arcs.</p>
+<div class="takeaway">
+<p>Forward checking looks one step from the new assignment. MAC also follows the effects of those deletions.</p>
+</div>
+<aside class="notes">
+<p>For a binary CSP, forward checking revises incoming arcs (Y,X) for unassigned neighbors Y of the chosen X, without propagating consequences between those neighbors. MAC restores arc consistency after each search choice. If the parent domains were already arc-consistent, AC-3 can start with incoming arcs to the newly restricted X. Otherwise initialize all directed arcs. Full propagation costs extra work per choice but may avoid much larger failed subtrees; neither method is universally faster. Sources: course search/inference material, AIMA CSP chapter, and Berkeley CS188 filtering notes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="filter-trace" class="slide level2 csps-slide search-trace csps-domain-trace">
+<h2>Forward Checking and MAC</h2>
+<p>Return to the <strong>three exams</strong>. Every edge requires different slots. Try <span class="math inline">C=2</span>.</p>
+<div class="trace-tree-frames" role="img" aria-label="Restrict C to 2, with A and B initially 1,2. Forward checking removes 2 from A and B, leaving both singleton 1. MAC then checks A,B and deletes A's last value because B1 provides no unequal support.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec15/filter-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec15/filter-1.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec15/filter-2.png" alt="" aria-hidden="true">
+</div>
+<div class="csps-steps">
+<div class="fragment" data-fragment-index="0">
+<p><strong>Forward checking:</strong> <span class="math inline">D_A=D_B=\{1\}</span>. Neither domain is empty yet.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>MAC:</strong> revise <span class="math inline">(A,B)</span>. Value <span class="math inline">1</span> has no unequal support, so <span class="math inline">D_A=\varnothing</span>.</p>
+</div>
+</div>
+<div class="takeaway fragment" data-fragment-index="1">
+<p>Propagation detects that the choice <span class="math inline">C=2</span> has no completion, before search assigns A and B.</p>
+</div>
+<aside class="notes">
+<p>At the first state, C is assigned but A and B remain unassigned. After basic forward checking they have forced values, but that method itself has not tested their mutual inequality. A solver may perform an additional check when assigning those singletons; MAC detects the conflict immediately by propagating between them. REVISE(A,B) leaves A empty while B remains {1}; stop on that first empty domain. This example explains a benefit of stronger propagation without claiming it always wins on runtime. The original domains are A12 B12 C23 and are arc-consistent before the choice.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="restore-trace" class="slide level2 csps-slide search-trace csps-domain-trace">
+<h2>Restoring a Failed Branch</h2>
+<p>The failed choice <span class="math inline">C=2</span> deleted values from <strong>several domains</strong>. Changing C alone does not repair the search state.</p>
+<div class="trace-tree-frames" role="img" aria-label="Failure state A empty, B1, C2 after trying C2. Backtracking restores the parent state A12, B12, C23, ready to try C3.">
+  <img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec15/restore-0.png" alt="" aria-hidden="true">
+  <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec15/restore-1.png" alt="" aria-hidden="true">
+</div>
+<div class="takeaway fragment" data-fragment-index="0">
+<p>Restore the <strong>parent’s domains</strong>, then try <span class="math inline">C=3</span>. The deletions belonged to the discarded branch.</p>
+</div>
+<p>Two common implementations: give each branch its own <strong>deep copy</strong>, or record deletions and undo them on return.</p>
+<aside class="notes">
+<p>Restored domains are A={1,2}, B={1,2}, C={2,3}. Restoring to the parent means preserving earlier valid pruning, not blindly resetting to the original puzzle on every failure. Undo both assignments and domain changes when mutating shared state. A shallow dictionary copy that shares its sets does not isolate branches. The improved pseudocode uses branch-local deep copies, trading extra memory and copying work for simple state management.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="minimum-remaining-values" class="slide level2 csps-slide">
+<h2>Minimum Remaining Values</h2>
+<p><strong>Minimum remaining values (MRV)</strong> selects the unassigned variable with the fewest current legal values.</p>
+<p>A <strong>new four-exam example</strong> uses the edges shown below. All four exams are unassigned.</p>
+<p><img data-src="imgs/drawio/lec15/mrv.png" class="csps-ordering" alt="Four-exam graph with edges AB, AC, AD, BC. Domains A12, B12, C123, D13. A, B, and D tie for the minimum domain size of 2."></p>
+<div class="takeaway">
+<p>A, B, and D tie with <strong>2 values</strong>. C has 3. Resolve a tie with another rule.</p>
+</div>
+<p>A singleton is forced. An empty domain signals failure. MRV often exposes difficult choices early.</p>
+<aside class="notes">
+<p>Use current domains after filtering, not the size of the original unrestricted domains. A fixed order is still complete, but may postpone an important contradiction. MRV does not guarantee a smaller search tree on every instance. Here all four variables are unassigned and all pair constraints are inequalities. The domain sizes are A2, B2, C3, D2. Source: original variable-ordering material and https://inst.eecs.berkeley.edu/~cs188/textbook/csp/ordering.html .</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-degree-tie-breaker" class="slide level2 csps-slide">
+<h2>The Degree Tie-Breaker</h2>
+<p>For an MRV tie, the <strong>degree heuristic</strong> prefers the variable constraining the most <strong>other unassigned variables</strong>.</p>
+<p><img data-src="imgs/drawio/lec15/degree.png" class="csps-ordering" alt="Same four-exam graph and domains. MRV ties A, B, D. A touches 3 unassigned neighbors, B touches 2, D touches 1. A is selected and its three incident edges are highlighted."></p>
+<div class="question">
+<p>Which of A, B, and D should be selected? <span class="fragment" data-fragment-index="0"><strong>A:</strong> degrees are A: 3, B: 2, D: 1.</span></p>
+</div>
+<div class="takeaway">
+<p><strong>Most constrained:</strong> fewest values. <strong>Most constraining:</strong> most unassigned neighbors.</p>
+</div>
+<aside class="notes">
+<p>The graph has AB, AC, AD, BC. All unassigned neighbor counts are A3, B2, C2, D1, but C is not in the MRV tie. Count constraints to unassigned variables in the remaining problem, rather than always using the original graph degree. Further ties can be broken deterministically. This is a standard heuristic, not a guarantee of the most effective choice for every instance. Source: original Lecture 15 and AIMA.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="least-constraining-value" class="slide level2 csps-slide">
+<h2>Least-Constraining Value</h2>
+<p><strong>Least-constraining value (LCV)</strong> preserves the most neighbor options. In our <strong>three-exam problem</strong>, select C and compare forward-checking deletions.</p>
+<p><img data-src="imgs/drawio/lec15/exam-problem.png" class="csps-lcv-reference" alt="Reference triangle with domains A12, B12, C23. All three edges require different slots."></p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Method</th>
-<th>Cost</th>
-<th>Benefit</th>
+<th style="text-align: left;">C’s value</th>
+<th style="text-align: left;">New <span class="math inline">D_A</span></th>
+<th style="text-align: left;">New <span class="math inline">D_B</span></th>
+<th style="text-align: left;">Deletions</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Local consistency around <span class="math inline">v</span></td>
-<td>Faster</td>
-<td>May miss useful implications</td>
+<td style="text-align: left;"><span class="math inline">2</span></td>
+<td style="text-align: left;"><span class="math inline">\{1\}</span></td>
+<td style="text-align: left;"><span class="math inline">\{1\}</span></td>
+<td style="text-align: left;"><span class="math inline">2</span></td>
 </tr>
 <tr class="even">
-<td>Fuller propagation</td>
-<td>Slower</td>
-<td>Prunes more and often pays off</td>
+<td style="text-align: left;"><span class="math inline">3</span></td>
+<td style="text-align: left;"><span class="math inline">\{1,2\}</span></td>
+<td style="text-align: left;"><span class="math inline">\{1,2\}</span></td>
+<td style="text-align: left;"><span class="math inline">0</span></td>
 </tr>
 </tbody>
 </table>
-<div class="takeaway">
-<p>Large CSPs often need strong branching-factor reductions, so fuller propagation is frequently worth the extra cost.</p>
+<div class="takeaway fragment" data-fragment-index="0">
+<p>LCV tries <strong><span class="math inline">C=3</span> first</strong>, avoiding the earlier failed branch.</p>
 </div>
+<aside class="notes">
+<p>This uses a one-step forward-checking score: add deletions across the unassigned neighbor domains. There are two deletions for C=2, one in A and one in B; there are none for C=3. More expensive LCV estimates may run fuller inference per candidate. Such simulations need copies or correct restoration as well. LCV changes value order; it does not discard the other values if the first attempt fails. It is particularly useful when seeking one solution. Source: original Lecture 15 and Berkeley CS188 ordering notes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="variable-ordering" class="slide level2">
-<h2>Variable Ordering</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:48%;">
-<h3 id="mrv">MRV</h3>
-<p>Choose the variable with the fewest remaining values.</p>
-<p>This tends to fail fast.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="most-constraining-variable">Most-Constraining Variable</h3>
-<p>Choose the variable involved in the most constraints.</p>
-<p>This is useful for tie-breaking.</p>
+<section id="improved-pseudocode" class="slide level2 csps-slide csps-code">
+<h2>Backtracking with Heuristics and AC-3</h2>
+<p>For a binary CSP, <strong>SOLVE</strong> uses domains as its state. <strong>CHECK_SOLUTION</strong> verifies every constraint and returns the assignment or FAILURE.</p>
+<div class="pseudo-code" role="group" aria-label="CSP search with MRV, degree, LCV, AC-3, and branch-local copies">
+  <div class="pseudo-line"><span class="pseudo-fn">SOLVE</span>(<span class="pseudo-var">D</span>, <span class="pseudo-var">C</span>):</div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">if any</span> <span class="pseudo-var">D</span>[<span class="pseudo-var">X</span>] <span class="pseudo-kw">is</span> empty: <span class="pseudo-kw">return</span> <span class="pseudo-lit">FAILURE</span></div>
+  <div class="pseudo-line indent-1"><span class="pseudo-kw">if all</span> domains <span class="pseudo-kw">are</span> singleton: <span class="pseudo-kw">return</span> <span class="pseudo-fn">CHECK_SOLUTION</span>(<span class="pseudo-var">D</span>,<span class="pseudo-var">C</span>)</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="0"><span class="pseudo-var">X</span> ← <span class="pseudo-fn">MRV_WITH_DEGREE</span>(<span class="pseudo-var">D</span>, <span class="pseudo-var">C</span>)</div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="0"><span class="pseudo-kw">for</span> <span class="pseudo-var">v</span> <span class="pseudo-kw">in</span> <span class="pseudo-fn">LCV_ORDER</span>(<span class="pseudo-var">X</span>, <span class="pseudo-var">D</span>, <span class="pseudo-var">C</span>):</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-var">child</span> ← <span class="pseudo-fn">DEEP_COPY</span>(<span class="pseudo-var">D</span>)</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="1"><span class="pseudo-var">child</span>[<span class="pseudo-var">X</span>] ← {<span class="pseudo-var">v</span>}</div>
+  <div class="pseudo-line indent-2 fragment" data-fragment-index="2"><span class="pseudo-kw">if</span> <span class="pseudo-fn">AC3</span>(<span class="pseudo-var">child</span>, <span class="pseudo-var">C</span>):</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="3"><span class="pseudo-var">result</span> ← <span class="pseudo-fn">SOLVE</span>(<span class="pseudo-var">child</span>, <span class="pseudo-var">C</span>)</div>
+  <div class="pseudo-line indent-3 fragment" data-fragment-index="3"><span class="pseudo-kw">if</span> <span class="pseudo-var">result</span> != <span class="pseudo-lit">FAILURE</span>: <span class="pseudo-kw">return</span> <span class="pseudo-var">result</span></div>
+  <div class="pseudo-line indent-1 fragment" data-fragment-index="4"><span class="pseudo-kw">return</span> <span class="pseudo-lit">FAILURE</span></div>
+</div>
+<div class="takeaway">
+<p>Each branch gets its own domains. If it fails, discard that copy and try the next value using the intact parent state.</p>
+</div>
+<aside class="notes">
+<p>MRV_WITH_DEGREE selects a variable with more than one remaining value, since singleton variables are already fixed in this domain-based representation. Start with unary constraints enforced. AC3 checks all directed arcs in this version, so it need not assume the input state is already arc-consistent. Inference returning true permits recursion but does not establish success. Every branch strictly fixes a previously nonsingleton variable, so the finite search terminates and is complete if all domain values are tried when necessary. Unlike the basic algorithm, explicit assignment undo is unnecessary because state is isolated in child. The notebook implements this copied-domain search pattern with singleton propagation and MRV, rather than full AC-3, degree tie-breaking, or LCV. Source: original improved search pseudocode and AIMA Figure 6.5, adapted to make branch restoration explicit.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="backjumping-and-constraint-learning" class="slide level2 csps-slide">
+<h2>Backjumping and Constraint Learning</h2>
+<p>A separate example assigns <span class="math inline">A=1,\ B=2,\ T=1</span>, in that order. <span class="math inline">D_X=\{1,2\}</span>, with rules <span class="math inline">X\ne A</span> and <span class="math inline">X\ne B</span>. T is unrelated.</p>
+<p><img data-src="imgs/drawio/lec15/backjump.png" class="csps-backjump" alt="Decision history A1, B2, T1, then X has no legal value. Chronological backtracking returns to T. Backjumping skips T and returns to B, the most recent decision in the conflict set A,B."></p>
+<ul>
+<li><strong>Conflict set:</strong> earlier choices that explain a failure. Here it is <span class="math inline">\{A=1,B=2\}</span>.</li>
+<li><strong>Backjumping:</strong> revisit the <strong>most recent</strong> decision in that set, so change B before trying an unrelated T value.</li>
+<li><strong>Constraint learning:</strong> remember a <strong>no-good</strong>, a partial assignment that cannot lead to a solution. Here, forbid the combination <span class="math inline">A=1,\ B=2</span>.</li>
+</ul>
+<aside class="notes">
+<p>X=1 conflicts with A=1 and X=2 conflicts with B=2. The original domain of X is exactly {1,2}, so neither value works and the two decisions jointly explain failure. T was assigned more recently than B but contributes nothing. Jump to B, undoing later choices, including T. Conflict-directed backjumping also combines reasons from deeper failed subtrees. Basic backjumping’s immediate dead ends are already caught by forward checking, while more elaborate learning can retain explanations for future search. This is an introductory overview. Source: AIMA’s freely available CSP chapter, https://aima.cs.berkeley.edu/newchap05.pdf , section on intelligent backtracking.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="complete-search-and-local-repair" class="slide level2 csps-slide">
+<h2>Complete Search and Local Repair</h2>
+<p>A CSP can also be approached through the local-search methods from Lecture 11.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Search state</th>
+<th style="text-align: left;">How it handles conflicts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Backtracking</strong></td>
+<td style="text-align: left;">A partial assignment</td>
+<td style="text-align: left;">Reject choices and return to earlier decisions</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Min-conflicts</strong></td>
+<td style="text-align: left;">A complete assignment that may violate constraints</td>
+<td style="text-align: left;">Change a conflicted variable to a value with fewer conflicts</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Min-conflicts</strong> can solve large instances quickly, but may get stuck or need restarts.</p>
+<div class="takeaway">
+<p>For finite domains, exhaustive backtracking can prove that no solution exists. A failed local-search run generally cannot.</p>
+</div>
+<aside class="notes">
+<p>A min-conflicts step typically selects a conflicted variable, evaluates the number of constraint violations for its possible values, and chooses a minimum-conflict value with randomized tie handling as appropriate. Unlike backtracking, the current full assignment may be invalid. This reconnects the CSP formulation to local repair without introducing another code demo. Source: original Lecture 15 Other Improvements and AIMA min-conflicts search.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sudoku-notebook" class="slide level2 csps-slide csps-notebook">
+<h2>Sudoku Notebook</h2>
+<p>Each blank is a variable. Row, column, and <span class="math inline">3\times3</span> box constraints forbid repeated digits.</p>
+<div class="columns two-column-balance">
+<div class="column" style="width:40%;">
+<p><img data-src="imgs/drawio/lec13/sudoku-puzzle.png" class="csps-sudoku" alt="The notebook's Sudoku puzzle, with row labels A through I and column labels 1 through 9."></p>
+</div><div class="column" style="width:57%;">
+<ul>
+<li><strong>is_valid:</strong> test a digit against its row, column, and box.</li>
+<li><strong>solve:</strong> choose the first blank, recurse, and reset it to zero after failure.</li>
+<li><strong>infer:</strong> remove an assigned digit from peer domains.</li>
+<li><strong>solve_reduce:</strong> propagate, select with MRV, and try copied domains.</li>
+</ul>
 </div></div>
+<div class="takeaway">
+<p>For general search, a guess must restrict its domain, and a failed branch must restore the previous state.</p>
+</div>
+<aside class="notes">
+<p>The notebook uses the same clue pattern as Lecture 13. Use the live notebook to show the actual Python functions. Its plain solver scans in row-major order. The inference solver keeps fixed cells as singleton domains, propagates through a queue, then uses MRV and branch-local copies when guesses are needed. The supplied puzzle is solved within one search call through propagation; the empty-grid example exercises guessing, and a locally legal wrong clue demonstrates an unsatisfiable case. The displayed saved counts are recursive calls, not timing measurements. Sources: course Sudoku notebook and the Wikipedia-derived original clue pattern credited in Lecture 13.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="value-ordering" class="slide level2">
-<h2>Value Ordering</h2>
-<h3 id="least-constraining-value-lcv">Least-Constraining Value (LCV)</h3>
+<section id="takeaways" class="slide level2 csps-slide">
+<h2>Takeaways</h2>
 <ul>
-<li>Try the value that removes the fewest options from other variables.</li>
-<li>This keeps future choices flexible.</li>
-<li>It helps when we only need one feasible value for the current variable.</li>
+<li>Backtracking tries choices and returns when a branch fails.</li>
+<li>Forward checking and MAC prune after each choice.</li>
+<li><strong>MRV</strong> chooses a variable with few remaining values.</li>
+<li>The <strong>degree heuristic</strong> breaks ties using remaining neighbors.</li>
+<li><strong>LCV</strong> tries values that preserve more options.</li>
+<li>Every failed branch must restore its assignments and domains.</li>
 </ul>
 <div class="takeaway">
-<p>Variable ordering chooses <strong>where</strong> to branch; value ordering chooses <strong>how</strong> to branch.</p>
+<p>A reliable solver combines correct state management with good branching choices and useful propagation.</p>
 </div>
-</section>
-<section id="improved-backtracking" class="slide level2 compact">
-<h2>Improved Backtracking</h2>
-<div class="pseudo-code" role="img" aria-label="Animated pseudocode for improved CSP backtracking with inference and heuristics">
-<div class="pseudo-line fragment" data-fragment-index="1">
-<span class="pseudo-fn">ImprovedBacktrack</span>(<span class="pseudo-var">assignment</span>):
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="2">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">assignment</span> <span class="pseudo-kw">is</span> complete:
-</div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="2">
-<span class="pseudo-kw">return</span> <span class="pseudo-var">assignment</span>
-</div>
-<div class="pseudo-line">
-&nbsp;
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="3">
-<span class="pseudo-var">X</span> <span class="pseudo-op">=</span> most-constrained unassigned variable <span class="pseudo-comment"># MRV</span>
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="4">
-order values for <span class="pseudo-var">X</span> by least-constraining value <span class="pseudo-comment"># LCV</span>
-</div>
-<div class="pseudo-line">
-&nbsp;
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="5">
-<span class="pseudo-kw">for</span> each <span class="pseudo-var">v</span> <span class="pseudo-kw">in</span> <span class="pseudo-var">D(X)</span>:
-</div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="6">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">v</span> is consistent with <span class="pseudo-var">assignment</span>:
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="6">
-assign <span class="pseudo-var">X</span> <span class="pseudo-op">=</span> <span class="pseudo-var">v</span>
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="7">
-perform inference, such as <span class="pseudo-fn">AC3</span>
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="8">
-<span class="pseudo-kw">if</span> inference did not detect failure:
-</div>
-<div class="pseudo-line indent-4 fragment" data-fragment-index="8">
-<span class="pseudo-var">result</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">ImprovedBacktrack</span>(<span class="pseudo-var">assignment</span>)
-</div>
-<div class="pseudo-line indent-4 fragment" data-fragment-index="9">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">result</span> <span class="pseudo-kw">is not</span> failure:
-</div>
-<div class="pseudo-line indent-4 fragment" data-fragment-index="9">
-<span class="pseudo-kw">return</span> <span class="pseudo-var">result</span>
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="10">
-undo assignment and restore domains
-</div>
-<div class="pseudo-line">
-&nbsp;
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="11">
-<span class="pseudo-kw">return</span> failure
-</div>
-</div>
-</section>
-<section id="backjumping" class="slide level2">
-<h2>Backjumping</h2>
-<ul>
-<li>Standard backtracking returns to the most recent choice.</li>
-<li>Backjumping returns to the earliest decision that actually caused failure.</li>
-<li>Simple backjumping often overlaps with what constraint propagation would prune.</li>
-</ul>
-<div class="takeaway">
-<p>Backjumping asks: “Which previous choice made this failure inevitable?”</p>
-</div>
-</section>
-<section id="other-improvements" class="slide level2">
-<h2>Other Improvements</h2>
-<ul>
-<li><strong>Conflict-directed backjumping:</strong> jump using the exact cause of failure.</li>
-<li><strong>Constraint learning:</strong> store no-good combinations so they are not repeated.</li>
-<li><strong>Local search for CSPs:</strong> useful when complete backtracking is too expensive.</li>
-</ul>
+<p><a href="../code_and_homework/sudoku.html" target="_blank" rel="noopener">Open the Sudoku notebook</a></p>
 <p><a class="asset-credit-link" href="../asset_credits.html#lec15" target="_blank" rel="noopener">Asset credits</a></p>
+<aside class="notes">
+<p>Return to the notebook: identify a legality check, the recursive call, and the reset to zero. Then compare candidate deletions with the copied-domain branching logic. In the inference solver, child_domains[cell] = {n} records a guess before recursion; each failed child is discarded. A complete assignment still needs to satisfy all constraints. Keep the backjumping and local-repair overview brief to protect notebook time.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 </section>

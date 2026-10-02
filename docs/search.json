@@ -4,21 +4,7 @@
     "href": "code_and_homework/sudoku.html",
     "title": "Sudoku as Constraint Search",
     "section": "",
-    "text": "Download notebook (.ipynb)\n  Download page (.html)\nEach blank is a variable with candidates 1 through 9. Rows, columns, and 3-by-3 boxes must contain no repeated digit. This is a constraint satisfaction problem (CSP).\nCompare a straightforward backtracking solver with a domain-reduction demonstration on the same puzzle. Run the cells in order with Matplotlib installed. The saved results are specific to this puzzle, not a benchmark across Sudoku instances."
-  },
-  {
-    "objectID": "code_and_homework/sudoku.html#puzzle-setup-and-display",
-    "href": "code_and_homework/sudoku.html#puzzle-setup-and-display",
-    "title": "Sudoku as Constraint Search",
-    "section": "Puzzle Setup and Display",
-    "text": "Puzzle Setup and Display\nThis cell defines the puzzle and draws it as a grid.\n\nimport matplotlib.pyplot as plt\nimport matplotlib.patches as patches\n\n# show a sudoku problem\npuzzle = [\n    [5, 3, 0, 0, 7, 0, 0, 0, 0],\n    [6, 0, 0, 1, 9, 5, 0, 0, 0],\n    [0, 9, 8, 0, 0, 0, 0, 6, 0],\n    [8, 0, 0, 0, 6, 0, 0, 0, 3],\n    [4, 0, 0, 8, 0, 3, 0, 0, 1],\n    [7, 0, 0, 0, 2, 0, 0, 0, 6],\n    [0, 6, 0, 0, 0, 0, 2, 8, 0],\n    [0, 0, 0, 4, 1, 9, 0, 0, 5],\n    [0, 0, 0, 0, 8, 0, 0, 7, 9]\n]\n\ndef draw_puzzle(puzzle):\n    fig, ax = plt.subplots(figsize=(3, 3))\n    ax.set_aspect('equal')\n    ax.set_xlim(0, 9)\n    ax.set_ylim(0, 9)\n    ax.set_xticks([])\n    ax.set_yticks([])\n    ax.add_patch(patches.Rectangle((0, 0), 9, 9, fill=False))\n    for i in range(9):\n        for j in range(9):\n            if puzzle[i][j] != 0:\n                ax.text(j + 0.5, 8.5 - i, str(puzzle[i][j]), ha='center', va='center')\n    for i in range(3):\n        for j in range(3):\n            ax.add_patch(patches.Rectangle((3 * j, 3 * i), 3, 3, fill=False\n                , linewidth=2))\n    for i in range(8):\n        ax.add_patch(patches.ConnectionPatch((i + 1, 0), (i + 1, 9), 'data', 'data'))\n        ax.add_patch(patches.ConnectionPatch((0, i + 1), (9, i + 1), 'data', 'data'))\n    plt.show()\n\ndraw_puzzle(puzzle)"
-  },
-  {
-    "objectID": "code_and_homework/sudoku.html#backtracking-solver",
-    "href": "code_and_homework/sudoku.html#backtracking-solver",
-    "title": "Sudoku as Constraint Search",
-    "section": "Backtracking Solver",
-    "text": "Backtracking Solver\nThe solver checks row, column, and box constraints before recursively filling the next empty cell.\n\ndef is_valid(puzzle, i, j, n):\n    for k in range(9):\n        if puzzle[i][k] == n or puzzle[k][j] == n:\n            return False\n    for k in range(3):\n        for l in range(3):\n            if puzzle[(i // 3) * 3 + k][(j // 3) * 3 + l] == n:\n                return False\n    return True\n\nsuccess_flag = False\nnum = 0\n\ndef solve(puzzle):\n    global success_flag, num\n    num += 1\n    for i in range(9):\n        for j in range(9):\n            if puzzle[i][j] == 0:\n                for n in range(1, 10):\n                    if is_valid(puzzle, i, j, n):\n                        puzzle[i][j] = n\n                        if solve(puzzle):\n                            if not success_flag:\n                                print(\"success with \", num, \" steps\")\n                                draw_puzzle(puzzle)\n                                success_flag = True\n                            return True\n                        puzzle[i][j] = 0\n                return False\n    return True\n\n# solve the sudoku problem by reducing the search space with inference\n# generate a dictionary of possible values for each cell\nall_cells = [(i, j) for i in range(9) for j in range(9)]\npossible_values = {cell: set(range(1, 10)) for cell in all_cells}\nfor i in range(9):\n    for j in range(9):\n        if puzzle[i][j] != 0:\n            possible_values[(i, j)] = set(puzzle[i][j] for _ in range(1))\n\nimport copy\ndef infer(possible_values, i, j, n):\n    for k in range(9):\n        if n in possible_values[(i, k)]:\n            possible_values[(i, k)].remove(n)\n            if len(possible_values[(i, k)]) == 0:\n                return False\n        if n in possible_values[(k, j)]:\n            possible_values[(k, j)].remove(n)\n            if len(possible_values[(k, j)]) == 0:\n                return False\n    for k in range(3):\n        for l in range(3):\n            if n in possible_values[(i // 3 * 3 + k, j // 3 * 3 + l)]:\n                possible_values[(i // 3 * 3 + k, j // 3 * 3 + l)].remove(n)\n                if len(possible_values[(i // 3 * 3 + k, j // 3 * 3 + l)]) == 0:\n                    return False\n    return True\n\nnum_reduce = 0\ndef solve_reduce(puzzle, possible_values):\n    global num_reduce\n    num_reduce += 1\n    copy_possible_values = copy.deepcopy(possible_values)\n    copy_puzzle = copy.deepcopy(puzzle)\n    # rank the cells by the number of possible values\n    cells = sorted(all_cells, key=lambda cell: len(copy_possible_values[cell]))\n    for cell in cells:\n        if len(copy_possible_values[cell]) == 1:\n            n = copy_possible_values[cell].pop()\n            copy_puzzle[cell[0]][cell[1]] = n\n            if not infer(copy_possible_values, cell[0], cell[1], n):\n                return False\n    if all(len(copy_possible_values[cell]) == 0 for cell in all_cells):\n        print(\"success with \", num_reduce, \" steps\")\n        draw_puzzle(copy_puzzle)\n        return True\n    for cell in cells:\n        if len(copy_possible_values[cell]) &gt; 1:\n            for n in copy_possible_values[cell]:\n                copy_puzzle[cell[0]][cell[1]] = n\n                if solve_reduce(copy_puzzle, copy_possible_values):\n                    return True\n            return False\n    return False\n\n\n\nsolve(copy.deepcopy(puzzle))\nsolve_reduce(copy.deepcopy(puzzle), possible_values)\n\nsuccess with  4209  steps\n\n\n\n\n\n\n\n\n\nsuccess with  4  steps\n\n\n\n\n\n\n\n\n\nTrue"
+    "text": "Download notebook (.ipynb)\n  Download page (.html)\nEach blank is a variable with candidates 1 through 9. Rows, columns, and 3-by-3 boxes must contain no repeated digit. This is a constraint satisfaction problem (CSP).\nCompare plain backtracking with a solver that combines inference and backtracking. Run the cells in order with Matplotlib installed. The saved results are specific to these puzzles, not a benchmark across Sudoku instances."
   },
   {
     "objectID": "code_and_homework/search_BFS_DFS.html",
@@ -537,97 +523,6 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Takeaways",
     "text": "Takeaways\n\n\n\nEnvironment properties determine what an agent must handle.\nFully observable, deterministic, static, discrete tasks are easiest.\nReal-world tasks are often partially observable, dynamic, multi-agent, and continuous.\nThe same task can be classified differently depending on assumptions.\nGood agent design starts with a clear task-environment analysis.\n\n\n\n\nAsset credits"
-  },
-  {
-    "objectID": "slides/lec15_CSP_Search.html#csp-search",
-    "href": "slides/lec15_CSP_Search.html#csp-search",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "CSP Search",
-    "text": "CSP Search\n\nConstraint propagation can reduce domains.\nSometimes propagation alone solves the problem.\nSometimes it proves failure.\nOften it only makes the remaining search easier.\n\n\nCSP solvers usually combine propagation with backtracking search."
-  },
-  {
-    "objectID": "slides/lec15_CSP_Search.html#after-propagation",
-    "href": "slides/lec15_CSP_Search.html#after-propagation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "After Propagation",
-    "text": "After Propagation\n\n\n\nDomain state\nMeaning\n\n\n\n\nEvery variable has one value\nProblem solved\n\n\nSome variable has no values\nCurrent path fails\n\n\nSome domains are smaller\nSearch is easier, but not done\n\n\n\n\nWhen propagation stops, what should the solver try next?"
-  },
-  {
-    "objectID": "slides/lec15_CSP_Search.html#backtracking-search",
-    "href": "slides/lec15_CSP_Search.html#backtracking-search",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Backtracking Search",
-    "text": "Backtracking Search\n\n\n\nChoose an unassigned variable.\nTry a value from its domain.\nContinue recursively.\nUndo the choice if it leads to failure.\n\n\n\n\n\nSudoku puzzle as a CSP search example"
-  },
-  {
-    "objectID": "slides/lec15_CSP_Search.html#commutativity",
-    "href": "slides/lec15_CSP_Search.html#commutativity",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Commutativity",
-    "text": "Commutativity\nIn CSPs, the final assignment does not depend on the order in which variables were assigned.\n\n\nNaive View\nIf there are x variables and each has y values, a naive action choice has branching factor xy.\n\nCSP View\nChoose one variable first; then branch only over its values. Branching factor becomes y.\n\n\nCommutativity lets us search assignments, not action permutations."
-  },
-  {
-    "objectID": "slides/lec15_CSP_Search.html#basic-backtracking",
-    "href": "slides/lec15_CSP_Search.html#basic-backtracking",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Basic Backtracking",
-    "text": "Basic Backtracking\n\n\nBacktrack(assignment):\n\n\nif assignment is complete:\n\n\nreturn assignment\n\n\n \n\n\nX = select an unassigned variable\n\n\n \n\n\nfor each v in Domain(X):\n\n\nif assigning X = v is consistent:\n\n\nadd X = v to assignment\n\n\nresult = Backtrack(assignment)\n\n\nif result is not failure:\n\n\nreturn result\n\n\nremove X = v from assignment\n\n\n \n\n\nreturn failure"
-  },
-  {
-    "objectID": "slides/lec15_CSP_Search.html#improving-csp-search",
-    "href": "slides/lec15_CSP_Search.html#improving-csp-search",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Improving CSP Search",
-    "text": "Improving CSP Search\nBecause CSPs share common structure, we can improve search in domain-independent ways.\n\n\n\n\n\n\n\nImprovement\nQuestion\n\n\n\n\nInference\nWhat values can be pruned after a choice?\n\n\nVariable ordering\nWhich variable should be assigned next?\n\n\nValue ordering\nWhich value should be tried first?\n\n\nBackjumping / learning\nWhat caused failure, and can we avoid repeating it?"
-  },
-  {
-    "objectID": "slides/lec15_CSP_Search.html#search-and-inference",
-    "href": "slides/lec15_CSP_Search.html#search-and-inference",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Search and Inference",
-    "text": "Search and Inference\n\n\nSearch\nAssign values to variables and backtrack when constraints fail.\n\nInference\nReduce domains by enforcing consistency before making more assignments.\n\nTwo options after assigning variable v:\n\nCheck only constraints involving v.\nRun fuller propagation starting from constraints involving v."
-  },
-  {
-    "objectID": "slides/lec15_CSP_Search.html#inference-tradeoff",
-    "href": "slides/lec15_CSP_Search.html#inference-tradeoff",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Inference Tradeoff",
-    "text": "Inference Tradeoff\n\n\n\nMethod\nCost\nBenefit\n\n\n\n\nLocal consistency around v\nFaster\nMay miss useful implications\n\n\nFuller propagation\nSlower\nPrunes more and often pays off\n\n\n\n\nLarge CSPs often need strong branching-factor reductions, so fuller propagation is frequently worth the extra cost."
-  },
-  {
-    "objectID": "slides/lec15_CSP_Search.html#variable-ordering",
-    "href": "slides/lec15_CSP_Search.html#variable-ordering",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Variable Ordering",
-    "text": "Variable Ordering\n\n\nMRV\nChoose the variable with the fewest remaining values.\nThis tends to fail fast.\n\nMost-Constraining Variable\nChoose the variable involved in the most constraints.\nThis is useful for tie-breaking."
-  },
-  {
-    "objectID": "slides/lec15_CSP_Search.html#value-ordering",
-    "href": "slides/lec15_CSP_Search.html#value-ordering",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Value Ordering",
-    "text": "Value Ordering\nLeast-Constraining Value (LCV)\n\nTry the value that removes the fewest options from other variables.\nThis keeps future choices flexible.\nIt helps when we only need one feasible value for the current variable.\n\n\nVariable ordering chooses where to branch; value ordering chooses how to branch."
-  },
-  {
-    "objectID": "slides/lec15_CSP_Search.html#improved-backtracking",
-    "href": "slides/lec15_CSP_Search.html#improved-backtracking",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Improved Backtracking",
-    "text": "Improved Backtracking\n\n\nImprovedBacktrack(assignment):\n\n\nif assignment is complete:\n\n\nreturn assignment\n\n\n \n\n\nX = most-constrained unassigned variable # MRV\n\n\norder values for X by least-constraining value # LCV\n\n\n \n\n\nfor each v in D(X):\n\n\nif v is consistent with assignment:\n\n\nassign X = v\n\n\nperform inference, such as AC3\n\n\nif inference did not detect failure:\n\n\nresult = ImprovedBacktrack(assignment)\n\n\nif result is not failure:\n\n\nreturn result\n\n\nundo assignment and restore domains\n\n\n \n\n\nreturn failure"
-  },
-  {
-    "objectID": "slides/lec15_CSP_Search.html#backjumping",
-    "href": "slides/lec15_CSP_Search.html#backjumping",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Backjumping",
-    "text": "Backjumping\n\nStandard backtracking returns to the most recent choice.\nBackjumping returns to the earliest decision that actually caused failure.\nSimple backjumping often overlaps with what constraint propagation would prune.\n\n\nBackjumping asks: “Which previous choice made this failure inevitable?”"
-  },
-  {
-    "objectID": "slides/lec15_CSP_Search.html#other-improvements",
-    "href": "slides/lec15_CSP_Search.html#other-improvements",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Other Improvements",
-    "text": "Other Improvements\n\nConflict-directed backjumping: jump using the exact cause of failure.\nConstraint learning: store no-good combinations so they are not repeated.\nLocal search for CSPs: useful when complete backtracking is too expensive.\n\nAsset credits"
   },
   {
     "objectID": "slides/lec13_CSP.html#constraint-satisfaction-problems",
@@ -1166,7 +1061,7 @@
     "href": "asset_credits.html#lec15",
     "title": "Visual Asset Credits",
     "section": "Lecture 15: CSP Search",
-    "text": "Lecture 15: CSP Search\nCarried-over assets needing source verification: Sudoku.png, SudokuSolution.png."
+    "text": "Lecture 15: CSP Search\nThe exam search tree, propagation and restoration traces, assignment-order comparison, variable-ordering examples, and backjumping diagram were drawn for this course in draw.io. The editable source is csp-search.drawio; the slides use PNG exports. The Sudoku grid is reused from Lecture 13, with the same Wikipedia-derived clue pattern as the course Sudoku notebook.\nThe search concepts and pseudocode follow the original course material and Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig. References include AIMA Figure 6.5, the UC Berkeley CS 188 ordering notes, and the AIMA chapter on CSP search and intelligent backtracking. The three-exam and four-exam examples are original course illustrations."
   },
   {
     "objectID": "asset_credits.html#lec16",
@@ -7081,77 +6976,70 @@
     "href": "code_and_homework/sudoku.html#imports-and-puzzle",
     "title": "Sudoku as Constraint Search",
     "section": "Imports and Puzzle",
-    "text": "Imports and Puzzle\nThe puzzle is a list of nine row lists. Zero represents an unassigned cell, not a Sudoku digit. The nonzero entries are fixed clues.\n\nimport matplotlib.pyplot as plt\nimport matplotlib.patches as patches\n\n# show a sudoku problem\npuzzle = [\n    [5, 3, 0, 0, 7, 0, 0, 0, 0],\n    [6, 0, 0, 1, 9, 5, 0, 0, 0],\n    [0, 9, 8, 0, 0, 0, 0, 6, 0],\n    [8, 0, 0, 0, 6, 0, 0, 0, 3],\n    [4, 0, 0, 8, 0, 3, 0, 0, 1],\n    [7, 0, 0, 0, 2, 0, 0, 0, 6],\n    [0, 6, 0, 0, 0, 0, 2, 8, 0],\n    [0, 0, 0, 4, 1, 9, 0, 0, 5],\n    [0, 0, 0, 0, 8, 0, 0, 7, 9]\n]"
+    "text": "Imports and Puzzle\nThe puzzle is a list of nine row lists. Zero represents an unassigned cell, not a Sudoku digit. The nonzero entries are fixed clues.\n\nimport copy\nfrom collections import deque\n\nimport matplotlib.pyplot as plt\nimport matplotlib.patches as patches\n\n# show a sudoku problem\npuzzle = [\n    [5, 3, 0, 0, 7, 0, 0, 0, 0],\n    [6, 0, 0, 1, 9, 5, 0, 0, 0],\n    [0, 9, 8, 0, 0, 0, 0, 6, 0],\n    [8, 0, 0, 0, 6, 0, 0, 0, 3],\n    [4, 0, 0, 8, 0, 3, 0, 0, 1],\n    [7, 0, 0, 0, 2, 0, 0, 0, 6],\n    [0, 6, 0, 0, 0, 0, 2, 8, 0],\n    [0, 0, 0, 4, 1, 9, 0, 0, 5],\n    [0, 0, 0, 0, 8, 0, 0, 7, 9]\n]"
   },
   {
     "objectID": "code_and_homework/sudoku.html#draw-the-grid",
     "href": "code_and_homework/sudoku.html#draw-the-grid",
     "title": "Sudoku as Constraint Search",
     "section": "Draw the Grid",
-    "text": "Draw the Grid\nThe helper writes only nonzero entries, draws thin cell boundaries, and emphasizes each 3-by-3 box. The vertical coordinate is flipped so list row 0 appears at the top. Drawing does not validate a solution.\n\ndef"
+    "text": "Draw the Grid\nThe helper writes only nonzero entries, draws thin cell boundaries, and emphasizes each 3-by-3 box. The vertical coordinate is flipped so list row 0 appears at the top. Drawing does not validate a solution.\n\ndef draw_puzzle(puzzle):\n    fig, ax = plt.subplots(figsize=(3, 3))\n    ax.set_aspect('equal')\n    ax.set_xlim(0, 9)\n    ax.set_ylim(0, 9)\n    ax.set_xticks([])\n    ax.set_yticks([])\n    ax.add_patch(patches.Rectangle((0, 0), 9, 9, fill=False))\n    for i in range(9):\n        for j in range(9):\n            if puzzle[i][j] != 0:\n                ax.text(j + 0.5, 8.5 - i, str(puzzle[i][j]), ha='center', va='center')\n    for i in range(3):\n        for j in range(3):\n            ax.add_patch(patches.Rectangle((3 * j, 3 * i), 3, 3, fill=False\n                , linewidth=2))\n    for i in range(8):\n        ax.add_patch(patches.ConnectionPatch((i + 1, 0), (i + 1, 9), 'data', 'data'))\n        ax.add_patch(patches.ConnectionPatch((0, i + 1), (9, i + 1), 'data', 'data'))\n    plt.show()"
   },
   {
     "objectID": "code_and_homework/sudoku.html#inspect-the-starting-state",
     "href": "code_and_homework/sudoku.html#inspect-the-starting-state",
     "title": "Sudoku as Constraint Search",
     "section": "Inspect the Starting State",
-    "text": "Inspect the Starting State\nChoose one blank and eliminate digits already present in its row, column, and box. That manual candidate test is what the next helper automates.\n\n\nExample answer\n\nUsing zero-based indices, choose (0, 2). Its row excludes 3, 5, and 7; its column excludes 8; and its box excludes 3, 5, 6, 8, and 9. The remaining candidates are 1, 2, and 4. This is a local legality check, not a guarantee that all three candidates extend to a full solution.\n\n\ndraw_puzzle(puzzle):\n    fig, ax = plt.subplots(figsize=(3, 3))\n    ax.set_aspect('equal')\n    ax.set_xlim(0, 9)\n    ax.set_ylim(0, 9)\n    ax.set_xticks([])\n    ax.set_yticks([])\n    ax.add_patch(patches.Rectangle((0, 0), 9, 9, fill=False))\n    for i in range(9):\n        for j in range(9):\n            if puzzle[i][j] != 0:\n                ax.text(j + 0.5, 8.5 - i, str(puzzle[i][j]), ha='center', va='center')\n    for i in range(3):\n        for j in range(3):\n            ax.add_patch(patches.Rectangle((3 * j, 3 * i), 3, 3, fill=False\n                , linewidth=2))\n    for i in range(8):\n        ax.add_patch(patches.ConnectionPatch((i + 1, 0), (i + 1, 9), 'data', 'data'))\n        ax.add_patch(patches.ConnectionPatch((0, i + 1), (9, i + 1), 'data', 'data'))\n    plt.show()\n\ndraw_puzzle(puzzle)"
+    "text": "Inspect the Starting State\nChoose one blank and eliminate digits already present in its row, column, and box. That manual candidate test is what the next helper automates.\n\n\nExample answer\n\nUsing zero-based indices, choose (0, 2). Its row excludes 3, 5, and 7; its column excludes 8; and its box excludes 3, 5, 6, 8, and 9. The remaining candidates are 1, 2, and 4. This is a local legality check, not a guarantee that all three candidates extend to a full solution.\n\n\ndraw_puzzle(puzzle)"
   },
   {
     "objectID": "code_and_homework/sudoku.html#check-a-candidate",
     "href": "code_and_homework/sudoku.html#check-a-candidate",
     "title": "Sudoku as Constraint Search",
     "section": "Check a Candidate",
-    "text": "Check a Candidate\nis_valid(puzzle, i, j, n) checks whether digit n conflicts with an existing entry in the row, column, or box of a blank cell. Integer division identifies the upper-left corner of the box.\nThe counters below record recursive calls and ensure the successful board is printed once. Reset them before comparing repeated runs.\n\ndef is_valid(puzzle, i, j, n):\n    for k in range(9):\n        if puzzle[i][k] == n or puzzle[k][j] == n:\n            return False\n    for k in range(3):\n        for l in range(3):\n            if puzzle[(i // 3) * 3 + k][(j // 3) * 3 + l] == n:\n                return False\n    return True\n\nsuccess_flag = False\nnum = 0"
+    "text": "Check a Candidate\nis_valid(puzzle, i, j, n) checks whether digit n conflicts with an existing entry in the row, column, or box of a blank cell. Integer division identifies the upper-left corner of the box.\nThe counter records recursive calls; success_flag avoids printing the solution repeatedly as recursion unwinds. Reset both before repeating the plain solver.\n\ndef is_valid(puzzle, i, j, n):\n    for k in range(9):\n        if puzzle[i][k] == n or puzzle[k][j] == n:\n            return False\n    for k in range(3):\n        for l in range(3):\n            if puzzle[(i // 3) * 3 + k][(j // 3) * 3 + l] == n:\n                return False\n    return True\n\nsuccess_flag = False\nnum = 0"
   },
   {
     "objectID": "code_and_homework/sudoku.html#backtrack-through-assignments",
     "href": "code_and_homework/sudoku.html#backtrack-through-assignments",
     "title": "Sudoku as Constraint Search",
     "section": "Backtrack Through Assignments",
-    "text": "Backtrack Through Assignments\nThe solver chooses the first blank in row-major order and tries digits from 1 through 9. A legal digit is written into the board before recursion. If the recursive call fails, the cell is reset to zero before trying another digit.\nNo blanks means success. Exhausting candidates at a blank means failure. This implementation assumes the supplied clues are valid; it is not a separate validator for arbitrary filled boards. The recursion mutates its argument, so later runs pass a deep copy.\n\ndef solve(puzzle):\n    global success_flag, num\n    num += 1\n    for i in range(9):\n        for j in range(9):\n            if puzzle[i][j] == 0:\n                for n in range(1, 10):\n                    if is_valid(puzzle, i, j, n):\n                        puzzle[i][j] = n\n                        if solve(puzzle):\n                            if not success_flag:\n                                print(\"success with \", num, \" steps\")\n                                draw_puzzle(puzzle)\n                                success_flag = True\n                            return True\n                        puzzle[i][j] = 0\n                return False\n    return True"
+    "text": "Backtrack Through Assignments\nThe solver chooses the first blank in row-major order and tries digits from 1 through 9. A legal digit is written into the board before recursion. If the recursive call fails, the cell is reset to zero before trying another digit.\nNo blanks means success. Exhausting candidates at a blank means failure. This implementation assumes the supplied clues are valid; it is not a separate validator for arbitrary filled boards. The recursion mutates its argument, so later runs pass a deep copy.\n\ndef solve(puzzle):\n    global success_flag, num\n    num += 1\n    for i in range(9):\n        for j in range(9):\n            if puzzle[i][j] == 0:\n                for n in range(1, 10):\n                    if is_valid(puzzle, i, j, n):\n                        puzzle[i][j] = n\n                        if solve(puzzle):\n                            if not success_flag:\n                                print(f\"Solved. Recursive calls: {num:,}.\")\n                                draw_puzzle(puzzle)\n                                success_flag = True\n                            return True\n                        puzzle[i][j] = 0\n                return False\n    return True"
   },
   {
     "objectID": "code_and_homework/sudoku.html#represent-candidate-domains",
     "href": "code_and_homework/sudoku.html#represent-candidate-domains",
     "title": "Sudoku as Constraint Search",
     "section": "Represent Candidate Domains",
-    "text": "Represent Candidate Domains\nEvery coordinate maps to a set of candidates. Blank cells initially allow all digits; clue cells begin with a singleton set. Domain reduction can make forced assignments before branching.\n\n# solve the sudoku problem by reducing the search space with inference\n# generate a dictionary of possible values for each cell\nall_cells = [(i, j) for i in range(9) for j in range(9)]\npossible_values = {cell: set(range(1, 10)) for cell in all_cells}\nfor i in range(9):\n    for j in range(9):\n        if puzzle[i][j] != 0:\n            possible_values[(i, j)] = set(puzzle[i][j] for _ in range(1))"
+    "text": "Represent Candidate Domains\nEvery coordinate maps to a set of candidates. Blank cells initially allow all digits; clue cells begin with a singleton set. make_domains creates a fresh dictionary for each puzzle and checks the 9-by-9 shape and digit range. Conflicting clues are detected during inference.\nA fixed cell keeps its singleton domain. An empty domain always means failure; it is never used to mark a processed cell.\n\nall_cells = [(i, j) for i in range(9) for j in range(9)]\n\ndef make_domains(puzzle):\n    if len(puzzle) != 9 or any(len(row) != 9 for row in puzzle):\n        raise ValueError(\"The puzzle must have 9 rows and 9 columns.\")\n    if any(type(n) is not int or not 0 &lt;= n &lt;= 9\n           for row in puzzle for n in row):\n        raise ValueError(\"Entries must be integers from 0 through 9.\")\n    return {\n        (i, j): {puzzle[i][j]} if puzzle[i][j] else set(range(1, 10))\n        for i, j in all_cells\n    }\n\npossible_values = make_domains(puzzle)"
   },
   {
     "objectID": "code_and_homework/sudoku.html#remove-an-assigned-digit-from-peers",
     "href": "code_and_homework/sudoku.html#remove-an-assigned-digit-from-peers",
     "title": "Sudoku as Constraint Search",
     "section": "Remove an Assigned Digit from Peers",
-    "text": "Remove an Assigned Digit from Peers\ninfer removes the assigned digit from candidates in the same row, column, and box. If an unresolved peer loses its last candidate, it returns False.\nThis demonstration uses an unusual convention: a processed cell has an empty set because its singleton was consumed with pop(). An unresolved cell becoming empty means failure, while an already processed empty set is skipped. Distinguishing assigned cells explicitly would make a general solver easier to reason about.\n\nimport copy\ndef infer(possible_values, i, j, n):\n    for k in range(9):\n        if n in possible_values[(i, k)]:\n            possible_values[(i, k)].remove(n)\n            if len(possible_values[(i, k)]) == 0:\n                return False\n        if n in possible_values[(k, j)]:\n            possible_values[(k, j)].remove(n)\n            if len(possible_values[(k, j)]) == 0:\n                return False\n    for k in range(3):\n        for l in range(3):\n            if n in possible_values[(i // 3 * 3 + k, j // 3 * 3 + l)]:\n                possible_values[(i // 3 * 3 + k, j // 3 * 3 + l)].remove(n)\n                if len(possible_values[(i // 3 * 3 + k, j // 3 * 3 + l)]) == 0:\n                    return False\n    return True\n\nnum_reduce = 0"
+    "text": "Remove an Assigned Digit from Peers\ninfer removes the assigned digit from each peer’s domain. If a peer loses its last candidate, it returns False. Otherwise it returns True, meaning this deletion step found no contradiction. It does not mean the puzzle is solved.\nBecause the source cell is not its own peer, its singleton remains intact. Two conflicting singleton clues make one peer’s domain empty and are rejected.\n\ndef infer(possible_values, i, j, n):\n    for cell in sorted(peers(i, j)):\n        if n in possible_values[cell]:\n            possible_values[cell].remove(n)\n            if not possible_values[cell]:\n                return False\n    return True"
   },
   {
     "objectID": "code_and_homework/sudoku.html#propagate-forced-values",
     "href": "code_and_homework/sudoku.html#propagate-forced-values",
     "title": "Sudoku as Constraint Search",
     "section": "Propagate Forced Values",
-    "text": "Propagate Forced Values\nThe function copies the board and candidate dictionary, then ranks cells by domain size. Singleton candidates are assigned and removed from peers. Repeated recursive passes can reveal further singletons.\nScope of this demonstration: the supplied puzzle is solved by propagation. The fallback branching code writes a guessed digit into the board but does not restrict that cell’s domain or propagate the guess. It is therefore not a complete inference-plus-backtracking solver for arbitrary puzzles. Do not interpret its success here as evidence that harder instances will terminate correctly.\n\ndef solve_reduce(puzzle, possible_values):\n    global num_reduce\n    num_reduce += 1\n    copy_possible_values = copy.deepcopy(possible_values)\n    copy_puzzle = copy.deepcopy(puzzle)\n    # rank the cells by the number of possible values\n    cells = sorted(all_cells, key=lambda cell: len(copy_possible_values[cell]))\n    for cell in cells:\n        if len(copy_possible_values[cell]) == 1:\n            n = copy_possible_values[cell].pop()\n            copy_puzzle[cell[0]][cell[1]] = n\n            if not infer(copy_possible_values, cell[0], cell[1], n):\n                return False\n    if all(len(copy_possible_values[cell]) == 0 for cell in all_cells):\n        print(\"success with \", num_reduce, \" steps\")\n        draw_puzzle(copy_puzzle)\n        return True\n    for cell in cells:\n        if len(copy_possible_values[cell]) &gt; 1:\n            for n in copy_possible_values[cell]:\n                copy_puzzle[cell[0]][cell[1]] = n\n                if solve_reduce(copy_puzzle, copy_possible_values):\n                    return True\n            return False\n    return False"
+    "text": "Propagate Forced Values\npropagate puts singleton cells into a queue. For each one, it writes the forced digit to the board and removes that digit from peers. Newly forced peers join the queue, so propagation continues until no forced cells remain to process.\nThe local processed set avoids propagating the same cell twice during this call. Domains remain nonempty unless a contradiction is found. This helper mutates its arguments; the search function below gives it branch-local copies.\n\ndef propagate(puzzle, possible_values):\n    if any(not possible_values[cell] for cell in all_cells):\n        return False\n    queue = deque(cell for cell in all_cells\n                  if len(possible_values[cell]) == 1)\n    processed = set()\n    while queue:\n        cell = queue.popleft()\n        if cell in processed:\n            continue\n        i, j = cell\n        n = next(iter(possible_values[cell]))\n        if puzzle[i][j] not in (0, n):\n            return False\n        puzzle[i][j] = n\n        processed.add(cell)\n        if not infer(possible_values, i, j, n):\n            return False\n        for peer in sorted(peers(i, j)):\n            if len(possible_values[peer]) == 1 and peer not in processed:\n                queue.append(peer)\n    return True"
   },
   {
     "objectID": "code_and_homework/sudoku.html#run-plain-backtracking",
     "href": "code_and_homework/sudoku.html#run-plain-backtracking",
     "title": "Sudoku as Constraint Search",
     "section": "Run Plain Backtracking",
-    "text": "Run Plain Backtracking\nThe deep copy protects the original clues. The saved run reports 4,209 recursive calls and displays the solved board. The printed word “steps” refers to function calls, not individual constraint checks.\n\nsolve(copy.deepcopy(puzzle))\n\nsuccess with  4209  steps"
-  },
-  {
-    "objectID": "code_and_homework/sudoku.html#run-domain-reduction",
-    "href": "code_and_homework/sudoku.html#run-domain-reduction",
-    "title": "Sudoku as Constraint Search",
-    "section": "Run Domain Reduction",
-    "text": "Run Domain Reduction\nThe saved run reports four recursive calls for this puzzle. A propagation call can scan many cells and candidates, so four versus 4,209 calls is not a direct timing ratio. The final True is the returned success flag.\n\nsolve_reduce(copy.deepcopy(puzzle), possible_values)\n\nsuccess with  4  steps\n\n\n\n\n\n\n\n\n\nTrue"
+    "text": "Run Plain Backtracking\nReset the counter and output flag before each run. The deep copy protects the original clues. This puzzle takes 4,209 recursive calls with the row-major solver; calls are not the same as individual constraint checks.\n\nsuccess_flag = False\nnum = 0\nsolve(copy.deepcopy(puzzle))\n\nSolved. Recursive calls: 4,209.\n\n\n\n\n\n\n\n\n\nTrue"
   },
   {
     "objectID": "code_and_homework/sudoku.html#compare-the-two-approaches",
     "href": "code_and_homework/sudoku.html#compare-the-two-approaches",
     "title": "Sudoku as Constraint Search",
     "section": "Compare the Two Approaches",
-    "text": "Compare the Two Approaches\n\nConfirm that every original clue is unchanged in the displayed solutions.\nTrace where plain backtracking undoes a choice and where inference removes a candidate.\nExplain why choosing a cell with few remaining values can reduce branching. This is the minimum remaining values (MRV) heuristic.\nBefore extending the inference solver, specify how a guessed value should update its domain and how failure should restore the previous state.\n\n\n\nAnswers and discussion\n\n\nCheck the clues independently of the blanks. Every initially nonzero entry must equal the corresponding final entry. For example, the original top-row 5, 3, and 7 retain their positions. Plain backtracking writes only into zeros; the inference version initializes each clue with exactly its given digit. A complete solution also needs each row, column, and box to contain digits 1 through 9.\nUndo versus eliminate. In solve, the line puzzle[i][j] = 0 restores a blank after a recursive branch fails. In infer, calls to .remove(n) delete an assigned digit from peer domains. Backtracking reverses a tentative assignment; inference rules out conflicting candidates before trying them.\nMRV exposes difficult choices early. A cell with two candidates creates at most two branches, while one with eight creates up to eight. A singleton is forced, and an unresolved empty domain signals failure. MRV often reduces wasted search by finding constrained decisions and contradictions early, but does not guarantee the smallest search tree on every puzzle.\nA guess must change the search state. On a branch-local copy, restrict the chosen cell’s domain to {n}, assign or propagate it using a consistent assigned-cell convention, and continue inference before recursion. If the branch fails, discard that copy or restore every changed domain and board entry. The current fallback only writes the board entry; without restricting the domain, recursion can revisit the same unresolved choice.\n\n\nTakeaway: inference can avoid search, but a general solver still needs correct state management and branching when propagation stalls."
+    "text": "Compare the Two Approaches\n\nConfirm that every original clue is unchanged in the displayed solutions.\nTrace where plain backtracking undoes a choice and where inference removes a candidate.\nExplain why choosing a cell with few remaining values can reduce branching. This is the minimum remaining values (MRV) heuristic.\nFind where a guessed value changes its domain and explain why a failed branch cannot change its parent.\n\n\n\nAnswers and discussion\n\n\nCheck the clues independently of the blanks. Every initially nonzero entry must equal the corresponding final entry. For example, the original top-row 5, 3, and 7 retain their positions. Plain backtracking writes only into zeros; the inference version initializes each clue with exactly its given digit. A complete solution also needs each row, column, and box to contain digits 1 through 9.\nUndo versus eliminate. In solve, the line puzzle[i][j] = 0 restores a blank after a recursive branch fails. In infer, .remove(n) deletes an assigned digit from peer domains. The inference solver instead uses copied boards and domains, so it discards a failed child rather than undoing changes in shared state.\nMRV exposes difficult choices early. A cell with two candidates creates at most two branches, while one with eight creates up to eight. A singleton is forced, and an unresolved empty domain signals failure. MRV often reduces wasted search by finding constrained decisions and contradictions early, but does not guarantee the smallest search tree on every puzzle.\nA guess changes its domain. The line child_domains[cell] = {n} records the decision. The recursive call propagates it on a copied board and copied domains. No set is shared with the parent, and each candidate starts with a fresh copy. Restricting an unresolved domain and propagating its singleton makes progress; failure discards that branch’s deletions.\n\n\nTakeaway: inference can avoid search, but a general solver still needs correct state management and branching when propagation stalls."
   },
   {
     "objectID": "code_and_homework/KNN_MNIST.html#imports-seed-and-device",
@@ -8335,5 +8223,152 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Takeaways",
     "text": "Takeaways\n\nNode consistency: remove values that fail a unary constraint.\nArc consistency: each remaining value has support across each binary constraint.\nREVISE: prune the first variable’s domain.\nAC-3: revisit affected incoming arcs after deletions.\nNonempty domains are not a proof of a solution.\n\n\nPropagation removes impossible candidates. Search may still be needed to choose values that work together.\n\nOpen the AC-3 notebook\nAsset credits\n\nIn the notebook, follow the domain changes, inspect why each removed value lacks support, compare the original queue with both directions, and then restrict a to 0 and propagate again. Keep the actual Python functions and their answers in the notebook, rather than duplicating them here. Lecture 15 adds search and variable/value ordering."
+  },
+  {
+    "objectID": "slides/lec15_CSP_Search.html#after-constraint-propagation",
+    "href": "slides/lec15_CSP_Search.html#after-constraint-propagation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "After Constraint Propagation",
+    "text": "After Constraint Propagation\nA constraint satisfaction problem (CSP) asks for values that satisfy every constraint. Propagation reduces domains, but may leave choices.\n\n\n\n\n\n\n\nRemaining domains\nNext step\n\n\n\n\nAny domain is empty\nReject the current branch\n\n\nEvery domain is a singleton (one value)\nVerify the complete assignment against every constraint\n\n\nSome domains have multiple values\nChoose a variable and try a value\n\n\n\n\nBacktracking search tries a choice, continues recursively, and undoes the choice if the branch fails.\n\nAn empty domain after a tentative choice rules out that branch. Search can still try other choices.\n\nBridge from Lecture 14: AC-3 can return true without finding a solution. For node-consistent binary CSPs, if arc consistency has left every domain singleton, those values satisfy every binary constraint. The general solver should still validate all original constraints, especially when propagation handles only a subset. Start from a valid set of domains and fixed clues. Suggested pacing: worked search and basic pseudocode about 9 minutes, inference and restoration about 8, ordering and improved search about 10, advanced overview and notebook bridge about 6, leaving roughly 15 minutes for Sudoku. Sources: original Lecture 15 Beamer and AIMA’s CSP chapter."
+  },
+  {
+    "objectID": "slides/lec15_CSP_Search.html#a-three-exam-search-problem",
+    "href": "slides/lec15_CSP_Search.html#a-three-exam-search-problem",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Three-Exam Search Problem",
+    "text": "A Three-Exam Search Problem\nExams A, B, C all share students, so every pair must use different slots.\nD_A=D_B=\\{1,2\\},\\qquad D_C=\\{2,3\\}.\n\n\nIf we try C=2, have we violated a constraint among assigned exams? No. A and B are still unassigned.\n\n\nThis is a separate three-exam example, with C allowed slots 2 and 3. Its two solutions, in (A,B,C) order, are (1,2,3) and (2,1,3). The initial domains are arc-consistent. C=2 is locally legal as a partial assignment but has no completion. We intentionally start with C and try 2 first to show how backtracking recovers. A different ordering can find the solution sooner."
+  },
+  {
+    "objectID": "slides/lec15_CSP_Search.html#backtrack-trace",
+    "href": "slides/lec15_CSP_Search.html#backtrack-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Backtracking Trace",
+    "text": "A Backtracking Trace\nChoose variables in the order C, A, B, trying smaller values first. The tree records choices; the triangle records constraints.\n\n  \n  \n  \n  \n  \n\n\n\n1. Try C=2.\n\n\n2. A=1 leaves B no legal value. A=2 also conflicts with C.\n\n\n3. Undo A and C, then try C=3.\n\n\n4. A=1,\\ B=2,\\ C=3 satisfies every constraint.\n\n\n\nNo propagation is used in this first trace. At C=2, A=1 is the first legal value. B=1 violates A!=B, and B=2 violates B!=C. Return to A, undo A=1, and test A=2, which violates A!=C. A’s values are exhausted, so return to C, undo C=2, and try C=3. A=1 is legal; B=1 fails against A, while B=2 succeeds. A rejected candidate is never added to the assignment. The pink branch summarizes the failed checks; gold marks the current choice, and teal marks the successful path."
+  },
+  {
+    "objectID": "slides/lec15_CSP_Search.html#assignment-order-and-commutativity",
+    "href": "slides/lec15_CSP_Search.html#assignment-order-and-commutativity",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Assignment Order and Commutativity",
+    "text": "Assignment Order and Commutativity\nAssigning A=1 then B=2 gives the same partial assignment as assigning them in the opposite order.\n\nLet n count variables and d be the largest domain size. After k assignments, n-k variables remain.\n\nBranching over variable-value pairs gives up to (n-k)d choices.\nSelecting one variable first gives up to d value choices.\n\n\nOne variable per level avoids repeated assignment orders.\n\n\nCommutativity concerns the resulting assignment for distinct variables, not an assertion that every ordering produces the same search effort or the same first solution. Before constraint pruning, an unconstrained n-variable problem with d values has d^n full assignments; considering every assignment order duplicates each one n! times. Standard CSP backtracking selects one variable at a node. A dynamic variable-selection rule is also valid. Source: supplied Lecture 15 Beamer and AIMA backtracking formulation."
+  },
+  {
+    "objectID": "slides/lec15_CSP_Search.html#basic-pseudocode",
+    "href": "slides/lec15_CSP_Search.html#basic-pseudocode",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Basic Backtracking",
+    "text": "Basic Backtracking\na is a consistent partial assignment, D stores domains, and C stores constraints. Start with a=\\{\\}.\n\n  BACKTRACK(a, D, C):\n  if a is complete: return COPY(a)\n  X ← SELECT_UNASSIGNED(a)\n  for v in D[X]:\n  if CONSISTENT(X, v, a, C):\n  a[X] ← v\n  result ← BACKTRACK(a, D, C)\n  if result != FAILURE: return result\n  REMOVE(a, X)\n  return FAILURE\n\nCONSISTENT checks constraints whose variables have all received values. REMOVE undoes X’s tentative assignment.\n\nThis is depth-first search over partial assignments. Each recursive call removes its own failed choice before returning failure. Domains are unchanged in this basic version. The invariant is that the current assignment violates no fully instantiated constraint; thus a complete assignment is a solution. COPY protects the returned dictionary from later mutations. If every value for X fails, return to the caller’s choice. Source: original course algorithm and AIMA Figure 6.5, https://aima.cs.berkeley.edu/algorithms.pdf ."
+  },
+  {
+    "objectID": "slides/lec15_CSP_Search.html#search-with-inference",
+    "href": "slides/lec15_CSP_Search.html#search-with-inference",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Search with Inference",
+    "text": "Search with Inference\nAfter trying X=v, restrict D_X to \\{v\\}, then remove values ruled out by the constraints.\n\n\n\n\n\n\n\nCheck\nWhat it does after a choice\n\n\n\n\nCheck assigned values\nReject an immediate conflict with earlier assignments\n\n\nForward checking\nDelete incompatible values from unassigned neighbors\n\n\nMaintaining arc consistency (MAC)\nPropagate deletions through the remaining constraint graph\n\n\n\nAC-3 (Arc Consistency Algorithm 3) can implement MAC by continuing to recheck affected arcs.\n\nForward checking looks one step from the new assignment. MAC also follows the effects of those deletions.\n\n\nFor a binary CSP, forward checking revises incoming arcs (Y,X) for unassigned neighbors Y of the chosen X, without propagating consequences between those neighbors. MAC restores arc consistency after each search choice. If the parent domains were already arc-consistent, AC-3 can start with incoming arcs to the newly restricted X. Otherwise initialize all directed arcs. Full propagation costs extra work per choice but may avoid much larger failed subtrees; neither method is universally faster. Sources: course search/inference material, AIMA CSP chapter, and Berkeley CS188 filtering notes."
+  },
+  {
+    "objectID": "slides/lec15_CSP_Search.html#filter-trace",
+    "href": "slides/lec15_CSP_Search.html#filter-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Forward Checking and MAC",
+    "text": "Forward Checking and MAC\nReturn to the three exams. Every edge requires different slots. Try C=2.\n\n  \n  \n  \n\n\n\nForward checking: D_A=D_B=\\{1\\}. Neither domain is empty yet.\n\n\nMAC: revise (A,B). Value 1 has no unequal support, so D_A=\\varnothing.\n\n\n\nPropagation detects that the choice C=2 has no completion, before search assigns A and B.\n\n\nAt the first state, C is assigned but A and B remain unassigned. After basic forward checking they have forced values, but that method itself has not tested their mutual inequality. A solver may perform an additional check when assigning those singletons; MAC detects the conflict immediately by propagating between them. REVISE(A,B) leaves A empty while B remains {1}; stop on that first empty domain. This example explains a benefit of stronger propagation without claiming it always wins on runtime. The original domains are A12 B12 C23 and are arc-consistent before the choice."
+  },
+  {
+    "objectID": "slides/lec15_CSP_Search.html#restore-trace",
+    "href": "slides/lec15_CSP_Search.html#restore-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Restoring a Failed Branch",
+    "text": "Restoring a Failed Branch\nThe failed choice C=2 deleted values from several domains. Changing C alone does not repair the search state.\n\n  \n  \n\n\nRestore the parent’s domains, then try C=3. The deletions belonged to the discarded branch.\n\nTwo common implementations: give each branch its own deep copy, or record deletions and undo them on return.\n\nRestored domains are A={1,2}, B={1,2}, C={2,3}. Restoring to the parent means preserving earlier valid pruning, not blindly resetting to the original puzzle on every failure. Undo both assignments and domain changes when mutating shared state. A shallow dictionary copy that shares its sets does not isolate branches. The improved pseudocode uses branch-local deep copies, trading extra memory and copying work for simple state management."
+  },
+  {
+    "objectID": "slides/lec15_CSP_Search.html#minimum-remaining-values",
+    "href": "slides/lec15_CSP_Search.html#minimum-remaining-values",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Minimum Remaining Values",
+    "text": "Minimum Remaining Values\nMinimum remaining values (MRV) selects the unassigned variable with the fewest current legal values.\nA new four-exam example uses the edges shown below. All four exams are unassigned.\n\n\nA, B, and D tie with 2 values. C has 3. Resolve a tie with another rule.\n\nA singleton is forced. An empty domain signals failure. MRV often exposes difficult choices early.\n\nUse current domains after filtering, not the size of the original unrestricted domains. A fixed order is still complete, but may postpone an important contradiction. MRV does not guarantee a smaller search tree on every instance. Here all four variables are unassigned and all pair constraints are inequalities. The domain sizes are A2, B2, C3, D2. Source: original variable-ordering material and https://inst.eecs.berkeley.edu/~cs188/textbook/csp/ordering.html ."
+  },
+  {
+    "objectID": "slides/lec15_CSP_Search.html#the-degree-tie-breaker",
+    "href": "slides/lec15_CSP_Search.html#the-degree-tie-breaker",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Degree Tie-Breaker",
+    "text": "The Degree Tie-Breaker\nFor an MRV tie, the degree heuristic prefers the variable constraining the most other unassigned variables.\n\n\nWhich of A, B, and D should be selected? A: degrees are A: 3, B: 2, D: 1.\n\n\nMost constrained: fewest values. Most constraining: most unassigned neighbors.\n\n\nThe graph has AB, AC, AD, BC. All unassigned neighbor counts are A3, B2, C2, D1, but C is not in the MRV tie. Count constraints to unassigned variables in the remaining problem, rather than always using the original graph degree. Further ties can be broken deterministically. This is a standard heuristic, not a guarantee of the most effective choice for every instance. Source: original Lecture 15 and AIMA."
+  },
+  {
+    "objectID": "slides/lec15_CSP_Search.html#least-constraining-value",
+    "href": "slides/lec15_CSP_Search.html#least-constraining-value",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Least-Constraining Value",
+    "text": "Least-Constraining Value\nLeast-constraining value (LCV) preserves the most neighbor options. In our three-exam problem, select C and compare forward-checking deletions.\n\n\n\n\nC’s value\nNew D_A\nNew D_B\nDeletions\n\n\n\n\n2\n\\{1\\}\n\\{1\\}\n2\n\n\n3\n\\{1,2\\}\n\\{1,2\\}\n0\n\n\n\n\nLCV tries C=3 first, avoiding the earlier failed branch.\n\n\nThis uses a one-step forward-checking score: add deletions across the unassigned neighbor domains. There are two deletions for C=2, one in A and one in B; there are none for C=3. More expensive LCV estimates may run fuller inference per candidate. Such simulations need copies or correct restoration as well. LCV changes value order; it does not discard the other values if the first attempt fails. It is particularly useful when seeking one solution. Source: original Lecture 15 and Berkeley CS188 ordering notes."
+  },
+  {
+    "objectID": "slides/lec15_CSP_Search.html#improved-pseudocode",
+    "href": "slides/lec15_CSP_Search.html#improved-pseudocode",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Backtracking with Heuristics and AC-3",
+    "text": "Backtracking with Heuristics and AC-3\nFor a binary CSP, SOLVE uses domains as its state. CHECK_SOLUTION verifies every constraint and returns the assignment or FAILURE.\n\n  SOLVE(D, C):\n  if any D[X] is empty: return FAILURE\n  if all domains are singleton: return CHECK_SOLUTION(D,C)\n  X ← MRV_WITH_DEGREE(D, C)\n  for v in LCV_ORDER(X, D, C):\n  child ← DEEP_COPY(D)\n  child[X] ← {v}\n  if AC3(child, C):\n  result ← SOLVE(child, C)\n  if result != FAILURE: return result\n  return FAILURE\n\n\nEach branch gets its own domains. If it fails, discard that copy and try the next value using the intact parent state.\n\n\nMRV_WITH_DEGREE selects a variable with more than one remaining value, since singleton variables are already fixed in this domain-based representation. Start with unary constraints enforced. AC3 checks all directed arcs in this version, so it need not assume the input state is already arc-consistent. Inference returning true permits recursion but does not establish success. Every branch strictly fixes a previously nonsingleton variable, so the finite search terminates and is complete if all domain values are tried when necessary. Unlike the basic algorithm, explicit assignment undo is unnecessary because state is isolated in child. The notebook implements this copied-domain search pattern with singleton propagation and MRV, rather than full AC-3, degree tie-breaking, or LCV. Source: original improved search pseudocode and AIMA Figure 6.5, adapted to make branch restoration explicit."
+  },
+  {
+    "objectID": "slides/lec15_CSP_Search.html#backjumping-and-constraint-learning",
+    "href": "slides/lec15_CSP_Search.html#backjumping-and-constraint-learning",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Backjumping and Constraint Learning",
+    "text": "Backjumping and Constraint Learning\nA separate example assigns A=1,\\ B=2,\\ T=1, in that order. D_X=\\{1,2\\}, with rules X\\ne A and X\\ne B. T is unrelated.\n\n\nConflict set: earlier choices that explain a failure. Here it is \\{A=1,B=2\\}.\nBackjumping: revisit the most recent decision in that set, so change B before trying an unrelated T value.\nConstraint learning: remember a no-good, a partial assignment that cannot lead to a solution. Here, forbid the combination A=1,\\ B=2.\n\n\nX=1 conflicts with A=1 and X=2 conflicts with B=2. The original domain of X is exactly {1,2}, so neither value works and the two decisions jointly explain failure. T was assigned more recently than B but contributes nothing. Jump to B, undoing later choices, including T. Conflict-directed backjumping also combines reasons from deeper failed subtrees. Basic backjumping’s immediate dead ends are already caught by forward checking, while more elaborate learning can retain explanations for future search. This is an introductory overview. Source: AIMA’s freely available CSP chapter, https://aima.cs.berkeley.edu/newchap05.pdf , section on intelligent backtracking."
+  },
+  {
+    "objectID": "slides/lec15_CSP_Search.html#complete-search-and-local-repair",
+    "href": "slides/lec15_CSP_Search.html#complete-search-and-local-repair",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Complete Search and Local Repair",
+    "text": "Complete Search and Local Repair\nA CSP can also be approached through the local-search methods from Lecture 11.\n\n\n\n\n\n\n\n\nMethod\nSearch state\nHow it handles conflicts\n\n\n\n\nBacktracking\nA partial assignment\nReject choices and return to earlier decisions\n\n\nMin-conflicts\nA complete assignment that may violate constraints\nChange a conflicted variable to a value with fewer conflicts\n\n\n\nMin-conflicts can solve large instances quickly, but may get stuck or need restarts.\n\nFor finite domains, exhaustive backtracking can prove that no solution exists. A failed local-search run generally cannot.\n\n\nA min-conflicts step typically selects a conflicted variable, evaluates the number of constraint violations for its possible values, and chooses a minimum-conflict value with randomized tie handling as appropriate. Unlike backtracking, the current full assignment may be invalid. This reconnects the CSP formulation to local repair without introducing another code demo. Source: original Lecture 15 Other Improvements and AIMA min-conflicts search."
+  },
+  {
+    "objectID": "slides/lec15_CSP_Search.html#sudoku-notebook",
+    "href": "slides/lec15_CSP_Search.html#sudoku-notebook",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Sudoku Notebook",
+    "text": "Sudoku Notebook\nEach blank is a variable. Row, column, and 3\\times3 box constraints forbid repeated digits.\n\n\n\n\n\nis_valid: test a digit against its row, column, and box.\nsolve: choose the first blank, recurse, and reset it to zero after failure.\ninfer: remove an assigned digit from peer domains.\nsolve_reduce: propagate, select with MRV, and try copied domains.\n\n\n\nFor general search, a guess must restrict its domain, and a failed branch must restore the previous state.\n\n\nThe notebook uses the same clue pattern as Lecture 13. Use the live notebook to show the actual Python functions. Its plain solver scans in row-major order. The inference solver keeps fixed cells as singleton domains, propagates through a queue, then uses MRV and branch-local copies when guesses are needed. The supplied puzzle is solved within one search call through propagation; the empty-grid example exercises guessing, and a locally legal wrong clue demonstrates an unsatisfiable case. The displayed saved counts are recursive calls, not timing measurements. Sources: course Sudoku notebook and the Wikipedia-derived original clue pattern credited in Lecture 13."
+  },
+  {
+    "objectID": "slides/lec15_CSP_Search.html#takeaways",
+    "href": "slides/lec15_CSP_Search.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nBacktracking tries choices and returns when a branch fails.\nForward checking and MAC prune after each choice.\nMRV chooses a variable with few remaining values.\nThe degree heuristic breaks ties using remaining neighbors.\nLCV tries values that preserve more options.\nEvery failed branch must restore its assignments and domains.\n\n\nA reliable solver combines correct state management with good branching choices and useful propagation.\n\nOpen the Sudoku notebook\nAsset credits\n\nReturn to the notebook: identify a legality check, the recursive call, and the reset to zero. Then compare candidate deletions with the copied-domain branching logic. In the inference solver, child_domains[cell] = {n} records a guess before recursion; each failed child is discarded. A complete assignment still needs to satisfy all constraints. Keep the backjumping and local-repair overview brief to protect notebook time."
+  },
+  {
+    "objectID": "code_and_homework/sudoku.html#find-the-peer-cells",
+    "href": "code_and_homework/sudoku.html#find-the-peer-cells",
+    "title": "Sudoku as Constraint Search",
+    "section": "Find the Peer Cells",
+    "text": "Find the Peer Cells\nPeers share a row, column, or box with a cell. Set union removes duplicates where those groups overlap. The cell itself is excluded, leaving 20 distinct peers. Sorting the peers later makes the propagation order reproducible.\n\ndef peers(i, j):\n    row = {(i, k) for k in range(9)}\n    column = {(k, j) for k in range(9)}\n    box = {(r, c)\n           for r in range(i // 3 * 3, i // 3 * 3 + 3)\n           for c in range(j // 3 * 3, j // 3 * 3 + 3)}\n    return (row | column | box) - {(i, j)}"
+  },
+  {
+    "objectID": "code_and_homework/sudoku.html#search-when-propagation-stalls",
+    "href": "code_and_homework/sudoku.html#search-when-propagation-stalls",
+    "title": "Sudoku as Constraint Search",
+    "section": "Search When Propagation Stalls",
+    "text": "Search When Propagation Stalls\nsolve_reduce first propagates on copied state. If every domain is singleton, the board is complete. Otherwise, minimum remaining values (MRV) chooses an unresolved cell with the fewest candidates. Values are tried in increasing order.\nEach guess restricts a fresh child domain to {n}. The recursive call propagates that decision before making another guess. If it fails, discard the child and try the next value; the parent’s board and domains stay intact. The function returns False only after propagation fails or every candidate branch fails.\n\nnum_reduce = 0\n\ndef solve_reduce(puzzle, possible_values):\n    global num_reduce\n    num_reduce += 1\n    copy_possible_values = copy.deepcopy(possible_values)\n    copy_puzzle = copy.deepcopy(puzzle)\n    if not propagate(copy_puzzle, copy_possible_values):\n        return False\n    unresolved = [cell for cell in all_cells\n                  if len(copy_possible_values[cell]) &gt; 1]\n    if not unresolved:\n        print(f\"Solved. Recursive calls: {num_reduce:,}.\")\n        draw_puzzle(copy_puzzle)\n        return True\n    cell = min(unresolved, key=lambda cell: len(copy_possible_values[cell]))\n    for n in sorted(copy_possible_values[cell]):\n        child_domains = copy.deepcopy(copy_possible_values)\n        child_domains[cell] = {n}\n        if solve_reduce(copy_puzzle, child_domains):\n            return True\n    return False"
+  },
+  {
+    "objectID": "code_and_homework/sudoku.html#run-inference-and-backtracking",
+    "href": "code_and_homework/sudoku.html#run-inference-and-backtracking",
+    "title": "Sudoku as Constraint Search",
+    "section": "Run Inference and Backtracking",
+    "text": "Run Inference and Backtracking\nThe queue solves this supplied puzzle through forced values within one search call, without guessing. The same function can branch when propagation stalls. One propagation pass can do many candidate checks, so recursive-call counts are not a direct timing comparison. The final True is the returned success flag.\n\nnum_reduce = 0\nsolve_reduce(puzzle, possible_values)\n\nSolved. Recursive calls: 1.\n\n\n\n\n\n\n\n\n\nTrue"
+  },
+  {
+    "objectID": "code_and_homework/sudoku.html#test-a-puzzle-that-needs-guessing",
+    "href": "code_and_homework/sudoku.html#test-a-puzzle-that-needs-guessing",
+    "title": "Sudoku as Constraint Search",
+    "section": "Test a Puzzle That Needs Guessing",
+    "text": "Test a Puzzle That Needs Guessing\nAn empty grid has no singleton domains, so propagation alone cannot start. The solver must restrict a guessed cell to one digit before recursion. It returns the first valid completion; an empty grid has many solutions.\nEach recursive choice fixes one unresolved cell. Every candidate receives its own branch-local domains.\n\nempty_puzzle = [[0] * 9 for _ in range(9)]\nnum_reduce = 0\nsolve_reduce(empty_puzzle, make_domains(empty_puzzle))\n\nSolved. Recursive calls: 48.\n\n\n\n\n\n\n\n\n\nTrue"
+  },
+  {
+    "objectID": "code_and_homework/sudoku.html#reject-a-locally-legal-wrong-clue",
+    "href": "code_and_homework/sudoku.html#reject-a-locally-legal-wrong-clue",
+    "title": "Sudoku as Constraint Search",
+    "section": "Reject a Locally Legal Wrong Clue",
+    "text": "Reject a Locally Legal Wrong Clue\nDigit 1 is locally legal at (0, 2) in the starting puzzle: it does not immediately repeat a row, column, or box digit. Fixing it there nevertheless makes this puzzle unsatisfiable. A local legality check does not guarantee a full completion.\nHere the added fixed clue leads to an empty domain during initial propagation, so the solver returns False. When guessing is needed, a failed branch instead returns to its parent; the whole search fails only if every branch fails. A failed local-search run would not provide the same no-solution guarantee.\n\nassert is_valid(puzzle, 0, 2, 1)\nno_solution = copy.deepcopy(puzzle)\nno_solution[0][2] = 1\nnum_reduce = 0\nresult = solve_reduce(no_solution, make_domains(no_solution))\nprint(\"Solver returned:\", result)\nassert result is False\n\nSolver returned: False"
   }
 ]

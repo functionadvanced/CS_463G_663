@@ -1,0 +1,43 @@
+/* Keep the deck and the viewer's slide previews in sync. */
+.reveal section.csps-slide { font-size: 0.9em; }
+.reveal section.csps-slide h2,
+.reveal section.csps-slide h3 { margin-top: 0; }
+.reveal section.csps-slide table { font-size: 0.83em; line-height: 1.28; }
+.reveal section.csps-slide th,
+.reveal section.csps-slide td { padding: 0.44em 0.5em; }
+.reveal section.csps-slide img:not(.trace-frame) {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  border: 0;
+  box-shadow: none;
+  margin: 0.15em auto;
+}
+.reveal section.csps-slide .csps-problem { max-height: 270px; }
+.reveal section.csps-slide .csps-orders { max-height: 190px; }
+.reveal section.csps-slide .csps-ordering { max-height: 285px; }
+.reveal section.csps-slide .csps-lcv-reference { max-height: 225px; }
+.reveal section.csps-slide .csps-backjump { max-height: 195px; }
+.reveal section.csps-slide .csps-sudoku { max-height: 325px; }
+.reveal section.csps-slide .trace-tree-frames { width: 860px; max-width: 100%; margin: 0.15em auto; }
+.reveal section.csps-backtrack-trace .trace-tree-frames { aspect-ratio: 900 / 335; }
+.reveal section.csps-domain-trace .trace-tree-frames { aspect-ratio: 900 / 300; }
+.reveal section.csps-slide .csps-steps p { margin: 0.2em 0; }
+.reveal section.csps-slide .takeaway,
+.reveal section.csps-slide .question {
+  margin-top: 0.45em;
+  padding-top: 0.45em;
+  padding-bottom: 0.45em;
+}
+.reveal section.csps-code .pseudo-code {
+  font-size: 0.76em;
+  line-height: 1.42;
+  margin: 0.4em 0;
+  padding: 0.5em 0.65em;
+  white-space: normal;
+}
+.reveal section.csps-code .pseudo-line { min-height: 1.42em; white-space: nowrap; }
+.reveal section.csps-code .pseudo-line.fragment.visible { opacity: 1; }
+.reveal section.csps-notebook .column li { margin-bottom: 0.4em; }
