@@ -1068,7 +1068,7 @@
     "href": "asset_credits.html#lec16",
     "title": "Visual Asset Credits",
     "section": "Lecture 16: Logic",
-    "text": "Lecture 16: Logic\nThe language-to-formula and syntax-tree SVG diagrams are original illustrations created for this course. The access-policy examples, truth tables, and classroom exercises were written for this lecture. Concepts follow Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig, Chapter 7, with reference to the UC Berkeley CS 188 propositional logic notes.\nReused public-domain (CC0) OpenClipart assets:\n\nslides/imgs/lec1/robot_openclipart.svg: Robot 2.\nslides/imgs/lec1/brain_lightbulb_openclipart.svg: Brain light bulb."
+    "text": "Lecture 16: Logic\nThe authorization cases, formula-evaluation animation, implication scenarios, direction-of-implication diagram, and policy-debugging and repair diagrams were drawn for this course in draw.io. The editable source is logic-foundations.drawio; the slides use PNG exports. The source also includes alternative illustrations not used in the shortened lecture. The access-policy examples, truth tables, and exercises were written for this lecture. Concepts follow Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig, Chapter 7, with reference to the UC Berkeley CS 188 propositional logic notes.\nReused public-domain (CC0) OpenClipart assets:\n\nslides/imgs/lec1/robot_openclipart.svg: Robot 2.\nslides/imgs/lec1/brain_lightbulb_openclipart.svg: Brain light bulb."
   },
   {
     "objectID": "asset_credits.html#lec17",
@@ -1349,83 +1349,6 @@
     "title": "Lecture Viewer",
     "section": "",
     "text": "Lecture Slides\n    Open printable slides\n  \n  \n    \n      Deck\n      \n    \n    \n      \n    \n  \n  Unable to load this lecture deck."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#logic",
-    "href": "slides/lec16_Logic.html#logic",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Logic",
-    "text": "Logic\n\n\nLogic is the formal study of reasoning.\n\nIt represents knowledge precisely.\nIt manipulates that knowledge with rules.\nIt supports automated reasoning, decision-making, and problem-solving.\n\n\nLogic gives AI a language for deriving new facts from known facts.\n\n\n\n\n\nBrain lightbulb icon for reasoning"
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#a-first-inference",
-    "href": "slides/lec16_Logic.html#a-first-inference",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "A First Inference",
-    "text": "A First Inference\n\nIf it is raining, then the ground is wet.\nIt is raining.\nTherefore, the ground is wet.\n\n\n\\text{Raining} \\rightarrow \\text{GroundWet}\n\n\n\n\n\nThe sentence above is simple; the power comes from making the reasoning rule explicit."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#why-logic-matters-in-ai",
-    "href": "slides/lec16_Logic.html#why-logic-matters-in-ai",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why Logic Matters in AI",
-    "text": "Why Logic Matters in AI\n\n\n\nArea\nHow logic helps\n\n\n\n\nKnowledge representation\nStore facts and rules\n\n\nAutomated theorem proving\nDerive consequences formally\n\n\nExpert systems\nApply domain rules to cases\n\n\nNatural language processing\nRepresent meaning and entailment\n\n\nPlanning and robotics\nReason about actions and goals"
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#types-of-logic",
-    "href": "slides/lec16_Logic.html#types-of-logic",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Types of Logic",
-    "text": "Types of Logic\n\n\nPropositional Logic\n\nAtomic statements.\nEach statement is true or false.\nExample: R \\rightarrow W.\n\n\nFirst-Order Logic\n\nObjects, relations, and quantifiers.\nExample:\n\n\n\\forall x\\; \\text{Human}(x) \\rightarrow \\text{Mortal}(x)\n\n\nOther Logics\n\nTemporal logic.\nModal logic.\nFuzzy logic."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#propositional-logic-1",
-    "href": "slides/lec16_Logic.html#propositional-logic-1",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Propositional Logic",
-    "text": "Propositional Logic\nPropositional logic is a formal system where each proposition is either true or false.\n\n\n\nComponent\nExample\n\n\n\n\nProposition\nR: it is raining\n\n\nNegation\n\\neg R\n\n\nConjunction\nR \\land W\n\n\nDisjunction\nR \\lor W\n\n\nImplication\nR \\rightarrow W\n\n\nBiconditional\nR \\leftrightarrow W"
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#truth-tables",
-    "href": "slides/lec16_Logic.html#truth-tables",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Truth Tables",
-    "text": "Truth Tables\nTruth tables define connectives by listing all possible input values and outputs.\n\n\nNegation\n\n\n\nP\n\\neg P\n\n\n\n\nT\nF\n\n\nF\nT\n\n\n\n\nConjunction\n\n\n\nP\nQ\nP \\land Q\n\n\n\n\nT\nT\nT\n\n\nT\nF\nF\n\n\nF\nT\nF\n\n\nF\nF\nF"
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#more-truth-tables",
-    "href": "slides/lec16_Logic.html#more-truth-tables",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "More Truth Tables",
-    "text": "More Truth Tables\n\n\nDisjunction\n\n\n\nP\nQ\nP \\lor Q\n\n\n\n\nT\nT\nT\n\n\nT\nF\nT\n\n\nF\nT\nT\n\n\nF\nF\nF\n\n\n\n\nImplication\n\n\n\nP\nQ\nP \\rightarrow Q\n\n\n\n\nT\nT\nT\n\n\nT\nF\nF\n\n\nF\nT\nT\n\n\nF\nF\nT\n\n\n\n\nBiconditional\n\n\n\nP\nQ\nP \\leftrightarrow Q\n\n\n\n\nT\nT\nT\n\n\nT\nF\nF\n\n\nF\nT\nF\n\n\nF\nF\nT"
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#implication-is-subtle",
-    "href": "slides/lec16_Logic.html#implication-is-subtle",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Implication Is Subtle",
-    "text": "Implication Is Subtle\nFor P \\rightarrow Q:\n\nIt is false only when P is true and Q is false.\nIf P is false, the implication is true in propositional logic.\n\n\nAn implication promises: whenever P holds, Q must hold."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#logical-equivalence",
-    "href": "slides/lec16_Logic.html#logical-equivalence",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Logical Equivalence",
-    "text": "Logical Equivalence\nTwo formulas are logically equivalent if they have the same truth value under every assignment.\n\nA \\equiv B\n\nCommon equivalences:\n\n\n\nName\nEquivalence\n\n\n\n\nDouble negation\n\\neg(\\neg P) \\equiv P\n\n\nDe Morgan\n\\neg(P \\land Q) \\equiv \\neg P \\lor \\neg Q\n\n\nDe Morgan\n\\neg(P \\lor Q) \\equiv \\neg P \\land \\neg Q\n\n\nImplication\nP \\rightarrow Q \\equiv \\neg P \\lor Q"
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#more-equivalence-laws",
-    "href": "slides/lec16_Logic.html#more-equivalence-laws",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "More Equivalence Laws",
-    "text": "More Equivalence Laws\n\n\nIdentity\n\nP \\land \\text{true} \\equiv P\nP \\lor \\text{false} \\equiv P\n\nDomination\n\nP \\lor \\text{true} \\equiv \\text{true}\nP \\land \\text{false} \\equiv \\text{false}\n\n\nIdempotent\n\nP \\lor P \\equiv P\nP \\land P \\equiv P\n\nWhy They Matter\nEquivalences let us rewrite formulas without changing meaning."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#proof-by-truth-table",
-    "href": "slides/lec16_Logic.html#proof-by-truth-table",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Proof by Truth Table",
-    "text": "Proof by Truth Table\nExample: De Morgan’s law.\n\n\\neg(P \\land Q) \\equiv \\neg P \\lor \\neg Q\n\n\n\n\n\n\n\n\n\n\n\n\n\nP\nQ\nP \\land Q\n\\neg(P \\land Q)\n\\neg P\n\\neg Q\n\\neg P \\lor \\neg Q\n\n\n\n\nT\nT\nT\nF\nF\nF\nF\n\n\nT\nF\nF\nT\nF\nT\nT\n\n\nF\nT\nF\nT\nT\nF\nT\n\n\nF\nF\nF\nT\nT\nT\nT\n\n\n\nThe two highlighted expressions have identical columns, so they are equivalent.\nAsset credits"
   },
   {
     "objectID": "slides/lec1_AI_def.html#today",
@@ -2394,214 +2317,11 @@
     "text": "Lecture 16b: Propositional Inference\nThe model-inclusion, resolution, and unit-propagation SVG diagrams are original illustrations created for this course. The robot and route examples, truth tables, exercises, and proof traces were written for the lecture. Concepts follow Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig, Chapter 7, with reference to the UC Berkeley CS 188 logic notes and the AIMA algorithm reference.\nReused public-domain (CC0) OpenClipart assets:\n\nslides/imgs/lec1/robot_openclipart.svg: Robot 2.\nslides/imgs/lec1/brain_lightbulb_openclipart.svg: Brain light bulb."
   },
   {
-    "objectID": "slides/lec16_Logic.html#what-does-the-rule-actually-permit",
-    "href": "slides/lec16_Logic.html#what-does-the-rule-actually-permit",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What Does the Rule Actually Permit?",
-    "text": "What Does the Rule Actually Permit?\n\n\nA lab’s access rule says:\n\nIf a person has a valid badge, the door unlocks.\n\n\nDoes this also say that the door stays locked for everyone without a valid badge?\n\n\nNo. A rule can promise one outcome without ruling out other ways to reach it.\n\n\n\n\n\n50-minute teaching plan, including discussion: slides 1-6, 8 minutes; 7-12, 9 minutes; 13-19, 12 minutes; 20-26, 10 minutes; 27-31, 11 minutes. Ask students to commit to an answer before revealing it. Main activities: translation on slide 11, formula evaluation on slide 20, and policy debugging on slides 27-29. This lecture develops representation and truth conditions. The following lecture develops entailment, CNF, and proof procedures.\nThe badge rule is a material implication about one fixed person and one evaluation of the access decision. It is not a description of an electrical actuator or a complete security policy.\n[Sources] - AIMA, Russell and Norvig, Chapter 7: logical agents and propositional logic. - Public-domain OpenClipart robot: https://openclipart.org/detail/325789/robot-2. [/Sources]"
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#logic-separates-meaning-from-wording",
-    "href": "slides/lec16_Logic.html#logic-separates-meaning-from-wording",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Logic Separates Meaning from Wording",
-    "text": "Logic Separates Meaning from Wording\nLogic provides a precise language for representing facts and constraints.\n\n\n  \n  \n  \n  \n  \n  \n  English ruleChoose the meaningLogical formulaMake it explicitPossible worldCheck true or false\n\n\n\nRepresentation: What exactly does the rule assert?\nEvaluation: Does a particular situation satisfy the rule?\nReasoning: What else follows from the facts and rules?\n\n\nConnect to CSPs: a logical formula also restricts combinations of values. A precise formula can still encode the wrong English meaning. Reasoning does not repair a mistranslated requirement. The diagram is original course artwork."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#which-sentences-are-propositions",
-    "href": "slides/lec16_Logic.html#which-sentences-are-propositions",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Which Sentences Are Propositions?",
-    "text": "Which Sentences Are Propositions?\nA proposition is a statement with a truth value, once its context is fixed.\n\n\n\n\n\n\n\nSentence\nA proposition?\n\n\n\n\n“The lab door is unlocked now.”\nYes, even if we have not checked\n\n\n“Two plus three equals six.”\nYes; it is false\n\n\n“Unlock the lab door!”\nNo; this is a command\n\n\n“Is the lab door unlocked?”\nNo; this is a question\n\n\n“x is greater than three.”\nNot a closed proposition until x is specified\n\n\n\n\nHaving a truth value is different from knowing that truth value.\n\n\nAsk whether an unobserved fact counts. Classical propositional logic uses two truth values, not a third value for our ignorance. Fix the person, door, and time whenever natural language would otherwise leave them implicit. The open expression involving x motivates predicates later; do not introduce quantifiers yet."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#give-each-atom-a-stable-meaning",
-    "href": "slides/lec16_Logic.html#give-each-atom-a-stable-meaning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Give Each Atom a Stable Meaning",
-    "text": "Give Each Atom a Stable Meaning\nFor one person, at one access decision:\n\n\n\nSymbol\nAtomic proposition\n\n\n\n\nB\nThe person has a valid badge\n\n\nV\nThe person is an approved visitor\n\n\nE\nAn emergency is active\n\n\nD\nThe door unlocks\n\n\n\n\nAn atom is a proposition that we treat as indivisible.\nSymbols are names, not numerical measurements.\nKeep the same meaning everywhere in a formula.\n\n\nThese four atoms will return in the final policy activity. They are a deliberately simplified access decision, not advice for physical security systems. Ask why E should not mean “no emergency” on one slide and “emergency” on another."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#syntax-groups-semantics-evaluates",
-    "href": "slides/lec16_Logic.html#syntax-groups-semantics-evaluates",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Syntax Groups; Semantics Evaluates",
-    "text": "Syntax Groups; Semantics Evaluates\nSyntax: how a formula is built. Semantics: when it is true.\n\n(B \\lor V) \\land \\neg E\n\n\n\n  \n  \n  \n  \n  ANDORNOTBVE\n\n\nParentheses matter: (B \\lor V) \\land \\neg E is not B \\lor (V \\land \\neg E).\n\nRead the tree bottom-up. The top-level connective combines two subformulas. The two displayed formulas differ when B is true and E is true. Prefer explicit parentheses over depending on a convention about precedence. Original diagram.\n[Sources] - https://inst.eecs.berkeley.edu/~cs188/textbook/logic/propositional.html [/Sources]"
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#negation-and-conjunction",
-    "href": "slides/lec16_Logic.html#negation-and-conjunction",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Negation and Conjunction",
-    "text": "Negation and Conjunction\n\nNOT: \\neg P flips the truth value of P.\nAND: P \\land Q requires both inputs to be true.\n\n\n\n\nP\nQ\n\\neg P\nP \\land Q\n\n\n\n\nT\nT\nF\nT\n\n\nT\nF\nF\nF\n\n\nF\nT\nT\nF\n\n\nF\nF\nT\nF\n\n\n\n\nT and F abbreviate \\text{true} and \\text{false} throughout the tables."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#logical-or-allows-both",
-    "href": "slides/lec16_Logic.html#logical-or-allows-both",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Logical OR Allows Both",
-    "text": "Logical OR Allows Both\nB \\lor V: the person has a valid badge or is an approved visitor.\n\n\n\nB\nV\nB \\lor V\n\n\n\n\nT\nT\nT\n\n\nT\nF\nT\n\n\nF\nT\nT\n\n\nF\nF\nF\n\n\n\n\nDoes a visitor with a valid badge satisfy this condition?\n\n\nYes. Logical OR is inclusive: at least one input is true."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#exactly-one-is-a-different-requirement",
-    "href": "slides/lec16_Logic.html#exactly-one-is-a-different-requirement",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Exactly One Is a Different Requirement",
-    "text": "Exactly One Is a Different Requirement\nSuppose the robot must choose exactly one route, A or B.\n\n(A \\lor B) \\land \\neg(A \\land B)\n\n\n\n\nA\nB\nAt least one: A \\lor B\nExactly one\n\n\n\n\nT\nT\nT\nF\n\n\nT\nF\nT\nT\n\n\nF\nT\nT\nT\n\n\nF\nF\nF\nF\n\n\n\nThis is exclusive OR (XOR). Ordinary \\lor does not express it.\n\nA and B mean that the respective route is selected, not that it is open. Ask students which factor rules out neither route, and which factor rules out both routes. The English word “or” can be ambiguous; ask what the task requires."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#build-a-requirement-in-pieces",
-    "href": "slides/lec16_Logic.html#build-a-requirement-in-pieces",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Build a Requirement in Pieces",
-    "text": "Build a Requirement in Pieces\n“A valid badge or approved visitor, and no active emergency.”\n\n\nEither authorization method: B \\lor V.\n\n\n\n\nNo emergency: \\neg E.\n\n\n\n\nBoth requirements:\n\n\n(B \\lor V) \\land \\neg E\n\n\n\nTranslate the parts, then connect them. Negation applies only to its stated scope."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#your-turn-translate-the-requirement",
-    "href": "slides/lec16_Logic.html#your-turn-translate-the-requirement",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Your Turn: Translate the Requirement",
-    "text": "Your Turn: Translate the Requirement\nLet B mean “battery ready” and C mean “corridor clear.”\n\n\nThe battery is ready and the corridor is clear.\nIt is not the case that both conditions hold.\nNeither condition holds.\n\n\nWrite one formula for each. Are the last two equivalent?\n\nGive pairs two minutes, then invite different formulas. This is a new small scenario: explicitly redefine B as battery ready for slides 11-12. The following slides restore the badge vocabulary. Do not reveal the next slide prematurely. A common mistake is translating “not both” as “neither.”"
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#not-both-is-not-the-same-as-neither",
-    "href": "slides/lec16_Logic.html#not-both-is-not-the-same-as-neither",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Not Both Is Not the Same as Neither",
-    "text": "Not Both Is Not the Same as Neither\n\n\n\nRequirement\nFormula\n\n\n\n\nBoth conditions hold\nB \\land C\n\n\nNot both hold\n\\neg(B \\land C)\n\n\nNeither holds\n\\neg B \\land \\neg C\n\n\n\n\nTake B=\\text{true} and C=\\text{false}:\n\nNot both is true.\nNeither is false.\n\n\n\nOne situation where the outputs differ is enough to show that two formulas are not equivalent."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#implication-rules-out-one-case",
-    "href": "slides/lec16_Logic.html#implication-rules-out-one-case",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Implication Rules Out One Case",
-    "text": "Implication Rules Out One Case\nBack to the lab: B = valid badge; D = door unlocks.\n\nB \\rightarrow D\n\n\n\n\nB\nD\nB \\rightarrow D\nRule satisfied?\n\n\n\n\nT\nT\nT\nYes\n\n\nT\nF\nF\nNo: badge, but no unlock\n\n\nF\nT\nT\nYes\n\n\nF\nF\nT\nYes\n\n\n\n\nThe implication is false only when its premise is true and its conclusion is false."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#a-false-premise-leaves-the-rule-unbroken",
-    "href": "slides/lec16_Logic.html#a-false-premise-leaves-the-rule-unbroken",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "A False Premise Leaves the Rule Unbroken",
-    "text": "A False Premise Leaves the Rule Unbroken\n“If there is a valid badge, the door unlocks”: B \\rightarrow D.\n\nNo valid badge, door locked: the rule is not violated.\nNo valid badge, door unlocked: the rule is still not violated.\n\n\nThis is material implication. It constrains truth values; it does not by itself express causation, timing, or a complete policy.\n\n\nWhich extra condition would rule out unlocking without a badge?\n\n\nD \\rightarrow B: unlocking requires a valid badge.\n\n\nThe implication is often called vacuously true when its premise is false. Use “not violated” to explain the convention, not to add a third truth value. The badge rule alone is compatible with a visitor, an override, or a faulty system unlocking the door. Do not infer a causal mechanism from a logical arrow."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#if-and-only-if-point-in-opposite-directions",
-    "href": "slides/lec16_Logic.html#if-and-only-if-point-in-opposite-directions",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "If and Only If Point in Opposite Directions",
-    "text": "If and Only If Point in Opposite Directions\n\n\n\n\n\n\n\n\nEnglish\nFormula\nWhat it requires\n\n\n\n\nD if B\nB \\rightarrow D\nBadge is sufficient for unlocking\n\n\nD only if B\nD \\rightarrow B\nBadge is necessary for unlocking\n\n\n\n\nSufficient: enough to guarantee the conclusion.\nNecessary: required whenever the conclusion holds.\n\n\n“The robot moves only if its battery is ready.” Let M = moves, R = ready. Which arrow?\n\n\nM \\rightarrow R. Read it as “movement requires readiness.”"
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#reversing-the-arrow-changes-the-rule",
-    "href": "slides/lec16_Logic.html#reversing-the-arrow-changes-the-rule",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Reversing the Arrow Changes the Rule",
-    "text": "Reversing the Arrow Changes the Rule\n\n\n\nName\nFormula\nEquivalent to the original?\n\n\n\n\nOriginal\nB \\rightarrow D\nYes\n\n\nConverse\nD \\rightarrow B\nNo\n\n\nInverse\n\\neg B \\rightarrow \\neg D\nNo\n\n\nContrapositive\n\\neg D \\rightarrow \\neg B\nYes\n\n\n\n\nTry B=\\text{false}, D=\\text{true}. Which rows are true?\n\n\nOriginal and contrapositive: true. Converse and inverse: false.\n\n\nThe converse and inverse are equivalent to each other, but not to the original. Here “not equivalent” means that there exists an assignment where the values differ, not that they differ on every assignment. Naming is less important than checking the truth conditions."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#check-the-contrapositive-in-every-world",
-    "href": "slides/lec16_Logic.html#check-the-contrapositive-in-every-world",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Check the Contrapositive in Every World",
-    "text": "Check the Contrapositive in Every World\n\n(B \\rightarrow D) \\equiv (\\neg D \\rightarrow \\neg B)\n\n\n\n\nB\nD\nB \\rightarrow D\n\\neg D \\rightarrow \\neg B\n\n\n\n\nT\nT\nT\nT\n\n\nT\nF\nF\nF\n\n\nF\nT\nT\nT\n\n\nF\nF\nT\nT\n\n\n\n\nEquivalent formulas agree on every assignment, not just on one convenient example."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#a-biconditional-requires-both-directions",
-    "href": "slides/lec16_Logic.html#a-biconditional-requires-both-directions",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "A Biconditional Requires Both Directions",
-    "text": "A Biconditional Requires Both Directions\n“The door unlocks if and only if the badge is valid.”\n\nB \\leftrightarrow D\n\\qquad\\equiv\\qquad\n(B \\rightarrow D) \\land (D \\rightarrow B)\n\n\n\n\nB\nD\nB \\leftrightarrow D\n\n\n\n\nT\nT\nT\n\n\nT\nF\nF\n\n\nF\nT\nF\n\n\nF\nF\nT\n\n\n\nThe two propositions must have the same truth value. “Iff” abbreviates “if and only if.”"
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#unless-needs-a-careful-translation",
-    "href": "slides/lec16_Logic.html#unless-needs-a-careful-translation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Unless Needs a Careful Translation",
-    "text": "Unless Needs a Careful Translation\n“The robot returns to its dock unless an emergency is active.”\nLet R = returns and E = emergency active.\n\n\\neg E \\rightarrow R\n\\qquad\\equiv\\qquad\nE \\lor R\n\n\nNo emergency: returning is required.\nEmergency active: this rule does not determine whether it returns.\n\n\nTo also prohibit returning during an emergency, add E \\rightarrow \\neg R. That is an extra requirement.\n\n\nUse the conventional inclusive reading of unless. Everyday usage can imply more; clarify the intended behavior before formalizing it. Returning during an emergency is neither required nor forbidden by the first rule alone. This is not automatically an XOR."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#evaluate-from-the-inside-out",
-    "href": "slides/lec16_Logic.html#evaluate-from-the-inside-out",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Evaluate from the Inside Out",
-    "text": "Evaluate from the Inside Out\nFor the access condition:\n\nF=(B \\lor V) \\land \\neg E\n\n\nEvaluate F for B=\\text{false}, V=\\text{true}, E=\\text{false}.\n\n\n\nB \\lor V = \\text{true}.\n\n\n\n\n\\neg E = \\text{true}.\n\n\n\n\nF = \\text{true} \\land \\text{true} = \\text{true}.\n\n\n\nGive students 30 seconds to evaluate before stepping through the fragments. Then ask what changes when E becomes true. Explain that F names the whole formula, while the tables use the letter F as an abbreviation for false; these are different contexts."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#a-truth-table-checks-every-assignment",
-    "href": "slides/lec16_Logic.html#a-truth-table-checks-every-assignment",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "A Truth Table Checks Every Assignment",
-    "text": "A Truth Table Checks Every Assignment\nThree atoms give 2^3=8 rows. Keep the intermediate columns.\n\n\n\nB\nV\nE\nB \\lor V\n\\neg E\n(B \\lor V) \\land \\neg E\n\n\n\n\nT\nT\nT\nT\nF\nF\n\n\nT\nT\nF\nT\nT\nT\n\n\nT\nF\nT\nT\nF\nF\n\n\nT\nF\nF\nT\nT\nT\n\n\nF\nT\nT\nT\nF\nF\n\n\nF\nT\nF\nT\nT\nT\n\n\nF\nF\nT\nF\nF\nF\n\n\nF\nF\nF\nF\nT\nF\n\n\n\nThe condition holds in three assignments. An emergency always makes it false.\n\nShow the enumeration pattern: B changes every four rows, V every two, E every row. Ask a student to explain the final row: no emergency alone is not enough. Emphasize that systematic enumeration avoids missing cases. In n variables, a full table has 2^n rows, which motivates more efficient reasoning next lecture."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#equivalence-preserves-all-truth-values",
-    "href": "slides/lec16_Logic.html#equivalence-preserves-all-truth-values",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Equivalence Preserves All Truth Values",
-    "text": "Equivalence Preserves All Truth Values\n\nA \\equiv B\n\nmeans that formulas A and B agree under every assignment to their atoms.\n\n\n\nGoal\nWhat is enough?\n\n\n\n\nProve equivalence with a truth table\nAll output rows agree\n\n\nDisprove equivalence\nOne row where the outputs differ\n\n\nRewrite safely\nApply an established equivalence law\n\n\n\n\nEquivalent formulas can replace each other inside a larger formula without changing its meaning.\n\n\nA and B here are arbitrary formulas, not the badge atom from the worked scenario. Mention that equivalence is a relation between formulas. The biconditional is a connective whose truth is evaluated within a world. A and B are equivalent exactly when their biconditional is true in every world. No formal entailment notation yet."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#de-morgan-moves-not-across-a-group",
-    "href": "slides/lec16_Logic.html#de-morgan-moves-not-across-a-group",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "De Morgan Moves NOT Across a Group",
-    "text": "De Morgan Moves NOT Across a Group\n\n\\neg(P \\land Q) \\equiv \\neg P \\lor \\neg Q\n\nNot both requirements succeed: at least one fails.\n\n\\neg(P \\lor Q) \\equiv \\neg P \\land \\neg Q\n\nNeither option succeeds: both fail.\n\nNegate each part and swap AND with OR. Keep the parentheses until the scope is clear.\n\n\nReturn to the “not both” versus “neither” exercise. Use a two-input sensor as an intuitive check: not(all ready) means any not-ready; not(any ready) means all not-ready. These equivalences are not an instruction to replace AND with OR without also negating the inputs."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#verify-de-morgan-with-a-truth-table",
-    "href": "slides/lec16_Logic.html#verify-de-morgan-with-a-truth-table",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Verify De Morgan with a Truth Table",
-    "text": "Verify De Morgan with a Truth Table\n\n\\neg(P \\land Q) \\equiv \\neg P \\lor \\neg Q\n\n\n\n\nP\nQ\n\\neg(P \\land Q)\n\\neg P \\lor \\neg Q\n\n\n\n\nT\nT\nF\nF\n\n\nT\nF\nT\nT\n\n\nF\nT\nT\nT\n\n\nF\nF\nT\nT\n\n\n\nThe shaded output columns agree in all four rows.\n\nWhy is checking only the first row insufficient?\n\n\nHave students compute the second row aloud. Even two non-equivalent formulas may match on the first row. Four rows exhaust the two-variable assignments, so agreement here establishes equivalence. The table omits intermediate columns for space; students should add them on paper if they need them."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#simplify-without-changing-the-requirement",
-    "href": "slides/lec16_Logic.html#simplify-without-changing-the-requirement",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Simplify Without Changing the Requirement",
-    "text": "Simplify Without Changing the Requirement\n“Valid badge and lab open, or valid badge and lab not open.”\nLet B = valid badge and L = lab open.\n\n(B \\land L) \\lor (B \\land \\neg L)\n\n\nDistribute the common factor:\n\n\\equiv B \\land (L \\lor \\neg L)\n\n\n\nOne of L and \\neg L always holds:\n\n\\equiv B \\land \\text{true} \\equiv B\n\n\n\nThe lab-open condition has canceled from the policy. Ask whether that was intended. The identity used is (X and Y) or (X and Z) equivalent to X and (Y or Z). The law of excluded middle makes L or not L true under every classical assignment. Rewriting exposes redundancies, but does not decide whether a requirement is appropriate."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#a-small-toolbox-for-rewriting",
-    "href": "slides/lec16_Logic.html#a-small-toolbox-for-rewriting",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "A Small Toolbox for Rewriting",
-    "text": "A Small Toolbox for Rewriting\n\n\n\n\n\n\n\nLaw\nEquivalence\n\n\n\n\nDouble negation\n\\neg\\neg P \\equiv P\n\n\nIdentity\nP \\land \\text{true} \\equiv P; P \\lor \\text{false} \\equiv P\n\n\nDomination\nP \\lor \\text{true} \\equiv \\text{true}; P \\land \\text{false} \\equiv \\text{false}\n\n\nIdempotence\nP \\land P \\equiv P; P \\lor P \\equiv P\n\n\nImplication\n(P \\rightarrow Q) \\equiv \\neg P \\lor Q\n\n\n\n\nRewrite \\neg(P \\rightarrow Q) without an implication.\n\n\n\\neg(\\neg P \\lor Q) \\equiv P \\land \\neg Q: precisely the case that violates the implication."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#mini-lab-does-this-policy-say-enough",
-    "href": "slides/lec16_Logic.html#mini-lab-does-this-policy-say-enough",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Mini-Lab: Does This Policy Say Enough?",
-    "text": "Mini-Lab: Does This Policy Say Enough?\nB = valid badge; V = approved visitor; E = emergency; D = unlock.\nThe intended policy: unlock exactly when authorized and no emergency is active.\nThe proposed rules are:\n\n((B \\lor V) \\land \\neg E) \\rightarrow D\n \nD \\rightarrow \\neg E\n\n\nCould both rules be true while an unauthorized person gets in? Find an assignment or explain why not.\n\n\nAllow three minutes in pairs. Suggested prompts: what happens if both B and V are false? What does the second rule actually require? Do not assume that a proposition is false just because no rule requires it to be true. The rules constrain possible access decisions; they are not a sequential program with an implicit else branch."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#a-missing-direction-leaves-a-gap",
-    "href": "slides/lec16_Logic.html#a-missing-direction-leaves-a-gap",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "A Missing Direction Leaves a Gap",
-    "text": "A Missing Direction Leaves a Gap\nTry an unauthorized person, no emergency, and an unlocked door:\n\nB=\\text{false},\\quad V=\\text{false},\\quad\nE=\\text{false},\\quad D=\\text{true}\n\n\n\n\n\n\n\n\nProposed rule\nEvaluation\n\n\n\n\n((B \\lor V) \\land \\neg E) \\rightarrow D\n\\text{false} \\rightarrow \\text{true}: true\n\n\nD \\rightarrow \\neg E\n\\text{true} \\rightarrow \\text{true}: true\n\n\n\n\nMissing requirement: unlocking must require authorization.\n\nD \\rightarrow (B \\lor V)\n\n\n\nAll written rules can be satisfied while the intended policy is violated."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#repair-the-policy-with-both-directions",
-    "href": "slides/lec16_Logic.html#repair-the-policy-with-both-directions",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Repair the Policy with Both Directions",
-    "text": "Repair the Policy with Both Directions\n\nD \\leftrightarrow ((B \\lor V) \\land \\neg E)\n\n\nAuthorization and no emergency guarantee unlocking.\nUnlocking requires authorization and no emergency.\n\n\nWhat must D be in each case?\n\nValid badge, emergency active.\nApproved visitor, no badge, no emergency.\nNo badge, no visitor approval, no emergency.\n\n\n\nFalse; true; false. The two directions now specify the complete Boolean decision.\n\n\nGive students one minute, then reveal. The repaired biconditional is equivalent to all three implications from the preceding slides. It is complete only for this simplified Boolean authorization decision; real systems require additional details such as identity, timing, access rights, failure handling, and safety requirements. The activity demonstrates specification debugging, not deployment-ready access control."
-  },
-  {
-    "objectID": "slides/lec16_Logic.html#what-propositional-logic-leaves-out",
-    "href": "slides/lec16_Logic.html#what-propositional-logic-leaves-out",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What Propositional Logic Leaves Out",
-    "text": "What Propositional Logic Leaves Out\n\n\n\n\n\n\n\nNeed\nWhat changes?\n\n\n\n\nFacts about many people\nFirst-order logic adds objects and predicates\n\n\n“Every approved visitor has a host”\nQuantifiers express general rules\n\n\n“The door eventually locks”\nTemporal logic expresses time relationships\n\n\nA sensor is only 90% reliable\nA probabilistic model represents uncertainty\n\n\n\n\nChoose the representation for the task. Today, each atom is a fixed true-or-false statement.\n\n\nThis replaces the old broad types-of-logic survey with a motivation for richer representations. Explain the distinction between truth values and an agent’s uncertain beliefs. No quantifier exercises here; First-Order Logic comes after Propositional Inference. Probability is a separate later part of the course.\n[Sources] - AIMA, Russell and Norvig: propositional logic, first-order logic, and probabilistic reasoning. [/Sources]"
-  },
-  {
     "objectID": "slides/lec16_Logic.html#takeaways",
     "href": "slides/lec16_Logic.html#takeaways",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Takeaways",
-    "text": "Takeaways\n\n\n\nAtoms: define one stable statement per symbol.\nConnectives: distinguish OR, XOR, implication, and iff.\nTranslation: check “only if,” “unless,” and negation scope.\nTruth tables: evaluate every assignment systematically.\nEquivalence: preserve truth values when rewriting.\n\n\n\n\n\nA formula says exactly what its truth conditions allow, not everything its author intended.\n\nAsset credits\n\nClose the opening badge question. Students should now be able to give the missing reverse implication and a concrete assignment that exposes the gap. Next lecture asks what conclusions must hold across every world compatible with a collection of formulas.\n[Sources] - Public-domain OpenClipart brain/lightbulb: https://openclipart.org/detail/266221/brain-light-bulb. [/Sources]"
+    "text": "Takeaways\n\n\n\nAtoms: give each symbol one stable meaning.\nConnectives: distinguish OR, XOR, implication, and biconditional.\nTranslation: check “only if” and negation scope.\nEvaluation: a truth table checks every assignment.\nEquivalence: preserve all truth values when rewriting.\n\n\n\n\n\nA formula’s truth conditions may permit more than its author intended. Look for an unwanted assignment that still satisfies the written rules.\n\nNext: what conclusions follow from a collection of facts and rules?\nAsset credits\n\nReturn to the opening badge rule: it leaves the no-badge cases open. The policy activity showed the same mistake in a larger specification.\n[Sources] - Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 7. - https://inst.eecs.berkeley.edu/~cs188/textbook/logic/propositional.html - Public-domain OpenClipart brain/light bulb: https://openclipart.org/detail/266221/brain-light-bulb. [/Sources]"
   },
   {
     "objectID": "slides/lec38_Transformers_contd.html#transformers-continued",
@@ -5537,13 +5257,6 @@
     "text": "Lecture 39: Cutting-Edge AI Topics\nNo external visual assets. Diagrams are drawn directly in the Quarto source."
   },
   {
-    "objectID": "slides/lec16_Logic.html#if-and-only-if-reverse-the-direction",
-    "href": "slides/lec16_Logic.html#if-and-only-if-reverse-the-direction",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "“If” and “Only If” Reverse the Direction",
-    "text": "“If” and “Only If” Reverse the Direction\n\n\n\n\n\n\n\n\nEnglish\nFormula\nWhat it requires\n\n\n\n\nD if B\nB \\rightarrow D\nBadge is sufficient for unlocking\n\n\nD only if B\nD \\rightarrow B\nBadge is necessary for unlocking\n\n\n\n\nSufficient: enough to guarantee the conclusion.\nNecessary: required whenever the conclusion holds.\n\n\n“The robot moves only if its battery is ready.” Let M = moves, R = ready. Which arrow?\n\n\nM \\rightarrow R. Read it as “movement requires readiness.”"
-  },
-  {
     "objectID": "slides/lec4_Search_Intro.html#which-route-would-you-choose",
     "href": "slides/lec4_Search_Intro.html#which-route-would-you-choose",
     "title": "CS 463G & CS 663\n(Intro to) AI",
@@ -8370,5 +8083,124 @@
     "title": "Sudoku as Constraint Search",
     "section": "Reject a Locally Legal Wrong Clue",
     "text": "Reject a Locally Legal Wrong Clue\nDigit 1 is locally legal at (0, 2) in the starting puzzle: it does not immediately repeat a row, column, or box digit. Fixing it there nevertheless makes this puzzle unsatisfiable. A local legality check does not guarantee a full completion.\nHere the added fixed clue leads to an empty domain during initial propagation, so the solver returns False. When guessing is needed, a failed branch instead returns to its parent; the whole search fails only if every branch fails. A failed local-search run would not provide the same no-solution guarantee.\n\nassert is_valid(puzzle, 0, 2, 1)\nno_solution = copy.deepcopy(puzzle)\nno_solution[0][2] = 1\nnum_reduce = 0\nresult = solve_reduce(no_solution, make_domains(no_solution))\nprint(\"Solver returned:\", result)\nassert result is False\n\nSolver returned: False"
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#opening-rule",
+    "href": "slides/lec16_Logic.html#opening-rule",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "What Does the Rule Actually Permit?",
+    "text": "What Does the Rule Actually Permit?\n\n\nA lab’s access rule says:\n\nIf a person has a valid badge, the door unlocks.\n\n\nMust the door stay locked for everyone without a valid badge?\n\n\nNo. The rule requires unlocking for badge holders. It leaves other cases open.\n\n\n\n\n\nInvite the viewer to choose an answer before revealing it. Return to this question after introducing implication and again in the final policy activity.\nThe lecture moves from representation to evaluation, then to equivalent formulas and policy debugging. Allow time to work through the truth tables and pause at the translation and policy questions. The next lecture introduces entailment and proof procedures.\nThe access example describes a simplified Boolean decision for one person at one time. It does not prescribe a real building’s safety or emergency policy.\n[Sources] - Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 7. - Public-domain OpenClipart robot: https://openclipart.org/detail/325789/robot-2. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#propositions",
+    "href": "slides/lec16_Logic.html#propositions",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Logic and Propositions",
+    "text": "Logic and Propositions\nLogic represents knowledge precisely and supports reasoning from it.\nA proposition is a statement that is true or false once its context is fixed.\n\n\n\nSentence\nA proposition?\n\n\n\n\n“The lab door is unlocked now.”\nYes, even if we have not checked\n\n\n“Two plus three equals six.”\nYes, and it is false\n\n\n“Unlock the door!” / “Is it unlocked?”\nNo, a command / question\n\n\n“x is greater than three.”\nNeeds a value for x to stand alone\n\n\n\n\nClassical logic uses T = true, F = false. Not knowing the value does not create a third value.\n\n\nConnect to constraint satisfaction problems (CSPs): logical formulas also accept some assignments and reject others. An agent can use such rules to represent requirements and infer consequences. A correctly evaluated formula may still represent the wrong requirement.\nFix the person, door, and time when natural language leaves them implicit. The open expression involving x is not a closed proposition by itself. Specifying x makes it evaluable. Quantified statements come later.\n[Sources] - Russell and Norvig, AIMA, Chapter 7. - https://inst.eecs.berkeley.edu/~cs188/textbook/logic/propositional.html [/Sources]"
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#access-atoms",
+    "href": "slides/lec16_Logic.html#access-atoms",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "One Symbol, One Stable Meaning",
+    "text": "One Symbol, One Stable Meaning\nAn atom is a proposition we treat as indivisible.\nFor one person, at one access decision:\n\n\n\nSymbol\nAtomic proposition\n\n\n\n\nB\nThe person has a valid badge\n\n\nV\nThe person is an approved visitor\n\n\nE\nAn emergency is active\n\n\nD\nThe door unlocks\n\n\n\n\nPropositional logic combines atoms using logical connectives. A truth assignment gives each atom a value, T or F.\n\n\nKeep B, V, E, and D fixed throughout the access example. Generic truth tables use P and Q, which can stand for any propositions. A symbol names a statement, not a numerical quantity or a command.\nIf the person or time changes, a new statement may be needed. An atom can describe a complicated fact in English, but propositional logic does not inspect its internal structure."
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#not-and",
+    "href": "slides/lec16_Logic.html#not-and",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "NOT and AND",
+    "text": "NOT and AND\n\nNegation (NOT): \\neg P flips the value of P.\nConjunction (AND): P \\land Q is true only when both inputs are true.\n\n\n\n\nP\nQ\n\\neg P\nP \\land Q\n\n\n\n\nT\nT\nF\nT\n\n\nT\nF\nF\nF\n\n\nF\nT\nT\nF\n\n\nF\nF\nT\nF\n\n\n\n\n“Valid badge and no emergency”: which atom does NOT apply to?\n\n\nB \\land \\neg E. Only the emergency condition is negated.\n\n\nIntroduce a truth table as a systematic list of all input assignments and their output values. P and Q produce four rows. The negation column ignores Q, while AND depends on both inputs."
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#or-xor",
+    "href": "slides/lec16_Logic.html#or-xor",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Inclusive OR and Exclusive OR",
+    "text": "Inclusive OR and Exclusive OR\nDisjunction (OR) means at least one. Exclusive OR (XOR) means exactly one.\n\n\n\\underbrace{B \\lor V}_{\\text{at least one}}\n\\qquad\\qquad\n\\underbrace{(B \\lor V) \\land \\neg(B \\land V)}_{\\text{exactly one}}\n\n\nAn approved visitor may also have a badge. Use ordinary OR if either method, including both together, is acceptable.\n\n\nRead every column as one assignment. The first column is the difference between inclusive and exclusive OR. XOR’s first factor rules out neither, and its second factor rules out both. Clarify an English “or” before formalizing it."
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#formula-evaluation",
+    "href": "slides/lec16_Logic.html#formula-evaluation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "An Access Condition, Step by Step",
+    "text": "An Access Condition, Step by Step\n“A valid badge or approved visitor, and no active emergency.”\n\n\\varphi = (B \\lor V) \\land \\neg E\n\n\\varphi (phi) names this condition. Try B=\\text{false}, V=\\text{true}, E=\\text{false}.\n\n  \n  \n  \n  \n\n\n\n\nB \\lor V = \\text{true}.\n\n\n\n\n\\neg E = \\text{true}.\n\n\n\n\n\\varphi = \\text{true}.\n\n\n\n\nFirst translate authorization as B OR V, no emergency as NOT E, then combine them with AND. Parentheses group the authorization condition. Phi names a formula, not a new independently assigned atom.\nPause before evaluating. Each advance highlights the corresponding operation. Evaluate from the assigned leaves upward. The operation uses its immediate child values, not the English wording again.\nIf E changes to true, NOT E becomes false and the root becomes false, even though authorization remains true. This gives the next truth table a concrete row to check."
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#access-truth-table",
+    "href": "slides/lec16_Logic.html#access-truth-table",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Truth Table Covers Every Assignment",
+    "text": "A Truth Table Covers Every Assignment\nThree atoms give 2^3=8 rows. Intermediate columns show the calculation.\n\n\n\nB\nV\nE\nB \\lor V\n\\neg E\n\\varphi\n\n\n\n\nT\nT\nT\nT\nF\nF\n\n\nT\nT\nF\nT\nT\nT\n\n\nT\nF\nT\nT\nF\nF\n\n\nT\nF\nF\nT\nT\nT\n\n\nF\nT\nT\nT\nF\nF\n\n\nF\nT\nF\nT\nT\nT\n\n\nF\nF\nT\nF\nF\nF\n\n\nF\nF\nF\nF\nT\nF\n\n\n\n\n\\varphi=(B \\lor V)\\land\\neg E is true in three assignments. No emergency alone is insufficient.\n\n\nShow the enumeration pattern: B changes every four rows, V every two, and E every row. The animated example was row six. The final row fails because neither authorization method holds.\nIn n atoms, a full table needs 2^n rows. This exponential growth motivates more efficient reasoning methods in the next lecture."
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#negation-scope",
+    "href": "slides/lec16_Logic.html#negation-scope",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Negation Scope and De Morgan’s Laws",
+    "text": "Negation Scope and De Morgan’s Laws\n“Not both” means at least one fails. “Neither” means both fail.\n\n\n\n\nEnglish\nFormula\nEquivalent formula\n\n\n\n\nNot both\n\\neg(B \\land V)\n\\neg B \\lor \\neg V\n\n\nNeither\n\\neg(B \\lor V)\n\\neg B \\land \\neg V\n\n\n\n\nDe Morgan: negate each part and swap AND with OR. The symbol \\equiv means logical equivalence.\n\n\nWith a badge but no visitor approval, not both is true and neither is false. One assignment with different outputs disproves equivalence between those two requirements.\nEach row of the table gives a De Morgan equivalence. Keep parentheses until negation scope is clear. The next slide verifies the first law for arbitrary propositions P and Q."
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#implication",
+    "href": "slides/lec16_Logic.html#implication",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Implication Has One Violating Case",
+    "text": "Implication Has One Violating Case\nImplication: B \\rightarrow D means “if valid badge, then door unlocks.”\nB is the premise. D is the conclusion.\n\n\nAn implication is false only when its premise is true and its conclusion is false.\n\nA false premise makes the rule vacuously true: neither no-badge case violates it.\n\nThe diagram supplies the four rows of the implication truth table. Ask which case violates the rule before discussing the two cases without a badge.\nThe rule’s truth value is different from the door’s truth value: the rule can be true while D is false. Logical truth here describes compliance with a statement.\n“Vacuously” is a technical term for the convention, not another truth value. A visitor or another access method could explain D when B is false. The formula does not claim such an explanation exists, only that this assignment is compatible with the rule.\nMaterial implication describes truth conditions, not causation or timing. It does not itself specify a complete policy."
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#if-only-if",
+    "href": "slides/lec16_Logic.html#if-only-if",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "“If” and “Only If”",
+    "text": "“If” and “Only If”\n\n\nB \\rightarrow D: badge is sufficient, enough to guarantee unlocking.\nD \\rightarrow B: badge is necessary, required whenever unlocking occurs.\n\n\n“The robot moves only if its battery is ready.” M = moves, R = ready. Which direction?\n\n\nM \\rightarrow R. Read it as “movement requires readiness.”\n\n\nAn English sentence may mention the conclusion first: “D if B” still means B implies D. Necessary does not mean sufficient. A ready battery need not force motion."
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#arrow-variants",
+    "href": "slides/lec16_Logic.html#arrow-variants",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Converse, Inverse, and Contrapositive",
+    "text": "Converse, Inverse, and Contrapositive\nEquivalence (\\equiv): formulas agree on every truth assignment.\n\n\n\n\n\n\n\n\nName\nFormula\nEquivalent to the original?\n\n\n\n\nOriginal\nB \\rightarrow D\nYes\n\n\nConverse: reverse the arrow\nD \\rightarrow B\nNo\n\n\nInverse: negate both parts\n\\neg B \\rightarrow \\neg D\nNo\n\n\nContrapositive: reverse and negate\n\\neg D \\rightarrow \\neg B\nYes\n\n\n\n\nTry B=\\text{false}, D=\\text{true}. Which formulas are true?\n\n\nOriginal and contrapositive: true. Converse and inverse: false.\n\n\nLogical equivalence means agreement on every assignment. A single differing assignment refutes it. The contrapositive rules out exactly the original rule’s violating case: a valid badge but no unlock.\nThe converse and inverse are equivalent to each other, though not to the original. “Not equivalent” does not mean they differ on every row."
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#biconditional",
+    "href": "slides/lec16_Logic.html#biconditional",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Biconditional Requires Both Directions",
+    "text": "A Biconditional Requires Both Directions\n“The door unlocks if and only if the badge is valid.”\n\nB \\leftrightarrow D\n\\quad\\equiv\\quad\n(B \\rightarrow D) \\land (D \\rightarrow B)\n\n\n\n\nB\nD\nB \\leftrightarrow D\n\n\n\n\nT\nT\nT\n\n\nT\nF\nF\n\n\nF\nT\nF\n\n\nF\nF\nT\n\n\n\n\nThe biconditional is true when both sides have the same value. Iff abbreviates “if and only if.”\n\n\nBoth arrows hold in the F/F row. Compare XOR: it accepts the two mismatching rows, whereas the biconditional accepts the two matching rows. This badge-only policy is a temporary example. The final policy allows visitors too."
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#de-morgan-table",
+    "href": "slides/lec16_Logic.html#de-morgan-table",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Checking De Morgan’s Law",
+    "text": "Checking De Morgan’s Law\n\n\\neg(P \\land Q) \\equiv \\neg P \\lor \\neg Q\n\n\n\n\nP\nQ\n\\neg(P \\land Q)\n\\neg P \\lor \\neg Q\n\n\n\n\nT\nT\nF\nF\n\n\nT\nF\nT\nT\n\n\nF\nT\nT\nT\n\n\nF\nF\nT\nT\n\n\n\n\nThe output columns match on every assignment. Equivalent formulas can replace each other inside a larger formula.\n\n\nWork through the T/F row: AND is false, so its negation is true. NOT P is false but NOT Q is true, so their OR is true. Matching every output establishes equivalence.\nAgreement on only one row would be insufficient. A biconditional can be true in one assignment without its two sides being logically equivalent across all assignments."
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#equivalence-laws",
+    "href": "slides/lec16_Logic.html#equivalence-laws",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Useful Equivalence Laws",
+    "text": "Useful Equivalence Laws\n\n\n\n\n\n\n\nLaw\nEquivalent formulas\n\n\n\n\nDouble negation\n\\neg\\neg P \\equiv P\n\n\nIdentity\nP \\land \\text{true} \\equiv PP \\lor \\text{false} \\equiv P\n\n\nDomination\nP \\lor \\text{true} \\equiv \\text{true}P \\land \\text{false} \\equiv \\text{false}\n\n\nIdempotence\nP \\land P \\equiv PP \\lor P \\equiv P\n\n\nImplication\n(P \\rightarrow Q) \\equiv \\neg P \\lor Q\n\n\nDistributivity: AND over OR\nP \\land (Q \\lor R) \\equiv (P \\land Q) \\lor (P \\land R)\n\n\nDistributivity: OR over AND\nP \\lor (Q \\land R) \\equiv (P \\lor Q) \\land (P \\lor R)\n\n\n\nOR over AND: either P is true, or both Q and R are true.\n\nExplain the names with truth conditions rather than asking for memorization. Identity leaves the value unchanged. Domination fixes it regardless of P. Idempotence means a repeated input changes nothing. The implication law reproduces the implication’s four-row table.\nBoolean logic has both distributive laws. The operator outside the parentheses distributes over the operator inside. AND over OR requires P and at least one of Q or R. OR over AND allows P alone, otherwise it requires both Q and R. For the second law, if P is true, both clauses on the right are true. If P is false, the right side reduces to Q AND R.\nOptional check: rewrite NOT (P implies Q) as P AND NOT Q. This uses the implication law, De Morgan’s law, and double negation in that order."
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#simplification",
+    "href": "slides/lec16_Logic.html#simplification",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Redundant Condition Disappears",
+    "text": "A Redundant Condition Disappears\nAND over OR, used backward, factors out a shared requirement:\n\n(P \\land Q) \\lor (P \\land R) \\equiv P \\land (Q \\lor R)\n\nBoth forms require P, together with at least one of Q or R.\nB = valid badge, L = lab open.\n\n(B \\land L) \\lor (B \\land \\neg L)\n\n\nHere P=B, Q=L, R=\\neg L. Factor out the shared B:\n\n\\equiv B \\land (L \\lor \\neg L)\n\n\n\nSince L \\lor \\neg L is always true, B \\land \\text{true} \\equiv B.\n\n\nThe formula allows either value of L. Only the valid badge is required.\n\n\nP, Q, and R are arbitrary propositions. In the left form, either successful branch requires P. In the right form, P is required once alongside the choice between Q and R. This is AND distributing over OR, used in reverse to factor out the repeated requirement.\nThe example says “valid badge and lab open, or valid badge and lab not open.” A valid badge is required in both branches. The law of excluded middle makes L or NOT L true. Identity finishes the rewrite. Neither the algebra nor the truth table decides whether the resulting policy is appropriate for the real task."
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#policy-gap",
+    "href": "slides/lec16_Logic.html#policy-gap",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Testing an Incomplete Access Policy",
+    "text": "Testing an Incomplete Access Policy\nIntended: unlock exactly when authorized and no emergency is active.\nProposed rules: Rule 1 ((B \\lor V) \\land \\neg E) \\rightarrow D and Rule 2 D \\rightarrow \\neg E.\n\nTry B=\\text{false}, V=\\text{false}, E=\\text{false}, D=\\text{true}. Do both rules hold?\n\n\n  \n  \n  \n\n\n\nRule 1: \\text{false}\\rightarrow\\text{true} is true.\n\n\nRule 2: \\text{true}\\rightarrow\\text{true} is true.\n\n\n\nCounterexample: both written rules hold, but an unauthorized person gets in.\n\n\nPoint to the no-authorization state and the open door throughout the evaluation. The counterexample satisfies the written rules but violates the intended requirement. This does not make the two written rules logically inconsistent. They simply permit too many assignments.\nPhi is the earlier condition (B OR V) AND NOT E. Rule 1 requires access for eligible people. Rule 2 prohibits unlocking during an emergency. Neither requires authorization whenever unlocking occurs. The missing direction is D implies B OR V."
+  },
+  {
+    "objectID": "slides/lec16_Logic.html#complete-policy",
+    "href": "slides/lec16_Logic.html#complete-policy",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Both Directions Specify the Decision",
+    "text": "Both Directions Specify the Decision\n\nD \\leftrightarrow ((B \\lor V) \\land \\neg E)\n\n\n\nWhat must D be in each case?\n\n\n\n\n\n\n\n\nSituation\nRequired D\n\n\n\n\nValid badge, emergency active\nF\n\n\nApproved visitor, no badge, no emergency\nT\n\n\nNeither authorization method, no emergency\nF\n\n\n\n\nThe forward direction requires unlocking for eligible people. The reverse direction requires both authorization and no emergency whenever unlocking occurs. Adding D implies B OR V to the original pair gives the same complete Boolean decision.\nThis completes the simplified specification for these four atoms. It does not account for hardware failure, time delays, or other access mechanisms that the example omits."
   }
 ]
