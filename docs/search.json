@@ -1075,7 +1075,7 @@
     "href": "asset_credits.html#lec17",
     "title": "Visual Asset Credits",
     "section": "Lecture 17: Propositional Inference",
-    "text": "Lecture 17: Propositional Inference\nThe model-inclusion, resolution, and unit-propagation SVG diagrams are original illustrations created for this course. The robot and route examples, truth tables, exercises, and proof traces were written for the lecture. Concepts follow Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig, Chapter 7, with reference to the UC Berkeley CS 188 logic notes and the AIMA algorithm reference.\nReused public-domain (CC0) OpenClipart assets:\n\nslides/imgs/lec1/robot_openclipart.svg: Robot 2.\nslides/imgs/lec1/brain_lightbulb_openclipart.svg: Brain light bulb."
+    "text": "Lecture 17: Propositional Inference\nThe possible-worlds, model-inclusion, proof-system, CNF, route, resolution, and unit-propagation diagrams are original illustrations created for this course in draw.io. The resolution proof includes a sequence of highlighted frames. Their editable source is propositional-inference.drawio; the displayed figures are PNG exports. The robot and route examples, exercises, and proof traces were written for the lecture. Concepts follow Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig, Chapter 7, with reference to the UC Berkeley CS 188 logic notes and the AIMA algorithm reference.\nReused public-domain (CC0) OpenClipart assets:\n\nslides/imgs/lec1/robot_openclipart.svg: Robot 2.\nslides/imgs/lec1/brain_lightbulb_openclipart.svg: Brain light bulb."
   },
   {
     "objectID": "asset_credits.html#lec18",
@@ -3696,214 +3696,11 @@
     "text": "What to Remember\n\nPlanning searches over action sequences, not single actions.\nStates, goals, preconditions, and effects are represented as predicate literals.\nAction templates become ground actions by replacing variables with objects.\nThe closed world assumption makes missing facts false.\nEven simple domains create many possible ground actions.\n\nAsset credits"
   },
   {
-    "objectID": "slides/lec17_Propositional_Inference.html#can-the-robot-conclude-it-may-move",
-    "href": "slides/lec17_Propositional_Inference.html#can-the-robot-conclude-it-may-move",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Can the Robot Conclude It May Move?",
-    "text": "Can the Robot Conclude It May Move?\n\n\nLet B = battery ready, C = corridor clear, and M = movement permitted.\nThe robot knows:\n\nB, \\qquad (B \\land C) \\rightarrow M\n\n\nMust M be true? Must M be false? Or is it still undetermined?\n\n\n\n\n\nTake a quick vote without revealing the answer yet. The intended answer is undetermined. We know B, but lack information about C and M. Do not read the implication as a biconditional. M is a proposition about permission, not an instruction that is executed automatically. The example will return at the end.\n50-minute teaching plan, including discussion and answer reveals:\n\nSlides 1-8: facts, models, entailment, and counterexamples (11 minutes).\nSlides 9-16: query exercise, formula classification, SAT, and model checking (14 minutes).\nSlides 17-24: inference rules, CNF practice, and resolution (14 minutes).\nSlides 25-31: refutation, common mistakes, and the robot exit exercise (11 minutes).\n\nKeep the three main activities on slides 9, 21, and 29 interactive. Students should justify an answer with a model, equivalence, or proof step, not just name a result. This lecture builds on Lecture 16 and prepares the propositional foundations needed for Lecture 18 and Homework 3; the examples are not the homework solutions.\n[Sources]\n\nOriginal robot example for this course.\nOpenClipart public-domain robot icon; see asset_credits.html#lec17.\nRussell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 7, logical agents and propositional theorem proving.\nUC Berkeley CS 188, propositional logic and inference: https://inst.eecs.berkeley.edu/~cs188/textbook/logic/propositional.html and https://inst.eecs.berkeley.edu/~cs188/textbook/logic/inference.html\nAIMA algorithm reference, truth-table enumeration and propositional resolution: https://aima.cs.berkeley.edu/algorithms.pdf"
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#facts-rules-and-a-query",
-    "href": "slides/lec17_Propositional_Inference.html#facts-rules-and-a-query",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Facts, Rules, and a Query",
-    "text": "Facts, Rules, and a Query\nA knowledge base (KB) is a collection of sentences assumed true.\n\n\n\nRole\nRobot example\n\n\n\n\nFact\nB\n\n\nRule\n(B \\land C) \\rightarrow M\n\n\nQuery\nDoes M follow from the KB?\n\n\n\nWe read all KB sentences together as a conjunction:\n\n\\text{KB} = B \\land \\bigl((B \\land C) \\rightarrow M\\bigr)\n\n\nInference asks what follows from the sentences, not what seems plausible.\n\n\nClarify that rules and facts are both formulas. Writing KB as a set or as their conjunction is a representational choice. The assumed facts could be wrong about the physical world; inference guarantees a consequence of the encoded premises, not the correctness of the sensors.\n[Sources]\n\nAIMA Chapter 7, knowledge-based agents. Original robot encoding."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#a-model-is-a-compatible-world",
-    "href": "slides/lec17_Propositional_Inference.html#a-model-is-a-compatible-world",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "A Model Is a Compatible World",
-    "text": "A Model Is a Compatible World\nAn assignment gives every proposition a truth value. It is a model of a formula when that formula evaluates to true.\n\n\n\nP\nQ\nP \\rightarrow Q\nModel of P \\rightarrow Q?\n\n\n\n\nT\nT\nT\nYes\n\n\nT\nF\nF\nNo\n\n\nF\nT\nT\nYes\n\n\nF\nF\nT\nYes\n\n\n\n\nThe implication rules out exactly one world: P true and Q false.\n\n\nT and F abbreviate true and false. Textbooks also call a full assignment a model and then say it satisfies or fails to satisfy a formula. Here, compatible world always means satisfying assignment. Ask students to identify the excluded row before explaining it.\n[Sources]\n\nhttps://inst.eecs.berkeley.edu/~cs188/textbook/logic/propositional.html"
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#entailment-means-every-compatible-world",
-    "href": "slides/lec17_Propositional_Inference.html#entailment-means-every-compatible-world",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Entailment Means Every Compatible World",
-    "text": "Entailment Means Every Compatible World\n\n\\text{KB} \\models \\alpha\n\nThe query \\alpha is true in every model of the KB.\n\n\n All assignments  Worlds where the query is true  Models of the KB Every one also satisfies the query\n\n\n\nAlpha names the query formula; it need not be a single atom. Explain the set inclusion visually. The reverse inclusion is not required: the query may hold in worlds that violate the KB.\n[Sources]\n\nEntailment definition: https://inst.eecs.berkeley.edu/~cs188/textbook/logic/inference.html\nOriginal SVG set-inclusion illustration."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#ignore-rows-that-violate-the-kb",
-    "href": "slides/lec17_Propositional_Inference.html#ignore-rows-that-violate-the-kb",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Ignore Rows That Violate the KB",
-    "text": "Ignore Rows That Violate the KB\n\n\\text{KB} = P \\land (P \\rightarrow Q), \\qquad \\alpha = Q\n\n\n\n\nP\nQ\nP \\rightarrow Q\nKB true?\nRelevant to the query?\n\n\n\n\nT\nT\nT\nYes\nYes: Q is true\n\n\nT\nF\nF\nNo\nNo\n\n\nF\nT\nT\nNo\nNo\n\n\nF\nF\nT\nNo\nNo\n\n\n\n\n\\text{KB} \\models Q. No row makes the KB true and the query false.\n\n\nHave students find the rows where the complete KB is true, not merely where one rule is true. There is exactly one such row. This is a semantic verification of modus ponens, which we will name later.\n[Sources]\n\nOriginal truth-table example using standard propositional semantics."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#one-counterexample-is-enough",
-    "href": "slides/lec17_Propositional_Inference.html#one-counterexample-is-enough",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "One Counterexample Is Enough",
-    "text": "One Counterexample Is Enough\nNow reverse the proposed reasoning:\n\n\\text{KB} = Q \\land (P \\rightarrow Q), \\qquad \\alpha = P\n\n\n\n\nAssignment\nKB true?\nQuery P true?\n\n\n\n\nP=\\text{true},\\ Q=\\text{true}\nYes\nYes\n\n\nP=\\text{false},\\ Q=\\text{true}\nYes\nNo\n\n\n\n\n\\text{KB} \\not\\models P. The second row is a countermodel: a model of the KB that falsifies the query.\n\n\nThis is the fallacy of affirming the consequent. One supporting example never proves entailment, but one countermodel disproves it. The two listed assignments exhaust the KB’s models over P and Q.\n[Sources]\n\nOriginal countermodel example. AIMA Chapter 7, entailment."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#not-entailed-does-not-mean-false",
-    "href": "slides/lec17_Propositional_Inference.html#not-entailed-does-not-mean-false",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Not Entailed Does Not Mean False",
-    "text": "Not Entailed Does Not Mean False\nReturn to \\text{KB}=B\\land((B\\land C)\\rightarrow M).\nBoth of these assignments satisfy it:\n\n\n\nB\nC\nM\nCompatible with KB?\n\n\n\n\nT\nF\nF\nYes\n\n\nT\nF\nT\nYes\n\n\n\n\n\n\\text{KB} \\not\\models M\n\\qquad\\text{and}\\qquad\n\\text{KB} \\not\\models \\neg M\n\n\n\nThe truth of M is undetermined by the KB. Missing information is not automatically false.\n\n\nThese are two witnesses, not an exhaustive list: B=true, C=true, M=true is also a model. The three cases supported, refuted, and undetermined describe our information; they do not introduce a third truth value into classical propositional logic. A closed-world convention would be an additional assumption, not the default here.\n[Sources]\n\nOriginal robot example and model enumeration."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#your-turn-which-queries-follow",
-    "href": "slides/lec17_Propositional_Inference.html#your-turn-which-queries-follow",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Your Turn: Which Queries Follow?",
-    "text": "Your Turn: Which Queries Follow?\nA robot has two routes: A and B mean the respective route is open; G means the destination is reachable.\n\n\\text{KB} = (A \\lor B) \\land (A \\rightarrow G) \\land (B \\rightarrow G)\n\n\nDoes the KB entail each of these queries?\nG \\qquad A \\qquad \\neg A\nJustify each answer with all compatible worlds or a countermodel.\n\n\nAllow three minutes of pair work. A and B are new symbols for this route example, not the earlier battery variables. Students may reason by cases rather than write all eight rows. Ask for explicit assignments when they claim non-entailment. Keep the answers on the next slide hidden until discussion ends."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#the-destination-is-certain-the-route-is-not",
-    "href": "slides/lec17_Propositional_Inference.html#the-destination-is-certain-the-route-is-not",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "The Destination Is Certain; the Route Is Not",
-    "text": "The Destination Is Certain; the Route Is Not\nThe KB has exactly these three models over A,B,G:\n\n\n\nA\nB\nG\n\n\n\n\nT\nF\nT\n\n\nF\nT\nT\n\n\nT\nT\nT\n\n\n\n\n\nG is entailed: every surviving world has G true.\nA is not entailed: the second row is a countermodel.\n\\neg A is not entailed: the first row is a countermodel.\n\n\n\nReachability can be certain even when the open route is unknown.\n\n\nExplain why G=false is impossible: the disjunction requires at least one open route, and its implication forces G=true. We will prove this same conclusion with resolution later, without listing all assignments."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#classify-a-formula-across-all-worlds",
-    "href": "slides/lec17_Propositional_Inference.html#classify-a-formula-across-all-worlds",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Classify a Formula Across All Worlds",
-    "text": "Classify a Formula Across All Worlds\n\n\n\n\n\n\n\n\nClassification\nTruth pattern\nExample\n\n\n\n\nValid / tautology\nTrue in every assignment\nP \\lor \\neg P\n\n\nUnsatisfiable / contradiction\nTrue in no assignment\nP \\land \\neg P\n\n\nContingent\nTrue in some, false in others\nP \\land Q\n\n\n\nSatisfiable means true in at least one assignment.\n\nValid formulas and contingent formulas are both satisfiable.\n\n\nMake explicit that valid/unsatisfiable/contingent form the three-way classification used in Homework 3, while satisfiable is a broader yes/no property. Validity concerns one formula across all assignments; entailment relates a KB to a query.\n[Sources]\n\nAIMA Chapter 7, validity and satisfiability."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#quick-check-which-kind-of-formula",
-    "href": "slides/lec17_Propositional_Inference.html#quick-check-which-kind-of-formula",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Quick Check: Which Kind of Formula?",
-    "text": "Quick Check: Which Kind of Formula?\n\n\n\n\n\n\n\nFormula\nClassification\n\n\n\n\n(P \\land Q) \\rightarrow P\nValid\n\n\n(P \\lor Q) \\land \\neg P \\land \\neg Q\nUnsatisfiable\n\n\nP \\rightarrow Q\nContingent\n\n\n\n\nFor the contingent formula, give one satisfying assignment and one falsifying assignment.\n\n\nP=\\text{false},Q=\\text{false} satisfies it; P=\\text{true},Q=\\text{false} falsifies it.\n\n\nReveal one classification at a time. First row: whenever the premise is true, P is already true. Second: the disjunction conflicts with the last two conjuncts. Third: not every implication is a tautology. These are different formulas from the homework."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#entailment-as-a-satisfiability-question",
-    "href": "slides/lec17_Propositional_Inference.html#entailment-as-a-satisfiability-question",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Entailment as a Satisfiability Question",
-    "text": "Entailment as a Satisfiability Question\nThe Boolean satisfiability problem (SAT) asks whether any assignment satisfies a formula.\n\n\\text{KB} \\models \\alpha\n\\quad\\Longleftrightarrow\\quad\n\\text{KB} \\land \\neg\\alpha \\text{ is unsatisfiable}\n\n\n\n\nTest result for \\text{KB}\\land\\neg\\alpha\nMeaning\n\n\n\n\nA satisfying assignment exists\nIt is a countermodel to the query\n\n\nNo satisfying assignment exists\nThe query is entailed\n\n\n\n\nTry to make the premises true and the conclusion false. If that is impossible, the conclusion follows.\n\n\nRead the equivalence in words before introducing SAT as a computational problem. This is the foundation of refutation. Do not equate satisfiable with entailed: the negated query is essential.\n[Sources]\n\nhttps://inst.eecs.berkeley.edu/~cs188/textbook/logic/inference.html"
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#first-check-that-the-kb-is-consistent",
-    "href": "slides/lec17_Propositional_Inference.html#first-check-that-the-kb-is-consistent",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "First Check That the KB Is Consistent",
-    "text": "First Check That the KB Is Consistent\nSuppose sensor reports give:\n\n\\text{KB} = C \\land \\neg C\n\n\nNo assignment satisfies the KB.\nIn classical logic, an inconsistent KB entails every query.\nThis does not make every claim about the physical world true.\n\n\nNo compatible worlds means the premises need repair, not that the robot knows everything.\n\n\nThe universal condition for entailment holds vacuously over an empty set of models. In a practical pipeline, check the KB’s consistency before treating a yes answer as useful evidence. Other logics handle inconsistency differently, but this course example uses classical logic.\n[Sources]\n\nConsequence of the classical model-theoretic entailment definition. Original sensor example."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#model-checking-searches-for-a-countermodel",
-    "href": "slides/lec17_Propositional_Inference.html#model-checking-searches-for-a-countermodel",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Model Checking Searches for a Countermodel",
-    "text": "Model Checking Searches for a Countermodel\nConceptual pseudocode; model is a complete truth assignment.\ndef entails(kb, query):\n    symbols = symbols_in(kb, query)\n    for model in all_assignments(symbols):\n        if evaluate(kb, model):\n            if not evaluate(query, model):\n                return False\n    return True\n\nEnumerate symbols from both the KB and the query.\nSkip assignments that violate the KB.\nn symbols give 2^n assignments before pruning.\n\n\nDefine all three helpers verbally: symbols_in gathers distinct proposition symbols, all_assignments enumerates Boolean assignments, evaluate applies the truth tables. The snippet is pseudocode, not a complete Python program. Step through the highlighted lines with the earlier reversed-implication countermodel. Ask why returning True inside the loop would be wrong. Formula evaluation adds work per assignment; do not claim O(2^n) regardless of formula size.\n[Sources]\n\nSimplified iterative teaching pseudocode based on the semantics of AIMA Figure 7.10, not a copied implementation: https://aima.cs.berkeley.edu/algorithms.pdf"
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#meaning-and-proof-are-different",
-    "href": "slides/lec17_Propositional_Inference.html#meaning-and-proof-are-different",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Meaning and Proof Are Different",
-    "text": "Meaning and Proof Are Different\n\n\n\n\n\n\n\nNotation\nWhat it says\n\n\n\n\n\\text{KB}\\models\\alpha\nThe query is true in every model of the KB\n\n\n\\text{KB}\\vdash\\alpha\nOur proof system derives the query\n\n\n\nSound: everything the proof system derives is entailed.\nComplete: every entailed query can be derived by that system.\n\nA sound proof cannot invent a consequence. A complete system can reach every consequence in its scope.\n\n\nThe single turnstile is a derivability relation; the double turnstile is semantic entailment. Completeness is relative to a logic and proof system, not a guarantee that any arbitrary short search will find the proof. If using the term algorithm, it must exhaust its complete procedure before a negative result is conclusive.\n[Sources]\n\nAIMA Chapter 7, inference and proofs."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#two-sound-inference-rules",
-    "href": "slides/lec17_Propositional_Inference.html#two-sound-inference-rules",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Two Sound Inference Rules",
-    "text": "Two Sound Inference Rules\n\n\nModus Ponens\n\nP\\rightarrow Q,\\quad P\n\nTherefore:\nQ\nAffirm the premise; conclude its consequence.\n\nModus Tollens\n\nP\\rightarrow Q,\\quad \\neg Q\n\nTherefore:\n\\neg P\nDeny the consequence; rule out its premise.\n\n\nNeither rule lets us infer P from Q and P\\rightarrow Q.\n\n\nLink modus ponens to the earlier truth table and modus tollens to the implication’s one forbidden row. The Latin names are conventional names for these patterns. No new probability or causal assumption is involved.\n[Sources]\n\nAIMA Chapter 7, sound propositional inference rules."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#cnf-gives-proofs-a-uniform-input",
-    "href": "slides/lec17_Propositional_Inference.html#cnf-gives-proofs-a-uniform-input",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "CNF Gives Proofs a Uniform Input",
-    "text": "CNF Gives Proofs a Uniform Input\nConjunctive normal form (CNF) is an AND of clauses.\n\n(P\\lor\\neg Q)\\land(Q\\lor R)\\land\\neg R\n\n\n\n\nTerm\nMeaning\nExamples\n\n\n\n\nLiteral\nAn atom or its negation\nP, \\neg Q\n\n\nClause\nAn OR of literals\nP\\lor\\neg Q\n\n\nUnit clause\nA clause with one literal\n\\neg R\n\n\n\n\nAll clauses must hold. Within a clause, at least one literal must hold.\n\n\nConjunctions and disjunctions can have more than two inputs. A unit clause is already valid CNF syntax; it does not need extra literals. Distinguish a formula from a set of clauses with implicit conjunction.\n[Sources]\n\nhttps://inst.eecs.berkeley.edu/~cs188/textbook/logic/propositional.html"
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#rewrite-without-changing-the-models",
-    "href": "slides/lec17_Propositional_Inference.html#rewrite-without-changing-the-models",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Rewrite Without Changing the Models",
-    "text": "Rewrite Without Changing the Models\n\nRemove implications and biconditionals.\n\n\nP\\rightarrow Q\\equiv\\neg P\\lor Q\n\n\nP\\leftrightarrow Q\\equiv(\\neg P\\lor Q)\\land(\\neg Q\\lor P)\n\n\nMove negation inward using De Morgan and double negation.\nDistribute OR over AND until the outer operation is AND.\n\n\nX\\lor(Y\\land Z)\\equiv(X\\lor Y)\\land(X\\lor Z)\n\n\nThese propositional rewrites preserve equivalence over the same symbols. Later, FOL Skolemization preserves satisfiability rather than equivalence in the original language; do not introduce that machinery here. Naive distribution can increase formula size substantially; the small examples are for understanding the transformation.\n[Sources]\n\nAIMA Chapter 7, conversion to conjunctive normal form."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#worked-conversion-distribute-carefully",
-    "href": "slides/lec17_Propositional_Inference.html#worked-conversion-distribute-carefully",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Worked Conversion: Distribute Carefully",
-    "text": "Worked Conversion: Distribute Carefully\nStart with \\neg(P\\rightarrow Q)\\lor R.\n\nRemove the implication:\n\\neg(\\neg P\\lor Q)\\lor R\n\n\nMove negation inward:\n(P\\land\\neg Q)\\lor R\n\n\nDistribute:\n(P\\lor R)\\land(\\neg Q\\lor R)\n\n\nPause before each reveal and have students predict the next expression. The result contains two clauses, not P OR NOT Q OR R. For a quick check, set R=false and verify that both the original and the result require P=true and Q=false."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#your-turn-one-clause-or-two",
-    "href": "slides/lec17_Propositional_Inference.html#your-turn-one-clause-or-two",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Your Turn: One Clause or Two?",
-    "text": "Your Turn: One Clause or Two?\nConvert both formulas to CNF. Show the intermediate rewrite.\n\n\nFormula 1\nP\\rightarrow(Q\\land R)\nOne premise requires two consequences.\n\nFormula 2\n(P\\land Q)\\rightarrow R\nTwo conditions jointly require one consequence.\n\n\nWhy should moving a conjunction across the implication change the clause structure?\n\n\nAllow three minutes to work in pairs. Ask students to eliminate the implication before deciding how many clauses they need. The two forms deliberately expose a common distribution and negation error."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#cnf-answers-the-conjunctions-location-matters",
-    "href": "slides/lec17_Propositional_Inference.html#cnf-answers-the-conjunctions-location-matters",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "CNF Answers: The Conjunction’s Location Matters",
-    "text": "CNF Answers: The Conjunction’s Location Matters\nFormula 1\n\nP\\rightarrow(Q\\land R)\n\\equiv\\neg P\\lor(Q\\land R)\n\n\n\\equiv(\\neg P\\lor Q)\\land(\\neg P\\lor R)\n\nFormula 2\n\n(P\\land Q)\\rightarrow R\n\\equiv\\neg(P\\land Q)\\lor R\n\n\n\\equiv\\neg P\\lor\\neg Q\\lor R\n\n\nThe first answer has two clauses; the second has one. In the first, P=true forces Q and R. In the second, R is forced only if P and Q are both true. Ask students to read the final clauses back into the original sentences."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#resolution-combines-two-clauses",
-    "href": "slides/lec17_Propositional_Inference.html#resolution-combines-two-clauses",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Resolution Combines Two Clauses",
-    "text": "Resolution Combines Two Clauses\nResolve one complementary pair, P and \\neg P:\n\n\\frac{P\\lor A\\qquad\\neg P\\lor B}{A\\lor B}\n\n\n\n     P or Anot P or BA or B\n\n\nThe derived clause is called the resolvent. Keep every other literal.\n\nP is the pivot atom. A and B can stand for the remaining disjunctions, including an empty remainder. Resolution is a sound consequence step, not generally an equivalence rewrite: replacing both parents by only the resolvent can lose information. In a refutation procedure, add derived clauses to the existing set.\n[Sources]\n\nAIMA Chapter 7, propositional resolution. Original SVG derivation diagram."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#why-the-resolution-rule-is-sound",
-    "href": "slides/lec17_Propositional_Inference.html#why-the-resolution-rule-is-sound",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why the Resolution Rule Is Sound",
-    "text": "Why the Resolution Rule Is Sound\nSuppose both P\\lor A and \\neg P\\lor B are true.\n\n\n\nCase\nWhat the parents force\nTherefore\n\n\n\n\nP=\\text{false}\nThe first clause requires A\nA\\lor B is true\n\n\nP=\\text{true}\nThe second clause requires B\nA\\lor B is true\n\n\n\nSpecial cases:\n\n\\frac{P\\qquad\\neg P\\lor Q}{Q}\n\\qquad\\qquad\n\\frac{P\\qquad\\neg P}{\\bot}\n\n\nThe empty clause, written \\bot here, is false under every assignment.\n\n\nSome texts use a square or an empty pair of braces for the empty clause. Here bottom denotes that contradictory clause; do not confuse the empty clause with an empty clause set, whose conjunction is true. The unit example on the left is modus ponens after implication elimination.\n[Sources]\n\nAIMA Chapter 7, soundness of resolution and empty clause. Original case analysis."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#prove-reachability-by-refutation",
-    "href": "slides/lec17_Propositional_Inference.html#prove-reachability-by-refutation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Prove Reachability by Refutation",
-    "text": "Prove Reachability by Refutation\nRecall A: route A open, B: route B open, G: reachable.\n\n\\text{KB}=(A\\lor B)\\land(A\\rightarrow G)\\land(B\\rightarrow G)\n\nTo prove G, add the negated query \\neg G and convert to clauses:\n\n\n\nID\nClause\nOrigin\n\n\n\n\n1\nA\\lor B\nAt least one route is open\n\n\n2\n\\neg A\\lor G\nA\\rightarrow G\n\n\n3\n\\neg B\\lor G\nB\\rightarrow G\n\n\n4\n\\neg G\nNegated query\n\n\n\n\nThis is the same example students classified by models earlier. We are temporarily supposing the destination is not reachable and checking whether that can coexist with the KB. Keep these clause IDs visible or write them on the board for the next slide."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#a-resolution-proof-is-a-checkable-trace",
-    "href": "slides/lec17_Propositional_Inference.html#a-resolution-proof-is-a-checkable-trace",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "A Resolution Proof Is a Checkable Trace",
-    "text": "A Resolution Proof Is a Checkable Trace\nStart: 1: A\\lor B, 2:\\neg A\\lor G, 3:\\neg B\\lor G, 4:\\neg G.\n\n\n\nNew ID\nParents\nResolve on\nDerived clause\n\n\n\n\n5\n2 and 4\nG\n\\neg A\n\n\n6\n1 and 5\nA\nB\n\n\n7\n3 and 6\nB\nG\n\n\n8\n4 and 7\nG\n\\bot\n\n\n\n\n\\text{KB}\\land\\neg G is unsatisfiable. Therefore \\text{KB}\\models G.\n\n\nReveal and discuss one resolvent per click. Read parents and pivot aloud. Ask why line 8 proves the original query, not its negation. A different valid proof order is acceptable. This proof avoids exhaustive truth-table enumeration."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#do-not-cancel-two-pairs-at-once",
-    "href": "slides/lec17_Propositional_Inference.html#do-not-cancel-two-pairs-at-once",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Do Not Cancel Two Pairs at Once",
-    "text": "Do Not Cancel Two Pairs at Once\nConsider these clauses:\nP\\lor Q,\\qquad\\neg P\\lor\\neg Q\n\nCan we erase both complementary pairs and conclude \\bot?\n\n\nNo. The assignment P=\\text{true}, Q=\\text{false} satisfies both parents.\n\n\nResolving only on P gives Q\\lor\\neg Q, a tautology, not a contradiction.\n\n\nGive students a brief opportunity to challenge the tempting but invalid cancellation. Resolving on Q instead gives P OR NOT P, also a tautology. A sound rule cannot turn a satisfiable set into a contradictory consequence."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#unit-propagation-connects-back-to-search",
-    "href": "slides/lec17_Propositional_Inference.html#unit-propagation-connects-back-to-search",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Unit Propagation Connects Back to Search",
-    "text": "Unit Propagation Connects Back to Search\nA unit clause forces its only literal to be true. Repeat after simplifying.\nFor \\{A\\lor B,\\ \\neg A\\lor G,\\ \\neg B\\lor G,\\ \\neg G\\}:\n\n\n     G = falseforced by not GA = B = falseforced by the rulesConflictA or B is false\n\n\n\nForced assignments can prune search. In general, no unit clauses does not mean the problem is solved; branching may still be needed.\n\n\nThis connects to constraint propagation from the preceding CSP lectures. A SAT solver can mix propagation with branching; this slide is not a full DPLL lecture. In this particular clause set, the unit clauses suffice to find a contradiction. Unit propagation alone is not complete for general CNF satisfiability.\n[Sources]\n\nUnit clause heuristic: https://inst.eecs.berkeley.edu/~cs188/textbook/logic/inference.html\nOriginal propagation diagram for the route example."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#exit-exercise-what-changed-for-the-robot",
-    "href": "slides/lec17_Propositional_Inference.html#exit-exercise-what-changed-for-the-robot",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Exit Exercise: What Changed for the Robot?",
-    "text": "Exit Exercise: What Changed for the Robot?\nAgain, B: battery ready, C: corridor clear, M: movement permitted.\n\\text{KB}_0=\\{B,\\ (B\\land C)\\rightarrow M\\}\nConsider two separate updates to this original KB:\n\nAdd C. Does M follow?\nInstead, add \\neg M. Does \\neg C follow?\n\n\nWrite the rule as a clause, then justify both answers with resolution.\n\n\nAllow two minutes of individual work before comparing answers. Keep the two updates separate. Students should get the clause NOT B OR NOT C OR M. This question returns to the opener but adds information, testing whether students understand why the answer can change."
-  },
-  {
-    "objectID": "slides/lec17_Propositional_Inference.html#the-added-fact-determines-the-conclusion",
-    "href": "slides/lec17_Propositional_Inference.html#the-added-fact-determines-the-conclusion",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "The Added Fact Determines the Conclusion",
-    "text": "The Added Fact Determines the Conclusion\nThe rule becomes \\neg B\\lor\\neg C\\lor M.\nResolving with known B first gives \\neg C\\lor M.\n\n\nUpdate 1: Add C\n\n\\frac{\\neg C\\lor M\\qquad C}{M}\nMovement permission follows.\n\n\nUpdate 2: Add \\neg M\n\n\\frac{\\neg C\\lor M\\qquad\\neg M}{\\neg C}\nThe corridor cannot be clear under these premises.\n\n\n\nThe original KB left M undetermined. New facts eliminate possible worlds.\n\n\nBoth are direct resolution derivations. To express either as a refutation proof, add the negation of its conclusion and resolve the derived unit clause with that assumption to obtain bottom. The second conclusion is logical, not a claim that permission always measures physical corridor safety; it follows because the encoded rule and B are assumed true."
-  },
-  {
     "objectID": "slides/lec17_Propositional_Inference.html#takeaways",
     "href": "slides/lec17_Propositional_Inference.html#takeaways",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Takeaways",
-    "text": "Takeaways\n\n\n\nEntailment: the query holds in every model of the KB.\nCountermodel: one compatible world falsifies the query.\nCNF: an AND of clauses; each clause is an OR of literals.\nResolution: remove one complementary pair and keep the rest.\nRefutation: show the KB plus the negated query is inconsistent.\n\n\n\n\n\nSupport a conclusion with a proof. Reject entailment with a countermodel. Do not confuse either with a guess.\n\nAsset credits\n\nClose by asking for the difference between not entailed and false. Bridge to the next class: the same entailment question remains, but FOL gives us objects, relations, and quantifiers. Source details are in notes and asset credits rather than an extra reading paragraph or credits slide.\n[Sources]\n\nAIMA Chapter 7 and UC Berkeley CS 188 logic notes, as cited above.\nOpenClipart public-domain brain/lightbulb icon; see asset_credits.html#lec17."
+    "text": "Takeaways\n\n\n\nEntailment: the query holds in every KB model.\nCountermodel: a KB model where the query is false.\nCNF: an AND of clauses, each an OR of literals.\nResolution: use one complementary pair and keep the other literals.\nRefutation: derive a contradiction from the KB plus the negated query.\n\n\n\n\n\nAn unknown conclusion needs more information. “Not entailed” is not the same as “false.”\n\nAsset credits\n\nAsk for one countermodel or proof step from today’s examples. The next lecture keeps the entailment question but adds objects, relations, and quantifiers in first-order logic.\n[Sources] - Russell and Norvig, AIMA, Chapter 7. - Public-domain brain/lightbulb icon: https://openclipart.org/detail/266221/brain-light-bulb. [/Sources]"
   },
   {
     "objectID": "slides/lec18_FOL.html#first-order-logic",
@@ -8202,5 +7999,145 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Both Directions Specify the Decision",
     "text": "Both Directions Specify the Decision\n\nD \\leftrightarrow ((B \\lor V) \\land \\neg E)\n\n\n\nWhat must D be in each case?\n\n\n\n\n\n\n\n\nSituation\nRequired D\n\n\n\n\nValid badge, emergency active\nF\n\n\nApproved visitor, no badge, no emergency\nT\n\n\nNeither authorization method, no emergency\nF\n\n\n\n\nThe forward direction requires unlocking for eligible people. The reverse direction requires both authorization and no emergency whenever unlocking occurs. Adding D implies B OR V to the original pair gives the same complete Boolean decision.\nThis completes the simplified specification for these four atoms. It does not account for hardware failure, time delays, or other access mechanisms that the example omits."
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#robot-question",
+    "href": "slides/lec17_Propositional_Inference.html#robot-question",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Can the Robot Conclude It May Move?",
+    "text": "Can the Robot Conclude It May Move?\n\n\nFor this robot, define:\n\nB: the battery is ready.\nC: the corridor is clear.\nM: movement is permitted.\n\nIt knows B and the rule (B\\land C)\\rightarrow M.\n\nMust M be true, must it be false, or is it undetermined?\n\n\n\n\n\nLecture 16 gave us a language and its truth conditions. Now we ask what an agent can conclude from several sentences together. B, C, and M are defined for this robot example and keep these meanings throughout it.\nTake a vote and ask what is missing. The answer is undetermined: B alone does not establish C. The rule is a sufficient condition for permission, not a biconditional or a command to move. Return to this question after identifying all models.\nAllow about 15 minutes for models and entailment, 7 for model checking and inference rules, 12 for CNF with the paired exercise, and 12 for resolution and propagation. Reserve the remaining time for the robot exit question. Pause at each answer reveal.\n[Sources] - Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 7. - Original robot example for this course. - Public-domain OpenClipart robot: https://openclipart.org/detail/325789/robot-2. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#knowledge-base",
+    "href": "slides/lec17_Propositional_Inference.html#knowledge-base",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Facts, Rules, and a Query",
+    "text": "Facts, Rules, and a Query\nA knowledge base (KB) is a collection of sentences assumed true.\n\n\n\nRole\nRobot example\n\n\n\n\nFact\nB: the battery is ready\n\n\nRule\n(B\\land C)\\rightarrow M\n\n\nQuery\nDoes M follow from these sentences?\n\n\n\nAll sentences must hold together:\n\n\\text{KB}=B\\land\\bigl((B\\land C)\\rightarrow M\\bigr)\n\n\nInference finds consequences of the encoded facts and rules. It does not verify that a sensor report is correct.\n\n\nA fact and a rule are both formulas. A set of KB sentences is interpreted as their conjunction. The query need not be stored in the KB, and it can be a compound formula rather than a single atom.\n[Sources] - AIMA Chapter 7, knowledge-based agents. Original robot encoding. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#robot-models",
+    "href": "slides/lec17_Propositional_Inference.html#robot-models",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Assignments and Models",
+    "text": "Assignments and Models\nAn assignment gives every atom T or F. A model of the KB is an assignment that makes every KB sentence true.\n\\text{KB}=B\\land\\bigl((B\\land C)\\rightarrow M\\bigr)\n\n\nThe KB leaves three possible worlds. T = true, F = false.\n\n\nRead each tile in B, C, M order. The top row has B=true. The second tile, B=true, C=true, M=false, violates the implication. The remaining three top-row worlds are models. All bottom-row worlds fail because the KB includes B as a fact, even when the implication itself is true.\nTextbooks sometimes call any assignment a model and then ask whether it satisfies a sentence. Here, a model of the KB always means a satisfying assignment. These are logical possibilities under the assumptions, not probability estimates.\n[Sources] - AIMA Chapter 7, models and satisfaction. Original enumeration and editable draw.io illustration. - https://inst.eecs.berkeley.edu/~cs188/textbook/logic/propositional.html [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#entailment",
+    "href": "slides/lec17_Propositional_Inference.html#entailment",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Entailment",
+    "text": "Entailment\n\\text{KB}\\models\\alpha\nRead: “The KB entails \\alpha.” The query \\alpha is true in every model of the KB.\n\n\nTo disprove entailment, find one world where the KB is true and the query is false.\n\n\nAlpha names the query formula. The double turnstile is the semantic entailment symbol. The diagram depicts an entailed query in general, not yet the robot query M. The query can be true outside the KB’s models, so the reverse inclusion is unnecessary.\n[Sources] - AIMA Chapter 7, entailment. - https://inst.eecs.berkeley.edu/~cs188/textbook/logic/inference.html [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#robot-queries",
+    "href": "slides/lec17_Propositional_Inference.html#robot-queries",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Robot’s Permission Is Undetermined",
+    "text": "The Robot’s Permission Is Undetermined\nThe three models of B\\land((B\\land C)\\rightarrow M):\n\n\n\nModel\nB\nC\nM\n\n\n\n\n1\nT\nT\nT\n\n\n2\nT\nF\nT\n\n\n3\nT\nF\nF\n\n\n\nA countermodel satisfies the KB but makes the query false.\n\n\\text{KB}\\models B: all three models have B=\\text{true}.\n\n\n\\text{KB}\\not\\models M: model 3 is a countermodel.\n\n\n\\text{KB}\\not\\models\\neg M: model 1 is a countermodel.\n\n\nNot entailed does not mean false. The KB permits both values of M.\n\n\nReturn to the opener. Ask students to identify a countermodel before each reveal. Model 2 also disproves entailment of NOT M. These three assignments exhaust the KB models over B, C, M.\nThe distinction is about what follows from our knowledge. Every individual assignment still has only the two classical truth values. Treating an unreported fact as false would be an extra closed-world assumption.\n[Sources] - Original robot example, with the classical entailment definition from AIMA Chapter 7. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#formula-classification",
+    "href": "slides/lec17_Propositional_Inference.html#formula-classification",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Validity and Satisfiability",
+    "text": "Validity and Satisfiability\nSatisfiable: at least one assignment makes the formula true.\n\n\n\nClassification\nAcross all assignments\nExample\n\n\n\n\nValid / tautology\nAlways true\nP\\lor\\neg P\n\n\nUnsatisfiable / contradiction\nAlways false\nP\\land\\neg P\n\n\nContingent\nSometimes true, sometimes false\nP\\rightarrow Q\n\n\n\n\nFor P\\rightarrow Q, give one satisfying and one falsifying assignment.\n\n\nP=\\text{false},Q=\\text{false} satisfies it. P=\\text{true},Q=\\text{false} falsifies it.\n\n\nValid and contingent formulas are both satisfiable.\n\n\nValidity classifies a single formula across all assignments. Entailment relates a KB to a query. The table’s three categories are mutually exclusive and exhaustive. Satisfiable is a broader yes/no property, not a fourth exclusive category.\nAn implication is not automatically valid. Remind students of its one violating row rather than treating the arrow as a proof that Q is true.\n[Sources] - AIMA Chapter 7, validity and satisfiability. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#sat-test",
+    "href": "slides/lec17_Propositional_Inference.html#sat-test",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Entailment as a SAT Test",
+    "text": "Entailment as a SAT Test\nThe Boolean satisfiability problem (SAT) asks whether a formula has a satisfying assignment.\n\n\\text{KB}\\models\\alpha\n\\quad\\Longleftrightarrow\\quad\n\\text{KB}\\land\\neg\\alpha\\text{ is unsatisfiable}\n\n\n\n\n\n\n\n\n\\text{KB}\\land\\neg\\alpha\nWhat it tells us\n\n\n\n\nHas a satisfying assignment\nA countermodel exists: \\alpha does not follow\n\n\nHas no satisfying assignment\n\\alpha follows from the KB\n\n\n\nThis is refutation: assume the conclusion is false and look for a contradiction with the KB.\n\nA consistent KB has at least one model. Check this first: C\\land\\neg C has none and entails every query in classical logic.\n\n\nExplain the negated query in words: can the premises all hold while the proposed conclusion fails? No such world means entailment. The negation is essential.\nThe consistency warning concerns classical logic. If the KB has no models, the universal condition for entailment is vacuously true. This does not make contradictory sensor reports trustworthy or make every claim about the physical world true. Repair the premises before interpreting an entailment result as useful evidence.\n[Sources] - AIMA Chapter 7, proof by refutation and satisfiability. - https://inst.eecs.berkeley.edu/~cs188/textbook/logic/inference.html [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#model-checking",
+    "href": "slides/lec17_Propositional_Inference.html#model-checking",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Model Checking",
+    "text": "Model Checking\nConceptual pseudocode: enumerate complete truth assignments.\ndef entails(kb, query):\n    symbols = symbols_in(kb, query)\n    for model in all_assignments(symbols):\n        if evaluate(kb, model):\n            if not evaluate(query, model):\n                return False\n    return True\n\nsymbols_in: collect distinct atoms from both inputs.\nall_assignments: enumerate all 2^n assignments for n atoms.\nevaluate: apply the connectives’ truth tables.\n\n\nWhy is return True after the loop?\n\n\nOne countermodel gives False. True requires exhausting the loop.\n\n\nThe helpers describe operations, not a complete runnable Python implementation. Follow the highlights: enumeration, testing a model, and accepting only after exhaustion. Rows violating the KB do not constrain the query. This procedure also returns True for an inconsistent KB, as classical semantics requires.\nUse the robot’s model 3 as a witness for query M. If querying a fresh atom X, symbols_in must include X even though it is absent from the KB. Counting 2^n assignments omits the additional cost of evaluating each formula.\n[Sources] - Simplified teaching pseudocode based on AIMA truth-table entailment: https://aima.cs.berkeley.edu/algorithms.pdf [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#meaning-and-proof",
+    "href": "slides/lec17_Propositional_Inference.html#meaning-and-proof",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Entailment and Derivation",
+    "text": "Entailment and Derivation\n\n\n\n\n\n\n\nNotation\nMeaning\n\n\n\n\n\\text{KB}\\models\\alpha\nTrue in every KB model: a statement about meaning\n\n\n\\text{KB}\\vdash\\alpha\nDerived by our proof rules: a statement about a proof\n\n\n\n\n\nSound: every derived conclusion is entailed. Complete: every entailed conclusion can be derived.\n\n\nRead the single turnstile as derives and the double turnstile as entails. The arrows in the diagram denote set inclusion, not implication between object-language atoms. A system that is both sound and complete has exactly the right consequences.\nCompleteness is relative to the logic and proof system. It does not mean that a particular unfinished proof search will find every consequence, or that modus ponens alone proves every propositional entailment. Propositional resolution is complete for refutation when all needed resolvents are explored.\n[Sources] - AIMA Chapter 7, inference systems, soundness, and completeness. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#inference-rules",
+    "href": "slides/lec17_Propositional_Inference.html#inference-rules",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Modus Ponens and Modus Tollens",
+    "text": "Modus Ponens and Modus Tollens\nThese are inference rules: patterns that derive a conclusion from known premises.\n\n\nModus Ponens\n\\frac{P\\rightarrow Q\\qquad P}{Q}\nThe premise P holds, so the rule requires Q.\nIf the battery is ready, a light is on. The battery is ready. Therefore the light is on.\n\nModus Tollens\n\\frac{P\\rightarrow Q\\qquad\\neg Q}{\\neg P}\nIf Q is false, P cannot hold without violating the rule.\nThe same rule holds, but the light is off. Therefore the battery is not ready.\n\n\nKnowing Q and P\\rightarrow Q does not establish P. The light might have another power source.\n\n\nExplain the fraction-like notation before using it: the formulas above the line are premises, the formula below is the derived conclusion. The Latin names identify these two reasoning patterns. Ponens affirms the antecedent; tollens denies the consequent. Both are sound because the implication excludes P=true, Q=false.\nThe light example is a separate simplified rule with generic atoms P and Q. The caveat is logical, not probabilistic: P=false, Q=true satisfies Q and the rule while falsifying P. Affirming the consequent is therefore unsound.\n[Sources] - AIMA Chapter 7, standard propositional inference rules. Original battery/light example. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#cnf-structure",
+    "href": "slides/lec17_Propositional_Inference.html#cnf-structure",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Conjunctive Normal Form",
+    "text": "Conjunctive Normal Form\nConjunctive normal form (CNF) is an AND of clauses.\n (P\\lor\\neg Q)\\land(Q\\lor R)\\land\\neg R \n\n\n\n\nTerm\nMeaning\n\n\n\n\nLiteral\nAn atom or its negation, such as P or \\neg Q\n\n\nClause\nAn OR of literals, such as P\\lor\\neg Q\n\n\nUnit clause\nJust one literal, such as \\neg R\n\n\n\n\nAll clauses must hold. Within each clause at least one literal must hold. A unit clause is already a clause and needs no extra literal. P, Q, and R are generic atoms for this section.\nAsk which clause forces R to be false. If R=false, the second clause then forces Q=true, and the first forces P=true. This also anticipates unit propagation.\n[Sources] - AIMA Chapter 7, CNF. Original annotated draw.io illustration. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#cnf-conversion",
+    "href": "slides/lec17_Propositional_Inference.html#cnf-conversion",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "CNF Conversion, Step by Step",
+    "text": "CNF Conversion, Step by Step\nConvert \\neg(P\\rightarrow Q)\\lor R without changing its models.\n\n\n\n\n\n\n\nStep\nEquivalent formula\n\n\n\n\n1. Remove the implication\n\\neg(\\neg P\\lor Q)\\lor R\n\n\n2. Move NOT inward\n(P\\land\\neg Q)\\lor R\n\n\n3. Distribute OR over AND\n(P\\lor R)\\land(\\neg Q\\lor R)\n\n\n\nThe distributive law used in step 3:\nX\\lor(Y\\land Z)\\equiv(X\\lor Y)\\land(X\\lor Z)\n\nThe result has two clauses. When R=\\text{false}, both forms require P=\\text{true} and Q=\\text{false}.\n\n\nPredict each expression before revealing it. Step 1 uses P implies Q equivalent to NOT P OR Q. Step 2 uses De Morgan and double negation. Step 3 first commutes R to the left, then substitutes X=R, Y=P, Z=NOT Q in the displayed distributive law.\nCNF needs OR over AND. AND over OR is also a valid distributive law, but expansion in that direction produces an OR of conjunctions instead. To remove a biconditional, rewrite P iff Q as (NOT P OR Q) AND (NOT Q OR P). Repeated distribution can greatly enlarge a formula, so this direct method is for small examples.\n[Sources] - AIMA Chapter 7, equivalent CNF rewrites. Original worked formula. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#cnf-practice",
+    "href": "slides/lec17_Propositional_Inference.html#cnf-practice",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "CNF Practice: One Clause or Two?",
+    "text": "CNF Practice: One Clause or Two?\nConvert both formulas. First remove the implication.\n\n\nOne Premise, Two Consequences\nP\\rightarrow(Q\\land R)\n\n\\neg P\\lor(Q\\land R) \\equiv(\\neg P\\lor Q)\\land(\\neg P\\lor R)\nTwo clauses: P requires Q and also R.\n\n\nTwo Conditions, One Consequence\n(P\\land Q)\\rightarrow R\n\n\\neg(P\\land Q)\\lor R \\equiv\\neg P\\lor\\neg Q\\lor R\nOne clause: only P and Q together require R.\n\n\n\nThe position of AND matters. Negating an AND and distributing over an AND are different steps.\n\n\nGive a short pair exercise before clicking. Keep both answers hidden initially and reveal each solution separately. In the first, distribute OR over AND. In the second, negating the premise changes its AND into OR by De Morgan, so no distribution is needed.\nUse P=true, Q=false, R=false to distinguish the original formulas: the first is false but the second is true. This tests whether students changed the rule while rearranging it.\n[Sources] - Original practice using AIMA Chapter 7 equivalence laws. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#resolution-rule",
+    "href": "slides/lec17_Propositional_Inference.html#resolution-rule",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Resolution",
+    "text": "Resolution\nResolution combines two clauses containing a complementary pair, P and \\neg P.\n\nP is the pivot atom. A,B are the remaining disjunctions. Add the derived resolvent; keep both parents.\n\n\n\nIf both parents are true…\nThen…\n\n\n\n\nP=\\text{false}\nThe first clause forces A\n\n\nP=\\text{true}\nThe second clause forces B\n\n\n\n\nEither way, A\\lor B is true. Resolution is sound.\n\n\nP is the pivot atom. A and B here stand for the remaining literals or disjunctions, not the robot’s battery atom. The case split proves soundness without guessing P’s truth value.\nResolution derives a consequence; it generally does not produce an equivalent replacement for both parents. A refutation procedure retains existing clauses and adds the resolvent.\n[Sources] - AIMA Chapter 7, propositional resolution. Original draw.io parent/resolvent diagram. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#empty-clause",
+    "href": "slides/lec17_Propositional_Inference.html#empty-clause",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Unit Resolution and the Empty Clause",
+    "text": "Unit Resolution and the Empty Clause\nA unit clause has only one literal, so resolving can leave a shorter clause or no literals at all.\n\n\nOne Literal Remains\n\\frac{P\\qquad\\neg P\\lor Q}{Q}\nThe fact P eliminates \\neg P. The remaining clause is Q.\n\nNo Literals Remain\n\\frac{P\\qquad\\neg P}{\\bot}\nThe empty clause, written \\bot, cannot be true under any assignment.\n\n\nDeriving \\bot proves the starting clauses cannot all hold together.\n\n\nThe first pattern is modus ponens after rewriting the implication as a clause. Read bottom as contradiction. Some sources denote the empty clause by a square or empty braces. An OR over zero literals is false.\nDistinguish the empty clause, which is false, from an empty set of clauses, whose conjunction is true. A resolution derivation of bottom shows inconsistency of the starting clause set. When those starting clauses are KB plus the negated query, this establishes the original query by refutation.\n[Sources] - AIMA Chapter 7, unit resolution and the empty clause. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#route-refutation",
+    "href": "slides/lec17_Propositional_Inference.html#route-refutation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Reachability by Refutation",
+    "text": "Reachability by Refutation\nL: left route open. R: right route open. G: the goal is reachable.\n\n\\text{KB}=(L\\lor R)\\land(L\\rightarrow G)\\land(R\\rightarrow G)\nTo prove G, add \\neg G and convert to clauses:\n\n\n\nID\nClause\nOrigin\n\n\n\n\n1\nL\\lor R\nAt least one route is open\n\n\n2\n\\neg L\\lor G\nL\\rightarrow G\n\n\n3\n\\neg R\\lor G\nR\\rightarrow G\n\n\n4\n\\neg G\nNegated query, added for the proof\n\n\n\n\nThis is a new example; L and R name two route-open propositions, not costs. Ask whether a reachable goal necessarily tells us which route is open. No: either one or both could be open. The KB is consistent, for example L=true, R=false, G=true satisfies it.\nThe diagram represents the alternative routes, not a shortest-path search. Clause 4 is a temporary assumption, not a reported fact about the goal. Refutation checks whether it can coexist with the original KB.\n[Sources] - Original route example and draw.io diagram, using AIMA Chapter 7 refutation. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#resolution-trace",
+    "href": "slides/lec17_Propositional_Inference.html#resolution-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Resolution Proof, Step by Step",
+    "text": "A Resolution Proof, Step by Step\nNumbers identify clauses. Each new clause records its parents and pivot.\n\n  \n  \n  \n  \n  \n\n\n\n5: resolve 2 and 4 on G to get \\neg L.\n\n\n6: resolve 3 and 4 on G to get \\neg R.\n\n\n7: resolve 1 and 5 on L to get R.\n\n\n8: resolve 6 and 7 on R to get \\bot. Thus \\text{KB}\\models G.\n\n\n\nOne click reveals one inference and highlights its parent clauses, connecting arrows, and new result. Step backward to revisit a deduction. Clause 4 is used twice; the two copies in the proof diagram denote the same negated-query clause.\nAsk students to predict each resolvent before revealing it. Deriving bottom disproves the extra assumption NOT G when combined with the KB. It proves G, not NOT G. Keep every clause, even when it is no longer used in the displayed derivation. Other valid proof orders are possible.\n[Sources] - Original checkable refutation trace. AIMA Chapter 7, propositional resolution. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#resolution-pitfall",
+    "href": "slides/lec17_Propositional_Inference.html#resolution-pitfall",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Resolution Uses One Complementary Pair",
+    "text": "Resolution Uses One Complementary Pair\nConsider P\\lor Q and \\neg P\\lor\\neg Q.\n\nCan we cancel both P,\\neg P and Q,\\neg Q to conclude \\bot?\n\n\nNo. P=\\text{true},Q=\\text{false} satisfies both parent clauses.\n\n\nResolve only on P:\n\\frac{P\\lor Q\\qquad\\neg P\\lor\\neg Q}{Q\\lor\\neg Q}\n\n\nThe resolvent is a tautology, not a contradiction. A sound rule cannot derive \\bot from satisfiable parents.\n\n\nThis is a useful counterexample to an overgeneralized cancellation rule. Resolving on Q gives P OR NOT P instead. A complementary pair across the two parent clauses is the pivot for one resolution step. Complementary literals in the resulting clause make it tautological, not empty.\n[Sources] - Original error-checking example based on AIMA’s resolution rule. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#unit-propagation",
+    "href": "slides/lec17_Propositional_Inference.html#unit-propagation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Unit Propagation",
+    "text": "Unit Propagation\nA unit clause forces its only literal to be true. Substitute that assignment and repeat.\nFor the route clauses \\{L\\lor R,\\ \\neg L\\lor G,\\ \\neg R\\lor G,\\ \\neg G\\}:\n\n\nLike constraint propagation, forced assignments reduce search. If they do not decide the formula, branching may still be needed.\n\n\nCSP means constraint satisfaction problem, as in Lectures 13-15. The clause NOT G first forces G=false. Simplifying NOT L OR G and NOT R OR G produces the unit clauses NOT L and NOT R. These force both routes closed, making L OR R false.\nThis is the same inconsistency as the resolution proof, viewed as successive forced assignments. Unit propagation alone is not a complete general SAT solver. No remaining unit clause does not imply a satisfying assignment or unsatisfiability.\n[Sources] - AIMA Chapter 7, SAT and unit clauses. - https://inst.eecs.berkeley.edu/~cs188/textbook/logic/inference.html - Original draw.io propagation diagram. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec17_Propositional_Inference.html#robot-updates",
+    "href": "slides/lec17_Propositional_Inference.html#robot-updates",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "New Facts Change the Robot’s Conclusions",
+    "text": "New Facts Change the Robot’s Conclusions\nB: battery ready. C: corridor clear. M: movement permitted.\nOriginal KB: B and (B\\land C)\\rightarrow M.\nThe rule becomes \\neg B\\lor\\neg C\\lor M. Resolving with B gives \\neg C\\lor M.\nConsider these separate updates to the original KB:\n\n\nAdd C: Does M Follow?\n\n\\frac{\\neg C\\lor M\\qquad C}{M}\nYes. The rule now has both required conditions.\n\n\nAdd \\neg M: Does \\neg C Follow?\n\n\\frac{\\neg C\\lor M\\qquad\\neg M}{\\neg C}\nYes. A clear corridor would contradict the rule and known facts.\n\n\n\nThe original KB left M undetermined. An added fact removes possible worlds.\n\n\nAllow a brief individual attempt before each reveal. The updates are alternatives, not cumulative: adding C and NOT M together would make this KB inconsistent. For each update students can also filter the three models on the earlier slide.\nThe second conclusion follows from this encoded sufficient-condition rule and B. It is not a claim that a movement restriction always measures real corridor safety. A refutation proof for either conclusion would add its negation and derive bottom from the displayed unit result.\n[Sources] - Original robot exercise using AIMA Chapter 7 inference and resolution. [/Sources]"
   }
 ]

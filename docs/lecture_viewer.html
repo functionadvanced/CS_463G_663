@@ -247,6 +247,10 @@ ul.task-list li input[type="checkbox"] {
     slideClone.classList.add("lecture-viewer-slide-clone");
     slideClone.removeAttribute("style");
     slideClone.removeAttribute("hidden");
+    // Reveal keeps a duplicate code block for each line-highlight step.
+    slideClone.querySelectorAll("pre.code-wrapper > code.fragment").forEach((step) => {
+      step.remove();
+    });
     slideClone.querySelectorAll(".fragment").forEach((fragment) => {
       fragment.classList.add("visible");
       fragment.classList.remove("current-fragment");
@@ -269,6 +273,9 @@ ul.task-list li input[type="checkbox"] {
       const scale = preview.clientWidth / 1050;
       preview.style.setProperty("--thumb-scale", scale.toString());
     });
+    const activeIndex = [...thumbs.querySelectorAll(".lecture-viewer-thumb")]
+      .findIndex((button) => button.classList.contains("active"));
+    if (activeIndex >= 0) setActiveThumb(activeIndex);
   };
 
   const setActiveThumb = (index) => {
@@ -297,6 +304,8 @@ ul.task-list li input[type="checkbox"] {
       return;
     }
 
+    // The embedded viewer keeps one selected slide at mobile widths too.
+    reveal.configure({ scrollActivationWidth: null });
     const slides = reveal.getSlides();
     const deckTitle = cleanText(deckDocument.querySelector("#title-slide .subtitle")?.textContent || title);
     const loadedUrl = new URL(deckDocument.location.href);
