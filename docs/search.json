@@ -676,7 +676,7 @@
     "href": "index.html#course-schedule",
     "title": "CS 463G & CS 663: (Intro to) Artificial Intelligence",
     "section": "Course Schedule",
-    "text": "Course Schedule\nThis schedule (including homework) is tentative and may be adjusted as the semester unfolds. The course website is the source for assignment specifications, dates, starter files, and updates; Canvas is used for submissions, grading, and lecture recordings. Official university dates are listed on the UK Academic Calendar, and the final exam period follows the UK Examination Schedule.\n\n\n\n#\nDate\nContent\n\n\n\n\n1\nMon, Aug 24\nCourse introduction, syllabus, grading, and course logisticsLecture 0: Language and ToolsTextbook: Artificial Intelligence: A Modern Approach\n\n\n2\nWed, Aug 26\nLecture 1: Introduction to AIAIMA 1.1-1.2\n\n\n3\nFri, Aug 28\nLecture 2: Agents and EnvironmentsAIMA 2.1-2.2\n\n\n4\nMon, Aug 31\nLecture 2b: Designing Intelligent AgentsPEAS, agent architectures, and a Python vacuum-agent demonstrationAIMA 2.3-2.4Code: Vacuum agents demo\n\n\n5\nWed, Sep 2\nLecture 3: The Nature of EnvironmentsAttendance Verification on Canvas\n\n\n6\nFri, Sep 4\nLecture 4: Introduction to SearchAIMA 3.1-3.2\n\n\n-\nMon, Sep 7\nNo class: Labor Day\n\n\n7\nWed, Sep 9\nLecture 5: BFS and DFSAIMA 3.4; practice BFS/DFS problemsCode: BFS and DFSHomework announced: Homework 1 - Keys, Doors, and Shortest Paths\n\n\n8\nFri, Sep 11\nLecture 6: Uniform-Cost SearchPractice Dijkstra’s algorithmCode: Uniform-cost search\n\n\n9\nMon, Sep 14\nLecture 7: Informed SearchAIMA 3.5Code: A* search\n\n\n10\nWed, Sep 16\nLecture 8: Search Review\n\n\n11\nFri, Sep 18\nLecture 9: Adversarial SearchAIMA U.S. 5.1-5.3 or AIMA Global 6.1-6.3Code: Tic-tac-toe\n\n\n12\nMon, Sep 21\nLecture 10: Alpha-Beta PruningCode: Alpha-beta pruningHomework announced: Homework 2 - Reversi Agents\n\n\n13\nWed, Sep 23\nLecture 11: Local SearchAIMA 4.1-4.2Code: Simulated annealing, 8-puzzleHomework due: Homework 1\n\n\n14\nFri, Sep 25\nLecture 12: Genetic AlgorithmCode: Genetic 8-queens\n\n\n15\nMon, Sep 28\nLecture 13: Constraint Satisfaction ProblemsAIMA U.S. 6.1-6.3 or AIMA Global 5.1-5.3\n\n\n16\nWed, Sep 30\nLecture 14: CSP ConsistencyCode: AC-3\n\n\n17\nFri, Oct 2\nLecture 15: CSP SearchCode: Sudoku\n\n\n18\nMon, Oct 5\nLecture 16: LogicPropositions, connectives, translation, truth tables, and equivalenceAIMA 7.1-7.4Homework due: Homework 2\n\n\n19\nWed, Oct 7\nLecture 17: Propositional InferenceModels, entailment, CNF, and resolution; worked examples and practiceAIMA 7.4-7.6\n\n\n20\nFri, Oct 9\nLecture 18: First-Order LogicMidterm review: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF)The specific topics covered by each question will be uploaded soon.Homework announced: Homework 3 - Logic Toolkit\n\n\n21\nMon, Oct 12\nMidterm exam in classPreparation: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF)Scope: Lectures 1–16, including Lecture 2b; Lectures 17 and 18 are excluded.\n\n\n22\nWed, Oct 14\nLecture 19: Planning\n\n\n23\nFri, Oct 16\nLecture 20: Planning Algorithms\n\n\n24\nMon, Oct 19\nLecture 21: ProbabilityAIMA Appendix A.3; AIMA 12.1-12.5Homework announced: Homework 4 - Probability in Motion\n\n\n25\nWed, Oct 21\nLecture 22: Probabilistic Inference\n\n\n26\nFri, Oct 23\nLecture 23: Bayes NetsAIMA 13.1-13.4Homework due: Homework 3\n\n\n-\nMon, Oct 26\nNo class: Fall Break\n\n\n27\nWed, Oct 28\nLecture 24: Machine LearningAIMA 19.1-19.2Code: KNN on MNIST\n\n\n28\nFri, Oct 30\nLecture 25: Bias, Variance, and OverfittingCode: Linear regression\n\n\n29\nMon, Nov 2\nLecture 26: Decision TreesAIMA 19.3Homework due: Homework 4\n\n\n30\nWed, Nov 4\nLecture 27: Practical PyTorchTensors, data loaders, models, autograd, training, evaluation, and debugging\n\n\n31\nFri, Nov 6\nLecture 28: Deep LearningAIMA U.S. 21.1 or AIMA Global 22.1Code: Backpropagation\n\n\n32\nMon, Nov 9\nLecture 29: Convolutional Neural NetworksCode: CNNHomework announced: Homework 5 - Two-Digit MNIST with a CNN\n\n\n33\nWed, Nov 11\nLecture 30: Reinforcement LearningAIMA 16.1-16.3 and 16.5\n\n\n34\nFri, Nov 13\nLecture 31: Multi-Armed Bandits\n\n\n35\nMon, Nov 16\nLecture 32: Value-Based Model-Free RL\n\n\n36\nWed, Nov 18\nLecture 33: Policy-Based Model-Free RLHomework announced: Homework 6 - Actor-Critic for Buckshot Roulette\n\n\n37\nFri, Nov 20\nLecture 34: PPO and GRPO\n\n\n38\nMon, Nov 23\nLecture 35: Generative Machine LearningAIMA 25.1 and 25.4Homework due: Homework 5\n\n\n-\nWed, Nov 25\nNo class: Thanksgiving Break\n\n\n-\nFri, Nov 27\nNo class: Thanksgiving Break\n\n\n39\nMon, Nov 30\nLecture 36: Autoregressive Models\n\n\n40\nWed, Dec 2\nLecture 37: TransformersHomework due: Homework 6\n\n\n41\nFri, Dec 4\nLecture 38: Transformers continued\n\n\n42\nMon, Dec 7\nLecture 39: Cutting-Edge AI TopicsLoRA, DPO, agent skills, evaluation harnessesPrep Day: no major assignments, quizzes, or exams\n\n\n43\nWed, Dec 9\nNew topic placeholder: student questions, demos, or optional wrap-upPrep Day; last day of classesFinal exam review\n\n\n\nFinal exam: Monday, December 14, 2026, 10:30 AM-12:30 PM (official UK examination schedule)."
+    "text": "Course Schedule\nThis schedule (including homework) is tentative and may be adjusted as the semester unfolds. The course website is the source for assignment specifications, dates, starter files, and updates; Canvas is used for submissions, grading, and lecture recordings. Official university dates are listed on the UK Academic Calendar, and the final exam period follows the UK Examination Schedule.\n\n\n\n#\nDate\nContent\n\n\n\n\n1\nMon, Aug 24\nCourse introduction, syllabus, grading, and course logisticsLecture 0: Language and ToolsTextbook: Artificial Intelligence: A Modern Approach\n\n\n2\nWed, Aug 26\nLecture 1: Introduction to AIAIMA 1.1-1.2\n\n\n3\nFri, Aug 28\nLecture 2: Agents and EnvironmentsAIMA 2.1-2.2\n\n\n4\nMon, Aug 31\nLecture 2b: Designing Intelligent AgentsPEAS, agent architectures, and a Python vacuum-agent demonstrationAIMA 2.3-2.4Code: Vacuum agents demo\n\n\n5\nWed, Sep 2\nLecture 3: The Nature of EnvironmentsAttendance Verification on Canvas\n\n\n6\nFri, Sep 4\nLecture 4: Introduction to SearchAIMA 3.1-3.2\n\n\n-\nMon, Sep 7\nNo class: Labor Day\n\n\n7\nWed, Sep 9\nLecture 5: BFS and DFSAIMA 3.4; practice BFS/DFS problemsCode: BFS and DFSHomework announced: Homework 1 - Keys, Doors, and Shortest Paths\n\n\n8\nFri, Sep 11\nLecture 6: Uniform-Cost SearchPractice Dijkstra’s algorithmCode: Uniform-cost search\n\n\n9\nMon, Sep 14\nLecture 7: Informed SearchAIMA 3.5Code: A* search\n\n\n10\nWed, Sep 16\nLecture 8: Search Review\n\n\n11\nFri, Sep 18\nLecture 9: Adversarial SearchAIMA U.S. 5.1-5.3 or AIMA Global 6.1-6.3Code: Tic-tac-toe\n\n\n12\nMon, Sep 21\nLecture 10: Alpha-Beta PruningCode: Alpha-beta pruningHomework announced: Homework 2 - Reversi Agents\n\n\n13\nWed, Sep 23\nLecture 11: Local SearchAIMA 4.1-4.2Code: Simulated annealing, 8-puzzleHomework due: Homework 1\n\n\n14\nFri, Sep 25\nLecture 12: Genetic AlgorithmCode: Genetic 8-queens\n\n\n15\nMon, Sep 28\nLecture 13: Constraint Satisfaction ProblemsAIMA U.S. 6.1-6.3 or AIMA Global 5.1-5.3\n\n\n16\nWed, Sep 30\nLecture 14: CSP ConsistencyCode: AC-3\n\n\n17\nFri, Oct 2\nLecture 15: CSP SearchCode: Sudoku\n\n\n18\nMon, Oct 5\nLecture 16: LogicPropositions, connectives, translation, truth tables, and equivalenceAIMA 7.1-7.4Homework due: Homework 2\n\n\n19\nWed, Oct 7\nLecture 17: Propositional InferenceModels, entailment, CNF, and resolution; worked examples and practiceAIMA 7.4-7.6\n\n\n20\nFri, Oct 9\nLecture 18: First-Order LogicMidterm review: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Homework announced: Homework 3 - Logic Toolkit\n\n\n21\nMon, Oct 12\nMidterm exam in classPreparation: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Scope: Lectures 1–16, including Lecture 2b; Lectures 17 and 18 are excluded.\n\n\n22\nWed, Oct 14\nLecture 19: Planning\n\n\n23\nFri, Oct 16\nLecture 20: Planning Algorithms\n\n\n24\nMon, Oct 19\nLecture 21: ProbabilityAIMA Appendix A.3; AIMA 12.1-12.5Homework announced: Homework 4 - Probability in Motion\n\n\n25\nWed, Oct 21\nLecture 22: Probabilistic Inference\n\n\n26\nFri, Oct 23\nLecture 23: Bayes NetsAIMA 13.1-13.4Homework due: Homework 3\n\n\n-\nMon, Oct 26\nNo class: Fall Break\n\n\n27\nWed, Oct 28\nLecture 24: Machine LearningAIMA 19.1-19.2Code: KNN on MNIST\n\n\n28\nFri, Oct 30\nLecture 25: Bias, Variance, and OverfittingCode: Linear regression\n\n\n29\nMon, Nov 2\nLecture 26: Decision TreesAIMA 19.3Homework due: Homework 4\n\n\n30\nWed, Nov 4\nLecture 27: Practical PyTorchTensors, data loaders, models, autograd, training, evaluation, and debugging\n\n\n31\nFri, Nov 6\nLecture 28: Deep LearningAIMA U.S. 21.1 or AIMA Global 22.1Code: Backpropagation\n\n\n32\nMon, Nov 9\nLecture 29: Convolutional Neural NetworksCode: CNNHomework announced: Homework 5 - Two-Digit MNIST with a CNN\n\n\n33\nWed, Nov 11\nLecture 30: Reinforcement LearningAIMA 16.1-16.3 and 16.5\n\n\n34\nFri, Nov 13\nLecture 31: Multi-Armed Bandits\n\n\n35\nMon, Nov 16\nLecture 32: Value-Based Model-Free RL\n\n\n36\nWed, Nov 18\nLecture 33: Policy-Based Model-Free RLHomework announced: Homework 6 - Actor-Critic for Buckshot Roulette\n\n\n37\nFri, Nov 20\nLecture 34: PPO and GRPO\n\n\n38\nMon, Nov 23\nLecture 35: Generative Machine LearningAIMA 25.1 and 25.4Homework due: Homework 5\n\n\n-\nWed, Nov 25\nNo class: Thanksgiving Break\n\n\n-\nFri, Nov 27\nNo class: Thanksgiving Break\n\n\n39\nMon, Nov 30\nLecture 36: Autoregressive Models\n\n\n40\nWed, Dec 2\nLecture 37: TransformersHomework due: Homework 6\n\n\n41\nFri, Dec 4\nLecture 38: Transformers continued\n\n\n42\nMon, Dec 7\nLecture 39: Cutting-Edge AI TopicsLoRA, DPO, agent skills, evaluation harnessesPrep Day: no major assignments, quizzes, or exams\n\n\n43\nWed, Dec 9\nNew topic placeholder: student questions, demos, or optional wrap-upPrep Day; last day of classesFinal exam review\n\n\n\nFinal exam: Monday, December 14, 2026, 10:30 AM-12:30 PM (official UK examination schedule)."
   },
   {
     "objectID": "index.html#references",
@@ -1082,7 +1082,7 @@
     "href": "asset_credits.html#lec18",
     "title": "Visual Asset Credits",
     "section": "Lecture 18: First-Order Logic",
-    "text": "Lecture 18: First-Order Logic\nReuses ../lec1/connections_openclipart.svg from OpenClipart."
+    "text": "Lecture 18: First-Order Logic\nThe quantifier-order and witness-function diagrams, and the highlighted resolution-proof frames, are original draw.io illustrations created for this course. Their editable source is first-order-logic.drawio; the slides use PNG exports. The advising example and quick-check questions were written for the lecture. Concepts and the Human/Mortal example follow Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig, Chapters 8-9, with reference to the UC Berkeley CS 188 first-order logic notes and Stanford CS 257 notes on clause form and Skolemization.\nReuses the public-domain OpenClipart connections artwork, slides/imgs/lec1/connections_openclipart.svg, credited under Lecture 1."
   },
   {
     "objectID": "asset_credits.html#lec19",
@@ -1257,56 +1257,49 @@
     "href": "homeworks/hw3.html",
     "title": "Homework 3: Logic Toolkit",
     "section": "",
-    "text": "LogicIndividualWritten derivations"
-  },
-  {
-    "objectID": "homeworks/hw3.html#background-and-reference-sheet",
-    "href": "homeworks/hw3.html#background-and-reference-sheet",
-    "title": "Homework 3: Logic Toolkit",
-    "section": "Background and reference sheet",
-    "text": "Background and reference sheet\nPropositional logic treats each symbol such as \\(P\\) or \\(Q\\) as one truth-valued statement. First-order logic adds objects, predicates, variables, and quantifiers, allowing a formula to describe relationships among members of a domain. Throughout this homework, parentheses and the scope of each quantifier are part of the meaning—not merely typography.\n\n\n\n\n\n\n\n\nForm\nRead as\nUseful equivalence\n\n\n\n\n\\(\\neg P\\)\nnot \\(P\\)\nflips the truth value\n\n\n\\(P \\land Q\\)\n\\(P\\) and \\(Q\\)\ntrue only when both are true\n\n\n\\(P \\lor Q\\)\n\\(P\\) or \\(Q\\)\nfalse only when both are false\n\n\n\\(P \\rightarrow Q\\)\nif \\(P\\), then \\(Q\\)\n\\(\\neg P \\lor Q\\)\n\n\n\\(P \\leftrightarrow Q\\)\n\\(P\\) exactly when \\(Q\\)\n\\((P\\rightarrow Q)\\land(Q\\rightarrow P)\\)\n\n\n\n\nClause-form workflow\nUse the same explicit pipeline for each CNF conversion:\n\neliminate \\(\\leftrightarrow\\) and \\(\\rightarrow\\);\nmove negations inward with De Morgan’s laws and quantifier duality;\nstandardize bound variable names apart;\nmove quantifiers to a clear prenex form when useful;\nSkolemize existential variables, recording which universal variables each Skolem function depends on;\ndistribute \\(\\lor\\) over \\(\\land\\); and\nwrite the result as a set of clauses, with universal quantifiers implicit.\n\n\n\n\n\n\n\nTipUnification and resolution reminders\n\n\n\nA substitution must be applied consistently everywhere, and a variable cannot be replaced by a term containing that same variable (the occurs check). Resolution combines clauses containing complementary literals, applies the required unifier, and removes the resolved pair. In a refutation proof, deriving the empty clause means that the knowledge base together with the negated query is inconsistent."
+    "text": "LogicIndividualWritten derivations\nRequired work: complete Problems 1-5 below. The reference sheet at the end is supporting material, with no additional questions to submit."
   },
   {
     "objectID": "homeworks/hw3.html#truth-tables-and-classification",
     "href": "homeworks/hw3.html#truth-tables-and-classification",
     "title": "Homework 3: Logic Toolkit",
     "section": "1. Truth tables and classification",
-    "text": "1. Truth tables and classification\nFor each formula, construct the complete truth table and classify it as exactly one of the following:\n\ntautology: true under every truth assignment;\ncontradiction: false under every truth assignment; or\ncontingent: true under at least one assignment and false under at least one assignment.\n\nAnalyze these formulas:\n\n\\[(P \\lor Q) \\rightarrow R\\]\n\\[\\neg(P \\lor Q) \\leftrightarrow (\\neg P \\land \\neg Q)\\]\n\\[((P \\rightarrow Q) \\land (Q \\rightarrow R)) \\rightarrow (P \\rightarrow R)\\]\n\nInclude columns for the useful subexpressions, not only the final result."
+    "text": "1. Truth tables and classification\nFor each formula, construct the complete truth table and classify it as exactly one of the following:\n\ntautology: true under every truth assignment;\ncontradiction: false under every truth assignment; or\ncontingent: true under at least one assignment and false under at least one assignment.\n\nAnalyze these formulas:\n\n(P \\lor Q) \\rightarrow R\n\\neg(P \\lor Q) \\leftrightarrow (\\neg P \\land \\neg Q)\n((P \\rightarrow Q) \\land (Q \\rightarrow R)) \\rightarrow (P \\rightarrow R)\n\nInclude columns for the useful subexpressions, not only the final result."
   },
   {
     "objectID": "homeworks/hw3.html#first-order-logic-translation",
     "href": "homeworks/hw3.html#first-order-logic-translation",
     "title": "Homework 3: Logic Toolkit",
     "section": "2. First-order logic translation",
-    "text": "2. First-order logic translation\nTranslate each sentence into first-order logic. State the domain and define every predicate or constant you introduce.\n\nEveryone who studies AI is intelligent.\nSome student loves logic but does not love probability.\nEvery professor teaches at least one course.\n\nUse quantifier scope and parentheses carefully. Equivalent, well-defined predicate names are acceptable."
+    "text": "2. First-order logic translation\nTranslate each sentence into first-order logic (FOL). State the domain and define every predicate or constant you introduce. Your domain must include all objects your encoding refers to, such as people and courses.\n\nEveryone who studies AI is intelligent.\nSome student loves logic but does not love probability.\nEvery professor teaches at least one course.\n\nUse quantifier scope and parentheses carefully. Equivalent, well-defined predicate names are acceptable."
   },
   {
     "objectID": "homeworks/hw3.html#conversion-to-clause-form",
     "href": "homeworks/hw3.html#conversion-to-clause-form",
     "title": "Homework 3: Logic Toolkit",
     "section": "3. Conversion to clause form",
-    "text": "3. Conversion to clause form\nConvert each formula to conjunctive normal form. Show implication elimination, movement of negations, standardization or Skolemization when needed, and distribution into clauses.\n\n\\[\\forall x\\, ((P(x) \\lor Q(x)) \\rightarrow R(x))\\]\n\\[\\neg \\exists y\\, \\forall x\\, (Loves(x,y) \\lor Hates(x,y))\\]\n\nFor the second formula, make the dependency of any Skolem function explicit. In the final clause set, universal quantifiers may be left implicit."
+    "text": "3. Conversion to clause form\nConvert each formula to conjunctive normal form (CNF) and give the final set of clauses. Show implication elimination, movement of negations, variable renaming or Skolemization when needed, and distribution into clauses. If a step is unnecessary, say so briefly.\n\n\\forall x\\, ((P(x) \\lor Q(x)) \\rightarrow R(x))\n\\neg \\exists y\\, \\forall x\\, (\\text{Loves}(x,y) \\lor \\text{Hates}(x,y))\n\nHere P,Q,R are unary predicates, \\text{Loves},\\text{Hates} are binary predicates, and x,y are variables. For the second formula, explain which universal variables any fresh Skolem function depends on. Use the same Skolem term for every occurrence of the existential variable it replaces. In the final clause set, universal quantifiers may be left implicit.\nSkolemization preserves satisfiability rather than logical equivalence in the original vocabulary. Label that step separately from equivalence rewrites."
   },
   {
     "objectID": "homeworks/hw3.html#unification",
     "href": "homeworks/hw3.html#unification",
     "title": "Homework 3: Logic Toolkit",
     "section": "4. Unification",
-    "text": "4. Unification\nFind a most general unifier (MGU) for each pair, or explain why no unifier exists. Show the substitutions in the order you derive them and give the composed substitution at the end.\n\n\\(P(A,x,f(y))\\) and \\(P(A,B,f(z))\\)\n\\(Knows(John,x)\\) and \\(Knows(y,Bob)\\)"
+    "text": "4. Unification\nFind a most general unifier (MGU) for each pair, or explain why no unifier exists. Show the bindings in the order you derive them, give the combined substitution at the end, and verify that applying it to both expressions makes them identical.\n\nP(A,x,f(y)) and P(A,B,f(z))\n\\text{Knows}(\\text{John},x) and \\text{Knows}(y,\\text{Bob})\n\nThe variables are x,y,z. The constants are A,B,\\text{John},\\text{Bob}. The symbol f is a unary function. The symbols P and \\text{Knows} are predicates. Write bindings as x\\mapsto t, meaning “replace x with term t.” Equivalent MGUs that differ only in variable renaming are acceptable."
   },
   {
     "objectID": "homeworks/hw3.html#resolution-proof",
     "href": "homeworks/hw3.html#resolution-proof",
     "title": "Homework 3: Logic Toolkit",
     "section": "5. Resolution proof",
-    "text": "5. Resolution proof\nUse refutation resolution to prove that query \\(Q\\) follows from this knowledge base:\n\\[P \\lor Q\\] \\[\\neg P \\lor R\\] \\[\\neg R\\]\nYour proof must:\n\nnegate the query;\nlist the initial clause set;\nidentify the parent clauses and resolved literal at every step; and\nend with the empty clause \\(\\square\\)."
+    "text": "5. Resolution proof\nUse refutation resolution to prove that query Q follows from this knowledge base (KB). In this problem, P,Q,R are propositional atoms:\nP \\lor Q \\neg P \\lor R \\neg R\nYour proof must:\n\nnegate the query;\nlist the initial clause set;\nidentify the parent clauses and resolved literal at every step; and\nend with the empty clause \\square and explain why it establishes \\text{KB}\\models Q.\n\nThe symbols \\square and \\bot both denote the empty clause here. Either is acceptable. Keep the original clauses when adding a resolvent."
   },
   {
     "objectID": "homeworks/hw3.html#presentation-checklist",
     "href": "homeworks/hw3.html#presentation-checklist",
     "title": "Homework 3: Logic Toolkit",
     "section": "Presentation checklist",
-    "text": "Presentation checklist\n\nEvery variable and predicate is defined.\nParentheses make quantifier and connective scope unambiguous.\nEach truth table includes all assignments exactly once.\nCNF work distinguishes a formula from its clause-set representation.\nThe unifier is applied consistently to both expressions.\nThe resolution proof states why deriving \\(\\square\\) establishes entailment.\n\n\n← Homework 2Homework 4 →"
+    "text": "Presentation checklist\n\nEvery variable and predicate is defined.\nParentheses make quantifier and connective scope unambiguous.\nEach truth table includes all assignments exactly once.\nCNF work distinguishes a formula from its clause-set representation.\nThe unifier is applied consistently to both expressions.\nThe resolution proof states why deriving \\square establishes entailment.\n\n\nEnd of HW3. Submit your answers to Problems 1-5 and check the list above. Everything below is reference material, not an additional task."
   },
   {
     "objectID": "homeworks/hw5-starter.html",
@@ -3703,144 +3696,18 @@
     "text": "Takeaways\n\n\n\nEntailment: the query holds in every KB model.\nCountermodel: a KB model where the query is false.\nCNF: an AND of clauses, each an OR of literals.\nResolution: use one complementary pair and keep the other literals.\nRefutation: derive a contradiction from the KB plus the negated query.\n\n\n\n\n\nAn unknown conclusion needs more information. “Not entailed” is not the same as “false.”\n\nAsset credits\n\nAsk for one countermodel or proof step from today’s examples. The next lecture keeps the entailment question but adds objects, relations, and quantifiers in first-order logic.\n[Sources] - Russell and Norvig, AIMA, Chapter 7. - Public-domain brain/lightbulb icon: https://openclipart.org/detail/266221/brain-light-bulb. [/Sources]"
   },
   {
-    "objectID": "slides/lec18_FOL.html#first-order-logic",
-    "href": "slides/lec18_FOL.html#first-order-logic",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "First-Order Logic",
-    "text": "First-Order Logic\nFirst-order logic gives AI a language for talking about objects, relations, and rules that apply broadly."
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#why-propositional-logic-is-not-enough",
-    "href": "slides/lec18_FOL.html#why-propositional-logic-is-not-enough",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why Propositional Logic Is Not Enough",
-    "text": "Why Propositional Logic Is Not Enough\n\n\nPropositional logic can name whole facts:\n\n\\text{HumanSocrates} \\rightarrow \\text{MortalSocrates}\n\nBut it cannot easily express the rule behind the fact:\n\n\\forall x\\; \\text{Human}(x) \\rightarrow \\text{Mortal}(x)\n\n\nFOL lets us reason about classes of objects without writing a separate proposition for every object.\n\n\n\n\n\nConnections icon for objects and relations"
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#building-blocks-of-fol",
-    "href": "slides/lec18_FOL.html#building-blocks-of-fol",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Building Blocks of FOL",
-    "text": "Building Blocks of FOL\n\n\n\n\n\n\n\n\nBuilding block\nMeaning\nExample\n\n\n\n\nConstants\nSpecific objects\n\\text{Socrates}, \\text{Alice}, 3\n\n\nVariables\nArbitrary objects\nx, y, z\n\n\nPredicates\nProperties or relations\n\\text{Human}(x), \\text{Loves}(\\text{Alice}, \\text{Bob})\n\n\nFunctions\nMap objects to objects\n\\text{Father}(\\text{John}) = \\text{David}\n\n\nConnectives\nCombine formulas\n\\land, \\lor, \\neg, \\rightarrow, \\leftrightarrow\n\n\nQuantifiers\nSpecify scope\n\\forall, \\exists\n\n\n\n\nRead each formula by asking: what objects exist, what relations hold, and how widely does the claim apply?"
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#two-core-quantifiers",
-    "href": "slides/lec18_FOL.html#two-core-quantifiers",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Two Core Quantifiers",
-    "text": "Two Core Quantifiers\n\n\nUniversal: \\forall\n\n\\forall x\\; \\text{Human}(x) \\rightarrow \\text{Mortal}(x)\n\nFor every object x, if x is human, then x is mortal.\n\nExistential: \\exists\n\n\\exists x\\; \\text{Likes}(x, \\text{IceCream})\n\nThere is at least one object x that likes ice cream.\n\n\n\\forall makes a general rule. \\exists promises at least one witness."
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#quantifier-order-matters",
-    "href": "slides/lec18_FOL.html#quantifier-order-matters",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Quantifier Order Matters",
-    "text": "Quantifier Order Matters\n\n\nEveryone Loves Someone\n\n\\forall x \\exists y\\; \\text{Loves}(x,y)\n\nEach person may have their own y.\n\nSomeone Is Loved by Everyone\n\n\\exists y \\forall x\\; \\text{Loves}(x,y)\n\nOne same y works for all x.\n\n\nSwapping the quantifiers changes the claim, even though the predicate is the same."
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#translating-english-to-fol",
-    "href": "slides/lec18_FOL.html#translating-english-to-fol",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Translating English to FOL",
-    "text": "Translating English to FOL\n\n\n\n\n\n\n\nEnglish sentence\nFOL pattern\n\n\n\n\nEvery student has a teacher.\n\\forall x\\; \\text{Student}(x) \\rightarrow \\exists y\\; \\text{Teacher}(y) \\land \\text{Teaches}(y,x)\n\n\nThere exists a course that every student takes.\n\\exists c \\forall x\\; \\text{Student}(x) \\rightarrow \\text{Takes}(x,c)\n\n\nEvery professor teaches at least one course.\n\\forall p\\; \\text{Professor}(p) \\rightarrow \\exists c\\; \\text{Teaches}(p,c)\n\n\n\n\nChoose the domain objects first, then decide where each quantifier must live."
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#negating-quantifiers",
-    "href": "slides/lec18_FOL.html#negating-quantifiers",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Negating Quantifiers",
-    "text": "Negating Quantifiers\nNegation flips the quantifier as it moves inward:\n\n\\neg \\forall x\\; P(x) \\equiv \\exists x\\; \\neg P(x)\n\n\n\\neg \\exists x\\; P(x) \\equiv \\forall x\\; \\neg P(x)\n\n\n“Not everyone is happy” means:\n\n\\neg \\forall x\\; \\text{Happy}(x) \\equiv \\exists x\\; \\neg \\text{Happy}(x)"
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#inference-rules-in-fol",
-    "href": "slides/lec18_FOL.html#inference-rules-in-fol",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Inference Rules in FOL",
-    "text": "Inference Rules in FOL\nFOL inference rules derive new facts from quantified knowledge.\n\n\n\n\n\n\n\nRule\nBasic idea\n\n\n\n\nUniversal Instantiation\nReplace a universally quantified variable with a specific object.\n\n\nExistential Instantiation\nIntroduce a new name for an object that must exist.\n\n\nGeneralized Modus Ponens\nCombine rules and facts after unification.\n\n\nResolution\nProve by contradiction using clauses and unification."
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#substitution-and-entailment",
-    "href": "slides/lec18_FOL.html#substitution-and-entailment",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Substitution and Entailment",
-    "text": "Substitution and Entailment\nSubstitution\nSubstitution replaces variables in a formula:\n\n\\theta = \\{x / \\text{Alice}\\}, \\qquad \\alpha = \\text{Loves}(x,y)\n\n\n\\text{SUBST}(\\theta,\\alpha) = \\text{Loves}(\\text{Alice},y)\n\nEntailment\n\n\\text{KB} \\models \\alpha\n\nmeans \\alpha is true in every model where \\text{KB} is true."
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#ui-and-ei",
-    "href": "slides/lec18_FOL.html#ui-and-ei",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "UI and EI",
-    "text": "UI and EI\n\n\nUniversal Instantiation\nFrom:\n\n\\forall x\\; P(x)\n\ninfer:\n\nP(a)\n\nfor any object a.\n\nExistential Instantiation\nFrom:\n\n\\exists x\\; P(x)\n\nintroduce a fresh constant c and infer:\n\nP(c)\n\n\n\nEI needs a new name; otherwise the proof may accidentally assume which object exists."
-  },
-  {
     "objectID": "slides/lec18_FOL.html#unification",
     "href": "slides/lec18_FOL.html#unification",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Unification",
-    "text": "Unification\nUnification finds a substitution \\theta that makes expressions match.\n\nGiven:\n\n\\text{Knows}(\\text{John},x)\n\\qquad\n\\text{Knows}(\\text{John},\\text{Bob})\n\nA unifier is:\n\n\\theta = \\{x / \\text{Bob}\\}\n\n\n\nUnification is the matching step that lets FOL inference use general rules with specific facts."
+    "section": "Substitution and Unification",
+    "text": "Substitution and Unification\nA substitution \\theta=\\{x\\mapsto\\text{Bo}\\} means “replace x with Bo.”\n\\text{Knows}(\\text{Ada},x)\\theta=\\text{Knows}(\\text{Ada},\\text{Bo})\nUnification finds substitutions that make two expressions identical.\n\\text{Knows}(\\text{Ada},x)\\qquad\\text{Knows}(y,\\text{Bo})\n\n\n\n\n\n\n\n\nArgument\nRequired match\nBinding\n\n\n\n\nFirst\nAda with y\ny\\mapsto\\text{Ada}\n\n\nSecond\nx with Bo\nx\\mapsto\\text{Bo}\n\n\n\n\nApply \\theta=\\{y\\mapsto\\text{Ada},\\ x\\mapsto\\text{Bo}\\} to both expressions. Both become \\text{Knows}(\\text{Ada},\\text{Bo}).\n\n\nThe postfix theta notation means apply the substitution to the whole expression, just as SUBST(theta, alpha) did in the previous materials. Bindings replace variables, not constant or predicate names. Explain each argument before revealing its binding. Constants are Ada and Bo; x and y are variables.\n[Sources] - AIMA Chapter 9, unification and substitutions. - https://aima.cs.berkeley.edu/algorithms.pdf [/Sources]"
   },
   {
     "objectID": "slides/lec18_FOL.html#generalized-modus-ponens",
     "href": "slides/lec18_FOL.html#generalized-modus-ponens",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Generalized Modus Ponens",
-    "text": "Generalized Modus Ponens\n\n\nRule\n\nP_1 \\land P_2 \\land \\cdots \\land P_k \\rightarrow Q\n\nIf the facts match the premises under \\theta, infer:\n\n\\text{SUBST}(\\theta,Q)\n\n\nExample\n\n\\forall x\\; \\text{Human}(x) \\rightarrow \\text{Mortal}(x)\n\n\n\\text{Human}(\\text{Socrates})\n\n\n\\theta = \\{x / \\text{Socrates}\\}\n\n\n\\text{Mortal}(\\text{Socrates})"
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#conjunctive-normal-form",
-    "href": "slides/lec18_FOL.html#conjunctive-normal-form",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Conjunctive Normal Form",
-    "text": "Conjunctive Normal Form\nCNF is a conjunction of clauses; each clause is a disjunction of literals.\n\n(P \\lor Q \\lor \\neg R) \\land (\\neg P \\lor R) \\land Q\n\n\n\nLiteral\nAn atom or its negation:\n\nP, \\quad \\neg R\n\n\nClause\nA disjunction of literals:\n\nP \\lor Q \\lor \\neg R"
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#converting-fol-to-cnf",
-    "href": "slides/lec18_FOL.html#converting-fol-to-cnf",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Converting FOL to CNF",
-    "text": "Converting FOL to CNF\nUse CNF because resolution works over clauses.\n\n\nEliminate implications: A \\rightarrow B \\equiv \\neg A \\lor B.\n\n\n\n\nMove negations inward: apply De Morgan’s laws and quantifier negation.\n\n\n\n\nStandardize variables: rename bound variables to avoid collisions.\n\n\n\n\nSkolemize: replace existential variables with Skolem constants or functions.\n\n\n\n\nDrop universal quantifiers and distribute \\lor over \\land."
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#cnf-example-start",
-    "href": "slides/lec18_FOL.html#cnf-example-start",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "CNF Example: Start",
-    "text": "CNF Example: Start\n“Everyone who loves all animals is loved by someone.”\n\n\\forall x\\left(\n  (\\forall y(\\text{Animal}(y) \\rightarrow \\text{Loves}(x,y)))\n  \\rightarrow\n  (\\exists z\\; \\text{Loves}(z,x))\n\\right)\n\n\nThe outer statement says: if x loves all animals, then someone loves x."
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#cnf-example-transform",
-    "href": "slides/lec18_FOL.html#cnf-example-transform",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "CNF Example: Transform",
-    "text": "CNF Example: Transform\n\nRemove implications\n\n\\forall x\\left(\n  \\neg \\forall y(\\neg \\text{Animal}(y) \\lor \\text{Loves}(x,y))\n  \\lor\n  \\exists z\\; \\text{Loves}(z,x)\n\\right)\n\n\n\nMove negation inward\n\n\\forall x\\left(\n  \\exists y(\\text{Animal}(y) \\land \\neg \\text{Loves}(x,y))\n  \\lor\n  \\exists z\\; \\text{Loves}(z,x)\n\\right)"
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#cnf-example-clauses",
-    "href": "slides/lec18_FOL.html#cnf-example-clauses",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "CNF Example: Clauses",
-    "text": "CNF Example: Clauses\n\nSkolemize\n\n\\forall x\\left(\n  (\\text{Animal}(f(x)) \\land \\neg \\text{Loves}(x,f(x)))\n  \\lor\n  \\text{Loves}(g(x),x)\n\\right)\n\n\n\nDistribute\n\n(\\text{Animal}(f(x)) \\lor \\text{Loves}(g(x),x))\n\\land\n(\\neg \\text{Loves}(x,f(x)) \\lor \\text{Loves}(g(x),x))"
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#resolution-in-propositional-logic",
-    "href": "slides/lec18_FOL.html#resolution-in-propositional-logic",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Resolution in Propositional Logic",
-    "text": "Resolution in Propositional Logic\nResolution eliminates complementary literals:\n\n\\frac{(P \\lor A),\\quad(\\neg P \\lor B)}{A \\lor B}\n\n\n\n(\\neg \\text{Rain} \\lor \\text{Wet}), \\quad \\text{Rain}\n\nResolving on \\text{Rain} gives:\n\n\\text{Wet}"
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#resolution-in-fol",
-    "href": "slides/lec18_FOL.html#resolution-in-fol",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Resolution in FOL",
-    "text": "Resolution in FOL\nFOL resolution adds unification before resolving.\n\n\n\\text{Loves}(x,\\text{Alice}) \\lor \\text{Hates}(x,\\text{Bob})\n\n\n\n\n\\neg \\text{Loves}(\\text{John},\\text{Alice}) \\lor \\text{Friends}(\\text{John},\\text{Bob})\n\n\n\nUnify with \\theta = \\{x / \\text{John}\\}, then resolve on \\text{Loves}(\\text{John},\\text{Alice}).\n\n\n\n\\text{Hates}(\\text{John},\\text{Bob}) \\lor \\text{Friends}(\\text{John},\\text{Bob})"
-  },
-  {
-    "objectID": "slides/lec18_FOL.html#what-to-remember",
-    "href": "slides/lec18_FOL.html#what-to-remember",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What to Remember",
-    "text": "What to Remember\n\nFOL represents objects, properties, relations, functions, and quantified rules.\nQuantifier order is part of the meaning.\nSubstitution and unification connect general rules to specific facts.\nCNF prepares formulas for resolution.\nResolution is a proof engine for automated reasoning.\n\nAsset credits"
+    "text": "Generalized Modus Ponens\nGeneralized modus ponens uses matching facts to apply a quantified rule.\n\n\n\nWhat we know\nFormula\n\n\n\n\nRule\n\\forall x\\,(\\text{Human}(x)\\rightarrow\\text{Mortal}(x))\n\n\nFact\n\\text{Human}(\\text{Socrates})\n\n\n\n\n\nMatch the premise using \\theta=\\{x\\mapsto\\text{Socrates}\\}.\n\n\n\n\nApply the same substitution to the conclusion:\n\n\\text{Mortal}(x)\\theta=\\text{Mortal}(\\text{Socrates}).\n\n\nWith several premises joined by AND, all must match known facts under one consistent substitution.\n\n\nThis reuses the first slide’s rule. We match Human(x) to Human(Socrates), then carry x’s binding into the conclusion. If the rule required Human(x) AND Tired(x), Human(Socrates) and Tired(Ada) would not suffice unless there were additional knowledge identifying their subjects.\n[Sources] - AIMA Chapter 9, generalized modus ponens and forward chaining. [/Sources]"
   },
   {
     "objectID": "slides/lec21_Probability.html#probability",
@@ -8139,5 +8006,117 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "New Facts Change the Robot’s Conclusions",
     "text": "New Facts Change the Robot’s Conclusions\nB: battery ready. C: corridor clear. M: movement permitted.\nOriginal KB: B and (B\\land C)\\rightarrow M.\nThe rule becomes \\neg B\\lor\\neg C\\lor M. Resolving with B gives \\neg C\\lor M.\nConsider these separate updates to the original KB:\n\n\nAdd C: Does M Follow?\n\n\\frac{\\neg C\\lor M\\qquad C}{M}\nYes. The rule now has both required conditions.\n\n\nAdd \\neg M: Does \\neg C Follow?\n\n\\frac{\\neg C\\lor M\\qquad\\neg M}{\\neg C}\nYes. A clear corridor would contradict the rule and known facts.\n\n\n\nThe original KB left M undetermined. An added fact removes possible worlds.\n\n\nAllow a brief individual attempt before each reveal. The updates are alternatives, not cumulative: adding C and NOT M together would make this KB inconsistent. For each update students can also filter the three models on the earlier slide.\nThe second conclusion follows from this encoded sufficient-condition rule and B. It is not a claim that a movement restriction always measures real corridor safety. A refutation proof for either conclusion would add its negation and derive bottom from the displayed unit result.\n[Sources] - Original robot exercise using AIMA Chapter 7 inference and resolution. [/Sources]"
+  },
+  {
+    "objectID": "homeworks/hw3.html#reference-sheet",
+    "href": "homeworks/hw3.html#reference-sheet",
+    "title": "Homework 3: Logic Toolkit",
+    "section": "Reference Sheet (Supporting Material)",
+    "text": "Reference Sheet (Supporting Material)\n\nBackground\nPropositional logic treats each symbol such as P or Q as one truth-valued statement. First-order logic adds objects, predicates, variables, and quantifiers. State a nonempty domain and use parentheses to make each quantifier’s scope clear.\n\n\n\n\n\n\n\n\nForm\nRead as\nUseful equivalence\n\n\n\n\n\\neg P\nnot P\nflips the truth value\n\n\nP\\land Q\nP and Q\ntrue only when both are true\n\n\nP\\lor Q\nP or Q\nfalse only when both are false\n\n\nP\\rightarrow Q\nif P, then Q\n\\neg P\\lor Q\n\n\nP\\leftrightarrow Q\nP exactly when Q\n(P\\rightarrow Q)\\land(Q\\rightarrow P)\n\n\n\nClassification: a tautology is always true, a contradiction is always false, and a contingent formula has both true and false assignments. A formula is satisfiable if at least one assignment makes it true. Both tautologies and contingent formulas are satisfiable.\n\n\nEquivalence Laws\nDe Morgan’s laws:\n\\neg(P\\land Q)\\equiv\\neg P\\lor\\neg Q,\n\\qquad \\neg(P\\lor Q)\\equiv\\neg P\\land\\neg Q.\nQuantifier negation:\n\\neg\\forall x\\,P(x)\\equiv\\exists x\\,\\neg P(x),\n\\qquad \\neg\\exists x\\,P(x)\\equiv\\forall x\\,\\neg P(x).\nOR over AND, the distribution used to form CNF:\nX\\lor(Y\\land Z)\\equiv(X\\lor Y)\\land(X\\lor Z).\n\n\nClause-Form Workflow\n\nEliminate \\leftrightarrow and \\rightarrow.\nMove negations inward with De Morgan’s laws, double negation, and quantifier negation.\nRename bound variables to avoid collisions. For example, (\\forall x\\,P(x))\\land(\\exists x\\,Q(x)) can use y in the second part.\nIf moving quantifiers to the front, preserve scope: do not capture a variable that was free in another part of the formula.\nSkolemize each existential with a fresh constant or function. Record its dependencies on surrounding universal variables. This step preserves satisfiability.\nDistribute OR over AND.\nWrite the result as a set of clauses, with universal quantifiers implicit. A clause is an OR of literals. The whole clause set requires all clauses to hold.\n\nFor instance, \\forall u\\,\\exists v\\,R(u,v) uses a fresh g(u) for v, while \\exists v\\,\\forall u\\,R(u,v) uses a fresh constant k.\n\n\nUnification and Resolution\nA substitution replaces variables with terms and applies consistently throughout each expression. An MGU avoids unnecessary bindings. The occurs check rejects a binding such as x\\mapsto f(x) because the replacement contains x itself. Different constant symbols do not unify syntactically.\nResolution combines clauses containing one complementary pair. In FOL, first rename variables in different parent clauses apart if needed, then find a unifier for the atoms. Apply that substitution to the entire parent clauses, remove the complementary literals, and join the remaining literals with OR.\nFor a refutation proof, add the negated query to the KB. Deriving the empty clause shows that the KB together with the negated query is unsatisfiable:\n\\text{KB}\\models\\alpha\\quad\\Longleftrightarrow\\quad\n\\text{KB}\\land\\neg\\alpha\\text{ is unsatisfiable}.\nThe empty clause has no literals and is false. It is different from an empty clause set, which has no requirements and is true.\n\n\nLecture References\n\nLecture 16: Propositional Logic\nLecture 17: Propositional Inference\nLecture 18: First-Order Logic\n\n\n← Homework 2Homework 4 →"
+  },
+  {
+    "objectID": "slides/lec18_FOL.html#objects-and-rules",
+    "href": "slides/lec18_FOL.html#objects-and-rules",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Objects and General Rules",
+    "text": "Objects and General Rules\n\n\nFirst-order logic (FOL) describes objects and their relationships.\nInstead of a separate rule for each person:\n\\text{HumanSocrates}\\rightarrow\\text{MortalSocrates}\nwrite one rule about all people:\n\\forall x\\,\\bigl(\\text{Human}(x)\\rightarrow\\text{Mortal}(x)\\bigr).\nThe domain is the nonempty set of objects that variables range over. Here, choose all people.\n\n\n\n\nRead the quantifier as “for every x.” Human and Mortal are predicates, whose arguments refer to people. The propositional atom HumanSocrates does not expose an object argument. A finite collection can be enumerated propositionally, but FOL states the general rule directly, including for people we have not named.\nKeep this lecture to about 30-35 minutes, leaving time for Homework 3 and midterm questions. Spend most of that time on quantifier scope, matching, and the single clause-form example. Lectures 17 and 18 are excluded from the upcoming midterm, as stated in the schedule.\n[Sources] - Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapters 8-9. - https://inst.eecs.berkeley.edu/~cs188/textbook/logic/first-order-logic.html - Public-domain OpenClipart connections artwork, credited on the course asset page. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec18_FOL.html#terms-and-predicates",
+    "href": "slides/lec18_FOL.html#terms-and-predicates",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Terms and Predicates",
+    "text": "Terms and Predicates\nA term refers to an object. An atomic formula makes a claim about objects.\n\n\n\n\n\n\n\n\nBuilding block\nExample\nMeaning\n\n\n\n\nConstant\n\\text{Ada}\nA named person\n\n\nVariable\nx\nA person whose value may vary\n\n\nFunction term\n\\text{Mother}(\\text{Ada})\nAn object: Ada’s mother\n\n\nPredicate\n\\text{Knows}(\\text{Ada},x)\nA claim: Ada knows x\n\n\n\nConnectives \\neg,\\land,\\lor,\\rightarrow,\\leftrightarrow combine formulas as before.\n\nDoes \\text{Mother}(\\text{Ada}) itself have a truth value?\n\n\nNo. It denotes an object. \\text{Human}(\\text{Mother}(\\text{Ada})) makes a truth-valued claim about that object.\n\n\nThe domain is people. In this simplified model, Mother assigns one person to every person. Functions are total and single-valued. A relation such as Advises may hold for several pairs or none, so it should generally be a predicate rather than a function. Different names need not denote different objects unless the model or premises say so.\nA FOL interpretation specifies the domain, the objects named by constants, functions on that domain, and the relations represented by predicates. An assignment supplies values for free variables. A model of a closed KB makes every sentence in the KB true.\n[Sources] - AIMA Chapter 8, first-order syntax and semantics. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec18_FOL.html#quantifiers",
+    "href": "slides/lec18_FOL.html#quantifiers",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Universal and Existential Quantifiers",
+    "text": "Universal and Existential Quantifiers\nDomain: people. \\text{Happy}(x) means “x is happy.”\n\n\nUniversal: \\forall\n\\forall x\\,\\text{Happy}(x)\nEvery person is happy.\nOne unhappy person makes the statement false.\n\nExistential: \\exists\n\\exists x\\,\\text{Happy}(x)\nAt least one person is happy.\nOne happy person is a witness that makes it true.\n\n\nThe quantifier binds x in its scope. In \\forall x\\,(\\text{Human}(x)\\rightarrow\\text{Mortal}(x)), the parentheses put both predicates in that scope.\n\n\nExistence does not mean exactly one. A witness is an object that satisfies the quantified condition. In Happy(x) alone, x is free: we must assign it a value to evaluate the formula. A closed sentence has no free variables.\nOn a finite domain, universal quantification behaves like AND across all objects, while existential quantification behaves like OR. This is an intuition for evaluation, not a claim that all FOL domains are finite.\n[Sources] - AIMA Chapter 8, quantifiers and scope. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec18_FOL.html#quantifier-order",
+    "href": "slides/lec18_FOL.html#quantifier-order",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Quantifier Order",
+    "text": "Quantifier Order\nDomain: people. An arrow from x to y means \\text{Knows}(x,y).\n\n\n\\forall x\\,\\exists y\\,\\text{Knows}(x,y)\nEach person knows someone. The witness may depend on x.\n\n\\exists y\\,\\forall x\\,\\text{Knows}(x,y)\nOne person is known by everyone. The same witness works for all x.\n\n\n\nThe left world satisfies only the first statement. The right world satisfies both.\n\n\nBoth diagrams use the same three-person domain, Ada, Bo, and Cy, with no additional Knows pairs. The left and right columns within each diagram are source and target copies of the same objects. Bo knowing Bo is allowed: we have not imposed an irreflexivity condition. Knows is directed and need not be symmetric.\nThe right-hand statement entails the left-hand one on a nonempty domain. Swapping mixed quantifiers can change meaning, but swapping two adjacent universals, or two adjacent existentials, does not.\n[Sources] - AIMA Chapter 8, nested quantifiers. Original finite relation examples and draw.io illustration. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec18_FOL.html#translation-patterns",
+    "href": "slides/lec18_FOL.html#translation-patterns",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Translating “Every” and “Some”",
+    "text": "Translating “Every” and “Some”\nDomain: people. \\text{Student}(x) and \\text{Advisor}(y) identify roles. \\text{Advises}(y,x) means “y advises x.”\nEvery Student Has an Advisor\n\\forall x\\,\\bigl(\\text{Student}(x)\\rightarrow\n  \\exists y\\,(\\text{Advisor}(y)\\land\\text{Advises}(y,x))\\bigr)\nSome Student Has an Advisor\n\n\\exists x\\,\\exists y\\,\\bigl(\\text{Student}(x)\\land\n  \\text{Advisor}(y)\\land\\text{Advises}(y,x)\\bigr)\n\n\nUse implication to restrict a universal rule to students. Use AND to require an existential witness to be a student.\n\n\nAsk for the second translation before revealing it. Under a universal quantifier, Student(x) AND … would claim that every person is a student. Under an existential quantifier, Student(x) implies … can be satisfied by a nonstudent, so it does not establish a student witness.\nThe first statement does not assert that any students exist. If there are no students, every implication in it is true. The second does assert the existence of at least one student and an advisor, who need not be a different person unless inequality is added.\n[Sources] - AIMA Chapter 8, translating quantified English. Original advising example. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec18_FOL.html#quantifier-negation",
+    "href": "slides/lec18_FOL.html#quantifier-negation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Negating Quantifiers",
+    "text": "Negating Quantifiers\nMoving NOT inward flips the quantifier:\n\\neg\\forall x\\,P(x)\\equiv\\exists x\\,\\neg P(x) \\neg\\exists x\\,P(x)\\equiv\\forall x\\,\\neg P(x)\n\n“Not everyone knows someone.” Rewrite \\neg\\forall x\\,\\exists y\\,\\text{Knows}(x,y) with NOT next to the predicate.\n\n\n\\exists x\\,\\forall y\\,\\neg\\text{Knows}(x,y)\nThere is a person who knows nobody.\n\n\n“Not everyone” means at least one exception. It does not mean “nobody.”\n\n\nP(x) here stands for any condition on x. Move the negation across one quantifier at a time. Across a compound condition, also apply De Morgan’s laws. This prepares students for Homework 3, Problem 3, without solving its specific formula.\n[Sources] - AIMA Chapter 8, quantifier negation. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec18_FOL.html#instantiation",
+    "href": "slides/lec18_FOL.html#instantiation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Instantiation",
+    "text": "Instantiation\nInstantiation replaces a quantified variable with a term.\n\n\nUniversal Instantiation (UI)\n\\forall x\\,\\text{Human}(x)\nAny particular instance follows:\n\\text{Human}(\\text{Ada}).\nThe rule applies to every object, including Ada.\n\nExistential Instantiation (EI)\n\\exists x\\,\\text{Happy}(x)\nGive a witness a fresh name k:\n\\text{Happy}(k).\nWe have not learned whether that witness is Ada.\n\n\nA fresh witness name adds no claim that it differs from all known people. It simply avoids assuming which person satisfies the existential.\n\n\nUI is ordinary logical consequence. EI is a witness introduction in an extended vocabulary for proof or satisfiability reasoning. Happy(k) is not an unrestricted consequence about an arbitrary preinterpreted name k. In natural deduction, the fresh-name assumption has a local scope and must not leak into an unjustified conclusion.\nFor a standalone existential with no surrounding universal dependency, the fresh name is a Skolem constant. For a nested existential we may need a function, covered later. UI also permits suitable function terms. Avoid variable capture when applying a substitution under quantifiers.\n[Sources] - AIMA Chapter 9, universal and existential instantiation. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec18_FOL.html#mgu-and-failure",
+    "href": "slides/lec18_FOL.html#mgu-and-failure",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Most General Unifiers and Failure",
+    "text": "Most General Unifiers and Failure\nA most general unifier (MGU) matches expressions without unnecessary bindings.\nR(x,f(y))\\qquad R(\\text{Ada},f(z))\n\nAn MGU is \\{x\\mapsto\\text{Ada},\\ y\\mapsto z\\}. It leaves z unrestricted. Here R is a predicate and f a unary function.\n\n\n\n\n\n\n\n\nExpressions\nWhy unification fails\n\n\n\n\nP(\\text{Ada}) and P(\\text{Bo})\nDifferent constant symbols cannot match syntactically\n\n\nP(x) and P(f(x))\nOccurs check: x occurs inside f(x)\n\n\n\n\nThe occurs check rejects x\\mapsto f(x): ordinary first-order terms must be finite.\n\n\nR is any binary predicate, P any unary predicate, and f a unary function symbol. An MGU allows every other unifier to be obtained by further substitution. For example, additionally setting z to Bo also unifies the pair but is more specific. Reversing y maps to z is an equivalent MGU up to variable renaming.\nSyntactic unification does not infer equalities between distinct constant symbols even if a possible interpretation maps them to the same object. Equality reasoning is a separate extension. In the occurs-check case, substitution cannot turn the finite term assigned to x into exactly that same term with an extra f around it. This is about finite syntactic terms, not whether a semantic function could have a fixed point.\n[Sources] - AIMA Chapter 9, most general unifiers and the occurs check. - https://www.cs.cmu.edu/~fp/courses/atp/lectures/10-unif.html [/Sources]"
+  },
+  {
+    "objectID": "slides/lec18_FOL.html#skolem-witnesses",
+    "href": "slides/lec18_FOL.html#skolem-witnesses",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Skolem Constants and Functions",
+    "text": "Skolem Constants and Functions\nSkolemization replaces existential variables with fresh witness symbols.\n\n\n\n\n\n\n\nQuantified statement\nWitness representation\n\n\n\n\n\\exists y\\,\\forall x\\,\\text{Knows}(x,y)\n\\forall x\\,\\text{Knows}(x,k): one fresh constant k\n\n\n\\forall x\\,\\exists y\\,\\text{Knows}(x,y)\n\\forall x\\,\\text{Knows}(x,f(x)): a fresh function f\n\n\n\n\n\nThe function’s arguments record the surrounding universal variables on which a witness may depend. Different inputs may still share a witness.\n\n\nThe diagram shows one possible interpretation of f for the left world from the quantifier-order slide. Skolemization does not compute this function or claim that the relation has a unique witness. It chooses one permissible witness per input when such witnesses exist.\nThe symbols must be new to the whole problem. Skolemization preserves satisfiability in an expanded vocabulary, not logical equivalence over a fixed interpretation of the new symbols. This is why it is suitable for refutation. For several surrounding universal variables, use f(x1,…,xn). A standalone existential has no such dependency, so a constant suffices.\n[Sources] - AIMA Chapter 9, Skolemization. - https://web.stanford.edu/class/cs257/slides/Lecture_7.pdf [/Sources]"
+  },
+  {
+    "objectID": "slides/lec18_FOL.html#clause-workflow",
+    "href": "slides/lec18_FOL.html#clause-workflow",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Clause Form for Resolution",
+    "text": "Clause Form for Resolution\nConjunctive normal form (CNF): AND of clauses, each an OR of literals. In FOL, atoms can contain terms, such as \\text{Human}(x).\n\n\n\nStep\nOperation\n\n\n\n\n1\nRemove \\rightarrow and \\leftrightarrow\n\n\n2\nMove NOT inward, including across quantifiers\n\n\n3\nRename bound variables to avoid collisions\n\n\n4\nSkolemize existentials with the correct dependencies\n\n\n5\nDistribute OR over AND and list the clauses\n\n\n\n\nAll remaining variables are implicitly universal. Skolemization preserves satisfiability. The other formula rewrites preserve equivalence.\n\n\nTo rename bound variables apart, (forall x P(x)) AND (exists x Q(x)) can use x in the first part and y in the second. Also standardize variables in different clauses apart before resolving, so variables with the same spelling in independent clauses are not accidentally tied together.\nParentheses still matter. Quantifiers may be moved to a prefix after safe renaming, provided their scope and dependencies are preserved. In A OR forall x B, pulling forall x outward requires that x not be free in A. Dropping the written universal quantifier is a clause notation convention, not replacement by a single named object.\n[Sources] - AIMA Chapter 9, first-order clause conversion. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec18_FOL.html#worked-clause-conversion",
+    "href": "slides/lec18_FOL.html#worked-clause-conversion",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "One Rule, Two Clauses",
+    "text": "One Rule, Two Clauses\nEvery student has an advisor. Abbreviate: S(x) = student, A(y) = advisor, T(y,x) = y advises x.\n\\forall x\\,\\bigl(S(x)\\rightarrow\\exists y\\,(A(y)\\land T(y,x))\\bigr)\n\n\n\n\n\n\n\nStep\nResult\n\n\n\n\nRemove implication\n\\forall x\\,\\exists y\\,(\\neg S(x)\\lor(A(y)\\land T(y,x)))\n\n\nSkolemize y with f(x)\n\\forall x\\,(\\neg S(x)\\lor(A(f(x))\\land T(f(x),x)))\n\n\nDistribute OR over AND\n(\\neg S(x)\\lor A(f(x)))\\land(\\neg S(x)\\lor T(f(x),x))\n\n\n\n\nTwo clauses, using the same f(x):\nC_1=\\{\\neg S(x),A(f(x))\\},\\qquad C_2=\\{\\neg S(x),T(f(x),x)\\}.\n\n\nThe original formula comes from the translation slide. The first row combines implication elimination with pulling the existential outward, valid because y is not free in S(x) and the domain is nonempty. No negations need pushing further inward, and x and y are already distinct.\nIntroduce f fresh for this example, independent of the earlier Knows example’s f. The last formula has implicit universal x. The clauses require one chosen individual f(x) both to be an advisor and to advise the student x. Using unrelated functions for the two occurrences would allow two different people and could weaken the original requirement. For a nonstudent, both clauses hold through NOT S(x).\nSet notation uses an inner set for the OR of literals and an outer set for the AND of clauses. C1 and C2 name the two clauses, not new logical atoms.\n[Sources] - Original worked advising example, using AIMA Chapter 9 clause-conversion rules. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec18_FOL.html#fol-resolution",
+    "href": "slides/lec18_FOL.html#fol-resolution",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Resolution with Unification",
+    "text": "Resolution with Unification\nResolve clauses whose opposite-sign atoms match under a substitution:\nC_1=\\neg\\text{Human}(x)\\lor\\text{Mortal}(x),\n\\qquad C_2=\\text{Human}(\\text{Socrates}).\n\n\nUnify \\text{Human}(x) and \\text{Human}(\\text{Socrates}):\n\n\\theta=\\{x\\mapsto\\text{Socrates}\\}.\n\n\n\nApply \\theta to the whole clauses, then remove the complementary pair.\n\nC_3=\\text{Mortal}(\\text{Socrates}).\n\n\nThe substitution affects the remaining literals too. Keep both parent clauses when adding the resolvent.\n\n\nThe negation signs differ, but the atoms Human(x) and Human(Socrates) unify. Do not try to unify a negated formula with a positive formula directly. The resolvent is the disjunction of the remaining substituted literals. Here only Mortal(Socrates) remains.\nThis example has one variable-bearing parent and one ground fact, so variable renaming between parents is unnecessary. In general, standardize parent clauses apart first. AIMA’s full FOL resolution procedure also includes factoring. We do not present this single example as a complete implementation of that procedure.\n[Sources] - AIMA Chapter 9, resolution in first-order logic. - https://inst.eecs.berkeley.edu/~cs188/textbook/logic/first-order-logical-inference.html [/Sources]"
+  },
+  {
+    "objectID": "slides/lec18_FOL.html#fol-refutation",
+    "href": "slides/lec18_FOL.html#fol-refutation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Refutation: A Complete Small Proof",
+    "text": "Refutation: A Complete Small Proof\nQuery: \\text{Mortal}(\\text{Socrates}). Add its negation as clause 3.\n\n  \n\n\n4. Parents 1 and 2, \\theta=\\{x\\mapsto\\text{Socrates}\\}: derive \\text{Mortal}(\\text{Socrates}).\n\n\n5. Parents 4 and 3, no binding needed: derive \\bot, the empty clause.\n\n\nThe KB and negated query cannot both hold. Therefore \\text{KB}\\models\\text{Mortal}(\\text{Socrates}).\n\n\nAnimate the same proof as the preceding slide, now completing refutation. Initial clauses are 1: NOT Human(x) OR Mortal(x), 2: Human(Socrates), 3: NOT Mortal(Socrates). Clause 3 is a temporary assumption for refutation, not an extra fact asserted by the original KB. The diagram highlights the currently used parents and derived clause at each step.\nThe empty clause has zero literals and is always false. It is different from the empty clause set, a conjunction of zero clauses that is true. We use bottom here as in Lecture 17. The square symbol used in HW3 names the same empty clause.\n[Sources] - Standard Human/Mortal example from AIMA Chapters 8-9, original draw.io proof layout. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec18_FOL.html#fol-check",
+    "href": "slides/lec18_FOL.html#fol-check",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Quick Check",
+    "text": "Quick Check\nDomain: people. \\text{Knows}(x,y) means “x knows y.”\n\nFor \\forall x\\,\\exists y\\,\\text{Knows}(x,y), may we replace y with one fixed constant k? Why?\n\n\nIn general, no. Different people may need different witnesses. Use a fresh function f(x).\n\n\nDo P(x,x) and P(\\text{Ada},\\text{Bo}) unify?\n\n\nNo. The first position requires x\\mapsto\\text{Ada}; the second requires x\\mapsto\\text{Bo}. One substitution cannot satisfy both.\n\n\nP is a binary predicate here. Ada and Bo are constant symbols. Pause for an answer before each reveal. These check witness dependency and consistent substitution, the main new skills needed for Homework 3.\n[Sources] - Original questions using AIMA Chapter 9 definitions. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec18_FOL.html#takeaways",
+    "href": "slides/lec18_FOL.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nState the domain and define every predicate.\nQuantifier order determines whether a witness may depend on another variable.\nUnification uses one consistent substitution across each expression.\nSkolem terms record witness dependencies in clause form.\nRefutation proves entailment by deriving the empty clause from the KB and negated query.\n\n\nHomework 3: Logic Toolkit. Show intermediate steps. Due Friday, October 23, 11:59 PM Eastern.\n\nAsset credits\n\nPoint students to the five required problems before the optional reference section. No code or starter download is required. Reserve the remaining class time for homework clarifications and review questions about Lectures 1-16 for the October 12 midterm, rather than expanding this deck with another full recap.\n[Sources] - Course schedule and Homework 3 specification. [/Sources]"
   }
 ]

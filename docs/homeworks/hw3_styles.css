@@ -1,0 +1,14 @@
+.hw3-page .hw3-main-end {
+  border-top: 4px solid #007c89;
+  border-bottom: 1px solid #bdcdd1;
+  color: #37464c;
+  margin: 3rem 0 2rem;
+  padding: 1.1rem 0;
+}
+.hw3-page #reference-sheet > h2 { color: #59656c; }
+.hw3-page #reference-sheet h3 { font-size: 1.2rem; }
+.hw3-page .katex-display { overflow-x: auto; overflow-y: hidden; padding: 0.25rem 0; }
+.hw3-page table { border-bottom: 2px solid #bdcdd1; }
+@media print {
+  .hw3-page #reference-sheet { break-before: page; }
+}

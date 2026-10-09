@@ -1,0 +1,35 @@
+.reveal section.fol18-slide { font-size: 0.9em; }
+.reveal section.fol18-slide h2,
+.reveal section.fol18-slide h3 { margin-top: 0; }
+.reveal section.fol18-slide table { font-size: 0.84em; line-height: 1.26; }
+.reveal section.fol18-slide th,
+.reveal section.fol18-slide td { padding: 0.4em 0.5em; }
+.reveal section.fol18-slide .column { padding: 0; }
+.reveal section.fol18-slide .columns { gap: 0.8em; }
+.reveal section.fol18-slide .takeaway,
+.reveal section.fol18-slide .question {
+  margin-top: 0.45em;
+  margin-bottom: 0.45em;
+  padding-top: 0.45em;
+  padding-bottom: 0.45em;
+}
+.reveal section.fol18-slide img:not(.trace-frame):not(.cc0-icon) {
+  border: 0;
+  box-shadow: none;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  margin: 0.2em auto;
+}
+.reveal section.fol18-slide .fol18-order { max-height: 245px; }
+.reveal section.fol18-slide .fol18-witness { max-height: 160px; }
+.reveal section.fol18-proof .trace-tree-frames {
+  aspect-ratio: 900 / 255;
+  width: 900px;
+  max-width: 100%;
+  margin: 0.25em auto;
+}
+.reveal section.fol18-proof p { margin: 0.35em 0; }
+.reveal #worked-clause-conversion table { font-size: 0.8em; }

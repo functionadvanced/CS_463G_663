@@ -73,8 +73,22 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -104,9 +118,10 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="hw3_styles.css">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed hw3-page quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -170,16 +185,20 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#background-and-reference-sheet" id="toc-background-and-reference-sheet" class="nav-link active" data-scroll-target="#background-and-reference-sheet">Background and reference sheet</a>
-  <ul class="collapse">
-  <li><a href="#clause-form-workflow" id="toc-clause-form-workflow" class="nav-link" data-scroll-target="#clause-form-workflow">Clause-form workflow</a></li>
-  </ul></li>
-  <li><a href="#truth-tables-and-classification" id="toc-truth-tables-and-classification" class="nav-link" data-scroll-target="#truth-tables-and-classification">1. Truth tables and classification</a></li>
+  <li><a href="#truth-tables-and-classification" id="toc-truth-tables-and-classification" class="nav-link active" data-scroll-target="#truth-tables-and-classification">1. Truth tables and classification</a></li>
   <li><a href="#first-order-logic-translation" id="toc-first-order-logic-translation" class="nav-link" data-scroll-target="#first-order-logic-translation">2. First-order logic translation</a></li>
   <li><a href="#conversion-to-clause-form" id="toc-conversion-to-clause-form" class="nav-link" data-scroll-target="#conversion-to-clause-form">3. Conversion to clause form</a></li>
   <li><a href="#unification" id="toc-unification" class="nav-link" data-scroll-target="#unification">4. Unification</a></li>
   <li><a href="#resolution-proof" id="toc-resolution-proof" class="nav-link" data-scroll-target="#resolution-proof">5. Resolution proof</a></li>
   <li><a href="#presentation-checklist" id="toc-presentation-checklist" class="nav-link" data-scroll-target="#presentation-checklist">Presentation checklist</a></li>
+  <li><a href="#reference-sheet" id="toc-reference-sheet" class="nav-link" data-scroll-target="#reference-sheet">Reference Sheet (Supporting Material)</a>
+  <ul class="collapse">
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#equivalence-laws" id="toc-equivalence-laws" class="nav-link" data-scroll-target="#equivalence-laws">Equivalence Laws</a></li>
+  <li><a href="#clause-form-workflow" id="toc-clause-form-workflow" class="nav-link" data-scroll-target="#clause-form-workflow">Clause-Form Workflow</a></li>
+  <li><a href="#unification-and-resolution" id="toc-unification-and-resolution" class="nav-link" data-scroll-target="#unification-and-resolution">Unification and Resolution</a></li>
+  <li><a href="#lecture-references" id="toc-lecture-references" class="nav-link" data-scroll-target="#lecture-references">Lecture References</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -214,9 +233,6 @@ window.Quarto = {
 <div class="assignment-meta">
 <span>Logic</span><span>Individual</span><span>Written derivations</span>
 </div>
-<div class="assignment-summary">
-<strong>Your goal:</strong> show the intermediate reasoning behind five foundational logic tasks. Correct notation matters, but so does making each transformation easy to follow.
-</div>
 <div class="assignment-facts">
 <div class="assignment-fact">
 <strong>Submit</strong><code>hw3submission.pdf</code>
@@ -237,16 +253,91 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Submission contract
+<span class="screen-reader-only">Important</span>Submission
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>Upload one PDF named <code>hw3submission.pdf</code> to Canvas. Include every requested intermediate step. A final expression without the supporting truth table, substitutions, or resolution steps will not receive full credit. No starter download is required for this written assignment.</p>
 </div>
 </div>
-<section id="background-and-reference-sheet" class="level2">
-<h2 class="anchored" data-anchor-id="background-and-reference-sheet">Background and reference sheet</h2>
-<p>Propositional logic treats each symbol such as <span class="math inline">\(P\)</span> or <span class="math inline">\(Q\)</span> as one truth-valued statement. First-order logic adds objects, predicates, variables, and quantifiers, allowing a formula to describe relationships among members of a domain. Throughout this homework, parentheses and the scope of each quantifier are part of the meaning—not merely typography.</p>
+<p><strong>Required work:</strong> complete Problems 1-5 below. The <a href="#reference-sheet">reference sheet</a> at the end is supporting material, with no additional questions to submit.</p>
+<section id="truth-tables-and-classification" class="level2">
+<h2 class="anchored" data-anchor-id="truth-tables-and-classification">1. Truth tables and classification</h2>
+<p>For each formula, construct the complete truth table and classify it as exactly one of the following:</p>
+<ul>
+<li><strong>tautology:</strong> true under every truth assignment;</li>
+<li><strong>contradiction:</strong> false under every truth assignment; or</li>
+<li><strong>contingent:</strong> true under at least one assignment and false under at least one assignment.</li>
+</ul>
+<p>Analyze these formulas:</p>
+<ol type="1">
+<li><span class="math display">(P \lor Q) \rightarrow R</span></li>
+<li><span class="math display">\neg(P \lor Q) \leftrightarrow (\neg P \land \neg Q)</span></li>
+<li><span class="math display">((P \rightarrow Q) \land (Q \rightarrow R)) \rightarrow (P \rightarrow R)</span></li>
+</ol>
+<p>Include columns for the useful subexpressions, not only the final result.</p>
+</section>
+<section id="first-order-logic-translation" class="level2">
+<h2 class="anchored" data-anchor-id="first-order-logic-translation">2. First-order logic translation</h2>
+<p>Translate each sentence into <strong>first-order logic (FOL)</strong>. State the domain and define every predicate or constant you introduce. Your domain must include all objects your encoding refers to, such as people and courses.</p>
+<ol type="1">
+<li>Everyone who studies AI is intelligent.</li>
+<li>Some student loves logic but does not love probability.</li>
+<li>Every professor teaches at least one course.</li>
+</ol>
+<p>Use quantifier scope and parentheses carefully. Equivalent, well-defined predicate names are acceptable.</p>
+</section>
+<section id="conversion-to-clause-form" class="level2">
+<h2 class="anchored" data-anchor-id="conversion-to-clause-form">3. Conversion to clause form</h2>
+<p>Convert each formula to <strong>conjunctive normal form (CNF)</strong> and give the final set of clauses. Show implication elimination, movement of negations, variable renaming or Skolemization when needed, and distribution into clauses. If a step is unnecessary, say so briefly.</p>
+<ol type="1">
+<li><span class="math display">\forall x\, ((P(x) \lor Q(x)) \rightarrow R(x))</span></li>
+<li><span class="math display">\neg \exists y\, \forall x\, (\text{Loves}(x,y) \lor \text{Hates}(x,y))</span></li>
+</ol>
+<p>Here <span class="math inline">P,Q,R</span> are unary predicates, <span class="math inline">\text{Loves},\text{Hates}</span> are binary predicates, and <span class="math inline">x,y</span> are variables. For the second formula, explain which universal variables any fresh Skolem function depends on. Use the same Skolem term for every occurrence of the existential variable it replaces. In the final clause set, universal quantifiers may be left implicit.</p>
+<p>Skolemization preserves satisfiability rather than logical equivalence in the original vocabulary. Label that step separately from equivalence rewrites.</p>
+</section>
+<section id="unification" class="level2">
+<h2 class="anchored" data-anchor-id="unification">4. Unification</h2>
+<p>Find a <strong>most general unifier (MGU)</strong> for each pair, or explain why no unifier exists. Show the bindings in the order you derive them, give the combined substitution at the end, and verify that applying it to both expressions makes them identical.</p>
+<ol type="1">
+<li><span class="math inline">P(A,x,f(y))</span> and <span class="math inline">P(A,B,f(z))</span></li>
+<li><span class="math inline">\text{Knows}(\text{John},x)</span> and <span class="math inline">\text{Knows}(y,\text{Bob})</span></li>
+</ol>
+<p>The variables are <span class="math inline">x,y,z</span>. The constants are <span class="math inline">A,B,\text{John},\text{Bob}</span>. The symbol <span class="math inline">f</span> is a unary function. The symbols <span class="math inline">P</span> and <span class="math inline">\text{Knows}</span> are predicates. Write bindings as <span class="math inline">x\mapsto t</span>, meaning “replace <span class="math inline">x</span> with term <span class="math inline">t</span>.” Equivalent MGUs that differ only in variable renaming are acceptable.</p>
+</section>
+<section id="resolution-proof" class="level2">
+<h2 class="anchored" data-anchor-id="resolution-proof">5. Resolution proof</h2>
+<p>Use <strong>refutation resolution</strong> to prove that query <span class="math inline">Q</span> follows from this <strong>knowledge base (KB)</strong>. In this problem, <span class="math inline">P,Q,R</span> are propositional atoms:</p>
+<p><span class="math display">P \lor Q</span> <span class="math display">\neg P \lor R</span> <span class="math display">\neg R</span></p>
+<p>Your proof must:</p>
+<ol type="1">
+<li>negate the query;</li>
+<li>list the initial clause set;</li>
+<li>identify the parent clauses and resolved literal at every step; and</li>
+<li>end with the empty clause <span class="math inline">\square</span> and explain why it establishes <span class="math inline">\text{KB}\models Q</span>.</li>
+</ol>
+<p>The symbols <span class="math inline">\square</span> and <span class="math inline">\bot</span> both denote the empty clause here. Either is acceptable. Keep the original clauses when adding a resolvent.</p>
+</section>
+<section id="presentation-checklist" class="level2">
+<h2 class="anchored" data-anchor-id="presentation-checklist">Presentation checklist</h2>
+<ul>
+<li>Every variable and predicate is defined.</li>
+<li>Parentheses make quantifier and connective scope unambiguous.</li>
+<li>Each truth table includes all assignments exactly once.</li>
+<li>CNF work distinguishes a formula from its clause-set representation.</li>
+<li>The unifier is applied consistently to both expressions.</li>
+<li>The resolution proof states why deriving <span class="math inline">\square</span> establishes entailment.</li>
+</ul>
+<div class="hw3-main-end" role="note">
+<p><strong>End of HW3.</strong> Submit your answers to Problems 1-5 and check the list above. Everything below is reference material, not an additional task.</p>
+</div>
+</section>
+<section id="reference-sheet" class="level2">
+<h2 class="anchored" data-anchor-id="reference-sheet">Reference Sheet (Supporting Material)</h2>
+<section id="background" class="level3">
+<h3 class="anchored" data-anchor-id="background">Background</h3>
+<p>Propositional logic treats each symbol such as <span class="math inline">P</span> or <span class="math inline">Q</span> as one truth-valued statement. First-order logic adds objects, predicates, variables, and quantifiers. State a nonempty domain and use parentheses to make each quantifier’s scope clear.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -262,129 +353,80 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td><span class="math inline">\(\neg P\)</span></td>
-<td>not <span class="math inline">\(P\)</span></td>
+<td><span class="math inline">\neg P</span></td>
+<td>not <span class="math inline">P</span></td>
 <td>flips the truth value</td>
 </tr>
 <tr class="even">
-<td><span class="math inline">\(P \land Q\)</span></td>
-<td><span class="math inline">\(P\)</span> and <span class="math inline">\(Q\)</span></td>
+<td><span class="math inline">P\land Q</span></td>
+<td><span class="math inline">P</span> and <span class="math inline">Q</span></td>
 <td>true only when both are true</td>
 </tr>
 <tr class="odd">
-<td><span class="math inline">\(P \lor Q\)</span></td>
-<td><span class="math inline">\(P\)</span> or <span class="math inline">\(Q\)</span></td>
+<td><span class="math inline">P\lor Q</span></td>
+<td><span class="math inline">P</span> or <span class="math inline">Q</span></td>
 <td>false only when both are false</td>
 </tr>
 <tr class="even">
-<td><span class="math inline">\(P \rightarrow Q\)</span></td>
-<td>if <span class="math inline">\(P\)</span>, then <span class="math inline">\(Q\)</span></td>
-<td><span class="math inline">\(\neg P \lor Q\)</span></td>
+<td><span class="math inline">P\rightarrow Q</span></td>
+<td>if <span class="math inline">P</span>, then <span class="math inline">Q</span></td>
+<td><span class="math inline">\neg P\lor Q</span></td>
 </tr>
 <tr class="odd">
-<td><span class="math inline">\(P \leftrightarrow Q\)</span></td>
-<td><span class="math inline">\(P\)</span> exactly when <span class="math inline">\(Q\)</span></td>
-<td><span class="math inline">\((P\rightarrow Q)\land(Q\rightarrow P)\)</span></td>
+<td><span class="math inline">P\leftrightarrow Q</span></td>
+<td><span class="math inline">P</span> exactly when <span class="math inline">Q</span></td>
+<td><span class="math inline">(P\rightarrow Q)\land(Q\rightarrow P)</span></td>
 </tr>
 </tbody>
 </table>
+<p><strong>Classification:</strong> a tautology is always true, a contradiction is always false, and a contingent formula has both true and false assignments. A formula is <strong>satisfiable</strong> if at least one assignment makes it true. Both tautologies and contingent formulas are satisfiable.</p>
+</section>
+<section id="equivalence-laws" class="level3">
+<h3 class="anchored" data-anchor-id="equivalence-laws">Equivalence Laws</h3>
+<p>De Morgan’s laws:</p>
+<p><span class="math display">\neg(P\land Q)\equiv\neg P\lor\neg Q,
+\qquad \neg(P\lor Q)\equiv\neg P\land\neg Q.</span></p>
+<p>Quantifier negation:</p>
+<p><span class="math display">\neg\forall x\,P(x)\equiv\exists x\,\neg P(x),
+\qquad \neg\exists x\,P(x)\equiv\forall x\,\neg P(x).</span></p>
+<p>OR over AND, the distribution used to form CNF:</p>
+<p><span class="math display">X\lor(Y\land Z)\equiv(X\lor Y)\land(X\lor Z).</span></p>
+</section>
 <section id="clause-form-workflow" class="level3">
-<h3 class="anchored" data-anchor-id="clause-form-workflow">Clause-form workflow</h3>
-<p>Use the same explicit pipeline for each CNF conversion:</p>
+<h3 class="anchored" data-anchor-id="clause-form-workflow">Clause-Form Workflow</h3>
 <ol type="1">
-<li>eliminate <span class="math inline">\(\leftrightarrow\)</span> and <span class="math inline">\(\rightarrow\)</span>;</li>
-<li>move negations inward with De Morgan’s laws and quantifier duality;</li>
-<li>standardize bound variable names apart;</li>
-<li>move quantifiers to a clear prenex form when useful;</li>
-<li>Skolemize existential variables, recording which universal variables each Skolem function depends on;</li>
-<li>distribute <span class="math inline">\(\lor\)</span> over <span class="math inline">\(\land\)</span>; and</li>
-<li>write the result as a set of clauses, with universal quantifiers implicit.</li>
+<li>Eliminate <span class="math inline">\leftrightarrow</span> and <span class="math inline">\rightarrow</span>.</li>
+<li>Move negations inward with De Morgan’s laws, double negation, and quantifier negation.</li>
+<li>Rename bound variables to avoid collisions. For example, <span class="math inline">(\forall x\,P(x))\land(\exists x\,Q(x))</span> can use <span class="math inline">y</span> in the second part.</li>
+<li>If moving quantifiers to the front, preserve scope: do not capture a variable that was free in another part of the formula.</li>
+<li>Skolemize each existential with a fresh constant or function. Record its dependencies on surrounding universal variables. This step preserves satisfiability.</li>
+<li>Distribute OR over AND.</li>
+<li>Write the result as a set of clauses, with universal quantifiers implicit. A clause is an OR of literals. The whole clause set requires all clauses to hold.</li>
 </ol>
-<div class="callout callout-style-simple callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Unification and resolution reminders
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>A substitution must be applied consistently everywhere, and a variable cannot be replaced by a term containing that same variable (the occurs check). Resolution combines clauses containing complementary literals, applies the required unifier, and removes the resolved pair. In a refutation proof, deriving the empty clause means that the knowledge base together with the negated query is inconsistent.</p>
-</div>
-</div>
+<p>For instance, <span class="math inline">\forall u\,\exists v\,R(u,v)</span> uses a fresh <span class="math inline">g(u)</span> for <span class="math inline">v</span>, while <span class="math inline">\exists v\,\forall u\,R(u,v)</span> uses a fresh constant <span class="math inline">k</span>.</p>
 </section>
+<section id="unification-and-resolution" class="level3">
+<h3 class="anchored" data-anchor-id="unification-and-resolution">Unification and Resolution</h3>
+<p>A substitution replaces variables with terms and applies consistently throughout each expression. An MGU avoids unnecessary bindings. The <strong>occurs check</strong> rejects a binding such as <span class="math inline">x\mapsto f(x)</span> because the replacement contains <span class="math inline">x</span> itself. Different constant symbols do not unify syntactically.</p>
+<p>Resolution combines clauses containing one complementary pair. In FOL, first rename variables in different parent clauses apart if needed, then find a unifier for the atoms. Apply that substitution to the entire parent clauses, remove the complementary literals, and join the remaining literals with OR.</p>
+<p>For a refutation proof, add the negated query to the KB. Deriving the empty clause shows that the KB together with the negated query is unsatisfiable:</p>
+<p><span class="math display">\text{KB}\models\alpha\quad\Longleftrightarrow\quad
+\text{KB}\land\neg\alpha\text{ is unsatisfiable}.</span></p>
+<p>The <strong>empty clause</strong> has no literals and is false. It is different from an empty clause set, which has no requirements and is true.</p>
 </section>
-<section id="truth-tables-and-classification" class="level2">
-<h2 class="anchored" data-anchor-id="truth-tables-and-classification">1. Truth tables and classification</h2>
-<p>For each formula, construct the complete truth table and classify it as exactly one of the following:</p>
+<section id="lecture-references" class="level3">
+<h3 class="anchored" data-anchor-id="lecture-references">Lecture References</h3>
 <ul>
-<li><strong>tautology:</strong> true under every truth assignment;</li>
-<li><strong>contradiction:</strong> false under every truth assignment; or</li>
-<li><strong>contingent:</strong> true under at least one assignment and false under at least one assignment.</li>
-</ul>
-<p>Analyze these formulas:</p>
-<ol type="1">
-<li><span class="math display">\[(P \lor Q) \rightarrow R\]</span></li>
-<li><span class="math display">\[\neg(P \lor Q) \leftrightarrow (\neg P \land \neg Q)\]</span></li>
-<li><span class="math display">\[((P \rightarrow Q) \land (Q \rightarrow R)) \rightarrow (P \rightarrow R)\]</span></li>
-</ol>
-<p>Include columns for the useful subexpressions, not only the final result.</p>
-</section>
-<section id="first-order-logic-translation" class="level2">
-<h2 class="anchored" data-anchor-id="first-order-logic-translation">2. First-order logic translation</h2>
-<p>Translate each sentence into first-order logic. State the domain and define every predicate or constant you introduce.</p>
-<ol type="1">
-<li>Everyone who studies AI is intelligent.</li>
-<li>Some student loves logic but does not love probability.</li>
-<li>Every professor teaches at least one course.</li>
-</ol>
-<p>Use quantifier scope and parentheses carefully. Equivalent, well-defined predicate names are acceptable.</p>
-</section>
-<section id="conversion-to-clause-form" class="level2">
-<h2 class="anchored" data-anchor-id="conversion-to-clause-form">3. Conversion to clause form</h2>
-<p>Convert each formula to conjunctive normal form. Show implication elimination, movement of negations, standardization or Skolemization when needed, and distribution into clauses.</p>
-<ol type="1">
-<li><span class="math display">\[\forall x\, ((P(x) \lor Q(x)) \rightarrow R(x))\]</span></li>
-<li><span class="math display">\[\neg \exists y\, \forall x\, (Loves(x,y) \lor Hates(x,y))\]</span></li>
-</ol>
-<p>For the second formula, make the dependency of any Skolem function explicit. In the final clause set, universal quantifiers may be left implicit.</p>
-</section>
-<section id="unification" class="level2">
-<h2 class="anchored" data-anchor-id="unification">4. Unification</h2>
-<p>Find a most general unifier (MGU) for each pair, or explain why no unifier exists. Show the substitutions in the order you derive them and give the composed substitution at the end.</p>
-<ol type="1">
-<li><span class="math inline">\(P(A,x,f(y))\)</span> and <span class="math inline">\(P(A,B,f(z))\)</span></li>
-<li><span class="math inline">\(Knows(John,x)\)</span> and <span class="math inline">\(Knows(y,Bob)\)</span></li>
-</ol>
-</section>
-<section id="resolution-proof" class="level2">
-<h2 class="anchored" data-anchor-id="resolution-proof">5. Resolution proof</h2>
-<p>Use refutation resolution to prove that query <span class="math inline">\(Q\)</span> follows from this knowledge base:</p>
-<p><span class="math display">\[P \lor Q\]</span> <span class="math display">\[\neg P \lor R\]</span> <span class="math display">\[\neg R\]</span></p>
-<p>Your proof must:</p>
-<ol type="1">
-<li>negate the query;</li>
-<li>list the initial clause set;</li>
-<li>identify the parent clauses and resolved literal at every step; and</li>
-<li>end with the empty clause <span class="math inline">\(\square\)</span>.</li>
-</ol>
-</section>
-<section id="presentation-checklist" class="level2">
-<h2 class="anchored" data-anchor-id="presentation-checklist">Presentation checklist</h2>
-<ul>
-<li>Every variable and predicate is defined.</li>
-<li>Parentheses make quantifier and connective scope unambiguous.</li>
-<li>Each truth table includes all assignments exactly once.</li>
-<li>CNF work distinguishes a formula from its clause-set representation.</li>
-<li>The unifier is applied consistently to both expressions.</li>
-<li>The resolution proof states why deriving <span class="math inline">\(\square\)</span> establishes entailment.</li>
+<li><a href="../lecture_viewer.html?deck=slides%2Flec16_Logic.html&amp;title=Lecture 16%3A Propositional Logic" target="_blank" rel="noopener">Lecture 16: Propositional Logic</a></li>
+<li><a href="../lecture_viewer.html?deck=slides%2Flec17_Propositional_Inference.html&amp;title=Lecture 17%3A Propositional Inference" target="_blank" rel="noopener">Lecture 17: Propositional Inference</a></li>
+<li><a href="../lecture_viewer.html?deck=slides%2Flec18_FOL.html&amp;title=Lecture 18%3A First-Order Logic" target="_blank" rel="noopener">Lecture 18: First-Order Logic</a></li>
 </ul>
 <nav class="assignment-nav">
 <a href="../homeworks/hw2.html">← Homework 2</a><a href="../homeworks/hw4.html">Homework 4 →</a>
 </nav>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

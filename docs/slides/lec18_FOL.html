@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec18_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,36 +164,38 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="first-order-logic" class="slide level2 section-slide">
-<h2>First-Order Logic</h2>
-<p>First-order logic gives AI a language for talking about objects, relations, and rules that apply broadly.</p>
-</section>
-<section id="why-propositional-logic-is-not-enough" class="slide level2">
-<h2>Why Propositional Logic Is Not Enough</h2>
+<section id="objects-and-rules" class="slide level2 fol18-slide">
+<h2>Objects and General Rules</h2>
 <div class="columns visual-pair">
-<div class="column" style="width:62%;">
-<p>Propositional logic can name whole facts:</p>
-<p><span class="math display">
-\text{HumanSocrates} \rightarrow \text{MortalSocrates}
-</span></p>
-<p>But it cannot easily express the rule behind the fact:</p>
-<p><span class="math display">
-\forall x\; \text{Human}(x) \rightarrow \text{Mortal}(x)
-</span></p>
-<div class="takeaway">
-<p>FOL lets us reason about classes of objects without writing a separate proposition for every object.</p>
-</div>
-</div><div class="column" style="width:30%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec1/connections_openclipart.svg" class="cc0-icon"></p>
-<figcaption>Connections icon for objects and relations</figcaption>
-</figure>
-</div>
+<div class="column" style="width:72%;">
+<p><strong>First-order logic (FOL)</strong> describes objects and their relationships.</p>
+<p>Instead of a separate rule for each person:</p>
+<p><span class="math display">\text{HumanSocrates}\rightarrow\text{MortalSocrates}</span></p>
+<p>write one rule about all people:</p>
+<p><span class="math display">\forall x\,\bigl(\text{Human}(x)\rightarrow\text{Mortal}(x)\bigr).</span></p>
+<p>The <strong>domain</strong> is the nonempty set of objects that variables range over. Here, choose all people.</p>
+</div><div class="column" style="width:23%;">
+<p><img data-src="imgs/lec1/connections_openclipart.svg" class="cc0-icon" alt="Connected people, illustrating objects and their relationships"></p>
 </div></div>
+<aside class="notes">
+<p>Read the quantifier as “for every x.” Human and Mortal are predicates, whose arguments refer to people. The propositional atom HumanSocrates does not expose an object argument. A finite collection can be enumerated propositionally, but FOL states the general rule directly, including for people we have not named.</p>
+<p>Keep this lecture to about 30-35 minutes, leaving time for Homework 3 and midterm questions. Spend most of that time on quantifier scope, matching, and the single clause-form example. Lectures 17 and 18 are excluded from the upcoming midterm, as stated in the schedule.</p>
+<p>[Sources] - Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapters 8-9. - https://inst.eecs.berkeley.edu/~cs188/textbook/logic/first-order-logic.html - Public-domain OpenClipart connections artwork, credited on the course asset page. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="building-blocks-of-fol" class="slide level2">
-<h2>Building Blocks of FOL</h2>
+<section id="terms-and-predicates" class="slide level2 fol18-slide">
+<h2>Terms and Predicates</h2>
+<p>A <strong>term</strong> refers to an object. An <strong>atomic formula</strong> makes a claim about objects.</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -202,420 +205,636 @@ Peizhong Ju
 <thead>
 <tr class="header">
 <th>Building block</th>
-<th>Meaning</th>
 <th>Example</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Constants</td>
-<td>Specific objects</td>
-<td><span class="math inline">\text{Socrates}</span>, <span class="math inline">\text{Alice}</span>, <span class="math inline">3</span></td>
+<td>Constant</td>
+<td><span class="math inline">\text{Ada}</span></td>
+<td>A named person</td>
 </tr>
 <tr class="even">
-<td>Variables</td>
-<td>Arbitrary objects</td>
-<td><span class="math inline">x, y, z</span></td>
+<td>Variable</td>
+<td><span class="math inline">x</span></td>
+<td>A person whose value may vary</td>
 </tr>
 <tr class="odd">
-<td>Predicates</td>
-<td>Properties or relations</td>
-<td><span class="math inline">\text{Human}(x)</span>, <span class="math inline">\text{Loves}(\text{Alice}, \text{Bob})</span></td>
+<td>Function term</td>
+<td><span class="math inline">\text{Mother}(\text{Ada})</span></td>
+<td>An object: Ada’s mother</td>
 </tr>
 <tr class="even">
-<td>Functions</td>
-<td>Map objects to objects</td>
-<td><span class="math inline">\text{Father}(\text{John}) = \text{David}</span></td>
-</tr>
-<tr class="odd">
-<td>Connectives</td>
-<td>Combine formulas</td>
-<td><span class="math inline">\land, \lor, \neg, \rightarrow, \leftrightarrow</span></td>
-</tr>
-<tr class="even">
-<td>Quantifiers</td>
-<td>Specify scope</td>
-<td><span class="math inline">\forall</span>, <span class="math inline">\exists</span></td>
+<td>Predicate</td>
+<td><span class="math inline">\text{Knows}(\text{Ada},x)</span></td>
+<td>A claim: Ada knows <span class="math inline">x</span></td>
 </tr>
 </tbody>
 </table>
+<p>Connectives <span class="math inline">\neg,\land,\lor,\rightarrow,\leftrightarrow</span> combine formulas as before.</p>
 <div class="question">
-<p>Read each formula by asking: what objects exist, what relations hold, and how widely does the claim apply?</p>
+<p>Does <span class="math inline">\text{Mother}(\text{Ada})</span> itself have a truth value?</p>
 </div>
+<div class="fragment takeaway">
+<p>No.&nbsp;It denotes an object. <span class="math inline">\text{Human}(\text{Mother}(\text{Ada}))</span> makes a truth-valued claim about that object.</p>
+</div>
+<aside class="notes">
+<p>The domain is people. In this simplified model, Mother assigns one person to every person. Functions are total and single-valued. A relation such as Advises may hold for several pairs or none, so it should generally be a predicate rather than a function. Different names need not denote different objects unless the model or premises say so.</p>
+<p>A FOL interpretation specifies the domain, the objects named by constants, functions on that domain, and the relations represented by predicates. An assignment supplies values for free variables. A model of a closed KB makes every sentence in the KB true.</p>
+<p>[Sources] - AIMA Chapter 8, first-order syntax and semantics. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="two-core-quantifiers" class="slide level2">
-<h2>Two Core Quantifiers</h2>
+<section id="quantifiers" class="slide level2 fol18-slide">
+<h2>Universal and Existential Quantifiers</h2>
+<p>Domain: people. <span class="math inline">\text{Happy}(x)</span> means “<span class="math inline">x</span> is happy.”</p>
 <div class="columns two-column-balance">
 <div class="column" style="width:48%;">
 <h3 id="universal-forall">Universal: <span class="math inline">\forall</span></h3>
-<p><span class="math display">
-\forall x\; \text{Human}(x) \rightarrow \text{Mortal}(x)
-</span></p>
-<p>For every object <span class="math inline">x</span>, if <span class="math inline">x</span> is human, then <span class="math inline">x</span> is mortal.</p>
+<p><span class="math display">\forall x\,\text{Happy}(x)</span></p>
+<p><strong>Every</strong> person is happy.</p>
+<p>One unhappy person makes the statement false.</p>
 </div><div class="column" style="width:48%;">
 <h3 id="existential-exists">Existential: <span class="math inline">\exists</span></h3>
-<p><span class="math display">
-\exists x\; \text{Likes}(x, \text{IceCream})
-</span></p>
-<p>There is at least one object <span class="math inline">x</span> that likes ice cream.</p>
+<p><span class="math display">\exists x\,\text{Happy}(x)</span></p>
+<p><strong>At least one</strong> person is happy.</p>
+<p>One happy person is a <strong>witness</strong> that makes it true.</p>
 </div></div>
 <div class="takeaway">
-<p><span class="math inline">\forall</span> makes a general rule. <span class="math inline">\exists</span> promises at least one witness.</p>
+<p>The quantifier binds <span class="math inline">x</span> in its scope. In <span class="math inline">\forall x\,(\text{Human}(x)\rightarrow\text{Mortal}(x))</span>, the parentheses put both predicates in that scope.</p>
 </div>
+<aside class="notes">
+<p>Existence does not mean exactly one. A witness is an object that satisfies the quantified condition. In Happy(x) alone, x is free: we must assign it a value to evaluate the formula. A closed sentence has no free variables.</p>
+<p>On a finite domain, universal quantification behaves like AND across all objects, while existential quantification behaves like OR. This is an intuition for evaluation, not a claim that all FOL domains are finite.</p>
+<p>[Sources] - AIMA Chapter 8, quantifiers and scope. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="quantifier-order-matters" class="slide level2 compact">
-<h2>Quantifier Order Matters</h2>
+<section id="quantifier-order" class="slide level2 fol18-slide">
+<h2>Quantifier Order</h2>
+<p>Domain: people. An arrow from <span class="math inline">x</span> to <span class="math inline">y</span> means <span class="math inline">\text{Knows}(x,y)</span>.</p>
 <div class="columns two-column-balance">
 <div class="column" style="width:48%;">
-<h3 id="everyone-loves-someone">Everyone Loves Someone</h3>
-<p><span class="math display">
-\forall x \exists y\; \text{Loves}(x,y)
-</span></p>
-<p>Each person may have their own <span class="math inline">y</span>.</p>
+<p><span class="math display">\forall x\,\exists y\,\text{Knows}(x,y)</span></p>
+<p>Each person knows someone. The witness may depend on <span class="math inline">x</span>.</p>
 </div><div class="column" style="width:48%;">
-<h3 id="someone-is-loved-by-everyone">Someone Is Loved by Everyone</h3>
-<p><span class="math display">
-\exists y \forall x\; \text{Loves}(x,y)
-</span></p>
-<p>One same <span class="math inline">y</span> works for all <span class="math inline">x</span>.</p>
+<p><span class="math display">\exists y\,\forall x\,\text{Knows}(x,y)</span></p>
+<p>One person is known by everyone. The same witness works for all <span class="math inline">x</span>.</p>
 </div></div>
-<div class="fragment question">
-<p>Swapping the quantifiers changes the claim, even though the predicate is the same.</p>
-</div>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec17/quantifier-order-matters.svg" alt="Quantifier order changes whether each person has a possibly different witness or all people share one witness"></p>
-</div>
-</section>
-<section id="translating-english-to-fol" class="slide level2 compact">
-<h2>Translating English to FOL</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>English sentence</th>
-<th>FOL pattern</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Every student has a teacher.</td>
-<td><span class="math inline">\forall x\; \text{Student}(x) \rightarrow \exists y\; \text{Teacher}(y) \land \text{Teaches}(y,x)</span></td>
-</tr>
-<tr class="even">
-<td>There exists a course that every student takes.</td>
-<td><span class="math inline">\exists c \forall x\; \text{Student}(x) \rightarrow \text{Takes}(x,c)</span></td>
-</tr>
-<tr class="odd">
-<td>Every professor teaches at least one course.</td>
-<td><span class="math inline">\forall p\; \text{Professor}(p) \rightarrow \exists c\; \text{Teaches}(p,c)</span></td>
-</tr>
-</tbody>
-</table>
-<div class="takeaway">
-<p>Choose the domain objects first, then decide where each quantifier must live.</p>
-</div>
-</section>
-<section id="negating-quantifiers" class="slide level2">
-<h2>Negating Quantifiers</h2>
-<p>Negation flips the quantifier as it moves inward:</p>
-<p><span class="math display">
-\neg \forall x\; P(x) \equiv \exists x\; \neg P(x)
-</span></p>
-<p><span class="math display">
-\neg \exists x\; P(x) \equiv \forall x\; \neg P(x)
-</span></p>
-<div class="example-box">
-<p>“Not everyone is happy” means:</p>
-<p><span class="math display">
-\neg \forall x\; \text{Happy}(x) \equiv \exists x\; \neg \text{Happy}(x)
-</span></p>
-</div>
-</section>
-<section id="inference-rules-in-fol" class="slide level2">
-<h2>Inference Rules in FOL</h2>
-<p>FOL inference rules derive new facts from quantified knowledge.</p>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Rule</th>
-<th>Basic idea</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Universal Instantiation</td>
-<td>Replace a universally quantified variable with a specific object.</td>
-</tr>
-<tr class="even">
-<td>Existential Instantiation</td>
-<td>Introduce a new name for an object that must exist.</td>
-</tr>
-<tr class="odd">
-<td>Generalized Modus Ponens</td>
-<td>Combine rules and facts after unification.</td>
-</tr>
-<tr class="even">
-<td>Resolution</td>
-<td>Prove by contradiction using clauses and unification.</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="substitution-and-entailment" class="slide level2">
-<h2>Substitution and Entailment</h2>
-<h3 id="substitution">Substitution</h3>
-<p>Substitution replaces variables in a formula:</p>
-<p><span class="math display">
-\theta = \{x / \text{Alice}\}, \qquad \alpha = \text{Loves}(x,y)
-</span></p>
-<p><span class="math display">
-\text{SUBST}(\theta,\alpha) = \text{Loves}(\text{Alice},y)
-</span></p>
-<h3 id="entailment">Entailment</h3>
-<p><span class="math display">
-\text{KB} \models \alpha
-</span></p>
-<p>means <span class="math inline">\alpha</span> is true in every model where <span class="math inline">\text{KB}</span> is true.</p>
-</section>
-<section id="ui-and-ei" class="slide level2">
-<h2>UI and EI</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="universal-instantiation">Universal Instantiation</h3>
-<p>From:</p>
-<p><span class="math display">
-\forall x\; P(x)
-</span></p>
-<p>infer:</p>
-<p><span class="math display">
-P(a)
-</span></p>
-<p>for any object <span class="math inline">a</span>.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="existential-instantiation">Existential Instantiation</h3>
-<p>From:</p>
-<p><span class="math display">
-\exists x\; P(x)
-</span></p>
-<p>introduce a fresh constant <span class="math inline">c</span> and infer:</p>
-<p><span class="math display">
-P(c)
-</span></p>
-</div></div>
-<div class="question">
-<p>EI needs a new name; otherwise the proof may accidentally assume which object exists.</p>
-</div>
-</section>
-<section id="unification" class="slide level2">
-<h2>Unification</h2>
-<p>Unification finds a substitution <span class="math inline">\theta</span> that makes expressions match.</p>
-<div class="definition">
-<p>Given:</p>
-<p><span class="math display">
-\text{Knows}(\text{John},x)
-\qquad
-\text{Knows}(\text{John},\text{Bob})
-</span></p>
-<p>A unifier is:</p>
-<p><span class="math display">
-\theta = \{x / \text{Bob}\}
-</span></p>
-</div>
-<div class="takeaway">
-<p>Unification is the matching step that lets FOL inference use general rules with specific facts.</p>
-</div>
-</section>
-<section id="generalized-modus-ponens" class="slide level2">
-<h2>Generalized Modus Ponens</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:50%;">
-<h3 id="rule">Rule</h3>
-<p><span class="math display">
-P_1 \land P_2 \land \cdots \land P_k \rightarrow Q
-</span></p>
-<p>If the facts match the premises under <span class="math inline">\theta</span>, infer:</p>
-<p><span class="math display">
-\text{SUBST}(\theta,Q)
-</span></p>
-</div><div class="column" style="width:46%;">
-<h3 id="example">Example</h3>
-<p><span class="math display">
-\forall x\; \text{Human}(x) \rightarrow \text{Mortal}(x)
-</span></p>
-<p><span class="math display">
-\text{Human}(\text{Socrates})
-</span></p>
-<p><span class="math display">
-\theta = \{x / \text{Socrates}\}
-</span></p>
-<p><span class="math display">
-\text{Mortal}(\text{Socrates})
-</span></p>
-</div></div>
-</section>
-<section id="conjunctive-normal-form" class="slide level2">
-<h2>Conjunctive Normal Form</h2>
-<p>CNF is a conjunction of clauses; each clause is a disjunction of literals.</p>
-<p><span class="math display">
-(P \lor Q \lor \neg R) \land (\neg P \lor R) \land Q
-</span></p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="literal">Literal</h3>
-<p>An atom or its negation:</p>
-<p><span class="math display">
-P, \quad \neg R
-</span></p>
-</div><div class="column" style="width:48%;">
-<h3 id="clause">Clause</h3>
-<p>A disjunction of literals:</p>
-<p><span class="math display">
-P \lor Q \lor \neg R
-</span></p>
-</div></div>
-</section>
-<section id="converting-fol-to-cnf" class="slide level2 scrollable">
-<h2>Converting FOL to CNF</h2>
-<p>Use CNF because resolution works over clauses.</p>
-<div class="fragment">
-<ol type="1">
-<li>Eliminate implications: <span class="math inline">A \rightarrow B \equiv \neg A \lor B</span>.</li>
-</ol>
-</div>
-<div class="fragment">
-<ol start="2" type="1">
-<li>Move negations inward: apply De Morgan’s laws and quantifier negation.</li>
-</ol>
-</div>
-<div class="fragment">
-<ol start="3" type="1">
-<li>Standardize variables: rename bound variables to avoid collisions.</li>
-</ol>
-</div>
-<div class="fragment">
-<ol start="4" type="1">
-<li>Skolemize: replace existential variables with Skolem constants or functions.</li>
-</ol>
-</div>
-<div class="fragment">
-<ol start="5" type="1">
-<li>Drop universal quantifiers and distribute <span class="math inline">\lor</span> over <span class="math inline">\land</span>.</li>
-</ol>
-</div>
-</section>
-<section id="cnf-example-start" class="slide level2">
-<h2>CNF Example: Start</h2>
-<p>“Everyone who loves all animals is loved by someone.”</p>
-<p><span class="math display">
-\forall x\left(
-  (\forall y(\text{Animal}(y) \rightarrow \text{Loves}(x,y)))
-  \rightarrow
-  (\exists z\; \text{Loves}(z,x))
-\right)
-</span></p>
-<div class="question">
-<p>The outer statement says: if <span class="math inline">x</span> loves all animals, then someone loves <span class="math inline">x</span>.</p>
-</div>
-</section>
-<section id="cnf-example-transform" class="slide level2">
-<h2>CNF Example: Transform</h2>
-<div class="fragment">
-<h3 id="remove-implications">Remove implications</h3>
-<p><span class="math display">
-\forall x\left(
-  \neg \forall y(\neg \text{Animal}(y) \lor \text{Loves}(x,y))
-  \lor
-  \exists z\; \text{Loves}(z,x)
-\right)
-</span></p>
-</div>
-<div class="fragment">
-<h3 id="move-negation-inward">Move negation inward</h3>
-<p><span class="math display">
-\forall x\left(
-  \exists y(\text{Animal}(y) \land \neg \text{Loves}(x,y))
-  \lor
-  \exists z\; \text{Loves}(z,x)
-\right)
-</span></p>
-</div>
-</section>
-<section id="cnf-example-clauses" class="slide level2">
-<h2>CNF Example: Clauses</h2>
-<div class="fragment">
-<h3 id="skolemize">Skolemize</h3>
-<p><span class="math display">
-\forall x\left(
-  (\text{Animal}(f(x)) \land \neg \text{Loves}(x,f(x)))
-  \lor
-  \text{Loves}(g(x),x)
-\right)
-</span></p>
-</div>
-<div class="fragment">
-<h3 id="distribute">Distribute</h3>
-<p><span class="math display">
-(\text{Animal}(f(x)) \lor \text{Loves}(g(x),x))
-\land
-(\neg \text{Loves}(x,f(x)) \lor \text{Loves}(g(x),x))
-</span></p>
-</div>
-</section>
-<section id="resolution-in-propositional-logic" class="slide level2">
-<h2>Resolution in Propositional Logic</h2>
-<p>Resolution eliminates complementary literals:</p>
-<p><span class="math display">
-\frac{(P \lor A),\quad(\neg P \lor B)}{A \lor B}
-</span></p>
-<div class="example-box">
-<p><span class="math display">
-(\neg \text{Rain} \lor \text{Wet}), \quad \text{Rain}
-</span></p>
-<p>Resolving on <span class="math inline">\text{Rain}</span> gives:</p>
-<p><span class="math display">
-\text{Wet}
-</span></p>
-</div>
-</section>
-<section id="resolution-in-fol" class="slide level2">
-<h2>Resolution in FOL</h2>
-<p>FOL resolution adds unification before resolving.</p>
-<div class="fragment">
-<p><span class="math display">
-\text{Loves}(x,\text{Alice}) \lor \text{Hates}(x,\text{Bob})
-</span></p>
-</div>
-<div class="fragment">
-<p><span class="math display">
-\neg \text{Loves}(\text{John},\text{Alice}) \lor \text{Friends}(\text{John},\text{Bob})
-</span></p>
-</div>
-<div class="fragment">
-<p>Unify with <span class="math inline">\theta = \{x / \text{John}\}</span>, then resolve on <span class="math inline">\text{Loves}(\text{John},\text{Alice})</span>.</p>
-</div>
+<p><img data-src="imgs/drawio/lec18/quantifier-order.png" class="fol18-order" alt="Left: Ada knows Bo, Bo knows Cy, Cy knows Ada. Everyone knows someone, but no one is known by all. Right: Ada, Bo, and Cy all know Bo, including Bo knowing Bo."></p>
 <div class="fragment takeaway">
-<p><span class="math display">
-\text{Hates}(\text{John},\text{Bob}) \lor \text{Friends}(\text{John},\text{Bob})
-</span></p>
+<p>The left world satisfies only the first statement. The right world satisfies both.</p>
 </div>
+<aside class="notes">
+<p>Both diagrams use the same three-person domain, Ada, Bo, and Cy, with no additional Knows pairs. The left and right columns within each diagram are source and target copies of the same objects. Bo knowing Bo is allowed: we have not imposed an irreflexivity condition. Knows is directed and need not be symmetric.</p>
+<p>The right-hand statement entails the left-hand one on a nonempty domain. Swapping mixed quantifiers can change meaning, but swapping two adjacent universals, or two adjacent existentials, does not.</p>
+<p>[Sources] - AIMA Chapter 8, nested quantifiers. Original finite relation examples and draw.io illustration. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
+<section id="translation-patterns" class="slide level2 fol18-slide">
+<h2>Translating “Every” and “Some”</h2>
+<p>Domain: people. <span class="math inline">\text{Student}(x)</span> and <span class="math inline">\text{Advisor}(y)</span> identify roles. <span class="math inline">\text{Advises}(y,x)</span> means “<span class="math inline">y</span> advises <span class="math inline">x</span>.”</p>
+<h3 id="every-student-has-an-advisor">Every Student Has an Advisor</h3>
+<p><span class="math display">\forall x\,\bigl(\text{Student}(x)\rightarrow
+  \exists y\,(\text{Advisor}(y)\land\text{Advises}(y,x))\bigr)</span></p>
+<h3 id="some-student-has-an-advisor">Some Student Has an Advisor</h3>
+<div class="fragment" data-fragment-index="0">
+<p><span class="math display">\exists x\,\exists y\,\bigl(\text{Student}(x)\land
+  \text{Advisor}(y)\land\text{Advises}(y,x)\bigr)</span></p>
+</div>
+<div class="takeaway">
+<p>Use implication to restrict a universal rule to students. Use AND to require an existential witness to be a student.</p>
+</div>
+<aside class="notes">
+<p>Ask for the second translation before revealing it. Under a universal quantifier, Student(x) AND … would claim that every person is a student. Under an existential quantifier, Student(x) implies … can be satisfied by a nonstudent, so it does not establish a student witness.</p>
+<p>The first statement does not assert that any students exist. If there are no students, every implication in it is true. The second does assert the existence of at least one student and an advisor, who need not be a different person unless inequality is added.</p>
+<p>[Sources] - AIMA Chapter 8, translating quantified English. Original advising example. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="quantifier-negation" class="slide level2 fol18-slide">
+<h2>Negating Quantifiers</h2>
+<p>Moving NOT inward flips the quantifier:</p>
+<p><span class="math display">\neg\forall x\,P(x)\equiv\exists x\,\neg P(x)</span> <span class="math display">\neg\exists x\,P(x)\equiv\forall x\,\neg P(x)</span></p>
+<div class="question">
+<p>“Not everyone knows someone.” Rewrite <span class="math inline">\neg\forall x\,\exists y\,\text{Knows}(x,y)</span> with NOT next to the predicate.</p>
+</div>
+<div class="fragment" data-fragment-index="0">
+<p><span class="math display">\exists x\,\forall y\,\neg\text{Knows}(x,y)</span></p>
+<p>There is a person who knows nobody.</p>
+</div>
+<div class="takeaway">
+<p>“Not everyone” means at least one exception. It does not mean “nobody.”</p>
+</div>
+<aside class="notes">
+<p>P(x) here stands for any condition on x. Move the negation across one quantifier at a time. Across a compound condition, also apply De Morgan’s laws. This prepares students for Homework 3, Problem 3, without solving its specific formula.</p>
+<p>[Sources] - AIMA Chapter 8, quantifier negation. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="instantiation" class="slide level2 fol18-slide">
+<h2>Instantiation</h2>
+<p><strong>Instantiation</strong> replaces a quantified variable with a term.</p>
+<div class="columns two-column-balance">
+<div class="column" style="width:48%;">
+<h3 id="universal-instantiation-ui">Universal Instantiation (UI)</h3>
+<p><span class="math display">\forall x\,\text{Human}(x)</span></p>
+<p>Any particular instance follows:</p>
+<p><span class="math display">\text{Human}(\text{Ada}).</span></p>
+<p>The rule applies to every object, including Ada.</p>
+</div><div class="column" style="width:48%;">
+<h3 id="existential-instantiation-ei">Existential Instantiation (EI)</h3>
+<p><span class="math display">\exists x\,\text{Happy}(x)</span></p>
+<p>Give a witness a <strong>fresh</strong> name <span class="math inline">k</span>:</p>
+<p><span class="math display">\text{Happy}(k).</span></p>
+<p>We have not learned whether that witness is Ada.</p>
+</div></div>
+<div class="takeaway">
+<p>A fresh witness name adds no claim that it differs from all known people. It simply avoids assuming which person satisfies the existential.</p>
+</div>
+<aside class="notes">
+<p>UI is ordinary logical consequence. EI is a witness introduction in an extended vocabulary for proof or satisfiability reasoning. Happy(k) is not an unrestricted consequence about an arbitrary preinterpreted name k. In natural deduction, the fresh-name assumption has a local scope and must not leak into an unjustified conclusion.</p>
+<p>For a standalone existential with no surrounding universal dependency, the fresh name is a Skolem constant. For a nested existential we may need a function, covered later. UI also permits suitable function terms. Avoid variable capture when applying a substitution under quantifiers.</p>
+<p>[Sources] - AIMA Chapter 9, universal and existential instantiation. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="unification" class="slide level2 fol18-slide">
+<h2>Substitution and Unification</h2>
+<p>A <strong>substitution</strong> <span class="math inline">\theta=\{x\mapsto\text{Bo}\}</span> means “replace <span class="math inline">x</span> with Bo.”</p>
+<p><span class="math display">\text{Knows}(\text{Ada},x)\theta=\text{Knows}(\text{Ada},\text{Bo})</span></p>
+<p><strong>Unification</strong> finds substitutions that make two expressions identical.</p>
+<p><span class="math display">\text{Knows}(\text{Ada},x)\qquad\text{Knows}(y,\text{Bo})</span></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Argument</th>
+<th>Required match</th>
+<th>Binding</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>First</td>
+<td>Ada with <span class="math inline">y</span></td>
+<td><span class="fragment" data-fragment-index="0"><span class="math inline">y\mapsto\text{Ada}</span></span></td>
+</tr>
+<tr class="even">
+<td>Second</td>
+<td><span class="math inline">x</span> with Bo</td>
+<td><span class="fragment" data-fragment-index="1"><span class="math inline">x\mapsto\text{Bo}</span></span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment takeaway" data-fragment-index="2">
+<p>Apply <span class="math inline">\theta=\{y\mapsto\text{Ada},\ x\mapsto\text{Bo}\}</span> to <strong>both</strong> expressions. Both become <span class="math inline">\text{Knows}(\text{Ada},\text{Bo})</span>.</p>
+</div>
+<aside class="notes">
+<p>The postfix theta notation means apply the substitution to the whole expression, just as SUBST(theta, alpha) did in the previous materials. Bindings replace variables, not constant or predicate names. Explain each argument before revealing its binding. Constants are Ada and Bo; x and y are variables.</p>
+<p>[Sources] - AIMA Chapter 9, unification and substitutions. - https://aima.cs.berkeley.edu/algorithms.pdf [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="mgu-and-failure" class="slide level2 fol18-slide">
+<h2>Most General Unifiers and Failure</h2>
+<p>A <strong>most general unifier (MGU)</strong> matches expressions without unnecessary bindings.</p>
+<p><span class="math display">R(x,f(y))\qquad R(\text{Ada},f(z))</span></p>
+<div class="fragment" data-fragment-index="0">
+<p>An MGU is <span class="math inline">\{x\mapsto\text{Ada},\ y\mapsto z\}</span>. It leaves <span class="math inline">z</span> unrestricted. Here <span class="math inline">R</span> is a predicate and <span class="math inline">f</span> a unary function.</p>
+</div>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Expressions</th>
+<th>Why unification fails</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">P(\text{Ada})</span> and <span class="math inline">P(\text{Bo})</span></td>
+<td>Different constant symbols cannot match syntactically</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">P(x)</span> and <span class="math inline">P(f(x))</span></td>
+<td><strong>Occurs check:</strong> <span class="math inline">x</span> occurs inside <span class="math inline">f(x)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>The occurs check rejects <span class="math inline">x\mapsto f(x)</span>: ordinary first-order terms must be finite.</p>
+</div>
+<aside class="notes">
+<p>R is any binary predicate, P any unary predicate, and f a unary function symbol. An MGU allows every other unifier to be obtained by further substitution. For example, additionally setting z to Bo also unifies the pair but is more specific. Reversing y maps to z is an equivalent MGU up to variable renaming.</p>
+<p>Syntactic unification does not infer equalities between distinct constant symbols even if a possible interpretation maps them to the same object. Equality reasoning is a separate extension. In the occurs-check case, substitution cannot turn the finite term assigned to x into exactly that same term with an extra f around it. This is about finite syntactic terms, not whether a semantic function could have a fixed point.</p>
+<p>[Sources] - AIMA Chapter 9, most general unifiers and the occurs check. - https://www.cs.cmu.edu/~fp/courses/atp/lectures/10-unif.html [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="generalized-modus-ponens" class="slide level2 fol18-slide scrollable">
+<h2>Generalized Modus Ponens</h2>
+<p><strong>Generalized modus ponens</strong> uses matching facts to apply a quantified rule.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>What we know</th>
+<th>Formula</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Rule</td>
+<td><span class="math inline">\forall x\,(\text{Human}(x)\rightarrow\text{Mortal}(x))</span></td>
+</tr>
+<tr class="even">
+<td>Fact</td>
+<td><span class="math inline">\text{Human}(\text{Socrates})</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment" data-fragment-index="0">
+<ol type="1">
+<li>Match the premise using <span class="math inline">\theta=\{x\mapsto\text{Socrates}\}</span>.</li>
+</ol>
+</div>
+<div class="fragment" data-fragment-index="1">
+<ol start="2" type="1">
+<li>Apply the <strong>same</strong> substitution to the conclusion:</li>
+</ol>
+<p><span class="math display">\text{Mortal}(x)\theta=\text{Mortal}(\text{Socrates}).</span></p>
+</div>
+<div class="takeaway">
+<p>With several premises joined by AND, all must match known facts under one consistent substitution.</p>
+</div>
+<aside class="notes">
+<p>This reuses the first slide’s rule. We match Human(x) to Human(Socrates), then carry x’s binding into the conclusion. If the rule required Human(x) AND Tired(x), Human(Socrates) and Tired(Ada) would not suffice unless there were additional knowledge identifying their subjects.</p>
+<p>[Sources] - AIMA Chapter 9, generalized modus ponens and forward chaining. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="skolem-witnesses" class="slide level2 fol18-slide">
+<h2>Skolem Constants and Functions</h2>
+<p><strong>Skolemization</strong> replaces existential variables with fresh witness symbols.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Quantified statement</th>
+<th>Witness representation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\exists y\,\forall x\,\text{Knows}(x,y)</span></td>
+<td><span class="math inline">\forall x\,\text{Knows}(x,k)</span>: one fresh constant <span class="math inline">k</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\forall x\,\exists y\,\text{Knows}(x,y)</span></td>
+<td><span class="math inline">\forall x\,\text{Knows}(x,f(x))</span>: a fresh function <span class="math inline">f</span></td>
+</tr>
+</tbody>
+</table>
+<p><img data-src="imgs/drawio/lec18/skolem-witness.png" class="fol18-witness" alt="A possible witness function chooses Bo for Ada, Cy for Bo, and Ada for Cy. The chosen witness may vary with x."></p>
+<div class="takeaway">
+<p>The function’s arguments record the surrounding universal variables on which a witness may depend. Different inputs may still share a witness.</p>
+</div>
+<aside class="notes">
+<p>The diagram shows one possible interpretation of f for the left world from the quantifier-order slide. Skolemization does not compute this function or claim that the relation has a unique witness. It chooses one permissible witness per input when such witnesses exist.</p>
+<p>The symbols must be new to the whole problem. Skolemization preserves satisfiability in an expanded vocabulary, not logical equivalence over a fixed interpretation of the new symbols. This is why it is suitable for refutation. For several surrounding universal variables, use f(x1,…,xn). A standalone existential has no such dependency, so a constant suffices.</p>
+<p>[Sources] - AIMA Chapter 9, Skolemization. - https://web.stanford.edu/class/cs257/slides/Lecture_7.pdf [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="clause-workflow" class="slide level2 fol18-slide">
+<h2>Clause Form for Resolution</h2>
+<p><strong>Conjunctive normal form (CNF):</strong> AND of clauses, each an OR of literals. In FOL, atoms can contain terms, such as <span class="math inline">\text{Human}(x)</span>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Operation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Remove <span class="math inline">\rightarrow</span> and <span class="math inline">\leftrightarrow</span></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Move NOT inward, including across quantifiers</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Rename bound variables to avoid collisions</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Skolemize existentials with the correct dependencies</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Distribute OR over AND and list the clauses</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>All remaining variables are implicitly universal. Skolemization preserves <strong>satisfiability</strong>. The other formula rewrites preserve equivalence.</p>
+</div>
+<aside class="notes">
+<p>To rename bound variables apart, (forall x P(x)) AND (exists x Q(x)) can use x in the first part and y in the second. Also standardize variables in different clauses apart before resolving, so variables with the same spelling in independent clauses are not accidentally tied together.</p>
+<p>Parentheses still matter. Quantifiers may be moved to a prefix after safe renaming, provided their scope and dependencies are preserved. In A OR forall x B, pulling forall x outward requires that x not be free in A. Dropping the written universal quantifier is a clause notation convention, not replacement by a single named object.</p>
+<p>[Sources] - AIMA Chapter 9, first-order clause conversion. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="worked-clause-conversion" class="slide level2 fol18-slide">
+<h2>One Rule, Two Clauses</h2>
+<p>Every student has an advisor. Abbreviate: <span class="math inline">S(x)</span> = student, <span class="math inline">A(y)</span> = advisor, <span class="math inline">T(y,x)</span> = <span class="math inline">y</span> advises <span class="math inline">x</span>.</p>
+<p><span class="math display">\forall x\,\bigl(S(x)\rightarrow\exists y\,(A(y)\land T(y,x))\bigr)</span></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Remove implication</td>
+<td><span class="fragment" data-fragment-index="0"><span class="math inline">\forall x\,\exists y\,(\neg S(x)\lor(A(y)\land T(y,x)))</span></span></td>
+</tr>
+<tr class="even">
+<td>Skolemize <span class="math inline">y</span> with <span class="math inline">f(x)</span></td>
+<td><span class="fragment" data-fragment-index="1"><span class="math inline">\forall x\,(\neg S(x)\lor(A(f(x))\land T(f(x),x)))</span></span></td>
+</tr>
+<tr class="odd">
+<td>Distribute OR over AND</td>
+<td><span class="fragment" data-fragment-index="2"><span class="math inline">(\neg S(x)\lor A(f(x)))\land(\neg S(x)\lor T(f(x),x))</span></span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment takeaway" data-fragment-index="3">
+<p>Two clauses, using the <strong>same</strong> <span class="math inline">f(x)</span>:</p>
+<p><span class="math display">C_1=\{\neg S(x),A(f(x))\},\qquad C_2=\{\neg S(x),T(f(x),x)\}.</span></p>
+</div>
+<aside class="notes">
+<p>The original formula comes from the translation slide. The first row combines implication elimination with pulling the existential outward, valid because y is not free in S(x) and the domain is nonempty. No negations need pushing further inward, and x and y are already distinct.</p>
+<p>Introduce f fresh for this example, independent of the earlier Knows example’s f.&nbsp;The last formula has implicit universal x. The clauses require one chosen individual f(x) both to be an advisor and to advise the student x. Using unrelated functions for the two occurrences would allow two different people and could weaken the original requirement. For a nonstudent, both clauses hold through NOT S(x).</p>
+<p>Set notation uses an inner set for the OR of literals and an outer set for the AND of clauses. C1 and C2 name the two clauses, not new logical atoms.</p>
+<p>[Sources] - Original worked advising example, using AIMA Chapter 9 clause-conversion rules. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="fol-resolution" class="slide level2 fol18-slide scrollable">
+<h2>Resolution with Unification</h2>
+<p>Resolve clauses whose opposite-sign atoms match under a substitution:</p>
+<p><span class="math display">C_1=\neg\text{Human}(x)\lor\text{Mortal}(x),
+\qquad C_2=\text{Human}(\text{Socrates}).</span></p>
+<div class="fragment" data-fragment-index="0">
+<ol type="1">
+<li>Unify <span class="math inline">\text{Human}(x)</span> and <span class="math inline">\text{Human}(\text{Socrates})</span>:</li>
+</ol>
+<p><span class="math display">\theta=\{x\mapsto\text{Socrates}\}.</span></p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<ol start="2" type="1">
+<li>Apply <span class="math inline">\theta</span> to the <strong>whole clauses</strong>, then remove the complementary pair.</li>
+</ol>
+<p><span class="math display">C_3=\text{Mortal}(\text{Socrates}).</span></p>
+</div>
+<div class="takeaway">
+<p>The substitution affects the remaining literals too. Keep both parent clauses when adding the resolvent.</p>
+</div>
+<aside class="notes">
+<p>The negation signs differ, but the atoms Human(x) and Human(Socrates) unify. Do not try to unify a negated formula with a positive formula directly. The resolvent is the disjunction of the remaining substituted literals. Here only Mortal(Socrates) remains.</p>
+<p>This example has one variable-bearing parent and one ground fact, so variable renaming between parents is unnecessary. In general, standardize parent clauses apart first. AIMA’s full FOL resolution procedure also includes factoring. We do not present this single example as a complete implementation of that procedure.</p>
+<p>[Sources] - AIMA Chapter 9, resolution in first-order logic. - https://inst.eecs.berkeley.edu/~cs188/textbook/logic/first-order-logical-inference.html [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="fol-refutation" class="slide level2 fol18-slide fol18-proof search-trace">
+<h2>Refutation: A Complete Small Proof</h2>
+<p><strong>Query:</strong> <span class="math inline">\text{Mortal}(\text{Socrates})</span>. Add its negation as clause 3.</p>
+<div class="trace-tree-frames" role="img" aria-label="Resolution proof: the universal human rule and Human(Socrates) derive Mortal(Socrates), which contradicts the negated query.">
+<p><img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec18/refutation-0.png" alt="Initial clauses: NOT Human(x) OR Mortal(x), Human(Socrates), and NOT Mortal(Socrates)."> <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec18/refutation-1.png" alt="Resolve clauses 1 and 2 with x replaced by Socrates to derive clause 4, Mortal(Socrates)."> <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec18/refutation-2.png" alt="Resolve Mortal(Socrates) and NOT Mortal(Socrates) to derive the empty clause."></p>
+</div>
+<div class="fragment" data-fragment-index="0">
+<p><strong>4.</strong> Parents 1 and 2, <span class="math inline">\theta=\{x\mapsto\text{Socrates}\}</span>: derive <span class="math inline">\text{Mortal}(\text{Socrates})</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>5.</strong> Parents 4 and 3, no binding needed: derive <span class="math inline">\bot</span>, the <strong>empty clause</strong>.</p>
+</div>
+<div class="fragment takeaway" data-fragment-index="1">
+<p>The KB and negated query cannot both hold. Therefore <span class="math inline">\text{KB}\models\text{Mortal}(\text{Socrates})</span>.</p>
+</div>
+<aside class="notes">
+<p>Animate the same proof as the preceding slide, now completing refutation. Initial clauses are 1: NOT Human(x) OR Mortal(x), 2: Human(Socrates), 3: NOT Mortal(Socrates). Clause 3 is a temporary assumption for refutation, not an extra fact asserted by the original KB. The diagram highlights the currently used parents and derived clause at each step.</p>
+<p>The empty clause has zero literals and is always false. It is different from the empty clause set, a conjunction of zero clauses that is true. We use bottom here as in Lecture 17. The square symbol used in HW3 names the same empty clause.</p>
+<p>[Sources] - Standard Human/Mortal example from AIMA Chapters 8-9, original draw.io proof layout. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="fol-check" class="slide level2 fol18-slide">
+<h2>Quick Check</h2>
+<p>Domain: people. <span class="math inline">\text{Knows}(x,y)</span> means “<span class="math inline">x</span> knows <span class="math inline">y</span>.”</p>
+<div class="question">
+<p>For <span class="math inline">\forall x\,\exists y\,\text{Knows}(x,y)</span>, may we replace <span class="math inline">y</span> with one fixed constant <span class="math inline">k</span>? Why?</p>
+</div>
+<div class="fragment" data-fragment-index="0">
+<p>In general, <strong>no</strong>. Different people may need different witnesses. Use a fresh function <span class="math inline">f(x)</span>.</p>
+</div>
+<div class="question">
+<p>Do <span class="math inline">P(x,x)</span> and <span class="math inline">P(\text{Ada},\text{Bo})</span> unify?</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p>No.&nbsp;The first position requires <span class="math inline">x\mapsto\text{Ada}</span>; the second requires <span class="math inline">x\mapsto\text{Bo}</span>. One substitution cannot satisfy both.</p>
+</div>
+<aside class="notes">
+<p>P is a binary predicate here. Ada and Bo are constant symbols. Pause for an answer before each reveal. These check witness dependency and consistent substitution, the main new skills needed for Homework 3.</p>
+<p>[Sources] - Original questions using AIMA Chapter 9 definitions. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="takeaways" class="slide level2 fol18-slide">
+<h2>Takeaways</h2>
 <ul>
-<li>FOL represents objects, properties, relations, functions, and quantified rules.</li>
-<li>Quantifier order is part of the meaning.</li>
-<li>Substitution and unification connect general rules to specific facts.</li>
-<li>CNF prepares formulas for resolution.</li>
-<li>Resolution is a proof engine for automated reasoning.</li>
+<li>State the domain and define every predicate.</li>
+<li>Quantifier order determines whether a witness may depend on another variable.</li>
+<li>Unification uses one consistent substitution across each expression.</li>
+<li>Skolem terms record witness dependencies in clause form.</li>
+<li>Refutation proves entailment by deriving the empty clause from the KB and negated query.</li>
 </ul>
+<div class="takeaway">
+<p><a href="../homeworks/hw3.html" target="_blank" rel="noopener">Homework 3: Logic Toolkit</a>. Show intermediate steps. Due <strong>Friday, October 23, 11:59 PM Eastern</strong>.</p>
+</div>
 <p><a href="../asset_credits.html#lec18" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
+<aside class="notes">
+<p>Point students to the five required problems before the optional reference section. No code or starter download is required. Reserve the remaining class time for homework clarifications and review questions about Lectures 1-16 for the October 12 midterm, rather than expanding this deck with another full recap.</p>
+<p>[Sources] - Course schedule and Homework 3 specification. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 </section>
