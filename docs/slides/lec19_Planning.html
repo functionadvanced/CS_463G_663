@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec19_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,426 +164,683 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="planning" class="slide level2 section-slide">
-<h2>Planning</h2>
-<p>Planning asks an agent to reason before acting: which sequence of actions will transform the current world into a goal world?</p>
-</section>
-<section id="what-is-planning" class="slide level2">
-<h2>What Is Planning?</h2>
-<div class="definition">
-<p>Planning is reasoning about a sequence of actions that achieves a goal.</p>
+<section id="planning-task" class="slide level2 planning19-slide">
+<h2>A Planning Task</h2>
+<p><strong>Planning</strong> finds an action sequence from an <strong>initial state</strong> (starting arrangement) to a <strong>goal</strong> (required final conditions).</p>
+<p><img data-src="imgs/drawio/lec19/start-goal.png" class="planning19-setup" alt="Initially C is on A, with A and B on the table. A goal arrangement puts A on B on C."></p>
+<div class="question">
+<p>Can we put <span class="math inline">A</span> onto <span class="math inline">B</span> immediately? What must happen first?</p>
 </div>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="we-represent">We represent</h3>
-<ul>
-<li>The initial state.</li>
-<li>Action templates.</li>
-<li>Preconditions.</li>
-<li>Effects.</li>
-<li>The goal.</li>
-</ul>
-</div><div class="column" style="width:48%;">
-<h3 id="we-search-for">We search for</h3>
-<ul>
-<li>A sequence of ground actions.</li>
-<li>Each action applicable when used.</li>
-<li>A final state satisfying the goal.</li>
-</ul>
-</div></div>
+<div class="fragment takeaway">
+<p><span class="math inline">C</span> blocks <span class="math inline">A</span>. A plan must first make <span class="math inline">A</span> movable.</p>
+</div>
+<aside class="notes">
+<p>Use this one arrangement throughout Lectures 19 and 20. A is teal, B gold, C rose. We model a move as a complete transfer of one block, with no separate pickup or hand state. Ask for a proposed sequence before introducing formal notation.</p>
+<p>[Sources] - Russell and Norvig, Artificial Intelligence: A Modern Approach, fourth edition, Section 11.1 and the blocks-world example in Figure 11.4. - https://aima.cs.berkeley.edu/algorithms.pdf - Original editable draw.io illustration of that example. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="why-planning-gets-its-own-representation" class="slide level2">
-<h2>Why Planning Gets Its Own Representation</h2>
-<p>Planning uses a restricted logic-like language so search can exploit structure.</p>
+<section id="classical-assumptions" class="slide level2 planning19-slide">
+<h2>Classical Planning Assumptions</h2>
+<p>Our planner uses a deliberately simplified model:</p>
 <table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>Component</th>
-<th>Planning view</th>
+<th>Assumption</th>
+<th>Meaning in this example</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>State</td>
-<td>A conjunction of function-free predicate literals</td>
+<td>Fully observable</td>
+<td>The current arrangement is known</td>
 </tr>
 <tr class="even">
-<td>Action</td>
-<td>Preconditions plus effects</td>
+<td>Deterministic</td>
+<td>A legal move has one predicted result</td>
 </tr>
 <tr class="odd">
-<td>Goal</td>
-<td>A conjunction of facts that must hold</td>
+<td>Static environment</td>
+<td>Blocks stay put unless the agent moves them</td>
 </tr>
 <tr class="even">
-<td>Quantifiers</td>
-<td>Avoided in the action/state language</td>
+<td>Finite, discrete states</td>
+<td>Finitely many distinct arrangements, described by true/false facts</td>
+</tr>
+<tr class="odd">
+<td>Sequential actions</td>
+<td>One complete move at a time</td>
 </tr>
 </tbody>
 </table>
 <div class="takeaway">
-<p>The restriction is a feature: it makes action applicability and goal checking mechanical.</p>
+<p>A classical plan is a fixed action sequence. Unexpected outcomes may require <strong>replanning</strong>: computing a new plan from the observed state.</p>
 </div>
+<aside class="notes">
+<p>These assumptions describe classical planning, not every planning method. We also ignore action duration and use one unit of cost per move. Real robot control would need geometric feasibility, perception, grasping, and failure handling, which are outside this symbolic model.</p>
+<p>[Sources] - AIMA fourth edition, Section 11.1. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="a-tiny-robot-example" class="slide level2">
-<h2>A Tiny Robot Example</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="state-and-goal">State and Goal</h3>
-<p><span class="math display">
-\text{At}(\text{Robot},A) \land \text{Connected}(A,B)
-</span></p>
-<p><span class="math display">
-\text{Goal}: \text{At}(\text{Robot},B)
-</span></p>
-</div><div class="column" style="width:48%;">
-<h3 id="action">Action</h3>
-<p><span class="math display">
-\text{Move}(A,B)
-</span></p>
-<p>Precondition:</p>
-<p><span class="math display">
-\text{At}(\text{Robot},A) \land \text{Connected}(A,B)
-</span></p>
-<p>Effect:</p>
-<p><span class="math display">
-\neg \text{At}(\text{Robot},A) \land \text{At}(\text{Robot},B)
-</span></p>
-</div></div>
-</section>
-<section id="blocks-world" class="slide level2">
-<h2>Blocks World</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:56%;">
-<p>Blocks world is a small planning domain:</p>
-<ul>
-<li>Labeled blocks sit on a table.</li>
-<li>Blocks can be stacked.</li>
-<li>A block can move only if nothing is on top of it.</li>
-<li>The goal describes a desired arrangement.</li>
-</ul>
-<div class="question">
-<p>Small domain, large search space. That is exactly why it is useful for planning.</p>
-</div>
-</div><div class="column" style="width:36%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec18/blocks_world.png" class="cc0-figure" style="width:90.0%"></p>
-<figcaption>Blocks world start and goal illustration</figcaption>
-</figure>
-</div>
-</div></div>
-</section>
-<section id="blocks-world-predicates" class="slide level2">
-<h2>Blocks World Predicates</h2>
+<section id="planning-search" class="slide level2 planning19-slide">
+<h2>Action Schemas and Ground Actions</h2>
+<p><strong>Objects</strong> are named things in the problem: blocks <span class="math inline">A,B,C</span> and <span class="math inline">\text{Table}</span>.</p>
+<p>An <strong>action schema</strong> is a reusable action description. A <strong>template</strong> means it has variables as placeholders, like blanks in a form.</p>
 <table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>Symbol</th>
+<th>Form</th>
+<th>Example</th>
 <th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><span class="math inline">\text{Table}</span></td>
-<td>The table constant</td>
+<td>Action schema</td>
+<td><span class="math inline">\text{Move}(b,\text{src},\text{dst})</span></td>
+<td>Move block <span class="math inline">b</span> from source <span class="math inline">\text{src}</span> onto destination <span class="math inline">\text{dst}</span></td>
 </tr>
 <tr class="even">
-<td><span class="math inline">\text{block}(A)</span></td>
-<td><span class="math inline">A</span> is a block</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\text{on}(A,B)</span></td>
-<td><span class="math inline">A</span> is on <span class="math inline">B</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\text{on}(A,\text{Table})</span></td>
-<td><span class="math inline">A</span> is on the table</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\text{clear}(A)</span></td>
-<td>Nothing is stacked on <span class="math inline">A</span></td>
+<td>Ground action</td>
+<td><span class="math inline">\text{Move}(B,\text{Table},C)</span></td>
+<td>Move <span class="math inline">B</span> from the table onto <span class="math inline">C</span></td>
 </tr>
 </tbody>
 </table>
+<p><strong>Grounding</strong> fills the placeholders: <span class="math inline">b=B</span>, <span class="math inline">\text{src}=\text{Table}</span>, <span class="math inline">\text{dst}=C</span>.</p>
+<p>A <strong>ground action</strong> has specific objects in every slot, with <strong>no variables left</strong>. The schema also defines when the action is allowed and what it changes.</p>
 <div class="takeaway">
-<p>Planning will use these facts directly; facts not listed as true are treated as false.</p>
+<p>Planning searches over states. Each legal ground action supplies one edge. The chosen objects must still meet the action’s requirements.</p>
 </div>
+<aside class="notes">
+<p>An object is an individual named entity in the domain, not necessarily a Python object. Here B and C name particular blocks, and Table names their shared support. The lower-case b and the descriptive names src and dst are variables to replace, not extra objects.</p>
+<p>The full action schema includes preconditions and effects, introduced on later slides. Grounding substitutes the chosen objects throughout those rules as well as in the action’s name. For example, Clear(b) becomes Clear(B). Ground means variable-free, not a physical location or a move onto the ground.</p>
+<p>Move(B,Table,C) is applicable in the initial arrangement because B is on the table and B and C are clear. Move(A,Table,B) is also ground, but is initially inapplicable because C blocks A. Grounding and checking applicability are different steps.</p>
+<p>This connects planning to the earlier search lectures: a node represents a world state, an applicable ground action supplies an edge to Result(s,a), the goal test checks the required facts, and a solution is an executable action sequence.</p>
+<p>[Sources] - AIMA Sections 11.1-11.2. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="initial-state" class="slide level2">
-<h2>Initial State</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:50%;">
-<p>The initial state is a set of true facts:</p>
-<p><span class="math display">
-\text{block}(A) \land \text{block}(B) \land \text{block}(C)
-</span></p>
-<p><span class="math display">
-\text{on}(B,\text{Table}) \land \text{on}(C,A) \land \text{on}(A,\text{Table})
-</span></p>
-</div><div class="column" style="width:42%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec18/blocks_world.png" class="cc0-figure"></p>
-<figcaption>Blocks world initial state</figcaption>
-</figure>
-</div>
-</div></div>
-<div class="question">
-<p>Closed world assumption: if <span class="math inline">\text{on}(B,A)</span> is not stated, the planner treats it as false.</p>
-</div>
-</section>
-<section id="goal-state" class="slide level2">
-<h2>Goal State</h2>
-<p>The goal is usually partial.</p>
-<p><span class="math display">
-\text{on}(A,B) \land \text{on}(B,C)
-</span></p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="specified">Specified</h3>
-<ul>
-<li><span class="math inline">A</span> must be on <span class="math inline">B</span>.</li>
-<li><span class="math inline">B</span> must be on <span class="math inline">C</span>.</li>
-</ul>
-</div><div class="column" style="width:48%;">
-<h3 id="not-specified">Not specified</h3>
-<ul>
-<li>Where <span class="math inline">C</span> is.</li>
-<li>Which other clear facts hold.</li>
-<li>Other irrelevant facts.</li>
-</ul>
-</div></div>
-<div class="takeaway">
-<p>Many complete final states can satisfy one partial goal.</p>
-</div>
-</section>
-<section id="first-try-a-move-template" class="slide level2">
-<h2>First Try: A Move Template</h2>
-<p>The natural action template is:</p>
-<div class="pseudo-code">
-<div class="pseudo-line">
-<span class="pseudo-fn">move</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">from</span>, <span class="pseudo-var">to</span>)
-</div>
-<div class="pseudo-line fragment">
-<span class="pseudo-kw">pre</span>: <span class="pseudo-fn">block</span>(<span class="pseudo-var">b</span>) <span class="pseudo-op">and</span> <span class="pseudo-fn">on</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">from</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-op">and</span> no block is on <span class="pseudo-var">b</span>
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-op">and</span> no block is on <span class="pseudo-var">to</span>
-</div>
-<div class="pseudo-line fragment">
-<span class="pseudo-kw">effect</span>: <span class="pseudo-fn">on</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">to</span>) <span class="pseudo-op">and not</span> <span class="pseudo-fn">on</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">from</span>)
-</div>
-</div>
-<div class="question">
-<p>But “no block is on …” sounds like a quantifier. The planning language is supposed to avoid quantifiers.</p>
-</div>
-</section>
-<section id="reifying-nothing-on-top" class="slide level2">
-<h2>Reifying “Nothing On Top”</h2>
-<p>Instead of writing:</p>
-<p><span class="math display">
-\neg \exists x\; \text{on}(x,b)
-</span></p>
-<p>we introduce a predicate:</p>
-<p><span class="math display">
-\text{clear}(b)
-</span></p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="before">Before</h3>
-<p>“No object is on <span class="math inline">b</span>.”</p>
-<p>This is quantified.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="after">After</h3>
-<p>“<span class="math inline">b</span> is clear.”</p>
-<p>This is a simple fact.</p>
-</div></div>
-</section>
-<section id="move-onto-another-object" class="slide level2">
-<h2>Move Onto Another Object</h2>
-<div class="pseudo-code">
-<div class="pseudo-line">
-<span class="pseudo-fn">move</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">from</span>, <span class="pseudo-var">to</span>)
-</div>
-<div class="pseudo-line fragment">
-<span class="pseudo-kw">pre</span>: <span class="pseudo-fn">block</span>(<span class="pseudo-var">b</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-op">and</span> <span class="pseudo-fn">on</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">from</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-op">and</span> <span class="pseudo-fn">clear</span>(<span class="pseudo-var">b</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-op">and</span> <span class="pseudo-fn">clear</span>(<span class="pseudo-var">to</span>)
-</div>
-<div class="pseudo-line fragment">
-<span class="pseudo-kw">effect</span>: <span class="pseudo-fn">on</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">to</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-op">and not</span> <span class="pseudo-fn">on</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">from</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-op">and not</span> <span class="pseudo-fn">clear</span>(<span class="pseudo-var">to</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-op">and</span> <span class="pseudo-fn">clear</span>(<span class="pseudo-var">from</span>)
-</div>
-</div>
-</section>
-<section id="move-onto-the-table" class="slide level2">
-<h2>Move Onto the Table</h2>
-<p>The table is a special destination: it can hold multiple blocks.</p>
-<div class="pseudo-code">
-<div class="pseudo-line">
-<span class="pseudo-fn">moveToTable</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">from</span>)
-</div>
-<div class="pseudo-line fragment">
-<span class="pseudo-kw">pre</span>: <span class="pseudo-fn">block</span>(<span class="pseudo-var">b</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-op">and</span> <span class="pseudo-fn">on</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">from</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-op">and</span> <span class="pseudo-fn">clear</span>(<span class="pseudo-var">b</span>)
-</div>
-<div class="pseudo-line fragment">
-<span class="pseudo-kw">effect</span>: <span class="pseudo-fn">on</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">Table</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-op">and not</span> <span class="pseudo-fn">on</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">from</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-op">and</span> <span class="pseudo-fn">clear</span>(<span class="pseudo-var">from</span>)
-</div>
-</div>
-<div class="takeaway">
-<p>Separating table moves keeps the action schema faithful to the domain.</p>
-</div>
-</section>
-<section id="from-templates-to-ground-actions" class="slide level2">
-<h2>From Templates to Ground Actions</h2>
-<p>Action templates contain variables. A plan uses ground actions.</p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="template">Template</h3>
-<p><span class="math display">
-\text{moveToTable}(b,\text{from})
-</span></p>
-<h3 id="ground-action">Ground action</h3>
-<p><span class="math display">
-\text{moveToTable}(C,A)
-</span></p>
-</div><div class="column" style="width:48%;">
-<h3 id="grounded-preconditions">Grounded preconditions</h3>
-<p><span class="math display">
-\text{block}(C) \land \text{on}(C,A) \land \text{clear}(C)
-</span></p>
-<h3 id="grounded-effects">Grounded effects</h3>
-<p><span class="math display">
-\text{on}(C,\text{Table}) \land \neg \text{on}(C,A) \land \text{clear}(A)
-</span></p>
-</div></div>
-</section>
-<section id="finding-a-plan" class="slide level2 scrollable">
-<h2>Finding a Plan</h2>
-<p>Goal:</p>
-<p><span class="math display">
-\text{on}(A,B) \land \text{on}(B,C)
-</span></p>
-<div class="fragment">
-<ol type="1">
-<li><span class="math inline">\text{moveToTable}(C,A)</span>: move <span class="math inline">C</span> off <span class="math inline">A</span>.</li>
-</ol>
-</div>
-<div class="fragment">
-<ol start="2" type="1">
-<li><span class="math inline">\text{move}(B,\text{Table},C)</span>: move <span class="math inline">B</span> onto <span class="math inline">C</span>.</li>
-</ol>
-</div>
-<div class="fragment">
-<ol start="3" type="1">
-<li><span class="math inline">\text{move}(A,\text{Table},B)</span>: move <span class="math inline">A</span> onto <span class="math inline">B</span>.</li>
-</ol>
-</div>
-<div class="takeaway">
-<p>Each action must be applicable when it is executed; the sequence matters.</p>
-</div>
-</section>
-<section id="problem-size" class="slide level2">
-<h2>Problem Size</h2>
-<p>Suppose there are 6 objects: blocks plus table.</p>
+<section id="blocks-vocabulary" class="slide level2 planning19-slide">
+<h2>Blocks-World Vocabulary</h2>
+<p>A <strong>constant</strong> names one object: <span class="math inline">A,B,C</span> or <span class="math inline">\text{Table}</span>. A <strong>predicate</strong> describes a property or relation, such as <span class="math inline">\text{Clear}</span> or <span class="math inline">\text{On}</span>.</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 27%">
-<col style="width: 36%">
-<col style="width: 36%">
+<col style="width: 50%">
+<col style="width: 50%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Template</th>
-<th style="text-align: right;">Parameters</th>
-<th style="text-align: right;">Ground instances</th>
+<th>Fact</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><span class="math inline">\text{move}(\text{block}, \text{from}, \text{to})</span></td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;"><span class="math inline">6^3 = 216</span></td>
+<td><span class="math inline">\text{Block}(A)</span></td>
+<td><span class="math inline">A</span> has <strong>type</strong> (object category) block; this never changes</td>
 </tr>
 <tr class="even">
-<td><span class="math inline">\text{moveToTable}(\text{block}, \text{from})</span></td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;"><span class="math inline">6^2 = 36</span></td>
+<td><span class="math inline">\text{On}(C,A)</span></td>
+<td><span class="math inline">C</span> rests directly on <span class="math inline">A</span></td>
 </tr>
 <tr class="odd">
-<td><strong>Total</strong></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"><strong>252</strong></td>
+<td><span class="math inline">\text{On}(B,\text{Table})</span></td>
+<td><span class="math inline">B</span> rests on the table</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\text{Clear}(B)</span></td>
+<td>No block is on top of <span class="math inline">B</span></td>
 </tr>
 </tbody>
 </table>
-<div class="question">
-<p>Many of these ground actions may be illegal in a state, but the planner still has to reason about a large candidate space.</p>
+<div class="takeaway">
+<p>For blocks, <strong>Clear</strong> means an empty top. <span class="math inline">\text{Clear}(\text{Table})</span> is a special, always-true convention: the table can accept several blocks.</p>
 </div>
+<aside class="notes">
+<p>We follow AIMA’s two-schema model, which includes Clear(Table). It does not mean that the table has no blocks. A move’s destination must be a block, so Move never deletes Clear(Table). MoveToTable handles the table destination separately.</p>
+<p>On and Clear can change. Block facts and the Clear(Table) convention stay fixed. The diagrams show only block arrangements, not every predicate.</p>
+<p>[Sources] - AIMA Figure 11.4, available in https://aima.cs.berkeley.edu/algorithms.pdf. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="complexity-of-planning" class="slide level2">
-<h2>Complexity of Planning</h2>
-<p>Planning is difficult in general.</p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="theoretical-results">Theoretical results</h3>
-<ul>
-<li>General planning is <strong>PSPACE-complete</strong>.</li>
-<li>Optimal planning is often <strong>NP-hard</strong>.</li>
-</ul>
-</div><div class="column" style="width:48%;">
-<h3 id="practical-pressure">Practical pressure</h3>
-<ul>
-<li>State spaces grow exponentially.</li>
-<li>Preconditions constrain search.</li>
-<li>Actions interact through their effects.</li>
-</ul>
+<section id="initial-facts" class="slide level2 planning19-slide">
+<h2>The Complete Initial State</h2>
+<p>A <strong>state</strong> <span class="math inline">s</span> is the set of facts currently true in the world.</p>
+<div class="columns visual-pair">
+<div class="column" style="width:66%;">
+<p><strong>Where blocks rest:</strong></p>
+<p><span class="math display">\begin{aligned}
+&amp;\text{On}(A,\text{Table}),\quad\text{On}(B,\text{Table}),\\
+&amp;\text{On}(C,A).
+\end{aligned}</span></p>
+<p><strong>Clear facts:</strong> <span class="math inline">\text{Clear}(B),\text{Clear}(C)</span>.</p>
+<p><strong>Fixed facts:</strong> <span class="math inline">\text{Block}(A),\text{Block}(B),\text{Block}(C)</span> and <span class="math inline">\text{Clear}(\text{Table})</span>.</p>
+</div><div class="column" style="width:30%;">
+<p><img data-src="imgs/drawio/lec19/initial-state.png" class="planning19-initial" alt="C rests on A, while B is separate. B and C have empty tops; A does not."></p>
 </div></div>
 <div class="takeaway">
-<p>The next question is how to search this space intelligently.</p>
+<p><strong>Closed-world assumption:</strong> facts absent from this complete state are false. In particular, <span class="math inline">\text{Clear}(A)=\text{false}</span>.</p>
 </div>
+<aside class="notes">
+<p>A state is a set of true ground atoms. All the listed facts must hold together, so commas in a set are interpreted conjunctively. Supplying the Clear facts is essential: a planner cannot infer them unless we implement a separate derivation rule.</p>
+<p>Contrast with Lecture 17’s logical KB, where an unreported fact could be undetermined. Here the state description is complete under the closed-world convention. This is a modeling assumption, not a rule that missing sensor data proves a physical claim false.</p>
+<p>[Sources] - AIMA Section 11.1 and Figure 11.4. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
+<section id="partial-goal" class="slide level2 planning19-slide">
+<h2>A Partial Goal</h2>
+<p>A <strong>partial goal</strong> specifies only the facts we require at the end.</p>
+<p><span class="math display">G=\{\text{On}(A,B),\ \text{On}(B,C)\}</span></p>
+<p>The symbol <span class="math inline">G</span> names the set of required goal facts.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Required</th>
+<th>Left unspecified by <span class="math inline">G</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">A</span> directly on <span class="math inline">B</span></td>
+<td>What <span class="math inline">C</span> rests on</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">B</span> directly on <span class="math inline">C</span></td>
+<td>Other facts and additional objects</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>The goal test <span class="math inline">G\subseteq s</span> means <strong>every fact in <span class="math inline">G</span> is in state <span class="math inline">s</span></strong>. Extra true facts are allowed. Both required facts must hold together.</p>
+</div>
+<aside class="notes">
+<p>In this exact three-block, acyclic physical domain, C must be on the table in a valid final arrangement. The formula itself does not state this: the domain constraints supply it. With additional blocks, C could rest on another block. Avoid claiming several valid three-block final arrangements for this particular goal.</p>
+<p>[Sources] - AIMA Section 11.1, goal representation. Original discussion of the three-block domain. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="action-update" class="slide level2 planning19-slide">
+<h2>Preconditions and Effects</h2>
+<p><strong>Preconditions</strong> say when an action is allowed. <strong>Effects</strong> say what it changes.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Set</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\text{Pre}(a)</span>, or PRE</td>
+<td>Preconditions: facts required before action <span class="math inline">a</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\text{Add}(a)</span>, or ADD</td>
+<td>Add effects: facts made true</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\text{Del}(a)</span>, or DELETE</td>
+<td>Delete effects: facts removed, hence made false</td>
+</tr>
+</tbody>
+</table>
+<p>An action is <strong>applicable</strong> (executable now) when <span class="math inline">\text{Pre}(a)\subseteq s</span>. Its next state is:</p>
+<p><span class="math display">\text{Result}(s,a)=\bigl(s\setminus\text{Del}(a)\bigr)\cup\text{Add}(a).</span></p>
+<p>Here <span class="math inline">\setminus</span> removes facts and <span class="math inline">\cup</span> combines fact sets.</p>
+<div class="takeaway">
+<p>The <strong>frame problem</strong> asks how to represent unchanged facts. Facts outside the effect sets persist: moving <span class="math inline">C</span> leaves <span class="math inline">\text{On}(B,\text{Table})</span> true.</p>
+</div>
+<aside class="notes">
+<p>Explain set difference as remove and union as add. The basic fragment used here has positive preconditions and disjoint add/delete lists. Negative effects are entries in the delete list, not negated atoms stored in a state. This is the STRIPS style of representation, named for Stanford Research Institute Problem Solver, with typing and inequality constraints on schema instances.</p>
+<p>[Sources] - AIMA Section 11.1, action applicability and the state transition function. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="clear-facts" class="slide level2 planning19-slide">
+<h2>Maintaining the Clear Facts</h2>
+<p>For a block <span class="math inline">b</span>, <span class="math inline">\text{Clear}(b)</span> means <strong>no block <span class="math inline">x</span> rests on <span class="math inline">b</span></strong>:</p>
+<p><span class="math display">\neg\exists x\,\text{On}(x,b).</span></p>
+<p>We store this summary as a fact and update it after each move.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>A move changes…</th>
+<th>Clear fact to update</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>The old supporting block loses its top block</td>
+<td>Add <span class="math inline">\text{Clear}(\text{src})</span></td>
+</tr>
+<tr class="even">
+<td>The destination block gains a top block</td>
+<td>Delete <span class="math inline">\text{Clear}(\text{dst})</span></td>
+</tr>
+<tr class="odd">
+<td>The moving block’s own top</td>
+<td>Nothing: it remains clear</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>The initial state and action effects must keep these summary facts consistent with the arrangement.</p>
+</div>
+<aside class="notes">
+<p>The quantified formula explains the meaning for block arguments only. It is not a formula evaluated by the state-set engine. Clear(Table) has the separate capacity convention already stated. Adding Clear(Table) after moving a block off it is harmless because that atom was already true.</p>
+<p>[Sources] - AIMA Section 11.1, blocks-world Clear predicate. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="move-schema" class="slide level2 planning19-slide planning19-action">
+<h2>Moving Onto a Block</h2>
+<p><span class="math inline">b</span> and <span class="math inline">\text{dst}</span> are distinct blocks. <span class="math inline">\text{src}</span> is a block or Table, different from both.</p>
+<div class="pseudo-code">
+<div class="pseudo-line">
+<span class="pseudo-fn">Move</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">src</span>, <span class="pseudo-var">dst</span>)
+</div>
+<div class="pseudo-line fragment" data-fragment-index="0">
+<span class="pseudo-kw">PRE</span>: <span class="pseudo-fn">On</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">src</span>) <span class="pseudo-op">and</span> <span class="pseudo-fn">Clear</span>(<span class="pseudo-var">b</span>) <span class="pseudo-op">and</span> <span class="pseudo-fn">Clear</span>(<span class="pseudo-var">dst</span>)
+</div>
+<div class="pseudo-line fragment" data-fragment-index="1">
+<span class="pseudo-kw">ADD</span>: <span class="pseudo-fn">On</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">dst</span>), <span class="pseudo-fn">Clear</span>(<span class="pseudo-var">src</span>)
+</div>
+<div class="pseudo-line fragment" data-fragment-index="1">
+<span class="pseudo-kw">DELETE</span>: <span class="pseudo-fn">On</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">src</span>), <span class="pseudo-fn">Clear</span>(<span class="pseudo-var">dst</span>)
+</div>
+</div>
+<p>Example: <span class="math inline">\text{Move}(B,\text{Table},C)</span> puts <span class="math inline">B</span> onto <span class="math inline">C</span>.</p>
+<div class="question">
+<p>Why must the schema delete <span class="math inline">\text{Clear}(C)</span>?</p>
+</div>
+<div class="fragment takeaway" data-fragment-index="2">
+<p><span class="math inline">B</span> now occupies <span class="math inline">C</span>’s top. Leaving <span class="math inline">\text{Clear}(C)</span> true would allow an impossible second block to move onto <span class="math inline">C</span>.</p>
+</div>
+<aside class="notes">
+<p>PRE, ADD, and DELETE refer to the three sets just defined. Type and inequality guards in the sentence above the code are part of the schema, even though we omit their fixed predicates from the displayed PRE line. dst cannot be Table. src may be Table, in which case its Clear atom stays true.</p>
+<p>[Sources] - AIMA Figure 11.4, with explicit parameter restrictions and add/delete presentation. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="table-schema" class="slide level2 planning19-slide planning19-action">
+<h2>Moving Onto the Table</h2>
+<p><span class="math inline">b</span> and <span class="math inline">\text{src}</span> are distinct blocks. The table is a constant, not a block.</p>
+<div class="pseudo-code">
+<div class="pseudo-line">
+<span class="pseudo-fn">MoveToTable</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">src</span>)
+</div>
+<div class="pseudo-line fragment" data-fragment-index="0">
+<span class="pseudo-kw">PRE</span>: <span class="pseudo-fn">On</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">src</span>) <span class="pseudo-op">and</span> <span class="pseudo-fn">Clear</span>(<span class="pseudo-var">b</span>)
+</div>
+<div class="pseudo-line fragment" data-fragment-index="1">
+<span class="pseudo-kw">ADD</span>: <span class="pseudo-fn">On</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">Table</span>), <span class="pseudo-fn">Clear</span>(<span class="pseudo-var">src</span>)
+</div>
+<div class="pseudo-line fragment" data-fragment-index="1">
+<span class="pseudo-kw">DELETE</span>: <span class="pseudo-fn">On</span>(<span class="pseudo-var">b</span>, <span class="pseudo-var">src</span>)
+</div>
+</div>
+<div class="takeaway">
+<p>No occupied-top check or delete effect is needed for the table. It has space for multiple blocks in this model.</p>
+</div>
+<aside class="notes">
+<p>This action moves onto the table. Its source must be a block, which excludes the useless MoveToTable(b,Table) instance. The earlier Beamer source mislabeled this as handling moves off the table. Explain the direction from the actual arguments rather than preserving that wording.</p>
+<p>[Sources] - AIMA Figure 11.4, MoveToTable action. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="grounding" class="slide level2 planning19-slide">
+<h2>Grounding an Action</h2>
+<p>Use the same replacements in every rule: <span class="math inline">b=C</span> and <span class="math inline">\text{src}=A</span>.</p>
+<p><span class="math display">\text{MoveToTable}(b,\text{src})\quad\leadsto\quad\text{MoveToTable}(C,A).</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Grounded set</th>
+<th>Facts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Preconditions</td>
+<td><span class="math inline">\text{On}(C,A),\ \text{Clear}(C)</span></td>
+</tr>
+<tr class="even">
+<td>Add</td>
+<td><span class="math inline">\text{On}(C,\text{Table}),\ \text{Clear}(A)</span></td>
+</tr>
+<tr class="odd">
+<td>Delete</td>
+<td><span class="math inline">\text{On}(C,A)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The object restrictions also hold: <span class="math inline">C</span> and <span class="math inline">A</span> are different blocks.</p>
+<div class="question">
+<p>After this action, does <span class="math inline">B</span> remain on the table?</p>
+</div>
+<div class="fragment takeaway">
+<p>Yes. <span class="math inline">\text{On}(B,\text{Table})</span> appears in neither effect set, so it persists.</p>
+</div>
+<aside class="notes">
+<p>The leadsto arrow denotes schema instantiation, not logical implication. All dynamic preconditions are true initially. The effect both clears A and keeps C’s own top clear.</p>
+<p>[Sources] - AIMA Section 11.1. Worked instance of Figure 11.4. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="plan-trace" class="slide level2 planning19-slide planning19-trace search-trace">
+<h2>A Plan, Step by Step</h2>
+<p>Goal: <span class="math inline">\text{On}(A,B)\land\text{On}(B,C)</span>.</p>
+<div class="trace-tree-frames" role="img" aria-label="Four block arrangements along the plan: C off A, B onto C, and A onto B.">
+<p><img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec19/plan-0.png" alt="State 0: C on A; A and B on the table."> <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec19/plan-1.png" alt="After MoveToTable(C,A), all blocks are separate on the table."> <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec19/plan-2.png" alt="After Move(B,Table,C), B is on C and A is separate."> <img class="trace-frame" data-trace-step="3" src="imgs/drawio/lec19/plan-3.png" alt="After Move(A,Table,B), A is on B on C."></p>
+</div>
+<div class="fragment" data-fragment-index="0">
+<p><strong>1.</strong> <span class="math inline">\text{MoveToTable}(C,A)</span> adds <span class="math inline">\text{Clear}(A)</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>2.</strong> <span class="math inline">\text{Move}(B,\text{Table},C)</span> achieves <span class="math inline">\text{On}(B,C)</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p><strong>3.</strong> <span class="math inline">\text{Move}(A,\text{Table},B)</span> achieves <span class="math inline">\text{On}(A,B)</span>.</p>
+</div>
+<aside class="notes">
+<p>At each reveal, ask whether the next move is applicable. Before step 2, C and B are clear. After step 2, B remains clear while C is not. Before step 3, A and B are clear. The two goal facts now hold together.</p>
+<p>[Sources] - AIMA Figure 11.4 solution sequence. Original animated draw.io frames. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="validate-plan" class="slide level2 planning19-slide scrollable">
+<h2>Checking a Proposed Plan</h2>
+<p>For <span class="math inline">k</span> actions <span class="math inline">a_1,\ldots,a_k</span>, <span class="math inline">s_i</span> is the state after action <span class="math inline">i</span>:</p>
+<ol type="1">
+<li>Start with the complete initial state <span class="math inline">s_0</span>.</li>
+<li>Check <span class="math inline">\text{Pre}(a_i)\subseteq s_{i-1}</span> before every action.</li>
+<li>Compute <span class="math inline">s_i=(s_{i-1}\setminus\text{Del}(a_i))\cup\text{Add}(a_i)</span>.</li>
+<li>Check <span class="math inline">G\subseteq s_k</span> at the end.</li>
+</ol>
+<div class="question">
+<p>What is wrong with starting our plan with <span class="math inline">\text{Move}(A,\text{Table},B)</span>?</p>
+</div>
+<div class="fragment takeaway">
+<p>The action needs <span class="math inline">\text{Clear}(A)</span>, which is false initially. Achieving a goal fact is insufficient if the action is not executable.</p>
+</div>
+<aside class="notes">
+<p>Define i as the action index and k as the sequence length. s_i denotes the state after i actions. A validator can reject a plan at the first failed precondition without running a physical robot. It validates the encoded model, so model accuracy still matters.</p>
+<p>[Sources] - AIMA Section 11.1, solution definition. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="effect-practice" class="slide level2 planning19-slide">
+<h2>Effect-Set Practice</h2>
+<p>Suppose all three blocks are separate on the table. Execute <span class="math inline">\text{Move}(B,\text{Table},C)</span>.</p>
+<div class="question">
+<p>Which facts change? Is <span class="math inline">B</span> still clear afterward?</p>
+</div>
+<div class="fragment" data-fragment-index="0">
+<p><strong>Add:</strong> <span class="math inline">\text{On}(B,C),\ \text{Clear}(\text{Table})</span>.</p>
+<p><strong>Delete:</strong> <span class="math inline">\text{On}(B,\text{Table}),\ \text{Clear}(C)</span>.</p>
+</div>
+<div class="fragment takeaway" data-fragment-index="1">
+<p><span class="math inline">\text{Clear}(B)</span> persists. Adding <span class="math inline">\text{Clear}(\text{Table})</span> is redundant because that fixed fact already holds.</p>
+</div>
+<aside class="notes">
+<p>This is the middle action of the plan. Ask students to distinguish the moving block’s top from the destination block’s top. The effect set is the schema’s specification, while the set of actually changed truth values omits the redundant Clear(Table) addition.</p>
+<p>[Sources] - Original exercise using AIMA Figure 11.4. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ground-action-count" class="slide level2 planning19-slide">
+<h2>Candidate Actions and Applicability</h2>
+<p>A <strong>candidate</strong> is a ground action allowed by the object rules: correct types and different objects where required.</p>
+<p>With <strong>five blocks and one table</strong>:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 30%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Schema</th>
+<th>Parameter choices</th>
+<th style="text-align: right;">Candidates</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\text{Move}(b,\text{src},\text{dst})</span></td>
+<td>5 moving blocks, 4 destinations, 4 sources</td>
+<td style="text-align: right;"><span class="math inline">5\times4\times4=80</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\text{MoveToTable}(b,\text{src})</span></td>
+<td>5 moving blocks, 4 block sources</td>
+<td style="text-align: right;"><span class="math inline">5\times4=20</span></td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td>Before state-dependent checks</td>
+<td style="text-align: right;"><span class="math inline">100</span></td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>For example, <span class="math inline">\text{Move}(A,\text{Table},B)</span> is a candidate but initially cannot run: <span class="math inline">A</span> is not clear. Candidates still need state-dependent precondition checks.</p>
+</div>
+<aside class="notes">
+<p>For Move, choose distinct b and dst among the five blocks. src can be any of the six objects except b and dst, giving four choices. For MoveToTable, src must be one of the four other blocks. Blind enumeration over all six objects would yield 216 plus 36 assignments, but many violate fixed type and inequality guards. We count the well-formed candidates here, not the branching factor of a particular state.</p>
+<p>[Sources] - Original calculation for the restricted AIMA Figure 11.4 schemas. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="state-growth" class="slide level2 planning19-slide">
+<h2>State Growth and Model Constraints</h2>
+<p>Each <strong>Boolean fact</strong> is true or false. A <strong>truth assignment</strong> chooses these values for all <span class="math inline">m</span> facts, giving up to <span class="math inline">2^m</span> combinations.</p>
+<p>A <strong>state constraint</strong> is a rule for a valid arrangement:</p>
 <ul>
-<li>Planning searches over action sequences, not single actions.</li>
-<li>States, goals, preconditions, and effects are represented as predicate literals.</li>
-<li>Action templates become ground actions by replacing variables with objects.</li>
-<li>The closed world assumption makes missing facts false.</li>
-<li>Even simple domains create many possible ground actions.</li>
+<li>Each block has exactly one support.</li>
+<li>A block supports at most one block.</li>
+<li>No cycles: <span class="math inline">A</span> on <span class="math inline">B</span> and <span class="math inline">B</span> on <span class="math inline">A</span> is forbidden.</li>
+<li>Clear facts agree with the arrangement.</li>
 </ul>
+<div class="takeaway">
+<p>An <strong>invariant</strong> is a rule preserved by every legal action. Our schemas preserve these constraints if the initial arrangement is valid.</p>
+</div>
+<aside class="notes">
+<p>m counts dynamic atoms, not objects. For three blocks there are nine possible On atoms and three Clear atoms, yielding 4096 raw assignments, but only 13 valid arrangements in this simplified domain. The Block atoms and Clear(Table) are fixed. We do not need a complexity-class detour to explain why representation and pruning matter.</p>
+<p>The schemas preserve the stated invariants from valid states because they move only a clear block onto a clear distinct block or the table. They do not repair an already inconsistent input state. A validator should check the model’s initial state too.</p>
+<p>[Sources] - AIMA Sections 11.1-11.2. Original three-block counting example. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="takeaways" class="slide level2 planning19-slide">
+<h2>Takeaways</h2>
+<ul>
+<li>A plan must satisfy every action’s preconditions in sequence.</li>
+<li>Grounding fills a schema’s variable slots with named objects.</li>
+<li>Add/delete effects update a complete state. Other facts persist.</li>
+<li>A partial goal tests only its required facts.</li>
+<li>Type restrictions and state constraints remove invalid candidates.</li>
+</ul>
+<div class="takeaway">
+<p>Next: search forward from the initial state or backward from the goal to find an action sequence.</p>
+</div>
 <p><a href="../asset_credits.html#lec19" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
+<aside class="notes">
+<p>[Sources] - AIMA fourth edition, Section 11.1, in both U.S. and Global editions. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 </section>

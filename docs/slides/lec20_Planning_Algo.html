@@ -32,9 +32,76 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec20_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,42 +230,602 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="planning-algorithms" class="slide level2 section-slide">
-<h2>Planning Algorithms</h2>
-<p>Last time: how to describe a planning problem. Today: how to solve one.</p>
+<section id="shared-problem" class="slide level2 planning20-slide">
+<h2>The Same Planning Problem</h2>
+<p><img data-src="imgs/drawio/lec19/start-goal.png" class="planning20-setup" alt="The same three-block task as Lecture 19: C on A initially, with B separate. The target tower is A on B on C."></p>
+<p>Goal: <span class="math inline">G=\{\text{On}(A,B),\text{On}(B,C)\}</span>.</p>
+<p>Recall: a <strong>state</strong> is its true facts. The <strong>Move</strong> and <strong>MoveToTable</strong> schemas are reusable rules with preconditions and effects.</p>
+<div class="question">
+<p>How could an algorithm discover the three-move plan, rather than having us supply it?</p>
+</div>
+<aside class="notes">
+<p>Retain the exact initial facts from Lecture 19: On(A,Table), On(B,Table), On(C,A), Clear(B), Clear(C), the three Block facts, and Clear(Table). A schematic plan path is only one branch of the search. All moves have unit cost.</p>
+<p>[Sources] - AIMA fourth edition, Sections 11.1-11.2 and Figure 11.4. - Original draw.io arrangement from Lecture 19. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="from-representation-to-search" class="slide level2">
-<h2>From Representation to Search</h2>
-<p>A planning problem gives us:</p>
+<section id="progression" class="slide level2 planning20-slide">
+<h2>Progression: Forward State Search</h2>
+<p><strong>Progression</strong> starts at the initial state and applies actions whose preconditions hold in the current state <span class="math inline">s</span>.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Operation</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Choose an action <span class="math inline">a</span></td>
+<td><span class="math inline">\text{Pre}(a)\subseteq s</span></td>
+</tr>
+<tr class="even">
+<td>Compute the next state (successor)</td>
+<td><span class="math inline">(s\setminus\text{Del}(a))\cup\text{Add}(a)</span></td>
+</tr>
+<tr class="odd">
+<td>Check the goal</td>
+<td><span class="math inline">G\subseteq s</span></td>
+</tr>
+</tbody>
+</table>
+<p>In our initial state, both actions below are legal:</p>
+<ul>
+<li><span class="math inline">\text{MoveToTable}(C,A)</span> clears <span class="math inline">A</span>.</li>
+<li><span class="math inline">\text{Move}(B,\text{Table},C)</span> achieves one goal fact but puts <span class="math inline">B</span> on top of <span class="math inline">C</span>.</li>
+</ul>
+<div class="takeaway">
+<p>Preconditions determine legal choices. Search decides which to explore.</p>
+</div>
+<aside class="notes">
+<p>The second move builds B on C while C is still on A. To free A later, we must move B off C before moving C off A, undoing the partial goal. It is a useful example of why immediate goal progress can be misleading. The first move is part of a shortest plan, but forward search must evaluate alternatives.</p>
+<p>[Sources] - AIMA Section 11.2.1. Original comparison in the AIMA blocks domain. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="progression-code" class="slide level2 planning20-slide">
+<h2>Breadth-First Progression</h2>
+<p>Pseudocode. <strong>Immutable</strong> means each stored state stays unchanged.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-code-line-numbers="|1-3|4-7|8-12|13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">def</span> breadth_first_plan(initial, goal):</span>
+<span id="cb1-2"><a></a>    frontier <span class="op">=</span> deque([(initial, [])])</span>
+<span id="cb1-3"><a></a>    seen <span class="op">=</span> {initial}</span>
+<span id="cb1-4"><a></a>    <span class="cf">while</span> frontier:</span>
+<span id="cb1-5"><a></a>        s, plan <span class="op">=</span> frontier.popleft()</span>
+<span id="cb1-6"><a></a>        <span class="cf">if</span> goal <span class="op">&lt;=</span> s:</span>
+<span id="cb1-7"><a></a>            <span class="cf">return</span> plan</span>
+<span id="cb1-8"><a></a>        <span class="cf">for</span> a <span class="kw">in</span> applicable_actions(s):</span>
+<span id="cb1-9"><a></a>            nxt <span class="op">=</span> result(s, a)</span>
+<span id="cb1-10"><a></a>            <span class="cf">if</span> nxt <span class="kw">not</span> <span class="kw">in</span> seen:</span>
+<span id="cb1-11"><a></a>                seen.add(nxt)</span>
+<span id="cb1-12"><a></a>                frontier.append((nxt, plan <span class="op">+</span> [a]))</span>
+<span id="cb1-13"><a></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><strong>Breadth-first search (BFS)</strong> uses a <strong>first-in, first-out (FIFO)</strong> queue. <code>deque</code> stores the queue. <code>popleft()</code> removes its oldest entry.</li>
+<li><code>frontier</code> stores (state, plan) pairs. <code>seen</code> records visited states.</li>
+<li><code>goal &lt;= s</code> tests whether every goal fact holds in state <code>s</code>.</li>
+</ul>
+<aside class="notes">
+<p>FIFO means first in, first out. deque is Python’s double-ended queue from collections, and popleft removes the oldest item. An immutable frozenset is one possible state representation. applicable_actions tests the typed ground actions’ preconditions. result implements the add/delete update from Lecture 19.</p>
+<p>This is teaching pseudocode, not a complete runnable implementation. The highlighted groups cover initialization, goal checking, expansion with repeat prevention, and failure after exhaustion. Under unit costs, BFS finds a shortest action sequence. Unequal costs require uniform-cost search or a suitable heuristic search.</p>
+<p>[Sources] - AIMA Section 11.2.1 and standard graph BFS, adapted to the planning representation. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="regression-rule" class="slide level2 planning20-slide">
+<h2>Regression: Backward Goal Search</h2>
+<p><strong>Regression</strong> searches backward: which facts must hold before an action achieves goal set <span class="math inline">G</span>? Its search nodes are <strong>requirements</strong>, not complete states.</p>
+<p>A useful action must:</p>
+<ul>
+<li>Add at least one required fact: <span class="math inline">\text{Add}(a)\cap G\ne\varnothing</span>.</li>
+<li>Delete none of the required facts: <span class="math inline">\text{Del}(a)\cap G=\varnothing</span>.</li>
+</ul>
+<p>Here <span class="math inline">\cap</span> means shared facts and <span class="math inline">\varnothing</span> is the empty set. The previous requirements are:</p>
+<p><span class="math display">\text{Regress}(G,a)=\bigl(G\setminus\text{Add}(a)\bigr)\cup\text{Pre}(a).</span></p>
+<div class="takeaway">
+<p>Keep goals that the action does not establish. Add every precondition of that action.</p>
+</div>
+<aside class="notes">
+<p>This formula is for positive conjunctive goals and positive-precondition add/delete actions. Regression nodes are sets of requirements, not complete world states. The search stops when the initial state satisfies the regressed set. Additional invariant tests may prune physically impossible combinations.</p>
+<p>Fixed type constraints are handled during grounding. A backward graph search should also record chosen actions and avoid repeated goal sets. It then executes the selected actions in reverse order of selection.</p>
+<p>[Sources] - AIMA Section 11.2.2. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="last-move" class="slide level2 planning20-slide">
+<h2>Regressing the Last Move</h2>
+<p>Goal: <span class="math inline">G=\{\text{On}(A,B),\text{On}(B,C)\}</span>.</p>
+<p>Choose <span class="math inline">a=\text{Move}(A,\text{Table},B)</span> as the <strong>last</strong> action.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Required facts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Remove the goal that <span class="math inline">a</span> adds</td>
+<td><span class="fragment" data-fragment-index="0"><span class="math inline">\text{On}(B,C)</span></span></td>
+</tr>
+<tr class="even">
+<td>Add all preconditions of <span class="math inline">a</span></td>
+<td><span class="fragment" data-fragment-index="1"><span class="math inline">\text{On}(A,\text{Table}),\text{Clear}(A),\text{Clear}(B)</span></span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment takeaway" data-fragment-index="2">
+<p>Before that last move, <span class="math inline">B</span> must already be on <span class="math inline">C</span>, while <span class="math inline">A</span> is on the table and both <span class="math inline">A</span> and <span class="math inline">B</span> are clear.</p>
+</div>
+<aside class="notes">
+<p>The chosen action also adds Clear(Table), but it was not a goal requirement, so it removes nothing else from G. It deletes On(A,Table) and Clear(B), neither of which is in the target goal set. This makes it compatible with G.</p>
+<p>The regressed set describes potentially many predecessor states. Do not draw it as a single fully specified block arrangement and call that the regression node.</p>
+<p>[Sources] - Original worked application of AIMA Section 11.2.2 to Figure 11.4. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="backward-trace" class="slide level2 planning20-slide planning20-trace search-trace">
+<h2>The Backward Trace</h2>
+<p>For compact notation, <span class="math inline">\text{Tbl}</span> denotes the table on this slide.</p>
+<div class="trace-tree-frames" role="img" aria-label="Regression starts at G3, then derives G2, G1, and G0. G0 is satisfied by the initial state.">
+<p><img class="trace-frame" data-trace-step="0" src="imgs/drawio/lec20/backward-0.png" alt="G3 is the original goal."> <img class="trace-frame" data-trace-step="1" src="imgs/drawio/lec20/backward-1.png" alt="G2 contains the requirements before Move(A,Table,B)."> <img class="trace-frame" data-trace-step="2" src="imgs/drawio/lec20/backward-2.png" alt="G1 contains the requirements before Move(B,Table,C)."> <img class="trace-frame" data-trace-step="3" src="imgs/drawio/lec20/backward-3.png" alt="G0 contains the requirements before MoveToTable(C,A), all true initially."></p>
+</div>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Set</th>
+<th>Requirements</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">G_3</span></td>
+<td><span class="math inline">\text{On}(A,B),\text{On}(B,C)</span></td>
+</tr>
+<tr class="even">
+<td><span class="fragment" data-fragment-index="0"><span class="math inline">G_2</span></span></td>
+<td><span class="fragment" data-fragment-index="0"><span class="math inline">\text{On}(B,C),\text{On}(A,\text{Tbl}),\text{Clear}(A),\text{Clear}(B)</span></span></td>
+</tr>
+<tr class="odd">
+<td><span class="fragment" data-fragment-index="1"><span class="math inline">G_1</span></span></td>
+<td><span class="fragment" data-fragment-index="1"><span class="math inline">\text{On}(A,\text{Tbl}),\text{On}(B,\text{Tbl}),\text{Clear}(A),\text{Clear}(B),\text{Clear}(C)</span></span></td>
+</tr>
+<tr class="even">
+<td><span class="fragment" data-fragment-index="2"><span class="math inline">G_0</span></span></td>
+<td><span class="fragment" data-fragment-index="2"><span class="math inline">\text{On}(A,\text{Tbl}),\text{On}(B,\text{Tbl}),\text{On}(C,A),\text{Clear}(B),\text{Clear}(C)</span></span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment takeaway" data-fragment-index="2">
+<p>All facts in <span class="math inline">G_0</span> hold initially. Execute the selected actions forward: <span class="math inline">\text{MoveToTable}(C,A)</span>, <span class="math inline">\text{Move}(B,\text{Tbl},C)</span>, <span class="math inline">\text{Move}(A,\text{Tbl},B)</span>.</p>
+</div>
+<aside class="notes">
+<p>G_i denotes the required facts before the final 3-i actions. Regress G3 through Move(A,Table,B), then G2 through Move(B,Table,C), then G1 through MoveToTable(C,A). The three operations select actions last to first. The resulting G0 includes On(C,A) and Clear(C), but no longer requires Clear(A), because the first move establishes it.</p>
+<p>Tbl abbreviates the Table object. Fixed Block predicates and Clear(Table) remain true and their type guards are already checked in these ground actions.</p>
+<p>[Sources] - Original regression trace using AIMA Sections 11.1-11.2. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="goal-threat" class="slide level2 planning20-slide">
+<h2>Actions That Threaten a Goal</h2>
+<p>An action <strong>threatens a goal</strong> if it deletes a required fact. Consider a new goal for our initial arrangement:</p>
+<p><span class="math display">G=\{\text{Clear}(A),\text{Clear}(B)\}.</span></p>
+<p>This goal is feasible: both facts hold when all three blocks are on the table.</p>
+<div class="question">
+<p>Could <span class="math inline">a=\text{Move}(C,A,B)</span> be the <strong>last action</strong> just because it clears <span class="math inline">A</span>?</p>
+</div>
+<div class="fragment" data-fragment-index="0">
+<p>No.&nbsp;It adds <span class="math inline">\text{Clear}(A)</span> but deletes <span class="math inline">\text{Clear}(B)</span>.</p>
+<p><span class="math display">\text{Del}(a)\cap G=\{\text{Clear}(B)\}\ne\varnothing.</span></p>
+</div>
+<div class="takeaway">
+<p><span class="math inline">\text{MoveToTable}(C,A)</span> achieves both goals directly. The rejected move can still occur earlier in a longer plan.</p>
+</div>
+<aside class="notes">
+<p>Use the same initial arrangement: C rests on A, while B is separate on the table. Only the goal changes for this example. The two goal facts can hold together, and MoveToTable(C,A) achieves them in one step.</p>
+<p>Move(C,A,B) is legal initially: C is on A, and C and B are clear. It adds On(C,B) and Clear(A), but deletes On(C,A) and Clear(B). The delete intersection with G is therefore exactly {Clear(B)}, so regression rejects it as the last action for this goal set.</p>
+<p>This is a rejection of an action choice at this backward-search node, not a claim that the action is always unusable. A valid longer plan is Move(C,A,B), followed by MoveToTable(C,B). The second move restores Clear(B), while Clear(A) persists.</p>
+<p>[Sources] - Original check using the relevance and consistency conditions of AIMA Section 11.2.2. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="planning-heuristics" class="slide level2 planning20-slide">
+<h2>Heuristics for Planning</h2>
+<p>A <strong>heuristic</strong> <span class="math inline">h(s)</span> estimates remaining plan cost, here the number of moves.</p>
+<p>An easy starting point counts goal facts not yet true. <span class="math inline">|X|</span> means the number of facts in set <span class="math inline">X</span>:</p>
+<p><span class="math display">h_{\text{goal}}(s)=|G\setminus s|.</span></p>
+<p>In our initial state, both goal facts are missing, so <span class="math inline">h_{\text{goal}}=2</span>. A shortest plan needs <strong>3</strong> moves because <span class="math inline">C</span> must first leave <span class="math inline">A</span>.</p>
+<div class="takeaway">
+<p>Goal counting misses prerequisite moves. It can also overestimate: one switch could turn on two lights, achieving two goal facts in one action.</p>
+</div>
+<aside class="notes">
+<p>This heuristic is a simple illustration, not a general admissible heuristic. Admissible means never overestimating the true optimal remaining cost. A* needs an appropriate heuristic and repeat-handling policy for its optimality guarantee.</p>
+<p>A relaxed problem omits some constraints and supplies a more systematic estimate. The next slide introduces the common delete relaxation. No action-cost asymmetry is present in the blocks example.</p>
+<p>[Sources] - AIMA Section 11.3, planning heuristics. Original comparison against the shortest three-move plan. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="delete-relaxation" class="slide level2 planning20-slide">
+<h2>Delete Relaxation</h2>
+<p>A <strong>relaxation</strong> drops rules to make a problem easier. <strong>Delete relaxation</strong> ignores delete effects but keeps preconditions and add effects.</p>
+<p>Robot example: <span class="math inline">L,R</span> are locations; <span class="math inline">\text{At}(L)</span> means the robot is at <span class="math inline">L</span>. <span class="math inline">\text{Go}(L,R)</span> requires <span class="math inline">\text{At}(L)</span>, adds <span class="math inline">\text{At}(R)</span>, and deletes <span class="math inline">\text{At}(L)</span>.</p>
+<p><img data-src="imgs/drawio/lec20/delete-relaxation.png" class="planning20-relaxed" alt="A real move changes At(L) into At(R). Ignoring the delete effect leaves both At(L) and At(R) true."></p>
+<p><strong>Fast Forward (FF)</strong> is a planner. It estimates cost by counting actions in a <strong>relaxed plan</strong>, one that solves the easier problem.</p>
+<div class="takeaway">
+<p>The relaxed robot can be “in both places.” This easier problem guides search, but its plan may violate the real model.</p>
+</div>
+<aside class="notes">
+<p>The optimum cost of a delete-relaxed plan is a lower bound on optimum real cost, because every real plan is valid in the relaxed positive-precondition model. Computing that optimum can still be hard. FF, expanded as Fast Forward, extracts a practical relaxed-plan estimate that is not generally admissible.</p>
+<p>In positive-precondition delete relaxation, facts accumulate rather than disappear. This can make later actions available without undoing earlier achievements. We return to a different reachability structure, the planning graph, on the next slide.</p>
+<p>[Sources] - AIMA Section 11.3. - Hoffmann and Nebel, The FF Planning System: Fast Plan Generation Through Heuristic Search, https://arxiv.org/abs/1106.0675. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="planning-graph" class="slide level2 planning20-slide">
+<h2>A Planning Graph</h2>
+<p>A <strong>planning graph</strong> alternates <strong>layers</strong> (levels): possible facts <span class="math inline">S_t</span> after <span class="math inline">t</span> steps, then possible actions <span class="math inline">A_t</span>.</p>
+<p>A <strong>no-op</strong> (no operation) keeps a fact true in the next layer. <strong>Mutex</strong> means <strong>mutually exclusive</strong>: facts cannot hold together, or actions conflict at that step.</p>
+<p><img data-src="imgs/drawio/lec20/planning-graph.png" class="planning20-graph" alt="Fact layer S0 contains At(L). Actions Go(L,R) and a no-op produce At(R) and At(L) in S1, but those two facts are mutually exclusive at this layer."></p>
+<div class="takeaway">
+<p>Moving gives <span class="math inline">\text{At}(R)</span>; staying gives <span class="math inline">\text{At}(L)</span>. <span class="math inline">S_1</span> lists both possibilities, not one state where the robot is in both places.</p>
+</div>
+<aside class="notes">
+<p>This uses the robot model from the preceding slide. The layer indexes represent increasing planning depth. Go deletes At(L), so it conflicts with the no-op that keeps At(L). Their resulting facts have inconsistent support at S1 and are mutex.</p>
+<p>A planning graph summarizes many possible histories and may overapproximate what can jointly hold. It is distinct from the earlier state-space graph, whose nodes are individual complete states. Unlike plain delete relaxation, this graph retains mutex information. Static connectivity is implicit in the single allowed Go action.</p>
+<p>[Sources] - AIMA Section 11.2.4 and Section 11.3, planning graphs. - https://www.cs.cmu.edu/~15281/coursenotes/classicalplan/ - Original draw.io robot graph. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="mutex-and-graphplan" class="slide level2 planning20-slide">
+<h2>Mutex and Graphplan</h2>
+<p>An action <strong>supports</strong> a fact if it makes that fact true. For example, <span class="math inline">\text{Go}(L,R)</span> supports <span class="math inline">\text{At}(R)</span>.</p>
+<p>Actions can conflict when:</p>
+<ul>
+<li>One deletes another’s precondition or effect.</li>
+<li>Their preconditions are mutually exclusive at the preceding fact layer.</li>
+</ul>
+<p><strong>Graphplan</strong> grows the graph, then performs <strong>plan extraction</strong>: a backward search for compatible actions whose effects achieve the goals.</p>
+<div class="question">
+<p>If all goal facts appear in a layer, do we already have a valid plan?</p>
+</div>
+<div class="fragment takeaway">
+<p>No.&nbsp;The goals may be mutex, or the actions supporting them may conflict. Even non-mutex goals still need a successful plan extraction.</p>
+</div>
+<aside class="notes">
+<p>Fact mutex also includes opposite literals and inconsistent support: every possible pair of supporting actions is mutex. Pairwise non-mutex goals are a useful test, not a complete guarantee that a plan exists. Graphplan includes backward extraction and records failures rather than simply reading a path through the reachability graph.</p>
+<p>Depending on the encoding, Graphplan permits nonconflicting parallel action sets and seeks a small number of layers. This need not minimize the number of sequential actions, so do not equate its objective with our BFS unit-action optimum.</p>
+<p>[Sources] - AIMA Section 11.2.4. - https://www.cs.cmu.edu/~avrim/graphplan.html [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sat-horizon" class="slide level2 planning20-slide">
+<h2>Planning as Boolean Satisfiability</h2>
+<p><strong>Boolean satisfiability (SAT)</strong> asks whether true/false values can satisfy all constraints in a formula. A working choice is a <strong>satisfying assignment</strong>, also called a <strong>SAT model</strong>.</p>
+<p>An <strong>encoding</strong> translates planning rules into Boolean constraints. Fix a <strong>horizon</strong> <span class="math inline">T</span>: the number of available action steps. Represent states at <span class="math inline">t=0,\ldots,T</span> and actions at <span class="math inline">t=0,\ldots,T-1</span>.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Part</th>
-<th>Example</th>
+<th>Horizon for our blocks task</th>
+<th>A plan within that horizon?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">T=0,1,2</span></td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">T=3</span></td>
+<td>Yes: the three-move plan</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p><strong>Unsatisfiable</strong> means no truth assignment works. At <span class="math inline">T=2</span>, this rules out plans within two steps. Longer plans may still exist.</p>
+</div>
+<aside class="notes">
+<p>Here T is a time-step horizon. Use a sequential encoding with at most one real action per step and allow idle steps, so the question is existence within T steps. Under these conditions the minimum horizon matches the fewest unit-cost actions. Alternative parallel encodings measure a different objective.</p>
+<p>The numbers follow from the block task: A and B must each move to their goal supports, and C must leave A first. This gives a lower bound of three, achieved by the displayed plan.</p>
+<p>[Sources] - AIMA Section 11.2.3. Original bounded-horizon application to Figure 11.4. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sat-constraints" class="slide level2 planning20-slide">
+<h2>SAT Encoding Ingredients</h2>
+<p>Each <strong>Boolean variable</strong> is true or false, recording a <strong>fact at a time</strong> or <strong>whether a ground action occurs</strong>.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Constraint</th>
+<th>What it enforces</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Initial state</td>
-<td><span class="math inline">\text{on}(A,\text{Table}) \land \text{on}(C,A)</span></td>
+<td>Every initial fact’s true or false value at <span class="math inline">t=0</span></td>
 </tr>
 <tr class="even">
-<td>Actions</td>
-<td><span class="math inline">\text{move}(b,\text{from},\text{to})</span></td>
+<td>Goal</td>
+<td>Required facts hold at <span class="math inline">t=T</span></td>
 </tr>
 <tr class="odd">
-<td>Goal</td>
-<td><span class="math inline">\text{on}(A,B) \land \text{on}(B,C)</span></td>
+<td>Action preconditions</td>
+<td>A chosen action is applicable</td>
+</tr>
+<tr class="even">
+<td>Action effects</td>
+<td>Its add/delete changes occur at <span class="math inline">t+1</span></td>
+</tr>
+<tr class="odd">
+<td>Frame constraints</td>
+<td>Only actions that add/delete a fact can change it</td>
+</tr>
+<tr class="even">
+<td>Action choice</td>
+<td>At most one action per step in our sequential model</td>
 </tr>
 </tbody>
 </table>
-<p>The algorithm must decide which action sequence reaches the goal.</p>
 <div class="takeaway">
-<p>Planning algorithms differ mainly in what they search over: states, goals, graphs, formulas, or task decompositions.</p>
+<p><strong>Frame constraints</strong> enforce persistence. Without them, the solver could invent <span class="math inline">\text{On}(A,B)</span> even when no action puts <span class="math inline">A</span> onto <span class="math inline">B</span>.</p>
 </div>
+<aside class="notes">
+<p>Unlike a state set that leaves false facts implicit, an SAT encoding must constrain their initial values too. Otherwise unspecified initial variables can be chosen to make an easier problem. Frame constraints connect each next-state atom to its current value and the actions that may add or delete it. The serial action constraint is an encoding choice rather than a requirement of every SAT planner.</p>
+<p>[Sources] - AIMA Section 11.2.3 and Section 7.7.4. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="main-families" class="slide level2">
-<h2>Main Families</h2>
+<section id="sat-example" class="slide level2 planning20-slide">
+<h2>A One-Step SAT Example</h2>
+<p>Robot model: the only real action is <span class="math inline">\text{Go}(L,R)</span>.</p>
+<p><strong>Variables:</strong> <span class="math inline">p_t</span> means at <span class="math inline">L</span> at time <span class="math inline">t</span>, <span class="math inline">q_t</span> means at <span class="math inline">R</span> at time <span class="math inline">t</span>, and <span class="math inline">m_0</span> means the action occurs in step 0.</p>
+<p><span class="math inline">\rightarrow</span> means “if … then.” <span class="math inline">\leftrightarrow</span> means “if and only if.”</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Requirement</th>
+<th>Boolean constraint</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Initial state and goal</td>
+<td><span class="math inline">p_0\land\neg q_0\land q_1</span></td>
+</tr>
+<tr class="even">
+<td>Precondition</td>
+<td><span class="math inline">m_0\rightarrow p_0</span></td>
+</tr>
+<tr class="odd">
+<td>At <span class="math inline">L</span> afterward: there before and no move</td>
+<td><span class="math inline">p_1\leftrightarrow(p_0\land\neg m_0)</span></td>
+</tr>
+<tr class="even">
+<td>At <span class="math inline">R</span> afterward: there before or a move</td>
+<td><span class="math inline">q_1\leftrightarrow(q_0\lor m_0)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment takeaway">
+<p><span class="math inline">q_0=\text{false}</span> and <span class="math inline">q_1=\text{true}</span> force <span class="math inline">m_0=\text{true}</span>: the robot must move.</p>
+</div>
+<aside class="notes">
+<p>The biconditionals give both causal change and persistence for the one-action model. If m0 is false, both locations keep their initial values. If m0 is true, the robot leaves L and arrives at R, with the precondition requiring it to start at L. These are all the constraints needed for this deliberately small one-step example, in addition to the usual Boolean variable domains.</p>
+<p>If we kept only m0 implies q1, the assignment m0=false, q1=true could invent arrival. The reverse causal direction is therefore essential. This is an illustration of SAT planning rather than the full blocks-world encoding.</p>
+<p>[Sources] - Original encoding using AIMA Section 11.2.3. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sat-code" class="slide level2 planning20-slide">
+<h2>Bounded SAT Planning</h2>
+<p>Conceptual Python pseudocode. The <strong>bound</strong> <code>max_horizon</code> is the largest number of action steps to try.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-code-line-numbers="|1-3|4-6|7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> sat_plan(problem, max_horizon):</span>
+<span id="cb2-2"><a></a>    <span class="cf">for</span> T <span class="kw">in</span> <span class="bu">range</span>(max_horizon <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb2-3"><a></a>        formula <span class="op">=</span> encode(problem, T)</span>
+<span id="cb2-4"><a></a>        model <span class="op">=</span> solve_sat(formula)</span>
+<span id="cb2-5"><a></a>        <span class="cf">if</span> model <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb2-6"><a></a>            <span class="cf">return</span> extract_actions(model)</span>
+<span id="cb2-7"><a></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>encode</code> builds all constraints for that horizon.</li>
+<li><code>solve_sat</code> returns a satisfying assignment or <code>None</code>.</li>
+<li><code>extract_actions</code> reads the selected actions in time order.</li>
+</ul>
+<div class="takeaway">
+<p><code>None</code> here means <strong>no plan within the tested bound</strong>. Validate an extracted plan against the original action model.</p>
+</div>
+<aside class="notes">
+<p>The helpers are conceptual, not a standalone implementation. An actual solver may also return unknown or time out, which must not be treated as a proof of unsatisfiability. Increasing horizons indefinitely can fail to terminate on an unsolvable task, so this version has an explicit bound. An empty assignment can be a valid model, hence the explicit is not None check.</p>
+<p>For exact, complete sequential encodings with idle steps, the first satisfying horizon gives a minimum-action plan. If actions carry unequal costs, minimizing the horizon alone does not minimize cost.</p>
+<p>[Sources] - Teaching adaptation of SATPlan from AIMA Section 11.2.3. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="hierarchical-planning" class="slide level2 planning20-slide">
+<h2>Hierarchical Task Network Planning</h2>
+<p>A <strong>hierarchical task network (HTN)</strong> arranges tasks and their required order.</p>
+<ul>
+<li><strong>Abstract task:</strong> a high-level request, such as “build the tower.”</li>
+<li><strong>Method:</strong> a rule for <strong>refinement</strong> (<strong>decomposition</strong>): splitting a task into subtasks.</li>
+<li><strong>Primitive task:</strong> an executable action, such as <span class="math inline">\text{MoveToTable}(C,A)</span>.</li>
+</ul>
+<p><img data-src="imgs/drawio/lec20/tower-method.png" class="planning20-hierarchy" alt="One ordered method for building the tower: clear A with MoveToTable(C,A), place B on C, then place A on B."></p>
+<div class="takeaway">
+<p>Each primitive action must still satisfy its preconditions.</p>
+</div>
+<aside class="notes">
+<p>This diagram shows one method suitable for the initial arrangement of our example, not a universal recipe for every tower task. A complete domain can contain alternative methods with different applicability conditions. The arrows between subtasks indicate ordering constraints, not state transitions or causal implication.</p>
+<p>HTN planning can restrict search to decompositions supplied by domain knowledge. A state-space plan might exist but be excluded by the available methods. This is why a method library’s coverage matters.</p>
+<p>[Sources] - AIMA Section 11.4. Original tower-method illustration. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="method-comparison" class="slide level2 planning20-slide">
+<h2>Planning Approaches Compared</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -207,352 +834,109 @@ Peizhong Ju
 </colgroup>
 <thead>
 <tr class="header">
-<th>Family</th>
-<th>Search object</th>
-<th>Typical idea</th>
+<th>Approach</th>
+<th>Search representation</th>
+<th>Key check</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Progression</td>
-<td>Current states</td>
-<td>Start at the initial state and apply actions</td>
+<td>Complete states</td>
+<td>Action applicable now?</td>
 </tr>
 <tr class="even">
 <td>Regression</td>
-<td>Goal descriptions</td>
-<td>Start at the goal and ask what must be true before</td>
+<td>Required fact sets</td>
+<td>Action achieves goals without deleting others?</td>
 </tr>
 <tr class="odd">
-<td>Planning graph</td>
-<td>Alternating fact/action layers</td>
-<td>Grow a relaxed reachability structure</td>
+<td>Planning graph / Graphplan</td>
+<td>Possible facts and supporting actions by layer</td>
+<td>Can chosen actions jointly achieve the goals?</td>
 </tr>
 <tr class="even">
 <td>SAT planning</td>
-<td>Boolean variables over time</td>
-<td>Ask if a length-<span class="math inline">T</span> plan exists</td>
+<td>Boolean assignments over time</td>
+<td>All encoded constraints satisfied?</td>
 </tr>
 <tr class="odd">
 <td>HTN planning</td>
-<td>Tasks and methods</td>
-<td>Decompose abstract tasks into primitive actions</td>
+<td>Task decompositions</td>
+<td>Valid task splits and executable final actions?</td>
 </tr>
 </tbody>
 </table>
+<aside class="notes">
+<p>Heuristics can guide progression or regression, so heuristic search is not necessarily a separate representation family. Planning graphs can also supply heuristics. The table compares representations rather than claiming one method always dominates the others.</p>
+<p>[Sources] - AIMA Sections 11.2-11.4. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="state-space-planning" class="slide level2">
-<h2>State-Space Planning</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="progression">Progression</h3>
-<ul>
-<li>Forward search.</li>
-<li>Nodes are concrete states.</li>
-<li>Actions generate successor states.</li>
-<li>Goal test checks the current state.</li>
-</ul>
-</div><div class="column" style="width:48%;">
-<h3 id="regression">Regression</h3>
-<ul>
-<li>Backward search.</li>
-<li>Nodes are goal descriptions.</li>
-<li>Actions explain how goals could be achieved.</li>
-<li>Stop when the initial state satisfies the regressed goals.</li>
-</ul>
-</div></div>
-</section>
-<section id="progression-search" class="slide level2">
-<h2>Progression Search</h2>
-<div class="pseudo-code">
-<div class="pseudo-line">
-<span class="pseudo-kw">function</span> <span class="pseudo-fn">ProgressionSearch</span>(<span class="pseudo-var">initial</span>, <span class="pseudo-var">goal</span>, <span class="pseudo-var">actions</span>)
+<section id="planning-check" class="slide level2 planning20-slide">
+<h2>Quick Check</h2>
+<div class="question">
+<p>Why must regression keep goal facts that the chosen action does not add?</p>
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">frontier</span> <span class="pseudo-op">=</span> [<span class="pseudo-var">initial</span>]
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">while</span> <span class="pseudo-var">frontier</span> <span class="pseudo-op">is not empty</span>
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-var">state</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">pop</span>(<span class="pseudo-var">frontier</span>)
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-kw">if</span> <span class="pseudo-fn">satisfies</span>(<span class="pseudo-var">state</span>, <span class="pseudo-var">goal</span>) <span class="pseudo-kw">return</span> <span class="pseudo-fn">plan</span>(<span class="pseudo-var">state</span>)
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-kw">for each</span> <span class="pseudo-var">action</span> <span class="pseudo-op">applicable in</span> <span class="pseudo-var">state</span>
-</div>
-<div class="pseudo-line fragment indent-3">
-<span class="pseudo-fn">push</span>(<span class="pseudo-var">frontier</span>, <span class="pseudo-fn">result</span>(<span class="pseudo-var">state</span>, <span class="pseudo-var">action</span>))
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">return</span> <span class="pseudo-var">failure</span>
-</div>
+<div class="fragment" data-fragment-index="0">
+<p>Those facts must already hold beforehand and survive the action. Replacing the entire goal with only the preconditions can lose requirements.</p>
 </div>
 <div class="question">
-<p>Progression is natural, but it may spend time on actions unrelated to the goal.</p>
+<p>The SAT formula is unsatisfiable at horizon 2. Can we conclude that the task has no plan?</p>
 </div>
+<div class="fragment" data-fragment-index="1">
+<p>No.&nbsp;Test a longer horizon. Our blocks example first has a solution at horizon 3.</p>
+</div>
+<aside class="notes">
+<p>Pause before revealing each answer. These check two common errors: discarding unachieved goals during regression, and interpreting bounded SAT failure as global impossibility.</p>
+<p>[Sources] - Original questions using AIMA Section 11.2. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="progression-example" class="slide level2 scrollable">
-<h2>Progression Example</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:42%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec19/blocks_world.png" class="cc0-figure"></p>
-<figcaption>Blocks world planning example</figcaption>
-</figure>
-</div>
-</div><div class="column" style="width:54%;">
-<p>Goal:</p>
-<p><span class="math display">
-\text{on}(A,B) \land \text{on}(B,C)
-</span></p>
-<p>Plan:</p>
-<ol type="1">
-<li><span class="math inline">\text{move}(C,B,\text{Table})</span></li>
-<li><span class="math inline">\text{move}(B,A,C)</span></li>
-<li><span class="math inline">\text{move}(A,\text{Table},B)</span></li>
-</ol>
-</div></div>
-</section>
-<section id="progression-as-a-path" class="slide level2">
-<h2>Progression as a Path</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec19/progression-as-a-path.svg" alt="Progression path through three block world moves from initial state to goal"></p>
-</div>
-<div class="takeaway">
-<p>Forward search asks: what can I do now?</p>
-</div>
-</section>
-<section id="regression-search" class="slide level2">
-<h2>Regression Search</h2>
-<div class="pseudo-code">
-<div class="pseudo-line">
-<span class="pseudo-kw">function</span> <span class="pseudo-fn">RegressionSearch</span>(<span class="pseudo-var">initial</span>, <span class="pseudo-var">goal</span>, <span class="pseudo-var">actions</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">frontier</span> <span class="pseudo-op">=</span> [<span class="pseudo-var">goal</span>]
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">while</span> <span class="pseudo-var">frontier</span> <span class="pseudo-op">is not empty</span>
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-var">subgoal</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">pop</span>(<span class="pseudo-var">frontier</span>)
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-kw">if</span> <span class="pseudo-fn">satisfies</span>(<span class="pseudo-var">initial</span>, <span class="pseudo-var">subgoal</span>) <span class="pseudo-kw">return</span> <span class="pseudo-fn">reversedPlan</span>(<span class="pseudo-var">subgoal</span>)
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-kw">for each</span> <span class="pseudo-var">action</span> <span class="pseudo-op">that achieves part of</span> <span class="pseudo-var">subgoal</span>
-</div>
-<div class="pseudo-line fragment indent-3">
-<span class="pseudo-fn">push</span>(<span class="pseudo-var">frontier</span>, <span class="pseudo-fn">regress</span>(<span class="pseudo-var">subgoal</span>, <span class="pseudo-var">action</span>))
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">return</span> <span class="pseudo-var">failure</span>
-</div>
-</div>
-<div class="question">
-<p>Regression is often helpful when the goal is small and most actions are irrelevant.</p>
-</div>
-</section>
-<section id="regression-example" class="slide level2">
-<h2>Regression Example</h2>
-<p>Goal:</p>
-<p><span class="math display">
-\text{on}(A,B) \land \text{on}(B,C)
-</span></p>
-<div class="fragment">
-<p><span class="math inline">\text{move}(A,\text{Table},B)</span> can achieve <span class="math inline">\text{on}(A,B)</span>, but it requires <span class="math inline">\text{clear}(B)</span>.</p>
-</div>
-<div class="fragment">
-<p><span class="math inline">\text{move}(B,\text{Table},C)</span> can achieve <span class="math inline">\text{on}(B,C)</span>, and it must happen before <span class="math inline">A</span> moves onto <span class="math inline">B</span>.</p>
-</div>
-<div class="fragment">
-<p>To make that possible, first clear <span class="math inline">C</span> by moving it away.</p>
-</div>
-<div class="takeaway">
-<p>Regression explains the plan from the goal backward, then executes it forward.</p>
-</div>
-</section>
-<section id="regression-as-dependencies" class="slide level2">
-<h2>Regression as Dependencies</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec19/regression-as-dependencies.svg" alt="Regression dependencies from goal backward to required clear blocks and initial-compatible move"></p>
-</div>
-</section>
-<section id="graph-based-planning" class="slide level2">
-<h2>Graph-Based Planning</h2>
-<p>Graph-based planning represents reachability explicitly.</p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec19/graph-based-planning.svg" alt="Planning graph alternates fact layers and action layers over time"></p>
-</div>
-<div class="takeaway">
-<p>A planning graph can reveal which facts and actions are reachable, and which ones are mutually incompatible.</p>
-</div>
-</section>
-<section id="graph-search-example-8-puzzle" class="slide level2">
-<h2>Graph Search Example: 8-Puzzle</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec19/graph-search-example-8-puzzle.svg" alt="Small 8-puzzle graph branching from the goal state"></p>
-</div>
-</section>
-<section id="boolean-satisfiability" class="slide level2">
-<h2>Boolean Satisfiability</h2>
-<p>SAT asks whether a Boolean formula has a satisfying assignment.</p>
-<p><span class="math display">
-(A \lor B) \land (\neg A \lor C) \land (\neg B \lor \neg C)
-</span></p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="why-it-matters">Why it matters</h3>
+<section id="takeaways" class="slide level2 planning20-slide">
+<h2>Takeaways</h2>
 <ul>
-<li>SAT is NP-complete.</li>
-<li>Modern SAT solvers are very strong in practice.</li>
+<li>Progression searches executable state transitions. Repeated-state handling prevents cycles.</li>
+<li>Regression preserves remaining goals and adds action preconditions.</li>
+<li>Relaxed problems help estimate cost. Planning graphs also flag conflicts.</li>
+<li>SAT planning needs full transition constraints and a stated horizon.</li>
+<li>HTN methods guide decomposition, with primitive actions checked against the model.</li>
 </ul>
-</div><div class="column" style="width:48%;">
-<h3 id="planning-connection">Planning connection</h3>
-<ul>
-<li>Turn a bounded planning problem into a formula.</li>
-<li>A satisfying assignment encodes a plan.</li>
-</ul>
-</div></div>
-</section>
-<section id="sat-based-planning" class="slide level2">
-<h2>SAT-Based Planning</h2>
-<div class="pseudo-code">
-<div class="pseudo-line">
-<span class="pseudo-kw">function</span> <span class="pseudo-fn">SATPlan</span>(<span class="pseudo-var">initial</span>, <span class="pseudo-var">goal</span>, <span class="pseudo-var">actions</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">for</span> <span class="pseudo-var">T</span> <span class="pseudo-op">=</span> <span class="pseudo-num">0</span>, <span class="pseudo-num">1</span>, <span class="pseudo-num">2</span>, …
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-var">formula</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">encodePlanningProblem</span>(<span class="pseudo-var">initial</span>, <span class="pseudo-var">goal</span>, <span class="pseudo-var">actions</span>, <span class="pseudo-var">T</span>)
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-var">assignment</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">SATsolver</span>(<span class="pseudo-var">formula</span>)
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">assignment</span> <span class="pseudo-op">exists</span>
-</div>
-<div class="pseudo-line fragment indent-3">
-<span class="pseudo-kw">return</span> <span class="pseudo-fn">extractActions</span>(<span class="pseudo-var">assignment</span>)
-</div>
-</div>
-</section>
-<section id="sat-encoding-ingredients" class="slide level2">
-<h2>SAT Encoding Ingredients</h2>
-<p>For a horizon <span class="math inline">T</span>, create variables such as:</p>
-<p><span class="math display">
-\text{on}(A,B,t), \qquad \text{move}(A,B,C,t)
-</span></p>
-<p>Then add constraints:</p>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Constraint type</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Initial state</td>
-<td>Facts true at <span class="math inline">t=0</span></td>
-</tr>
-<tr class="even">
-<td>Goal</td>
-<td>Goal facts true at <span class="math inline">t=T</span></td>
-</tr>
-<tr class="odd">
-<td>Preconditions</td>
-<td>If an action occurs, its preconditions held</td>
-</tr>
-<tr class="even">
-<td>Effects</td>
-<td>Actions make add/delete effects true</td>
-</tr>
-<tr class="odd">
-<td>Frame/action constraints</td>
-<td>Facts persist unless changed; actions do not conflict</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="heuristic-search-planning" class="slide level2">
-<h2>Heuristic Search Planning</h2>
-<p>Heuristics estimate distance to the goal.</p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="common-idea">Common idea</h3>
-<p>Relax the problem, solve or approximate the relaxed version, and use that as a guide.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="examples">Examples</h3>
-<ul>
-<li>A* planning.</li>
-<li>FF: Fast Forward heuristic.</li>
-<li>Planning graph heuristics.</li>
-</ul>
-</div></div>
 <div class="takeaway">
-<p>Good heuristics keep the planner from expanding many irrelevant states.</p>
+<p>Every returned plan must work under the original preconditions, effects, and goal test.</p>
 </div>
-</section>
-<section id="hierarchical-task-network-planning" class="slide level2">
-<h2>Hierarchical Task Network Planning</h2>
-<p>HTN planning decomposes tasks instead of searching directly over primitive actions.</p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec19/hierarchical-task-network-planning.svg" alt="Hierarchical task network decomposes prepare trip into methods and primitive actions"></p>
-</div>
-</section>
-<section id="htn-concepts" class="slide level2">
-<h2>HTN Concepts</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Concept</th>
-<th>Role</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Task</td>
-<td>A unit of work, possibly abstract</td>
-</tr>
-<tr class="even">
-<td>Method</td>
-<td>A way to decompose a task</td>
-</tr>
-<tr class="odd">
-<td>Primitive action</td>
-<td>An executable action</td>
-</tr>
-<tr class="even">
-<td>Task network</td>
-<td>Ordering and dependency structure among tasks</td>
-</tr>
-</tbody>
-</table>
-<div class="takeaway">
-<p>HTN planning uses domain knowledge to guide the decomposition, which can be powerful when good methods are available.</p>
-</div>
-</section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
-<ul>
-<li>Progression searches forward from the initial state.</li>
-<li>Regression searches backward from the goal.</li>
-<li>Planning graphs and heuristics expose useful reachability information.</li>
-<li>SAT planning asks whether a plan of length <span class="math inline">T</span> exists.</li>
-<li>HTN planning solves abstract tasks by decomposition.</li>
-</ul>
 <p><a href="../asset_credits.html#lec20" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
+<aside class="notes">
+<p>[Sources] - AIMA fourth edition, Sections 11.2-11.4, in both U.S. and Global editions. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 </section>

@@ -676,7 +676,7 @@
     "href": "index.html#course-schedule",
     "title": "CS 463G & CS 663: (Intro to) Artificial Intelligence",
     "section": "Course Schedule",
-    "text": "Course Schedule\nThis schedule (including homework) is tentative and may be adjusted as the semester unfolds. The course website is the source for assignment specifications, dates, starter files, and updates; Canvas is used for submissions, grading, and lecture recordings. Official university dates are listed on the UK Academic Calendar, and the final exam period follows the UK Examination Schedule.\n\n\n\n#\nDate\nContent\n\n\n\n\n1\nMon, Aug 24\nCourse introduction, syllabus, grading, and course logisticsLecture 0: Language and ToolsTextbook: Artificial Intelligence: A Modern Approach\n\n\n2\nWed, Aug 26\nLecture 1: Introduction to AIAIMA 1.1-1.2\n\n\n3\nFri, Aug 28\nLecture 2: Agents and EnvironmentsAIMA 2.1-2.2\n\n\n4\nMon, Aug 31\nLecture 2b: Designing Intelligent AgentsPEAS, agent architectures, and a Python vacuum-agent demonstrationAIMA 2.3-2.4Code: Vacuum agents demo\n\n\n5\nWed, Sep 2\nLecture 3: The Nature of EnvironmentsAttendance Verification on Canvas\n\n\n6\nFri, Sep 4\nLecture 4: Introduction to SearchAIMA 3.1-3.2\n\n\n-\nMon, Sep 7\nNo class: Labor Day\n\n\n7\nWed, Sep 9\nLecture 5: BFS and DFSAIMA 3.4; practice BFS/DFS problemsCode: BFS and DFSHomework announced: Homework 1 - Keys, Doors, and Shortest Paths\n\n\n8\nFri, Sep 11\nLecture 6: Uniform-Cost SearchPractice Dijkstra’s algorithmCode: Uniform-cost search\n\n\n9\nMon, Sep 14\nLecture 7: Informed SearchAIMA 3.5Code: A* search\n\n\n10\nWed, Sep 16\nLecture 8: Search Review\n\n\n11\nFri, Sep 18\nLecture 9: Adversarial SearchAIMA U.S. 5.1-5.3 or AIMA Global 6.1-6.3Code: Tic-tac-toe\n\n\n12\nMon, Sep 21\nLecture 10: Alpha-Beta PruningCode: Alpha-beta pruningHomework announced: Homework 2 - Reversi Agents\n\n\n13\nWed, Sep 23\nLecture 11: Local SearchAIMA 4.1-4.2Code: Simulated annealing, 8-puzzleHomework due: Homework 1\n\n\n14\nFri, Sep 25\nLecture 12: Genetic AlgorithmCode: Genetic 8-queens\n\n\n15\nMon, Sep 28\nLecture 13: Constraint Satisfaction ProblemsAIMA U.S. 6.1-6.3 or AIMA Global 5.1-5.3\n\n\n16\nWed, Sep 30\nLecture 14: CSP ConsistencyCode: AC-3\n\n\n17\nFri, Oct 2\nLecture 15: CSP SearchCode: Sudoku\n\n\n18\nMon, Oct 5\nLecture 16: LogicPropositions, connectives, translation, truth tables, and equivalenceAIMA 7.1-7.4Homework due: Homework 2\n\n\n19\nWed, Oct 7\nLecture 17: Propositional InferenceModels, entailment, CNF, and resolution; worked examples and practiceAIMA 7.4-7.6\n\n\n20\nFri, Oct 9\nLecture 18: First-Order LogicMidterm review: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Homework announced: Homework 3 - Logic Toolkit\n\n\n21\nMon, Oct 12\nMidterm exam in classPreparation: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Scope: Lectures 1–16, including Lecture 2b; Lectures 17 and 18 are excluded.\n\n\n22\nWed, Oct 14\nLecture 19: Planning\n\n\n23\nFri, Oct 16\nLecture 20: Planning Algorithms\n\n\n24\nMon, Oct 19\nLecture 21: ProbabilityAIMA Appendix A.3; AIMA 12.1-12.5Homework announced: Homework 4 - Probability in Motion\n\n\n25\nWed, Oct 21\nLecture 22: Probabilistic Inference\n\n\n26\nFri, Oct 23\nLecture 23: Bayes NetsAIMA 13.1-13.4Homework due: Homework 3\n\n\n-\nMon, Oct 26\nNo class: Fall Break\n\n\n27\nWed, Oct 28\nLecture 24: Machine LearningAIMA 19.1-19.2Code: KNN on MNIST\n\n\n28\nFri, Oct 30\nLecture 25: Bias, Variance, and OverfittingCode: Linear regression\n\n\n29\nMon, Nov 2\nLecture 26: Decision TreesAIMA 19.3Homework due: Homework 4\n\n\n30\nWed, Nov 4\nLecture 27: Practical PyTorchTensors, data loaders, models, autograd, training, evaluation, and debugging\n\n\n31\nFri, Nov 6\nLecture 28: Deep LearningAIMA U.S. 21.1 or AIMA Global 22.1Code: Backpropagation\n\n\n32\nMon, Nov 9\nLecture 29: Convolutional Neural NetworksCode: CNNHomework announced: Homework 5 - Two-Digit MNIST with a CNN\n\n\n33\nWed, Nov 11\nLecture 30: Reinforcement LearningAIMA 16.1-16.3 and 16.5\n\n\n34\nFri, Nov 13\nLecture 31: Multi-Armed Bandits\n\n\n35\nMon, Nov 16\nLecture 32: Value-Based Model-Free RL\n\n\n36\nWed, Nov 18\nLecture 33: Policy-Based Model-Free RLHomework announced: Homework 6 - Actor-Critic for Buckshot Roulette\n\n\n37\nFri, Nov 20\nLecture 34: PPO and GRPO\n\n\n38\nMon, Nov 23\nLecture 35: Generative Machine LearningAIMA 25.1 and 25.4Homework due: Homework 5\n\n\n-\nWed, Nov 25\nNo class: Thanksgiving Break\n\n\n-\nFri, Nov 27\nNo class: Thanksgiving Break\n\n\n39\nMon, Nov 30\nLecture 36: Autoregressive Models\n\n\n40\nWed, Dec 2\nLecture 37: TransformersHomework due: Homework 6\n\n\n41\nFri, Dec 4\nLecture 38: Transformers continued\n\n\n42\nMon, Dec 7\nLecture 39: Cutting-Edge AI TopicsLoRA, DPO, agent skills, evaluation harnessesPrep Day: no major assignments, quizzes, or exams\n\n\n43\nWed, Dec 9\nNew topic placeholder: student questions, demos, or optional wrap-upPrep Day; last day of classesFinal exam review\n\n\n\nFinal exam: Monday, December 14, 2026, 10:30 AM-12:30 PM (official UK examination schedule)."
+    "text": "Course Schedule\nThis schedule (including homework) is tentative and may be adjusted as the semester unfolds. The course website is the source for assignment specifications, dates, starter files, and updates; Canvas is used for submissions, grading, and lecture recordings. Official university dates are listed on the UK Academic Calendar, and the final exam period follows the UK Examination Schedule.\n\n\n\n#\nDate\nContent\n\n\n\n\n1\nMon, Aug 24\nCourse introduction, syllabus, grading, and course logisticsLecture 0: Language and ToolsTextbook: Artificial Intelligence: A Modern Approach\n\n\n2\nWed, Aug 26\nLecture 1: Introduction to AIAIMA 1.1-1.2\n\n\n3\nFri, Aug 28\nLecture 2: Agents and EnvironmentsAIMA 2.1-2.2\n\n\n4\nMon, Aug 31\nLecture 2b: Designing Intelligent AgentsPEAS, agent architectures, and a Python vacuum-agent demonstrationAIMA 2.3-2.4Code: Vacuum agents demo\n\n\n5\nWed, Sep 2\nLecture 3: The Nature of EnvironmentsAttendance Verification on Canvas\n\n\n6\nFri, Sep 4\nLecture 4: Introduction to SearchAIMA 3.1-3.2\n\n\n-\nMon, Sep 7\nNo class: Labor Day\n\n\n7\nWed, Sep 9\nLecture 5: BFS and DFSAIMA 3.4; practice BFS/DFS problemsCode: BFS and DFSHomework announced: Homework 1 - Keys, Doors, and Shortest Paths\n\n\n8\nFri, Sep 11\nLecture 6: Uniform-Cost SearchPractice Dijkstra’s algorithmCode: Uniform-cost search\n\n\n9\nMon, Sep 14\nLecture 7: Informed SearchAIMA 3.5Code: A* search\n\n\n10\nWed, Sep 16\nLecture 8: Search Review\n\n\n11\nFri, Sep 18\nLecture 9: Adversarial SearchAIMA U.S. 5.1-5.3 or AIMA Global 6.1-6.3Code: Tic-tac-toe\n\n\n12\nMon, Sep 21\nLecture 10: Alpha-Beta PruningCode: Alpha-beta pruningHomework announced: Homework 2 - Reversi Agents\n\n\n13\nWed, Sep 23\nLecture 11: Local SearchAIMA 4.1-4.2Code: Simulated annealing, 8-puzzleHomework due: Homework 1\n\n\n14\nFri, Sep 25\nLecture 12: Genetic AlgorithmCode: Genetic 8-queens\n\n\n15\nMon, Sep 28\nLecture 13: Constraint Satisfaction ProblemsAIMA U.S. 6.1-6.3 or AIMA Global 5.1-5.3\n\n\n16\nWed, Sep 30\nLecture 14: CSP ConsistencyCode: AC-3\n\n\n17\nFri, Oct 2\nLecture 15: CSP SearchCode: Sudoku\n\n\n18\nMon, Oct 5\nLecture 16: LogicPropositions, connectives, translation, truth tables, and equivalenceAIMA 7.1-7.4Homework due: Homework 2\n\n\n19\nWed, Oct 7\nLecture 17: Propositional InferenceModels, entailment, CNF, and resolution; worked examples and practiceAIMA 7.4-7.6\n\n\n20\nFri, Oct 9\nLecture 18: First-Order LogicMidterm review: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Homework announced: Homework 3 - Logic Toolkit\n\n\n21\nMon, Oct 12\nMidterm exam in classPreparation: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Scope: Lectures 1–16, including Lecture 2b; Lectures 17 and 18 are excluded.\n\n\n22\nWed, Oct 14\nLecture 19: PlanningAIMA 11.1: Definition of Classical Planning\n\n\n23\nFri, Oct 16\nLecture 20: Planning AlgorithmsAIMA 11.2-11.4: Classical planning algorithms, heuristics, and hierarchical planning\n\n\n24\nMon, Oct 19\nLecture 21: ProbabilityAIMA Appendix A.3; AIMA 12.1-12.5Homework announced: Homework 4 - Probability in Motion\n\n\n25\nWed, Oct 21\nLecture 22: Probabilistic Inference\n\n\n26\nFri, Oct 23\nLecture 23: Bayes NetsAIMA 13.1-13.4Homework due: Homework 3\n\n\n-\nMon, Oct 26\nNo class: Fall Break\n\n\n27\nWed, Oct 28\nLecture 24: Machine LearningAIMA 19.1-19.2Code: KNN on MNIST\n\n\n28\nFri, Oct 30\nLecture 25: Bias, Variance, and OverfittingCode: Linear regression\n\n\n29\nMon, Nov 2\nLecture 26: Decision TreesAIMA 19.3Homework due: Homework 4\n\n\n30\nWed, Nov 4\nLecture 27: Practical PyTorchTensors, data loaders, models, autograd, training, evaluation, and debugging\n\n\n31\nFri, Nov 6\nLecture 28: Deep LearningAIMA U.S. 21.1 or AIMA Global 22.1Code: Backpropagation\n\n\n32\nMon, Nov 9\nLecture 29: Convolutional Neural NetworksCode: CNNHomework announced: Homework 5 - Two-Digit MNIST with a CNN\n\n\n33\nWed, Nov 11\nLecture 30: Reinforcement LearningAIMA 16.1-16.3 and 16.5\n\n\n34\nFri, Nov 13\nLecture 31: Multi-Armed Bandits\n\n\n35\nMon, Nov 16\nLecture 32: Value-Based Model-Free RL\n\n\n36\nWed, Nov 18\nLecture 33: Policy-Based Model-Free RLHomework announced: Homework 6 - Actor-Critic for Buckshot Roulette\n\n\n37\nFri, Nov 20\nLecture 34: PPO and GRPO\n\n\n38\nMon, Nov 23\nLecture 35: Generative Machine LearningAIMA 25.1 and 25.4Homework due: Homework 5\n\n\n-\nWed, Nov 25\nNo class: Thanksgiving Break\n\n\n-\nFri, Nov 27\nNo class: Thanksgiving Break\n\n\n39\nMon, Nov 30\nLecture 36: Autoregressive Models\n\n\n40\nWed, Dec 2\nLecture 37: TransformersHomework due: Homework 6\n\n\n41\nFri, Dec 4\nLecture 38: Transformers continued\n\n\n42\nMon, Dec 7\nLecture 39: Cutting-Edge AI TopicsLoRA, DPO, agent skills, evaluation harnessesPrep Day: no major assignments, quizzes, or exams\n\n\n43\nWed, Dec 9\nNew topic placeholder: student questions, demos, or optional wrap-upPrep Day; last day of classesFinal exam review\n\n\n\nFinal exam: Monday, December 14, 2026, 10:30 AM-12:30 PM (official UK examination schedule)."
   },
   {
     "objectID": "index.html#references",
@@ -1089,14 +1089,14 @@
     "href": "asset_credits.html#lec19",
     "title": "Visual Asset Credits",
     "section": "Lecture 19: Planning",
-    "text": "Lecture 19: Planning\nCarried-over asset needing source verification: blocks_world.png."
+    "text": "Lecture 19: Planning\nThe blocks-world diagrams and highlighted plan frames are original draw.io illustrations of the AIMA three-block example. Their editable source is blocks-planning.drawio; the slides use PNG exports. The action schemas and solution sequence follow Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig, fourth edition, Section 11.1 and Figure 11.4, available in the AIMA algorithm reference. The state-update exercises and filtered candidate-action count were written for this lecture."
   },
   {
     "objectID": "asset_credits.html#lec20",
     "href": "asset_credits.html#lec20",
     "title": "Visual Asset Credits",
     "section": "Lecture 20: Planning Algorithms",
-    "text": "Lecture 20: Planning Algorithms\nCarried-over asset needing source verification: blocks_world.png."
+    "text": "Lecture 20: Planning Algorithms\nThe backward requirement-set trace, delete-relaxation comparison, robot planning graph, and tower-task hierarchy are original draw.io diagrams. Their editable source is planning-algorithms.drawio; the displayed images are PNG exports. The opening arrangement reuses the original Lecture 19 blocks-world drawing. The regression trace, SAT example, and practice questions were written for this course. Concepts follow Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig, fourth edition, Sections 11.2-11.4, with reference to the CMU classical planning notes, the Graphplan authors’ page, and the Fast Forward planning paper."
   },
   {
     "objectID": "asset_credits.html#lec21",
@@ -3435,258 +3435,6 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "What to Remember",
     "text": "What to Remember\n\nFull joint distributions answer any probability query in principle.\nMarginalization sums out variables.\nConditioning divides by the evidence probability.\nNormalization rescales relative values into probabilities.\nFull joint tables grow exponentially, so we need structured models.\n\nAsset credits"
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#planning-algorithms",
-    "href": "slides/lec20_Planning_Algo.html#planning-algorithms",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Planning Algorithms",
-    "text": "Planning Algorithms\nLast time: how to describe a planning problem. Today: how to solve one."
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#from-representation-to-search",
-    "href": "slides/lec20_Planning_Algo.html#from-representation-to-search",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "From Representation to Search",
-    "text": "From Representation to Search\nA planning problem gives us:\n\n\n\nPart\nExample\n\n\n\n\nInitial state\n\\text{on}(A,\\text{Table}) \\land \\text{on}(C,A)\n\n\nActions\n\\text{move}(b,\\text{from},\\text{to})\n\n\nGoal\n\\text{on}(A,B) \\land \\text{on}(B,C)\n\n\n\nThe algorithm must decide which action sequence reaches the goal.\n\nPlanning algorithms differ mainly in what they search over: states, goals, graphs, formulas, or task decompositions."
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#main-families",
-    "href": "slides/lec20_Planning_Algo.html#main-families",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Main Families",
-    "text": "Main Families\n\n\n\n\n\n\n\n\nFamily\nSearch object\nTypical idea\n\n\n\n\nProgression\nCurrent states\nStart at the initial state and apply actions\n\n\nRegression\nGoal descriptions\nStart at the goal and ask what must be true before\n\n\nPlanning graph\nAlternating fact/action layers\nGrow a relaxed reachability structure\n\n\nSAT planning\nBoolean variables over time\nAsk if a length-T plan exists\n\n\nHTN planning\nTasks and methods\nDecompose abstract tasks into primitive actions"
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#state-space-planning",
-    "href": "slides/lec20_Planning_Algo.html#state-space-planning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "State-Space Planning",
-    "text": "State-Space Planning\n\n\nProgression\n\nForward search.\nNodes are concrete states.\nActions generate successor states.\nGoal test checks the current state.\n\n\nRegression\n\nBackward search.\nNodes are goal descriptions.\nActions explain how goals could be achieved.\nStop when the initial state satisfies the regressed goals."
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#progression-search",
-    "href": "slides/lec20_Planning_Algo.html#progression-search",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Progression Search",
-    "text": "Progression Search\n\n\nfunction ProgressionSearch(initial, goal, actions)\n\n\nfrontier = [initial]\n\n\nwhile frontier is not empty\n\n\nstate = pop(frontier)\n\n\nif satisfies(state, goal) return plan(state)\n\n\nfor each action applicable in state\n\n\npush(frontier, result(state, action))\n\n\nreturn failure\n\n\n\nProgression is natural, but it may spend time on actions unrelated to the goal."
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#progression-example",
-    "href": "slides/lec20_Planning_Algo.html#progression-example",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Progression Example",
-    "text": "Progression Example\n\n\n\n\n\nBlocks world planning example\n\n\n\nGoal:\n\n\\text{on}(A,B) \\land \\text{on}(B,C)\n\nPlan:\n\n\\text{move}(C,B,\\text{Table})\n\\text{move}(B,A,C)\n\\text{move}(A,\\text{Table},B)"
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#progression-as-a-path",
-    "href": "slides/lec20_Planning_Algo.html#progression-as-a-path",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Progression as a Path",
-    "text": "Progression as a Path\n\n\n\n\nForward search asks: what can I do now?"
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#regression-search",
-    "href": "slides/lec20_Planning_Algo.html#regression-search",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Regression Search",
-    "text": "Regression Search\n\n\nfunction RegressionSearch(initial, goal, actions)\n\n\nfrontier = [goal]\n\n\nwhile frontier is not empty\n\n\nsubgoal = pop(frontier)\n\n\nif satisfies(initial, subgoal) return reversedPlan(subgoal)\n\n\nfor each action that achieves part of subgoal\n\n\npush(frontier, regress(subgoal, action))\n\n\nreturn failure\n\n\n\nRegression is often helpful when the goal is small and most actions are irrelevant."
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#regression-example",
-    "href": "slides/lec20_Planning_Algo.html#regression-example",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Regression Example",
-    "text": "Regression Example\nGoal:\n\n\\text{on}(A,B) \\land \\text{on}(B,C)\n\n\n\\text{move}(A,\\text{Table},B) can achieve \\text{on}(A,B), but it requires \\text{clear}(B).\n\n\n\\text{move}(B,\\text{Table},C) can achieve \\text{on}(B,C), and it must happen before A moves onto B.\n\n\nTo make that possible, first clear C by moving it away.\n\n\nRegression explains the plan from the goal backward, then executes it forward."
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#regression-as-dependencies",
-    "href": "slides/lec20_Planning_Algo.html#regression-as-dependencies",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Regression as Dependencies",
-    "text": "Regression as Dependencies"
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#graph-based-planning",
-    "href": "slides/lec20_Planning_Algo.html#graph-based-planning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Graph-Based Planning",
-    "text": "Graph-Based Planning\nGraph-based planning represents reachability explicitly.\n\n\n\n\nA planning graph can reveal which facts and actions are reachable, and which ones are mutually incompatible."
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#graph-search-example-8-puzzle",
-    "href": "slides/lec20_Planning_Algo.html#graph-search-example-8-puzzle",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Graph Search Example: 8-Puzzle",
-    "text": "Graph Search Example: 8-Puzzle"
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#boolean-satisfiability",
-    "href": "slides/lec20_Planning_Algo.html#boolean-satisfiability",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Boolean Satisfiability",
-    "text": "Boolean Satisfiability\nSAT asks whether a Boolean formula has a satisfying assignment.\n\n(A \\lor B) \\land (\\neg A \\lor C) \\land (\\neg B \\lor \\neg C)\n\n\n\nWhy it matters\n\nSAT is NP-complete.\nModern SAT solvers are very strong in practice.\n\n\nPlanning connection\n\nTurn a bounded planning problem into a formula.\nA satisfying assignment encodes a plan."
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#sat-based-planning",
-    "href": "slides/lec20_Planning_Algo.html#sat-based-planning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "SAT-Based Planning",
-    "text": "SAT-Based Planning\n\n\nfunction SATPlan(initial, goal, actions)\n\n\nfor T = 0, 1, 2, …\n\n\nformula = encodePlanningProblem(initial, goal, actions, T)\n\n\nassignment = SATsolver(formula)\n\n\nif assignment exists\n\n\nreturn extractActions(assignment)"
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#sat-encoding-ingredients",
-    "href": "slides/lec20_Planning_Algo.html#sat-encoding-ingredients",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "SAT Encoding Ingredients",
-    "text": "SAT Encoding Ingredients\nFor a horizon T, create variables such as:\n\n\\text{on}(A,B,t), \\qquad \\text{move}(A,B,C,t)\n\nThen add constraints:\n\n\n\n\n\n\n\nConstraint type\nMeaning\n\n\n\n\nInitial state\nFacts true at t=0\n\n\nGoal\nGoal facts true at t=T\n\n\nPreconditions\nIf an action occurs, its preconditions held\n\n\nEffects\nActions make add/delete effects true\n\n\nFrame/action constraints\nFacts persist unless changed; actions do not conflict"
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#heuristic-search-planning",
-    "href": "slides/lec20_Planning_Algo.html#heuristic-search-planning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Heuristic Search Planning",
-    "text": "Heuristic Search Planning\nHeuristics estimate distance to the goal.\n\n\nCommon idea\nRelax the problem, solve or approximate the relaxed version, and use that as a guide.\n\nExamples\n\nA* planning.\nFF: Fast Forward heuristic.\nPlanning graph heuristics.\n\n\n\nGood heuristics keep the planner from expanding many irrelevant states."
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#hierarchical-task-network-planning",
-    "href": "slides/lec20_Planning_Algo.html#hierarchical-task-network-planning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Hierarchical Task Network Planning",
-    "text": "Hierarchical Task Network Planning\nHTN planning decomposes tasks instead of searching directly over primitive actions."
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#htn-concepts",
-    "href": "slides/lec20_Planning_Algo.html#htn-concepts",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "HTN Concepts",
-    "text": "HTN Concepts\n\n\n\nConcept\nRole\n\n\n\n\nTask\nA unit of work, possibly abstract\n\n\nMethod\nA way to decompose a task\n\n\nPrimitive action\nAn executable action\n\n\nTask network\nOrdering and dependency structure among tasks\n\n\n\n\nHTN planning uses domain knowledge to guide the decomposition, which can be powerful when good methods are available."
-  },
-  {
-    "objectID": "slides/lec20_Planning_Algo.html#what-to-remember",
-    "href": "slides/lec20_Planning_Algo.html#what-to-remember",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What to Remember",
-    "text": "What to Remember\n\nProgression searches forward from the initial state.\nRegression searches backward from the goal.\nPlanning graphs and heuristics expose useful reachability information.\nSAT planning asks whether a plan of length T exists.\nHTN planning solves abstract tasks by decomposition.\n\nAsset credits"
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#planning",
-    "href": "slides/lec19_Planning.html#planning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Planning",
-    "text": "Planning\nPlanning asks an agent to reason before acting: which sequence of actions will transform the current world into a goal world?"
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#what-is-planning",
-    "href": "slides/lec19_Planning.html#what-is-planning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What Is Planning?",
-    "text": "What Is Planning?\n\nPlanning is reasoning about a sequence of actions that achieves a goal.\n\n\n\nWe represent\n\nThe initial state.\nAction templates.\nPreconditions.\nEffects.\nThe goal.\n\n\nWe search for\n\nA sequence of ground actions.\nEach action applicable when used.\nA final state satisfying the goal."
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#why-planning-gets-its-own-representation",
-    "href": "slides/lec19_Planning.html#why-planning-gets-its-own-representation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why Planning Gets Its Own Representation",
-    "text": "Why Planning Gets Its Own Representation\nPlanning uses a restricted logic-like language so search can exploit structure.\n\n\n\nComponent\nPlanning view\n\n\n\n\nState\nA conjunction of function-free predicate literals\n\n\nAction\nPreconditions plus effects\n\n\nGoal\nA conjunction of facts that must hold\n\n\nQuantifiers\nAvoided in the action/state language\n\n\n\n\nThe restriction is a feature: it makes action applicability and goal checking mechanical."
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#a-tiny-robot-example",
-    "href": "slides/lec19_Planning.html#a-tiny-robot-example",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "A Tiny Robot Example",
-    "text": "A Tiny Robot Example\n\n\nState and Goal\n\n\\text{At}(\\text{Robot},A) \\land \\text{Connected}(A,B)\n\n\n\\text{Goal}: \\text{At}(\\text{Robot},B)\n\n\nAction\n\n\\text{Move}(A,B)\n\nPrecondition:\n\n\\text{At}(\\text{Robot},A) \\land \\text{Connected}(A,B)\n\nEffect:\n\n\\neg \\text{At}(\\text{Robot},A) \\land \\text{At}(\\text{Robot},B)"
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#blocks-world",
-    "href": "slides/lec19_Planning.html#blocks-world",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Blocks World",
-    "text": "Blocks World\n\n\nBlocks world is a small planning domain:\n\nLabeled blocks sit on a table.\nBlocks can be stacked.\nA block can move only if nothing is on top of it.\nThe goal describes a desired arrangement.\n\n\nSmall domain, large search space. That is exactly why it is useful for planning.\n\n\n\n\n\nBlocks world start and goal illustration"
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#blocks-world-predicates",
-    "href": "slides/lec19_Planning.html#blocks-world-predicates",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Blocks World Predicates",
-    "text": "Blocks World Predicates\n\n\n\nSymbol\nMeaning\n\n\n\n\n\\text{Table}\nThe table constant\n\n\n\\text{block}(A)\nA is a block\n\n\n\\text{on}(A,B)\nA is on B\n\n\n\\text{on}(A,\\text{Table})\nA is on the table\n\n\n\\text{clear}(A)\nNothing is stacked on A\n\n\n\n\nPlanning will use these facts directly; facts not listed as true are treated as false."
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#initial-state",
-    "href": "slides/lec19_Planning.html#initial-state",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Initial State",
-    "text": "Initial State\n\n\nThe initial state is a set of true facts:\n\n\\text{block}(A) \\land \\text{block}(B) \\land \\text{block}(C)\n\n\n\\text{on}(B,\\text{Table}) \\land \\text{on}(C,A) \\land \\text{on}(A,\\text{Table})\n\n\n\n\n\nBlocks world initial state\n\n\n\n\nClosed world assumption: if \\text{on}(B,A) is not stated, the planner treats it as false."
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#goal-state",
-    "href": "slides/lec19_Planning.html#goal-state",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Goal State",
-    "text": "Goal State\nThe goal is usually partial.\n\n\\text{on}(A,B) \\land \\text{on}(B,C)\n\n\n\nSpecified\n\nA must be on B.\nB must be on C.\n\n\nNot specified\n\nWhere C is.\nWhich other clear facts hold.\nOther irrelevant facts.\n\n\n\nMany complete final states can satisfy one partial goal."
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#first-try-a-move-template",
-    "href": "slides/lec19_Planning.html#first-try-a-move-template",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "First Try: A Move Template",
-    "text": "First Try: A Move Template\nThe natural action template is:\n\n\nmove(b, from, to)\n\n\npre: block(b) and on(b, from)\n\n\nand no block is on b\n\n\nand no block is on to\n\n\neffect: on(b, to) and not on(b, from)\n\n\n\nBut “no block is on …” sounds like a quantifier. The planning language is supposed to avoid quantifiers."
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#reifying-nothing-on-top",
-    "href": "slides/lec19_Planning.html#reifying-nothing-on-top",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Reifying “Nothing On Top”",
-    "text": "Reifying “Nothing On Top”\nInstead of writing:\n\n\\neg \\exists x\\; \\text{on}(x,b)\n\nwe introduce a predicate:\n\n\\text{clear}(b)\n\n\n\nBefore\n“No object is on b.”\nThis is quantified.\n\nAfter\n“b is clear.”\nThis is a simple fact."
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#move-onto-another-object",
-    "href": "slides/lec19_Planning.html#move-onto-another-object",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Move Onto Another Object",
-    "text": "Move Onto Another Object\n\n\nmove(b, from, to)\n\n\npre: block(b)\n\n\nand on(b, from)\n\n\nand clear(b)\n\n\nand clear(to)\n\n\neffect: on(b, to)\n\n\nand not on(b, from)\n\n\nand not clear(to)\n\n\nand clear(from)"
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#move-onto-the-table",
-    "href": "slides/lec19_Planning.html#move-onto-the-table",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Move Onto the Table",
-    "text": "Move Onto the Table\nThe table is a special destination: it can hold multiple blocks.\n\n\nmoveToTable(b, from)\n\n\npre: block(b)\n\n\nand on(b, from)\n\n\nand clear(b)\n\n\neffect: on(b, Table)\n\n\nand not on(b, from)\n\n\nand clear(from)\n\n\n\nSeparating table moves keeps the action schema faithful to the domain."
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#from-templates-to-ground-actions",
-    "href": "slides/lec19_Planning.html#from-templates-to-ground-actions",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "From Templates to Ground Actions",
-    "text": "From Templates to Ground Actions\nAction templates contain variables. A plan uses ground actions.\n\n\nTemplate\n\n\\text{moveToTable}(b,\\text{from})\n\nGround action\n\n\\text{moveToTable}(C,A)\n\n\nGrounded preconditions\n\n\\text{block}(C) \\land \\text{on}(C,A) \\land \\text{clear}(C)\n\nGrounded effects\n\n\\text{on}(C,\\text{Table}) \\land \\neg \\text{on}(C,A) \\land \\text{clear}(A)"
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#finding-a-plan",
-    "href": "slides/lec19_Planning.html#finding-a-plan",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Finding a Plan",
-    "text": "Finding a Plan\nGoal:\n\n\\text{on}(A,B) \\land \\text{on}(B,C)\n\n\n\n\\text{moveToTable}(C,A): move C off A.\n\n\n\n\n\\text{move}(B,\\text{Table},C): move B onto C.\n\n\n\n\n\\text{move}(A,\\text{Table},B): move A onto B.\n\n\n\nEach action must be applicable when it is executed; the sequence matters."
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#problem-size",
-    "href": "slides/lec19_Planning.html#problem-size",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Problem Size",
-    "text": "Problem Size\nSuppose there are 6 objects: blocks plus table.\n\n\n\n\n\n\n\n\nTemplate\nParameters\nGround instances\n\n\n\n\n\\text{move}(\\text{block}, \\text{from}, \\text{to})\n3\n6^3 = 216\n\n\n\\text{moveToTable}(\\text{block}, \\text{from})\n2\n6^2 = 36\n\n\nTotal\n\n252\n\n\n\n\nMany of these ground actions may be illegal in a state, but the planner still has to reason about a large candidate space."
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#complexity-of-planning",
-    "href": "slides/lec19_Planning.html#complexity-of-planning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Complexity of Planning",
-    "text": "Complexity of Planning\nPlanning is difficult in general.\n\n\nTheoretical results\n\nGeneral planning is PSPACE-complete.\nOptimal planning is often NP-hard.\n\n\nPractical pressure\n\nState spaces grow exponentially.\nPreconditions constrain search.\nActions interact through their effects.\n\n\n\nThe next question is how to search this space intelligently."
-  },
-  {
-    "objectID": "slides/lec19_Planning.html#what-to-remember",
-    "href": "slides/lec19_Planning.html#what-to-remember",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What to Remember",
-    "text": "What to Remember\n\nPlanning searches over action sequences, not single actions.\nStates, goals, preconditions, and effects are represented as predicate literals.\nAction templates become ground actions by replacing variables with objects.\nThe closed world assumption makes missing facts false.\nEven simple domains create many possible ground actions.\n\nAsset credits"
   },
   {
     "objectID": "slides/lec17_Propositional_Inference.html#takeaways",
@@ -8118,5 +7866,257 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Takeaways",
     "text": "Takeaways\n\nState the domain and define every predicate.\nQuantifier order determines whether a witness may depend on another variable.\nUnification uses one consistent substitution across each expression.\nSkolem terms record witness dependencies in clause form.\nRefutation proves entailment by deriving the empty clause from the KB and negated query.\n\n\nHomework 3: Logic Toolkit. Show intermediate steps. Due Friday, October 23, 11:59 PM Eastern.\n\nAsset credits\n\nPoint students to the five required problems before the optional reference section. No code or starter download is required. Reserve the remaining class time for homework clarifications and review questions about Lectures 1-16 for the October 12 midterm, rather than expanding this deck with another full recap.\n[Sources] - Course schedule and Homework 3 specification. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#planning-task",
+    "href": "slides/lec19_Planning.html#planning-task",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Planning Task",
+    "text": "A Planning Task\nPlanning finds an action sequence from an initial state (starting arrangement) to a goal (required final conditions).\n\n\nCan we put A onto B immediately? What must happen first?\n\n\nC blocks A. A plan must first make A movable.\n\n\nUse this one arrangement throughout Lectures 19 and 20. A is teal, B gold, C rose. We model a move as a complete transfer of one block, with no separate pickup or hand state. Ask for a proposed sequence before introducing formal notation.\n[Sources] - Russell and Norvig, Artificial Intelligence: A Modern Approach, fourth edition, Section 11.1 and the blocks-world example in Figure 11.4. - https://aima.cs.berkeley.edu/algorithms.pdf - Original editable draw.io illustration of that example. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#classical-assumptions",
+    "href": "slides/lec19_Planning.html#classical-assumptions",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Classical Planning Assumptions",
+    "text": "Classical Planning Assumptions\nOur planner uses a deliberately simplified model:\n\n\n\n\n\n\n\nAssumption\nMeaning in this example\n\n\n\n\nFully observable\nThe current arrangement is known\n\n\nDeterministic\nA legal move has one predicted result\n\n\nStatic environment\nBlocks stay put unless the agent moves them\n\n\nFinite, discrete states\nFinitely many distinct arrangements, described by true/false facts\n\n\nSequential actions\nOne complete move at a time\n\n\n\n\nA classical plan is a fixed action sequence. Unexpected outcomes may require replanning: computing a new plan from the observed state.\n\n\nThese assumptions describe classical planning, not every planning method. We also ignore action duration and use one unit of cost per move. Real robot control would need geometric feasibility, perception, grasping, and failure handling, which are outside this symbolic model.\n[Sources] - AIMA fourth edition, Section 11.1. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#planning-search",
+    "href": "slides/lec19_Planning.html#planning-search",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Action Schemas and Ground Actions",
+    "text": "Action Schemas and Ground Actions\nObjects are named things in the problem: blocks A,B,C and \\text{Table}.\nAn action schema is a reusable action description. A template means it has variables as placeholders, like blanks in a form.\n\n\n\n\n\n\n\n\nForm\nExample\nMeaning\n\n\n\n\nAction schema\n\\text{Move}(b,\\text{src},\\text{dst})\nMove block b from source \\text{src} onto destination \\text{dst}\n\n\nGround action\n\\text{Move}(B,\\text{Table},C)\nMove B from the table onto C\n\n\n\nGrounding fills the placeholders: b=B, \\text{src}=\\text{Table}, \\text{dst}=C.\nA ground action has specific objects in every slot, with no variables left. The schema also defines when the action is allowed and what it changes.\n\nPlanning searches over states. Each legal ground action supplies one edge. The chosen objects must still meet the action’s requirements.\n\n\nAn object is an individual named entity in the domain, not necessarily a Python object. Here B and C name particular blocks, and Table names their shared support. The lower-case b and the descriptive names src and dst are variables to replace, not extra objects.\nThe full action schema includes preconditions and effects, introduced on later slides. Grounding substitutes the chosen objects throughout those rules as well as in the action’s name. For example, Clear(b) becomes Clear(B). Ground means variable-free, not a physical location or a move onto the ground.\nMove(B,Table,C) is applicable in the initial arrangement because B is on the table and B and C are clear. Move(A,Table,B) is also ground, but is initially inapplicable because C blocks A. Grounding and checking applicability are different steps.\nThis connects planning to the earlier search lectures: a node represents a world state, an applicable ground action supplies an edge to Result(s,a), the goal test checks the required facts, and a solution is an executable action sequence.\n[Sources] - AIMA Sections 11.1-11.2. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#blocks-vocabulary",
+    "href": "slides/lec19_Planning.html#blocks-vocabulary",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Blocks-World Vocabulary",
+    "text": "Blocks-World Vocabulary\nA constant names one object: A,B,C or \\text{Table}. A predicate describes a property or relation, such as \\text{Clear} or \\text{On}.\n\n\n\n\n\n\n\nFact\nMeaning\n\n\n\n\n\\text{Block}(A)\nA has type (object category) block; this never changes\n\n\n\\text{On}(C,A)\nC rests directly on A\n\n\n\\text{On}(B,\\text{Table})\nB rests on the table\n\n\n\\text{Clear}(B)\nNo block is on top of B\n\n\n\n\nFor blocks, Clear means an empty top. \\text{Clear}(\\text{Table}) is a special, always-true convention: the table can accept several blocks.\n\n\nWe follow AIMA’s two-schema model, which includes Clear(Table). It does not mean that the table has no blocks. A move’s destination must be a block, so Move never deletes Clear(Table). MoveToTable handles the table destination separately.\nOn and Clear can change. Block facts and the Clear(Table) convention stay fixed. The diagrams show only block arrangements, not every predicate.\n[Sources] - AIMA Figure 11.4, available in https://aima.cs.berkeley.edu/algorithms.pdf. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#initial-facts",
+    "href": "slides/lec19_Planning.html#initial-facts",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Complete Initial State",
+    "text": "The Complete Initial State\nA state s is the set of facts currently true in the world.\n\n\nWhere blocks rest:\n\\begin{aligned}\n&\\text{On}(A,\\text{Table}),\\quad\\text{On}(B,\\text{Table}),\\\\\n&\\text{On}(C,A).\n\\end{aligned}\nClear facts: \\text{Clear}(B),\\text{Clear}(C).\nFixed facts: \\text{Block}(A),\\text{Block}(B),\\text{Block}(C) and \\text{Clear}(\\text{Table}).\n\n\n\n\nClosed-world assumption: facts absent from this complete state are false. In particular, \\text{Clear}(A)=\\text{false}.\n\n\nA state is a set of true ground atoms. All the listed facts must hold together, so commas in a set are interpreted conjunctively. Supplying the Clear facts is essential: a planner cannot infer them unless we implement a separate derivation rule.\nContrast with Lecture 17’s logical KB, where an unreported fact could be undetermined. Here the state description is complete under the closed-world convention. This is a modeling assumption, not a rule that missing sensor data proves a physical claim false.\n[Sources] - AIMA Section 11.1 and Figure 11.4. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#partial-goal",
+    "href": "slides/lec19_Planning.html#partial-goal",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Partial Goal",
+    "text": "A Partial Goal\nA partial goal specifies only the facts we require at the end.\nG=\\{\\text{On}(A,B),\\ \\text{On}(B,C)\\}\nThe symbol G names the set of required goal facts.\n\n\n\nRequired\nLeft unspecified by G\n\n\n\n\nA directly on B\nWhat C rests on\n\n\nB directly on C\nOther facts and additional objects\n\n\n\n\nThe goal test G\\subseteq s means every fact in G is in state s. Extra true facts are allowed. Both required facts must hold together.\n\n\nIn this exact three-block, acyclic physical domain, C must be on the table in a valid final arrangement. The formula itself does not state this: the domain constraints supply it. With additional blocks, C could rest on another block. Avoid claiming several valid three-block final arrangements for this particular goal.\n[Sources] - AIMA Section 11.1, goal representation. Original discussion of the three-block domain. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#action-update",
+    "href": "slides/lec19_Planning.html#action-update",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Preconditions and Effects",
+    "text": "Preconditions and Effects\nPreconditions say when an action is allowed. Effects say what it changes.\n\n\n\n\n\n\n\nSet\nRole\n\n\n\n\n\\text{Pre}(a), or PRE\nPreconditions: facts required before action a\n\n\n\\text{Add}(a), or ADD\nAdd effects: facts made true\n\n\n\\text{Del}(a), or DELETE\nDelete effects: facts removed, hence made false\n\n\n\nAn action is applicable (executable now) when \\text{Pre}(a)\\subseteq s. Its next state is:\n\\text{Result}(s,a)=\\bigl(s\\setminus\\text{Del}(a)\\bigr)\\cup\\text{Add}(a).\nHere \\setminus removes facts and \\cup combines fact sets.\n\nThe frame problem asks how to represent unchanged facts. Facts outside the effect sets persist: moving C leaves \\text{On}(B,\\text{Table}) true.\n\n\nExplain set difference as remove and union as add. The basic fragment used here has positive preconditions and disjoint add/delete lists. Negative effects are entries in the delete list, not negated atoms stored in a state. This is the STRIPS style of representation, named for Stanford Research Institute Problem Solver, with typing and inequality constraints on schema instances.\n[Sources] - AIMA Section 11.1, action applicability and the state transition function. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#clear-facts",
+    "href": "slides/lec19_Planning.html#clear-facts",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Maintaining the Clear Facts",
+    "text": "Maintaining the Clear Facts\nFor a block b, \\text{Clear}(b) means no block x rests on b:\n\\neg\\exists x\\,\\text{On}(x,b).\nWe store this summary as a fact and update it after each move.\n\n\n\n\n\n\n\nA move changes…\nClear fact to update\n\n\n\n\nThe old supporting block loses its top block\nAdd \\text{Clear}(\\text{src})\n\n\nThe destination block gains a top block\nDelete \\text{Clear}(\\text{dst})\n\n\nThe moving block’s own top\nNothing: it remains clear\n\n\n\n\nThe initial state and action effects must keep these summary facts consistent with the arrangement.\n\n\nThe quantified formula explains the meaning for block arguments only. It is not a formula evaluated by the state-set engine. Clear(Table) has the separate capacity convention already stated. Adding Clear(Table) after moving a block off it is harmless because that atom was already true.\n[Sources] - AIMA Section 11.1, blocks-world Clear predicate. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#move-schema",
+    "href": "slides/lec19_Planning.html#move-schema",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Moving Onto a Block",
+    "text": "Moving Onto a Block\nb and \\text{dst} are distinct blocks. \\text{src} is a block or Table, different from both.\n\n\nMove(b, src, dst)\n\n\nPRE: On(b, src) and Clear(b) and Clear(dst)\n\n\nADD: On(b, dst), Clear(src)\n\n\nDELETE: On(b, src), Clear(dst)\n\n\nExample: \\text{Move}(B,\\text{Table},C) puts B onto C.\n\nWhy must the schema delete \\text{Clear}(C)?\n\n\nB now occupies C’s top. Leaving \\text{Clear}(C) true would allow an impossible second block to move onto C.\n\n\nPRE, ADD, and DELETE refer to the three sets just defined. Type and inequality guards in the sentence above the code are part of the schema, even though we omit their fixed predicates from the displayed PRE line. dst cannot be Table. src may be Table, in which case its Clear atom stays true.\n[Sources] - AIMA Figure 11.4, with explicit parameter restrictions and add/delete presentation. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#table-schema",
+    "href": "slides/lec19_Planning.html#table-schema",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Moving Onto the Table",
+    "text": "Moving Onto the Table\nb and \\text{src} are distinct blocks. The table is a constant, not a block.\n\n\nMoveToTable(b, src)\n\n\nPRE: On(b, src) and Clear(b)\n\n\nADD: On(b, Table), Clear(src)\n\n\nDELETE: On(b, src)\n\n\n\nNo occupied-top check or delete effect is needed for the table. It has space for multiple blocks in this model.\n\n\nThis action moves onto the table. Its source must be a block, which excludes the useless MoveToTable(b,Table) instance. The earlier Beamer source mislabeled this as handling moves off the table. Explain the direction from the actual arguments rather than preserving that wording.\n[Sources] - AIMA Figure 11.4, MoveToTable action. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#grounding",
+    "href": "slides/lec19_Planning.html#grounding",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Grounding an Action",
+    "text": "Grounding an Action\nUse the same replacements in every rule: b=C and \\text{src}=A.\n\\text{MoveToTable}(b,\\text{src})\\quad\\leadsto\\quad\\text{MoveToTable}(C,A).\n\n\n\nGrounded set\nFacts\n\n\n\n\nPreconditions\n\\text{On}(C,A),\\ \\text{Clear}(C)\n\n\nAdd\n\\text{On}(C,\\text{Table}),\\ \\text{Clear}(A)\n\n\nDelete\n\\text{On}(C,A)\n\n\n\nThe object restrictions also hold: C and A are different blocks.\n\nAfter this action, does B remain on the table?\n\n\nYes. \\text{On}(B,\\text{Table}) appears in neither effect set, so it persists.\n\n\nThe leadsto arrow denotes schema instantiation, not logical implication. All dynamic preconditions are true initially. The effect both clears A and keeps C’s own top clear.\n[Sources] - AIMA Section 11.1. Worked instance of Figure 11.4. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#plan-trace",
+    "href": "slides/lec19_Planning.html#plan-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Plan, Step by Step",
+    "text": "A Plan, Step by Step\nGoal: \\text{On}(A,B)\\land\\text{On}(B,C).\n\n   \n\n\n1. \\text{MoveToTable}(C,A) adds \\text{Clear}(A).\n\n\n2. \\text{Move}(B,\\text{Table},C) achieves \\text{On}(B,C).\n\n\n3. \\text{Move}(A,\\text{Table},B) achieves \\text{On}(A,B).\n\n\nAt each reveal, ask whether the next move is applicable. Before step 2, C and B are clear. After step 2, B remains clear while C is not. Before step 3, A and B are clear. The two goal facts now hold together.\n[Sources] - AIMA Figure 11.4 solution sequence. Original animated draw.io frames. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#validate-plan",
+    "href": "slides/lec19_Planning.html#validate-plan",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Checking a Proposed Plan",
+    "text": "Checking a Proposed Plan\nFor k actions a_1,\\ldots,a_k, s_i is the state after action i:\n\nStart with the complete initial state s_0.\nCheck \\text{Pre}(a_i)\\subseteq s_{i-1} before every action.\nCompute s_i=(s_{i-1}\\setminus\\text{Del}(a_i))\\cup\\text{Add}(a_i).\nCheck G\\subseteq s_k at the end.\n\n\nWhat is wrong with starting our plan with \\text{Move}(A,\\text{Table},B)?\n\n\nThe action needs \\text{Clear}(A), which is false initially. Achieving a goal fact is insufficient if the action is not executable.\n\n\nDefine i as the action index and k as the sequence length. s_i denotes the state after i actions. A validator can reject a plan at the first failed precondition without running a physical robot. It validates the encoded model, so model accuracy still matters.\n[Sources] - AIMA Section 11.1, solution definition. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#effect-practice",
+    "href": "slides/lec19_Planning.html#effect-practice",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Effect-Set Practice",
+    "text": "Effect-Set Practice\nSuppose all three blocks are separate on the table. Execute \\text{Move}(B,\\text{Table},C).\n\nWhich facts change? Is B still clear afterward?\n\n\nAdd: \\text{On}(B,C),\\ \\text{Clear}(\\text{Table}).\nDelete: \\text{On}(B,\\text{Table}),\\ \\text{Clear}(C).\n\n\n\\text{Clear}(B) persists. Adding \\text{Clear}(\\text{Table}) is redundant because that fixed fact already holds.\n\n\nThis is the middle action of the plan. Ask students to distinguish the moving block’s top from the destination block’s top. The effect set is the schema’s specification, while the set of actually changed truth values omits the redundant Clear(Table) addition.\n[Sources] - Original exercise using AIMA Figure 11.4. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#ground-action-count",
+    "href": "slides/lec19_Planning.html#ground-action-count",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Candidate Actions and Applicability",
+    "text": "Candidate Actions and Applicability\nA candidate is a ground action allowed by the object rules: correct types and different objects where required.\nWith five blocks and one table:\n\n\n\n\n\n\n\n\nSchema\nParameter choices\nCandidates\n\n\n\n\n\\text{Move}(b,\\text{src},\\text{dst})\n5 moving blocks, 4 destinations, 4 sources\n5\\times4\\times4=80\n\n\n\\text{MoveToTable}(b,\\text{src})\n5 moving blocks, 4 block sources\n5\\times4=20\n\n\nTotal\nBefore state-dependent checks\n100\n\n\n\n\nFor example, \\text{Move}(A,\\text{Table},B) is a candidate but initially cannot run: A is not clear. Candidates still need state-dependent precondition checks.\n\n\nFor Move, choose distinct b and dst among the five blocks. src can be any of the six objects except b and dst, giving four choices. For MoveToTable, src must be one of the four other blocks. Blind enumeration over all six objects would yield 216 plus 36 assignments, but many violate fixed type and inequality guards. We count the well-formed candidates here, not the branching factor of a particular state.\n[Sources] - Original calculation for the restricted AIMA Figure 11.4 schemas. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#state-growth",
+    "href": "slides/lec19_Planning.html#state-growth",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "State Growth and Model Constraints",
+    "text": "State Growth and Model Constraints\nEach Boolean fact is true or false. A truth assignment chooses these values for all m facts, giving up to 2^m combinations.\nA state constraint is a rule for a valid arrangement:\n\nEach block has exactly one support.\nA block supports at most one block.\nNo cycles: A on B and B on A is forbidden.\nClear facts agree with the arrangement.\n\n\nAn invariant is a rule preserved by every legal action. Our schemas preserve these constraints if the initial arrangement is valid.\n\n\nm counts dynamic atoms, not objects. For three blocks there are nine possible On atoms and three Clear atoms, yielding 4096 raw assignments, but only 13 valid arrangements in this simplified domain. The Block atoms and Clear(Table) are fixed. We do not need a complexity-class detour to explain why representation and pruning matter.\nThe schemas preserve the stated invariants from valid states because they move only a clear block onto a clear distinct block or the table. They do not repair an already inconsistent input state. A validator should check the model’s initial state too.\n[Sources] - AIMA Sections 11.1-11.2. Original three-block counting example. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec19_Planning.html#takeaways",
+    "href": "slides/lec19_Planning.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nA plan must satisfy every action’s preconditions in sequence.\nGrounding fills a schema’s variable slots with named objects.\nAdd/delete effects update a complete state. Other facts persist.\nA partial goal tests only its required facts.\nType restrictions and state constraints remove invalid candidates.\n\n\nNext: search forward from the initial state or backward from the goal to find an action sequence.\n\nAsset credits\n\n[Sources] - AIMA fourth edition, Section 11.1, in both U.S. and Global editions. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#shared-problem",
+    "href": "slides/lec20_Planning_Algo.html#shared-problem",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Same Planning Problem",
+    "text": "The Same Planning Problem\n\nGoal: G=\\{\\text{On}(A,B),\\text{On}(B,C)\\}.\nRecall: a state is its true facts. The Move and MoveToTable schemas are reusable rules with preconditions and effects.\n\nHow could an algorithm discover the three-move plan, rather than having us supply it?\n\n\nRetain the exact initial facts from Lecture 19: On(A,Table), On(B,Table), On(C,A), Clear(B), Clear(C), the three Block facts, and Clear(Table). A schematic plan path is only one branch of the search. All moves have unit cost.\n[Sources] - AIMA fourth edition, Sections 11.1-11.2 and Figure 11.4. - Original draw.io arrangement from Lecture 19. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#progression",
+    "href": "slides/lec20_Planning_Algo.html#progression",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Progression: Forward State Search",
+    "text": "Progression: Forward State Search\nProgression starts at the initial state and applies actions whose preconditions hold in the current state s.\n\n\n\n\n\n\n\nOperation\nRule\n\n\n\n\nChoose an action a\n\\text{Pre}(a)\\subseteq s\n\n\nCompute the next state (successor)\n(s\\setminus\\text{Del}(a))\\cup\\text{Add}(a)\n\n\nCheck the goal\nG\\subseteq s\n\n\n\nIn our initial state, both actions below are legal:\n\n\\text{MoveToTable}(C,A) clears A.\n\\text{Move}(B,\\text{Table},C) achieves one goal fact but puts B on top of C.\n\n\nPreconditions determine legal choices. Search decides which to explore.\n\n\nThe second move builds B on C while C is still on A. To free A later, we must move B off C before moving C off A, undoing the partial goal. It is a useful example of why immediate goal progress can be misleading. The first move is part of a shortest plan, but forward search must evaluate alternatives.\n[Sources] - AIMA Section 11.2.1. Original comparison in the AIMA blocks domain. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#progression-code",
+    "href": "slides/lec20_Planning_Algo.html#progression-code",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Breadth-First Progression",
+    "text": "Breadth-First Progression\nPseudocode. Immutable means each stored state stays unchanged.\ndef breadth_first_plan(initial, goal):\n    frontier = deque([(initial, [])])\n    seen = {initial}\n    while frontier:\n        s, plan = frontier.popleft()\n        if goal &lt;= s:\n            return plan\n        for a in applicable_actions(s):\n            nxt = result(s, a)\n            if nxt not in seen:\n                seen.add(nxt)\n                frontier.append((nxt, plan + [a]))\n    return None\n\nBreadth-first search (BFS) uses a first-in, first-out (FIFO) queue. deque stores the queue. popleft() removes its oldest entry.\nfrontier stores (state, plan) pairs. seen records visited states.\ngoal &lt;= s tests whether every goal fact holds in state s.\n\n\nFIFO means first in, first out. deque is Python’s double-ended queue from collections, and popleft removes the oldest item. An immutable frozenset is one possible state representation. applicable_actions tests the typed ground actions’ preconditions. result implements the add/delete update from Lecture 19.\nThis is teaching pseudocode, not a complete runnable implementation. The highlighted groups cover initialization, goal checking, expansion with repeat prevention, and failure after exhaustion. Under unit costs, BFS finds a shortest action sequence. Unequal costs require uniform-cost search or a suitable heuristic search.\n[Sources] - AIMA Section 11.2.1 and standard graph BFS, adapted to the planning representation. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#regression-rule",
+    "href": "slides/lec20_Planning_Algo.html#regression-rule",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Regression: Backward Goal Search",
+    "text": "Regression: Backward Goal Search\nRegression searches backward: which facts must hold before an action achieves goal set G? Its search nodes are requirements, not complete states.\nA useful action must:\n\nAdd at least one required fact: \\text{Add}(a)\\cap G\\ne\\varnothing.\nDelete none of the required facts: \\text{Del}(a)\\cap G=\\varnothing.\n\nHere \\cap means shared facts and \\varnothing is the empty set. The previous requirements are:\n\\text{Regress}(G,a)=\\bigl(G\\setminus\\text{Add}(a)\\bigr)\\cup\\text{Pre}(a).\n\nKeep goals that the action does not establish. Add every precondition of that action.\n\n\nThis formula is for positive conjunctive goals and positive-precondition add/delete actions. Regression nodes are sets of requirements, not complete world states. The search stops when the initial state satisfies the regressed set. Additional invariant tests may prune physically impossible combinations.\nFixed type constraints are handled during grounding. A backward graph search should also record chosen actions and avoid repeated goal sets. It then executes the selected actions in reverse order of selection.\n[Sources] - AIMA Section 11.2.2. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#last-move",
+    "href": "slides/lec20_Planning_Algo.html#last-move",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Regressing the Last Move",
+    "text": "Regressing the Last Move\nGoal: G=\\{\\text{On}(A,B),\\text{On}(B,C)\\}.\nChoose a=\\text{Move}(A,\\text{Table},B) as the last action.\n\n\n\n\n\n\n\nStep\nRequired facts\n\n\n\n\nRemove the goal that a adds\n\\text{On}(B,C)\n\n\nAdd all preconditions of a\n\\text{On}(A,\\text{Table}),\\text{Clear}(A),\\text{Clear}(B)\n\n\n\n\nBefore that last move, B must already be on C, while A is on the table and both A and B are clear.\n\n\nThe chosen action also adds Clear(Table), but it was not a goal requirement, so it removes nothing else from G. It deletes On(A,Table) and Clear(B), neither of which is in the target goal set. This makes it compatible with G.\nThe regressed set describes potentially many predecessor states. Do not draw it as a single fully specified block arrangement and call that the regression node.\n[Sources] - Original worked application of AIMA Section 11.2.2 to Figure 11.4. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#backward-trace",
+    "href": "slides/lec20_Planning_Algo.html#backward-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Backward Trace",
+    "text": "The Backward Trace\nFor compact notation, \\text{Tbl} denotes the table on this slide.\n\n   \n\n\n\n\n\n\n\n\nSet\nRequirements\n\n\n\n\nG_3\n\\text{On}(A,B),\\text{On}(B,C)\n\n\nG_2\n\\text{On}(B,C),\\text{On}(A,\\text{Tbl}),\\text{Clear}(A),\\text{Clear}(B)\n\n\nG_1\n\\text{On}(A,\\text{Tbl}),\\text{On}(B,\\text{Tbl}),\\text{Clear}(A),\\text{Clear}(B),\\text{Clear}(C)\n\n\nG_0\n\\text{On}(A,\\text{Tbl}),\\text{On}(B,\\text{Tbl}),\\text{On}(C,A),\\text{Clear}(B),\\text{Clear}(C)\n\n\n\n\nAll facts in G_0 hold initially. Execute the selected actions forward: \\text{MoveToTable}(C,A), \\text{Move}(B,\\text{Tbl},C), \\text{Move}(A,\\text{Tbl},B).\n\n\nG_i denotes the required facts before the final 3-i actions. Regress G3 through Move(A,Table,B), then G2 through Move(B,Table,C), then G1 through MoveToTable(C,A). The three operations select actions last to first. The resulting G0 includes On(C,A) and Clear(C), but no longer requires Clear(A), because the first move establishes it.\nTbl abbreviates the Table object. Fixed Block predicates and Clear(Table) remain true and their type guards are already checked in these ground actions.\n[Sources] - Original regression trace using AIMA Sections 11.1-11.2. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#goal-threat",
+    "href": "slides/lec20_Planning_Algo.html#goal-threat",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Actions That Threaten a Goal",
+    "text": "Actions That Threaten a Goal\nAn action threatens a goal if it deletes a required fact. Consider a new goal for our initial arrangement:\nG=\\{\\text{Clear}(A),\\text{Clear}(B)\\}.\nThis goal is feasible: both facts hold when all three blocks are on the table.\n\nCould a=\\text{Move}(C,A,B) be the last action just because it clears A?\n\n\nNo. It adds \\text{Clear}(A) but deletes \\text{Clear}(B).\n\\text{Del}(a)\\cap G=\\{\\text{Clear}(B)\\}\\ne\\varnothing.\n\n\n\\text{MoveToTable}(C,A) achieves both goals directly. The rejected move can still occur earlier in a longer plan.\n\n\nUse the same initial arrangement: C rests on A, while B is separate on the table. Only the goal changes for this example. The two goal facts can hold together, and MoveToTable(C,A) achieves them in one step.\nMove(C,A,B) is legal initially: C is on A, and C and B are clear. It adds On(C,B) and Clear(A), but deletes On(C,A) and Clear(B). The delete intersection with G is therefore exactly {Clear(B)}, so regression rejects it as the last action for this goal set.\nThis is a rejection of an action choice at this backward-search node, not a claim that the action is always unusable. A valid longer plan is Move(C,A,B), followed by MoveToTable(C,B). The second move restores Clear(B), while Clear(A) persists.\n[Sources] - Original check using the relevance and consistency conditions of AIMA Section 11.2.2. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#planning-heuristics",
+    "href": "slides/lec20_Planning_Algo.html#planning-heuristics",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Heuristics for Planning",
+    "text": "Heuristics for Planning\nA heuristic h(s) estimates remaining plan cost, here the number of moves.\nAn easy starting point counts goal facts not yet true. |X| means the number of facts in set X:\nh_{\\text{goal}}(s)=|G\\setminus s|.\nIn our initial state, both goal facts are missing, so h_{\\text{goal}}=2. A shortest plan needs 3 moves because C must first leave A.\n\nGoal counting misses prerequisite moves. It can also overestimate: one switch could turn on two lights, achieving two goal facts in one action.\n\n\nThis heuristic is a simple illustration, not a general admissible heuristic. Admissible means never overestimating the true optimal remaining cost. A* needs an appropriate heuristic and repeat-handling policy for its optimality guarantee.\nA relaxed problem omits some constraints and supplies a more systematic estimate. The next slide introduces the common delete relaxation. No action-cost asymmetry is present in the blocks example.\n[Sources] - AIMA Section 11.3, planning heuristics. Original comparison against the shortest three-move plan. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#delete-relaxation",
+    "href": "slides/lec20_Planning_Algo.html#delete-relaxation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Delete Relaxation",
+    "text": "Delete Relaxation\nA relaxation drops rules to make a problem easier. Delete relaxation ignores delete effects but keeps preconditions and add effects.\nRobot example: L,R are locations; \\text{At}(L) means the robot is at L. \\text{Go}(L,R) requires \\text{At}(L), adds \\text{At}(R), and deletes \\text{At}(L).\n\nFast Forward (FF) is a planner. It estimates cost by counting actions in a relaxed plan, one that solves the easier problem.\n\nThe relaxed robot can be “in both places.” This easier problem guides search, but its plan may violate the real model.\n\n\nThe optimum cost of a delete-relaxed plan is a lower bound on optimum real cost, because every real plan is valid in the relaxed positive-precondition model. Computing that optimum can still be hard. FF, expanded as Fast Forward, extracts a practical relaxed-plan estimate that is not generally admissible.\nIn positive-precondition delete relaxation, facts accumulate rather than disappear. This can make later actions available without undoing earlier achievements. We return to a different reachability structure, the planning graph, on the next slide.\n[Sources] - AIMA Section 11.3. - Hoffmann and Nebel, The FF Planning System: Fast Plan Generation Through Heuristic Search, https://arxiv.org/abs/1106.0675. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#planning-graph",
+    "href": "slides/lec20_Planning_Algo.html#planning-graph",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Planning Graph",
+    "text": "A Planning Graph\nA planning graph alternates layers (levels): possible facts S_t after t steps, then possible actions A_t.\nA no-op (no operation) keeps a fact true in the next layer. Mutex means mutually exclusive: facts cannot hold together, or actions conflict at that step.\n\n\nMoving gives \\text{At}(R); staying gives \\text{At}(L). S_1 lists both possibilities, not one state where the robot is in both places.\n\n\nThis uses the robot model from the preceding slide. The layer indexes represent increasing planning depth. Go deletes At(L), so it conflicts with the no-op that keeps At(L). Their resulting facts have inconsistent support at S1 and are mutex.\nA planning graph summarizes many possible histories and may overapproximate what can jointly hold. It is distinct from the earlier state-space graph, whose nodes are individual complete states. Unlike plain delete relaxation, this graph retains mutex information. Static connectivity is implicit in the single allowed Go action.\n[Sources] - AIMA Section 11.2.4 and Section 11.3, planning graphs. - https://www.cs.cmu.edu/~15281/coursenotes/classicalplan/ - Original draw.io robot graph. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#mutex-and-graphplan",
+    "href": "slides/lec20_Planning_Algo.html#mutex-and-graphplan",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Mutex and Graphplan",
+    "text": "Mutex and Graphplan\nAn action supports a fact if it makes that fact true. For example, \\text{Go}(L,R) supports \\text{At}(R).\nActions can conflict when:\n\nOne deletes another’s precondition or effect.\nTheir preconditions are mutually exclusive at the preceding fact layer.\n\nGraphplan grows the graph, then performs plan extraction: a backward search for compatible actions whose effects achieve the goals.\n\nIf all goal facts appear in a layer, do we already have a valid plan?\n\n\nNo. The goals may be mutex, or the actions supporting them may conflict. Even non-mutex goals still need a successful plan extraction.\n\n\nFact mutex also includes opposite literals and inconsistent support: every possible pair of supporting actions is mutex. Pairwise non-mutex goals are a useful test, not a complete guarantee that a plan exists. Graphplan includes backward extraction and records failures rather than simply reading a path through the reachability graph.\nDepending on the encoding, Graphplan permits nonconflicting parallel action sets and seeks a small number of layers. This need not minimize the number of sequential actions, so do not equate its objective with our BFS unit-action optimum.\n[Sources] - AIMA Section 11.2.4. - https://www.cs.cmu.edu/~avrim/graphplan.html [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#sat-horizon",
+    "href": "slides/lec20_Planning_Algo.html#sat-horizon",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Planning as Boolean Satisfiability",
+    "text": "Planning as Boolean Satisfiability\nBoolean satisfiability (SAT) asks whether true/false values can satisfy all constraints in a formula. A working choice is a satisfying assignment, also called a SAT model.\nAn encoding translates planning rules into Boolean constraints. Fix a horizon T: the number of available action steps. Represent states at t=0,\\ldots,T and actions at t=0,\\ldots,T-1.\n\n\n\nHorizon for our blocks task\nA plan within that horizon?\n\n\n\n\nT=0,1,2\nNo\n\n\nT=3\nYes: the three-move plan\n\n\n\n\nUnsatisfiable means no truth assignment works. At T=2, this rules out plans within two steps. Longer plans may still exist.\n\n\nHere T is a time-step horizon. Use a sequential encoding with at most one real action per step and allow idle steps, so the question is existence within T steps. Under these conditions the minimum horizon matches the fewest unit-cost actions. Alternative parallel encodings measure a different objective.\nThe numbers follow from the block task: A and B must each move to their goal supports, and C must leave A first. This gives a lower bound of three, achieved by the displayed plan.\n[Sources] - AIMA Section 11.2.3. Original bounded-horizon application to Figure 11.4. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#sat-constraints",
+    "href": "slides/lec20_Planning_Algo.html#sat-constraints",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "SAT Encoding Ingredients",
+    "text": "SAT Encoding Ingredients\nEach Boolean variable is true or false, recording a fact at a time or whether a ground action occurs.\n\n\n\n\n\n\n\nConstraint\nWhat it enforces\n\n\n\n\nInitial state\nEvery initial fact’s true or false value at t=0\n\n\nGoal\nRequired facts hold at t=T\n\n\nAction preconditions\nA chosen action is applicable\n\n\nAction effects\nIts add/delete changes occur at t+1\n\n\nFrame constraints\nOnly actions that add/delete a fact can change it\n\n\nAction choice\nAt most one action per step in our sequential model\n\n\n\n\nFrame constraints enforce persistence. Without them, the solver could invent \\text{On}(A,B) even when no action puts A onto B.\n\n\nUnlike a state set that leaves false facts implicit, an SAT encoding must constrain their initial values too. Otherwise unspecified initial variables can be chosen to make an easier problem. Frame constraints connect each next-state atom to its current value and the actions that may add or delete it. The serial action constraint is an encoding choice rather than a requirement of every SAT planner.\n[Sources] - AIMA Section 11.2.3 and Section 7.7.4. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#sat-example",
+    "href": "slides/lec20_Planning_Algo.html#sat-example",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A One-Step SAT Example",
+    "text": "A One-Step SAT Example\nRobot model: the only real action is \\text{Go}(L,R).\nVariables: p_t means at L at time t, q_t means at R at time t, and m_0 means the action occurs in step 0.\n\\rightarrow means “if … then.” \\leftrightarrow means “if and only if.”\n\n\n\n\n\n\n\nRequirement\nBoolean constraint\n\n\n\n\nInitial state and goal\np_0\\land\\neg q_0\\land q_1\n\n\nPrecondition\nm_0\\rightarrow p_0\n\n\nAt L afterward: there before and no move\np_1\\leftrightarrow(p_0\\land\\neg m_0)\n\n\nAt R afterward: there before or a move\nq_1\\leftrightarrow(q_0\\lor m_0)\n\n\n\n\nq_0=\\text{false} and q_1=\\text{true} force m_0=\\text{true}: the robot must move.\n\n\nThe biconditionals give both causal change and persistence for the one-action model. If m0 is false, both locations keep their initial values. If m0 is true, the robot leaves L and arrives at R, with the precondition requiring it to start at L. These are all the constraints needed for this deliberately small one-step example, in addition to the usual Boolean variable domains.\nIf we kept only m0 implies q1, the assignment m0=false, q1=true could invent arrival. The reverse causal direction is therefore essential. This is an illustration of SAT planning rather than the full blocks-world encoding.\n[Sources] - Original encoding using AIMA Section 11.2.3. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#sat-code",
+    "href": "slides/lec20_Planning_Algo.html#sat-code",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Bounded SAT Planning",
+    "text": "Bounded SAT Planning\nConceptual Python pseudocode. The bound max_horizon is the largest number of action steps to try.\ndef sat_plan(problem, max_horizon):\n    for T in range(max_horizon + 1):\n        formula = encode(problem, T)\n        model = solve_sat(formula)\n        if model is not None:\n            return extract_actions(model)\n    return None\n\nencode builds all constraints for that horizon.\nsolve_sat returns a satisfying assignment or None.\nextract_actions reads the selected actions in time order.\n\n\nNone here means no plan within the tested bound. Validate an extracted plan against the original action model.\n\n\nThe helpers are conceptual, not a standalone implementation. An actual solver may also return unknown or time out, which must not be treated as a proof of unsatisfiability. Increasing horizons indefinitely can fail to terminate on an unsolvable task, so this version has an explicit bound. An empty assignment can be a valid model, hence the explicit is not None check.\nFor exact, complete sequential encodings with idle steps, the first satisfying horizon gives a minimum-action plan. If actions carry unequal costs, minimizing the horizon alone does not minimize cost.\n[Sources] - Teaching adaptation of SATPlan from AIMA Section 11.2.3. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#hierarchical-planning",
+    "href": "slides/lec20_Planning_Algo.html#hierarchical-planning",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Hierarchical Task Network Planning",
+    "text": "Hierarchical Task Network Planning\nA hierarchical task network (HTN) arranges tasks and their required order.\n\nAbstract task: a high-level request, such as “build the tower.”\nMethod: a rule for refinement (decomposition): splitting a task into subtasks.\nPrimitive task: an executable action, such as \\text{MoveToTable}(C,A).\n\n\n\nEach primitive action must still satisfy its preconditions.\n\n\nThis diagram shows one method suitable for the initial arrangement of our example, not a universal recipe for every tower task. A complete domain can contain alternative methods with different applicability conditions. The arrows between subtasks indicate ordering constraints, not state transitions or causal implication.\nHTN planning can restrict search to decompositions supplied by domain knowledge. A state-space plan might exist but be excluded by the available methods. This is why a method library’s coverage matters.\n[Sources] - AIMA Section 11.4. Original tower-method illustration. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#method-comparison",
+    "href": "slides/lec20_Planning_Algo.html#method-comparison",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Planning Approaches Compared",
+    "text": "Planning Approaches Compared\n\n\n\n\n\n\n\n\nApproach\nSearch representation\nKey check\n\n\n\n\nProgression\nComplete states\nAction applicable now?\n\n\nRegression\nRequired fact sets\nAction achieves goals without deleting others?\n\n\nPlanning graph / Graphplan\nPossible facts and supporting actions by layer\nCan chosen actions jointly achieve the goals?\n\n\nSAT planning\nBoolean assignments over time\nAll encoded constraints satisfied?\n\n\nHTN planning\nTask decompositions\nValid task splits and executable final actions?\n\n\n\n\nHeuristics can guide progression or regression, so heuristic search is not necessarily a separate representation family. Planning graphs can also supply heuristics. The table compares representations rather than claiming one method always dominates the others.\n[Sources] - AIMA Sections 11.2-11.4. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#planning-check",
+    "href": "slides/lec20_Planning_Algo.html#planning-check",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Quick Check",
+    "text": "Quick Check\n\nWhy must regression keep goal facts that the chosen action does not add?\n\n\nThose facts must already hold beforehand and survive the action. Replacing the entire goal with only the preconditions can lose requirements.\n\n\nThe SAT formula is unsatisfiable at horizon 2. Can we conclude that the task has no plan?\n\n\nNo. Test a longer horizon. Our blocks example first has a solution at horizon 3.\n\n\nPause before revealing each answer. These check two common errors: discarding unachieved goals during regression, and interpreting bounded SAT failure as global impossibility.\n[Sources] - Original questions using AIMA Section 11.2. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec20_Planning_Algo.html#takeaways",
+    "href": "slides/lec20_Planning_Algo.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nProgression searches executable state transitions. Repeated-state handling prevents cycles.\nRegression preserves remaining goals and adds action preconditions.\nRelaxed problems help estimate cost. Planning graphs also flag conflicts.\nSAT planning needs full transition constraints and a stated horizon.\nHTN methods guide decomposition, with primitive actions checked against the model.\n\n\nEvery returned plan must work under the original preconditions, effects, and goal test.\n\nAsset credits\n\n[Sources] - AIMA fourth edition, Sections 11.2-11.4, in both U.S. and Global editions. [/Sources]"
   }
 ]
