@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec21_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,380 +164,657 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="probability" class="slide level2 section-slide">
-<h2>Probability</h2>
-<p>Probability is the language AI uses when the world is uncertain, noisy, or only partially observed.</p>
-</section>
-<section id="why-probability-in-ai" class="slide level2">
-<h2>Why Probability in AI?</h2>
+<section id="uncertainty" class="slide level2 probability21-slide">
+<h2>Uncertainty in AI</h2>
+<p>An alarm sounds. Does that prove a robot has a defective part?</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Area</th>
-<th>What is uncertain?</th>
+<th>Observation</th>
+<th>Possible explanation</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Robotics</td>
-<td>Sensor readings, action outcomes</td>
+<td>Alarm sounds</td>
+<td>A defective part triggered it</td>
 </tr>
 <tr class="even">
-<td>Machine learning</td>
-<td>Labels, parameters, predictions</td>
+<td>Alarm sounds</td>
+<td>A working part triggered a false alarm</td>
 </tr>
+</tbody>
+</table>
+<p><strong>Probability</strong> assigns numbers to uncertainty under a stated model.</p>
+<div class="question">
+<p>Would the same alarm mean the same thing if defects were common rather than rare?</p>
+</div>
+<div class="takeaway">
+<p>We need both the alarm’s behavior and how common defects are. We will calculate this near the end of the lecture.</p>
+</div>
+<aside class="notes">
+<p>Connect to the deterministic models in planning: an observation can have several explanations. The robot example is hypothetical, not measured equipment reliability. Probability can guide decisions, but choosing an action also requires a cost or utility model.</p>
+<p>[Sources] - AIMA fourth edition, Sections 12.1-12.2 and Appendix A.3. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="probability-space" class="slide level2 probability21-slide">
+<h2>Outcomes, Events, and Probability</h2>
+<p>Roll one <strong>fair</strong> six-sided die: each of its six outcomes has probability <span class="math inline">1/6</span>.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Meaning</th>
+<th>Die example</th>
+</tr>
+</thead>
+<tbody>
 <tr class="odd">
-<td>NLP</td>
-<td>Intended meaning, next word, speech signal</td>
+<td>Outcome</td>
+<td>One possible result</td>
+<td><span class="math inline">4</span></td>
 </tr>
 <tr class="even">
-<td>Computer vision</td>
-<td>Occlusion, lighting, object identity</td>
+<td>Sample space <span class="math inline">\Omega</span></td>
+<td>All possible outcomes</td>
+<td><span class="math inline">\{1,2,3,4,5,6\}</span></td>
 </tr>
 <tr class="odd">
-<td>Reinforcement learning</td>
-<td>Transitions and rewards</td>
+<td>Event <span class="math inline">A</span></td>
+<td>A set of outcomes</td>
+<td>Even: <span class="math inline">A=\{2,4,6\}</span></td>
+</tr>
+<tr class="even">
+<td>Probability measure <span class="math inline">P</span></td>
+<td>A number assigned to an event</td>
+<td><span class="math inline">P(A)=3/6=1/2</span></td>
+</tr>
+</tbody>
+</table>
+<p><img data-src="imgs/drawio/lec21/sample-events.png" class="probability21-events" alt="The six die outcomes inside the sample space. Event A contains even outcomes 2, 4, 6; event B contains outcomes 4, 5, 6. Outcomes 4 and 6 lie in their overlap."></p>
+<aside class="notes">
+<p>The diagram also labels B as the event that the result is at least 4. An event occurs when the observed outcome belongs to its set. The event space F is the collection of allowed events; for this finite example, use every subset of Omega. The formal probability space is (Omega, F, P).</p>
+<p>Counting outcomes works here because the die is fair. For unequal outcome probabilities, add their probability weights rather than dividing counts.</p>
+<p>[Sources] - AIMA Appendix A.3 and Section 12.2. - Stanford CS229 probability review, Sections 1-1.1: https://cs229.stanford.edu/section/cs229-prob.pdf. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="probability-rules" class="slide level2 probability21-slide">
+<h2>Probability Rules</h2>
+<p>An <strong>axiom</strong> is a starting rule. The basic axioms require nonnegative probabilities, <span class="math inline">P(\Omega)=1</span>, and additivity for disjoint events.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Rule</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">0\le P(A)\le1</span></td>
+<td>Every event has a valid probability</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">P(A^c)=1-P(A)</span></td>
+<td><span class="math inline">A^c</span> is the <strong>complement</strong>: outcomes outside <span class="math inline">A</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">P(A\cup B)=P(A)+P(B)</span> if <span class="math inline">A\cap B=\varnothing</span></td>
+<td><strong>Disjoint</strong> events have no shared outcomes</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">P(A\cup B)=P(A)+P(B)-P(A\cap B)</span></td>
+<td>Otherwise, subtract the overlap counted twice</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\cup</span> means <strong>or</strong>, <span class="math inline">\cap</span> means <strong>and</strong>, and <span class="math inline">\varnothing</span> is the empty set.</p>
+<p>For the die, even <span class="math inline">A</span> and at-least-4 <span class="math inline">B</span> overlap at <span class="math inline">4,6</span>:</p>
+<p><span class="math display">P(A\cup B)=\frac36+\frac36-\frac26=\frac46.</span></p>
+<aside class="notes">
+<p>The upper bound 1 and complement rule follow from the axioms. General additivity applies to countably many pairwise disjoint events. The finite examples here avoid measure-theory details. The union is {2,4,5,6}, checking the arithmetic by counting.</p>
+<p>[Sources] - AIMA Section 12.2 and Appendix A.3. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="conditional-probability" class="slide level2 probability21-slide">
+<h2>Conditional Probability</h2>
+<p><strong>Conditional probability</strong> <span class="math inline">P(A\mid B)</span> means the probability of <span class="math inline">A</span> <strong>given that <span class="math inline">B</span> occurred</strong>. The bar <span class="math inline">\mid</span> means “given.”</p>
+<p><span class="math display">P(A\mid B)=\frac{P(A\cap B)}{P(B)},\qquad P(B)&gt;0.</span></p>
+<p>Die example: <span class="math inline">A</span> is even, and <span class="math inline">B</span> is at least <span class="math inline">4</span>.</p>
+<p><img data-src="imgs/drawio/lec21/conditional-die.png" class="probability21-conditional" alt="Before observing B, all six die outcomes are possible. After learning that the outcome is at least 4, only 4, 5, 6 remain; 4 and 6 are even."></p>
+<div class="fragment takeaway" data-fragment-index="0">
+<p>Two of the three remaining outcomes are even: <span class="math inline">P(A\mid B)=(2/6)/(3/6)=2/3</span>, compared with <span class="math inline">P(A)=1/2</span>.</p>
+</div>
+<aside class="notes">
+<p>Conditioning restricts the possible outcomes and rescales their probabilities to total 1. The outcomes remain equally likely in this die example. For a general model, retain relative weights rather than assuming uniformity after conditioning.</p>
+<p>[Sources] - AIMA Section 12.2, conditional probability. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="independence" class="slide level2 probability21-slide">
+<h2>Independence</h2>
+<p>Events are <strong>independent</strong> when observing one leaves the other’s probability unchanged:</p>
+<p><span class="math display">P(A\cap B)=P(A)P(B).</span></p>
+<p>If <span class="math inline">P(B)&gt;0</span>, this is equivalent to <span class="math inline">P(A\mid B)=P(A)</span>.</p>
+<p>Draw one card uniformly from a standard 52-card deck, without jokers. Let <span class="math inline">A</span> mean <strong>king</strong> and <span class="math inline">B</span> mean <strong>heart</strong>.</p>
+<p><span class="math display">P(A)=\frac4{52},\qquad P(B)=\frac{13}{52},\qquad P(A\cap B)=\frac1{52}.</span></p>
+<p><span class="math display">P(A\mid B)=\frac{1/52}{13/52}=\frac1{13}=P(A).</span></p>
+<div class="takeaway">
+<p>King and heart are independent, although they overlap. Disjoint positive-probability events cannot be independent: learning one rules out the other.</p>
+</div>
+<aside class="notes">
+<p>The king of hearts belongs to both events. This contrasts with the die events, where conditioning changed 1/2 to 2/3. An equally valid check multiplies (4/52)(13/52)=1/52. Drawing multiple cards without replacement introduces dependencies between draws.</p>
+<p>[Sources] - Card example from the supplied course material. AIMA Section 12.4. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="random-variables" class="slide level2 probability21-slide">
+<h2>Random Variables and a PMF</h2>
+<p>A <strong>random variable</strong> maps each outcome to a value. For two independent fair coin tosses (heads probability <span class="math inline">1/2</span>), let <span class="math inline">X</span> count heads. <span class="math inline">H</span> means heads and <span class="math inline">T</span> tails.</p>
+<p><img data-src="imgs/drawio/lec21/coin-count.png" class="probability21-coins" alt="The four equally likely outcomes HH, HT, TH, TT map to head counts 2, 1, 1, 0 respectively."></p>
+<p>A <strong>discrete</strong> variable has countably many values. Its <strong>probability mass function (PMF)</strong> gives <span class="math inline">p_X(x)=P(X=x)</span> for each value <span class="math inline">x</span>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Value <span class="math inline">x</span></th>
+<th style="text-align: right;"><span class="math inline">0</span></th>
+<th style="text-align: right;"><span class="math inline">1</span></th>
+<th style="text-align: right;"><span class="math inline">2</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">p_X(x)</span></td>
+<td style="text-align: right;"><span class="math inline">1/4</span></td>
+<td style="text-align: right;"><span class="math inline">1/2</span></td>
+<td style="text-align: right;"><span class="math inline">1/4</span></td>
 </tr>
 </tbody>
 </table>
 <div class="takeaway">
-<p>Logic asks what must be true. Probability asks how strongly we should believe something under uncertainty.</p>
+<p>Uppercase <span class="math inline">X</span> names the variable. Lowercase <span class="math inline">x</span> names a possible value. Multiple outcomes can map to the same value.</p>
 </div>
+<aside class="notes">
+<p>Discrete means the possible values are countable, including finite sets such as {0,1,2}. HT and TH are separate ordered outcomes, so the head-count distribution is not uniform. The PMF entries are nonnegative and sum to 1.</p>
+<p>[Sources] - AIMA Section 12.2 and Appendix A.3. Original two-toss diagram and table. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="probability-space" class="slide level2 compact">
-<h2>Probability Space</h2>
-<p>A probability model has three pieces.</p>
-<div class="columns two-column-balance">
-<div class="column" style="width:32%;">
-<h3 id="sample-space">Sample space</h3>
-<p><span class="math display">
-\Omega
-</span></p>
-<p>All possible outcomes.</p>
-</div><div class="column" style="width:32%;">
-<h3 id="events">Events</h3>
-<p><span class="math display">
-\mathcal{F}
-</span></p>
-<p>Subsets of <span class="math inline">\Omega</span> that we assign probabilities to.</p>
-</div><div class="column" style="width:32%;">
-<h3 id="measure">Measure</h3>
-<p><span class="math display">
-P: \mathcal{F} \rightarrow \mathbb{R}
-</span></p>
-<p>Maps events to probabilities.</p>
-</div></div>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec20/probability-space.svg" alt="Sample space rectangle containing overlapping events A and B whose intersection is used for conditional probability"></p>
+<section id="mean-variance" class="slide level2 probability21-slide">
+<h2>Mean and Variance</h2>
+<p>The <strong>expectation</strong> or <strong>mean</strong> is a probability-weighted average:</p>
+<p><span class="math display">\mu=E[X]=\sum_x x\,p_X(x).</span></p>
+<p>The <strong>variance</strong> measures spread using squared distances from the mean:</p>
+<p><span class="math display">\operatorname{Var}(X)=E[(X-\mu)^2].</span></p>
+<p>For our head count, the PMF is <span class="math inline">(1/4,1/2,1/4)</span> at <span class="math inline">x=0,1,2</span>.</p>
+<div class="fragment" data-fragment-index="0">
+<p><span class="math display">\begin{aligned}
+E[X]&amp;=0\left(\frac14\right)+1\left(\frac12\right)+2\left(\frac14\right)=1,\\
+\operatorname{Var}(X)&amp;=(0-1)^2\left(\frac14\right)+(1-1)^2\left(\frac12\right)+(2-1)^2\left(\frac14\right)=\frac12.
+\end{aligned}</span></p>
 </div>
-</section>
-<section id="axioms-of-probability" class="slide level2 compact">
-<h2>Axioms of Probability</h2>
-<p>For any event <span class="math inline">A</span>:</p>
-<p><span class="math display">
-P(A) \geq 0
-</span></p>
-<p>For the full sample space:</p>
-<p><span class="math display">
-P(\Omega)=1
-</span></p>
-<p>For disjoint events <span class="math inline">A_1,A_2,\ldots</span>:</p>
-<p><span class="math display">
-P\left(\bigcup_i A_i\right)=\sum_i P(A_i)
-</span></p>
 <div class="takeaway">
-<p>Everything else we use in probabilistic AI is built on these rules.</p>
+<p>An expected value is an average, not a guaranteed outcome. A fair die has mean <span class="math inline">3.5</span>, even though no roll produces <span class="math inline">3.5</span>.</p>
 </div>
+<aside class="notes">
+<p>The sum runs over every possible value of X. Variance uses squared units, and standard deviation is its square root. Var(X)=E[X^2]-(E[X])^2 gives 1.5-1=0.5 here.</p>
+<p>[Sources] - AIMA Appendix A.3 and Stanford CS229 probability review, Sections 2.4-2.5. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="conditional-probability" class="slide level2">
-<h2>Conditional Probability</h2>
-<p>Conditional probability updates attention to the part of the sample space where <span class="math inline">B</span> happened.</p>
-<div class="definition">
-<p><span class="math display">
-P(A \mid B)=\frac{P(A \cap B)}{P(B)}, \qquad P(B) \neq 0
-</span></p>
-</div>
+<section id="linearity" class="slide level2 probability21-slide">
+<h2>Linearity of Expectation</h2>
+<p><strong>Linearity</strong> means that the expectation of a sum equals the sum of the expectations:</p>
+<p><span class="math display">E[X+Y]=E[X]+E[Y].</span></p>
+<p>Let <span class="math inline">X</span> be <span class="math inline">1</span> if the first fair coin toss is heads and <span class="math inline">0</span> otherwise. Define <span class="math inline">Y</span> the same way for the second toss.</p>
+<p><span class="math display">E[X]=\frac12,\qquad E[Y]=\frac12,\qquad E[X+Y]=1.</span></p>
 <div class="question">
-<p>Read <span class="math inline">P(A \mid B)</span> as: probability of <span class="math inline">A</span> after learning <span class="math inline">B</span>.</p>
-</div>
-</section>
-<section id="independence" class="slide level2">
-<h2>Independence</h2>
-<p>Two events are independent when learning one does not change the probability of the other.</p>
-<p><span class="math display">
-P(A \cap B)=P(A)P(B)
-</span></p>
-<p>Equivalently, if <span class="math inline">P(B)&gt;0</span>:</p>
-<p><span class="math display">
-P(A \mid B)=P(A)
-</span></p>
-<div class="takeaway">
-<p>Independence is an assumption about information, not just a formula to memorize.</p>
-</div>
-</section>
-<section id="card-example" class="slide level2">
-<h2>Card Example</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:62%;">
-<p>Let:</p>
-<ul>
-<li><span class="math inline">A</span>: the card is a king.</li>
-<li><span class="math inline">B</span>: the card is a heart.</li>
-</ul>
-<p><span class="math display">
-P(A)=\frac{4}{52}, \qquad P(B)=\frac{13}{52}, \qquad P(A \cap B)=\frac{1}{52}
-</span></p>
-<div class="fragment">
-<p><span class="math display">
-P(A \mid B)=\frac{1/52}{13/52}=\frac{1}{13}
-</span></p>
-</div>
-</div><div class="column" style="width:26%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec20/deck.png" class="cc0-icon"></p>
-<figcaption>Deck of cards illustration</figcaption>
-</figure>
-</div>
-</div></div>
-</section>
-<section id="card-independence-check" class="slide level2">
-<h2>Card Independence Check</h2>
-<p>For “king” and “heart”:</p>
-<p><span class="math display">
-P(A \cap B)=\frac{1}{52}
-</span></p>
-<div class="fragment">
-<p><span class="math display">
-P(A)P(B)=\frac{4}{52}\cdot\frac{13}{52}=\frac{52}{2704}=\frac{1}{52}
-</span></p>
+<p>Does the identity still hold if <span class="math inline">Y=X</span>, so the variables are completely dependent?</p>
 </div>
 <div class="fragment takeaway">
-<p>So drawing a heart does not change the chance that the card is a king.</p>
+<p>Yes: <span class="math inline">E[X+X]=2E[X]</span>. Linearity does <strong>not require independence</strong>, provided the expectations exist. This is useful for adding waiting times in HW4.</p>
 </div>
+<aside class="notes">
+<p>These 0/1 variables are indicators: they mark whether an event occurs. Their expectations equal their event probabilities. For HW4, divide the total collection time into stages and add stage expectations without first proving stage independence. No full assignment derivation is needed here.</p>
+<p>[Sources] - AIMA Appendix A.3 and Stanford CS229 probability review, Section 2.4. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="random-variables" class="slide level2">
-<h2>Random Variables</h2>
-<p>A random variable maps outcomes to values.</p>
+<section id="continuous-density" class="slide level2 probability21-slide">
+<h2>Continuous Variables and a PDF</h2>
+<p>A <strong>continuous</strong> variable takes values along a range. Its <strong>probability density function (PDF)</strong> <span class="math inline">f_U(u)</span> gives probability per unit length. <strong>Area gives probability</strong>.</p>
+<p>Let <span class="math inline">U</span> be uniform on <span class="math inline">[0,2]</span>: equal-length intervals are equally likely. Its density is <span class="math inline">1/2</span> on that interval and <span class="math inline">0</span> outside it.</p>
+<p><img data-src="imgs/drawio/lec21/uniform-density.png" class="probability21-density" alt="Uniform density one half from 0 to 2. The interval from 0.5 to 1 is shaded; its width one half times height one half gives area one quarter."></p>
+<p><span class="math display">P(0.5\le U\le1)=\int_{0.5}^1 f_U(u)\,du=(1-0.5)\left(\frac12\right)=\frac14.</span></p>
+<div class="takeaway">
+<p>Here <span class="math inline">P(U=u)=0</span>. Density can exceed <span class="math inline">1</span>. Only area gives probability.</p>
+</div>
+<aside class="notes">
+<p>The entire area is 2 times 1/2, which equals 1. A uniform density on [0,0.1] has height 10. A cumulative distribution function (CDF) gives F_U(u)=P(U&lt;=u), accumulating area up to u. This prepares students for uniform angular positions in HW4.</p>
+<p>[Sources] - AIMA Appendix A.3 and Stanford CS229 probability review, Sections 2.1-2.3. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="joint-distribution" class="slide level2 probability21-slide">
+<h2>A Joint Distribution</h2>
+<p>A <strong>joint distribution</strong> assigns probability to combinations of variable values.</p>
+<p>Toy model: <span class="math inline">W</span> is weather and <span class="math inline">U</span> is umbrella use. These symbols are local to this model.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Type</th>
-<th>Values</th>
-<th>Example</th>
-<th>Distribution</th>
+<th><span class="math inline">P(W=w,U=u)</span></th>
+<th style="text-align: right;"><span class="math inline">U=\text{Yes}</span></th>
+<th style="text-align: right;"><span class="math inline">U=\text{No}</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Discrete</td>
-<td>Countable</td>
-<td>Number of heads</td>
-<td>PMF</td>
+<td><span class="math inline">W=\text{Sunny}</span></td>
+<td style="text-align: right;"><span class="math inline">0.10</span></td>
+<td style="text-align: right;"><span class="math inline">0.60</span></td>
 </tr>
 <tr class="even">
-<td>Continuous</td>
-<td>Real-valued range</td>
-<td>Temperature</td>
-<td>PDF</td>
+<td><span class="math inline">W=\text{Rainy}</span></td>
+<td style="text-align: right;"><span class="math inline">0.20</span></td>
+<td style="text-align: right;"><span class="math inline">0.10</span></td>
 </tr>
 </tbody>
 </table>
-<p>Two summary quantities:</p>
-<p><span class="math display">
-E[X] \quad \text{and} \quad Var(X)
-</span></p>
-<div class="takeaway">
-<p>Random variables let us reason about useful features of outcomes, not just outcomes themselves.</p>
-</div>
-</section>
-<section id="joint-marginal-conditional" class="slide level2">
-<h2>Joint, Marginal, Conditional</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:32%;">
-<h3 id="joint">Joint</h3>
-<p><span class="math display">
-P(X,Y)
-</span></p>
-<p>How two variables behave together.</p>
-</div><div class="column" style="width:32%;">
-<h3 id="marginal">Marginal</h3>
-<p><span class="math display">
-P(X)=\sum_y P(X,y)
-</span></p>
-<p>One variable after summing out another.</p>
-</div><div class="column" style="width:32%;">
-<h3 id="conditional">Conditional</h3>
-<p><span class="math display">
-P(X \mid Y)=\frac{P(X,Y)}{P(Y)}
-</span></p>
-<p>One variable after observing another.</p>
-</div></div>
-</section>
-<section id="continuous-version" class="slide level2">
-<h2>Continuous Version</h2>
-<p>For continuous variables, replace sums with integrals.</p>
-<p><span class="math display">
-f_{X_1}(x_1)=
-\int \cdots \int
-f_{X_1,\ldots,X_n}(x_1,\ldots,x_n)
-\,dx_2\cdots dx_n
-</span></p>
-<p><span class="math display">
-f_{X_1 \mid X_2,\ldots,X_n}
-=
-\frac{f_{X_1,\ldots,X_n}}{f_{X_2,\ldots,X_n}}
-</span></p>
+<p>All four entries are nonnegative and sum to <span class="math inline">1</span>.</p>
 <div class="question">
-<p>Same idea as the discrete case: marginalize what you do not need, condition on what you observe.</p>
+<p>Which entry represents rain <strong>and</strong> an umbrella? Which entries represent rain regardless of umbrella use?</p>
 </div>
+<div class="fragment takeaway">
+<p>Rain and umbrella: <span class="math inline">0.20</span>. Rain regardless of umbrella: <span class="math inline">0.20+0.10=0.30</span>.</p>
+</div>
+<aside class="notes">
+<p>A comma inside P(W=w,U=u) means the two events hold together. P(w,u) abbreviates the same thing once variables are clear. Every cell in a full joint table shares one total sum of 1. These numbers match the model at the start of Lecture 22.</p>
+<p>[Sources] - AIMA Sections 12.2-12.3. Original course weather model. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="chain-rule" class="slide level2">
-<h2>Chain Rule</h2>
-<p>The joint distribution can always be decomposed into conditionals:</p>
-<p><span class="math display">
-P(x_1,\ldots,x_n)
-=
-P(x_n \mid x_1,\ldots,x_{n-1})
-\cdots
-P(x_2 \mid x_1)P(x_1)
-</span></p>
+<section id="marginal-conditional" class="slide level2 probability21-slide">
+<h2>Marginal and Conditional Distributions</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Weather <span class="math inline">w</span></th>
+<th style="text-align: right;"><span class="math inline">P(w,U=\text{Yes})</span></th>
+<th style="text-align: right;"><span class="math inline">P(w,U=\text{No})</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sunny</td>
+<td style="text-align: right;"><span class="math inline">0.10</span></td>
+<td style="text-align: right;"><span class="math inline">0.60</span></td>
+</tr>
+<tr class="even">
+<td>Rainy</td>
+<td style="text-align: right;"><span class="math inline">0.20</span></td>
+<td style="text-align: right;"><span class="math inline">0.10</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Marginalization</strong> sums over a variable we do not keep:</p>
+<p><span class="math display">P(W=\text{Rainy})=\sum_u P(W=\text{Rainy},U=u)=0.20+0.10=0.30.</span></p>
+<p><strong>Conditioning</strong> fixes a variable to its observed value:</p>
+<p><span class="math display">P(W=\text{Rainy}\mid U=\text{Yes})=\frac{0.20}{0.10+0.20}=\frac23.</span></p>
 <div class="takeaway">
-<p>Bayesian networks will use this idea, plus independence assumptions, to represent large distributions compactly.</p>
+<p>Ignoring umbrella use and observing an umbrella answer different questions. For continuous variables, marginalization integrates the joint density instead of summing it.</p>
 </div>
+<aside class="notes">
+<p>The marginal P(U=Yes)=0.3 provides the denominator. Conditioning keeps its Yes column and normalizes it. An unobserved variable in a marginal is not assumed to be No.</p>
+<p>For continuous X,Y, the counterparts are f_X(x)=integral f_X,Y(x,y) dy and f_X|Y(x|y)=f_X,Y(x,y)/f_Y(y) when f_Y(y)&gt;0. The weather variables in the table are discrete.</p>
+<p>[Sources] - AIMA Section 12.3 and Appendix A.3. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="multivariate-gaussian" class="slide level2">
-<h2>Multivariate Gaussian</h2>
-<p>A multivariate Gaussian models a vector of continuous variables.</p>
-<p><span class="math display">
-f(\mathbf{x} \mid \boldsymbol{\mu}, \boldsymbol{\Sigma})
-=
-\frac{1}{(2\pi)^{k/2}|\boldsymbol{\Sigma}|^{1/2}}
-\exp\left(
--\frac{1}{2}
-(\mathbf{x}-\boldsymbol{\mu})^T
-\boldsymbol{\Sigma}^{-1}
-(\mathbf{x}-\boldsymbol{\mu})
-\right)
-</span></p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<p><span class="math inline">\boldsymbol{\mu}</span> controls the center.</p>
-</div><div class="column" style="width:48%;">
-<p><span class="math inline">\boldsymbol{\Sigma}</span> controls spread and correlation.</p>
-</div></div>
-</section>
-<section id="bayes-rule" class="slide level2">
-<h2>Bayes’ Rule</h2>
-<p>Starting from conditional probability:</p>
-<p><span class="math display">
-P(A \mid B)=\frac{P(B \mid A)P(A)}{P(B)}
-</span></p>
-<p>For a binary hypothesis <span class="math inline">H</span>:</p>
-<p><span class="math display">
-P(H \mid E)=
-\frac{P(E \mid H)P(H)}
-{P(E \mid H)P(H)+P(E \mid \neg H)P(\neg H)}
-</span></p>
+<section id="chain-rule" class="slide level2 probability21-slide">
+<h2>The Chain Rule</h2>
+<p>The <strong>chain rule</strong> writes a joint probability as successive conditional probabilities. It requires <strong>no independence assumption</strong>.</p>
+<p>For weather and umbrella use:</p>
+<p><span class="math display">P(W=\text{Rainy},U=\text{Yes})=P(U=\text{Yes}\mid W=\text{Rainy})P(W=\text{Rainy}).</span></p>
+<p>From our table: <span class="math inline">(2/3)(0.30)=0.20</span>.</p>
+<p>For three variables with values <span class="math inline">x,y,z</span>:</p>
+<p><span class="math display">P(x,y,z)=P(x)P(y\mid x)P(z\mid x,y).</span></p>
 <div class="takeaway">
-<p>Bayes’ rule updates a prior belief after seeing evidence.</p>
+<p>If each variable is independent of all earlier variables together, the factors simplify to <span class="math inline">P(x,y,z)=P(x)P(y)P(z)</span>.</p>
 </div>
+<aside class="notes">
+<p>P(x,y,z) abbreviates P(X=x,Y=y,Z=z). Each conditional needs a positive-probability conditioning event in these discrete formulas. Zero-probability conditioning cases have zero joint mass and need a chosen version of the conditional.</p>
+<p>For n variables, P(x_1,…,x_n)=product_i P(x_i|x_1,…,x_{i-1}). Pairwise independence alone does not imply the full product form. This is the basis of later Bayesian-network representations.</p>
+<p>[Sources] - AIMA Section 12.2, product and chain rules, and Section 12.4, independence. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="sample-problem-spam" class="slide level2">
-<h2>Sample Problem: Spam</h2>
-<p>Given:</p>
-<p><span class="math display">
-P(S)=0.3,\quad P(K \mid S)=0.6,\quad P(K \mid \neg S)=0.2
-</span></p>
-<div class="fragment">
-<p>Evidence probability:</p>
-<p><span class="math display">
-P(K)=0.6(0.3)+0.2(0.7)=0.32
-</span></p>
-</div>
-<div class="fragment">
-<p>Posterior:</p>
-<p><span class="math display">
-P(S \mid K)=\frac{0.6(0.3)}{0.32}=0.5625
-</span></p>
-</div>
-</section>
-<section id="sample-problem-false-positives" class="slide level2">
-<h2>Sample Problem: False Positives</h2>
-<p>Given:</p>
-<p><span class="math display">
-P(D)=0.01,\quad P(+ \mid D)=0.95,\quad P(+ \mid \neg D)=0.05
-</span></p>
-<div class="fragment">
-<p><span class="math display">
-P(+)=0.95(0.01)+0.05(0.99)=0.059
-</span></p>
-</div>
-<div class="fragment">
-<p><span class="math display">
-P(D \mid +)=\frac{0.95(0.01)}{0.059}\approx 0.161
-</span></p>
-</div>
+<section id="bayes-rule" class="slide level2 probability21-slide">
+<h2>Bayes’ Rule and Its Vocabulary</h2>
+<p>Let <span class="math inline">H</span> be a proposed explanation and <span class="math inline">E</span> an observed event, with <span class="math inline">P(E)&gt;0</span>.</p>
+<p><span class="math display">P(H\mid E)=\frac{P(E\mid H)P(H)}{P(E)}.</span></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Expression</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Prior</td>
+<td><span class="math inline">P(H)</span></td>
+<td>Belief before this observation</td>
+</tr>
+<tr class="even">
+<td>Likelihood</td>
+<td><span class="math inline">P(E\mid H)</span></td>
+<td>Probability of this observation if <span class="math inline">H</span> holds</td>
+</tr>
+<tr class="odd">
+<td>Evidence probability</td>
+<td><span class="math inline">P(E)</span></td>
+<td>Overall probability of this observation</td>
+</tr>
+<tr class="even">
+<td>Posterior</td>
+<td><span class="math inline">P(H\mid E)</span></td>
+<td>Updated belief after the observation</td>
+</tr>
+</tbody>
+</table>
 <div class="takeaway">
-<p>Even a good test can have a low posterior when the disease is rare.</p>
+<p><span class="math inline">P(E\mid H)</span> and <span class="math inline">P(H\mid E)</span> answer different questions. Bayes’ rule connects them using the prior and the evidence probability.</p>
 </div>
+<aside class="notes">
+<p>Likelihood here is evaluated at the observed event as a function of the hypothesis. It is not the probability that the hypothesis is correct. For a binary hypothesis, P(E)=P(E|H)P(H)+P(E|not H)P(not H). The next slide computes both terms.</p>
+<p>[Sources] - AIMA Section 12.5. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="sample-problem-joint-distribution" class="slide level2">
-<h2>Sample Problem: Joint Distribution</h2>
-<p>Given:</p>
-<p><span class="math display">
-P(Y=3)=0.15,\qquad P(X&gt;0.5 \mid Y=3)=0.6
-</span></p>
-<p>Use:</p>
-<p><span class="math display">
-P(A,B)=P(A \mid B)P(B)
-</span></p>
-<div class="fragment">
-<p><span class="math display">
-P(X&gt;0.5, Y=3)=0.6 \cdot 0.15 = 0.09
-</span></p>
+<section id="spam-example" class="slide level2 probability21-slide">
+<h2>Spam Given a Keyword</h2>
+<p>Let <span class="math inline">S</span> mean spam and <span class="math inline">K</span> mean an email contains a particular keyword. The toy model gives:</p>
+<p><span class="math display">P(S)=0.30,\qquad P(K\mid S)=0.60,\qquad P(K\mid\neg S)=0.20.</span></p>
+<p><img data-src="imgs/drawio/lec21/spam-counts.png" class="probability21-counts" alt="Out of an illustrative 1000 emails, 300 are spam and 700 are not. The keyword appears in 180 spam emails and 140 non-spam emails."></p>
+<div class="fragment" data-fragment-index="0">
+<p>The <strong>law of total probability</strong> adds the spam and non-spam routes:</p>
+<p><span class="math display">P(K)=P(K\mid S)P(S)+P(K\mid\neg S)P(\neg S)=0.18+0.14=0.32.</span></p>
 </div>
-</section>
-<section id="probability-in-generative-ai-ddpm" class="slide level2">
-<h2>Probability in Generative AI: DDPM</h2>
-<p>Denoising Diffusion Probabilistic Models use two probabilistic processes.</p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="forward-noising">Forward noising</h3>
-<p><span class="math display">
-q(x_t \mid x_{t-1})
-=
-\mathcal{N}(x_t;\sqrt{1-\beta_t}x_{t-1},\beta_t I)
-</span></p>
-</div><div class="column" style="width:48%;">
-<h3 id="learned-reverse">Learned reverse</h3>
-<p><span class="math display">
-p(x_{t-1} \mid x_t)
-=
-\mathcal{N}(x_{t-1};\mu_\theta(x_t,t),\Sigma_\theta(x_t,t))
-</span></p>
-</div></div>
-<div class="takeaway">
-<p>The model learns how to reverse a gradual noising process.</p>
+<div class="fragment takeaway" data-fragment-index="1">
+<p><span class="math inline">P(S\mid K)=180/(180+140)=0.5625</span>. The keyword raises the spam probability from <span class="math inline">30\%</span> to <span class="math inline">56.25\%</span>.</p>
 </div>
+<aside class="notes">
+<p>The frequencies describe a hypothetical population matching the probabilities, not an observed dataset. Out of 320 keyword emails, 180 are spam. This equals (0.60 times 0.30)/0.32. Both keyword-producing routes belong in the denominator.</p>
+<p>Total probability sums over a disjoint, exhaustive partition. Here S and not S form that partition.</p>
+<p>[Sources] - Spam example from the supplied course material. AIMA Section 12.5. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="further-reading" class="slide level2">
-<h2>Further Reading</h2>
+<section id="false-positives" class="slide level2 probability21-slide">
+<h2>Rare Defects and False Positives</h2>
+<p>Defective: <span class="math inline">D</span>. Flagged: <span class="math inline">F</span>. <strong>Base rate:</strong> <span class="math inline">P(D)=0.01</span> (1% defective).</p>
 <ul>
-<li><a href="https://cs229.stanford.edu/section/cs229-prob.pdf">Stanford CS229 probability review</a></li>
-<li><a href="https://ia803404.us.archive.org/6/items/introduction-to-probability-joseph-k.-blitzstein-jessica-hwang/Introduction%20to%20Probability-Joseph%20K.%20Blitzstein%2C%20Jessica%20Hwang.pdf">Introduction to Probability by Blitzstein and Hwang</a></li>
+<li><strong>True-positive rate:</strong> flags 95% of defective parts, <span class="math inline">P(F\mid D)=0.95</span>.</li>
+<li><strong>False-positive rate:</strong> flags 5% of working parts, <span class="math inline">P(F\mid\neg D)=0.05</span>.</li>
 </ul>
+<p><img data-src="imgs/drawio/lec21/false-alarm-counts.png" class="probability21-counts" alt="Among an illustrative 10000 parts, 100 are defective and 9900 work. The alarm flags 95 defective parts and 495 working parts."></p>
+<div class="question">
+<p>Among the flagged parts, what fraction are actually defective?</p>
+</div>
+<div class="fragment takeaway" data-fragment-index="0">
+<p><span class="math inline">P(D\mid F)=95/(95+495)\approx16.1\%</span>. Most flagged parts are working.</p>
+</div>
+<aside class="notes">
+<p>This uses the supplied false-positive example’s numbers in hypothetical parts inspection. A false positive is a positive prediction for an item without the condition. The flagged fraction is 0.95(0.01)+0.05(0.99)=0.059. The posterior is 0.0095/0.059, or 95/590.</p>
+<p>The base rate changes the interpretation even if the conditional alarm rates stay fixed. Choosing a repair policy also requires repair and failure costs.</p>
+<p>[Sources] - Numerical teaching example from the supplied course material, adapted to robot parts. AIMA Section 12.5. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
+<section id="joint-practice" class="slide level2 probability21-slide">
+<h2>Joint-Probability Practice</h2>
+<p>An image classifier predicts a handwritten digit. Let:</p>
 <ul>
-<li>Probability represents uncertainty in AI systems.</li>
-<li>Conditional probability updates beliefs after observing evidence.</li>
-<li>Independence says an observation gives no additional information.</li>
-<li>Joint, marginal, and conditional distributions are different views of the same probability model.</li>
-<li>Bayes’ rule turns priors and likelihoods into posteriors.</li>
+<li><span class="math inline">X</span> be image brightness, scaled to <span class="math inline">[0,1]</span>.</li>
+<li><span class="math inline">Y</span> be the predicted digit, one of <span class="math inline">0,1,\ldots,9</span>.</li>
 </ul>
+<p>Suppose <span class="math inline">P(Y=3)=0.15</span> and <span class="math inline">P(X&gt;0.5\mid Y=3)=0.60</span>.</p>
+<div class="question">
+<p>What is the probability that an image is bright <strong>and</strong> predicted as digit <span class="math inline">3</span>?</p>
+</div>
+<div class="fragment takeaway" data-fragment-index="0">
+<p><span class="math inline">P(X&gt;0.5,Y=3)=P(X&gt;0.5\mid Y=3)P(Y=3)=0.60(0.15)=0.09</span>. This describes <span class="math inline">9\%</span> of images under the model.</p>
+</div>
+<aside class="notes">
+<p>X is continuous, but X&gt;0.5 is an event with nonzero probability, so ordinary event probability applies. Y is the classifier’s prediction, not the true digit. The calculation therefore does not measure accuracy.</p>
+<p>[Sources] - Image-classification example from the supplied course material. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="common-distributions" class="slide level2 probability21-slide">
+<h2>Common Probability Distributions</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Discrete</strong></p>
+<ul>
+<li>Bernoulli</li>
+<li>Binomial</li>
+<li>Geometric</li>
+<li>Poisson</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Continuous</strong></p>
+<ul>
+<li>Uniform</li>
+<li>Normal (Gaussian)</li>
+<li>Exponential</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>These names identify common distribution families. Introduce their formulas and applications when a later topic needs them.</p>
+<p>[Sources] - AIMA Appendix A.3. Stanford CS229 probability review. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="takeaways" class="slide level2 probability21-slide">
+<h2>Takeaways</h2>
+<ul>
+<li>Define the sample space, events, and variables before calculating.</li>
+<li>Conditioning keeps the observed event and rescales its probabilities.</li>
+<li>Independence is a property of the model, not a default assumption.</li>
+<li>PMFs assign mass to values. PDFs give probabilities through area.</li>
+<li>Bayes’ rule combines likelihoods and base rates to update beliefs.</li>
+<li>Linearity lets us add expectations without assuming independence.</li>
+</ul>
+<div class="takeaway">
+<p><a href="../homeworks/hw4.html" target="_blank" rel="noopener">Homework 4: Probability in Motion</a>: geometric probability, random walks, and coupon collection. Define your events and show the reasoning behind each step.</p>
+</div>
 <p><a href="../asset_credits.html#lec21" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
+<aside class="notes">
+<p>HW4 is announced with this lecture and is due Monday, November 2. The assignment page states the submission format and modeling assumptions. Introduce the three problems without deriving their final answers.</p>
+<p>Further reading: Stanford CS229 probability review, https://cs229.stanford.edu/section/cs229-prob.pdf. AIMA Appendix A.3 and Sections 12.1-12.5 match the schedule’s reading entry.</p>
+<p>[Sources] - AIMA fourth edition, Appendix A.3 and Sections 12.1-12.5. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 </section>

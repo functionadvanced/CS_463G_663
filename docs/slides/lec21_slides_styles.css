@@ -1,0 +1,31 @@
+.reveal section.probability21-slide { font-size: 0.9em; }
+.reveal section.probability21-slide h2 { margin-top: 0; }
+.reveal section.probability21-slide p { margin: 0.35em 0; }
+.reveal section.probability21-slide .katex-display { margin: 0.55em 0; }
+.reveal section.probability21-slide .takeaway p,
+.reveal section.probability21-slide .question p { margin: 0; }
+.reveal section.probability21-slide table { font-size: 0.84em; line-height: 1.26; }
+.reveal section.probability21-slide th,
+.reveal section.probability21-slide td { padding: 0.4em 0.5em; }
+.reveal section.probability21-slide .takeaway,
+.reveal section.probability21-slide .question { margin: 0.45em 0; padding-top: 0.45em; padding-bottom: 0.45em; }
+.reveal section.probability21-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  border: 0;
+  box-shadow: none;
+  object-fit: contain;
+  margin: 0.2em auto;
+}
+.reveal section.probability21-slide .probability21-events { max-height: 205px; }
+.reveal section.probability21-slide .probability21-conditional { max-height: 200px; }
+.reveal section.probability21-slide .probability21-coins { max-height: 180px; }
+.reveal section.probability21-slide .probability21-density { max-height: 215px; }
+.reveal section.probability21-slide .probability21-counts { max-height: 190px; }
+.reveal #false-positives .probability21-counts { max-height: 175px; }
+.reveal #bayes-rule table { table-layout: fixed; width: 100%; }
+.reveal #bayes-rule col:first-child { width: 25% !important; }
+.reveal #bayes-rule col:nth-child(2) { width: 23% !important; }
+.reveal #bayes-rule col:last-child { width: 52% !important; }

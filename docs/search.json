@@ -791,39 +791,25 @@
     "text": "ProbabilityIndividualWritten derivations"
   },
   {
-    "objectID": "homeworks/hw4.html#background-three-reusable-probability-ideas",
-    "href": "homeworks/hw4.html#background-three-reusable-probability-ideas",
-    "title": "Homework 4: Probability in Motion",
-    "section": "Background: three reusable probability ideas",
-    "text": "Background: three reusable probability ideas\nEach problem looks different, but each is built around a standard way of organizing uncertainty.\n\nSymmetry and anchoring: for points placed uniformly on a circle, rotating the entire configuration does not change its probability. A continuous configuration can often be counted by anchoring a candidate event at an observed point.\nFirst-step analysis: condition on the next transition, then express an unknown probability or expectation in terms of neighboring states. Absorbing states supply the boundary values needed to solve the recurrence.\nWaiting-time stages: divide a collection process into stages. If a stage succeeds independently with probability \\(s\\) per draw, its waiting time is geometric with mean \\(1/s\\). Linearity of expectation then allows the stage means to be added even when the stage durations are not independent.\n\nThe main identities you may use are\n\\[\n\\Pr(A)=\\sum_i \\Pr(A\\mid B_i)\\Pr(B_i),\n\\qquad\nE\\!\\left[\\sum_i X_i\\right]=\\sum_i E[X_i],\n\\qquad\nE[G]=\\frac{1}{s}\\ \\text{for }G\\sim\\operatorname{Geometric}(s).\n\\]\nFor every derivation, name the event or random variable before manipulating it. This makes it clear when you are using a probability, an expectation, or a boundary condition."
-  },
-  {
     "objectID": "homeworks/hw4.html#ducks-in-a-circular-pool",
     "href": "homeworks/hw4.html#ducks-in-a-circular-pool",
     "title": "Homework 4: Probability in Motion",
     "section": "1. Ducks in a circular pool",
-    "text": "1. Ducks in a circular pool\nThere are \\(n\\) ducks on the circumference of a circular pool. Each duck’s position is selected independently and uniformly at random. A closed semicircle may be rotated to any orientation after the positions are observed. Events in which a duck lies exactly on a chosen boundary have probability zero and do not affect the answer.\n\n\n\n\nThree points may all fit on one side of a diameter, or they may wrap around the circle so that no semicircle contains all three.\n\n\n\n\nFor \\(n=2\\), compute the probability that all ducks are contained in some semicircle.\nFor \\(n=3\\), compute the same probability.\nFor general integer \\(n \\ge 2\\), derive the probability that all \\(n\\) ducks are contained in some semicircle.\n\nYour general argument should explain why the candidate semicircle can be anchored at one of the observed positions and why the relevant anchor events do not overlap except on probability-zero configurations."
+    "text": "1. Ducks in a circular pool\nThere are \\(n\\) ducks on the circumference of a circular pool. Each duck’s position is selected independently and uniformly at random. A closed semicircle may be rotated to any orientation after the positions are observed. Configurations with coincident or exactly opposite positions have probability zero and do not affect the answer.\n\n\n\n\nThree points may all fit on one side of a diameter, or they may wrap around the circle so that no semicircle contains all three.\n\n\n\n\nFor \\(n=2\\), compute the probability that all ducks are contained in some semicircle.\nFor \\(n=3\\), compute the same probability.\nFor general integer \\(n \\ge 2\\), derive the probability that all \\(n\\) ducks are contained in some semicircle.\n\n\n\n\n\n\n\nTipHint\n\n\n\nSymmetry and anchoring: rotating the entire configuration does not change its probability. Consider a clockwise semicircle whose starting boundary passes through one observed duck. Explain why some such anchored semicircle contains all ducks whenever the configuration fits in a semicircle, and why these anchor events do not overlap except on probability-zero configurations."
   },
   {
     "objectID": "homeworks/hw4.html#random-walk-with-absorbing-barriers",
     "href": "homeworks/hw4.html#random-walk-with-absorbing-barriers",
     "title": "Homework 4: Probability in Motion",
     "section": "2. Random walk with absorbing barriers",
-    "text": "2. Random walk with absorbing barriers\nA walker starts at integer position \\(k\\) on the interval \\([-N,M]\\), where \\(M,N\\) are positive integers. At every step, the walker moves right with probability \\(p\\) and left with probability \\(q=1-p\\). Reaching \\(-N\\) or \\(M\\) ends the walk.\nLet\n\\[P_k = \\Pr(\\text{reach } M \\text{ before } -N \\mid X_0=k).\\]\nFor Parts 1-3, assume \\(0&lt;p&lt;1\\).\n\n\n\n\nFrom an interior state \\(k\\), the walker moves left with probability \\(1-p\\) or right with probability \\(p\\); the endpoints are absorbing.\n\n\n\n\nDerive the recurrence for \\(P_k\\) and state both boundary conditions.\nExpress \\(P_{-N+1}\\) and \\(P_{-N+2}\\) in terms of \\(p\\) and \\(P_{-N+3}\\), assuming \\(N \\ge 3\\).\nSolve for \\(P_k\\) for every \\(-N \\le k \\le M\\). Handle the fair-walk case \\(p=\\tfrac12\\) separately from \\(p\\ne\\tfrac12\\).\nEvaluate \\(P_2\\) when \\(p=0.6\\), \\(M=10\\), and \\(N=6\\).\nEvaluate \\(P_2\\) when \\(p=0.4\\), \\(M=10\\), and \\(N=6\\).\n\nFor each numerical answer, give at least four decimal places and briefly compare the two biased walks.\n\n\n\n\n\n\nTipUseful check\n\n\n\nYour closed form should produce \\(P_{-N}=0\\) and \\(P_M=1\\). In the fair case, the answer should be linear in the starting position."
+    "text": "2. Random walk with absorbing barriers\nA walker starts at integer position \\(k\\) on the interval \\([-N,M]\\), where \\(M,N\\) are positive integers. At every step, the walker moves right with probability \\(p\\) and left with probability \\(q=1-p\\). Reaching \\(-N\\) or \\(M\\) ends the walk.\nLet\n\\[P_k = \\Pr(\\text{reach } M \\text{ before } -N \\mid X_0=k).\\]\nFor Parts 1-3, assume \\(0&lt;p&lt;1\\).\n\n\n\n\nFrom an interior state \\(k\\), the walker moves left with probability \\(1-p\\) or right with probability \\(p\\); the endpoints are absorbing.\n\n\n\n\nDerive the recurrence for \\(P_k\\) and state both boundary conditions.\nExpress \\(P_{-N+1}\\) and \\(P_{-N+2}\\) in terms of \\(p\\) and \\(P_{-N+3}\\), assuming \\(N \\ge 3\\).\nSolve for \\(P_k\\) for every \\(-N \\le k \\le M\\). Handle the fair-walk case \\(p=\\tfrac12\\) separately from \\(p\\ne\\tfrac12\\).\nEvaluate \\(P_2\\) when \\(p=0.6\\), \\(M=10\\), and \\(N=6\\).\nEvaluate \\(P_2\\) when \\(p=0.4\\), \\(M=10\\), and \\(N=6\\).\n\nFor each numerical answer, give at least four decimal places and briefly compare the two biased walks.\n\n\n\n\n\n\nTipHint\n\n\n\nFirst-step analysis: condition on whether the next step is left or right, then express \\(P_k\\) using the probabilities at those neighboring states. The law of total probability is\n\\[\\Pr(A)=\\sum_i \\Pr(A\\mid B_i)\\Pr(B_i),\\]\nwhere the \\(B_i\\) are disjoint events covering all possible outcomes. Here, the two next-step directions form that partition.\nThe absorbing states supply the boundary values. As a check, your closed form should produce \\(P_{-N}=0\\) and \\(P_M=1\\). In the fair case, the answer should be linear in the starting position."
   },
   {
     "objectID": "homeworks/hw4.html#coupon-collector",
     "href": "homeworks/hw4.html#coupon-collector",
     "title": "Homework 4: Probability in Motion",
     "section": "3. Coupon collector",
-    "text": "3. Coupon collector\nThere are \\(N\\) distinct card types, with \\(N \\ge 1\\). Each independent draw produces one of the \\(N\\) types uniformly at random. Duplicates are kept but do not increase the number of distinct types collected.\n\n\n\n\nEvery draw selects one of the \\(N\\) card types with probability \\(1/N\\).\n\n\n\n\nWhat is the probability of drawing one specified type on a single draw?\nWhat is the expected number of draws until that specified type appears for the first time?\nIf exactly \\(k\\) distinct types have already been collected, what is the expected number of additional draws until a new type appears?\nDerive the expected total number of draws \\(E[T]\\) required to collect all \\(N\\) types. Express the result using the harmonic number \\(H_N\\) and define \\(H_N\\)."
-  },
-  {
-    "objectID": "homeworks/hw4.html#what-a-complete-solution-includes",
-    "href": "homeworks/hw4.html#what-a-complete-solution-includes",
-    "title": "Homework 4: Probability in Motion",
-    "section": "What a complete solution includes",
-    "text": "What a complete solution includes\n\nA clearly named event or random variable for each problem.\nA derivation, not only a remembered formula.\nBoundary conditions for the random walk and the \\(p=\\tfrac12\\) special case.\nExact expressions before decimal approximations.\nA short sanity check for every final result.\n\n\n← Homework 3Homework 5 →"
+    "text": "3. Coupon collector\nThere are \\(N\\) distinct card types, with \\(N \\ge 1\\). Each independent draw produces one of the \\(N\\) types uniformly at random. Duplicates are kept but do not increase the number of distinct types collected.\n\n\n\n\nEvery draw selects one of the \\(N\\) card types with probability \\(1/N\\).\n\n\n\n\nWhat is the probability of drawing one specified type on a single draw?\nWhat is the expected number of draws until that specified type appears for the first time?\nIf exactly \\(k\\) distinct types have already been collected, what is the expected number of additional draws until a new type appears?\nDerive the expected total number of draws \\(E[T]\\) required to collect all \\(N\\) types. Express the result using the harmonic number \\(H_N\\) and define \\(H_N\\).\n\n\n\n\n\n\n\nTipHint\n\n\n\nWaiting-time stages: let \\(W_k\\) be the number of additional draws needed to obtain a new type when \\(k\\) distinct types have been collected. While that stage lasts, each independent draw has the same success probability \\(s_k\\). Counting the successful draw, the waiting time has mean\n\\[E[W_k]=\\frac{1}{s_k}.\\]\nFind \\(s_k\\) by counting the types still missing. Then use \\(T=\\sum_{k=0}^{N-1}W_k\\) and linearity of expectation:\n\\[E[T]=\\sum_{k=0}^{N-1}E[W_k].\\]\nLinearity does not require the stage durations to be independent.\n\n\n\n← Homework 3Homework 5 →"
   },
   {
     "objectID": "homeworks/hw2.html",
@@ -1103,7 +1089,7 @@
     "href": "asset_credits.html#lec21",
     "title": "Visual Asset Credits",
     "section": "Lecture 21: Probability",
-    "text": "Lecture 21: Probability\nCarried-over asset needing source verification: deck.png."
+    "text": "Lecture 21: Probability\nThe sample-space diagram, conditioned die outcomes, coin-to-head-count mapping, uniform-density area plot, and spam/false-alarm frequency diagrams are original editable draw.io figures. Their source is probability-examples.drawio; the slides use PNG exports.\nThe worked examples are illustrative course models, not measured frequencies or equipment reliability estimates. The spam probabilities, false-positive rates, and digit-classifier exercise build on the supplied course material. Background references are Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig, fourth edition, Appendix A.3 and Sections 12.1-12.5, and the Stanford CS229 probability review."
   },
   {
     "objectID": "asset_credits.html#lec22",
@@ -3458,144 +3444,46 @@
     "text": "Generalized Modus Ponens\nGeneralized modus ponens uses matching facts to apply a quantified rule.\n\n\n\nWhat we know\nFormula\n\n\n\n\nRule\n\\forall x\\,(\\text{Human}(x)\\rightarrow\\text{Mortal}(x))\n\n\nFact\n\\text{Human}(\\text{Socrates})\n\n\n\n\n\nMatch the premise using \\theta=\\{x\\mapsto\\text{Socrates}\\}.\n\n\n\n\nApply the same substitution to the conclusion:\n\n\\text{Mortal}(x)\\theta=\\text{Mortal}(\\text{Socrates}).\n\n\nWith several premises joined by AND, all must match known facts under one consistent substitution.\n\n\nThis reuses the first slide’s rule. We match Human(x) to Human(Socrates), then carry x’s binding into the conclusion. If the rule required Human(x) AND Tired(x), Human(Socrates) and Tired(Ada) would not suffice unless there were additional knowledge identifying their subjects.\n[Sources] - AIMA Chapter 9, generalized modus ponens and forward chaining. [/Sources]"
   },
   {
-    "objectID": "slides/lec21_Probability.html#probability",
-    "href": "slides/lec21_Probability.html#probability",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Probability",
-    "text": "Probability\nProbability is the language AI uses when the world is uncertain, noisy, or only partially observed."
-  },
-  {
-    "objectID": "slides/lec21_Probability.html#why-probability-in-ai",
-    "href": "slides/lec21_Probability.html#why-probability-in-ai",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why Probability in AI?",
-    "text": "Why Probability in AI?\n\n\n\nArea\nWhat is uncertain?\n\n\n\n\nRobotics\nSensor readings, action outcomes\n\n\nMachine learning\nLabels, parameters, predictions\n\n\nNLP\nIntended meaning, next word, speech signal\n\n\nComputer vision\nOcclusion, lighting, object identity\n\n\nReinforcement learning\nTransitions and rewards\n\n\n\n\nLogic asks what must be true. Probability asks how strongly we should believe something under uncertainty."
-  },
-  {
     "objectID": "slides/lec21_Probability.html#probability-space",
     "href": "slides/lec21_Probability.html#probability-space",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Probability Space",
-    "text": "Probability Space\nA probability model has three pieces.\n\n\nSample space\n\n\\Omega\n\nAll possible outcomes.\n\nEvents\n\n\\mathcal{F}\n\nSubsets of \\Omega that we assign probabilities to.\n\nMeasure\n\nP: \\mathcal{F} \\rightarrow \\mathbb{R}\n\nMaps events to probabilities."
-  },
-  {
-    "objectID": "slides/lec21_Probability.html#axioms-of-probability",
-    "href": "slides/lec21_Probability.html#axioms-of-probability",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Axioms of Probability",
-    "text": "Axioms of Probability\nFor any event A:\n\nP(A) \\geq 0\n\nFor the full sample space:\n\nP(\\Omega)=1\n\nFor disjoint events A_1,A_2,\\ldots:\n\nP\\left(\\bigcup_i A_i\\right)=\\sum_i P(A_i)\n\n\nEverything else we use in probabilistic AI is built on these rules."
+    "section": "Outcomes, Events, and Probability",
+    "text": "Outcomes, Events, and Probability\nRoll one fair six-sided die: each of its six outcomes has probability 1/6.\n\n\n\n\n\n\n\n\nTerm\nMeaning\nDie example\n\n\n\n\nOutcome\nOne possible result\n4\n\n\nSample space \\Omega\nAll possible outcomes\n\\{1,2,3,4,5,6\\}\n\n\nEvent A\nA set of outcomes\nEven: A=\\{2,4,6\\}\n\n\nProbability measure P\nA number assigned to an event\nP(A)=3/6=1/2\n\n\n\n\n\nThe diagram also labels B as the event that the result is at least 4. An event occurs when the observed outcome belongs to its set. The event space F is the collection of allowed events; for this finite example, use every subset of Omega. The formal probability space is (Omega, F, P).\nCounting outcomes works here because the die is fair. For unequal outcome probabilities, add their probability weights rather than dividing counts.\n[Sources] - AIMA Appendix A.3 and Section 12.2. - Stanford CS229 probability review, Sections 1-1.1: https://cs229.stanford.edu/section/cs229-prob.pdf. [/Sources]"
   },
   {
     "objectID": "slides/lec21_Probability.html#conditional-probability",
     "href": "slides/lec21_Probability.html#conditional-probability",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Conditional Probability",
-    "text": "Conditional Probability\nConditional probability updates attention to the part of the sample space where B happened.\n\n\nP(A \\mid B)=\\frac{P(A \\cap B)}{P(B)}, \\qquad P(B) \\neq 0\n\n\n\nRead P(A \\mid B) as: probability of A after learning B."
+    "text": "Conditional Probability\nConditional probability P(A\\mid B) means the probability of A given that B occurred. The bar \\mid means “given.”\nP(A\\mid B)=\\frac{P(A\\cap B)}{P(B)},\\qquad P(B)&gt;0.\nDie example: A is even, and B is at least 4.\n\n\nTwo of the three remaining outcomes are even: P(A\\mid B)=(2/6)/(3/6)=2/3, compared with P(A)=1/2.\n\n\nConditioning restricts the possible outcomes and rescales their probabilities to total 1. The outcomes remain equally likely in this die example. For a general model, retain relative weights rather than assuming uniformity after conditioning.\n[Sources] - AIMA Section 12.2, conditional probability. [/Sources]"
   },
   {
     "objectID": "slides/lec21_Probability.html#independence",
     "href": "slides/lec21_Probability.html#independence",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Independence",
-    "text": "Independence\nTwo events are independent when learning one does not change the probability of the other.\n\nP(A \\cap B)=P(A)P(B)\n\nEquivalently, if P(B)&gt;0:\n\nP(A \\mid B)=P(A)\n\n\nIndependence is an assumption about information, not just a formula to memorize."
-  },
-  {
-    "objectID": "slides/lec21_Probability.html#card-example",
-    "href": "slides/lec21_Probability.html#card-example",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Card Example",
-    "text": "Card Example\n\n\nLet:\n\nA: the card is a king.\nB: the card is a heart.\n\n\nP(A)=\\frac{4}{52}, \\qquad P(B)=\\frac{13}{52}, \\qquad P(A \\cap B)=\\frac{1}{52}\n\n\n\nP(A \\mid B)=\\frac{1/52}{13/52}=\\frac{1}{13}\n\n\n\n\n\n\nDeck of cards illustration"
-  },
-  {
-    "objectID": "slides/lec21_Probability.html#card-independence-check",
-    "href": "slides/lec21_Probability.html#card-independence-check",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Card Independence Check",
-    "text": "Card Independence Check\nFor “king” and “heart”:\n\nP(A \\cap B)=\\frac{1}{52}\n\n\n\nP(A)P(B)=\\frac{4}{52}\\cdot\\frac{13}{52}=\\frac{52}{2704}=\\frac{1}{52}\n\n\n\nSo drawing a heart does not change the chance that the card is a king."
+    "text": "Independence\nEvents are independent when observing one leaves the other’s probability unchanged:\nP(A\\cap B)=P(A)P(B).\nIf P(B)&gt;0, this is equivalent to P(A\\mid B)=P(A).\nDraw one card uniformly from a standard 52-card deck, without jokers. Let A mean king and B mean heart.\nP(A)=\\frac4{52},\\qquad P(B)=\\frac{13}{52},\\qquad P(A\\cap B)=\\frac1{52}.\nP(A\\mid B)=\\frac{1/52}{13/52}=\\frac1{13}=P(A).\n\nKing and heart are independent, although they overlap. Disjoint positive-probability events cannot be independent: learning one rules out the other.\n\n\nThe king of hearts belongs to both events. This contrasts with the die events, where conditioning changed 1/2 to 2/3. An equally valid check multiplies (4/52)(13/52)=1/52. Drawing multiple cards without replacement introduces dependencies between draws.\n[Sources] - Card example from the supplied course material. AIMA Section 12.4. [/Sources]"
   },
   {
     "objectID": "slides/lec21_Probability.html#random-variables",
     "href": "slides/lec21_Probability.html#random-variables",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Random Variables",
-    "text": "Random Variables\nA random variable maps outcomes to values.\n\n\n\nType\nValues\nExample\nDistribution\n\n\n\n\nDiscrete\nCountable\nNumber of heads\nPMF\n\n\nContinuous\nReal-valued range\nTemperature\nPDF\n\n\n\nTwo summary quantities:\n\nE[X] \\quad \\text{and} \\quad Var(X)\n\n\nRandom variables let us reason about useful features of outcomes, not just outcomes themselves."
-  },
-  {
-    "objectID": "slides/lec21_Probability.html#joint-marginal-conditional",
-    "href": "slides/lec21_Probability.html#joint-marginal-conditional",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Joint, Marginal, Conditional",
-    "text": "Joint, Marginal, Conditional\n\n\nJoint\n\nP(X,Y)\n\nHow two variables behave together.\n\nMarginal\n\nP(X)=\\sum_y P(X,y)\n\nOne variable after summing out another.\n\nConditional\n\nP(X \\mid Y)=\\frac{P(X,Y)}{P(Y)}\n\nOne variable after observing another."
-  },
-  {
-    "objectID": "slides/lec21_Probability.html#continuous-version",
-    "href": "slides/lec21_Probability.html#continuous-version",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Continuous Version",
-    "text": "Continuous Version\nFor continuous variables, replace sums with integrals.\n\nf_{X_1}(x_1)=\n\\int \\cdots \\int\nf_{X_1,\\ldots,X_n}(x_1,\\ldots,x_n)\n\\,dx_2\\cdots dx_n\n\n\nf_{X_1 \\mid X_2,\\ldots,X_n}\n=\n\\frac{f_{X_1,\\ldots,X_n}}{f_{X_2,\\ldots,X_n}}\n\n\nSame idea as the discrete case: marginalize what you do not need, condition on what you observe."
+    "section": "Random Variables and a PMF",
+    "text": "Random Variables and a PMF\nA random variable maps each outcome to a value. For two independent fair coin tosses (heads probability 1/2), let X count heads. H means heads and T tails.\n\nA discrete variable has countably many values. Its probability mass function (PMF) gives p_X(x)=P(X=x) for each value x.\n\n\n\nValue x\n0\n1\n2\n\n\n\n\np_X(x)\n1/4\n1/2\n1/4\n\n\n\n\nUppercase X names the variable. Lowercase x names a possible value. Multiple outcomes can map to the same value.\n\n\nDiscrete means the possible values are countable, including finite sets such as {0,1,2}. HT and TH are separate ordered outcomes, so the head-count distribution is not uniform. The PMF entries are nonnegative and sum to 1.\n[Sources] - AIMA Section 12.2 and Appendix A.3. Original two-toss diagram and table. [/Sources]"
   },
   {
     "objectID": "slides/lec21_Probability.html#chain-rule",
     "href": "slides/lec21_Probability.html#chain-rule",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Chain Rule",
-    "text": "Chain Rule\nThe joint distribution can always be decomposed into conditionals:\n\nP(x_1,\\ldots,x_n)\n=\nP(x_n \\mid x_1,\\ldots,x_{n-1})\n\\cdots\nP(x_2 \\mid x_1)P(x_1)\n\n\nBayesian networks will use this idea, plus independence assumptions, to represent large distributions compactly."
-  },
-  {
-    "objectID": "slides/lec21_Probability.html#multivariate-gaussian",
-    "href": "slides/lec21_Probability.html#multivariate-gaussian",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Multivariate Gaussian",
-    "text": "Multivariate Gaussian\nA multivariate Gaussian models a vector of continuous variables.\n\nf(\\mathbf{x} \\mid \\boldsymbol{\\mu}, \\boldsymbol{\\Sigma})\n=\n\\frac{1}{(2\\pi)^{k/2}|\\boldsymbol{\\Sigma}|^{1/2}}\n\\exp\\left(\n-\\frac{1}{2}\n(\\mathbf{x}-\\boldsymbol{\\mu})^T\n\\boldsymbol{\\Sigma}^{-1}\n(\\mathbf{x}-\\boldsymbol{\\mu})\n\\right)\n\n\n\n\\boldsymbol{\\mu} controls the center.\n\n\\boldsymbol{\\Sigma} controls spread and correlation."
+    "section": "The Chain Rule",
+    "text": "The Chain Rule\nThe chain rule writes a joint probability as successive conditional probabilities. It requires no independence assumption.\nFor weather and umbrella use:\nP(W=\\text{Rainy},U=\\text{Yes})=P(U=\\text{Yes}\\mid W=\\text{Rainy})P(W=\\text{Rainy}).\nFrom our table: (2/3)(0.30)=0.20.\nFor three variables with values x,y,z:\nP(x,y,z)=P(x)P(y\\mid x)P(z\\mid x,y).\n\nIf each variable is independent of all earlier variables together, the factors simplify to P(x,y,z)=P(x)P(y)P(z).\n\n\nP(x,y,z) abbreviates P(X=x,Y=y,Z=z). Each conditional needs a positive-probability conditioning event in these discrete formulas. Zero-probability conditioning cases have zero joint mass and need a chosen version of the conditional.\nFor n variables, P(x_1,…,x_n)=product_i P(x_i|x_1,…,x_{i-1}). Pairwise independence alone does not imply the full product form. This is the basis of later Bayesian-network representations.\n[Sources] - AIMA Section 12.2, product and chain rules, and Section 12.4, independence. [/Sources]"
   },
   {
     "objectID": "slides/lec21_Probability.html#bayes-rule",
     "href": "slides/lec21_Probability.html#bayes-rule",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Bayes’ Rule",
-    "text": "Bayes’ Rule\nStarting from conditional probability:\n\nP(A \\mid B)=\\frac{P(B \\mid A)P(A)}{P(B)}\n\nFor a binary hypothesis H:\n\nP(H \\mid E)=\n\\frac{P(E \\mid H)P(H)}\n{P(E \\mid H)P(H)+P(E \\mid \\neg H)P(\\neg H)}\n\n\nBayes’ rule updates a prior belief after seeing evidence."
-  },
-  {
-    "objectID": "slides/lec21_Probability.html#sample-problem-spam",
-    "href": "slides/lec21_Probability.html#sample-problem-spam",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Sample Problem: Spam",
-    "text": "Sample Problem: Spam\nGiven:\n\nP(S)=0.3,\\quad P(K \\mid S)=0.6,\\quad P(K \\mid \\neg S)=0.2\n\n\nEvidence probability:\n\nP(K)=0.6(0.3)+0.2(0.7)=0.32\n\n\n\nPosterior:\n\nP(S \\mid K)=\\frac{0.6(0.3)}{0.32}=0.5625"
-  },
-  {
-    "objectID": "slides/lec21_Probability.html#sample-problem-false-positives",
-    "href": "slides/lec21_Probability.html#sample-problem-false-positives",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Sample Problem: False Positives",
-    "text": "Sample Problem: False Positives\nGiven:\n\nP(D)=0.01,\\quad P(+ \\mid D)=0.95,\\quad P(+ \\mid \\neg D)=0.05\n\n\n\nP(+)=0.95(0.01)+0.05(0.99)=0.059\n\n\n\n\nP(D \\mid +)=\\frac{0.95(0.01)}{0.059}\\approx 0.161\n\n\n\nEven a good test can have a low posterior when the disease is rare."
-  },
-  {
-    "objectID": "slides/lec21_Probability.html#sample-problem-joint-distribution",
-    "href": "slides/lec21_Probability.html#sample-problem-joint-distribution",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Sample Problem: Joint Distribution",
-    "text": "Sample Problem: Joint Distribution\nGiven:\n\nP(Y=3)=0.15,\\qquad P(X&gt;0.5 \\mid Y=3)=0.6\n\nUse:\n\nP(A,B)=P(A \\mid B)P(B)\n\n\n\nP(X&gt;0.5, Y=3)=0.6 \\cdot 0.15 = 0.09"
-  },
-  {
-    "objectID": "slides/lec21_Probability.html#probability-in-generative-ai-ddpm",
-    "href": "slides/lec21_Probability.html#probability-in-generative-ai-ddpm",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Probability in Generative AI: DDPM",
-    "text": "Probability in Generative AI: DDPM\nDenoising Diffusion Probabilistic Models use two probabilistic processes.\n\n\nForward noising\n\nq(x_t \\mid x_{t-1})\n=\n\\mathcal{N}(x_t;\\sqrt{1-\\beta_t}x_{t-1},\\beta_t I)\n\n\nLearned reverse\n\np(x_{t-1} \\mid x_t)\n=\n\\mathcal{N}(x_{t-1};\\mu_\\theta(x_t,t),\\Sigma_\\theta(x_t,t))\n\n\n\nThe model learns how to reverse a gradual noising process."
-  },
-  {
-    "objectID": "slides/lec21_Probability.html#further-reading",
-    "href": "slides/lec21_Probability.html#further-reading",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Further Reading",
-    "text": "Further Reading\n\nStanford CS229 probability review\nIntroduction to Probability by Blitzstein and Hwang"
-  },
-  {
-    "objectID": "slides/lec21_Probability.html#what-to-remember",
-    "href": "slides/lec21_Probability.html#what-to-remember",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What to Remember",
-    "text": "What to Remember\n\nProbability represents uncertainty in AI systems.\nConditional probability updates beliefs after observing evidence.\nIndependence says an observation gives no additional information.\nJoint, marginal, and conditional distributions are different views of the same probability model.\nBayes’ rule turns priors and likelihoods into posteriors.\n\nAsset credits"
+    "section": "Bayes’ Rule and Its Vocabulary",
+    "text": "Bayes’ Rule and Its Vocabulary\nLet H be a proposed explanation and E an observed event, with P(E)&gt;0.\nP(H\\mid E)=\\frac{P(E\\mid H)P(H)}{P(E)}.\n\n\n\n\n\n\n\n\nTerm\nExpression\nMeaning\n\n\n\n\nPrior\nP(H)\nBelief before this observation\n\n\nLikelihood\nP(E\\mid H)\nProbability of this observation if H holds\n\n\nEvidence probability\nP(E)\nOverall probability of this observation\n\n\nPosterior\nP(H\\mid E)\nUpdated belief after the observation\n\n\n\n\nP(E\\mid H) and P(H\\mid E) answer different questions. Bayes’ rule connects them using the prior and the evidence probability.\n\n\nLikelihood here is evaluated at the observed event as a function of the hypothesis. It is not the probability that the hypothesis is correct. For a binary hypothesis, P(E)=P(E|H)P(H)+P(E|not H)P(not H). The next slide computes both terms.\n[Sources] - AIMA Section 12.5. [/Sources]"
   },
   {
     "objectID": "slides/lec23_Bayes_Net.html#bayesian-networks",
@@ -8118,5 +8006,89 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Takeaways",
     "text": "Takeaways\n\nProgression searches executable state transitions. Repeated-state handling prevents cycles.\nRegression preserves remaining goals and adds action preconditions.\nRelaxed problems help estimate cost. Planning graphs also flag conflicts.\nSAT planning needs full transition constraints and a stated horizon.\nHTN methods guide decomposition, with primitive actions checked against the model.\n\n\nEvery returned plan must work under the original preconditions, effects, and goal test.\n\nAsset credits\n\n[Sources] - AIMA fourth edition, Sections 11.2-11.4, in both U.S. and Global editions. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec21_Probability.html#uncertainty",
+    "href": "slides/lec21_Probability.html#uncertainty",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Uncertainty in AI",
+    "text": "Uncertainty in AI\nAn alarm sounds. Does that prove a robot has a defective part?\n\n\n\nObservation\nPossible explanation\n\n\n\n\nAlarm sounds\nA defective part triggered it\n\n\nAlarm sounds\nA working part triggered a false alarm\n\n\n\nProbability assigns numbers to uncertainty under a stated model.\n\nWould the same alarm mean the same thing if defects were common rather than rare?\n\n\nWe need both the alarm’s behavior and how common defects are. We will calculate this near the end of the lecture.\n\n\nConnect to the deterministic models in planning: an observation can have several explanations. The robot example is hypothetical, not measured equipment reliability. Probability can guide decisions, but choosing an action also requires a cost or utility model.\n[Sources] - AIMA fourth edition, Sections 12.1-12.2 and Appendix A.3. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec21_Probability.html#probability-rules",
+    "href": "slides/lec21_Probability.html#probability-rules",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Probability Rules",
+    "text": "Probability Rules\nAn axiom is a starting rule. The basic axioms require nonnegative probabilities, P(\\Omega)=1, and additivity for disjoint events.\n\n\n\n\n\n\n\nRule\nMeaning\n\n\n\n\n0\\le P(A)\\le1\nEvery event has a valid probability\n\n\nP(A^c)=1-P(A)\nA^c is the complement: outcomes outside A\n\n\nP(A\\cup B)=P(A)+P(B) if A\\cap B=\\varnothing\nDisjoint events have no shared outcomes\n\n\nP(A\\cup B)=P(A)+P(B)-P(A\\cap B)\nOtherwise, subtract the overlap counted twice\n\n\n\n\\cup means or, \\cap means and, and \\varnothing is the empty set.\nFor the die, even A and at-least-4 B overlap at 4,6:\nP(A\\cup B)=\\frac36+\\frac36-\\frac26=\\frac46.\n\nThe upper bound 1 and complement rule follow from the axioms. General additivity applies to countably many pairwise disjoint events. The finite examples here avoid measure-theory details. The union is {2,4,5,6}, checking the arithmetic by counting.\n[Sources] - AIMA Section 12.2 and Appendix A.3. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec21_Probability.html#mean-variance",
+    "href": "slides/lec21_Probability.html#mean-variance",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Mean and Variance",
+    "text": "Mean and Variance\nThe expectation or mean is a probability-weighted average:\n\\mu=E[X]=\\sum_x x\\,p_X(x).\nThe variance measures spread using squared distances from the mean:\n\\operatorname{Var}(X)=E[(X-\\mu)^2].\nFor our head count, the PMF is (1/4,1/2,1/4) at x=0,1,2.\n\n\\begin{aligned}\nE[X]&=0\\left(\\frac14\\right)+1\\left(\\frac12\\right)+2\\left(\\frac14\\right)=1,\\\\\n\\operatorname{Var}(X)&=(0-1)^2\\left(\\frac14\\right)+(1-1)^2\\left(\\frac12\\right)+(2-1)^2\\left(\\frac14\\right)=\\frac12.\n\\end{aligned}\n\n\nAn expected value is an average, not a guaranteed outcome. A fair die has mean 3.5, even though no roll produces 3.5.\n\n\nThe sum runs over every possible value of X. Variance uses squared units, and standard deviation is its square root. Var(X)=E[X^2]-(E[X])^2 gives 1.5-1=0.5 here.\n[Sources] - AIMA Appendix A.3 and Stanford CS229 probability review, Sections 2.4-2.5. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec21_Probability.html#linearity",
+    "href": "slides/lec21_Probability.html#linearity",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Linearity of Expectation",
+    "text": "Linearity of Expectation\nLinearity means that the expectation of a sum equals the sum of the expectations:\nE[X+Y]=E[X]+E[Y].\nLet X be 1 if the first fair coin toss is heads and 0 otherwise. Define Y the same way for the second toss.\nE[X]=\\frac12,\\qquad E[Y]=\\frac12,\\qquad E[X+Y]=1.\n\nDoes the identity still hold if Y=X, so the variables are completely dependent?\n\n\nYes: E[X+X]=2E[X]. Linearity does not require independence, provided the expectations exist. This is useful for adding waiting times in HW4.\n\n\nThese 0/1 variables are indicators: they mark whether an event occurs. Their expectations equal their event probabilities. For HW4, divide the total collection time into stages and add stage expectations without first proving stage independence. No full assignment derivation is needed here.\n[Sources] - AIMA Appendix A.3 and Stanford CS229 probability review, Section 2.4. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec21_Probability.html#continuous-density",
+    "href": "slides/lec21_Probability.html#continuous-density",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Continuous Variables and a PDF",
+    "text": "Continuous Variables and a PDF\nA continuous variable takes values along a range. Its probability density function (PDF) f_U(u) gives probability per unit length. Area gives probability.\nLet U be uniform on [0,2]: equal-length intervals are equally likely. Its density is 1/2 on that interval and 0 outside it.\n\nP(0.5\\le U\\le1)=\\int_{0.5}^1 f_U(u)\\,du=(1-0.5)\\left(\\frac12\\right)=\\frac14.\n\nHere P(U=u)=0. Density can exceed 1. Only area gives probability.\n\n\nThe entire area is 2 times 1/2, which equals 1. A uniform density on [0,0.1] has height 10. A cumulative distribution function (CDF) gives F_U(u)=P(U&lt;=u), accumulating area up to u. This prepares students for uniform angular positions in HW4.\n[Sources] - AIMA Appendix A.3 and Stanford CS229 probability review, Sections 2.1-2.3. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec21_Probability.html#joint-distribution",
+    "href": "slides/lec21_Probability.html#joint-distribution",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Joint Distribution",
+    "text": "A Joint Distribution\nA joint distribution assigns probability to combinations of variable values.\nToy model: W is weather and U is umbrella use. These symbols are local to this model.\n\n\n\nP(W=w,U=u)\nU=\\text{Yes}\nU=\\text{No}\n\n\n\n\nW=\\text{Sunny}\n0.10\n0.60\n\n\nW=\\text{Rainy}\n0.20\n0.10\n\n\n\nAll four entries are nonnegative and sum to 1.\n\nWhich entry represents rain and an umbrella? Which entries represent rain regardless of umbrella use?\n\n\nRain and umbrella: 0.20. Rain regardless of umbrella: 0.20+0.10=0.30.\n\n\nA comma inside P(W=w,U=u) means the two events hold together. P(w,u) abbreviates the same thing once variables are clear. Every cell in a full joint table shares one total sum of 1. These numbers match the model at the start of Lecture 22.\n[Sources] - AIMA Sections 12.2-12.3. Original course weather model. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec21_Probability.html#marginal-conditional",
+    "href": "slides/lec21_Probability.html#marginal-conditional",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Marginal and Conditional Distributions",
+    "text": "Marginal and Conditional Distributions\n\n\n\nWeather w\nP(w,U=\\text{Yes})\nP(w,U=\\text{No})\n\n\n\n\nSunny\n0.10\n0.60\n\n\nRainy\n0.20\n0.10\n\n\n\nMarginalization sums over a variable we do not keep:\nP(W=\\text{Rainy})=\\sum_u P(W=\\text{Rainy},U=u)=0.20+0.10=0.30.\nConditioning fixes a variable to its observed value:\nP(W=\\text{Rainy}\\mid U=\\text{Yes})=\\frac{0.20}{0.10+0.20}=\\frac23.\n\nIgnoring umbrella use and observing an umbrella answer different questions. For continuous variables, marginalization integrates the joint density instead of summing it.\n\n\nThe marginal P(U=Yes)=0.3 provides the denominator. Conditioning keeps its Yes column and normalizes it. An unobserved variable in a marginal is not assumed to be No.\nFor continuous X,Y, the counterparts are f_X(x)=integral f_X,Y(x,y) dy and f_X|Y(x|y)=f_X,Y(x,y)/f_Y(y) when f_Y(y)&gt;0. The weather variables in the table are discrete.\n[Sources] - AIMA Section 12.3 and Appendix A.3. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec21_Probability.html#spam-example",
+    "href": "slides/lec21_Probability.html#spam-example",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Spam Given a Keyword",
+    "text": "Spam Given a Keyword\nLet S mean spam and K mean an email contains a particular keyword. The toy model gives:\nP(S)=0.30,\\qquad P(K\\mid S)=0.60,\\qquad P(K\\mid\\neg S)=0.20.\n\n\nThe law of total probability adds the spam and non-spam routes:\nP(K)=P(K\\mid S)P(S)+P(K\\mid\\neg S)P(\\neg S)=0.18+0.14=0.32.\n\n\nP(S\\mid K)=180/(180+140)=0.5625. The keyword raises the spam probability from 30\\% to 56.25\\%.\n\n\nThe frequencies describe a hypothetical population matching the probabilities, not an observed dataset. Out of 320 keyword emails, 180 are spam. This equals (0.60 times 0.30)/0.32. Both keyword-producing routes belong in the denominator.\nTotal probability sums over a disjoint, exhaustive partition. Here S and not S form that partition.\n[Sources] - Spam example from the supplied course material. AIMA Section 12.5. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec21_Probability.html#false-positives",
+    "href": "slides/lec21_Probability.html#false-positives",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Rare Defects and False Positives",
+    "text": "Rare Defects and False Positives\nDefective: D. Flagged: F. Base rate: P(D)=0.01 (1% defective).\n\nTrue-positive rate: flags 95% of defective parts, P(F\\mid D)=0.95.\nFalse-positive rate: flags 5% of working parts, P(F\\mid\\neg D)=0.05.\n\n\n\nAmong the flagged parts, what fraction are actually defective?\n\n\nP(D\\mid F)=95/(95+495)\\approx16.1\\%. Most flagged parts are working.\n\n\nThis uses the supplied false-positive example’s numbers in hypothetical parts inspection. A false positive is a positive prediction for an item without the condition. The flagged fraction is 0.95(0.01)+0.05(0.99)=0.059. The posterior is 0.0095/0.059, or 95/590.\nThe base rate changes the interpretation even if the conditional alarm rates stay fixed. Choosing a repair policy also requires repair and failure costs.\n[Sources] - Numerical teaching example from the supplied course material, adapted to robot parts. AIMA Section 12.5. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec21_Probability.html#joint-practice",
+    "href": "slides/lec21_Probability.html#joint-practice",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Joint-Probability Practice",
+    "text": "Joint-Probability Practice\nAn image classifier predicts a handwritten digit. Let:\n\nX be image brightness, scaled to [0,1].\nY be the predicted digit, one of 0,1,\\ldots,9.\n\nSuppose P(Y=3)=0.15 and P(X&gt;0.5\\mid Y=3)=0.60.\n\nWhat is the probability that an image is bright and predicted as digit 3?\n\n\nP(X&gt;0.5,Y=3)=P(X&gt;0.5\\mid Y=3)P(Y=3)=0.60(0.15)=0.09. This describes 9\\% of images under the model.\n\n\nX is continuous, but X&gt;0.5 is an event with nonzero probability, so ordinary event probability applies. Y is the classifier’s prediction, not the true digit. The calculation therefore does not measure accuracy.\n[Sources] - Image-classification example from the supplied course material. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec21_Probability.html#takeaways",
+    "href": "slides/lec21_Probability.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nDefine the sample space, events, and variables before calculating.\nConditioning keeps the observed event and rescales its probabilities.\nIndependence is a property of the model, not a default assumption.\nPMFs assign mass to values. PDFs give probabilities through area.\nBayes’ rule combines likelihoods and base rates to update beliefs.\nLinearity lets us add expectations without assuming independence.\n\n\nHomework 4: Probability in Motion: geometric probability, random walks, and coupon collection. Define your events and show the reasoning behind each step.\n\nAsset credits\n\nHW4 is announced with this lecture and is due Monday, November 2. The assignment page states the submission format and modeling assumptions. Introduce the three problems without deriving their final answers.\nFurther reading: Stanford CS229 probability review, https://cs229.stanford.edu/section/cs229-prob.pdf. AIMA Appendix A.3 and Sections 12.1-12.5 match the schedule’s reading entry.\n[Sources] - AIMA fourth edition, Appendix A.3 and Sections 12.1-12.5. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec21_Probability.html#common-distributions",
+    "href": "slides/lec21_Probability.html#common-distributions",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Common Probability Distributions",
+    "text": "Common Probability Distributions\n\n\nDiscrete\n\nBernoulli\nBinomial\nGeometric\nPoisson\n\n\nContinuous\n\nUniform\nNormal (Gaussian)\nExponential\n\n\n\nThese names identify common distribution families. Introduce their formulas and applications when a later topic needs them.\n[Sources] - AIMA Appendix A.3. Stanford CS229 probability review. [/Sources]"
   }
 ]

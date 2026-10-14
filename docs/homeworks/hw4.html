@@ -170,11 +170,9 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#background-three-reusable-probability-ideas" id="toc-background-three-reusable-probability-ideas" class="nav-link active" data-scroll-target="#background-three-reusable-probability-ideas">Background: three reusable probability ideas</a></li>
-  <li><a href="#ducks-in-a-circular-pool" id="toc-ducks-in-a-circular-pool" class="nav-link" data-scroll-target="#ducks-in-a-circular-pool">1. Ducks in a circular pool</a></li>
+  <li><a href="#ducks-in-a-circular-pool" id="toc-ducks-in-a-circular-pool" class="nav-link active" data-scroll-target="#ducks-in-a-circular-pool">1. Ducks in a circular pool</a></li>
   <li><a href="#random-walk-with-absorbing-barriers" id="toc-random-walk-with-absorbing-barriers" class="nav-link" data-scroll-target="#random-walk-with-absorbing-barriers">2. Random walk with absorbing barriers</a></li>
   <li><a href="#coupon-collector" id="toc-coupon-collector" class="nav-link" data-scroll-target="#coupon-collector">3. Coupon collector</a></li>
-  <li><a href="#what-a-complete-solution-includes" id="toc-what-a-complete-solution-includes" class="nav-link" data-scroll-target="#what-a-complete-solution-includes">What a complete solution includes</a></li>
   </ul>
 </nav>
     </div>
@@ -239,27 +237,9 @@ window.Quarto = {
 <p>Upload one PDF named <code>hw4submission.pdf</code> to Canvas. Define any event or random variable you introduce, justify the main steps of each derivation, and simplify final expressions when possible. No starter download is required for this written assignment.</p>
 </div>
 </div>
-<section id="background-three-reusable-probability-ideas" class="level2">
-<h2 class="anchored" data-anchor-id="background-three-reusable-probability-ideas">Background: three reusable probability ideas</h2>
-<p>Each problem looks different, but each is built around a standard way of organizing uncertainty.</p>
-<ul>
-<li><strong>Symmetry and anchoring:</strong> for points placed uniformly on a circle, rotating the entire configuration does not change its probability. A continuous configuration can often be counted by anchoring a candidate event at an observed point.</li>
-<li><strong>First-step analysis:</strong> condition on the next transition, then express an unknown probability or expectation in terms of neighboring states. Absorbing states supply the boundary values needed to solve the recurrence.</li>
-<li><strong>Waiting-time stages:</strong> divide a collection process into stages. If a stage succeeds independently with probability <span class="math inline">\(s\)</span> per draw, its waiting time is geometric with mean <span class="math inline">\(1/s\)</span>. Linearity of expectation then allows the stage means to be added even when the stage durations are not independent.</li>
-</ul>
-<p>The main identities you may use are</p>
-<p><span class="math display">\[
-\Pr(A)=\sum_i \Pr(A\mid B_i)\Pr(B_i),
-\qquad
-E\!\left[\sum_i X_i\right]=\sum_i E[X_i],
-\qquad
-E[G]=\frac{1}{s}\ \text{for }G\sim\operatorname{Geometric}(s).
-\]</span></p>
-<p>For every derivation, name the event or random variable before manipulating it. This makes it clear when you are using a probability, an expectation, or a boundary condition.</p>
-</section>
 <section id="ducks-in-a-circular-pool" class="level2">
 <h2 class="anchored" data-anchor-id="ducks-in-a-circular-pool">1. Ducks in a circular pool</h2>
-<p>There are <span class="math inline">\(n\)</span> ducks on the circumference of a circular pool. Each duck’s position is selected independently and uniformly at random. A closed semicircle may be rotated to any orientation after the positions are observed. Events in which a duck lies exactly on a chosen boundary have probability zero and do not affect the answer.</p>
+<p>There are <span class="math inline">\(n\)</span> ducks on the circumference of a circular pool. Each duck’s position is selected independently and uniformly at random. A closed semicircle may be rotated to any orientation after the positions are observed. Configurations with coincident or exactly opposite positions have probability zero and do not affect the answer.</p>
 <div class="homework-figure homework-figure--wide">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -273,7 +253,19 @@ E[G]=\frac{1}{s}\ \text{for }G\sim\operatorname{Geometric}(s).
 <li>For <span class="math inline">\(n=3\)</span>, compute the same probability.</li>
 <li>For general integer <span class="math inline">\(n \ge 2\)</span>, derive the probability that all <span class="math inline">\(n\)</span> ducks are contained in some semicircle.</li>
 </ol>
-<p>Your general argument should explain why the candidate semicircle can be anchored at one of the observed positions and why the relevant anchor events do not overlap except on probability-zero configurations.</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Hint
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Symmetry and anchoring:</strong> rotating the entire configuration does not change its probability. Consider a clockwise semicircle whose starting boundary passes through one observed duck. Explain why some such anchored semicircle contains all ducks whenever the configuration fits in a semicircle, and why these anchor events do not overlap except on probability-zero configurations.</p>
+</div>
+</div>
 </section>
 <section id="random-walk-with-absorbing-barriers" class="level2">
 <h2 class="anchored" data-anchor-id="random-walk-with-absorbing-barriers">2. Random walk with absorbing barriers</h2>
@@ -303,11 +295,14 @@ E[G]=\frac{1}{s}\ \text{for }G\sim\operatorname{Geometric}(s).
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Useful check
+<span class="screen-reader-only">Tip</span>Hint
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Your closed form should produce <span class="math inline">\(P_{-N}=0\)</span> and <span class="math inline">\(P_M=1\)</span>. In the fair case, the answer should be linear in the starting position.</p>
+<p><strong>First-step analysis:</strong> condition on whether the next step is left or right, then express <span class="math inline">\(P_k\)</span> using the probabilities at those neighboring states. The law of total probability is</p>
+<p><span class="math display">\[\Pr(A)=\sum_i \Pr(A\mid B_i)\Pr(B_i),\]</span></p>
+<p>where the <span class="math inline">\(B_i\)</span> are disjoint events covering all possible outcomes. Here, the two next-step directions form that partition.</p>
+<p>The absorbing states supply the boundary values. As a check, your closed form should produce <span class="math inline">\(P_{-N}=0\)</span> and <span class="math inline">\(P_M=1\)</span>. In the fair case, the answer should be linear in the starting position.</p>
 </div>
 </div>
 </section>
@@ -328,16 +323,23 @@ E[G]=\frac{1}{s}\ \text{for }G\sim\operatorname{Geometric}(s).
 <li>If exactly <span class="math inline">\(k\)</span> distinct types have already been collected, what is the expected number of additional draws until a new type appears?</li>
 <li>Derive the expected total number of draws <span class="math inline">\(E[T]\)</span> required to collect all <span class="math inline">\(N\)</span> types. Express the result using the harmonic number <span class="math inline">\(H_N\)</span> and define <span class="math inline">\(H_N\)</span>.</li>
 </ol>
-</section>
-<section id="what-a-complete-solution-includes" class="level2">
-<h2 class="anchored" data-anchor-id="what-a-complete-solution-includes">What a complete solution includes</h2>
-<ul>
-<li>A clearly named event or random variable for each problem.</li>
-<li>A derivation, not only a remembered formula.</li>
-<li>Boundary conditions for the random walk and the <span class="math inline">\(p=\tfrac12\)</span> special case.</li>
-<li>Exact expressions before decimal approximations.</li>
-<li>A short sanity check for every final result.</li>
-</ul>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Hint
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Waiting-time stages:</strong> let <span class="math inline">\(W_k\)</span> be the number of additional draws needed to obtain a new type when <span class="math inline">\(k\)</span> distinct types have been collected. While that stage lasts, each independent draw has the same success probability <span class="math inline">\(s_k\)</span>. Counting the successful draw, the waiting time has mean</p>
+<p><span class="math display">\[E[W_k]=\frac{1}{s_k}.\]</span></p>
+<p>Find <span class="math inline">\(s_k\)</span> by counting the types still missing. Then use <span class="math inline">\(T=\sum_{k=0}^{N-1}W_k\)</span> and linearity of expectation:</p>
+<p><span class="math display">\[E[T]=\sum_{k=0}^{N-1}E[W_k].\]</span></p>
+<p>Linearity does not require the stage durations to be independent.</p>
+</div>
+</div>
 <nav class="assignment-nav">
 <a href="../homeworks/hw3.html">← Homework 3</a><a href="../homeworks/hw5.html">Homework 5 →</a>
 </nav>
