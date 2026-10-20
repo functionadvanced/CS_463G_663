@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec22_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -143,13 +144,6 @@
       margin-right: 0; 
     }
   </style>
-  <style>
-  .reveal table { font-size: 0.76em; line-height: 1.22; }
-  .reveal th, .reveal td { padding: 0.4em 0.48em; }
-  .reveal .inference-figure svg { display: block; width: 100%; max-height: 240px; }
-  .reveal .math.inline { white-space: nowrap; }
-  .reveal #the-toothache-model img { max-height: 125px; }
-  </style>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -170,148 +164,41 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="what-does-an-observation-tell-us" class="slide level2">
-<h2>What Does an Observation Tell Us?</h2>
-<p>A robot sees an umbrella. Does that establish that it is raining?</p>
-<div class="question">
-<p>An observation can support several explanations. What numbers would we need to compare them?</p>
-</div>
-<div class="fragment takeaway">
-<p>We need a probability model relating weather and umbrella use. Inference turns that model and the observation into a conditional distribution.</p>
-</div>
-<aside class="notes">
-<p>50-minute plan: weather query and vocabulary, 8 minutes; joint-table operations, 12; multiple-evidence activity, 10; independence and common errors, 10; representation and exit problem, 10. No separate code demo or homework release today. HW4 was introduced in the preceding class; leave the last few minutes flexible for questions. The toothache probabilities follow the AIMA teaching example and are not clinical estimates. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/bayes-nets/inference.html. New exercises and inline diagrams are original course material.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="what-is-inference" class="slide level2">
-<h2>What Is Inference?</h2>
-<div class="definition">
-<p>Probabilistic inference answers queries such as <span class="math inline">P(\text{Query} \mid \text{Evidence})</span>.</p>
-</div>
-<p>Examples:</p>
-<ul>
-<li>Given an umbrella observation, infer the probability of rain.</li>
-<li>Given robot sensor readings, infer the robot’s location.</li>
-<li>Given user behavior, infer a likely preference.</li>
-</ul>
-<div class="takeaway">
-<p>The distribution is the model; inference is how we ask questions of the model.</p>
-</div>
-</section>
-<section id="full-joint-distribution" class="slide level2">
-<h2>Full Joint Distribution</h2>
-<p>A full joint distribution assigns probability to every complete assignment of variables.</p>
-<p>For weather <span class="math inline">W</span> and umbrella use <span class="math inline">U</span>:</p>
+<section id="inference" class="slide level2 inference22-slide">
+<h2>Inference from an Observation</h2>
+<p>Someone has a toothache. How likely is a cavity?</p>
+<p><strong>Probabilistic inference</strong> uses a probability model and observed information to calculate probabilities of unknown quantities.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Weather</th>
-<th>Umbrella</th>
-<th style="text-align: right;"><span class="math inline">P(W,U)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Sunny</td>
-<td>Yes</td>
-<td style="text-align: right;">0.1</td>
-</tr>
-<tr class="even">
-<td>Sunny</td>
-<td>No</td>
-<td style="text-align: right;">0.6</td>
-</tr>
-<tr class="odd">
-<td>Rainy</td>
-<td>Yes</td>
-<td style="text-align: right;">0.2</td>
-</tr>
-<tr class="even">
-<td>Rainy</td>
-<td>No</td>
-<td style="text-align: right;">0.1</td>
-</tr>
-</tbody>
-</table>
-<div class="fragment">
-<p><span class="math display">
-P(U=\text{Yes})=0.1+0.2=0.3
-</span></p>
-</div>
-</section>
-<section id="rain-given-an-umbrella" class="slide level2">
-<h2>Rain Given an Umbrella</h2>
-<p>The observation keeps only the two rows with <span class="math inline">U=\text{Yes}</span>.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Weather</th>
-<th style="text-align: right;">Joint mass with umbrella</th>
-<th style="text-align: right;">Conditional probability</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Sunny</td>
-<td style="text-align: right;"><span class="math inline">0.1</span></td>
-<td style="text-align: right;"><span class="math inline">0.1/0.3=1/3</span></td>
-</tr>
-<tr class="even">
-<td>Rainy</td>
-<td style="text-align: right;"><span class="math inline">0.2</span></td>
-<td style="text-align: right;"><span class="math inline">0.2/0.3=2/3</span></td>
-</tr>
-</tbody>
-</table>
-<p><span class="math display">P(W=\text{Rainy}\mid U=\text{Yes})=\frac{0.2}{0.3}=\frac23.</span></p>
-<div class="takeaway">
-<p>Rain becomes more likely, but the observation does not make it certain.</p>
-</div>
-</section>
-<section id="query-evidence-and-hidden-variables" class="slide level2">
-<h2>Query, Evidence, and Hidden Variables</h2>
-<p>Suppose we ask <span class="math inline">P(C\mid T)</span> in a model with variables <span class="math inline">C,T,H</span>.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Role</th>
-<th>Variable</th>
-<th>What we do</th>
+<th>Term</th>
+<th>Meaning</th>
+<th>Our question</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Query</td>
-<td>Cavity <span class="math inline">C</span></td>
-<td>Keep both possible outcomes</td>
+<td>What we want to find out</td>
+<td>Is there a cavity?</td>
 </tr>
 <tr class="even">
 <td>Evidence</td>
-<td>Toothache <span class="math inline">T</span></td>
-<td>Fix to the observed value</td>
-</tr>
-<tr class="odd">
-<td>Hidden</td>
-<td>Probe catches <span class="math inline">H</span></td>
-<td>Sum over possible values</td>
+<td>What we have observed</td>
+<td>There is a toothache</td>
 </tr>
 </tbody>
 </table>
 <div class="question">
-<p>An unobserved variable is not automatically false. Why would setting <span class="math inline">H=\text{false}</span> change the question?</p>
+<p>Could a toothache have another explanation? What would that mean for our answer?</p>
+</div>
+<div class="fragment takeaway" data-fragment-index="0">
+<p>The answer is a probability under the model. An observation can support an explanation without proving it.</p>
 </div>
 <aside class="notes">
-<p>It would add evidence that we do not have, yielding P(C given T and not H). In formulas below, an uppercase Boolean symbol by itself denotes its true event, and a negated symbol denotes its false event. A distribution over C includes both C and not C.</p>
+<p>Connect to Lecture 21’s alarm example. Today the model is already supplied: inference computes answers from it, rather than learning its probabilities from data. A probability alone does not choose an action without a cost or utility model.</p>
+<p>The dental example is an illustrative AIMA model, not clinical guidance or measured medical reliability. Work through the table slowly enough for students to track the changing denominators. Leave time for the two-evidence exercise, robot practice, and HW4 questions.</p>
+<p>[Sources] - AIMA fourth edition, Section 12.3. - UC Berkeley CS 188, Inference: https://inst.eecs.berkeley.edu/~cs188/textbook/bayes-nets/inference.html. [/Sources]</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -324,25 +211,57 @@ P(U=\text{Yes})=0.1+0.2=0.3
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-toothache-model" class="slide level2">
-<h2>The Toothache Model</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:20%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec21/tooth.png" class="cc0-icon"></p>
-<figcaption>Toothache illustration</figcaption>
-</figure>
-</div>
-</div><div class="column" style="width:76%;">
-<p><strong>Toy Boolean variables:</strong></p>
-<ul>
-<li><span class="math inline">C</span>: cavity.</li>
-<li><span class="math inline">T</span>: toothache.</li>
-<li><span class="math inline">H</span>: probe catches.</li>
-</ul>
-<p>An event such as <span class="math inline">C</span> means <span class="math inline">C=\text{true}</span>.</p>
-</div></div>
+<section id="model-variables" class="slide level2 inference22-slide">
+<h2>Model Variables and Notation</h2>
+<p>Each variable is <strong>Boolean</strong>, or binary: it takes either <span class="math inline">\text{true}</span> or <span class="math inline">\text{false}</span>.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>What true means</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">C</span>: cavity</td>
+<td>The tooth has a cavity</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">T</span>: toothache</td>
+<td>The person has a toothache</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">H</span>: probe catches</td>
+<td>The tip of a dentist’s small examining tool gets stuck on the tooth</td>
+</tr>
+</tbody>
+</table>
+<p>We use the shorthand <span class="math inline">C</span> for the event <span class="math inline">C=\text{true}</span>, and <span class="math inline">\neg C</span> for <span class="math inline">C=\text{false}</span>. The same convention applies to <span class="math inline">T</span> and <span class="math inline">H</span>.</p>
+<p><span class="math display">P(C,T)=P(C\text{ and }T),\qquad P(C\mid T)=\text{probability of }C\text{ given }T.</span></p>
+<aside class="notes">
+<p>A comma means that both listed events occur. The vertical bar means given. A probe catch is a separate observation from toothache. The letter H is simply the label used in this course for that observation.</p>
+<p>An uppercase letter sometimes names a random variable and sometimes its true event; the shorthand above makes that convention explicit. A distribution over C has two outcomes, true and false.</p>
+<p>[Sources] - Supplied Spring 2025 Beamer lecture, toothache example. AIMA Sections 12.2-12.3. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="full-joint" class="slide level2 inference22-slide">
+<h2>The Full Joint Table</h2>
+<p>A <strong>full joint distribution</strong> assigns probability to every <strong>complete assignment</strong>: one value for each variable.</p>
+<div class="joint-model">
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -370,151 +289,33 @@ P(U=\text{Yes})=0.1+0.2=0.3
 </tr>
 </tbody>
 </table>
-<p>All eight nonnegative entries sum to <span class="math inline">1</span>.</p>
-</section>
-<section id="query-1-pc-lor-t" class="slide level2">
-<h2>Query 1: <span class="math inline">P(C \lor T)</span></h2>
-<p>It is easier to use the complement:</p>
-<p><span class="math display">
-P(C \lor T)=1-P(\neg C,\neg T)
-</span></p>
-<div class="fragment">
-<p>From the full joint table:</p>
-<p><span class="math display">
-P(\neg C,\neg T)=P(\neg C,\neg T,H)+P(\neg C,\neg T,\neg H)
-</span></p>
 </div>
-<div class="fragment">
-<p><span class="math display">
-P(\neg C,\neg T)=0.144+0.576=0.72
-</span></p>
-</div>
-<div class="fragment takeaway">
-<p><span class="math display">
-P(C \lor T)=1-0.72=0.28
-</span></p>
-</div>
-</section>
-<section id="marginalization" class="slide level2">
-<h2>Marginalization</h2>
-<p>To compute a marginal, sum out variables that are not in the query.</p>
-<p><span class="math display">
-P(C)=\sum_T\sum_H P(C,T,H)
-</span></p>
-<div class="fragment">
-<p>For the cavity row:</p>
-<p><span class="math display">
-P(C)=0.108+0.012+0.072+0.008=0.2
-</span></p>
-</div>
-<div class="takeaway">
-<p>“Summing out” reduces a distribution over many variables to a distribution over fewer variables.</p>
-</div>
-</section>
-<section id="query-2-pc-mid-t" class="slide level2">
-<h2>Query 2: <span class="math inline">P(C \mid T)</span></h2>
-<p>Keep <span class="math inline">T=\text{true}</span> and sum over both values of <span class="math inline">H</span>.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Quantity</th>
-<th>Matching joint mass</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Numerator <span class="math inline">P(C,T)</span></td>
-<td><span class="math inline">0.108+0.012=0.12</span></td>
-</tr>
-<tr class="even">
-<td>Other outcome <span class="math inline">P(\neg C,T)</span></td>
-<td><span class="math inline">0.016+0.064=0.08</span></td>
-</tr>
-<tr class="odd">
-<td>Evidence probability <span class="math inline">P(T)</span></td>
-<td><span class="math inline">0.12+0.08=0.20</span></td>
-</tr>
-</tbody>
-</table>
-<div class="fragment takeaway">
-<p><span class="math display">
-P(C \mid T)=\frac{P(C,T)}{P(T)}=\frac{0.12}{0.2}=0.6
-</span></p>
-</div>
-</section>
-<section id="normalization-with-alpha" class="slide level2">
-<h2>Normalization with <span class="math inline">\alpha</span></h2>
-<p>For query outcomes ordered as <span class="math inline">(C,\neg C)</span>, first collect joint masses:</p>
-<p><span class="math display">
-w=(0.12,0.08).
-</span></p>
-<div class="fragment">
-<p>Normalize with:</p>
-<p><span class="math display">
-\alpha=\frac{1}{0.12+0.08}=5
-</span></p>
-</div>
-<div class="fragment">
-<p><span class="math display">
-\bigl(P(C\mid T),P(\neg C\mid T)\bigr)=(0.6,0.4).
-</span></p>
-</div>
-<div class="takeaway">
-<p>Normalization divides nonnegative weights by their positive sum. Here that sum is the evidence probability <span class="math inline">P(T)</span>.</p>
-</div>
-</section>
-<section id="a-reusable-inference-procedure" class="slide level2">
-<h2>A Reusable Inference Procedure</h2>
-<div class="inference-figure">
-<svg viewbox="0 0 1000 240" role="img" aria-label="Three steps of joint-table inference: keep rows matching evidence, sum hidden values separately for each query outcome, and divide by the total remaining probability mass.">
-<defs><marker id="inference-flow-arrow" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="9" markerheight="9" markerunits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#5d6470"></path></marker></defs>
-<g stroke="#5d6470" stroke-width="3" marker-end="url(#inference-flow-arrow)"><path d="M295 105H351"></path><path d="M645 105H701"></path></g>
-<rect x="5" y="30" width="290" height="155" rx="7" fill="#fff4db" stroke="#b7791f" stroke-width="2"></rect>
-<rect x="355" y="30" width="290" height="155" rx="7" fill="#e8f6f5" stroke="#007c89" stroke-width="2"></rect>
-<rect x="705" y="30" width="290" height="155" rx="7" fill="#fdecef" stroke="#b8325f" stroke-width="2"></rect>
-<g font-family="sans-serif" fill="#202124" text-anchor="middle"><g font-size="31"><text x="150" y="89">Filter</text><text x="500" y="89">Sum</text><text x="850" y="89">Normalize</text></g><g font-size="25"><text x="150" y="137">Match the evidence</text><text x="500" y="137">Remove hidden values</text><text x="850" y="137">Divide by total mass</text></g></g>
-</svg>
-</div>
-<p>Query <span class="math inline">Q</span>, evidence <span class="math inline">E=e</span>, hidden variables <span class="math inline">H</span>:</p>
-<p><span class="math display">
-\begin{aligned}
-w(q)&amp;=\sum_h P(Q=q,E=e,H=h),\\[0.4em]
-P(Q=q\mid E=e)&amp;=\frac{w(q)}{\sum_{q'}w(q')}.
-\end{aligned}
-</span></p>
-<p>Keep query outcomes separate until the final normalization.</p>
-</section>
-<section id="two-pieces-of-evidence" class="slide level2">
-<h2>Two Pieces of Evidence</h2>
-<p>Now we observe both toothache and a probe catch: <span class="math inline">T,H</span>.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Query outcome</th>
-<th style="text-align: right;">Matching joint mass</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">C</span></td>
-<td style="text-align: right;"><span class="math inline">0.108</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\neg C</span></td>
-<td style="text-align: right;"><span class="math inline">0.016</span></td>
-</tr>
-</tbody>
-</table>
+<p>For example, <span class="math inline">P(C,T,\neg H)=0.012</span>: cavity <strong>and</strong> toothache <strong>and</strong> no probe catch.</p>
 <div class="question">
-<p>What is <span class="math inline">P(C\mid T,H)</span>? Is there any hidden variable left to sum out?</p>
+<p>Which entry means toothache and a probe catch, but no cavity?</p>
 </div>
-<div class="fragment">
-<p><span class="math display">P(C\mid T,H)=\frac{0.108}{0.108+0.016}\approx0.871.</span> No hidden variable remains in this three-variable model.</p>
+<div class="fragment takeaway" data-fragment-index="0">
+<p><span class="math inline">P(\neg C,T,H)=0.016</span>. All eight entries are nonnegative and sum to <span class="math inline">1</span>. Individual rows need not sum to <span class="math inline">1</span>.</p>
 </div>
+<aside class="notes">
+<p>These are joint probabilities over the whole hypothetical population, not conditional probabilities within a row. There are eight assignments because three Boolean variables have 2^3 combinations. The table’s cavity row totals 0.2 and no-cavity row totals 0.8.</p>
+<p>[Sources] - AIMA Section 12.3, toothache/cavity/catch full joint distribution. Values preserved from the supplied Beamer lecture. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="practice-evidence-against-the-first-guess" class="slide level2 scrollable">
-<h2>Practice: Evidence Against the First Guess</h2>
-<p>Observe a toothache but <strong>no</strong> probe catch: <span class="math inline">T,\neg H</span>.</p>
+<section id="marginalization" class="slide level2 inference22-slide">
+<h2>Marginalization: Summing Out Variables</h2>
+<p><strong>Marginalization</strong> adds probabilities across all values of variables we do not keep. The result is a <strong>marginal distribution</strong> over the remaining variables.</p>
+<div class="joint-model cavity-row">
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -528,29 +329,30 @@ P(Q=q\mid E=e)&amp;=\frac{w(q)}{\sum_{q'}w(q')}.
 <tbody>
 <tr class="odd">
 <td><span class="math inline">C</span></td>
-<td style="text-align: right;">0.108</td>
+<td style="text-align: right;"><strong>0.108</strong></td>
 <td style="text-align: right;"><strong>0.012</strong></td>
-<td style="text-align: right;">0.072</td>
-<td style="text-align: right;">0.008</td>
+<td style="text-align: right;"><strong>0.072</strong></td>
+<td style="text-align: right;"><strong>0.008</strong></td>
 </tr>
 <tr class="even">
 <td><span class="math inline">\neg C</span></td>
 <td style="text-align: right;">0.016</td>
-<td style="text-align: right;"><strong>0.064</strong></td>
+<td style="text-align: right;">0.064</td>
 <td style="text-align: right;">0.144</td>
 <td style="text-align: right;">0.576</td>
 </tr>
 </tbody>
 </table>
-<div class="question">
-<ol type="1">
-<li>Compute <span class="math inline">P(C\mid T,\neg H)</span>.</li>
-<li>Compare it with <span class="math inline">P(C\mid T)=0.6</span>.</li>
-<li>Does observing more evidence always increase the probability of <span class="math inline">C</span>?</li>
-</ol>
+</div>
+<p>To find <span class="math inline">P(C)</span>, keep the cavity row and add across both values of <span class="math inline">T</span> and <span class="math inline">H</span>.</p>
+<div class="fragment takeaway" data-fragment-index="0">
+<p><span class="math display">P(C)=0.108+0.012+0.072+0.008=0.20.</span></p>
+<p>No toothache or probe result has been observed, so we include every possibility for them.</p>
 </div>
 <aside class="notes">
-<p>Allow three minutes. Ask students to write the numerator and denominator before using a calculator. The answer comes on the next slide.</p>
+<p>The other outcome has P(not C)=0.80, so the marginal distribution over C is (0.20, 0.80). This differs from conditioning: we have added all possibilities rather than retaining just an observed value. For a finite joint table, summing out is ordinary addition over mutually exclusive assignments.</p>
+<p>The optional complement check from the original lecture is P(C or T)=1-(0.144+0.576)=0.28. It is not needed for the main conditional-inference calculation.</p>
+<p>[Sources] - AIMA Section 12.3. [/Sources]</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -563,44 +365,260 @@ P(Q=q\mid E=e)&amp;=\frac{w(q)}{\sum_{q'}w(q')}.
           display:block!important;
       }</style></aside>
 </section>
-<section id="practice-answer-evidence-can-lower-a-belief" class="slide level2">
-<h2>Practice Answer: Evidence Can Lower a Belief</h2>
-<p><span class="math display">
-P(C\mid T,\neg H)=\frac{0.012}{0.012+0.064}\approx0.158.
-</span></p>
+<section id="variable-roles" class="slide level2 inference22-slide">
+<h2>Query, Evidence, and Hidden Variables</h2>
+<p>We want the cavity probability given a toothache: <span class="math inline">P(C\mid T)</span>.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Available evidence</th>
-<th style="text-align: right;">Probability of <span class="math inline">C</span></th>
+<th>Role</th>
+<th>Variable</th>
+<th>Operation</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>None</td>
-<td style="text-align: right;"><span class="math inline">0.200</span></td>
+<td>Query</td>
+<td>Cavity <span class="math inline">C</span></td>
+<td>Keep its true and false outcomes separate</td>
 </tr>
 <tr class="even">
-<td>Toothache</td>
-<td style="text-align: right;"><span class="math inline">0.600</span></td>
+<td>Evidence</td>
+<td>Toothache <span class="math inline">T</span></td>
+<td>Fix it to the observed value, true</td>
 </tr>
 <tr class="odd">
-<td>Toothache and probe catches</td>
-<td style="text-align: right;"><span class="math inline">0.871</span></td>
-</tr>
-<tr class="even">
-<td>Toothache and probe does not catch</td>
-<td style="text-align: right;"><span class="math inline">0.158</span></td>
+<td>Hidden</td>
+<td>Probe catch <span class="math inline">H</span></td>
+<td>Add over both possible values</td>
 </tr>
 </tbody>
 </table>
-<div class="takeaway">
-<p>More evidence can raise or lower a particular hypothesis’s probability. The direction depends on what was observed.</p>
+<p>A <strong>hidden variable</strong> is in the model but is neither queried nor observed.</p>
+<div class="question">
+<p>We did not observe a probe result. Would setting <span class="math inline">H=\text{false}</span> still answer our question?</p>
 </div>
+<div class="fragment takeaway" data-fragment-index="0">
+<p>No.&nbsp;That adds an observation we do not have and changes the question to <span class="math inline">P(C\mid T,\neg H)</span>.</p>
+</div>
+<aside class="notes">
+<p>Variable roles depend on the query, not on permanent labels in the model. H becomes evidence if a probe result is observed. If the query were P(H given C), H would be the query, C evidence, and T hidden.</p>
+<p>[Sources] - UC Berkeley CS 188, Inference by Enumeration. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="reversing-a-conditional" class="slide level2">
+<section id="filter" class="slide level2 inference22-slide">
+<h2>Step 1: Filter by the Evidence</h2>
+<p><strong>Filtering</strong> keeps only complete assignments that match what we observed. Here, <span class="math inline">T=\text{true}</span>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Cavity <span class="math inline">C</span></th>
+<th>Probe catch <span class="math inline">H</span></th>
+<th style="text-align: right;">Retained joint probability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>true</td>
+<td>true</td>
+<td style="text-align: right;">0.108</td>
+</tr>
+<tr class="even">
+<td>true</td>
+<td>false</td>
+<td style="text-align: right;">0.012</td>
+</tr>
+<tr class="odd">
+<td>false</td>
+<td>true</td>
+<td style="text-align: right;">0.016</td>
+</tr>
+<tr class="even">
+<td>false</td>
+<td>false</td>
+<td style="text-align: right;">0.064</td>
+</tr>
+</tbody>
+</table>
+<p>The four assignments with <span class="math inline">T=\text{false}</span> do not match the evidence.</p>
+<div class="fragment takeaway" data-fragment-index="0">
+<p>The retained entries sum to <span class="math inline">P(T)=0.20</span>. They are still joint probabilities. We have not rescaled them yet.</p>
+</div>
+<aside class="notes">
+<p>Filtering here means selecting rows of a joint table. It is not the separate time-series filtering problem discussed in temporal models. If the original table is laid out as two rows and four columns, this operation keeps its two toothache columns. The long-form table here lists the four surviving assignments explicitly.</p>
+<p>[Sources] - AIMA Section 12.3. UC Berkeley CS 188, Inference by Enumeration. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sum-hidden" class="slide level2 inference22-slide">
+<h2>Step 2: Sum the Hidden Values</h2>
+<p>Add the two probe possibilities <strong>separately for each cavity outcome</strong>.</p>
+<p><img data-src="imgs/drawio/lec22/summed-masses.png" class="inference22-sums" alt="For cavity true, the masses 0.108 with a catch and 0.012 without a catch sum to 0.12. For cavity false, 0.016 and 0.064 sum to 0.08. The two cavity outcomes stay separate."></p>
+<p>Each total is an <strong>unnormalized weight</strong>: a nonnegative value before rescaling to sum to <span class="math inline">1</span>.</p>
+<p><span class="math display">w_C=P(C,T)=0.12,\qquad w_{\neg C}=P(\neg C,T)=0.08.</span></p>
+<div class="takeaway">
+<p>The hidden variable <span class="math inline">H</span> has been summed out. Cavity status <span class="math inline">C</span> remains the query.</p>
+</div>
+<aside class="notes">
+<p>These particular weights are joint probabilities with the observed event. Weights in other algorithms can have a different common scale; normalizing still works if they are proportional to the desired probabilities and their sum is positive. The subscripts on w label the true and false cavity outcomes.</p>
+<p>[Sources] - AIMA Section 12.3. Original draw.io diagram using the AIMA table entries. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="normalize" class="slide level2 inference22-slide">
+<h2>Step 3: Normalize the Weights</h2>
+<p><strong>Normalization</strong> divides each nonnegative weight by the sum of all the weights. Here that sum is <span class="math inline">P(T)=0.12+0.08=0.20</span>.</p>
+<div class="fragment" data-fragment-index="0">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Query outcome</th>
+<th style="text-align: right;">Weight</th>
+<th style="text-align: right;">Conditional probability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Cavity</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;"><span class="math inline">P(C\mid T)=0.12/0.20=0.60</span></td>
+</tr>
+<tr class="even">
+<td>No cavity</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;"><span class="math inline">P(\neg C\mid T)=0.08/0.20=0.40</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p>The <strong>normalizing constant</strong> <span class="math inline">\alpha</span> is the reciprocal of the total. Multiplying by it gives the same result:</p>
+<p><span class="math display">\alpha=\frac{1}{0.20}=5,\qquad \alpha(0.12,0.08)=(0.60,0.40).</span></p>
+</div>
+<div class="takeaway">
+<p>The total must be positive. If the evidence has probability <span class="math inline">0</span> in this discrete model, this conditional probability is undefined.</p>
+</div>
+<aside class="notes">
+<p>The two conditional probabilities sum to one. Do not divide by the full table’s total of one: after observing a toothache, the relevant total is 0.20. Alpha is not a new probability; its value can exceed one.</p>
+<p>Zero-probability evidence may reveal an inadequate model or an input error. It does not justify silently substituting a uniform distribution.</p>
+<p>[Sources] - Supplied Beamer lecture, normalization using alpha. AIMA Section 12.3. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="enumeration" class="slide level2 inference22-slide">
+<h2>Inference by Enumeration</h2>
+<p><strong>Enumeration</strong> means checking possible complete assignments in the model.</p>
+<p><img data-src="imgs/drawio/lec22/inference-workflow.png" class="inference22-workflow" alt="Filter: keep assignments matching evidence. Sum: add hidden values for each query outcome. Normalize: divide each weight by their total."></p>
+<p>For <span class="math inline">P(C\mid T)</span>, we kept the toothache assignments, summed over the probe result, and divided by <span class="math inline">0.20</span>.</p>
+<div class="takeaway">
+<p>This is <strong>exact inference</strong>: it computes the model’s probabilities without estimating them from random samples. Its accuracy still depends on the model.</p>
+</div>
+<aside class="notes">
+<p>An exact calculation is exact relative to the supplied distribution, even if that distribution is a simplified description of reality. The method extends to multiple query variables: preserve each joint query assignment until the final normalization.</p>
+<p>[Sources] - UC Berkeley CS 188, Inference by Enumeration: https://inst.eecs.berkeley.edu/~cs188/textbook/bayes-nets/inference.html. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="more-evidence" class="slide level2 inference22-slide">
+<h2>Two Possible Probe Results</h2>
+<p>With a toothache, <span class="math inline">P(C\mid T)=0.60</span>. Now observe the probe result.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">Catch <span class="math inline">H</span></th>
+<th style="text-align: right;">No catch <span class="math inline">\neg H</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Cavity <span class="math inline">C</span></td>
+<td style="text-align: right;">0.108</td>
+<td style="text-align: right;">0.012</td>
+</tr>
+<tr class="even">
+<td>No cavity <span class="math inline">\neg C</span></td>
+<td style="text-align: right;">0.016</td>
+<td style="text-align: right;">0.064</td>
+</tr>
+</tbody>
+</table>
+<div class="question">
+<p>Compute <span class="math inline">P(C\mid T,H)</span> and <span class="math inline">P(C\mid T,\neg H)</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="0">
+<p><span class="math display">P(C\mid T,H)=\frac{0.108}{0.108+0.016}\approx0.871.</span></p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><span class="math display">P(C\mid T,\neg H)=\frac{0.012}{0.012+0.064}\approx0.158.</span></p>
+</div>
+<div class="fragment takeaway" data-fragment-index="2">
+<p>More evidence can raise or lower a particular explanation’s probability.</p>
+</div>
+<aside class="notes">
+<p>Allow students to choose the relevant column and write both denominators before revealing the answers. No hidden variable remains once both T and H are observed in this three-variable model. The displayed numbers remain joint masses from the original table, so each selected column must be normalized separately.</p>
+<p>[Sources] - AIMA toothache distribution. Two-evidence practice written for this course. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="conditional-direction" class="slide level2 inference22-slide">
 <h2>Reversing a Conditional</h2>
-<p>The same joint mass appears in both numerators:</p>
+<p>From the joint table, <span class="math inline">P(C)=0.20</span>, <span class="math inline">P(H)=0.34</span>, and</p>
 <p><span class="math display">P(C,H)=0.108+0.072=0.18.</span></p>
 <table class="caption-top">
 <thead>
@@ -621,34 +639,14 @@ P(C\mid T,\neg H)=\frac{0.012}{0.012+0.064}\approx0.158.
 </tbody>
 </table>
 <div class="question">
-<p>Why do the answers differ even though both use <span class="math inline">P(C,H)</span>?</p>
+<p>Why do the answers differ even though the numerator is the same?</p>
 </div>
-<div class="fragment">
-<p>They condition on different events, so they divide by different evidence probabilities.</p>
-</div>
-</section>
-<section id="can-we-multiply-the-marginals" class="slide level2">
-<h2>Can We Multiply the Marginals?</h2>
-<p>From the toothache table:</p>
-<p><span class="math display">P(T)=0.20,\quad P(H)=0.34,\quad P(T,H)=0.124.</span></p>
-<div class="question">
-<p>Are toothache and probe catches independent in this model?</p>
-</div>
-<div class="fragment">
-<p><span class="math display">P(T)P(H)=0.20\times0.34=0.068\ne0.124.</span> <strong>No.</strong> Multiplying the marginals would give the wrong joint probability.</p>
-</div>
-</section>
-<section id="conditional-independence-is-different" class="slide level2">
-<h2>Conditional Independence Is Different</h2>
-<p>Within the cavity group:</p>
-<p><span class="math display">P(T\mid C)=0.6,\qquad P(H\mid C)=0.9.</span> <span class="math display">P(T,H\mid C)=\frac{0.108}{0.2}=0.54=0.6\times0.9.</span></p>
-<p>Within the no-cavity group:</p>
-<p><span class="math display">P(T\mid\neg C)=0.1,\quad P(H\mid\neg C)=0.2,</span> <span class="math display">P(T,H\mid\neg C)=0.02=0.1\times0.2.</span></p>
-<div class="takeaway">
-<p>This table has <span class="math inline">T\perp H\mid C</span>, although <span class="math inline">T</span> and <span class="math inline">H</span> are not marginally independent.</p>
+<div class="fragment takeaway" data-fragment-index="0">
+<p>The given events differ. Each denominator is the probability of the event after the bar.</p>
 </div>
 <aside class="notes">
-<p>The symbol perpendicular means independence. Given each Boolean value of C, the joint table for Boolean T,H factorizes. State explicitly that this is a property of the toy distribution, not a universal claim about medical symptoms. It motivates the following Bayesian-network lecture.</p>
+<p>P(H)=0.108+0.072+0.016+0.144=0.34. The numerator is the same intersection in both directions, but conditioning selects different reference populations. This connects directly to Bayes’ rule from Lecture 21.</p>
+<p>[Sources] - AIMA Sections 12.3 and 12.5. [/Sources]</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -661,44 +659,55 @@ P(C\mid T,\neg H)=\frac{0.012}{0.012+0.064}\approx0.158.
           display:block!important;
       }</style></aside>
 </section>
-<section id="common-inference-mistakes" class="slide level2">
-<h2>Common Inference Mistakes</h2>
+<section id="independence" class="slide level2 inference22-slide">
+<h2>Marginal Independence</h2>
+<p><strong>Marginal independence</strong> is <strong>ordinary independence</strong>: learning one variable leaves the other’s distribution unchanged, without conditioning on a third variable.</p>
+<p>Let <span class="math inline">X</span> and <span class="math inline">Y</span> be the results of two fair coin tosses. Our model gives:</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 20%">
+<col style="width: 26%">
+<col style="width: 26%">
+<col style="width: 26%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Mistake</th>
-<th>What goes wrong</th>
+<th>First toss <span class="math inline">X</span></th>
+<th style="text-align: right;"><span class="math inline">Y=\text{heads}</span></th>
+<th style="text-align: right;"><span class="math inline">Y=\text{tails}</span></th>
+<th style="text-align: right;">Marginal <span class="math inline">P(X)</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Treat an unobserved variable as false</td>
-<td>Adds evidence that was never observed</td>
+<td>heads</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;"><strong>0.50</strong></td>
 </tr>
 <tr class="even">
-<td>Sum the numerator across both query outcomes</td>
-<td>Loses the distinction we are trying to infer</td>
+<td>tails</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;"><strong>0.50</strong></td>
 </tr>
 <tr class="odd">
-<td>Use the full table total as denominator</td>
-<td>Fails to condition on the evidence</td>
-</tr>
-<tr class="even">
-<td>Multiply marginals without checking independence</td>
-<td>Changes the probability model</td>
-</tr>
-<tr class="odd">
-<td>Normalize weights that sum to zero</td>
-<td>Conditions on an impossible event in the model</td>
+<td>Marginal <span class="math inline">P(Y)</span></td>
+<td style="text-align: right;"><strong>0.50</strong></td>
+<td style="text-align: right;"><strong>0.50</strong></td>
+<td style="text-align: right;">1.00</td>
 </tr>
 </tbody>
 </table>
+<div class="fragment takeaway" data-fragment-index="0">
+<p><span class="math display">P(X=\text{heads}\mid Y=\text{heads})=\frac{0.25}{0.50}=0.50.</span></p>
+<p>The first toss stays 50% heads after learning the second result. Every joint cell also equals the product of its two marginals: <span class="math inline">0.25=0.50(0.50)</span>.</p>
+</div>
 <aside class="notes">
-<p>For discrete conditional probability, P(E=e)=0 makes the ratio undefined. This does not prove the real-world observation impossible; it may reveal a deficient model or data-entry error. Do not replace the result by a uniform distribution without stating a new modeling assumption.</p>
+<p>The right column and bottom row contain marginal probabilities, obtained by summing over the other toss. The bottom-right 1.00 is the total probability, not an additional outcome. The four inner cells form the full joint distribution of X and Y.</p>
+<p>The supplied joint table is the modeling assumption: fairness alone does not imply independence of two tosses. All four pairs have probability one quarter here. Check factorization for every pair, or equivalently note that conditioning on either possible second result leaves the first toss’s full distribution unchanged. The same statement holds with the two tosses interchanged.</p>
+<p>Marginal independence is ordinary independence. The qualifier marginal emphasizes the contrast with conditional independence, rather than naming a different notion. It describes X and Y without conditioning on a third variable. The next slide returns to the dental example to introduce independence within a known group. These are different models; the coin example does not claim that the dental observations are marginally independent.</p>
+<p>[Sources] - AIMA Section 12.4, independence. Original fair-coin example and joint table. [/Sources]</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -711,59 +720,91 @@ P(C\mid T,\neg H)=\frac{0.012}{0.012+0.064}\approx0.158.
           display:block!important;
       }</style></aside>
 </section>
-<section id="full-joint-tables-do-not-scale" class="slide level2">
-<h2>Full Joint Tables Do Not Scale</h2>
-<p>For <span class="math inline">n</span> binary variables, a full joint table has:</p>
-<p><span class="math display">
-2^n
-</span></p>
-<p>entries.</p>
+<section id="conditional-independence" class="slide level2 inference22-slide">
+<h2>Conditional Independence</h2>
+<p>Back to the toothache model: <strong>conditional independence</strong> means that, once cavity status is known, learning the probe result gives no further information about toothache.</p>
 <table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 26%">
+<col style="width: 26%">
+<col style="width: 26%">
+</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: right;">Variables</th>
-<th style="text-align: right;">Entries</th>
+<th>Known group</th>
+<th style="text-align: right;"><span class="math inline">P(T\mid\text{group})</span></th>
+<th style="text-align: right;"><span class="math inline">P(H\mid\text{group})</span></th>
+<th style="text-align: right;"><span class="math inline">P(T,H\mid\text{group})</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">10</td>
-<td style="text-align: right;"><span class="math inline">2^{10}=1024</span></td>
+<td>Cavity</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;"><span class="math inline">0.54=0.60(0.90)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">50</td>
-<td style="text-align: right;"><span class="math inline">2^{50}\approx 10^{15}</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">100</td>
-<td style="text-align: right;"><span class="math inline">2^{100}\approx 10^{30}</span></td>
+<td>No cavity</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;"><span class="math inline">0.02=0.10(0.20)</span></td>
 </tr>
 </tbody>
 </table>
-<div class="question">
-<p>The table is exact, but exactness becomes useless if we cannot store or query it.</p>
+<p>The joint probability equals the product <strong>within each group</strong>.</p>
+<div class="fragment takeaway" data-fragment-index="0">
+<p>We write <span class="math inline">T\perp H\mid C</span>: <span class="math inline">\perp</span> means independent, and <span class="math inline">\mid C</span> means given cavity status, for both values of <span class="math inline">C</span>.</p>
 </div>
+<aside class="notes">
+<p>Here C after the bar names the conditioning random variable, not only its true event. The condition holds for both its true and false groups. In the cavity group, P(T,H|C)=0.108/0.20=0.54. In the no-cavity group, 0.016/0.80=0.02. Checking the true-true cell together with the two Boolean marginals establishes factorization for all four T,H outcomes in each group.</p>
+<p>This is a property of this toy distribution, not a universal claim about dental observations. Marginal dependence and conditional independence can coexist because mixing different cavity-status groups creates a dependence.</p>
+<p>[Sources] - AIMA Section 12.5.2, combining evidence using conditional independence. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="the-need-for-structure" class="slide level2">
-<h2>The Need for Structure</h2>
-<p>Full joint inference requires summing many entries.</p>
-<p>Structured representations reduce the work by exploiting conditional independence.</p>
-<div class="inference-figure">
-<svg viewbox="0 0 1000 200" role="img" aria-label="Bayesian network with cavity C pointing to toothache T and probe catches H. The model states that T and H are conditionally independent given C.">
-<defs><marker id="inference-bayes-arrow" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="9" markerheight="9" markerunits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#5d6470"></path></marker></defs>
-<path d="M440 80L270 134M560 80L730 134" stroke="#5d6470" stroke-width="3" marker-end="url(#inference-bayes-arrow)"></path>
-<g stroke-width="2"><rect x="390" y="15" width="220" height="67" rx="7" fill="#e8f6f5" stroke="#007c89"></rect><rect x="70" y="133" width="290" height="62" rx="7" fill="#fff4db" stroke="#b7791f"></rect><rect x="640" y="133" width="290" height="62" rx="7" fill="#fdecef" stroke="#b8325f"></rect></g>
-<g font-family="sans-serif" font-size="29" text-anchor="middle" fill="#202124"><text x="500" y="59">Cavity C</text><text x="215" y="174">Toothache T</text><text x="785" y="174">Probe catches H</text></g>
-</svg>
-</div>
+<section id="structured-models" class="slide level2 inference22-slide">
+<h2>Compact Probability Models</h2>
+<p>A full table for <span class="math inline">n</span> binary variables has <span class="math inline">2^n</span> entries: each new variable doubles its size. At <span class="math inline">n=50</span>, that is about <span class="math inline">10^{15}</span> entries.</p>
+<p>A <strong>Bayesian network</strong> is a graph of variables with local probability tables. Arrows identify the variables each local probability conditions on.</p>
+<p><img data-src="imgs/drawio/lec22/cavity-network.png" class="inference22-network" alt="Cavity C points to toothache T and probe catch H. The model uses separate conditional probabilities for T and H given C, expressing their conditional independence."></p>
+<p><strong>Factorization</strong> writes the joint as a product of smaller distributions:</p>
 <p><span class="math display">P(C,T,H)=P(C)P(T\mid C)P(H\mid C).</span></p>
 <div class="takeaway">
-<p>Bayesian networks can store the distribution compactly. Exact inference can still be expensive, depending on the graph.</p>
+<p>Conditional independence makes this model compact. Exact inference can still be expensive in larger networks.</p>
 </div>
+<aside class="notes">
+<p>In the graph, a node represents a random variable. An arrow identifies a variable used in the target’s local conditional probability. This is a preview; the next lecture defines the graph rules and tables in detail. Graph structure by itself is not proof of causation.</p>
+<p>A general chain rule gives P(C,T,H)=P(C)P(T|C)P(H|C,T). The conditional-independence property lets us replace the last factor with P(H|C). For example, 0.20 times 0.60 times 0.90 reproduces 0.108. A full binary table has 2^n entries but only 2^n-1 independent free probabilities because they sum to one.</p>
+<p>[Sources] - Supplied Beamer lecture, full-joint storage growth. AIMA Sections 13.1-13.2. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="exit-problem-a-robots-sensor" class="slide level2">
-<h2>Exit Problem: A Robot’s Sensor</h2>
-<p>A robot occupies either the left or right room. Its sensor flashes or stays dark.</p>
+<section id="robot-practice" class="slide level2 inference22-slide scrollable">
+<h2>Practice: A Robot’s Sensor</h2>
+<p>A robot occupies the left or right room. Its sensor may flash in either room. These are joint probabilities in a toy model.</p>
+<div class="columns">
+<div class="column" style="width:46%;">
+<p><img data-src="imgs/drawio/lec22/robot-rooms.png" class="inference22-rooms" alt="A two-room floor plan, with a left room and a right room connected by a doorway. The robot's location is unknown."></p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -775,33 +816,77 @@ P(C\mid T,\neg H)=\frac{0.012}{0.012+0.064}\approx0.158.
 <tbody>
 <tr class="odd">
 <td>Left</td>
-<td style="text-align: right;"><span class="math inline">0.36</span></td>
-<td style="text-align: right;"><span class="math inline">0.24</span></td>
+<td style="text-align: right;">0.36</td>
+<td style="text-align: right;">0.24</td>
 </tr>
 <tr class="even">
 <td>Right</td>
-<td style="text-align: right;"><span class="math inline">0.08</span></td>
-<td style="text-align: right;"><span class="math inline">0.32</span></td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.32</td>
 </tr>
 </tbody>
 </table>
+</div><div class="column" style="width:50%;">
 <div class="question">
-<p>Compute <span class="math inline">P(\text{Left})</span>, <span class="math inline">P(\text{Left}\mid\text{Flash})</span>, and <span class="math inline">P(\text{Flash}\mid\text{Left})</span>.</p>
+<p>Find:</p>
+<ol type="1">
+<li><span class="math inline">P(\text{Left})</span></li>
+<li><span class="math inline">P(\text{Left}\mid\text{Flash})</span></li>
+<li><span class="math inline">P(\text{Flash}\mid\text{Left})</span></li>
+</ol>
 </div>
-<div class="fragment">
-<p><span class="math display">0.60,\qquad \frac{0.36}{0.44}\approx0.818,\qquad \frac{0.36}{0.60}=0.60.</span></p>
+<div class="fragment" data-fragment-index="0">
+<p><strong>Answers, in the same order:</strong></p>
+<ol type="1">
+<li><span class="math inline">0.36+0.24=0.60</span></li>
+<li><span class="math inline">0.36/0.44\approx0.818</span></li>
+<li><span class="math inline">0.36/0.60=0.60</span></li>
+</ol>
 </div>
+</div></div>
+<aside class="notes">
+<p>All four table entries sum to one. The marginal P(Left) uses the whole left row. P(Flash)=0.36+0.08=0.44 supplies the second answer’s denominator, while P(Left)=0.60 supplies the third. Ask students to identify the denominator before calculating.</p>
+<p>[Sources] - Original course exercise and draw.io floor plan. Probabilities are illustrative, not measured sensor performance. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
+<section id="takeaways" class="slide level2 inference22-slide">
+<h2>Takeaways</h2>
 <ul>
-<li>Full joint distributions answer any probability query in principle.</li>
-<li>Marginalization sums out variables.</li>
-<li>Conditioning divides by the evidence probability.</li>
-<li>Normalization rescales relative values into probabilities.</li>
-<li>Full joint tables grow exponentially, so we need structured models.</li>
+<li>Identify the query, observed evidence, and hidden variables.</li>
+<li>Filter by evidence, sum hidden values, then normalize.</li>
+<li>Unknown does not mean false. Keep query outcomes separate.</li>
+<li>Divide by the evidence probability, which must be positive.</li>
+<li>Check independence before replacing a joint probability with a product.</li>
+<li>Conditional independence can make a model smaller.</li>
 </ul>
+<div class="takeaway">
+<p>Before calculating, say what is known, what is unknown, and which probability belongs in the denominator.</p>
+</div>
 <p><a href="../asset_credits.html#lec22" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
+<aside class="notes">
+<p>Leave time for questions on the robot exercise or HW4. The next lecture develops Bayesian networks and introduces sampling when exact inference is expensive.</p>
+<p>[Sources] - AIMA fourth edition, Sections 12.3-12.5 and 13.1-13.2. [/Sources]</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 </section>

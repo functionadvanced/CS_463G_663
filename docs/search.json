@@ -676,7 +676,7 @@
     "href": "index.html#course-schedule",
     "title": "CS 463G & CS 663: (Intro to) Artificial Intelligence",
     "section": "Course Schedule",
-    "text": "Course Schedule\nThis schedule (including homework) is tentative and may be adjusted as the semester unfolds. The course website is the source for assignment specifications, dates, starter files, and updates; Canvas is used for submissions, grading, and lecture recordings. Official university dates are listed on the UK Academic Calendar, and the final exam period follows the UK Examination Schedule.\n\n\n\n#\nDate\nContent\n\n\n\n\n1\nMon, Aug 24\nCourse introduction, syllabus, grading, and course logisticsLecture 0: Language and ToolsTextbook: Artificial Intelligence: A Modern Approach\n\n\n2\nWed, Aug 26\nLecture 1: Introduction to AIAIMA 1.1-1.2\n\n\n3\nFri, Aug 28\nLecture 2: Agents and EnvironmentsAIMA 2.1-2.2\n\n\n4\nMon, Aug 31\nLecture 2b: Designing Intelligent AgentsPEAS, agent architectures, and a Python vacuum-agent demonstrationAIMA 2.3-2.4Code: Vacuum agents demo\n\n\n5\nWed, Sep 2\nLecture 3: The Nature of EnvironmentsAttendance Verification on Canvas\n\n\n6\nFri, Sep 4\nLecture 4: Introduction to SearchAIMA 3.1-3.2\n\n\n-\nMon, Sep 7\nNo class: Labor Day\n\n\n7\nWed, Sep 9\nLecture 5: BFS and DFSAIMA 3.4; practice BFS/DFS problemsCode: BFS and DFSHomework announced: Homework 1 - Keys, Doors, and Shortest Paths\n\n\n8\nFri, Sep 11\nLecture 6: Uniform-Cost SearchPractice Dijkstra’s algorithmCode: Uniform-cost search\n\n\n9\nMon, Sep 14\nLecture 7: Informed SearchAIMA 3.5Code: A* search\n\n\n10\nWed, Sep 16\nLecture 8: Search Review\n\n\n11\nFri, Sep 18\nLecture 9: Adversarial SearchAIMA U.S. 5.1-5.3 or AIMA Global 6.1-6.3Code: Tic-tac-toe\n\n\n12\nMon, Sep 21\nLecture 10: Alpha-Beta PruningCode: Alpha-beta pruningHomework announced: Homework 2 - Reversi Agents\n\n\n13\nWed, Sep 23\nLecture 11: Local SearchAIMA 4.1-4.2Code: Simulated annealing, 8-puzzleHomework due: Homework 1\n\n\n14\nFri, Sep 25\nLecture 12: Genetic AlgorithmCode: Genetic 8-queens\n\n\n15\nMon, Sep 28\nLecture 13: Constraint Satisfaction ProblemsAIMA U.S. 6.1-6.3 or AIMA Global 5.1-5.3\n\n\n16\nWed, Sep 30\nLecture 14: CSP ConsistencyCode: AC-3\n\n\n17\nFri, Oct 2\nLecture 15: CSP SearchCode: Sudoku\n\n\n18\nMon, Oct 5\nLecture 16: LogicPropositions, connectives, translation, truth tables, and equivalenceAIMA 7.1-7.4Homework due: Homework 2\n\n\n19\nWed, Oct 7\nLecture 17: Propositional InferenceModels, entailment, CNF, and resolution; worked examples and practiceAIMA 7.4-7.6\n\n\n20\nFri, Oct 9\nLecture 18: First-Order LogicMidterm review: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Homework announced: Homework 3 - Logic Toolkit\n\n\n21\nMon, Oct 12\nMidterm exam in classPreparation: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Scope: Lectures 1–16, including Lecture 2b; Lectures 17 and 18 are excluded.\n\n\n22\nWed, Oct 14\nLecture 19: PlanningAIMA 11.1: Definition of Classical Planning\n\n\n23\nFri, Oct 16\nLecture 20: Planning AlgorithmsAIMA 11.2-11.4: Classical planning algorithms, heuristics, and hierarchical planning\n\n\n24\nMon, Oct 19\nLecture 21: ProbabilityNo in-person class. The lecture recording has been uploaded to Canvas under Files. Please watch it instead.AIMA Appendix A.3; AIMA 12.1-12.5Homework announced: Homework 4 - Probability in Motion\n\n\n25\nWed, Oct 21\nLecture 22: Probabilistic Inference\n\n\n26\nFri, Oct 23\nLecture 23: Bayes NetsAIMA 13.1-13.4Homework due: Homework 3\n\n\n-\nMon, Oct 26\nNo class: Fall Break\n\n\n27\nWed, Oct 28\nLecture 24: Machine LearningAIMA 19.1-19.2Code: KNN on MNIST\n\n\n28\nFri, Oct 30\nLecture 25: Bias, Variance, and OverfittingCode: Linear regression\n\n\n29\nMon, Nov 2\nLecture 26: Decision TreesAIMA 19.3Homework due: Homework 4\n\n\n30\nWed, Nov 4\nLecture 27: Practical PyTorchTensors, data loaders, models, autograd, training, evaluation, and debugging\n\n\n31\nFri, Nov 6\nLecture 28: Deep LearningAIMA U.S. 21.1 or AIMA Global 22.1Code: Backpropagation\n\n\n32\nMon, Nov 9\nLecture 29: Convolutional Neural NetworksCode: CNNHomework announced: Homework 5 - Two-Digit MNIST with a CNN\n\n\n33\nWed, Nov 11\nLecture 30: Reinforcement LearningAIMA 16.1-16.3 and 16.5\n\n\n34\nFri, Nov 13\nLecture 31: Multi-Armed Bandits\n\n\n35\nMon, Nov 16\nLecture 32: Value-Based Model-Free RL\n\n\n36\nWed, Nov 18\nLecture 33: Policy-Based Model-Free RLHomework announced: Homework 6 - Actor-Critic for Buckshot Roulette\n\n\n37\nFri, Nov 20\nLecture 34: PPO and GRPO\n\n\n38\nMon, Nov 23\nLecture 35: Generative Machine LearningAIMA 25.1 and 25.4Homework due: Homework 5\n\n\n-\nWed, Nov 25\nNo class: Thanksgiving Break\n\n\n-\nFri, Nov 27\nNo class: Thanksgiving Break\n\n\n39\nMon, Nov 30\nLecture 36: Autoregressive Models\n\n\n40\nWed, Dec 2\nLecture 37: TransformersHomework due: Homework 6\n\n\n41\nFri, Dec 4\nLecture 38: Transformers continued\n\n\n42\nMon, Dec 7\nLecture 39: Cutting-Edge AI TopicsLoRA, DPO, agent skills, evaluation harnessesPrep Day: no major assignments, quizzes, or exams\n\n\n43\nWed, Dec 9\nNew topic placeholder: student questions, demos, or optional wrap-upPrep Day; last day of classesFinal exam review\n\n\n\nFinal exam: Monday, December 14, 2026, 10:30 AM-12:30 PM (official UK examination schedule)."
+    "text": "Course Schedule\nThis schedule (including homework) is tentative and may be adjusted as the semester unfolds. The course website is the source for assignment specifications, dates, starter files, and updates; Canvas is used for submissions, grading, and lecture recordings. Official university dates are listed on the UK Academic Calendar, and the final exam period follows the UK Examination Schedule.\n\n\n\n#\nDate\nContent\n\n\n\n\n1\nMon, Aug 24\nCourse introduction, syllabus, grading, and course logisticsLecture 0: Language and ToolsTextbook: Artificial Intelligence: A Modern Approach\n\n\n2\nWed, Aug 26\nLecture 1: Introduction to AIAIMA 1.1-1.2\n\n\n3\nFri, Aug 28\nLecture 2: Agents and EnvironmentsAIMA 2.1-2.2\n\n\n4\nMon, Aug 31\nLecture 2b: Designing Intelligent AgentsPEAS, agent architectures, and a Python vacuum-agent demonstrationAIMA 2.3-2.4Code: Vacuum agents demo\n\n\n5\nWed, Sep 2\nLecture 3: The Nature of EnvironmentsAttendance Verification on Canvas\n\n\n6\nFri, Sep 4\nLecture 4: Introduction to SearchAIMA 3.1-3.2\n\n\n-\nMon, Sep 7\nNo class: Labor Day\n\n\n7\nWed, Sep 9\nLecture 5: BFS and DFSAIMA 3.4; practice BFS/DFS problemsCode: BFS and DFSHomework announced: Homework 1 - Keys, Doors, and Shortest Paths\n\n\n8\nFri, Sep 11\nLecture 6: Uniform-Cost SearchPractice Dijkstra’s algorithmCode: Uniform-cost search\n\n\n9\nMon, Sep 14\nLecture 7: Informed SearchAIMA 3.5Code: A* search\n\n\n10\nWed, Sep 16\nLecture 8: Search Review\n\n\n11\nFri, Sep 18\nLecture 9: Adversarial SearchAIMA U.S. 5.1-5.3 or AIMA Global 6.1-6.3Code: Tic-tac-toe\n\n\n12\nMon, Sep 21\nLecture 10: Alpha-Beta PruningCode: Alpha-beta pruningHomework announced: Homework 2 - Reversi Agents\n\n\n13\nWed, Sep 23\nLecture 11: Local SearchAIMA 4.1-4.2Code: Simulated annealing, 8-puzzleHomework due: Homework 1\n\n\n14\nFri, Sep 25\nLecture 12: Genetic AlgorithmCode: Genetic 8-queens\n\n\n15\nMon, Sep 28\nLecture 13: Constraint Satisfaction ProblemsAIMA U.S. 6.1-6.3 or AIMA Global 5.1-5.3\n\n\n16\nWed, Sep 30\nLecture 14: CSP ConsistencyCode: AC-3\n\n\n17\nFri, Oct 2\nLecture 15: CSP SearchCode: Sudoku\n\n\n18\nMon, Oct 5\nLecture 16: LogicPropositions, connectives, translation, truth tables, and equivalenceAIMA 7.1-7.4Homework due: Homework 2\n\n\n19\nWed, Oct 7\nLecture 17: Propositional InferenceModels, entailment, CNF, and resolution; worked examples and practiceAIMA 7.4-7.6\n\n\n20\nFri, Oct 9\nLecture 18: First-Order LogicMidterm review: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Homework announced: Homework 3 - Logic Toolkit\n\n\n21\nMon, Oct 12\nMidterm exam in classPreparation: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Scope: Lectures 1–16, including Lecture 2b; Lectures 17 and 18 are excluded.\n\n\n22\nWed, Oct 14\nLecture 19: PlanningAIMA 11.1: Definition of Classical Planning\n\n\n23\nFri, Oct 16\nLecture 20: Planning AlgorithmsAIMA 11.2-11.4: Classical planning algorithms, heuristics, and hierarchical planning\n\n\n24\nMon, Oct 19\nLecture 21: ProbabilityNo in-person class. The lecture recording has been uploaded to Canvas under Files. Please watch it instead.AIMA Appendix A.3; AIMA 12.1-12.5Homework announced: Homework 4 - Probability in Motion\n\n\n25\nWed, Oct 21\nLecture 22: Probabilistic InferenceAIMA 12.3-12.5; preview of 13.1-13.2\n\n\n26\nFri, Oct 23\nLecture 23: Bayes NetsAIMA 13.1-13.4Homework due: Homework 3\n\n\n-\nMon, Oct 26\nNo class: Fall Break\n\n\n27\nWed, Oct 28\nLecture 24: Machine LearningAIMA 19.1-19.2Code: KNN on MNIST\n\n\n28\nFri, Oct 30\nLecture 25: Bias, Variance, and OverfittingCode: Linear regression\n\n\n29\nMon, Nov 2\nLecture 26: Decision TreesAIMA 19.3Homework due: Homework 4\n\n\n30\nWed, Nov 4\nLecture 27: Practical PyTorchTensors, data loaders, models, autograd, training, evaluation, and debugging\n\n\n31\nFri, Nov 6\nLecture 28: Deep LearningAIMA U.S. 21.1 or AIMA Global 22.1Code: Backpropagation\n\n\n32\nMon, Nov 9\nLecture 29: Convolutional Neural NetworksCode: CNNHomework announced: Homework 5 - Two-Digit MNIST with a CNN\n\n\n33\nWed, Nov 11\nLecture 30: Reinforcement LearningAIMA 16.1-16.3 and 16.5\n\n\n34\nFri, Nov 13\nLecture 31: Multi-Armed Bandits\n\n\n35\nMon, Nov 16\nLecture 32: Value-Based Model-Free RL\n\n\n36\nWed, Nov 18\nLecture 33: Policy-Based Model-Free RLHomework announced: Homework 6 - Actor-Critic for Buckshot Roulette\n\n\n37\nFri, Nov 20\nLecture 34: PPO and GRPO\n\n\n38\nMon, Nov 23\nLecture 35: Generative Machine LearningAIMA 25.1 and 25.4Homework due: Homework 5\n\n\n-\nWed, Nov 25\nNo class: Thanksgiving Break\n\n\n-\nFri, Nov 27\nNo class: Thanksgiving Break\n\n\n39\nMon, Nov 30\nLecture 36: Autoregressive Models\n\n\n40\nWed, Dec 2\nLecture 37: TransformersHomework due: Homework 6\n\n\n41\nFri, Dec 4\nLecture 38: Transformers continued\n\n\n42\nMon, Dec 7\nLecture 39: Cutting-Edge AI TopicsLoRA, DPO, agent skills, evaluation harnessesPrep Day: no major assignments, quizzes, or exams\n\n\n43\nWed, Dec 9\nNew topic placeholder: student questions, demos, or optional wrap-upPrep Day; last day of classesFinal exam review\n\n\n\nFinal exam: Monday, December 14, 2026, 10:30 AM-12:30 PM (official UK examination schedule)."
   },
   {
     "objectID": "index.html#references",
@@ -1096,7 +1096,7 @@
     "href": "asset_credits.html#lec22",
     "title": "Visual Asset Credits",
     "section": "Lecture 22: Probabilistic Inference",
-    "text": "Lecture 22: Probabilistic Inference\nCarried-over asset needing source verification: tooth.png.\nThe inference procedure and small Bayesian-network SVG diagrams are original course illustrations. The toothache probability table follows AIMA’s teaching example. The weather and robot-sensor exercises are illustrative course examples, not measurements. See also the UC Berkeley CS 188 inference notes."
+    "text": "Lecture 22: Probabilistic Inference\nThe hidden-value sums, filter/sum/normalize workflow, cavity network, and robot-room floor plan are original editable draw.io diagrams. Their source is joint-table-inference.drawio; the slides use PNG exports.\nThe toothache/cavity/probe-catch joint table follows Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig, fourth edition, Sections 12.3-12.5. The Bayesian-network preview follows Sections 13.1-13.2. The two-evidence and robot-sensor exercises are illustrative course examples, not clinical or measured sensor probabilities. See also the UC Berkeley CS 188 inference notes."
   },
   {
     "objectID": "asset_credits.html#lec23",
@@ -3325,102 +3325,11 @@
     "text": "What to Remember\n\nMachine learning builds models from data.\nSupervised learning uses labels; unsupervised learning finds structure; RL learns from reward.\nk-NN classifies by local similarity.\nPCA reduces dimension by finding high-variance directions.\nRL connects learning with sequential decision-making.\n\nAsset credits"
   },
   {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#probabilistic-inference",
-    "href": "slides/lec22_Probabilistic_Inference.html#probabilistic-inference",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Probabilistic Inference",
-    "text": "Probabilistic Inference\nProbabilistic inference computes unknown probabilities from known distributions and evidence."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#what-is-inference",
-    "href": "slides/lec22_Probabilistic_Inference.html#what-is-inference",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What Is Inference?",
-    "text": "What Is Inference?\n\nProbabilistic inference answers queries such as P(\\text{Query} \\mid \\text{Evidence}).\n\nExamples:\n\nGiven an umbrella observation, infer the probability of rain.\nGiven robot sensor readings, infer the robot’s location.\nGiven user behavior, infer a likely preference.\n\n\nThe distribution is the model; inference is how we ask questions of the model."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#full-joint-distribution",
-    "href": "slides/lec22_Probabilistic_Inference.html#full-joint-distribution",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Full Joint Distribution",
-    "text": "Full Joint Distribution\nA full joint distribution assigns probability to every complete assignment of variables.\nFor weather W and umbrella use U:\n\n\n\nWeather\nUmbrella\nP(W,U)\n\n\n\n\nSunny\nYes\n0.1\n\n\nSunny\nNo\n0.6\n\n\nRainy\nYes\n0.2\n\n\nRainy\nNo\n0.1\n\n\n\n\n\nP(U=\\text{Yes})=0.1+0.2=0.3"
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#the-toothache-model",
-    "href": "slides/lec22_Probabilistic_Inference.html#the-toothache-model",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "The Toothache Model",
-    "text": "The Toothache Model\n\n\n\n\n\nToothache illustration\n\n\n\nToy Boolean variables:\n\nC: cavity.\nT: toothache.\nH: probe catches.\n\nAn event such as C means C=\\text{true}.\n\n\n\n\n\nT,H\nT,\\neg H\n\\neg T,H\n\\neg T,\\neg H\n\n\n\n\nC\n0.108\n0.012\n0.072\n0.008\n\n\n\\neg C\n0.016\n0.064\n0.144\n0.576\n\n\n\nAll eight nonnegative entries sum to 1."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#query-1-pc-lor-t",
-    "href": "slides/lec22_Probabilistic_Inference.html#query-1-pc-lor-t",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Query 1: P(C \\lor T)",
-    "text": "Query 1: P(C \\lor T)\nIt is easier to use the complement:\n\nP(C \\lor T)=1-P(\\neg C,\\neg T)\n\n\nFrom the full joint table:\n\nP(\\neg C,\\neg T)=P(\\neg C,\\neg T,H)+P(\\neg C,\\neg T,\\neg H)\n\n\n\n\nP(\\neg C,\\neg T)=0.144+0.576=0.72\n\n\n\n\nP(C \\lor T)=1-0.72=0.28"
-  },
-  {
     "objectID": "slides/lec22_Probabilistic_Inference.html#marginalization",
     "href": "slides/lec22_Probabilistic_Inference.html#marginalization",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Marginalization",
-    "text": "Marginalization\nTo compute a marginal, sum out variables that are not in the query.\n\nP(C)=\\sum_T\\sum_H P(C,T,H)\n\n\nFor the cavity row:\n\nP(C)=0.108+0.012+0.072+0.008=0.2\n\n\n\n“Summing out” reduces a distribution over many variables to a distribution over fewer variables."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#query-2-pc-mid-t",
-    "href": "slides/lec22_Probabilistic_Inference.html#query-2-pc-mid-t",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Query 2: P(C \\mid T)",
-    "text": "Query 2: P(C \\mid T)\nKeep T=\\text{true} and sum over both values of H.\n\n\n\nQuantity\nMatching joint mass\n\n\n\n\nNumerator P(C,T)\n0.108+0.012=0.12\n\n\nOther outcome P(\\neg C,T)\n0.016+0.064=0.08\n\n\nEvidence probability P(T)\n0.12+0.08=0.20\n\n\n\n\n\nP(C \\mid T)=\\frac{P(C,T)}{P(T)}=\\frac{0.12}{0.2}=0.6"
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#normalization-with-alpha",
-    "href": "slides/lec22_Probabilistic_Inference.html#normalization-with-alpha",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Normalization with \\alpha",
-    "text": "Normalization with \\alpha\nFor query outcomes ordered as (C,\\neg C), first collect joint masses:\n\nw=(0.12,0.08).\n\n\nNormalize with:\n\n\\alpha=\\frac{1}{0.12+0.08}=5\n\n\n\n\n\\bigl(P(C\\mid T),P(\\neg C\\mid T)\\bigr)=(0.6,0.4).\n\n\n\nNormalization divides nonnegative weights by their positive sum. Here that sum is the evidence probability P(T)."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#normalization-picture",
-    "href": "slides/lec22_Probabilistic_Inference.html#normalization-picture",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Normalization Picture",
-    "text": "Normalization Picture\n\n\n\n\nThe relative ratio stays the same; only the total mass is rescaled."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#why-normalization-helps",
-    "href": "slides/lec22_Probabilistic_Inference.html#why-normalization-helps",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why Normalization Helps",
-    "text": "Why Normalization Helps\n\n\nValidity\n\nProbabilities must sum to 1.\nNormalization rescales values without changing their relative order.\n\n\nComputation\n\nOften the denominator is expensive.\nWe compute proportional values first.\nThen normalize at the end."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#softmax-as-normalization",
-    "href": "slides/lec22_Probabilistic_Inference.html#softmax-as-normalization",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Softmax as Normalization",
-    "text": "Softmax as Normalization\nSoftmax turns logits into probabilities:\n\n\\text{softmax}(z_i)=\\frac{e^{z_i}}{\\sum_j e^{z_j}}\n\n\n\nUsed in classification\nThe output layer maps raw scores to class probabilities.\n\nUsed in transformers\nAttention scores become attention weights; output logits become token probabilities."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#full-joint-tables-do-not-scale",
-    "href": "slides/lec22_Probabilistic_Inference.html#full-joint-tables-do-not-scale",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Full Joint Tables Do Not Scale",
-    "text": "Full Joint Tables Do Not Scale\nFor n binary variables, a full joint table has:\n\n2^n\n\nentries.\n\n\n\nVariables\nEntries\n\n\n\n\n10\n2^{10}=1024\n\n\n50\n2^{50}\\approx 10^{15}\n\n\n100\n2^{100}\\approx 10^{30}\n\n\n\n\nThe table is exact, but exactness becomes useless if we cannot store or query it."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#the-need-for-structure",
-    "href": "slides/lec22_Probabilistic_Inference.html#the-need-for-structure",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "The Need for Structure",
-    "text": "The Need for Structure\nFull joint inference requires summing many entries.\nStructured representations reduce the work by exploiting conditional independence.\n\n\n\n\n\nCavity CToothache TProbe catches H\n\n\nP(C,T,H)=P(C)P(T\\mid C)P(H\\mid C).\n\nBayesian networks can store the distribution compactly. Exact inference can still be expensive, depending on the graph."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#what-to-remember",
-    "href": "slides/lec22_Probabilistic_Inference.html#what-to-remember",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What to Remember",
-    "text": "What to Remember\n\nFull joint distributions answer any probability query in principle.\nMarginalization sums out variables.\nConditioning divides by the evidence probability.\nNormalization rescales relative values into probabilities.\nFull joint tables grow exponentially, so we need structured models.\n\nAsset credits"
+    "section": "Marginalization: Summing Out Variables",
+    "text": "Marginalization: Summing Out Variables\nMarginalization adds probabilities across all values of variables we do not keep. The result is a marginal distribution over the remaining variables.\n\n\n\n\n\nT,H\nT,\\neg H\n\\neg T,H\n\\neg T,\\neg H\n\n\n\n\nC\n0.108\n0.012\n0.072\n0.008\n\n\n\\neg C\n0.016\n0.064\n0.144\n0.576\n\n\n\n\nTo find P(C), keep the cavity row and add across both values of T and H.\n\nP(C)=0.108+0.012+0.072+0.008=0.20.\nNo toothache or probe result has been observed, so we include every possibility for them.\n\n\nThe other outcome has P(not C)=0.80, so the marginal distribution over C is (0.20, 0.80). This differs from conditioning: we have added all possibilities rather than retaining just an observed value. For a finite joint table, summing out is ordinary addition over mutually exclusive assignments.\nThe optional complement check from the original lecture is P(C or T)=1-(0.144+0.576)=0.28. It is not needed for the main conditional-inference calculation.\n[Sources] - AIMA Section 12.3. [/Sources]"
   },
   {
     "objectID": "slides/lec17_Propositional_Inference.html#takeaways",
@@ -4870,90 +4779,6 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Unary, Binary, and Global Constraints",
     "text": "Unary, Binary, and Global Constraints\nThe arity of a constraint is the number of variables it involves.\n\n\n\n\n\n\n\n\nKind\nExample\nMeaning\n\n\n\n\nUnary\nX_A=1\nA rule on one variable\n\n\nBinary\nX_A\\ne X_B\nA rule on two variables\n\n\nGlobal\n\\operatorname{AllDifferent}(X_1,\\ldots,X_9)\nA structured rule on a collection\n\n\n\n\\operatorname{AllDifferent}(X,Y,Z) requires every pair to differ:\nX\\ne Y\\quad\\land\\quad X\\ne Z\\quad\\land\\quad Y\\ne Z.\n\nDo X\\ne Y and Y\\ne Z alone imply all three are different?  No: (X,Y,Z)=(1,2,1) satisfies both.\n\n\nThe symbol land means logical AND. Global is not simply an arity of three; it names a structured constraint over a collection, potentially of varying size. AllDifferent is logically equivalent to all pairwise inequalities, but a specialized propagation algorithm may use its global structure more effectively. Source: AIMA CSP formulations."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#what-does-an-observation-tell-us",
-    "href": "slides/lec22_Probabilistic_Inference.html#what-does-an-observation-tell-us",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What Does an Observation Tell Us?",
-    "text": "What Does an Observation Tell Us?\nA robot sees an umbrella. Does that establish that it is raining?\n\nAn observation can support several explanations. What numbers would we need to compare them?\n\n\nWe need a probability model relating weather and umbrella use. Inference turns that model and the observation into a conditional distribution.\n\n\n50-minute plan: weather query and vocabulary, 8 minutes; joint-table operations, 12; multiple-evidence activity, 10; independence and common errors, 10; representation and exit problem, 10. No separate code demo or homework release today. HW4 was introduced in the preceding class; leave the last few minutes flexible for questions. The toothache probabilities follow the AIMA teaching example and are not clinical estimates. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/bayes-nets/inference.html. New exercises and inline diagrams are original course material."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#rain-given-an-umbrella",
-    "href": "slides/lec22_Probabilistic_Inference.html#rain-given-an-umbrella",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Rain Given an Umbrella",
-    "text": "Rain Given an Umbrella\nThe observation keeps only the two rows with U=\\text{Yes}.\n\n\n\nWeather\nJoint mass with umbrella\nConditional probability\n\n\n\n\nSunny\n0.1\n0.1/0.3=1/3\n\n\nRainy\n0.2\n0.2/0.3=2/3\n\n\n\nP(W=\\text{Rainy}\\mid U=\\text{Yes})=\\frac{0.2}{0.3}=\\frac23.\n\nRain becomes more likely, but the observation does not make it certain."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#query-evidence-and-hidden-variables",
-    "href": "slides/lec22_Probabilistic_Inference.html#query-evidence-and-hidden-variables",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Query, Evidence, and Hidden Variables",
-    "text": "Query, Evidence, and Hidden Variables\nSuppose we ask P(C\\mid T) in a model with variables C,T,H.\n\n\n\nRole\nVariable\nWhat we do\n\n\n\n\nQuery\nCavity C\nKeep both possible outcomes\n\n\nEvidence\nToothache T\nFix to the observed value\n\n\nHidden\nProbe catches H\nSum over possible values\n\n\n\n\nAn unobserved variable is not automatically false. Why would setting H=\\text{false} change the question?\n\n\nIt would add evidence that we do not have, yielding P(C given T and not H). In formulas below, an uppercase Boolean symbol by itself denotes its true event, and a negated symbol denotes its false event. A distribution over C includes both C and not C."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#a-reusable-inference-procedure",
-    "href": "slides/lec22_Probabilistic_Inference.html#a-reusable-inference-procedure",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "A Reusable Inference Procedure",
-    "text": "A Reusable Inference Procedure\n\n\n\n\n\n\n\nFilterSumNormalizeMatch the evidenceRemove hidden valuesDivide by total mass\n\n\nQuery Q, evidence E=e, hidden variables H:\n\n\\begin{aligned}\nw(q)&=\\sum_h P(Q=q,E=e,H=h),\\\\[0.4em]\nP(Q=q\\mid E=e)&=\\frac{w(q)}{\\sum_{q'}w(q')}.\n\\end{aligned}\n\nKeep query outcomes separate until the final normalization."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#two-pieces-of-evidence",
-    "href": "slides/lec22_Probabilistic_Inference.html#two-pieces-of-evidence",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Two Pieces of Evidence",
-    "text": "Two Pieces of Evidence\nNow we observe both toothache and a probe catch: T,H.\n\n\n\nQuery outcome\nMatching joint mass\n\n\n\n\nC\n0.108\n\n\n\\neg C\n0.016\n\n\n\n\nWhat is P(C\\mid T,H)? Is there any hidden variable left to sum out?\n\n\nP(C\\mid T,H)=\\frac{0.108}{0.108+0.016}\\approx0.871. No hidden variable remains in this three-variable model."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#practice-evidence-against-the-first-guess",
-    "href": "slides/lec22_Probabilistic_Inference.html#practice-evidence-against-the-first-guess",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Practice: Evidence Against the First Guess",
-    "text": "Practice: Evidence Against the First Guess\nObserve a toothache but no probe catch: T,\\neg H.\n\n\n\n\nT,H\nT,\\neg H\n\\neg T,H\n\\neg T,\\neg H\n\n\n\n\nC\n0.108\n0.012\n0.072\n0.008\n\n\n\\neg C\n0.016\n0.064\n0.144\n0.576\n\n\n\n\n\nCompute P(C\\mid T,\\neg H).\nCompare it with P(C\\mid T)=0.6.\nDoes observing more evidence always increase the probability of C?\n\n\n\nAllow three minutes. Ask students to write the numerator and denominator before using a calculator. The answer comes on the next slide."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#practice-answer-evidence-can-lower-a-belief",
-    "href": "slides/lec22_Probabilistic_Inference.html#practice-answer-evidence-can-lower-a-belief",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Practice Answer: Evidence Can Lower a Belief",
-    "text": "Practice Answer: Evidence Can Lower a Belief\n\nP(C\\mid T,\\neg H)=\\frac{0.012}{0.012+0.064}\\approx0.158.\n\n\n\n\nAvailable evidence\nProbability of C\n\n\n\n\nNone\n0.200\n\n\nToothache\n0.600\n\n\nToothache and probe catches\n0.871\n\n\nToothache and probe does not catch\n0.158\n\n\n\n\nMore evidence can raise or lower a particular hypothesis’s probability. The direction depends on what was observed."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#reversing-a-conditional",
-    "href": "slides/lec22_Probabilistic_Inference.html#reversing-a-conditional",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Reversing a Conditional",
-    "text": "Reversing a Conditional\nThe same joint mass appears in both numerators:\nP(C,H)=0.108+0.072=0.18.\n\n\n\nQuestion\nCalculation\n\n\n\n\nProbe catches, given cavity\nP(H\\mid C)=0.18/0.20=0.90\n\n\nCavity, given probe catches\nP(C\\mid H)=0.18/0.34\\approx0.529\n\n\n\n\nWhy do the answers differ even though both use P(C,H)?\n\n\nThey condition on different events, so they divide by different evidence probabilities."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#can-we-multiply-the-marginals",
-    "href": "slides/lec22_Probabilistic_Inference.html#can-we-multiply-the-marginals",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Can We Multiply the Marginals?",
-    "text": "Can We Multiply the Marginals?\nFrom the toothache table:\nP(T)=0.20,\\quad P(H)=0.34,\\quad P(T,H)=0.124.\n\nAre toothache and probe catches independent in this model?\n\n\nP(T)P(H)=0.20\\times0.34=0.068\\ne0.124. No. Multiplying the marginals would give the wrong joint probability."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#conditional-independence-is-different",
-    "href": "slides/lec22_Probabilistic_Inference.html#conditional-independence-is-different",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Conditional Independence Is Different",
-    "text": "Conditional Independence Is Different\nWithin the cavity group:\nP(T\\mid C)=0.6,\\qquad P(H\\mid C)=0.9. P(T,H\\mid C)=\\frac{0.108}{0.2}=0.54=0.6\\times0.9.\nWithin the no-cavity group:\nP(T\\mid\\neg C)=0.1,\\quad P(H\\mid\\neg C)=0.2, P(T,H\\mid\\neg C)=0.02=0.1\\times0.2.\n\nThis table has T\\perp H\\mid C, although T and H are not marginally independent.\n\n\nThe symbol perpendicular means independence. Given each Boolean value of C, the joint table for Boolean T,H factorizes. State explicitly that this is a property of the toy distribution, not a universal claim about medical symptoms. It motivates the following Bayesian-network lecture."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#common-inference-mistakes",
-    "href": "slides/lec22_Probabilistic_Inference.html#common-inference-mistakes",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Common Inference Mistakes",
-    "text": "Common Inference Mistakes\n\n\n\n\n\n\n\nMistake\nWhat goes wrong\n\n\n\n\nTreat an unobserved variable as false\nAdds evidence that was never observed\n\n\nSum the numerator across both query outcomes\nLoses the distinction we are trying to infer\n\n\nUse the full table total as denominator\nFails to condition on the evidence\n\n\nMultiply marginals without checking independence\nChanges the probability model\n\n\nNormalize weights that sum to zero\nConditions on an impossible event in the model\n\n\n\n\nFor discrete conditional probability, P(E=e)=0 makes the ratio undefined. This does not prove the real-world observation impossible; it may reveal a deficient model or data-entry error. Do not replace the result by a uniform distribution without stating a new modeling assumption."
-  },
-  {
-    "objectID": "slides/lec22_Probabilistic_Inference.html#exit-problem-a-robots-sensor",
-    "href": "slides/lec22_Probabilistic_Inference.html#exit-problem-a-robots-sensor",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Exit Problem: A Robot’s Sensor",
-    "text": "Exit Problem: A Robot’s Sensor\nA robot occupies either the left or right room. Its sensor flashes or stays dark.\n\n\n\nLocation\nFlash\nDark\n\n\n\n\nLeft\n0.36\n0.24\n\n\nRight\n0.08\n0.32\n\n\n\n\nCompute P(\\text{Left}), P(\\text{Left}\\mid\\text{Flash}), and P(\\text{Flash}\\mid\\text{Left}).\n\n\n0.60,\\qquad \\frac{0.36}{0.44}\\approx0.818,\\qquad \\frac{0.36}{0.60}=0.60."
   },
   {
     "objectID": "slides/lec31_MAB.html#which-option-should-we-try-next",
@@ -8090,5 +7915,110 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Common Probability Distributions",
     "text": "Common Probability Distributions\n\n\nDiscrete\n\nBernoulli\nBinomial\nGeometric\nPoisson\n\n\nContinuous\n\nUniform\nNormal (Gaussian)\nExponential\n\n\n\nThese names identify common distribution families. Introduce their formulas and applications when a later topic needs them.\n[Sources] - AIMA Appendix A.3. Stanford CS229 probability review. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec22_Probabilistic_Inference.html#inference",
+    "href": "slides/lec22_Probabilistic_Inference.html#inference",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Inference from an Observation",
+    "text": "Inference from an Observation\nSomeone has a toothache. How likely is a cavity?\nProbabilistic inference uses a probability model and observed information to calculate probabilities of unknown quantities.\n\n\n\nTerm\nMeaning\nOur question\n\n\n\n\nQuery\nWhat we want to find out\nIs there a cavity?\n\n\nEvidence\nWhat we have observed\nThere is a toothache\n\n\n\n\nCould a toothache have another explanation? What would that mean for our answer?\n\n\nThe answer is a probability under the model. An observation can support an explanation without proving it.\n\n\nConnect to Lecture 21’s alarm example. Today the model is already supplied: inference computes answers from it, rather than learning its probabilities from data. A probability alone does not choose an action without a cost or utility model.\nThe dental example is an illustrative AIMA model, not clinical guidance or measured medical reliability. Work through the table slowly enough for students to track the changing denominators. Leave time for the two-evidence exercise, robot practice, and HW4 questions.\n[Sources] - AIMA fourth edition, Section 12.3. - UC Berkeley CS 188, Inference: https://inst.eecs.berkeley.edu/~cs188/textbook/bayes-nets/inference.html. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec22_Probabilistic_Inference.html#model-variables",
+    "href": "slides/lec22_Probabilistic_Inference.html#model-variables",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Model Variables and Notation",
+    "text": "Model Variables and Notation\nEach variable is Boolean, or binary: it takes either \\text{true} or \\text{false}.\n\n\n\n\n\n\n\nVariable\nWhat true means\n\n\n\n\nC: cavity\nThe tooth has a cavity\n\n\nT: toothache\nThe person has a toothache\n\n\nH: probe catches\nThe tip of a dentist’s small examining tool gets stuck on the tooth\n\n\n\nWe use the shorthand C for the event C=\\text{true}, and \\neg C for C=\\text{false}. The same convention applies to T and H.\nP(C,T)=P(C\\text{ and }T),\\qquad P(C\\mid T)=\\text{probability of }C\\text{ given }T.\n\nA comma means that both listed events occur. The vertical bar means given. A probe catch is a separate observation from toothache. The letter H is simply the label used in this course for that observation.\nAn uppercase letter sometimes names a random variable and sometimes its true event; the shorthand above makes that convention explicit. A distribution over C has two outcomes, true and false.\n[Sources] - Supplied Spring 2025 Beamer lecture, toothache example. AIMA Sections 12.2-12.3. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec22_Probabilistic_Inference.html#full-joint",
+    "href": "slides/lec22_Probabilistic_Inference.html#full-joint",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Full Joint Table",
+    "text": "The Full Joint Table\nA full joint distribution assigns probability to every complete assignment: one value for each variable.\n\n\n\n\n\nT,H\nT,\\neg H\n\\neg T,H\n\\neg T,\\neg H\n\n\n\n\nC\n0.108\n0.012\n0.072\n0.008\n\n\n\\neg C\n0.016\n0.064\n0.144\n0.576\n\n\n\n\nFor example, P(C,T,\\neg H)=0.012: cavity and toothache and no probe catch.\n\nWhich entry means toothache and a probe catch, but no cavity?\n\n\nP(\\neg C,T,H)=0.016. All eight entries are nonnegative and sum to 1. Individual rows need not sum to 1.\n\n\nThese are joint probabilities over the whole hypothetical population, not conditional probabilities within a row. There are eight assignments because three Boolean variables have 2^3 combinations. The table’s cavity row totals 0.2 and no-cavity row totals 0.8.\n[Sources] - AIMA Section 12.3, toothache/cavity/catch full joint distribution. Values preserved from the supplied Beamer lecture. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec22_Probabilistic_Inference.html#variable-roles",
+    "href": "slides/lec22_Probabilistic_Inference.html#variable-roles",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Query, Evidence, and Hidden Variables",
+    "text": "Query, Evidence, and Hidden Variables\nWe want the cavity probability given a toothache: P(C\\mid T).\n\n\n\nRole\nVariable\nOperation\n\n\n\n\nQuery\nCavity C\nKeep its true and false outcomes separate\n\n\nEvidence\nToothache T\nFix it to the observed value, true\n\n\nHidden\nProbe catch H\nAdd over both possible values\n\n\n\nA hidden variable is in the model but is neither queried nor observed.\n\nWe did not observe a probe result. Would setting H=\\text{false} still answer our question?\n\n\nNo. That adds an observation we do not have and changes the question to P(C\\mid T,\\neg H).\n\n\nVariable roles depend on the query, not on permanent labels in the model. H becomes evidence if a probe result is observed. If the query were P(H given C), H would be the query, C evidence, and T hidden.\n[Sources] - UC Berkeley CS 188, Inference by Enumeration. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec22_Probabilistic_Inference.html#filter",
+    "href": "slides/lec22_Probabilistic_Inference.html#filter",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Step 1: Filter by the Evidence",
+    "text": "Step 1: Filter by the Evidence\nFiltering keeps only complete assignments that match what we observed. Here, T=\\text{true}.\n\n\n\nCavity C\nProbe catch H\nRetained joint probability\n\n\n\n\ntrue\ntrue\n0.108\n\n\ntrue\nfalse\n0.012\n\n\nfalse\ntrue\n0.016\n\n\nfalse\nfalse\n0.064\n\n\n\nThe four assignments with T=\\text{false} do not match the evidence.\n\nThe retained entries sum to P(T)=0.20. They are still joint probabilities. We have not rescaled them yet.\n\n\nFiltering here means selecting rows of a joint table. It is not the separate time-series filtering problem discussed in temporal models. If the original table is laid out as two rows and four columns, this operation keeps its two toothache columns. The long-form table here lists the four surviving assignments explicitly.\n[Sources] - AIMA Section 12.3. UC Berkeley CS 188, Inference by Enumeration. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec22_Probabilistic_Inference.html#sum-hidden",
+    "href": "slides/lec22_Probabilistic_Inference.html#sum-hidden",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Step 2: Sum the Hidden Values",
+    "text": "Step 2: Sum the Hidden Values\nAdd the two probe possibilities separately for each cavity outcome.\n\nEach total is an unnormalized weight: a nonnegative value before rescaling to sum to 1.\nw_C=P(C,T)=0.12,\\qquad w_{\\neg C}=P(\\neg C,T)=0.08.\n\nThe hidden variable H has been summed out. Cavity status C remains the query.\n\n\nThese particular weights are joint probabilities with the observed event. Weights in other algorithms can have a different common scale; normalizing still works if they are proportional to the desired probabilities and their sum is positive. The subscripts on w label the true and false cavity outcomes.\n[Sources] - AIMA Section 12.3. Original draw.io diagram using the AIMA table entries. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec22_Probabilistic_Inference.html#normalize",
+    "href": "slides/lec22_Probabilistic_Inference.html#normalize",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Step 3: Normalize the Weights",
+    "text": "Step 3: Normalize the Weights\nNormalization divides each nonnegative weight by the sum of all the weights. Here that sum is P(T)=0.12+0.08=0.20.\n\n\n\n\nQuery outcome\nWeight\nConditional probability\n\n\n\n\nCavity\n0.12\nP(C\\mid T)=0.12/0.20=0.60\n\n\nNo cavity\n0.08\nP(\\neg C\\mid T)=0.08/0.20=0.40\n\n\n\n\n\nThe normalizing constant \\alpha is the reciprocal of the total. Multiplying by it gives the same result:\n\\alpha=\\frac{1}{0.20}=5,\\qquad \\alpha(0.12,0.08)=(0.60,0.40).\n\n\nThe total must be positive. If the evidence has probability 0 in this discrete model, this conditional probability is undefined.\n\n\nThe two conditional probabilities sum to one. Do not divide by the full table’s total of one: after observing a toothache, the relevant total is 0.20. Alpha is not a new probability; its value can exceed one.\nZero-probability evidence may reveal an inadequate model or an input error. It does not justify silently substituting a uniform distribution.\n[Sources] - Supplied Beamer lecture, normalization using alpha. AIMA Section 12.3. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec22_Probabilistic_Inference.html#enumeration",
+    "href": "slides/lec22_Probabilistic_Inference.html#enumeration",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Inference by Enumeration",
+    "text": "Inference by Enumeration\nEnumeration means checking possible complete assignments in the model.\n\nFor P(C\\mid T), we kept the toothache assignments, summed over the probe result, and divided by 0.20.\n\nThis is exact inference: it computes the model’s probabilities without estimating them from random samples. Its accuracy still depends on the model.\n\n\nAn exact calculation is exact relative to the supplied distribution, even if that distribution is a simplified description of reality. The method extends to multiple query variables: preserve each joint query assignment until the final normalization.\n[Sources] - UC Berkeley CS 188, Inference by Enumeration: https://inst.eecs.berkeley.edu/~cs188/textbook/bayes-nets/inference.html. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec22_Probabilistic_Inference.html#more-evidence",
+    "href": "slides/lec22_Probabilistic_Inference.html#more-evidence",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Two Possible Probe Results",
+    "text": "Two Possible Probe Results\nWith a toothache, P(C\\mid T)=0.60. Now observe the probe result.\n\n\n\n\nCatch H\nNo catch \\neg H\n\n\n\n\nCavity C\n0.108\n0.012\n\n\nNo cavity \\neg C\n0.016\n0.064\n\n\n\n\nCompute P(C\\mid T,H) and P(C\\mid T,\\neg H).\n\n\nP(C\\mid T,H)=\\frac{0.108}{0.108+0.016}\\approx0.871.\n\n\nP(C\\mid T,\\neg H)=\\frac{0.012}{0.012+0.064}\\approx0.158.\n\n\nMore evidence can raise or lower a particular explanation’s probability.\n\n\nAllow students to choose the relevant column and write both denominators before revealing the answers. No hidden variable remains once both T and H are observed in this three-variable model. The displayed numbers remain joint masses from the original table, so each selected column must be normalized separately.\n[Sources] - AIMA toothache distribution. Two-evidence practice written for this course. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec22_Probabilistic_Inference.html#conditional-direction",
+    "href": "slides/lec22_Probabilistic_Inference.html#conditional-direction",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Reversing a Conditional",
+    "text": "Reversing a Conditional\nFrom the joint table, P(C)=0.20, P(H)=0.34, and\nP(C,H)=0.108+0.072=0.18.\n\n\n\nQuestion\nCalculation\n\n\n\n\nProbe catches, given cavity\nP(H\\mid C)=0.18/0.20=0.90\n\n\nCavity, given probe catches\nP(C\\mid H)=0.18/0.34\\approx0.529\n\n\n\n\nWhy do the answers differ even though the numerator is the same?\n\n\nThe given events differ. Each denominator is the probability of the event after the bar.\n\n\nP(H)=0.108+0.072+0.016+0.144=0.34. The numerator is the same intersection in both directions, but conditioning selects different reference populations. This connects directly to Bayes’ rule from Lecture 21.\n[Sources] - AIMA Sections 12.3 and 12.5. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec22_Probabilistic_Inference.html#independence",
+    "href": "slides/lec22_Probabilistic_Inference.html#independence",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Marginal Independence",
+    "text": "Marginal Independence\nMarginal independence is ordinary independence: learning one variable leaves the other’s distribution unchanged, without conditioning on a third variable.\nLet X and Y be the results of two fair coin tosses. Our model gives:\n\n\n\n\n\n\n\n\n\nFirst toss X\nY=\\text{heads}\nY=\\text{tails}\nMarginal P(X)\n\n\n\n\nheads\n0.25\n0.25\n0.50\n\n\ntails\n0.25\n0.25\n0.50\n\n\nMarginal P(Y)\n0.50\n0.50\n1.00\n\n\n\n\nP(X=\\text{heads}\\mid Y=\\text{heads})=\\frac{0.25}{0.50}=0.50.\nThe first toss stays 50% heads after learning the second result. Every joint cell also equals the product of its two marginals: 0.25=0.50(0.50).\n\n\nThe right column and bottom row contain marginal probabilities, obtained by summing over the other toss. The bottom-right 1.00 is the total probability, not an additional outcome. The four inner cells form the full joint distribution of X and Y.\nThe supplied joint table is the modeling assumption: fairness alone does not imply independence of two tosses. All four pairs have probability one quarter here. Check factorization for every pair, or equivalently note that conditioning on either possible second result leaves the first toss’s full distribution unchanged. The same statement holds with the two tosses interchanged.\nMarginal independence is ordinary independence. The qualifier marginal emphasizes the contrast with conditional independence, rather than naming a different notion. It describes X and Y without conditioning on a third variable. The next slide returns to the dental example to introduce independence within a known group. These are different models; the coin example does not claim that the dental observations are marginally independent.\n[Sources] - AIMA Section 12.4, independence. Original fair-coin example and joint table. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec22_Probabilistic_Inference.html#conditional-independence",
+    "href": "slides/lec22_Probabilistic_Inference.html#conditional-independence",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Conditional Independence",
+    "text": "Conditional Independence\nBack to the toothache model: conditional independence means that, once cavity status is known, learning the probe result gives no further information about toothache.\n\n\n\n\n\n\n\n\n\nKnown group\nP(T\\mid\\text{group})\nP(H\\mid\\text{group})\nP(T,H\\mid\\text{group})\n\n\n\n\nCavity\n0.60\n0.90\n0.54=0.60(0.90)\n\n\nNo cavity\n0.10\n0.20\n0.02=0.10(0.20)\n\n\n\nThe joint probability equals the product within each group.\n\nWe write T\\perp H\\mid C: \\perp means independent, and \\mid C means given cavity status, for both values of C.\n\n\nHere C after the bar names the conditioning random variable, not only its true event. The condition holds for both its true and false groups. In the cavity group, P(T,H|C)=0.108/0.20=0.54. In the no-cavity group, 0.016/0.80=0.02. Checking the true-true cell together with the two Boolean marginals establishes factorization for all four T,H outcomes in each group.\nThis is a property of this toy distribution, not a universal claim about dental observations. Marginal dependence and conditional independence can coexist because mixing different cavity-status groups creates a dependence.\n[Sources] - AIMA Section 12.5.2, combining evidence using conditional independence. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec22_Probabilistic_Inference.html#structured-models",
+    "href": "slides/lec22_Probabilistic_Inference.html#structured-models",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Compact Probability Models",
+    "text": "Compact Probability Models\nA full table for n binary variables has 2^n entries: each new variable doubles its size. At n=50, that is about 10^{15} entries.\nA Bayesian network is a graph of variables with local probability tables. Arrows identify the variables each local probability conditions on.\n\nFactorization writes the joint as a product of smaller distributions:\nP(C,T,H)=P(C)P(T\\mid C)P(H\\mid C).\n\nConditional independence makes this model compact. Exact inference can still be expensive in larger networks.\n\n\nIn the graph, a node represents a random variable. An arrow identifies a variable used in the target’s local conditional probability. This is a preview; the next lecture defines the graph rules and tables in detail. Graph structure by itself is not proof of causation.\nA general chain rule gives P(C,T,H)=P(C)P(T|C)P(H|C,T). The conditional-independence property lets us replace the last factor with P(H|C). For example, 0.20 times 0.60 times 0.90 reproduces 0.108. A full binary table has 2^n entries but only 2^n-1 independent free probabilities because they sum to one.\n[Sources] - Supplied Beamer lecture, full-joint storage growth. AIMA Sections 13.1-13.2. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec22_Probabilistic_Inference.html#robot-practice",
+    "href": "slides/lec22_Probabilistic_Inference.html#robot-practice",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Practice: A Robot’s Sensor",
+    "text": "Practice: A Robot’s Sensor\nA robot occupies the left or right room. Its sensor may flash in either room. These are joint probabilities in a toy model.\n\n\n\n\n\n\nLocation\nFlash\nDark\n\n\n\n\nLeft\n0.36\n0.24\n\n\nRight\n0.08\n0.32\n\n\n\n\n\nFind:\n\nP(\\text{Left})\nP(\\text{Left}\\mid\\text{Flash})\nP(\\text{Flash}\\mid\\text{Left})\n\n\n\nAnswers, in the same order:\n\n0.36+0.24=0.60\n0.36/0.44\\approx0.818\n0.36/0.60=0.60\n\n\n\n\nAll four table entries sum to one. The marginal P(Left) uses the whole left row. P(Flash)=0.36+0.08=0.44 supplies the second answer’s denominator, while P(Left)=0.60 supplies the third. Ask students to identify the denominator before calculating.\n[Sources] - Original course exercise and draw.io floor plan. Probabilities are illustrative, not measured sensor performance. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec22_Probabilistic_Inference.html#takeaways",
+    "href": "slides/lec22_Probabilistic_Inference.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nIdentify the query, observed evidence, and hidden variables.\nFilter by evidence, sum hidden values, then normalize.\nUnknown does not mean false. Keep query outcomes separate.\nDivide by the evidence probability, which must be positive.\nCheck independence before replacing a joint probability with a product.\nConditional independence can make a model smaller.\n\n\nBefore calculating, say what is known, what is unknown, and which probability belongs in the denominator.\n\nAsset credits\n\nLeave time for questions on the robot exercise or HW4. The next lecture develops Bayesian networks and introduces sampling when exact inference is expensive.\n[Sources] - AIMA fourth edition, Sections 12.3-12.5 and 13.1-13.2. [/Sources]"
   }
 ]

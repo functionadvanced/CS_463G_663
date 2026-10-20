@@ -1,0 +1,38 @@
+.reveal section.inference22-slide { font-size: 0.9em; }
+.reveal section.inference22-slide h2 { margin-top: 0; }
+.reveal section.inference22-slide p { margin: 0.35em 0; }
+.reveal section.inference22-slide .math.inline { white-space: nowrap; }
+.reveal section.inference22-slide .katex-display { margin: 0.5em 0; }
+.reveal section.inference22-slide table { font-size: 0.86em; line-height: 1.26; }
+.reveal section.inference22-slide th,
+.reveal section.inference22-slide td { padding: 0.42em 0.5em; }
+.reveal section.inference22-slide .question,
+.reveal section.inference22-slide .takeaway { margin: 0.45em 0; padding: 0.45em 0.65em; }
+.reveal section.inference22-slide .question p,
+.reveal section.inference22-slide .takeaway p { margin: 0; }
+.reveal section.inference22-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border: 0;
+  box-shadow: none;
+  margin: 0.2em auto;
+}
+.reveal section.inference22-slide .inference22-sums { max-height: 230px; }
+.reveal section.inference22-slide .inference22-workflow { max-height: 195px; }
+.reveal section.inference22-slide .inference22-network { max-height: 160px; }
+.reveal section.inference22-slide .inference22-rooms { max-height: 100px; }
+.reveal section.inference22-slide .joint-model table { font-size: 0.94em; table-layout: fixed; }
+.reveal section.inference22-slide .cavity-row tbody tr:first-child td { background: var(--cs-soft-gold); }
+.reveal #conditional-independence table { table-layout: fixed; font-size: 0.8em; }
+.reveal #conditional-independence th:first-child { width: 21%; }
+.reveal #conditional-independence th:nth-child(2),
+.reveal #conditional-independence th:nth-child(3) { width: 23%; }
+.reveal #conditional-independence th:last-child { width: 33%; }
+.reveal #normalize table { table-layout: fixed; }
+.reveal #normalize th:first-child { width: 22%; }
+.reveal #normalize th:nth-child(2) { width: 16%; }
+.reveal #normalize th:last-child { width: 62%; }
+.reveal #robot-practice table { font-size: 0.9em; }
+.reveal #robot-practice .question ol { margin-top: 0.3em; margin-bottom: 0; }
