@@ -1,0 +1,44 @@
+.reveal section.bayes23-slide { font-size: 0.9em; }
+.reveal section.bayes23-slide h2 { margin-top: 0; }
+.reveal section.bayes23-slide p { margin: 0.35em 0; }
+.reveal section.bayes23-slide .math.inline { white-space: nowrap; }
+.reveal section.bayes23-slide .katex-display { margin: 0.5em 0; }
+.reveal section.bayes23-slide table { font-size: 0.85em; line-height: 1.26; }
+.reveal section.bayes23-slide th,
+.reveal section.bayes23-slide td { padding: 0.42em 0.5em; }
+.reveal section.bayes23-slide .question,
+.reveal section.bayes23-slide .takeaway { margin: 0.45em 0; padding: 0.45em 0.65em; }
+.reveal section.bayes23-slide .question p,
+.reveal section.bayes23-slide .takeaway p { margin: 0; }
+.reveal section.bayes23-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border: 0;
+  box-shadow: none;
+  margin: 0.2em auto;
+}
+.reveal section.bayes23-slide .bayes23-network { max-height: 150px; }
+.reveal section.bayes23-slide .bayes23-process { max-height: 210px; }
+.reveal section.bayes23-slide .bayes23-counts { max-height: 235px; }
+.reveal section.bayes23-slide .pseudo-code { font-size: 0.72em; line-height: 1.35; }
+.reveal section.bayes23-slide .pseudo-line { min-height: 1.35em; white-space: nowrap; }
+.reveal #local-tables table,
+.reveal #conditional-independence table,
+.reveal #storage table,
+.reveal #sampling-comparison table { table-layout: fixed; }
+.reveal #local-tables th:first-child { width: 12%; }
+.reveal #local-tables th:nth-child(2) { width: 26%; }
+.reveal #local-tables th:nth-child(3),
+.reveal #local-tables th:last-child { width: 31%; }
+.reveal #conditional-independence table { font-size: 0.8em; }
+.reveal #conditional-independence th:first-child { width: 28%; }
+.reveal #conditional-independence th:nth-child(2),
+.reveal #conditional-independence th:last-child { width: 36%; }
+.reveal #storage th:first-child { width: 40%; }
+.reveal #storage th:nth-child(2),
+.reveal #storage th:last-child { width: 30%; }
+.reveal #sampling-comparison th:first-child { width: 23%; }
+.reveal #sampling-comparison th:nth-child(2) { width: 36%; }
+.reveal #sampling-comparison th:last-child { width: 41%; }

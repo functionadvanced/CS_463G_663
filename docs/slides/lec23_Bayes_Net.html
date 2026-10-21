@@ -35,6 +35,8 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec23_slides_styles.css">
+  <link rel="stylesheet" href="dental_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,219 +165,508 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="bayesian-networks" class="slide level2 section-slide">
-<h2>Bayesian Networks</h2>
-<p>Bayesian networks use graph structure to represent large joint distributions compactly.</p>
-</section>
-<section id="what-is-a-bayesian-network" class="slide level2">
-<h2>What Is a Bayesian Network?</h2>
-<p>A Bayesian network is a directed acyclic graph (DAG).</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Part</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Node</td>
-<td>Random variable</td>
-</tr>
-<tr class="even">
-<td>Directed edge</td>
-<td>Direct probabilistic dependence</td>
-</tr>
-<tr class="odd">
-<td>Parents</td>
-<td>Variables a node conditions on</td>
-</tr>
-<tr class="even">
-<td>CPD/CPT</td>
-<td>Conditional probability distribution/table</td>
-</tr>
-</tbody>
-</table>
+<section id="dental-variables" class="slide level2 dental-glossary-slide">
+<h2>The Dental Example, Illustrated</h2>
+<div class="dental-glossary">
+<p><img data-src="imgs/dental-example/dental-variables-cartoon.png" class="dental-glossary-image" alt="Three separate cartoons: a cutaway tooth with a small decayed hole, a person holding a sore cheek, and a dentist's curved probe tip snagging in a small rough notch on a tooth."></p>
+<div class="dental-glossary-labels">
+<div class="dental-definition">
+<p><strong><span class="math inline">C</span>: Cavity</strong></p>
+<p>A small hole caused by decay in a tooth.</p>
+</div>
+<div class="dental-definition">
+<p><strong><span class="math inline">T</span>: Toothache</strong></p>
+<p>Pain in or around a tooth.</p>
+</div>
+<div class="dental-definition">
+<p><strong><span class="math inline">H</span>: Probe catches</strong></p>
+<p>A dentist’s pointed tool snags on a rough spot.</p>
+</div>
+</div>
+</div>
 <div class="takeaway">
-<p>The graph tells us how the joint distribution factorizes.</p>
+<p>Toothache and probe catch are observations, not proof of a cavity.</p>
 </div>
+<aside class="notes">
+<p>Read “catches” as “snags” or “gets stuck,” not “finds the tooth.” H records the result of an examination, while T records a symptom. A cavity can exist without either observation, and either observation can occur without a cavity in this simplified probability model. The cartoons illustrate the words, not guaranteed causal relationships or a clinical diagnostic procedure.</p>
+<p>The three-part cartoon was generated for this course using OpenAI’s built-in image-generation tool. Its provenance and generation prompt are linked in the visual asset credits.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="simple-diagnosis-network" class="slide level2">
-<h2>Simple Diagnosis Network</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec22/simple-diagnosis-network.svg" alt="Disease points to test result"></p>
+<section id="graph-and-local-probabilities" class="slide level2 bayes23-slide">
+<h2>Graph and Local Probabilities</h2>
+<p>A <strong>Bayesian network</strong> combines a graph with local probability tables.</p>
+<p><img data-src="imgs/drawio/lec22/cavity-network.png" class="bayes23-network" alt="Cavity C is the parent of toothache T and probe catch H."></p>
+<ul>
+<li>A <strong>node</strong> is a random variable. Here, each is <strong>binary</strong>: true or false.</li>
+<li>An arrow goes from a <strong>parent</strong> to a <strong>child</strong>; a <strong>root</strong> has no parents.</li>
+<li>A <strong>directed acyclic graph (DAG)</strong> has arrows but no directed cycle: following arrows cannot bring us back to the starting node.</li>
+</ul>
+<p>Here <span class="math inline">C</span>: cavity; <span class="math inline">T</span>: toothache; <span class="math inline">H</span>: the dentist’s probe catches on the tooth.</p>
+<div class="takeaway">
+<p>Arrows specify the local conditioning structure, not proof of causation.</p>
 </div>
-<p>The edge says the test result depends on disease status:</p>
-<p><span class="math display">
-P(D,T)=P(D)P(T \mid D)
-</span></p>
-<div class="question">
-<p>Inference usually asks the reverse diagnostic question: <span class="math inline">P(D \mid T)</span>.</p>
-</div>
+<aside class="notes">
+<p>The model and illustrative probabilities follow AIMA, fourth edition, Sections 13.1-13.4. These are teaching probabilities, not clinical data. A redundant edge need not imply actual dependence. See https://inst.eecs.berkeley.edu/~cs188/textbook/bayes-nets/representation.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="toothache-bayesian-network" class="slide level2">
-<h2>Toothache Bayesian Network</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec22/toothache-bayesian-network.svg" alt="Weather is disconnected; cavity points to toothache and catch"></p>
-</div>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="independent-root">Independent root</h3>
-<p>Weather is disconnected, so it is independent of the dental variables.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="shared-parent">Shared parent</h3>
-<p>Toothache and catch both depend on cavity.</p>
-</div></div>
-</section>
-<section id="tables-in-the-network" class="slide level2">
-<h2>Tables in the Network</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:38%;">
-<h3 id="prior">Prior</h3>
+<section id="local-tables" class="slide level2 bayes23-slide">
+<h2>Local Probability Tables</h2>
+<p>A <strong>conditional probability table (CPT)</strong> gives a distribution for each parent assignment. A root uses a <strong>prior</strong>: its distribution before evidence.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th><span class="math inline">C</span></th>
-<th style="text-align: right;"><span class="math inline">P(C)</span></th>
+<th>Node</th>
+<th>Parent value</th>
+<th style="text-align: right;">Probability true</th>
+<th style="text-align: right;">Probability false</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>true</td>
+<td><span class="math inline">C</span></td>
+<td>No parent</td>
 <td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.80</td>
 </tr>
 <tr class="even">
-<td>false</td>
+<td><span class="math inline">T</span></td>
+<td><span class="math inline">C=\text{true}</span></td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">0.40</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">T</span></td>
+<td><span class="math inline">C=\text{false}</span></td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.90</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">H</span></td>
+<td><span class="math inline">C=\text{true}</span></td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">0.10</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">H</span></td>
+<td><span class="math inline">C=\text{false}</span></td>
+<td style="text-align: right;">0.20</td>
 <td style="text-align: right;">0.80</td>
 </tr>
 </tbody>
 </table>
-</div><div class="column" style="width:58%;">
-<h3 id="conditional-table">Conditional table</h3>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Cavity</th>
-<th style="text-align: right;"><span class="math inline">P(T=\text{true} \mid C)</span></th>
-<th style="text-align: right;"><span class="math inline">P(T=\text{false} \mid C)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>true</td>
-<td style="text-align: right;">0.60</td>
-<td style="text-align: right;">0.40</td>
-</tr>
-<tr class="even">
-<td>false</td>
-<td style="text-align: right;">0.10</td>
-<td style="text-align: right;">0.90</td>
-</tr>
-</tbody>
-</table>
-</div></div>
 <div class="takeaway">
-<p>Tables list one distribution per parent assignment, so each row must sum to 1.</p>
+<p>Each row sums to 1. The entire table does not need to sum to 1.</p>
 </div>
+<p>For short, <span class="math inline">C</span> means <span class="math inline">C=\text{true}</span>; <span class="math inline">\neg C</span> means <span class="math inline">C=\text{false}</span>, and similarly for <span class="math inline">T,H</span>.</p>
 </section>
-<section id="compact-representation" class="slide level2">
-<h2>Compact Representation</h2>
-<p>A full joint over <span class="math inline">n</span> binary variables needs <span class="math inline">2^n</span> entries.</p>
-<p>A Bayesian network can be much smaller when each node has few parents.</p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="full-joint">Full joint</h3>
-<p>Store every combination.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="bayes-net">Bayes net</h3>
-<p>Store local conditionals.</p>
-</div></div>
-<div class="takeaway">
-<p>The compactness depends on whether the edges capture real conditional independence.</p>
-</div>
-</section>
-<section id="factorization-rule" class="slide level2">
-<h2>Factorization Rule</h2>
-<p>For variables <span class="math inline">X_1,\ldots,X_n</span>:</p>
+<section id="factorization" class="slide level2 bayes23-slide">
+<h2>Factorization: Local to Joint</h2>
+<p><img data-src="imgs/drawio/lec22/cavity-network.png" class="bayes23-network" alt="Cavity points to toothache and probe catch."></p>
+<p><strong>Factorization</strong> writes the joint probability as a product: each variable is conditioned only on its parents.</p>
 <p><span class="math display">
-P(X_1,\ldots,X_n)
-=
-\prod_{i=1}^n P(X_i \mid \text{Parents}(X_i))
+P(C,T,H)=P(C)\,P(T\mid C)\,P(H\mid C).
 </span></p>
-<p>For the toothache network:</p>
-<p><span class="math display">
-P(W,C,T,H)=P(W)P(C)P(T \mid C)P(H \mid C)
-</span></p>
-</section>
-<section id="conditional-independence" class="slide level2 compact">
-<h2>Conditional Independence</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec22/conditional-independence.svg" alt="Cavity points to toothache and catch, creating conditional independence when cavity is known"></p>
-</div>
-<p>Toothache and catch are not necessarily independent.</p>
 <div class="fragment">
-<p>But once we know whether there is a cavity, they become conditionally independent:</p>
+<p>For one complete assignment, all three variables true:</p>
 <p><span class="math display">
-T \perp H \mid C
+P(C,T,H)=0.20\times0.60\times0.90=0.108.
 </span></p>
 </div>
 <div class="takeaway">
-<p>Conditional independence is the main reason Bayesian networks save space and computation.</p>
+<p>Use the same product rule for every true/false assignment, selecting the appropriate CPT entries.</p>
 </div>
+<aside class="notes">
+<p>The first formula uses the conventional distribution notation; the worked line uses the true-event shorthand defined on the previous slide. Generally, P(X_1,…,X_n) is the product of P(X_i | Parents(X_i)).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="exact-inference-can-still-be-hard" class="slide level2">
-<h2>Exact Inference Can Still Be Hard</h2>
-<p>Even with factorization, exact inference can require summing over many hidden variables.</p>
-<div class="definition">
-<p>Query form:</p>
-<p><span class="math display">
-P(\text{Query} \mid \text{Evidence})
-</span></p>
-</div>
-<p>For large networks, exact methods may be too expensive.</p>
-<div class="question">
-<p>When exact inference is hard, we estimate probabilities by sampling.</p>
-</div>
-</section>
-<section id="monte-carlo-estimation" class="slide level2">
-<h2>Monte Carlo Estimation</h2>
-<p>Monte Carlo methods use random samples to approximate probabilities.</p>
+<section id="conditional-independence" class="slide level2 bayes23-slide">
+<h2>The Graph Encodes an Assumption</h2>
+<p><img data-src="imgs/drawio/lec22/cavity-network.png" class="bayes23-network" alt="Toothache and probe catch share cavity as their parent."></p>
+<p>The model assumes <strong>conditional independence</strong>: once cavity status is known, toothache adds no information about probe catch.</p>
+<p><span class="math display">T\perp H\mid C</span></p>
 <table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: right;">Number of coin flips</th>
-<th style="text-align: right;">Estimated <span class="math inline">P(Heads)</span></th>
+<th>Known cavity status</th>
+<th style="text-align: right;">With toothache</th>
+<th style="text-align: right;">Without toothache</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">0.60</td>
+<td><span class="math inline">C=\text{true}</span></td>
+<td style="text-align: right;"><span class="math inline">P(H\mid C,T)=0.90</span></td>
+<td style="text-align: right;"><span class="math inline">P(H\mid C,\neg T)=0.90</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">50</td>
-<td style="text-align: right;">0.48</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">100</td>
-<td style="text-align: right;">0.51</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">500</td>
-<td style="text-align: right;">0.502</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1000</td>
-<td style="text-align: right;">0.499</td>
+<td><span class="math inline">C=\text{false}</span></td>
+<td style="text-align: right;"><span class="math inline">P(H\mid\neg C,T)=0.20</span></td>
+<td style="text-align: right;"><span class="math inline">P(H\mid\neg C,\neg T)=0.20</span></td>
 </tr>
 </tbody>
 </table>
 <div class="takeaway">
-<p>More independent samples usually make the estimate more stable.</p>
+<p>This does <strong>not</strong> assert ordinary independence between <span class="math inline">T</span> and <span class="math inline">H</span> when cavity status is unknown.</p>
 </div>
 </section>
-<section id="sampling-methods" class="slide level2 compact">
-<h2>Sampling Methods</h2>
+<section id="storage" class="slide level2 bayes23-slide">
+<h2>Storage and Inference Cost</h2>
+<p>A <strong>free parameter</strong> is a probability we must specify. For a binary variable, the other probability in that row is <span class="math inline">1-p</span>.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Binary variables</th>
+<th style="text-align: right;">Full joint: free parameters</th>
+<th style="text-align: right;">Bayesian network: free parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Our 3-node network</td>
+<td style="text-align: right;"><span class="math inline">2^3-1=7</span></td>
+<td style="text-align: right;"><span class="math inline">1+2+2=5</span></td>
+</tr>
+<tr class="even">
+<td>50 nodes: one root, one parent per other node</td>
+<td style="text-align: right;"><span class="math inline">2^{50}-1\approx10^{15}</span></td>
+<td style="text-align: right;"><span class="math inline">1+49\times2=99</span></td>
+</tr>
+</tbody>
+</table>
+<p>The saving comes from the network’s conditional-independence assumptions.</p>
+<div class="takeaway">
+<p>A compact model can still require expensive sums for exact inference in a large network.</p>
+</div>
+<aside class="notes">
+<p>These counts are free parameters, not the number of stored table cells. For the 50-node example, assume a binary DAG with exactly one root and exactly one parent for each remaining node. General inference difficulty depends on structure as well as node count; tree-structured networks have efficient exact methods.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="exact-benchmark" class="slide level2 bayes23-slide">
+<h2>One Exact Answer as a Benchmark</h2>
+<p>Target: <span class="math inline">P(C\mid T)</span>, the <strong>posterior</strong> probability of a cavity after observing a toothache.</p>
+<ul>
+<li><strong>Query variable:</strong> what we want to infer, <span class="math inline">C</span>.</li>
+<li><strong>Evidence:</strong> an observed value, <span class="math inline">T=\text{true}</span>.</li>
+<li><strong>Hidden variable:</strong> unobserved and not the query, here <span class="math inline">H</span>.</li>
+</ul>
+<p>Summing over <span class="math inline">H</span> leaves these two possibilities:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Cavity status</th>
+<th style="text-align: right;">Joint probability with toothache</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>True</td>
+<td style="text-align: right;"><span class="math inline">P(C,T)=0.20\times0.60=0.12</span></td>
+</tr>
+<tr class="even">
+<td>False</td>
+<td style="text-align: right;"><span class="math inline">P(\neg C,T)=0.80\times0.10=0.08</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment takeaway">
+<p>Normalize: <span class="math inline">P(C\mid T)=\dfrac{0.12}{0.12+0.08}=0.60</span>.</p>
+</div>
+<aside class="notes">
+<p>Summing the H factor gives P(H | C) + P(not H | C) = 1 for either value of C. This small network is easy to solve exactly; it provides a check for approximate methods.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="monte-carlo" class="slide level2 bayes23-slide">
+<h2>Monte Carlo: Estimate by Random Sampling</h2>
+<p>A <strong>sample</strong> is one randomly generated assignment, such as <span class="math inline">(C,T,H)=(\text{true},\text{false},\text{true})</span>.</p>
+<p><strong>Monte Carlo estimation</strong> approximates probabilities using random samples.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Illustrative batch</th>
+<th style="text-align: right;">Cavity true</th>
+<th style="text-align: right;">Cavity false</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>20 independent draws from the model</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">15</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math display">
+\widehat{P}(C)=\frac{5}{20}=0.25
+\qquad\text{versus the model's }P(C)=0.20.
+</span></p>
+<p>The hat marks an <strong>estimate</strong>, not an exact probability from the model.</p>
+<div class="takeaway">
+<p>More independent samples tend to reduce sampling error, but an estimate need not improve after every new draw.</p>
+</div>
+<aside class="notes">
+<p>The counts are illustrative, not a measured run. Sampling estimates the specified model, not whether the model describes reality correctly. To estimate a posterior such as P(C | T), we must also account for the evidence.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="prior-sampling" class="slide level2 bayes23-slide">
+<h2>Prior Sampling: Parents Before Children</h2>
+<p>A <strong>topological order</strong> puts every parent before its children. Both <span class="math inline">C,T,H</span> and <span class="math inline">C,H,T</span> work here.</p>
+<p>At each node, draw from its table using the already sampled parent values.</p>
+<p><img data-src="imgs/drawio/lec23/prior-trace.png" class="bayes23-process" alt="Draw C true using u .13 and probability .20; T false using u .80 and probability .60; H true using u .40 and probability .90."></p>
+<p>Here <span class="math inline">u</span> is uniform on <span class="math inline">[0,1)</span>: choose true if <span class="math inline">u&lt;p</span>, where <span class="math inline">p</span> is the probability of true.</p>
+<div class="takeaway">
+<p><code>PriorSample()</code> returns one complete joint sample. No evidence is enforced yet.</p>
+</div>
+</section>
+<section id="rejection-sampling" class="slide level2 bayes23-slide">
+<h2>Rejection Sampling: Keep the Evidence</h2>
+<p>To estimate <span class="math inline">P(C\mid T)</span>, draw complete prior samples and <strong>reject</strong> any with <span class="math inline">T=\text{false}</span>.</p>
+<p><img data-src="imgs/drawio/lec23/rejection-counts.png" class="bayes23-counts" alt="Among 1000 prior draws, expected counts are 800 rejected and 200 kept; the kept group contains 120 with cavity and 80 without."></p>
+<p>These are <strong>expected counts</strong>, not guaranteed counts in a particular batch.</p>
+<p><span class="math display">
+\widehat{P}(C\mid T)=\frac{\text{kept samples with cavity}}{\text{all kept samples}}
+\quad\text{(about }120/200=0.60\text{).}
+</span></p>
+<div class="takeaway">
+<p>Rare evidence means most prior samples are discarded.</p>
+</div>
+</section>
+<section id="rejection-algorithm" class="slide level2 bayes23-slide">
+<h2>Rejection Sampling: The Algorithm</h2>
+<p>Evidence is <span class="math inline">T=\text{true}</span>. Let <span class="math inline">N</span> be the number of prior draws; <code>counts</code> records the two cavity outcomes.</p>
+<div class="pseudo-code">
+<div class="pseudo-line">
+<span class="pseudo-kw">function</span> <span class="pseudo-fn">EstimateCavity</span>(<span class="pseudo-var">N</span>)
+</div>
+<div class="pseudo-line indent-1">
+<span class="pseudo-var">counts</span> <span class="pseudo-op">=</span> {<span class="pseudo-lit">true</span>: <span class="pseudo-num">0</span>, <span class="pseudo-lit">false</span>: <span class="pseudo-num">0</span>}
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="0">
+<span class="pseudo-kw">repeat</span> <span class="pseudo-var">N</span> <span class="pseudo-kw">times</span>
+</div>
+<div class="pseudo-line fragment indent-2" data-fragment-index="0">
+<span class="pseudo-var">C</span>, <span class="pseudo-var">T</span>, <span class="pseudo-var">H</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">PriorSample</span>()
+</div>
+<div class="pseudo-line fragment indent-2" data-fragment-index="1">
+<span class="pseudo-kw">if</span> <span class="pseudo-var">T</span> <span class="pseudo-op">==</span> <span class="pseudo-lit">true</span>
+</div>
+<div class="pseudo-line fragment indent-3" data-fragment-index="1">
+<span class="pseudo-var">counts</span>[<span class="pseudo-var">C</span>] <span class="pseudo-op">+=</span> <span class="pseudo-num">1</span>
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-var">total</span> <span class="pseudo-op">=</span> <span class="pseudo-var">counts</span>[<span class="pseudo-lit">true</span>] <span class="pseudo-op">+</span> <span class="pseudo-var">counts</span>[<span class="pseudo-lit">false</span>]
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-kw">if</span> <span class="pseudo-var">total</span> <span class="pseudo-op">==</span> <span class="pseudo-num">0</span>: <span class="pseudo-kw">return</span> <span class="pseudo-lit">no_estimate</span>
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="3">
+<span class="pseudo-kw">return</span> <span class="pseudo-var">counts</span>[<span class="pseudo-lit">true</span>] <span class="pseudo-op">/</span> <span class="pseudo-var">total</span>
+</div>
+</div>
+<div class="takeaway">
+<p>Divide by the number <strong>accepted</strong>, not by <span class="math inline">N</span>. If none match, we have no estimate.</p>
+</div>
+</section>
+<section id="likelihood-weighting" class="slide level2 bayes23-slide">
+<h2>Likelihood Weighting: Fix and Reweight</h2>
+<p>Keep <span class="math inline">T=\text{true}</span> fixed. Sample <span class="math inline">C</span> from its prior and <span class="math inline">H</span> given <span class="math inline">C</span>.</p>
+<p>A sample’s <strong>weight</strong> is the evidence probability (<strong>likelihood</strong>) given its sampled parents: <span class="math inline">w=P(T\mid C)</span>.</p>
+<p><img data-src="imgs/drawio/lec23/weighted-counts.png" class="bayes23-counts" alt="Illustrative 1000 weighted samples: 200 cavity samples with weight .60 give total 120; 800 no-cavity samples with weight .10 give total 80."></p>
+<p>For this illustrative batch:</p>
+<p><span class="math display">\widehat{P}(C\mid T)=\frac{120}{120+80}=0.60.</span></p>
+<div class="takeaway">
+<p>Weights make samples that better explain the evidence count more.</p>
+</div>
+<aside class="notes">
+<p>Likelihood here means the probability of the observed evidence, viewed as a function of the sampled parent assignment. The displayed batch has exactly 200 C=true draws for illustration; other batches produce other estimates. With multiple evidence nodes, multiply their local evidence likelihoods. Very unequal weights can make an estimate depend on only a few samples.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="weighting-algorithm" class="slide level2 bayes23-slide">
+<h2>One Weighted Sample</h2>
+<p><code>draw_true(p)</code> returns true with probability <span class="math inline">p</span>, otherwise false. Here <code>w</code> is the sample’s weight for the observed toothache.</p>
+<div class="pseudo-code">
+<div class="pseudo-line">
+<span class="pseudo-kw">function</span> <span class="pseudo-fn">WeightedSample</span>()
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="0">
+<span class="pseudo-var">C</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">draw_true</span>(<span class="pseudo-num">0.20</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-var">T</span> <span class="pseudo-op">=</span> <span class="pseudo-lit">true</span>
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-var">w</span> <span class="pseudo-op">=</span> <span class="pseudo-num">0.60</span> <span class="pseudo-kw">if</span> <span class="pseudo-var">C</span> <span class="pseudo-kw">else</span> <span class="pseudo-num">0.10</span>
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-var">H</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">draw_true</span>(<span class="pseudo-num">0.90</span> <span class="pseudo-kw">if</span> <span class="pseudo-var">C</span> <span class="pseudo-kw">else</span> <span class="pseudo-num">0.20</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="3">
+<span class="pseudo-kw">return</span> (<span class="pseudo-var">C</span>, <span class="pseudo-var">T</span>, <span class="pseudo-var">H</span>, <span class="pseudo-var">w</span>)
+</div>
+</div>
+<p>Across many samples:</p>
+<p><span class="math display">
+\widehat{P}(C\mid T)=\frac{\text{sum of weights for }C=\text{true}}{\text{sum of all weights}}.
+</span></p>
+<aside class="notes">
+<p>If the total weight is zero, the ratio is undefined and there is no estimate from that batch. All weights in this toy model are positive. H is included to illustrate a complete weighted sample; it could be omitted when computing this particular query.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="gibbs-sampling" class="slide level2 bayes23-slide">
+<h2>Gibbs Sampling: Change One Variable</h2>
+<p>A <strong>state</strong> is the current assignment. <strong>Gibbs sampling</strong> keeps evidence fixed and resamples one unobserved variable given all the others.</p>
+<p><img data-src="imgs/drawio/lec23/gibbs-states.png" class="bayes23-process" alt="With toothache fixed true, update cavity from false to true, then update probe catch from false to true. Only one variable changes in each step."></p>
+<p>Each next state depends on the current state, not the full history: a <strong>Markov chain</strong>. This is a <strong>Markov chain Monte Carlo (MCMC)</strong> method.</p>
+<div class="takeaway">
+<p>Keep <span class="math inline">T</span> fixed; alternate updates of <span class="math inline">C</span> and <span class="math inline">H</span>. Use the visited states to estimate the query probability.</p>
+</div>
+<aside class="notes">
+<p>The illustrated C update has probability .012/(.012+.064) = .158 and uses uniform draw u=.12; the following H update has probability .90 and uses u=.30. Consecutive states are dependent. A burn-in means discarding initial states to reduce initialization effects; it does not certify convergence. Valid convergence conditions matter: deterministic or zero-probability constraints can prevent a single-site chain from reaching all required states. This toy network has strictly positive entries. See https://inst.eecs.berkeley.edu/~cs188/textbook/bayes-nets/approximate.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="gibbs-update" class="slide level2 bayes23-slide">
+<h2>One Gibbs Update, Worked Out</h2>
+<p>Suppose the current state has <span class="math inline">T=\text{true}</span> and <span class="math inline">H=\text{true}</span>. Resample <span class="math inline">C</span> while holding these two values fixed.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Candidate value of <span class="math inline">C</span></th>
+<th style="text-align: right;">Joint probability with <span class="math inline">T,H</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>True</td>
+<td style="text-align: right;"><span class="math inline">0.20\times0.60\times0.90=0.108</span></td>
+</tr>
+<tr class="even">
+<td>False</td>
+<td style="text-align: right;"><span class="math inline">0.80\times0.10\times0.20=0.016</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><span class="math display">P(C\mid T,H)=\frac{0.108}{0.108+0.016}\approx0.871.</span></p>
+<p>Draw a new <span class="math inline">C</span>: true with probability <span class="math inline">0.871</span>, false otherwise.</p>
+</div>
+<div class="takeaway">
+<p>Next, resample <span class="math inline">H</span> using the new <span class="math inline">C</span>: probability <span class="math inline">0.90</span> if <span class="math inline">C</span> is true, <span class="math inline">0.20</span> otherwise. The evidence <span class="math inline">T</span> never changes.</p>
+</div>
+<aside class="notes">
+<p>Unnormalized means proportional to the desired conditional probability, before dividing by the sum. Given C, H is conditionally independent of T in this graph, so its Gibbs conditional is just its local table. The update illustrated here is a different starting H value from the preceding diagram.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sampling-comparison" class="slide level2 bayes23-slide">
+<h2>How the Methods Use Evidence</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -385,171 +676,118 @@ P(\text{Query} \mid \text{Evidence})
 <thead>
 <tr class="header">
 <th>Method</th>
-<th>Idea</th>
-<th>Weak point</th>
+<th>What happens to evidence?</th>
+<th>Main limitation</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Prior sampling</td>
-<td>Sample nodes in topological order</td>
-<td>Does not condition on evidence</td>
+<td>Sample it like any other variable</td>
+<td>Joint draws alone are not a posterior estimate</td>
 </tr>
 <tr class="even">
 <td>Rejection sampling</td>
-<td>Keep samples matching evidence</td>
-<td>Wastes samples when evidence is rare</td>
+<td>Discard draws that do not match</td>
+<td>Rare evidence wastes draws</td>
 </tr>
 <tr class="odd">
 <td>Likelihood weighting</td>
-<td>Fix evidence and weight samples</td>
-<td>Can still struggle with unlikely evidence</td>
+<td>Fix its value; weight by its likelihood</td>
+<td>A few large weights may dominate</td>
 </tr>
 <tr class="even">
 <td>Gibbs sampling</td>
-<td>Resample variables in a Markov chain</td>
-<td>Needs time to mix</td>
+<td>Fix its value; update other variables</td>
+<td>Dependent states may explore possibilities slowly</td>
 </tr>
 </tbody>
 </table>
-<div class="step-strip">
-<div class="step-card">
-<strong>Prior</strong><span>sample everything from the model</span>
-</div>
-<div class="step-card">
-<strong>Rejection</strong><span>throw away samples that miss evidence</span>
-</div>
-<div class="step-card">
-<strong>Weighting</strong><span>clamp evidence and attach weights</span>
-</div>
-<div class="step-card">
-<strong>Gibbs</strong><span>walk through states by resampling variables</span>
-</div>
-</div>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec22/sampling-methods.svg" alt="Sampling methods differ in how they use evidence: discard, weight, or clamp during a Markov chain"></p>
-</div>
-</section>
-<section id="prior-sampling" class="slide level2">
-<h2>Prior Sampling</h2>
-<div class="pseudo-code">
-<div class="pseudo-line">
-<span class="pseudo-kw">function</span> <span class="pseudo-fn">PriorSample</span>(<span class="pseudo-var">network</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">sample</span> <span class="pseudo-op">=</span> {}
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">for each</span> <span class="pseudo-var">node</span> <span class="pseudo-op">in topological order</span>
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-var">parents</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">valuesOfParents</span>(<span class="pseudo-var">node</span>, <span class="pseudo-var">sample</span>)
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-var">sample</span>[<span class="pseudo-var">node</span>] <span class="pseudo-op">=</span> <span class="pseudo-fn">draw</span>(<span class="pseudo-fn">P</span>(<span class="pseudo-var">node</span> <span class="pseudo-op">|</span> <span class="pseudo-var">parents</span>))
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">return</span> <span class="pseudo-var">sample</span>
-</div>
-</div>
-</section>
-<section id="rejection-sampling" class="slide level2">
-<h2>Rejection Sampling</h2>
-<div class="pseudo-code">
-<div class="pseudo-line">
-<span class="pseudo-kw">function</span> <span class="pseudo-fn">RejectionSampling</span>(<span class="pseudo-var">query</span>, <span class="pseudo-var">evidence</span>, <span class="pseudo-var">N</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">kept</span> <span class="pseudo-op">=</span> []
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">repeat</span> <span class="pseudo-var">N</span> <span class="pseudo-kw">times</span>
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-var">sample</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">PriorSample</span>(<span class="pseudo-var">network</span>)
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-kw">if</span> <span class="pseudo-fn">matches</span>(<span class="pseudo-var">sample</span>, <span class="pseudo-var">evidence</span>)
-</div>
-<div class="pseudo-line fragment indent-3">
-<span class="pseudo-fn">append</span>(<span class="pseudo-var">kept</span>, <span class="pseudo-var">sample</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">return</span> <span class="pseudo-fn">estimate</span>(<span class="pseudo-var">query</span>, <span class="pseudo-var">kept</span>)
-</div>
-</div>
 <div class="question">
-<p>If evidence is rare, most samples disappear.</p>
+<p>If only 1 in 10,000 prior samples matches the evidence, which method immediately wastes most draws?</p>
+</div>
+<div class="fragment">
+<p><strong>Rejection sampling.</strong> Fixing the evidence avoids those rejections, but does not guarantee a fast, accurate estimate.</p>
 </div>
 </section>
-<section id="likelihood-weighting" class="slide level2">
-<h2>Likelihood Weighting</h2>
-<div class="pseudo-code">
-<div class="pseudo-line">
-<span class="pseudo-kw">function</span> <span class="pseudo-fn">WeightedSample</span>(<span class="pseudo-var">evidence</span>)
+<section id="sampling-practice" class="slide level2 bayes23-slide">
+<h2>Short Practice: Two Observations</h2>
+<p>Observe a toothache <strong>and no probe catch</strong>. Estimate <span class="math inline">P(C\mid T,\neg H)</span> by likelihood weighting, fixing both observations.</p>
+<p>Suppose 1,000 prior draws of <span class="math inline">C</span> give these counts:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th><span class="math inline">C</span></th>
+<th style="text-align: right;">Draws</th>
+<th style="text-align: right;"><span class="math inline">P(T\mid C)</span></th>
+<th style="text-align: right;"><span class="math inline">P(\neg H\mid C)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>True</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">0.10</td>
+</tr>
+<tr class="even">
+<td>False</td>
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.80</td>
+</tr>
+</tbody>
+</table>
+<div class="question">
+<p>What is each sample’s weight? What is the normalized estimate?</p>
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">sample</span> <span class="pseudo-op">=</span> {}; <span class="pseudo-var">weight</span> <span class="pseudo-op">=</span> <span class="pseudo-num">1</span>
+<div class="fragment" data-fragment-index="0">
+<p>Weights: <span class="math inline">0.60\times0.10=0.06</span> and <span class="math inline">0.10\times0.80=0.08</span>.</p>
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">for each</span> <span class="pseudo-var">node</span> <span class="pseudo-op">in topological order</span>
+<div class="fragment" data-fragment-index="1">
+<p>Total weights: <span class="math inline">200\times0.06=12</span>, <span class="math inline">800\times0.08=64</span>.</p>
+<p><span class="math display">\widehat{P}(C\mid T,\neg H)=\frac{12}{12+64}\approx0.158.</span></p>
 </div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">node</span> <span class="pseudo-op">is evidence</span>
-</div>
-<div class="pseudo-line fragment indent-3">
-<span class="pseudo-var">sample</span>[<span class="pseudo-var">node</span>] <span class="pseudo-op">=</span> <span class="pseudo-var">evidence</span>[<span class="pseudo-var">node</span>]
-</div>
-<div class="pseudo-line fragment indent-3">
-<span class="pseudo-var">weight</span> <span class="pseudo-op">*=</span> <span class="pseudo-fn">P</span>(<span class="pseudo-var">node</span> <span class="pseudo-op">|</span> <span class="pseudo-var">parents</span>)
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-kw">else</span> <span class="pseudo-var">sample</span>[<span class="pseudo-var">node</span>] <span class="pseudo-op">=</span> <span class="pseudo-fn">draw</span>(<span class="pseudo-fn">P</span>(<span class="pseudo-var">node</span> <span class="pseudo-op">|</span> <span class="pseudo-var">parents</span>))
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">return</span> (<span class="pseudo-var">sample</span>, <span class="pseudo-var">weight</span>)
-</div>
-</div>
+<aside class="notes">
+<p>Again these batch counts are illustrative. Because they exactly match the C prior proportions, the estimate equals the exact model answer in this particular example. Contrast with the .60 posterior for toothache alone: no probe catch is evidence against a cavity.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="gibbs-sampling" class="slide level2">
-<h2>Gibbs Sampling</h2>
-<div class="pseudo-code">
-<div class="pseudo-line">
-<span class="pseudo-kw">function</span> <span class="pseudo-fn">GibbsSampling</span>(<span class="pseudo-var">evidence</span>, <span class="pseudo-var">N</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">state</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">randomAssignmentConsistentWith</span>(<span class="pseudo-var">evidence</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">repeat</span> <span class="pseudo-var">N</span> <span class="pseudo-kw">times</span>
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-kw">for each</span> non-evidence <span class="pseudo-var">variable</span> <span class="pseudo-var">X</span>
-</div>
-<div class="pseudo-line fragment indent-3">
-<span class="pseudo-var">state</span>[<span class="pseudo-var">X</span>] <span class="pseudo-op">=</span> <span class="pseudo-fn">draw</span>(<span class="pseudo-fn">P</span>(<span class="pseudo-var">X</span> <span class="pseudo-op">|</span> <span class="pseudo-var">MarkovBlanket</span>(<span class="pseudo-var">X</span>)))
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-fn">record</span>(<span class="pseudo-var">state</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">return</span> <span class="pseudo-fn">estimateFromRecordedStates</span>()
-</div>
-</div>
-<div class="takeaway">
-<p>MCMC avoids rejecting full samples; it walks through likely assignments over time.</p>
-</div>
-</section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
+<section id="takeaways" class="slide level2 bayes23-slide">
+<h2>Takeaways</h2>
 <ul>
-<li>A Bayesian network is a DAG plus local conditional distributions.</li>
-<li>Its factorization compactly represents a joint distribution.</li>
-<li>Conditional independence is the main modeling payoff.</li>
-<li>Exact inference can still be expensive.</li>
-<li>Sampling approximates inference when exact computation is too costly.</li>
+<li><strong>Graph + local tables</strong> specify a joint distribution.</li>
+<li><strong>Conditional independence</strong> makes the representation compact.</li>
+<li>Identify the <strong>query</strong>, <strong>evidence</strong>, and <strong>hidden variables</strong> first.</li>
+<li>Rejection, weighting, and Gibbs sampling differ in how they use evidence.</li>
+<li>An approximate answer still needs enough useful samples; no method is always best.</li>
 </ul>
+<div class="takeaway">
+<p>Same model, same query, different routes to an estimate. Check against an exact answer when one is available.</p>
+</div>
 <p><a href="../asset_credits.html#lec23" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
+<aside class="notes">
+<p>AIMA, fourth edition, Sections 13.1-13.4. Leave time for questions about HW3, due today. No additional implementation is required by this deck.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 </section>

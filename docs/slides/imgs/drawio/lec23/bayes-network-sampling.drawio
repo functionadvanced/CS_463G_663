@@ -1,0 +1,79 @@
+<mxfile host="Electron" type="device" version="28.0.6">
+  <diagram id="prior-trace" name="Prior trace">
+    <mxGraphModel page="1" pageWidth="960" pageHeight="220" background="#ffffff">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="canvas" value="" style="fillColor=#ffffff;strokeColor=none;" vertex="1" parent="1"><mxGeometry width="960" height="220" as="geometry"/></mxCell>
+        <mxCell id="c" value="Draw C&#xa;p(true) = 0.20&#xa;u = 0.13&#xa;C = true" style="rounded=0;fillColor=#e8f6f5;strokeColor=#007c89;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;fontColor=#173e43;spacing=8;" vertex="1" parent="1"><mxGeometry x="15" y="20" width="280" height="180" as="geometry"/></mxCell>
+        <mxCell id="t" value="Draw T given C&#xa;p(true) = 0.60&#xa;u = 0.80&#xa;T = false" style="rounded=0;fillColor=#fff4db;strokeColor=#b7791f;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;fontColor=#5e441e;spacing=8;" vertex="1" parent="1"><mxGeometry x="340" y="20" width="280" height="180" as="geometry"/></mxCell>
+        <mxCell id="h" value="Draw H given C&#xa;p(true) = 0.90&#xa;u = 0.40&#xa;H = true" style="rounded=0;fillColor=#e8f6f5;strokeColor=#007c89;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;fontColor=#173e43;spacing=8;" vertex="1" parent="1"><mxGeometry x="665" y="20" width="280" height="180" as="geometry"/></mxCell>
+        <mxCell id="ct" style="strokeColor=#626f79;strokeWidth=2.5;endArrow=block;endSize=6;" edge="1" source="c" target="t" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="th" style="strokeColor=#626f79;strokeWidth=2.5;endArrow=block;endSize=6;" edge="1" source="t" target="h" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="rejection-counts" name="Rejection counts">
+    <mxGraphModel page="1" pageWidth="960" pageHeight="260" background="#ffffff">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="canvas" value="" style="fillColor=#ffffff;strokeColor=none;" vertex="1" parent="1"><mxGeometry width="960" height="260" as="geometry"/></mxCell>
+        <mxCell id="draws" value="1,000&#xa;prior samples" style="rounded=0;fillColor=#f0f3f5;strokeColor=#626f79;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;spacing=8;" vertex="1" parent="1"><mxGeometry x="15" y="85" width="225" height="90" as="geometry"/></mxCell>
+        <mxCell id="kept" value="T = true&#xa;200 kept" style="rounded=0;fillColor=#e8f6f5;strokeColor=#007c89;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;fontColor=#173e43;spacing=8;" vertex="1" parent="1"><mxGeometry x="325" y="15" width="250" height="95" as="geometry"/></mxCell>
+        <mxCell id="rejected" value="T = false&#xa;800 rejected" style="rounded=0;fillColor=#fdecef;strokeColor=#b8325f;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;fontColor=#7c2544;spacing=8;" vertex="1" parent="1"><mxGeometry x="325" y="150" width="250" height="95" as="geometry"/></mxCell>
+        <mxCell id="counts" value="120 with cavity&#xa;80 without cavity" style="rounded=0;fillColor=#fff4db;strokeColor=#b7791f;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;fontColor=#5e441e;spacing=8;" vertex="1" parent="1"><mxGeometry x="655" y="15" width="290" height="95" as="geometry"/></mxCell>
+        <mxCell id="accept" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=1;exitY=0.3;entryX=0;entryY=0.5;strokeColor=#007c89;strokeWidth=2.5;endArrow=block;endSize=6;" edge="1" source="draws" target="kept" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="reject" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=1;exitY=0.7;entryX=0;entryY=0.5;strokeColor=#b8325f;strokeWidth=2.5;endArrow=block;endSize=6;" edge="1" source="draws" target="rejected" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="count-kept" style="strokeColor=#626f79;strokeWidth=2.5;endArrow=block;endSize=6;" edge="1" source="kept" target="counts" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="expected" value="Expected counts&#xa;(not a measured run)" style="text;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=26;fontColor=#626f79;" vertex="1" parent="1"><mxGeometry x="620" y="150" width="335" height="90" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="weighted-counts" name="Weighted counts">
+    <mxGraphModel page="1" pageWidth="960" pageHeight="270" background="#ffffff">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="canvas" value="" style="fillColor=#ffffff;strokeColor=none;" vertex="1" parent="1"><mxGeometry width="960" height="270" as="geometry"/></mxCell>
+        <mxCell id="fixed" value="T = true in every sample" style="text;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=30;fontStyle=1;fontColor=#626f79;" vertex="1" parent="1"><mxGeometry x="15" y="5" width="930" height="42" as="geometry"/></mxCell>
+        <mxCell id="true-draws" value="C = true&#xa;200 draws" style="rounded=0;fillColor=#e8f6f5;strokeColor=#007c89;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;fontColor=#173e43;spacing=6;" vertex="1" parent="1"><mxGeometry x="15" y="65" width="285" height="80" as="geometry"/></mxCell>
+        <mxCell id="true-weight" value="Weight per draw&#xa;0.60" style="rounded=0;fillColor=#f0f3f5;strokeColor=#626f79;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;spacing=6;" vertex="1" parent="1"><mxGeometry x="350" y="65" width="280" height="80" as="geometry"/></mxCell>
+        <mxCell id="true-total" value="Total weight&#xa;200 x 0.60 = 120" style="rounded=0;fillColor=#fff4db;strokeColor=#b7791f;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;fontColor=#5e441e;spacing=6;" vertex="1" parent="1"><mxGeometry x="680" y="65" width="265" height="80" as="geometry"/></mxCell>
+        <mxCell id="false-draws" value="C = false&#xa;800 draws" style="rounded=0;fillColor=#e8f6f5;strokeColor=#007c89;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;fontColor=#173e43;spacing=6;" vertex="1" parent="1"><mxGeometry x="15" y="175" width="285" height="80" as="geometry"/></mxCell>
+        <mxCell id="false-weight" value="Weight per draw&#xa;0.10" style="rounded=0;fillColor=#f0f3f5;strokeColor=#626f79;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;spacing=6;" vertex="1" parent="1"><mxGeometry x="350" y="175" width="280" height="80" as="geometry"/></mxCell>
+        <mxCell id="false-total" value="Total weight&#xa;800 x 0.10 = 80" style="rounded=0;fillColor=#fff4db;strokeColor=#b7791f;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;fontColor=#5e441e;spacing=6;" vertex="1" parent="1"><mxGeometry x="680" y="175" width="265" height="80" as="geometry"/></mxCell>
+        <mxCell id="t1" style="strokeColor=#626f79;strokeWidth=2.5;endArrow=block;endSize=6;" edge="1" source="true-draws" target="true-weight" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="t2" style="strokeColor=#626f79;strokeWidth=2.5;endArrow=block;endSize=6;" edge="1" source="true-weight" target="true-total" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f1" style="strokeColor=#626f79;strokeWidth=2.5;endArrow=block;endSize=6;" edge="1" source="false-draws" target="false-weight" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f2" style="strokeColor=#626f79;strokeWidth=2.5;endArrow=block;endSize=6;" edge="1" source="false-weight" target="false-total" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="gibbs-states" name="Gibbs states">
+    <mxGraphModel page="1" pageWidth="960" pageHeight="240" background="#ffffff">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="canvas" value="" style="fillColor=#ffffff;strokeColor=none;" vertex="1" parent="1"><mxGeometry width="960" height="240" as="geometry"/></mxCell>
+        <mxCell id="label1" value="Initial state" style="text;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=30;fontStyle=1;fontColor=#626f79;" vertex="1" parent="1"><mxGeometry x="15" y="5" width="280" height="45" as="geometry"/></mxCell>
+        <mxCell id="label2" value="Resample C" style="text;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=30;fontStyle=1;fontColor=#007c89;" vertex="1" parent="1"><mxGeometry x="340" y="5" width="280" height="45" as="geometry"/></mxCell>
+        <mxCell id="label3" value="Resample H" style="text;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=30;fontStyle=1;fontColor=#007c89;" vertex="1" parent="1"><mxGeometry x="665" y="5" width="280" height="45" as="geometry"/></mxCell>
+        <mxCell id="s1" value="" style="rounded=0;fillColor=#f0f3f5;strokeColor=#626f79;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="15" y="60" width="280" height="165" as="geometry"/></mxCell>
+        <mxCell id="s2" value="" style="rounded=0;fillColor=#f0f3f5;strokeColor=#626f79;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="340" y="60" width="280" height="165" as="geometry"/></mxCell>
+        <mxCell id="s3" value="" style="rounded=0;fillColor=#f0f3f5;strokeColor=#626f79;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="665" y="60" width="280" height="165" as="geometry"/></mxCell>
+        <mxCell id="s1c" value="C = false" style="text;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;" vertex="1" parent="1"><mxGeometry x="25" y="65" width="260" height="45" as="geometry"/></mxCell>
+        <mxCell id="s1t" value="T = true (fixed)" style="fillColor=#fff4db;strokeColor=none;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;fontColor=#5e441e;" vertex="1" parent="1"><mxGeometry x="25" y="115" width="260" height="50" as="geometry"/></mxCell>
+        <mxCell id="s1h" value="H = false" style="text;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;" vertex="1" parent="1"><mxGeometry x="25" y="170" width="260" height="45" as="geometry"/></mxCell>
+        <mxCell id="s2c" value="C = true" style="fillColor=#e8f6f5;strokeColor=none;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;fontStyle=1;fontColor=#007c89;" vertex="1" parent="1"><mxGeometry x="350" y="65" width="260" height="45" as="geometry"/></mxCell>
+        <mxCell id="s2t" value="T = true (fixed)" style="fillColor=#fff4db;strokeColor=none;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;fontColor=#5e441e;" vertex="1" parent="1"><mxGeometry x="350" y="115" width="260" height="50" as="geometry"/></mxCell>
+        <mxCell id="s2h" value="H = false" style="text;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;" vertex="1" parent="1"><mxGeometry x="350" y="170" width="260" height="45" as="geometry"/></mxCell>
+        <mxCell id="s3c" value="C = true" style="text;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;" vertex="1" parent="1"><mxGeometry x="675" y="65" width="260" height="45" as="geometry"/></mxCell>
+        <mxCell id="s3t" value="T = true (fixed)" style="fillColor=#fff4db;strokeColor=none;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;fontColor=#5e441e;" vertex="1" parent="1"><mxGeometry x="675" y="115" width="260" height="50" as="geometry"/></mxCell>
+        <mxCell id="s3h" value="H = true" style="fillColor=#e8f6f5;strokeColor=none;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=29;fontStyle=1;fontColor=#007c89;" vertex="1" parent="1"><mxGeometry x="675" y="170" width="260" height="45" as="geometry"/></mxCell>
+        <mxCell id="update-c" style="strokeColor=#626f79;strokeWidth=2.5;endArrow=block;endSize=6;" edge="1" source="s1" target="s2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="update-h" style="strokeColor=#626f79;strokeWidth=2.5;endArrow=block;endSize=6;" edge="1" source="s2" target="s3" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

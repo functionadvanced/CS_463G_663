@@ -1,0 +1,41 @@
+/* Match the viewer's deck-style naming convention so thumbnails share this layout. */
+.reveal section.dental-glossary-slide { font-size: 0.9em; }
+.reveal section.dental-glossary-slide h2 { margin-top: 0; }
+.reveal section.dental-glossary-slide .dental-glossary {
+  width: 92%;
+  max-width: 960px;
+  margin: 0.4em auto;
+}
+.reveal section.dental-glossary-slide .dental-glossary > p { margin: 0; }
+.reveal section.dental-glossary-slide .dental-glossary-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+}
+.reveal section.dental-glossary-slide .dental-glossary-labels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  text-align: center;
+}
+.reveal section.dental-glossary-slide .dental-definition p {
+  margin: 0.2em 0;
+  font-size: 0.9em;
+  line-height: 1.3;
+}
+.reveal section.dental-glossary-slide .dental-definition > p:first-child {
+  margin: 0.25em 0;
+  font-size: 1em;
+}
+.reveal section.dental-glossary-slide .dental-definition:first-child > p:first-child strong { color: var(--cs-teal); }
+.reveal section.dental-glossary-slide .dental-definition:nth-child(2) > p:first-child strong { color: var(--cs-gold); }
+.reveal section.dental-glossary-slide .dental-definition:last-child > p:first-child strong { color: #b8325f; }
+.reveal section.dental-glossary-slide .takeaway {
+  margin: 0.5em 0;
+  padding: 0.45em 0.65em;
+}
+.reveal section.dental-glossary-slide .takeaway p { margin: 0; }

@@ -1096,14 +1096,14 @@
     "href": "asset_credits.html#lec22",
     "title": "Visual Asset Credits",
     "section": "Lecture 22: Probabilistic Inference",
-    "text": "Lecture 22: Probabilistic Inference\nThe hidden-value sums, filter/sum/normalize workflow, cavity network, and robot-room floor plan are original editable draw.io diagrams. Their source is joint-table-inference.drawio; the slides use PNG exports.\nThe toothache/cavity/probe-catch joint table follows Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig, fourth edition, Sections 12.3-12.5. The Bayesian-network preview follows Sections 13.1-13.2. The two-evidence and robot-sensor exercises are illustrative course examples, not clinical or measured sensor probabilities. See also the UC Berkeley CS 188 inference notes."
+    "text": "Lecture 22: Probabilistic Inference\nThe cavity, toothache, and probe-catch cartoon was generated for this course using OpenAI’s built-in image-generation tool, and is shared with Lecture 23. See the generation prompt and provenance. It illustrates terminology in the teaching model, not a clinical diagnostic procedure.\nThe hidden-value sums, filter/sum/normalize workflow, cavity network, and robot-room floor plan are original editable draw.io diagrams. Their source is joint-table-inference.drawio; the slides use PNG exports.\nThe toothache/cavity/probe-catch joint table follows Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig, fourth edition, Sections 12.3-12.5. The Bayesian-network preview follows Sections 13.1-13.2. The two-evidence and robot-sensor exercises are illustrative course examples, not clinical or measured sensor probabilities. See also the UC Berkeley CS 188 inference notes."
   },
   {
     "objectID": "asset_credits.html#lec23",
     "href": "asset_credits.html#lec23",
     "title": "Visual Asset Credits",
     "section": "Lecture 23: Bayes Nets",
-    "text": "Lecture 23: Bayes Nets\nNo local image assets."
+    "text": "Lecture 23: Bayes Nets\nThe illustrated dental glossary reuses the same AI-generated cavity, toothache, and probe-catch cartoon as Lecture 22, with its generation prompt and provenance.\nThe prior-sampling trace, rejection counts, weighted counts, and Gibbs-state updates are original editable draw.io diagrams. Their source is bayes-network-sampling.drawio; the slides use PNG exports. The cavity-network diagram is reused from Lecture 22’s joint-table-inference.drawio.\nThe cavity/toothache/probe-catch model and sampling methods follow Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig, fourth edition, Sections 13.1-13.4. Probabilities, sample counts, and uniform draws are illustrative teaching examples, not clinical data or measured simulation results. See also the UC Berkeley CS 188 notes on Bayesian-network representation and approximate inference."
   },
   {
     "objectID": "asset_credits.html#lec24",
@@ -3395,116 +3395,39 @@
     "text": "Bayes’ Rule and Its Vocabulary\nLet H be a proposed explanation and E an observed event, with P(E)&gt;0.\nP(H\\mid E)=\\frac{P(E\\mid H)P(H)}{P(E)}.\n\n\n\n\n\n\n\n\nTerm\nExpression\nMeaning\n\n\n\n\nPrior\nP(H)\nBelief before this observation\n\n\nLikelihood\nP(E\\mid H)\nProbability of this observation if H holds\n\n\nEvidence probability\nP(E)\nOverall probability of this observation\n\n\nPosterior\nP(H\\mid E)\nUpdated belief after the observation\n\n\n\n\nP(E\\mid H) and P(H\\mid E) answer different questions. Bayes’ rule connects them using the prior and the evidence probability.\n\n\nLikelihood here is evaluated at the observed event as a function of the hypothesis. It is not the probability that the hypothesis is correct. For a binary hypothesis, P(E)=P(E|H)P(H)+P(E|not H)P(not H). The next slide computes both terms.\n[Sources] - AIMA Section 12.5. [/Sources]"
   },
   {
-    "objectID": "slides/lec23_Bayes_Net.html#bayesian-networks",
-    "href": "slides/lec23_Bayes_Net.html#bayesian-networks",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Bayesian Networks",
-    "text": "Bayesian Networks\nBayesian networks use graph structure to represent large joint distributions compactly."
-  },
-  {
-    "objectID": "slides/lec23_Bayes_Net.html#what-is-a-bayesian-network",
-    "href": "slides/lec23_Bayes_Net.html#what-is-a-bayesian-network",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What Is a Bayesian Network?",
-    "text": "What Is a Bayesian Network?\nA Bayesian network is a directed acyclic graph (DAG).\n\n\n\nPart\nMeaning\n\n\n\n\nNode\nRandom variable\n\n\nDirected edge\nDirect probabilistic dependence\n\n\nParents\nVariables a node conditions on\n\n\nCPD/CPT\nConditional probability distribution/table\n\n\n\n\nThe graph tells us how the joint distribution factorizes."
-  },
-  {
-    "objectID": "slides/lec23_Bayes_Net.html#simple-diagnosis-network",
-    "href": "slides/lec23_Bayes_Net.html#simple-diagnosis-network",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Simple Diagnosis Network",
-    "text": "Simple Diagnosis Network\n\n\n\nThe edge says the test result depends on disease status:\n\nP(D,T)=P(D)P(T \\mid D)\n\n\nInference usually asks the reverse diagnostic question: P(D \\mid T)."
-  },
-  {
-    "objectID": "slides/lec23_Bayes_Net.html#toothache-bayesian-network",
-    "href": "slides/lec23_Bayes_Net.html#toothache-bayesian-network",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Toothache Bayesian Network",
-    "text": "Toothache Bayesian Network\n\n\n\n\n\nIndependent root\nWeather is disconnected, so it is independent of the dental variables.\n\nShared parent\nToothache and catch both depend on cavity."
-  },
-  {
-    "objectID": "slides/lec23_Bayes_Net.html#tables-in-the-network",
-    "href": "slides/lec23_Bayes_Net.html#tables-in-the-network",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Tables in the Network",
-    "text": "Tables in the Network\n\n\nPrior\n\n\n\nC\nP(C)\n\n\n\n\ntrue\n0.20\n\n\nfalse\n0.80\n\n\n\n\nConditional table\n\n\n\nCavity\nP(T=\\text{true} \\mid C)\nP(T=\\text{false} \\mid C)\n\n\n\n\ntrue\n0.60\n0.40\n\n\nfalse\n0.10\n0.90\n\n\n\n\n\nTables list one distribution per parent assignment, so each row must sum to 1."
-  },
-  {
-    "objectID": "slides/lec23_Bayes_Net.html#compact-representation",
-    "href": "slides/lec23_Bayes_Net.html#compact-representation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Compact Representation",
-    "text": "Compact Representation\nA full joint over n binary variables needs 2^n entries.\nA Bayesian network can be much smaller when each node has few parents.\n\n\nFull joint\nStore every combination.\n\nBayes net\nStore local conditionals.\n\n\nThe compactness depends on whether the edges capture real conditional independence."
-  },
-  {
-    "objectID": "slides/lec23_Bayes_Net.html#factorization-rule",
-    "href": "slides/lec23_Bayes_Net.html#factorization-rule",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Factorization Rule",
-    "text": "Factorization Rule\nFor variables X_1,\\ldots,X_n:\n\nP(X_1,\\ldots,X_n)\n=\n\\prod_{i=1}^n P(X_i \\mid \\text{Parents}(X_i))\n\nFor the toothache network:\n\nP(W,C,T,H)=P(W)P(C)P(T \\mid C)P(H \\mid C)"
-  },
-  {
     "objectID": "slides/lec23_Bayes_Net.html#conditional-independence",
     "href": "slides/lec23_Bayes_Net.html#conditional-independence",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Conditional Independence",
-    "text": "Conditional Independence\n\n\n\nToothache and catch are not necessarily independent.\n\nBut once we know whether there is a cavity, they become conditionally independent:\n\nT \\perp H \\mid C\n\n\n\nConditional independence is the main reason Bayesian networks save space and computation."
-  },
-  {
-    "objectID": "slides/lec23_Bayes_Net.html#exact-inference-can-still-be-hard",
-    "href": "slides/lec23_Bayes_Net.html#exact-inference-can-still-be-hard",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Exact Inference Can Still Be Hard",
-    "text": "Exact Inference Can Still Be Hard\nEven with factorization, exact inference can require summing over many hidden variables.\n\nQuery form:\n\nP(\\text{Query} \\mid \\text{Evidence})\n\n\nFor large networks, exact methods may be too expensive.\n\nWhen exact inference is hard, we estimate probabilities by sampling."
-  },
-  {
-    "objectID": "slides/lec23_Bayes_Net.html#monte-carlo-estimation",
-    "href": "slides/lec23_Bayes_Net.html#monte-carlo-estimation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Monte Carlo Estimation",
-    "text": "Monte Carlo Estimation\nMonte Carlo methods use random samples to approximate probabilities.\n\n\n\nNumber of coin flips\nEstimated P(Heads)\n\n\n\n\n10\n0.60\n\n\n50\n0.48\n\n\n100\n0.51\n\n\n500\n0.502\n\n\n1000\n0.499\n\n\n\n\nMore independent samples usually make the estimate more stable."
-  },
-  {
-    "objectID": "slides/lec23_Bayes_Net.html#sampling-methods",
-    "href": "slides/lec23_Bayes_Net.html#sampling-methods",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Sampling Methods",
-    "text": "Sampling Methods\n\n\n\n\n\n\n\n\nMethod\nIdea\nWeak point\n\n\n\n\nPrior sampling\nSample nodes in topological order\nDoes not condition on evidence\n\n\nRejection sampling\nKeep samples matching evidence\nWastes samples when evidence is rare\n\n\nLikelihood weighting\nFix evidence and weight samples\nCan still struggle with unlikely evidence\n\n\nGibbs sampling\nResample variables in a Markov chain\nNeeds time to mix\n\n\n\n\n\nPriorsample everything from the model\n\n\nRejectionthrow away samples that miss evidence\n\n\nWeightingclamp evidence and attach weights\n\n\nGibbswalk through states by resampling variables"
+    "section": "The Graph Encodes an Assumption",
+    "text": "The Graph Encodes an Assumption\n\nThe model assumes conditional independence: once cavity status is known, toothache adds no information about probe catch.\nT\\perp H\\mid C\n\n\n\n\n\n\n\n\nKnown cavity status\nWith toothache\nWithout toothache\n\n\n\n\nC=\\text{true}\nP(H\\mid C,T)=0.90\nP(H\\mid C,\\neg T)=0.90\n\n\nC=\\text{false}\nP(H\\mid\\neg C,T)=0.20\nP(H\\mid\\neg C,\\neg T)=0.20\n\n\n\n\nThis does not assert ordinary independence between T and H when cavity status is unknown."
   },
   {
     "objectID": "slides/lec23_Bayes_Net.html#prior-sampling",
     "href": "slides/lec23_Bayes_Net.html#prior-sampling",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Prior Sampling",
-    "text": "Prior Sampling\n\n\nfunction PriorSample(network)\n\n\nsample = {}\n\n\nfor each node in topological order\n\n\nparents = valuesOfParents(node, sample)\n\n\nsample[node] = draw(P(node | parents))\n\n\nreturn sample"
+    "section": "Prior Sampling: Parents Before Children",
+    "text": "Prior Sampling: Parents Before Children\nA topological order puts every parent before its children. Both C,T,H and C,H,T work here.\nAt each node, draw from its table using the already sampled parent values.\n\nHere u is uniform on [0,1): choose true if u&lt;p, where p is the probability of true.\n\nPriorSample() returns one complete joint sample. No evidence is enforced yet."
   },
   {
     "objectID": "slides/lec23_Bayes_Net.html#rejection-sampling",
     "href": "slides/lec23_Bayes_Net.html#rejection-sampling",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Rejection Sampling",
-    "text": "Rejection Sampling\n\n\nfunction RejectionSampling(query, evidence, N)\n\n\nkept = []\n\n\nrepeat N times\n\n\nsample = PriorSample(network)\n\n\nif matches(sample, evidence)\n\n\nappend(kept, sample)\n\n\nreturn estimate(query, kept)\n\n\n\nIf evidence is rare, most samples disappear."
+    "section": "Rejection Sampling: Keep the Evidence",
+    "text": "Rejection Sampling: Keep the Evidence\nTo estimate P(C\\mid T), draw complete prior samples and reject any with T=\\text{false}.\n\nThese are expected counts, not guaranteed counts in a particular batch.\n\n\\widehat{P}(C\\mid T)=\\frac{\\text{kept samples with cavity}}{\\text{all kept samples}}\n\\quad\\text{(about }120/200=0.60\\text{).}\n\n\nRare evidence means most prior samples are discarded."
   },
   {
     "objectID": "slides/lec23_Bayes_Net.html#likelihood-weighting",
     "href": "slides/lec23_Bayes_Net.html#likelihood-weighting",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Likelihood Weighting",
-    "text": "Likelihood Weighting\n\n\nfunction WeightedSample(evidence)\n\n\nsample = {}; weight = 1\n\n\nfor each node in topological order\n\n\nif node is evidence\n\n\nsample[node] = evidence[node]\n\n\nweight *= P(node | parents)\n\n\nelse sample[node] = draw(P(node | parents))\n\n\nreturn (sample, weight)"
+    "section": "Likelihood Weighting: Fix and Reweight",
+    "text": "Likelihood Weighting: Fix and Reweight\nKeep T=\\text{true} fixed. Sample C from its prior and H given C.\nA sample’s weight is the evidence probability (likelihood) given its sampled parents: w=P(T\\mid C).\n\nFor this illustrative batch:\n\\widehat{P}(C\\mid T)=\\frac{120}{120+80}=0.60.\n\nWeights make samples that better explain the evidence count more.\n\n\nLikelihood here means the probability of the observed evidence, viewed as a function of the sampled parent assignment. The displayed batch has exactly 200 C=true draws for illustration; other batches produce other estimates. With multiple evidence nodes, multiply their local evidence likelihoods. Very unequal weights can make an estimate depend on only a few samples."
   },
   {
     "objectID": "slides/lec23_Bayes_Net.html#gibbs-sampling",
     "href": "slides/lec23_Bayes_Net.html#gibbs-sampling",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Gibbs Sampling",
-    "text": "Gibbs Sampling\n\n\nfunction GibbsSampling(evidence, N)\n\n\nstate = randomAssignmentConsistentWith(evidence)\n\n\nrepeat N times\n\n\nfor each non-evidence variable X\n\n\nstate[X] = draw(P(X | MarkovBlanket(X)))\n\n\nrecord(state)\n\n\nreturn estimateFromRecordedStates()\n\n\n\nMCMC avoids rejecting full samples; it walks through likely assignments over time."
-  },
-  {
-    "objectID": "slides/lec23_Bayes_Net.html#what-to-remember",
-    "href": "slides/lec23_Bayes_Net.html#what-to-remember",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What to Remember",
-    "text": "What to Remember\n\nA Bayesian network is a DAG plus local conditional distributions.\nIts factorization compactly represents a joint distribution.\nConditional independence is the main modeling payoff.\nExact inference can still be expensive.\nSampling approximates inference when exact computation is too costly.\n\nAsset credits"
+    "section": "Gibbs Sampling: Change One Variable",
+    "text": "Gibbs Sampling: Change One Variable\nA state is the current assignment. Gibbs sampling keeps evidence fixed and resamples one unobserved variable given all the others.\n\nEach next state depends on the current state, not the full history: a Markov chain. This is a Markov chain Monte Carlo (MCMC) method.\n\nKeep T fixed; alternate updates of C and H. Use the visited states to estimate the query probability.\n\n\nThe illustrated C update has probability .012/(.012+.064) = .158 and uses uniform draw u=.12; the following H update has probability .90 and uses u=.30. Consecutive states are dependent. A burn-in means discarding initial states to reduce initialization effects; it does not certify convergence. Valid convergence conditions matter: deterministic or zero-probability constraints can prevent a single-site chain from reaching all required states. This toy network has strictly positive entries. See https://inst.eecs.berkeley.edu/~cs188/textbook/bayes-nets/approximate.html."
   },
   {
     "objectID": "slides/lec25_Bias_Variance.html#bias-variance-and-overfitting",
@@ -8020,5 +7943,103 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Takeaways",
     "text": "Takeaways\n\nIdentify the query, observed evidence, and hidden variables.\nFilter by evidence, sum hidden values, then normalize.\nUnknown does not mean false. Keep query outcomes separate.\nDivide by the evidence probability, which must be positive.\nCheck independence before replacing a joint probability with a product.\nConditional independence can make a model smaller.\n\n\nBefore calculating, say what is known, what is unknown, and which probability belongs in the denominator.\n\nAsset credits\n\nLeave time for questions on the robot exercise or HW4. The next lecture develops Bayesian networks and introduces sampling when exact inference is expensive.\n[Sources] - AIMA fourth edition, Sections 12.3-12.5 and 13.1-13.2. [/Sources]"
+  },
+  {
+    "objectID": "slides/lec23_Bayes_Net.html#graph-and-local-probabilities",
+    "href": "slides/lec23_Bayes_Net.html#graph-and-local-probabilities",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Graph and Local Probabilities",
+    "text": "Graph and Local Probabilities\nA Bayesian network combines a graph with local probability tables.\n\n\nA node is a random variable. Here, each is binary: true or false.\nAn arrow goes from a parent to a child; a root has no parents.\nA directed acyclic graph (DAG) has arrows but no directed cycle: following arrows cannot bring us back to the starting node.\n\nHere C: cavity; T: toothache; H: the dentist’s probe catches on the tooth.\n\nArrows specify the local conditioning structure, not proof of causation.\n\n\nThe model and illustrative probabilities follow AIMA, fourth edition, Sections 13.1-13.4. These are teaching probabilities, not clinical data. A redundant edge need not imply actual dependence. See https://inst.eecs.berkeley.edu/~cs188/textbook/bayes-nets/representation.html."
+  },
+  {
+    "objectID": "slides/lec23_Bayes_Net.html#local-tables",
+    "href": "slides/lec23_Bayes_Net.html#local-tables",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Local Probability Tables",
+    "text": "Local Probability Tables\nA conditional probability table (CPT) gives a distribution for each parent assignment. A root uses a prior: its distribution before evidence.\n\n\n\nNode\nParent value\nProbability true\nProbability false\n\n\n\n\nC\nNo parent\n0.20\n0.80\n\n\nT\nC=\\text{true}\n0.60\n0.40\n\n\nT\nC=\\text{false}\n0.10\n0.90\n\n\nH\nC=\\text{true}\n0.90\n0.10\n\n\nH\nC=\\text{false}\n0.20\n0.80\n\n\n\n\nEach row sums to 1. The entire table does not need to sum to 1.\n\nFor short, C means C=\\text{true}; \\neg C means C=\\text{false}, and similarly for T,H."
+  },
+  {
+    "objectID": "slides/lec23_Bayes_Net.html#factorization",
+    "href": "slides/lec23_Bayes_Net.html#factorization",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Factorization: Local to Joint",
+    "text": "Factorization: Local to Joint\n\nFactorization writes the joint probability as a product: each variable is conditioned only on its parents.\n\nP(C,T,H)=P(C)\\,P(T\\mid C)\\,P(H\\mid C).\n\n\nFor one complete assignment, all three variables true:\n\nP(C,T,H)=0.20\\times0.60\\times0.90=0.108.\n\n\n\nUse the same product rule for every true/false assignment, selecting the appropriate CPT entries.\n\n\nThe first formula uses the conventional distribution notation; the worked line uses the true-event shorthand defined on the previous slide. Generally, P(X_1,…,X_n) is the product of P(X_i | Parents(X_i))."
+  },
+  {
+    "objectID": "slides/lec23_Bayes_Net.html#storage",
+    "href": "slides/lec23_Bayes_Net.html#storage",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Storage and Inference Cost",
+    "text": "Storage and Inference Cost\nA free parameter is a probability we must specify. For a binary variable, the other probability in that row is 1-p.\n\n\n\n\n\n\n\n\nBinary variables\nFull joint: free parameters\nBayesian network: free parameters\n\n\n\n\nOur 3-node network\n2^3-1=7\n1+2+2=5\n\n\n50 nodes: one root, one parent per other node\n2^{50}-1\\approx10^{15}\n1+49\\times2=99\n\n\n\nThe saving comes from the network’s conditional-independence assumptions.\n\nA compact model can still require expensive sums for exact inference in a large network.\n\n\nThese counts are free parameters, not the number of stored table cells. For the 50-node example, assume a binary DAG with exactly one root and exactly one parent for each remaining node. General inference difficulty depends on structure as well as node count; tree-structured networks have efficient exact methods."
+  },
+  {
+    "objectID": "slides/lec23_Bayes_Net.html#exact-benchmark",
+    "href": "slides/lec23_Bayes_Net.html#exact-benchmark",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "One Exact Answer as a Benchmark",
+    "text": "One Exact Answer as a Benchmark\nTarget: P(C\\mid T), the posterior probability of a cavity after observing a toothache.\n\nQuery variable: what we want to infer, C.\nEvidence: an observed value, T=\\text{true}.\nHidden variable: unobserved and not the query, here H.\n\nSumming over H leaves these two possibilities:\n\n\n\nCavity status\nJoint probability with toothache\n\n\n\n\nTrue\nP(C,T)=0.20\\times0.60=0.12\n\n\nFalse\nP(\\neg C,T)=0.80\\times0.10=0.08\n\n\n\n\nNormalize: P(C\\mid T)=\\dfrac{0.12}{0.12+0.08}=0.60.\n\n\nSumming the H factor gives P(H | C) + P(not H | C) = 1 for either value of C. This small network is easy to solve exactly; it provides a check for approximate methods."
+  },
+  {
+    "objectID": "slides/lec23_Bayes_Net.html#monte-carlo",
+    "href": "slides/lec23_Bayes_Net.html#monte-carlo",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Monte Carlo: Estimate by Random Sampling",
+    "text": "Monte Carlo: Estimate by Random Sampling\nA sample is one randomly generated assignment, such as (C,T,H)=(\\text{true},\\text{false},\\text{true}).\nMonte Carlo estimation approximates probabilities using random samples.\n\n\n\nIllustrative batch\nCavity true\nCavity false\n\n\n\n\n20 independent draws from the model\n5\n15\n\n\n\n\n\\widehat{P}(C)=\\frac{5}{20}=0.25\n\\qquad\\text{versus the model's }P(C)=0.20.\n\nThe hat marks an estimate, not an exact probability from the model.\n\nMore independent samples tend to reduce sampling error, but an estimate need not improve after every new draw.\n\n\nThe counts are illustrative, not a measured run. Sampling estimates the specified model, not whether the model describes reality correctly. To estimate a posterior such as P(C | T), we must also account for the evidence."
+  },
+  {
+    "objectID": "slides/lec23_Bayes_Net.html#rejection-algorithm",
+    "href": "slides/lec23_Bayes_Net.html#rejection-algorithm",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Rejection Sampling: The Algorithm",
+    "text": "Rejection Sampling: The Algorithm\nEvidence is T=\\text{true}. Let N be the number of prior draws; counts records the two cavity outcomes.\n\n\nfunction EstimateCavity(N)\n\n\ncounts = {true: 0, false: 0}\n\n\nrepeat N times\n\n\nC, T, H = PriorSample()\n\n\nif T == true\n\n\ncounts[C] += 1\n\n\ntotal = counts[true] + counts[false]\n\n\nif total == 0: return no_estimate\n\n\nreturn counts[true] / total\n\n\n\nDivide by the number accepted, not by N. If none match, we have no estimate."
+  },
+  {
+    "objectID": "slides/lec23_Bayes_Net.html#weighting-algorithm",
+    "href": "slides/lec23_Bayes_Net.html#weighting-algorithm",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "One Weighted Sample",
+    "text": "One Weighted Sample\ndraw_true(p) returns true with probability p, otherwise false. Here w is the sample’s weight for the observed toothache.\n\n\nfunction WeightedSample()\n\n\nC = draw_true(0.20)\n\n\nT = true\n\n\nw = 0.60 if C else 0.10\n\n\nH = draw_true(0.90 if C else 0.20)\n\n\nreturn (C, T, H, w)\n\n\nAcross many samples:\n\n\\widehat{P}(C\\mid T)=\\frac{\\text{sum of weights for }C=\\text{true}}{\\text{sum of all weights}}.\n\n\nIf the total weight is zero, the ratio is undefined and there is no estimate from that batch. All weights in this toy model are positive. H is included to illustrate a complete weighted sample; it could be omitted when computing this particular query."
+  },
+  {
+    "objectID": "slides/lec23_Bayes_Net.html#gibbs-update",
+    "href": "slides/lec23_Bayes_Net.html#gibbs-update",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "One Gibbs Update, Worked Out",
+    "text": "One Gibbs Update, Worked Out\nSuppose the current state has T=\\text{true} and H=\\text{true}. Resample C while holding these two values fixed.\n\n\n\nCandidate value of C\nJoint probability with T,H\n\n\n\n\nTrue\n0.20\\times0.60\\times0.90=0.108\n\n\nFalse\n0.80\\times0.10\\times0.20=0.016\n\n\n\n\nP(C\\mid T,H)=\\frac{0.108}{0.108+0.016}\\approx0.871.\nDraw a new C: true with probability 0.871, false otherwise.\n\n\nNext, resample H using the new C: probability 0.90 if C is true, 0.20 otherwise. The evidence T never changes.\n\n\nUnnormalized means proportional to the desired conditional probability, before dividing by the sum. Given C, H is conditionally independent of T in this graph, so its Gibbs conditional is just its local table. The update illustrated here is a different starting H value from the preceding diagram."
+  },
+  {
+    "objectID": "slides/lec23_Bayes_Net.html#sampling-comparison",
+    "href": "slides/lec23_Bayes_Net.html#sampling-comparison",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "How the Methods Use Evidence",
+    "text": "How the Methods Use Evidence\n\n\n\n\n\n\n\n\nMethod\nWhat happens to evidence?\nMain limitation\n\n\n\n\nPrior sampling\nSample it like any other variable\nJoint draws alone are not a posterior estimate\n\n\nRejection sampling\nDiscard draws that do not match\nRare evidence wastes draws\n\n\nLikelihood weighting\nFix its value; weight by its likelihood\nA few large weights may dominate\n\n\nGibbs sampling\nFix its value; update other variables\nDependent states may explore possibilities slowly\n\n\n\n\nIf only 1 in 10,000 prior samples matches the evidence, which method immediately wastes most draws?\n\n\nRejection sampling. Fixing the evidence avoids those rejections, but does not guarantee a fast, accurate estimate."
+  },
+  {
+    "objectID": "slides/lec23_Bayes_Net.html#sampling-practice",
+    "href": "slides/lec23_Bayes_Net.html#sampling-practice",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Short Practice: Two Observations",
+    "text": "Short Practice: Two Observations\nObserve a toothache and no probe catch. Estimate P(C\\mid T,\\neg H) by likelihood weighting, fixing both observations.\nSuppose 1,000 prior draws of C give these counts:\n\n\n\nC\nDraws\nP(T\\mid C)\nP(\\neg H\\mid C)\n\n\n\n\nTrue\n200\n0.60\n0.10\n\n\nFalse\n800\n0.10\n0.80\n\n\n\n\nWhat is each sample’s weight? What is the normalized estimate?\n\n\nWeights: 0.60\\times0.10=0.06 and 0.10\\times0.80=0.08.\n\n\nTotal weights: 200\\times0.06=12, 800\\times0.08=64.\n\\widehat{P}(C\\mid T,\\neg H)=\\frac{12}{12+64}\\approx0.158.\n\n\nAgain these batch counts are illustrative. Because they exactly match the C prior proportions, the estimate equals the exact model answer in this particular example. Contrast with the .60 posterior for toothache alone: no probe catch is evidence against a cavity."
+  },
+  {
+    "objectID": "slides/lec23_Bayes_Net.html#takeaways",
+    "href": "slides/lec23_Bayes_Net.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nGraph + local tables specify a joint distribution.\nConditional independence makes the representation compact.\nIdentify the query, evidence, and hidden variables first.\nRejection, weighting, and Gibbs sampling differ in how they use evidence.\nAn approximate answer still needs enough useful samples; no method is always best.\n\n\nSame model, same query, different routes to an estimate. Check against an exact answer when one is available.\n\nAsset credits\n\nAIMA, fourth edition, Sections 13.1-13.4. Leave time for questions about HW3, due today. No additional implementation is required by this deck."
+  },
+  {
+    "objectID": "slides/lec22_Probabilistic_Inference.html#dental-variables",
+    "href": "slides/lec22_Probabilistic_Inference.html#dental-variables",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Dental Example, Illustrated",
+    "text": "The Dental Example, Illustrated\n\n\n\n\nC: Cavity\nA small hole caused by decay in a tooth.\n\n\nT: Toothache\nPain in or around a tooth.\n\n\nH: Probe catches\nA dentist’s pointed tool snags on a rough spot.\n\n\n\n\nToothache and probe catch are observations, not proof of a cavity.\n\n\nRead “catches” as “snags” or “gets stuck,” not “finds the tooth.” H records the result of an examination, while T records a symptom. A cavity can exist without either observation, and either observation can occur without a cavity in this simplified probability model. The cartoons illustrate the words, not guaranteed causal relationships or a clinical diagnostic procedure.\nThe three-part cartoon was generated for this course using OpenAI’s built-in image-generation tool. Its provenance and generation prompt are linked in the visual asset credits."
+  },
+  {
+    "objectID": "slides/lec23_Bayes_Net.html#dental-variables",
+    "href": "slides/lec23_Bayes_Net.html#dental-variables",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Dental Example, Illustrated",
+    "text": "The Dental Example, Illustrated\n\n\n\n\nC: Cavity\nA small hole caused by decay in a tooth.\n\n\nT: Toothache\nPain in or around a tooth.\n\n\nH: Probe catches\nA dentist’s pointed tool snags on a rough spot.\n\n\n\n\nToothache and probe catch are observations, not proof of a cavity.\n\n\nRead “catches” as “snags” or “gets stuck,” not “finds the tooth.” H records the result of an examination, while T records a symptom. A cavity can exist without either observation, and either observation can occur without a cavity in this simplified probability model. The cartoons illustrate the words, not guaranteed causal relationships or a clinical diagnostic procedure.\nThe three-part cartoon was generated for this course using OpenAI’s built-in image-generation tool. Its provenance and generation prompt are linked in the visual asset credits."
   }
 ]
