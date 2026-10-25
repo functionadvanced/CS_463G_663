@@ -2,6 +2,9 @@
 !.gitignore
 !docs/
 !docs/**
+!.github/
+!.github/workflows/
+!.github/workflows/deploy-pages.yml
 
 /.quarto/
 **/*.quarto_ipynb
