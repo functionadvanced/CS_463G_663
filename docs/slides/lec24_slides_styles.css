@@ -1,0 +1,55 @@
+.reveal section.ml24-slide { font-size: 0.9em; }
+.reveal section.ml24-slide h2 { margin-top: 0; }
+.reveal section.ml24-slide p { margin: 0.35em 0; }
+.reveal section.ml24-slide .math.inline { white-space: nowrap; }
+.reveal section.ml24-slide .katex-display { margin: 0.5em 0; }
+.reveal section.ml24-slide table { font-size: 0.85em; line-height: 1.26; }
+.reveal section.ml24-slide th,
+.reveal section.ml24-slide td { padding: 0.42em 0.5em; }
+.reveal section.ml24-slide .question,
+.reveal section.ml24-slide .takeaway { margin: 0.45em 0; padding: 0.45em 0.65em; }
+.reveal section.ml24-slide .question p,
+.reveal section.ml24-slide .takeaway p { margin: 0; }
+.reveal section.ml24-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border: 0;
+  box-shadow: none;
+  margin: 0.2em auto;
+}
+.reveal section.ml24-slide .ml24-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px;
+  gap: 28px;
+  align-items: center;
+}
+.reveal section.ml24-slide .ml24-icon { max-height: 170px; }
+.reveal section.ml24-slide .ml24-example {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+}
+.reveal section.ml24-slide .ml24-flow { max-height: 225px; }
+.reveal section.ml24-slide .ml24-neighbors { max-height: 300px; }
+.reveal section.ml24-slide .ml24-maze { max-height: 280px; }
+.reveal section.ml24-slide .ml24-pca { max-height: 340px; }
+.reveal section.ml24-slide .ml24-digits { max-height: 200px; }
+.reveal section.ml24-slide .pseudo-code { font-size: 0.72em; line-height: 1.35; }
+.reveal section.ml24-slide .pseudo-line { min-height: 1.35em; white-space: nowrap; }
+.reveal #learning-settings table,
+.reveal #supervised-tasks table,
+.reveal #unsupervised table { table-layout: fixed; }
+.reveal #learning-settings th:first-child { width: 27%; }
+.reveal #learning-settings th:nth-child(2) { width: 38%; }
+.reveal #learning-settings th:last-child { width: 35%; }
+.reveal #supervised-tasks th:first-child { width: 24%; }
+.reveal #supervised-tasks th:nth-child(2) { width: 24%; }
+.reveal #supervised-tasks th:last-child { width: 52%; }
+.reveal #unsupervised th:first-child { width: 29%; }
+.reveal #unsupervised th:nth-child(2) { width: 35%; }
+.reveal #unsupervised th:last-child { width: 36%; }
+.reveal #knn-vote table { font-size: 0.78em; }
+.reveal #robot-rewards table { font-size: 0.8em; }

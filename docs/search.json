@@ -1110,14 +1110,14 @@
     "href": "asset_credits.html#lec24",
     "title": "Visual Asset Credits",
     "section": "Lecture 24: Machine Learning",
-    "text": "Lecture 24: Machine Learning\nReuses ../lec1/brain_lightbulb_openclipart.svg from OpenClipart."
+    "text": "Lecture 24: Machine Learning\nThe training/prediction workflow, numerical neighbor-vote chart, PCA projection chart, robot feedback loop, and maze route are original editable draw.io figures. Their source is machine-learning-examples.drawio; the slides use PNG exports. Coordinates, feature-scale examples, evaluation counts, and robot rewards are constructed teaching examples.\nThe handwritten-digit figure is an unchanged saved image from the course’s KNN on MNIST notebook, using the MNIST handwritten-digit dataset distributed through Torchvision. It is not a newly run experiment. The public-domain OpenClipart brain/lightbulb icon is reused from Lecture 1.\nThe lecture follows the supplied Spring 2025 material and Artificial Intelligence: A Modern Approach by Stuart Russell and Peter Norvig, fourth edition, Sections 19.1-19.2. See also the scikit-learn documentation on nearest-neighbor methods and principal component analysis."
   },
   {
     "objectID": "asset_credits.html#lec25",
     "href": "asset_credits.html#lec25",
     "title": "Visual Asset Credits",
     "section": "Lecture 25: Bias, Variance, and Overfitting",
-    "text": "Lecture 25: Bias, Variance, and Overfitting\nNo external visual assets. Diagrams are drawn directly in the Quarto source."
+    "text": "Lecture 25: Bias, Variance, and Overfitting\nThe campus courier cartoon and waiting-at-a-door cartoon were generated for this lecture using Codex’s built-in image generator. They illustrate the delivery-time example, not measured events or real people. The generation prompts and provenance are included with the assets.\nThe candidate delivery-time regression line, comparison of three polynomial fits, fixed-route bias/variance illustration, and the two error-versus-complexity charts are original editable data charts. Their source is regression-generalization.drawio, with data and formula notes; the slides use PNG exports. The campus delivery records, timing rule, and repeated-training predictions are invented teaching examples, not measured campus data. Delivery times use minutes; the later notebook is a separate random-feature experiment in its own output units. The polynomial fits illustrate a separate curved pattern and are calculated from the same seven constructed observations. The classical and double-descent curves are explicitly schematic, not measured notebook results or universal laws.\nThe lecture builds on the supplied Spring 2025 material and the course’s linear regression notebook. Technical references are the NumPy pseudoinverse documentation, scikit-learn’s bias-variance example, Belkin et al., Reconciling modern machine learning practice and the bias-variance trade-off, and Bartlett et al., Benign Overfitting in Linear Regression."
   },
   {
     "objectID": "asset_credits.html#lec25b",
@@ -3213,116 +3213,25 @@
     "text": "What to Remember\n\nDecision trees classify by following attribute tests from root to leaf.\nGreedy tree induction avoids exhaustive search.\nEntropy measures label uncertainty.\nInformation gain measures entropy reduction from a split.\nPruning combats overfitting and can improve generalization.\n\nAsset credits"
   },
   {
-    "objectID": "slides/lec24_Machine_Learning.html#machine-learning",
-    "href": "slides/lec24_Machine_Learning.html#machine-learning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Machine Learning",
-    "text": "Machine Learning\nLearning agents improve their performance from observations."
-  },
-  {
     "objectID": "slides/lec24_Machine_Learning.html#why-learning",
     "href": "slides/lec24_Machine_Learning.html#why-learning",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why Learning?",
-    "text": "Why Learning?\n\n\nLearning is valuable when:\n\nDesigners cannot anticipate every possible situation.\nThe task changes over time.\nWe do not know how to write the rules directly.\nData reveals patterns that are hard to specify by hand.\n\n\nInstead of programming every rule, we design a learning process.\n\n\n\n\n\nBrain lightbulb icon for learning"
-  },
-  {
-    "objectID": "slides/lec24_Machine_Learning.html#what-is-machine-learning",
-    "href": "slides/lec24_Machine_Learning.html#what-is-machine-learning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What Is Machine Learning?",
-    "text": "What Is Machine Learning?\n\nMachine learning enables computers to learn from data and make predictions or decisions without being explicitly programmed for every case.\n\nA typical ML system:\n\n\n\n\nThe learned model is both a hypothesis about the world and a piece of software."
-  },
-  {
-    "objectID": "slides/lec24_Machine_Learning.html#three-major-categories",
-    "href": "slides/lec24_Machine_Learning.html#three-major-categories",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Three Major Categories",
-    "text": "Three Major Categories\n\n\n\n\n\n\n\n\nCategory\nTraining signal\nTypical tasks\n\n\n\n\nSupervised learning\nLabeled examples\nClassification, regression\n\n\nUnsupervised learning\nUnlabeled data\nClustering, dimensionality reduction\n\n\nReinforcement learning\nRewards from interaction\nControl, game playing, robotics"
-  },
-  {
-    "objectID": "slides/lec24_Machine_Learning.html#supervised-learning",
-    "href": "slides/lec24_Machine_Learning.html#supervised-learning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Supervised Learning",
-    "text": "Supervised Learning\nSupervised learning learns from input-output pairs.\n\n\n\nComponent\nMeaning\n\n\n\n\nFeatures\nInputs used for learning\n\n\nLabels\nCorrect outputs during training\n\n\nModel\nFunction learned from examples\n\n\nLoss function\nError measure between prediction and label\n\n\n\nExamples:\n\nClassification: spam vs. not spam.\nRegression: house-price prediction."
-  },
-  {
-    "objectID": "slides/lec24_Machine_Learning.html#unsupervised-learning",
-    "href": "slides/lec24_Machine_Learning.html#unsupervised-learning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Unsupervised Learning",
-    "text": "Unsupervised Learning\nUnsupervised learning looks for structure without labels.\n\n\nCommon tasks\n\nClustering.\nDimensionality reduction.\nAnomaly detection.\n\n\nUse cases\n\nCustomer segmentation.\nVisualization.\nFraud detection.\n\n\n\nThe question changes from “what is the correct answer?” to “what structure is hidden in the data?”"
+    "section": "Why Learn from Examples?",
+    "text": "Why Learn from Examples?\n\n\nHow would we recognize a handwritten digit from its pixels?\n\nPeople write the same digit in many different ways.\nA fixed list of shape rules is difficult to make complete.\nExamples can reveal useful patterns we did not specify by hand.\n\n\n\n\nMachine learning (ML) uses experience or data to prepare a model for predictions or decisions.\n\nExplicit rules and learning can work together. A learned prediction can support a search algorithm or a rule-based system.\n\n\nAIMA, fourth edition, Sections 19.1-19.2. This connects learning to the earlier symbolic methods. Good Old-Fashioned AI (GOFAI) is a common name for symbolic, rule-based AI. Learning can be viewed as searching over hypotheses, but need not use the state-space search algorithms from the earlier lectures. More data does not guarantee improvement if it is irrelevant, biased, or poorly labeled."
   },
   {
     "objectID": "slides/lec24_Machine_Learning.html#reinforcement-learning",
     "href": "slides/lec24_Machine_Learning.html#reinforcement-learning",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Reinforcement Learning",
-    "text": "Reinforcement Learning\nReinforcement learning studies agents that learn by interacting with an environment.\n\n\n\nCore pieces:\n\nAgent, environment, state, action, reward, policy."
-  },
-  {
-    "objectID": "slides/lec24_Machine_Learning.html#relationship-to-gofai",
-    "href": "slides/lec24_Machine_Learning.html#relationship-to-gofai",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Relationship to GOFAI",
-    "text": "Relationship to GOFAI\n\n\nGOFAI\n\nExplicit symbols and rules.\nSearch over states or plans.\nLogic-based reasoning.\n\n\nMachine learning\n\nData-driven model fitting.\nSearch over model parameters or hypotheses.\nPattern recognition and prediction.\n\n\n\nML can be viewed as searching for a model that explains data, but the search space and methods are often very different from symbolic AI."
-  },
-  {
-    "objectID": "slides/lec24_Machine_Learning.html#k-nearest-neighbors",
-    "href": "slides/lec24_Machine_Learning.html#k-nearest-neighbors",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "k-Nearest Neighbors",
-    "text": "k-Nearest Neighbors\nk-NN is an instance-based supervised learning algorithm.\n\nTo classify a new point, find the k closest training examples and let them vote.\n\nIt is simple, useful, and a good first example of how “learning” can be stored in the training data itself."
-  },
-  {
-    "objectID": "slides/lec24_Machine_Learning.html#k-nn-algorithm",
-    "href": "slides/lec24_Machine_Learning.html#k-nn-algorithm",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "k-NN Algorithm",
-    "text": "k-NN Algorithm\n\n\nfunction KNNPredict(query, trainingData, k)\n\n\ndistances = []\n\n\nfor each (x, label) in trainingData\n\n\nappend(distances, (distance(query, x), label))\n\n\nneighbors = kSmallest(distances, k)\n\n\nreturn majorityVote(neighbors)"
-  },
-  {
-    "objectID": "slides/lec24_Machine_Learning.html#k-nn-picture",
-    "href": "slides/lec24_Machine_Learning.html#k-nn-picture",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "k-NN Picture",
-    "text": "k-NN Picture\n\n\n\n\nThe label depends on the local neighborhood and the choice of k."
+    "section": "Reinforcement Learning Through Interaction",
+    "text": "Reinforcement Learning Through Interaction\nIn reinforcement learning, an agent (the learner) acts in an environment (the world it interacts with).\n\n\nState: the current situation, such as the robot’s position.\nAction: a choice, such as moving up or right.\nPolicy: the rule used to choose actions from states.\n\n\nThe goal is high total reward over time. A reward may arrive later and need not tell us which action was correct.\n\n\nThe diagram uses a fully observed toy maze, so position is a sufficient state. In general an agent may receive only observations rather than the full environment state. Reward is numerical feedback, not necessarily a labeled answer or a guarantee of progress. The detailed reinforcement-learning algorithms appear later in the course. AIMA Chapter 22 in the U.S. fourth edition, Chapter 23 in the Global fourth edition."
   },
   {
     "objectID": "slides/lec24_Machine_Learning.html#pca",
     "href": "slides/lec24_Machine_Learning.html#pca",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "PCA",
-    "text": "PCA\nPrincipal Component Analysis is an unsupervised method for dimensionality reduction.\nIt finds new axes that capture as much variance as possible.\n\n\nWhy use it?\n\nReduce dimension.\nRemove redundancy.\nImprove efficiency.\nVisualize high-dimensional data.\n\n\nKey operation\nProject data onto a smaller number of principal components."
-  },
-  {
-    "objectID": "slides/lec24_Machine_Learning.html#pca-and-svd",
-    "href": "slides/lec24_Machine_Learning.html#pca-and-svd",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "PCA and SVD",
-    "text": "PCA and SVD\nPCA can be computed using singular value decomposition:\n\nX=U\\Sigma V^T\n\n\n\n\nMatrix\nRole\n\n\n\n\nU\nLeft singular vectors\n\n\n\\Sigma\nSingular values, related to variance\n\n\nV\nRight singular vectors, principal components\n\n\n\n\nThe principal components are the directions in V."
-  },
-  {
-    "objectID": "slides/lec24_Machine_Learning.html#rl-example-robot-navigation",
-    "href": "slides/lec24_Machine_Learning.html#rl-example-robot-navigation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "RL Example: Robot Navigation",
-    "text": "RL Example: Robot Navigation\nA robot explores a maze and learns how to reach the exit.\n\n\n\nRL component\nMaze example\n\n\n\n\nAgent\nRobot\n\n\nEnvironment\nMaze\n\n\nState\nCurrent position\n\n\nAction\nUp, down, left, right\n\n\nReward\n+10 for exit, -1 for wall\n\n\nPolicy\nStrategy for choosing actions"
-  },
-  {
-    "objectID": "slides/lec24_Machine_Learning.html#policy-improvement",
-    "href": "slides/lec24_Machine_Learning.html#policy-improvement",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Policy Improvement",
-    "text": "Policy Improvement\n\nInitial policy\nMove randomly; turn when blocked.\n\n\nIntermediate policy\nAvoid walls; avoid paths that previously failed.\n\n\nLearned policy\nPrefer high-reward paths while still exploring enough to improve.\n\n\nRL is learning from consequences, not from labeled answers."
-  },
-  {
-    "objectID": "slides/lec24_Machine_Learning.html#what-to-remember",
-    "href": "slides/lec24_Machine_Learning.html#what-to-remember",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What to Remember",
-    "text": "What to Remember\n\nMachine learning builds models from data.\nSupervised learning uses labels; unsupervised learning finds structure; RL learns from reward.\nk-NN classifies by local similarity.\nPCA reduces dimension by finding high-variance directions.\nRL connects learning with sequential decision-making.\n\nAsset credits"
+    "section": "Principal Component Analysis (PCA)",
+    "text": "Principal Component Analysis (PCA)\nPCA reduces the number of coordinates. First center the data: subtract each feature’s mean.\n\n\n\n\nVariance measures spread around the mean.\nThe first principal component (PC1) is the direction with greatest variance.\nProjection drops each point onto that line, giving one coordinate instead of two.\n\nGray: original points. Gold: projected points.\n\n\n\nPreserving spread does not guarantee preserving the information needed to predict a label.\n\n\nThe constructed centered points are (-3,-2), (-2,-3), (-1,0), (0,-1), (0,1), (1,0), (2,3), (3,2). Their first principal direction is (1,1)/sqrt(2). The projections shown are orthogonal and exact. Scaling the original features can change PCA too.\nSingular Value Decomposition (SVD) computes PCA from a centered matrix X with one example per row. In X = U Sigma V^T, V contains feature-space directions, Sigma contains singular values, and U contains example-space directions. Coordinates along the principal directions are given by X V = U Sigma. The columns of V are principal directions, ordered by singular value. With n examples, the corresponding sample variances are sigma_j^2/(n-1). Keeping the leading columns yields fewer coordinates. This is a computational connection, not a claim that high variance guarantees better classification. Reference: https://scikit-learn.org/stable/modules/decomposition.html#pca."
   },
   {
     "objectID": "slides/lec22_Probabilistic_Inference.html#marginalization",
@@ -3430,95 +3339,18 @@
     "text": "Gibbs Sampling: Change One Variable\nA state is the current assignment. Gibbs sampling keeps evidence fixed and resamples one unobserved variable given all the others.\n\nEach next state depends on the current state, not the full history: a Markov chain. This is a Markov chain Monte Carlo (MCMC) method.\n\nKeep T fixed; alternate updates of C and H. Use the visited states to estimate the query probability.\n\n\nThe illustrated C update has probability .012/(.012+.064) = .158 and uses uniform draw u=.12; the following H update has probability .90 and uses u=.30. Consecutive states are dependent. A burn-in means discarding initial states to reduce initialization effects; it does not certify convergence. Valid convergence conditions matter: deterministic or zero-probability constraints can prevent a single-site chain from reaching all required states. This toy network has strictly positive entries. See https://inst.eecs.berkeley.edu/~cs188/textbook/bayes-nets/approximate.html."
   },
   {
-    "objectID": "slides/lec25_Bias_Variance.html#bias-variance-and-overfitting",
-    "href": "slides/lec25_Bias_Variance.html#bias-variance-and-overfitting",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Bias, Variance, and Overfitting",
-    "text": "Bias, Variance, and Overfitting\nHow complex should a learned model be?"
-  },
-  {
-    "objectID": "slides/lec25_Bias_Variance.html#parameterized-models",
-    "href": "slides/lec25_Bias_Variance.html#parameterized-models",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Parameterized Models",
-    "text": "Parameterized Models\nA model is often defined by parameters \\theta learned from data.\n\ny=f(x;\\theta)\n\nExamples:\n\nLinear regression coefficients.\nNeural network weights.\nDecision-tree split choices.\n\n\nLearning means choosing parameters that perform well beyond the training data."
-  },
-  {
-    "objectID": "slides/lec25_Bias_Variance.html#training-error-vs.-test-error",
-    "href": "slides/lec25_Bias_Variance.html#training-error-vs.-test-error",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Training Error vs. Test Error",
-    "text": "Training Error vs. Test Error\n\n\n\n\n\n\n\n\nError\nMeasured on\nWhat it tells us\n\n\n\n\nTraining error\nData used for fitting\nHow well the model fits examples it saw\n\n\nTest error\nUnseen data\nHow well the model generalizes\n\n\n\n\nA model can have low training error and still fail the real task."
-  },
-  {
-    "objectID": "slides/lec25_Bias_Variance.html#linear-regression",
-    "href": "slides/lec25_Bias_Variance.html#linear-regression",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Linear Regression",
-    "text": "Linear Regression\nLinear regression predicts a continuous output using a weighted sum of features.\n\n\\hat{y}=\\beta_1x_1+\\beta_2x_2+\\cdots+\\beta_px_p\n=\n\\mathbf{x}^T\\boldsymbol{\\beta}\n\n\nTemperature prediction:\n\nx_1=1\nx_2= humidity\nx_3= wind speed\nx_4= humidity squared"
-  },
-  {
-    "objectID": "slides/lec25_Bias_Variance.html#learning-the-parameters",
-    "href": "slides/lec25_Bias_Variance.html#learning-the-parameters",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Learning the Parameters",
-    "text": "Learning the Parameters\nGiven n training examples, mean squared error is:\n\n\\frac{1}{n}\\sum_{i=1}^{n}(y_i-\\hat{y}_i)^2\n\nMatrix form:\n\n\\min_{\\boldsymbol{\\beta}}\n\\frac{1}{n}\\left\\|X^T\\boldsymbol{\\beta}-\\mathbf{y}\\right\\|_2^2\n\n\nTraining is an optimization problem."
-  },
-  {
-    "objectID": "slides/lec25_Bias_Variance.html#optimization",
-    "href": "slides/lec25_Bias_Variance.html#optimization",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Optimization",
-    "text": "Optimization\nFor many ML models, parameters are learned with gradient descent or variants such as stochastic gradient descent.\nWhen linear regression has enough well-behaved samples, it also has a closed-form solution:\n\n\\tilde{\\boldsymbol{\\beta}}=(XX^T)^{-1}X\\mathbf{y}\n\n\nEven when optimization succeeds, generalization is a separate question."
-  },
-  {
     "objectID": "slides/lec25_Bias_Variance.html#bias-and-variance",
     "href": "slides/lec25_Bias_Variance.html#bias-and-variance",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Bias and Variance",
-    "text": "Bias and Variance\n\n\nBias\nError from overly simple assumptions.\nHigh bias can cause underfitting.\n\nVariance\nError from sensitivity to the training sample.\nHigh variance can cause overfitting.\n\n\nThe classical story: better generalization often requires balancing bias and variance."
-  },
-  {
-    "objectID": "slides/lec25_Bias_Variance.html#bias-variance-tradeoff",
-    "href": "slides/lec25_Bias_Variance.html#bias-variance-tradeoff",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Bias-Variance Tradeoff",
-    "text": "Bias-Variance Tradeoff\n\n       Model complexity Error    Test error Training error High bias High variance Classical sweet spot"
-  },
-  {
-    "objectID": "slides/lec25_Bias_Variance.html#linear-regression-cases",
-    "href": "slides/lec25_Bias_Variance.html#linear-regression-cases",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Linear Regression Cases",
-    "text": "Linear Regression Cases\nSuppose the true relationship is linear.\n\n\n\n\n\n\n\n\nCase\nInterpretation\nClassical behavior\n\n\n\n\np&lt;s\nToo few features\nHigh bias, low variance\n\n\ns \\leq p &lt; n\nEnough features, fewer than samples\nLow bias, rising variance\n\n\np&gt;n\nMore features than samples\nOverparameterized\n\n\n\nwhere s is the number of true features, p is selected features, and n is samples."
+    "section": "Bias and Variance Across Training Sets",
+    "text": "Bias and Variance Across Training Sets\nFix a 2 km, two-stop route, whose mean duration is 15 minutes. Imagine refitting on fresh sets of 50 training routes.\n\nBias: average prediction minus the true noise-free mean output.\nVariance: how much the prediction changes across those training datasets.\n\n\n\nA is about 5 minutes too low on average. B changes more across training sets. The route stays the same; the training records change.\n\n\nThe five displayed predictions per method are constructed values, not estimates from actual courier experiments or the notebook. Treating these five equally likely outcomes as an illustrative distribution gives mean 10 minutes, bias -5 minutes and variance .5 squared minutes for A, versus mean 15 minutes, bias 0 and variance 18 squared minutes for B. Each point is the prediction from a different training dataset for the identical fixed route, not a different route or the same model tested on five days. Bias and variance are properties of a learning procedure at an input under repeated training samples. Reference: https://scikit-learn.org/stable/auto_examples/ensemble/plot_bias_variance.html."
   },
   {
     "objectID": "slides/lec25_Bias_Variance.html#double-descent",
     "href": "slides/lec25_Bias_Variance.html#double-descent",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Double Descent",
-    "text": "Double Descent\nClassical bias-variance says test error eventually rises as complexity increases.\nModern models can show double descent:\n\nTest error first decreases.\nThen spikes near the interpolation threshold.\nThen decreases again as the model becomes even more overparameterized.\n\n\nThis challenges the simple claim that all overfitting is harmful."
-  },
-  {
-    "objectID": "slides/lec25_Bias_Variance.html#double-descent-curve",
-    "href": "slides/lec25_Bias_Variance.html#double-descent-curve",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Double Descent Curve",
-    "text": "Double Descent Curve\n\n       Model complexity Error    Interpolation threshold Training error Test error High bias Peak Benign?"
-  },
-  {
-    "objectID": "slides/lec25_Bias_Variance.html#benign-overfitting",
-    "href": "slides/lec25_Bias_Variance.html#benign-overfitting",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Benign Overfitting",
-    "text": "Benign Overfitting\nClassical theory suggests overfitting harms test performance.\nIn modern deep learning, some models can fit the training data extremely well and still generalize.\n\n\nWhat happens?\n\nTraining error approaches zero.\nTest error remains acceptable.\n\n\nWhy it matters\n\nIt complicates regularization.\nIt motivates newer theories of generalization."
-  },
-  {
-    "objectID": "slides/lec25_Bias_Variance.html#what-to-remember",
-    "href": "slides/lec25_Bias_Variance.html#what-to-remember",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What to Remember",
-    "text": "What to Remember\n\nTraining error and test error answer different questions.\nBias is error from simplicity; variance is error from sensitivity.\nOverfitting means fitting training-specific noise or quirks.\nClassical generalization has a bias-variance tradeoff.\nModern overparameterized models can show double descent and benign overfitting.\n\nAsset credits"
+    "text": "Double Descent\nDouble descent: unseen error can fall, rise near interpolation, then fall again for larger models.\n\nNear p=n, small changes in noisy training outputs can cause large coefficient changes and unstable new predictions.\nBenign overfitting describes settings where fitting even the training noise still permits accurate prediction on new data.\n\np&gt;n alone guarantees neither double descent nor benign overfitting.\n\n\nThe figure is deliberately schematic. Belkin, Hsu, Ma, and Mandal, Reconciling modern machine learning practice and the bias-variance trade-off: https://arxiv.org/abs/1812.11118. Bartlett, Long, Lugosi, and Tsigler, Benign Overfitting in Linear Regression: https://arxiv.org/abs/1906.11300. Benign overfitting can yield near-optimal prediction under particular distributional conditions; exact training fit alone is insufficient evidence. The phenomenon occurs in some linear models as well as more complex learners.\nThe notebook’s isotropic Gaussian, fixed-signal experiment need not improve indefinitely after interpolation. Its overparameterized expected-error formula has a growing signal-bias contribution and a decreasing noise-amplification contribution. Consequently the large-p branch can turn upward again. The schematic is not a promise that arbitrary further enlargement improves that experiment."
   },
   {
     "objectID": "slides/lec27_Practical_PyTorch.html#practical-pytorch",
@@ -8041,5 +7873,215 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "The Dental Example, Illustrated",
     "text": "The Dental Example, Illustrated\n\n\n\n\nC: Cavity\nA small hole caused by decay in a tooth.\n\n\nT: Toothache\nPain in or around a tooth.\n\n\nH: Probe catches\nA dentist’s pointed tool snags on a rough spot.\n\n\n\n\nToothache and probe catch are observations, not proof of a cavity.\n\n\nRead “catches” as “snags” or “gets stuck,” not “finds the tooth.” H records the result of an examination, while T records a symptom. A cavity can exist without either observation, and either observation can occur without a cavity in this simplified probability model. The cartoons illustrate the words, not guaranteed causal relationships or a clinical diagnostic procedure.\nThe three-part cartoon was generated for this course using OpenAI’s built-in image-generation tool. Its provenance and generation prompt are linked in the visual asset credits."
+  },
+  {
+    "objectID": "slides/lec24_Machine_Learning.html#training-prediction",
+    "href": "slides/lec24_Machine_Learning.html#training-prediction",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Training and Prediction",
+    "text": "Training and Prediction\nA model maps an input to an output. A label is an example’s supplied target answer, such as the digit in an image.\nOne example using labeled data:\n\n\nTraining (or fitting) prepares the model using the available examples.\nPrediction applies that model to a new input.\n\n\nThe new input’s label is not an input to the prediction step.\n\n\nFor k-NN, training largely stores the reference examples. Other algorithms fit numerical parameters. The learned model is a hypothesis about the input-output relationship as well as an executable prediction procedure. AIMA Sections 19.1-19.2."
+  },
+  {
+    "objectID": "slides/lec24_Machine_Learning.html#learning-settings",
+    "href": "slides/lec24_Machine_Learning.html#learning-settings",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Three Learning Settings",
+    "text": "Three Learning Settings\nThe feedback available to the learner determines the setting.\n\n\n\n\n\n\n\n\nSetting\nAvailable feedback\nExample\n\n\n\n\nSupervised learning\nInputs paired with target labels\nImage and its digit answer\n\n\nUnsupervised learning\nInputs without target labels\nGroup similar images\n\n\nReinforcement learning (RL)\nReward: numerical feedback from interaction\nLearn moves that lead a robot to an exit\n\n\n\n\nAre we given target answers, only inputs, or feedback from actions?\n\n\nThese are three major settings, not an exhaustive taxonomy. Labels can be categorical or numerical. A reward need not identify the correct action, and can arrive after several actions. AIMA Sections 19.1-19.2."
+  },
+  {
+    "objectID": "slides/lec24_Machine_Learning.html#supervised-tasks",
+    "href": "slides/lec24_Machine_Learning.html#supervised-tasks",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Supervised Tasks: Categories or Numbers",
+    "text": "Supervised Tasks: Categories or Numbers\nFeatures are the input measurements. The label is the target output supplied for each training example.\n\n\n\n\n\n\n\n\nTask\nOutput\nFeatures and label\n\n\n\n\nClassification\nA category\nPixel intensities; digit category 0-9\n\n\nRegression\nA numerical value\nFloor area and location; house price\n\n\n\nThe digit 7 is a category here, not an amount to be averaged.\nA loss scores prediction error. Examples: 0 for a correct category and 1 for a wrong one, or squared error for a numerical prediction.\n\nThe task determines what a good prediction means and how we measure its error.\n\n\nDigit labels happen to be encoded as integers, but their numeric distances do not define classification error. A 7 predicted as 8 is simply a wrong category under 0-1 loss. AIMA Section 19.2."
+  },
+  {
+    "objectID": "slides/lec24_Machine_Learning.html#knn-distance",
+    "href": "slides/lec24_Machine_Learning.html#knn-distance",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "k-Nearest Neighbors",
+    "text": "k-Nearest Neighbors\nk-nearest neighbors (k-NN) stores labeled examples. For a new input, it finds the k closest stored examples and lets their labels vote.\nLet q=(q_1,q_2) be the query, the new input. Let x=(x_1,x_2) be a stored example with two numerical features.\nEuclidean distance is straight-line distance:\nd(q,x)=\\sqrt{(q_1-x_1)^2+(q_2-x_2)^2}.\nFor N stored examples, choose an integer k with 1\\leq k\\leq N.\n\nFor classification, the most frequent label among the selected neighbors wins. k-NN can also do regression by averaging their numerical targets.\n\n\nInstance-based learning means retaining training instances and doing much of the work when a prediction is requested. In more than two dimensions, sum squared differences across all features before taking the square root. Reference: https://scikit-learn.org/stable/modules/neighbors.html."
+  },
+  {
+    "objectID": "slides/lec24_Machine_Learning.html#knn-vote",
+    "href": "slides/lec24_Machine_Learning.html#knn-vote",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Neighbor Vote, Worked Out",
+    "text": "A Neighbor Vote, Worked Out\nTwo features are already on comparable scales. The query is q=(0,0); letters A and B are class labels.\n\n\n\nThe three nearest examples:\n\n\n\nExample\nFeatures\nDistance\n\n\n\n\nA1\n(1,0)\n1\n\n\nB1\n(0,2)\n2\n\n\nB2\n(2,2)\n\\sqrt{8}\\approx2.83\n\n\n\n\n\n\nWith k=1, A1 alone votes: predict A.\n\n\nWith k=3, the votes are A, B, B: predict B.\n\n\nThe fourth example A2 has distance sqrt(10), about 3.16, so it is outside the first three. There are no distance or voting ties for the two choices of k shown. All coordinates are constructed for this example. Small k is sensitive to individual examples; a larger neighborhood may include points from other classes."
+  },
+  {
+    "objectID": "slides/lec24_Machine_Learning.html#knn-algorithm",
+    "href": "slides/lec24_Machine_Learning.html#knn-algorithm",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "k-NN Prediction Algorithm",
+    "text": "k-NN Prediction Algorithm\nLet D contain N stored (features, label) pairs. mostVotes returns the most frequent label. Assume 1\\leq k\\leq N.\n\n\nfunction KNNPredict(q, D, k)\n\n\ndistances = []\n\n\nfor each (x, label) in D\n\n\nappend(distances, (d(q, x), label))\n\n\nsortAscendingByDistance(distances)\n\n\nneighbors = first k entries of distances\n\n\nreturn mostVotes(neighbors)\n\n\nFix a rule for ties, such as a fixed class order. An odd k does not prevent all ties when there are more than two classes.\n\nStore examples during training. Compute distances and vote during prediction.\n\n\nThe pseudocode uses a fixed rule for equal distances as well as equal vote counts. The notebook sorts with NumPy and its Counter vote resolves equal counts by label encounter order. The details of tie-breaking can affect predictions. Full sorting is a simple implementation, not a requirement for every k-NN algorithm. The stored-example search is different from fitting neural-network weights."
+  },
+  {
+    "objectID": "slides/lec24_Machine_Learning.html#feature-scales",
+    "href": "slides/lec24_Machine_Learning.html#feature-scales",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Feature Scales Change the Neighbors",
+    "text": "Feature Scales Change the Neighbors\nSuppose the features are an object’s height and mass.\n\n\n\nObject\nHeight (cm)\nMass (g)\n\n\n\n\nQuery\n10\n100\n\n\nA\n11\n150\n\n\nB\n20\n102\n\n\n\n\nUsing cm and g: distance to A \\approx50.01, to B \\approx10.20. B is closer.\n\n\nConvert mass to kg: distance to A \\approx1.001, to B \\approx10.000. A is closer.\n\n\nChoose meaningful feature scales. Estimate any scaling settings from training data, then apply the same transformation to new inputs.\n\n\nRaw distances are sqrt(1^2 + 50^2) and sqrt(10^2 + 2^2). After conversion to kg they are sqrt(1^2 + .05^2) and sqrt(10^2 + .002^2). This illustrates how relative feature scales weight the distance. Applying the same nonzero scale factor to every feature does not change Euclidean neighbor ordering. In particular, the notebook’s common transformation from pixel range [0,1] to [-1,1] scales all pixel differences equally."
+  },
+  {
+    "objectID": "slides/lec24_Machine_Learning.html#evaluation",
+    "href": "slides/lec24_Machine_Learning.html#evaluation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Evaluation on Unseen Examples",
+    "text": "Evaluation on Unseen Examples\nGeneralization means performing well on new examples. A hyperparameter is a chosen setting, such as k.\n\n\n\n\n\n\n\nData split\nPurpose\n\n\n\n\nTraining\nFit a model, or store reference examples for k-NN\n\n\nValidation\nCompare choices such as different values of k\n\n\nTest\nEvaluate the final choice without using these answers to select it\n\n\n\nAccuracy is the fraction of predictions that match the labels:\n\\text{accuracy}=\\frac{\\text{number correct}}{\\text{number evaluated}};\\qquad \\frac{12}{15}=0.80.\n\nA test score stops being an independent final check if we repeatedly use it to choose k.\n\n\nThe 12-of-15 count is illustrative. The notebook fixes k=3 and uses the provided MNIST training/test split. It does not create a validation split or tune k. To compare hyperparameters, reserve validation data from the training portion. If preprocessing learns statistics, fit them without using the validation or test examples. AIMA Section 19.2."
+  },
+  {
+    "objectID": "slides/lec24_Machine_Learning.html#mnist-demo",
+    "href": "slides/lec24_Machine_Learning.html#mnist-demo",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Notebook Example: Handwritten Digits",
+    "text": "Notebook Example: Handwritten Digits\nMNIST (Modified National Institute of Standards and Technology) contains 28\\times28 grayscale digit images.\n\n\nFeatures: flatten the image into 28\\times28=784 pixel values. The distance compares all 784 values.\nLabel: the digit category, 0 through 9.\nThis notebook stores 10,000 training examples, then predicts using k=3. Its fit method stores examples rather than learning weights.\n\nKNN on MNIST notebook\nAsset credits\n\nThe figure is an unchanged saved output from the course notebook, not a newly run experiment. The code takes the first shuffled batch of 10,000 training images, not the entire MNIST training set. Prediction uses NumPy on the CPU even when the setup prints another available device. Test labels are used only in evaluation and result display, not in finding neighbors. The notebook includes its own runnable code, explanations, and saved results. Dataset reference: https://docs.pytorch.org/vision/stable/generated/torchvision.datasets.MNIST.html."
+  },
+  {
+    "objectID": "slides/lec24_Machine_Learning.html#unsupervised",
+    "href": "slides/lec24_Machine_Learning.html#unsupervised",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Unsupervised Learning Tasks",
+    "text": "Unsupervised Learning Tasks\nWe have inputs but no supplied target answers.\n\n\n\n\n\n\n\n\nTask\nMeaning\nExample\n\n\n\n\nClustering\nGroup similar examples\nGroup handwriting styles without digit labels\n\n\nDimensionality reduction\nRepresent inputs with fewer coordinates\nCompress hundreds of pixel features\n\n\nAnomaly detection\nFind examples unusual relative to the data\nFlag an unusual image for inspection\n\n\n\n\nA discovered group or unusual example still needs interpretation. An unusual transaction, for example, is not automatically fraud.\n\n\nThese methods may also be used inside larger supervised pipelines. Calling a method unsupervised describes which target information it uses, not whether its output is automatically meaningful. AIMA Section 19.1."
+  },
+  {
+    "objectID": "slides/lec24_Machine_Learning.html#robot-rewards",
+    "href": "slides/lec24_Machine_Learning.html#robot-rewards",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Robot Navigation: Rewards and a Policy",
+    "text": "Robot Navigation: Rewards and a Policy\nA policy chooses up, down, left, or right for each square. Reaching the exit ends the run.\n\n\n\nIllustrative rewards:\n\n\n\nOutcome\nReward\n\n\n\n\nOrdinary move\n-1\n\n\nAttempt to enter a wall: stay put\n-3\n\n\nEnter the exit\n+10\n\n\n\n\n\n\nThe marked route has six moves: five ordinary moves, then the exit. Total reward: 5(-1)+10=5.\n\n\nThe robot learns which moves lead to reward. We do not supply a correct-move label for every square.\n\n\nRewards are mutually exclusive per transition: entering the exit yields +10 rather than +10 and a separate -1. The displayed route is illustrative, not an experimental learned policy. A policy maps every relevant state to an action, whereas a route is one resulting sequence of actions. For this fully known deterministic maze, search could compute a path directly; RL illustrates learning from interaction when transitions or useful decisions are not supplied in advance. Exploration means trying actions to gain information, while exploitation means using what has already been learned. Improvement is not guaranteed after every interaction."
+  },
+  {
+    "objectID": "slides/lec24_Machine_Learning.html#learning-practice",
+    "href": "slides/lec24_Machine_Learning.html#learning-practice",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Quick Check: What Feedback Is Available?",
+    "text": "Quick Check: What Feedback Is Available?\n\nPredict tomorrow’s temperature using past weather records paired with the next day’s temperature.\nGroup handwriting images without being given their digit labels.\nLet a robot try moves and receive rewards for reaching an exit.\n\n\n1. Supervised regression: the training examples have numerical targets.\n\n\n2. Unsupervised clustering: no target groups are supplied.\n\n\n3. Reinforcement learning: feedback comes from interaction."
+  },
+  {
+    "objectID": "slides/lec24_Machine_Learning.html#takeaways",
+    "href": "slides/lec24_Machine_Learning.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nFeatures describe inputs. Labels supply targets in supervised learning.\nk-NN predicts using nearby stored examples. The choice of features, scales, and k matters.\nValidation helps choose settings. Unseen test examples check the final choice.\nPCA finds directions of large variation without using labels.\nReinforcement learning uses rewards from interaction to learn decisions.\n\n\nA useful model must work on new examples, beyond the data used to prepare or choose it."
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#generalization",
+    "href": "slides/lec25_Bias_Variance.html#generalization",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Fitting Data and Generalizing",
+    "text": "Fitting Data and Generalizing\nGeneralization means predicting well on new routes. Observations may include noise: variation not predictable from the recorded inputs, such as random waiting delays.\n\n\n\n\n\n\n\nData\nRole\n\n\n\n\nTraining\nFit coefficients using our 50 completed routes\n\n\nValidation\nCompare model choices on separate routes, without refitting\n\n\nTest\nCheck the final choice on further routes used for neither fitting nor choosing\n\n\n\n\nIf a model remembers every training route’s duration, must it predict the next route accurately?\n\n\nNo. Matching the training observations can include matching their noise.\n\n\nThe supplied Spring 2025 lecture motivates generalization through linear regression. The examples here assume fresh examples come from the same distribution as training data. A representative independent test set estimates generalization performance, but is not a guarantee about every future input. The notebook’s comparisons across many model sizes are an experiment, not a procedure for selecting a deployed model using its test set."
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#linear-model",
+    "href": "slides/lec25_Bias_Variance.html#linear-model",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Linear Regression and Its Parameters",
+    "text": "Linear Regression and Its Parameters\nA parameter is a number fitted from data. For one-stop routes, try predicting duration from distance alone:\n\\hat y=b+wz.\n\n\n\n\nb: intercept, predicted minutes at z=0.\nw: slope, extra minutes per kilometer.\n\\hat y: predicted duration; y: recorded duration.\n\nThe dots are observations. The line is one candidate model.\n\n\n\nFor b=8, w=2, and a 3 km route: \\hat y=8+2(3)=14 minutes.\n\n\nThe displayed line is a candidate, not the least-squares optimum for these three observations. Its intercept is the model’s prediction at z=0, an extrapolated baseline, not a claim that zero-distance deliveries necessarily occur. The later constructed full rule is 5+2z+3c. For the one-stop subset c=1, its mean is 8+2z, so this candidate agrees with the assumed mean but need not minimize the observed noisy sample loss. In neural-network terminology an intercept is sometimes called a bias parameter; that is different from the statistical bias discussed later. The letter z is route distance; later x denotes a vector of features."
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#mse",
+    "href": "slides/lec25_Bias_Variance.html#mse",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Residuals and Mean Squared Error",
+    "text": "Residuals and Mean Squared Error\nA residual is observed minus predicted output: y_i-\\hat y_i. Here i identifies an observation, and n is the number of observations.\nMean squared error (MSE) averages the squared residuals:\n\\text{MSE}=\\frac{1}{n}\\sum_{i=1}^{n}(y_i-\\hat y_i)^2.\n\n\n\nDistance (km)\nObserved (min)\nPredicted (min)\nSquared residual\n\n\n\n\n1\n11\n10\n1\n\n\n2\n11\n12\n1\n\n\n3\n16\n14\n4\n\n\n\n\n\\text{MSE}=(1+1+4)/3=2\\ \\text{min}^2. Minimizing this loss is least squares.\n\n\nThese predictions use b=8, w=2 from the previous slide. The residuals are 1,-1,2 minutes, with squared residuals 1,1,4. These are the three displayed training examples, not a complete 50-route error estimate. Squaring prevents positive and negative residuals from canceling and penalizes large errors more strongly. MSE has squared-output units. Minimizing mean squared error and minimizing the sum of squared residuals have the same minimizers when n is fixed."
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#design-matrix",
+    "href": "slides/lec25_Bias_Variance.html#design-matrix",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Features and the Design Matrix",
+    "text": "Features and the Design Matrix\nFeatures are input numbers. For the distance-only model, use \\mathbf x=(1,z)^T and coefficients \\boldsymbol\\beta=(b,w)^T. There are p=2 features, including the constant 1.\nTranspose (T) swaps rows and columns.\n\\hat y=\\mathbf x^T\\boldsymbol\\beta.\nA design matrix stores all inputs. We use features as rows and observations as columns:\n\nX=\\begin{bmatrix}1&1&1\\\\1&2&3\\end{bmatrix},\\qquad\n\\boldsymbol\\beta=\\begin{bmatrix}8\\\\2\\end{bmatrix},\\qquad\n\\hat{\\mathbf y}=X^T\\boldsymbol\\beta=\\begin{bmatrix}10\\\\12\\\\14\\end{bmatrix}.\n\nThis excerpt has n=3 routes. The full training set has n=50. In general, X has shape p\\times n.\n\nEach column is one route. Each row is one feature used for every route.\n\n\nFor the example x=(1,z), beta=(b,w), and the three distances are z=1,2,3. The output vector has n entries. The n=3 matrix is only the displayed excerpt, not the full n=50 experiment. Many other libraries store examples in rows, the opposite convention. In the notebook, the candidate features are independent Gaussian inputs and there is no added constant feature. A constant counts as a feature when one is included, as in this illustration. Linear regression is linear in the coefficients; constructed features such as z^2 can represent a curved relationship."
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#pseudoinverse",
+    "href": "slides/lec25_Bias_Variance.html#pseudoinverse",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Fitting with a Pseudoinverse",
+    "text": "Fitting with a Pseudoinverse\nOptimization chooses parameters to minimize a loss. Here we minimize training MSE.\nThe Moore-Penrose pseudoinverse is a matrix operation that provides a least-squares solution even when an ordinary inverse is unavailable:\n\\hat{\\boldsymbol\\beta}=(X^T)^\\dagger\\mathbf y.\n\nSuperscript \\dagger denotes the pseudoinverse.\n\\mathbf y holds the n observed training outputs.\nIf several fits have the same minimum loss, this chooses the minimum-norm one: the coefficient vector with the smallest Euclidean length.\n\n\nFor the three displayed routes, least squares gives \\hat b=23/3\\approx7.67 and \\hat w=2.5. Their training MSE falls from 2 to 25/18\\approx1.39\\ \\text{min}^2.\n\n\nFor the three displayed routes only, the design has rows (1,1,1) and (1,2,3), with observed outputs (11,11,16). The pseudoinverse gives beta=(23/3,5/2), predictions (61/6,76/6,91/6), and residuals (5/6,-10/6,5/6). Its training MSE is 25/18, below the chosen candidate’s MSE 2. Fitting the observed sample better does not establish better prediction on fresh routes. These values are not claimed estimates from all 50 routes.\nThe Euclidean length of beta is sqrt(sum_j beta_j^2). For an underdetermined constraint beta_1+beta_2=2, (1,1) has smaller length than (2,0); the minimum-norm solution is (1,1). NumPy’s pinv uses singular value decomposition with a numerical cutoff for very small singular values. Reference: https://numpy.org/doc/stable/reference/generated/numpy.linalg.pinv.html.\nWith this feature-row convention, the ordinary unique least-squares formula is (X XT)(-1) X y when X has full row rank p, so p cannot exceed n. Merely having more observations than features does not guarantee this independence condition. The pseudoinverse handles both sides of the interpolation threshold. Gradient descent is a different optimization method that repeatedly adjusts parameters using loss derivatives; stochastic gradient descent uses subsets of examples for its updates. Neither algorithm is required by this notebook."
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#under-overfit",
+    "href": "slides/lec25_Bias_Variance.html#under-overfit",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Underfitting and Overfitting",
+    "text": "Underfitting and Overfitting\nUnderfitting: the model is too rigid to capture the broad pattern.\nOverfitting: matching training-specific fluctuations harms prediction on new examples.\nFor this separate curved-pattern illustration, polynomial degree is the largest power of the input. Degree 2 is quadratic. These models are linear in their coefficients.\n\nDots are the same seven observations in each panel. The dashed gray curve is the underlying pattern.\n\nA perfect fit to the dots can be a poor fit to the pattern between them.\n\n\nThis constructed example uses the noise-free rule y=z^2 and observed points z=-3,-2,-1,0,1,2,3 with y=9,5,0,1,0,5,9. The fitted degree-one model is 29/7 with zero slope. The fitted quadratic is 1/21+(43/42)z^2. The interpolating polynomial is 1-(181/90)z2+(79/72)z4-(31/360)z^6. All are linear least-squares models in their chosen polynomial features. Their training MSEs are about 13.265, 0.687, and zero. Degree alone is not a universal diagnosis of underfitting or overfitting."
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#noise-decomposition",
+    "href": "slides/lec25_Bias_Variance.html#noise-decomposition",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Prediction Error and Irreducible Noise",
+    "text": "Prediction Error and Irreducible Noise\nIrreducible noise is output variation that the available features cannot predict, even if we know the true mean rule.\nHere expected means averaged over fresh training datasets and fresh independent output noise, at a fixed input:\n\n\\begin{aligned}\n\\text{Expected squared error}\n&=\\text{bias}^2+\\text{variance}\\\\\n&\\quad+\\text{noise variance}.\n\\end{aligned}\n\n\n\nThe noise standard deviation \\sigma is the square root of its variance. In our delivery example, \\sigma=2 minutes, so \\sigma^2=4\\ \\text{min}^2.\n\nEven a perfect 15-minute mean prediction cannot foresee this route’s random waiting delay.\n\n\n\n\n\nAssume observed output Y=f(x)+epsilon with independent zero-mean noise epsilon. Bias is E_D[f_hat_D(x)]-f(x), variance is E_D[(f_hat_D(x)-E_D[f_hat_D(x)])^2], and noise variance is E[epsilon^2]. The identity concerns squared prediction error, not arbitrary losses, and follows by expanding the square. Averaging further over test inputs gives an integrated version. In the delivery illustration, even knowledge of the true mean rule leaves expected squared error 4 min^2 on a fresh noisy route. The separate notebook uses noise standard deviation .2 in its own output units, so its corresponding noise variance is .04. The bias-variance identity remains valid when a model displays double descent."
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#complexity-errors",
+    "href": "slides/lec25_Bias_Variance.html#complexity-errors",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Model Complexity and Validation",
+    "text": "Model Complexity and Validation\nCompare delivery models on the same training routes. Horizontal: increasing p. Vertical: MSE. The curves are schematic, not measured delivery results.\n\n\nTraining error: MSE on the examples used to fit the coefficients.\nValidation error: MSE on held-out examples; no refitting on them.\n\n\nChoose p using the lowest validation MSE. Keep the test set for the final check.\n\n\nFor nested feature sets, fixed training examples, and unregularized least squares solved to the global optimum, the minimum achievable training MSE cannot increase when features are added: setting the new coefficients to zero preserves the old solution. Unseen error has no corresponding monotonicity guarantee. The curves illustrate a possible validation pattern and are not fitted to the notebook results. Reducing complexity, collecting more informative data, and regularization can help; regularization means adding a penalty or constraint to the fitting procedure, such as discouraging large coefficients. A held-out validation estimate itself has sampling uncertainty."
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#interpolation",
+    "href": "slides/lec25_Bias_Variance.html#interpolation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Interpolation: Zero Training Error",
+    "text": "Interpolation: Zero Training Error\nInterpolation means matching every observed training output exactly, including its noise:\n\\hat y_i=y_i\\quad\\text{for every training observation }i.\nEach of the n observations gives one equation to satisfy. We have p fitted coefficients available.\n\nWith p&lt;n, we generally cannot satisfy all n noisy equations exactly.\nIn our independent random-feature example, exact fitting becomes possible at p=n=50: the interpolation threshold.\nWith p&gt;n, many exact fits exist. The pseudoinverse selects the minimum-norm one.\n\n\nThe earlier degree-6 polynomial also interpolates: its seven coefficients fit all seven dots. Zero training MSE says nothing by itself about new dots.\n\n\nThe selected training design has shape n by p after transposing our feature-row matrix. Independent Gaussian entries give rank min(n,p) with probability one. Thus at p=n it is invertible almost surely and can match any response vector; for p&gt;n it has full row rank and has infinitely many solutions. For p&lt;n, the n noisy constraints are generally inconsistent. The parameter-count argument requires independent constraints and a sufficiently expressive design: repeating one feature many times would not produce this threshold. The earlier seven distinct input locations give an invertible degree-six Vandermonde design. Exact arithmetic is assumed in this explanation; numerical training MSE may be near rather than identically zero."
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#notebook-experiment",
+    "href": "slides/lec25_Bias_Variance.html#notebook-experiment",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Notebook: Linear Regression and Generalization",
+    "text": "Notebook: Linear Regression and Generalization\nWe vary the number of fitted features while keeping the data-generating rule fixed.\n\n\n\nSetting\nNotebook value\n\n\n\n\nObservations per training dataset, n\n50\n\n\nFeatures that truly affect the output, s\n10\n\n\nCandidate feature count, p\n1-48 and 52-250\n\n\nNoise standard deviation, \\sigma\n0.2\n\n\nIndependent train/test trials\n20\n\n\n\nThe shaded band shows the smallest to largest error across trials. Read plot colors as p&lt;n versus p&gt;n, not as proof of underfitting or overfitting.\nLinear regression notebook\n\nEach trial generates independent training and test data with the same normalized true coefficient vector. Each fit uses the first p rows of the feature-by-observation matrix and the pseudoinverse of its transpose. Values 49, 50, and 51 are omitted around the singular expected-error threshold. The shaded min-to-max range is neither a confidence interval nor a standard-deviation band. The recorded figure legends use underfitting/overfitting for the two parameter-count ranges, so the distinction on this slide matters. Both axes of the notebook’s test-error figures are logarithmic, while the training-error plot has a linear vertical axis. The large-p test-error branch can rise again. More features alone do not guarantee benign overfitting."
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#takeaways",
+    "href": "slides/lec25_Bias_Variance.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nn counts training cases; p fitted terms; s nonzero true terms.\nBias describes systematic offset. Variance describes sensitivity to the training dataset.\nUnpredictable output noise remains even with a correct mean model.\nParameter count, interpolation, and harmful overfitting are different concepts.\nEvaluate on fresh data. A perfect training fit is not a certificate of generalization.\n\n\nFor delivery models, the final check is accurate timing on new routes, beyond the records used to fit or choose the model.\n\nAsset credits"
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#model-size",
+    "href": "slides/lec25_Bias_Variance.html#model-size",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Model Size: Delivery Inputs",
+    "text": "Model Size: Delivery Inputs\nModel complexity means flexibility. Each selected feature gets one fitted coefficient, counted in p, including the intercept.\n\n\n\nSize\nFeatures\nCandidate prediction\n\n\n\n\np=1\nConstant 1\n\\hat y=b\n\n\np=2\n1,z\n\\hat y=b+w_1z\n\n\np=3\n1,z,c\n\\hat y=b+w_1z+w_2c\n\n\n\nFrom the same observation, we can construct several features:\n\\mathbf x=(1,z,z^2,c,c^2,c^3)^T,\\qquad p=6.\nThese powers allow curves while the model remains linear in its coefficients.\n\nFor z=2,c=2, the features are (1,2,4,2,4,8)^T. This is still one observation. Our 50 routes still give n=50.\n\n\nThese are candidate models with different feature sets, not claimed estimates from a real dataset. In the three-feature model, x_1=1, x_2=z, and x_3=c; p counts the intercept as well as slopes. For b=5, w_1=2, w_2=3, a 2 km, two-stop route has predicted duration 5+2(2)+3(2)=15 minutes. The one-stop version of 5+2z+3c is 8+2z, matching the preceding illustration.\nConstructed features are numerical functions of the same recorded inputs, not extra observations. The six-feature predictor is b+w_1z+w_2z2+w_3c+w_4c2+w_5*c^3. Its dependence on the fitted coefficients is linear even though it can curve with distance and stop count. For z=2,c=2, its feature vector is (1,2,4,2,4,8). The equal values in this one vector do not mean these features agree across all possible routes. With our feature-row matrix convention, adding three constructed features changes the full matrix from 3 by 50 to 6 by 50. It does not create more training information or guarantee independent feature rows. Under the later assumed true rule 5+2z+3c, the extra power terms have zero true coefficients; increasing p does not automatically increase s. Adding flexibility can reduce bias but also increase sensitivity to training data."
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#experiment-setup",
+    "href": "slides/lec25_Bias_Variance.html#experiment-setup",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Separate Controlled Experiment",
+    "text": "A Separate Controlled Experiment\nEach observation now has 250 independent random inputs, x_1,\\ldots,x_{250}. Only the first ten affect the output. We include no constant feature:\ny=a_1x_1+\\cdots+a_{10}x_{10}+\\varepsilon.\nThe a_1,\\ldots,a_{10} are fixed, nonzero true coefficients. Independent, zero-mean noise \\varepsilon has standard deviation 0.2 in this experiment’s output units.\n\n\n\nSymbol\nMeaning\nValue or choice\n\n\n\n\nn\nNumber of training observations\n50\n\n\ns\nNumber of features that truly affect the output\n10\n\n\np\nNumber of features we let the fitted model use\n1 to 250\n\n\n\n\nThe delivery rule had s=3, counting the constant. This separate experiment has s=10 and no constant. The meaning of s is unchanged.\n\n\nThis is a new constructed example with measured random features, rather than polynomial features of one z. In the experiment and its later notebook demonstration, all input coordinates are independent standard normal variables. The ten true coefficients have Euclidean length 1. The remaining 240 true coefficients are zero. Independent zero-mean Gaussian output noise has standard deviation .2. The data-generating coefficients stay fixed across training and test datasets, and no constant feature is added. The noise-free mean output is the sum of the first ten contributions. The word true refers to this constructed rule, not to what a fitted model discovers. Index j identifies a feature. In a real dataset we usually do not know the true rule or which features matter."
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#parameter-counts",
+    "href": "slides/lec25_Bias_Variance.html#parameter-counts",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Fitted Features and True Features",
+    "text": "Fitted Features and True Features\nRecall: n=50 training observations, s=10 truly relevant features. We fit one coefficient for each of the first p inputs:\n\\hat y=\\hat\\beta_1x_1+\\cdots+\\hat\\beta_px_p.\nThe \\hat\\beta coefficients are estimates fitted from training data.\n\n\n\n\n\n\n\n\nChoice of p\nComparison\nWhat the model can use\n\n\n\n\n5\np&lt;s\nOnly x_1,\\ldots,x_5; misses five relevant features\n\n\n20\ns\\leq p&lt;n\nAll ten relevant features, plus ten irrelevant ones\n\n\n80\np&gt;n\nAll ten relevant features, plus seventy irrelevant ones\n\n\n\nUnderparameterized means p&lt;n. Overparameterized means p&gt;n.\n\ns describes the true rule. p describes the model we choose.\n\n\nThe hat on beta indicates coefficients estimated from the training data. In this controlled experiment, the first s features are precisely the relevant ones. Thus p&gt;=s includes all relevant features only because of this specified ordering; an arbitrary selection of p&gt;=s inputs need not do so. Irrelevant means a zero coefficient in the true conditional mean, not necessarily a fitted coefficient of zero. The least-squares fit can assign nonzero coefficients to these inputs by matching chance associations with training noise. Underparameterized is not a synonym for underfitting, and overparameterized is not a synonym for harmful overfitting. The p=5 fit cannot recover the omitted independent inputs from the included ones."
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#delivery-task",
+    "href": "slides/lec25_Bias_Variance.html#delivery-task",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Predicting Campus Delivery Times",
+    "text": "Predicting Campus Delivery Times\nA campus courier team wants to predict a route’s duration before departure.\n\n\n\nInputs: planned distance z (km) and stops c.\nOutput: recorded route duration y (minutes).\nOne observation: one completed route.\n\n\n\n\nWe have 50 training routes. Here are three one-stop routes from the records:\n\n\n\nRoute\nDistance z (km)\nStops c\nDuration y (min)\n\n\n\n\nA\n1\n1\n11\n\n\nB\n2\n1\n11\n\n\nC\n3\n1\n16\n\n\n\n\nThese are invented teaching records, not measured campus data.\n\n\nThis running example is a realistic prediction task with deliberately constructed numbers, not a claim about an actual courier service. Only inputs known before departure are eligible features. Actual travel duration, eventual waiting time, and completion timestamps would not be valid inputs for predicting the same route before it starts. The three displayed routes are a small excerpt; the full illustrative training set contains 50 routes with varying distances and stop counts. No complete 50-route dataset or real fitted model is claimed. Later we explicitly assume a simple data-generating rule to make the otherwise unknown meaning of s visible."
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#delivery-counts",
+    "href": "slides/lec25_Bias_Variance.html#delivery-counts",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Delivery Data: n, p, and s",
+    "text": "Delivery Data: n, p, and s\nTo make the unknown true rule visible, suppose our teaching data follow:\ny=\\underbrace{5+2z+3c}_{\\text{mean duration in minutes}}+\\varepsilon.\nHere \\varepsilon is unpredictable variation around the mean, such as random waiting. It has mean zero and standard deviation 2 minutes.\n\n\n\n\n\n\n\nSymbol\nMeaning in this example\n\n\n\n\nn=50\nFifty completed routes used for fitting\n\n\ns=3\nThree nonzero true terms: constant 1, distance z, and stops c\n\n\np\nTerms we choose to fit: 2 for 1,z or 3 for 1,z,c\n\n\n\n\nWe choose p. The true rule determines s, which we usually do not know in real data. Both counts include the constant here.\n\n\nAll numerical values and the true rule are explicit teaching assumptions. A feature is relevant here if its coefficient in this specified conditional mean is nonzero. We count the constant as a feature, so s=3 includes the baseline; the number of varying relevant inputs is two. The extra job tags are five numeric random values assigned independently of distance, stops, duration noise, and other routes before departure, with true coefficients zero. Their apparent association with observed delays in a finite training sample is accidental. The full distribution of waiting noise is not important for the definitions; assume independent zero-mean noise with standard deviation 2 minutes. Negative noise means a faster-than-average trip, not a negative duration. Actual delivery data need not follow this simple rule, and a realistic study would investigate the feature set and data distribution rather than claiming s is known."
+  },
+  {
+    "objectID": "slides/lec25_Bias_Variance.html#delivery-fit",
+    "href": "slides/lec25_Bias_Variance.html#delivery-fit",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Delivery Models: Missing Stops or Fitting Delays",
+    "text": "Delivery Models: Missing Stops or Fitting Delays\nCompare two 2 km routes under our assumed mean rule 5+2z+3c:\n\n\n\n\n\n\n\n\n\nStops\nMean duration\nDistance-only 8+2z\nDistance + stops 5+2z+3c\n\n\n\n\n1\n12 min\n12 min\n12 min\n\n\n3\n18 min\n12 min\n18 min\n\n\n\n\nUnderfitting: the distance-only model cannot distinguish these routes. It misses the added stop delays.\nOverfitting risk: five extra random numeric job tags give p=8. They may fit accidental training delays, but cannot predict the next route’s delay.\n\n\nUseful inputs capture a repeatable pattern. More inputs also create opportunities to fit coincidences.\n\n\nThe table compares chosen candidate predictors with the assumed noise-free mean, not measured test outcomes. A distance-only model predicts the same value for equal distances regardless of its fitted intercept and slope. It therefore cannot represent a true mean that differs with stop count at a fixed distance. The 8+2z candidate happens to be correct for one-stop routes and is six minutes too low for three-stop routes at the same distance. The three-feature candidate uses the assumed true coefficients here for an easily checked comparison; finite-data estimates would generally differ. Random job tags are independent numerical inputs, not an encoded target or a unique identifier seen only after completion. They have no true predictive information by construction but may correlate with noise in a finite sample. Extra inputs create a risk of overfitting, not a guarantee that every larger model performs worse."
   }
 ]

@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec24_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,48 +164,66 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="machine-learning" class="slide level2 section-slide">
-<h2>Machine Learning</h2>
-<p>Learning agents improve their performance from observations.</p>
-</section>
-<section id="why-learning" class="slide level2">
-<h2>Why Learning?</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:62%;">
-<p>Learning is valuable when:</p>
+<section id="why-learning" class="slide level2 ml24-slide">
+<h2>Why Learn from Examples?</h2>
+<div class="ml24-intro">
+<div>
+<p>How would we recognize a handwritten digit from its pixels?</p>
 <ul>
-<li>Designers cannot anticipate every possible situation.</li>
-<li>The task changes over time.</li>
-<li>We do not know how to write the rules directly.</li>
-<li>Data reveals patterns that are hard to specify by hand.</li>
+<li>People write the same digit in many different ways.</li>
+<li>A fixed list of shape rules is difficult to make complete.</li>
+<li>Examples can reveal useful patterns we did not specify by hand.</li>
+</ul>
+</div>
+<p><img data-src="imgs/lec1/brain_lightbulb_openclipart.svg" class="ml24-icon" alt="A brain inside a lightbulb."></p>
+</div>
+<p><strong>Machine learning (ML)</strong> uses experience or data to prepare a model for predictions or decisions.</p>
+<div class="takeaway">
+<p>Explicit rules and learning can work together. A learned prediction can support a search algorithm or a rule-based system.</p>
+</div>
+<aside class="notes">
+<p>AIMA, fourth edition, Sections 19.1-19.2. This connects learning to the earlier symbolic methods. Good Old-Fashioned AI (GOFAI) is a common name for symbolic, rule-based AI. Learning can be viewed as searching over hypotheses, but need not use the state-space search algorithms from the earlier lectures. More data does not guarantee improvement if it is irrelevant, biased, or poorly labeled.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="training-prediction" class="slide level2 ml24-slide">
+<h2>Training and Prediction</h2>
+<p>A <strong>model</strong> maps an input to an output. A <strong>label</strong> is an example’s supplied target answer, such as the digit in an image.</p>
+<p>One example using labeled data:</p>
+<p><img data-src="imgs/drawio/lec24/training-prediction.png" class="ml24-flow" alt="Training uses labeled examples and a learning algorithm to prepare a model. At prediction time, a new input and the prepared model produce a prediction, without receiving the new input's label."></p>
+<ul>
+<li><strong>Training</strong> (or <strong>fitting</strong>) prepares the model using the available examples.</li>
+<li><strong>Prediction</strong> applies that model to a new input.</li>
 </ul>
 <div class="takeaway">
-<p>Instead of programming every rule, we design a learning process.</p>
+<p>The new input’s label is not an input to the prediction step.</p>
 </div>
-</div><div class="column" style="width:30%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec1/brain_lightbulb_openclipart.svg" class="cc0-icon"></p>
-<figcaption>Brain lightbulb icon for learning</figcaption>
-</figure>
-</div>
-</div></div>
+<aside class="notes">
+<p>For k-NN, training largely stores the reference examples. Other algorithms fit numerical parameters. The learned model is a hypothesis about the input-output relationship as well as an executable prediction procedure. AIMA Sections 19.1-19.2.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="what-is-machine-learning" class="slide level2">
-<h2>What Is Machine Learning?</h2>
-<div class="definition">
-<p>Machine learning enables computers to learn from data and make predictions or decisions without being explicitly programmed for every case.</p>
-</div>
-<p>A typical ML system:</p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec23/what-is-machine-learning.svg" alt="Machine learning system from data to learning algorithm to model to prediction or decision"></p>
-</div>
-<div class="takeaway">
-<p>The learned model is both a hypothesis about the world and a piece of software.</p>
-</div>
-</section>
-<section id="three-major-categories" class="slide level2">
-<h2>Three Major Categories</h2>
+<section id="learning-settings" class="slide level2 ml24-slide">
+<h2>Three Learning Settings</h2>
+<p>The feedback available to the learner determines the setting.</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -213,277 +232,531 @@ Peizhong Ju
 </colgroup>
 <thead>
 <tr class="header">
-<th>Category</th>
-<th>Training signal</th>
-<th>Typical tasks</th>
+<th>Setting</th>
+<th>Available feedback</th>
+<th>Example</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Supervised learning</td>
-<td>Labeled examples</td>
-<td>Classification, regression</td>
+<td><strong>Supervised learning</strong></td>
+<td>Inputs paired with target labels</td>
+<td>Image and its digit answer</td>
 </tr>
 <tr class="even">
-<td>Unsupervised learning</td>
-<td>Unlabeled data</td>
-<td>Clustering, dimensionality reduction</td>
+<td><strong>Unsupervised learning</strong></td>
+<td>Inputs without target labels</td>
+<td>Group similar images</td>
 </tr>
 <tr class="odd">
-<td>Reinforcement learning</td>
-<td>Rewards from interaction</td>
-<td>Control, game playing, robotics</td>
+<td><strong>Reinforcement learning (RL)</strong></td>
+<td>Reward: numerical feedback from interaction</td>
+<td>Learn moves that lead a robot to an exit</td>
 </tr>
 </tbody>
 </table>
+<div class="question">
+<p>Are we given target answers, only inputs, or feedback from actions?</p>
+</div>
+<aside class="notes">
+<p>These are three major settings, not an exhaustive taxonomy. Labels can be categorical or numerical. A reward need not identify the correct action, and can arrive after several actions. AIMA Sections 19.1-19.2.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="supervised-learning" class="slide level2">
-<h2>Supervised Learning</h2>
-<p>Supervised learning learns from input-output pairs.</p>
+<section id="supervised-tasks" class="slide level2 ml24-slide">
+<h2>Supervised Tasks: Categories or Numbers</h2>
+<p><strong>Features</strong> are the input measurements. The <strong>label</strong> is the target output supplied for each training example.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>Output</th>
+<th>Features and label</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Classification</strong></td>
+<td>A category</td>
+<td>Pixel intensities; digit category 0-9</td>
+</tr>
+<tr class="even">
+<td><strong>Regression</strong></td>
+<td>A numerical value</td>
+<td>Floor area and location; house price</td>
+</tr>
+</tbody>
+</table>
+<p>The digit 7 is a category here, not an amount to be averaged.</p>
+<p>A <strong>loss</strong> scores prediction error. Examples: 0 for a correct category and 1 for a wrong one, or squared error for a numerical prediction.</p>
+<div class="takeaway">
+<p>The task determines what a good prediction means and how we measure its error.</p>
+</div>
+<aside class="notes">
+<p>Digit labels happen to be encoded as integers, but their numeric distances do not define classification error. A 7 predicted as 8 is simply a wrong category under 0-1 loss. AIMA Section 19.2.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="knn-distance" class="slide level2 ml24-slide">
+<h2>k-Nearest Neighbors</h2>
+<p><strong>k-nearest neighbors (k-NN)</strong> stores labeled examples. For a new input, it finds the <span class="math inline">k</span> closest stored examples and lets their labels vote.</p>
+<p>Let <span class="math inline">q=(q_1,q_2)</span> be the <strong>query</strong>, the new input. Let <span class="math inline">x=(x_1,x_2)</span> be a stored example with two numerical features.</p>
+<p><strong>Euclidean distance</strong> is straight-line distance:</p>
+<p><span class="math display">d(q,x)=\sqrt{(q_1-x_1)^2+(q_2-x_2)^2}.</span></p>
+<p>For <span class="math inline">N</span> stored examples, choose an integer <span class="math inline">k</span> with <span class="math inline">1\leq k\leq N</span>.</p>
+<div class="takeaway">
+<p>For classification, the most frequent label among the selected neighbors wins. k-NN can also do regression by averaging their numerical targets.</p>
+</div>
+<aside class="notes">
+<p>Instance-based learning means retaining training instances and doing much of the work when a prediction is requested. In more than two dimensions, sum squared differences across all features before taking the square root. Reference: https://scikit-learn.org/stable/modules/neighbors.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="knn-vote" class="slide level2 ml24-slide">
+<h2>A Neighbor Vote, Worked Out</h2>
+<p>Two features are already on comparable scales. The query is <span class="math inline">q=(0,0)</span>; letters A and B are class labels.</p>
+<div class="ml24-example">
+<p><img data-src="imgs/drawio/lec24/neighbor-vote.png" class="ml24-neighbors" alt="Query q at (0,0). Class A examples A1 at (1,0) and A2 at (3,1) are circles. Class B examples B1 at (0,2) and B2 at (2,2) are squares. Gold dashed lines identify the three nearest examples A1, B1, B2."></p>
+<div>
+<p>The three nearest examples:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Component</th>
-<th>Meaning</th>
+<th>Example</th>
+<th>Features</th>
+<th style="text-align: right;">Distance</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Features</td>
-<td>Inputs used for learning</td>
+<td>A1</td>
+<td><span class="math inline">(1,0)</span></td>
+<td style="text-align: right;"><span class="math inline">1</span></td>
 </tr>
 <tr class="even">
-<td>Labels</td>
-<td>Correct outputs during training</td>
+<td>B1</td>
+<td><span class="math inline">(0,2)</span></td>
+<td style="text-align: right;"><span class="math inline">2</span></td>
 </tr>
 <tr class="odd">
-<td>Model</td>
-<td>Function learned from examples</td>
-</tr>
-<tr class="even">
-<td>Loss function</td>
-<td>Error measure between prediction and label</td>
+<td>B2</td>
+<td><span class="math inline">(2,2)</span></td>
+<td style="text-align: right;"><span class="math inline">\sqrt{8}\approx2.83</span></td>
 </tr>
 </tbody>
 </table>
-<p>Examples:</p>
-<ul>
-<li>Classification: spam vs.&nbsp;not spam.</li>
-<li>Regression: house-price prediction.</li>
-</ul>
-</section>
-<section id="unsupervised-learning" class="slide level2">
-<h2>Unsupervised Learning</h2>
-<p>Unsupervised learning looks for structure without labels.</p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="common-tasks">Common tasks</h3>
-<ul>
-<li>Clustering.</li>
-<li>Dimensionality reduction.</li>
-<li>Anomaly detection.</li>
-</ul>
-</div><div class="column" style="width:48%;">
-<h3 id="use-cases">Use cases</h3>
-<ul>
-<li>Customer segmentation.</li>
-<li>Visualization.</li>
-<li>Fraud detection.</li>
-</ul>
-</div></div>
-<div class="question">
-<p>The question changes from “what is the correct answer?” to “what structure is hidden in the data?”</p>
 </div>
-</section>
-<section id="reinforcement-learning" class="slide level2">
-<h2>Reinforcement Learning</h2>
-<p>Reinforcement learning studies agents that learn by interacting with an environment.</p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec23/reinforcement-learning.svg" alt="Agent sends actions to environment; environment returns state and reward"></p>
 </div>
-<p>Core pieces:</p>
-<ul>
-<li>Agent, environment, state, action, reward, policy.</li>
-</ul>
-</section>
-<section id="relationship-to-gofai" class="slide level2">
-<h2>Relationship to GOFAI</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="gofai">GOFAI</h3>
-<ul>
-<li>Explicit symbols and rules.</li>
-<li>Search over states or plans.</li>
-<li>Logic-based reasoning.</li>
-</ul>
-</div><div class="column" style="width:48%;">
-<h3 id="machine-learning-1">Machine learning</h3>
-<ul>
-<li>Data-driven model fitting.</li>
-<li>Search over model parameters or hypotheses.</li>
-<li>Pattern recognition and prediction.</li>
-</ul>
-</div></div>
-<div class="takeaway">
-<p>ML can be viewed as searching for a model that explains data, but the search space and methods are often very different from symbolic AI.</p>
+<div class="fragment" data-fragment-index="0">
+<p>With <span class="math inline">k=1</span>, A1 alone votes: predict <strong>A</strong>.</p>
 </div>
-</section>
-<section id="k-nearest-neighbors" class="slide level2">
-<h2>k-Nearest Neighbors</h2>
-<p>k-NN is an instance-based supervised learning algorithm.</p>
-<div class="definition">
-<p>To classify a new point, find the <span class="math inline">k</span> closest training examples and let them vote.</p>
+<div class="fragment takeaway" data-fragment-index="1">
+<p>With <span class="math inline">k=3</span>, the votes are A, B, B: predict <strong>B</strong>.</p>
 </div>
-<p>It is simple, useful, and a good first example of how “learning” can be stored in the training data itself.</p>
+<aside class="notes">
+<p>The fourth example A2 has distance sqrt(10), about 3.16, so it is outside the first three. There are no distance or voting ties for the two choices of k shown. All coordinates are constructed for this example. Small k is sensitive to individual examples; a larger neighborhood may include points from other classes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="k-nn-algorithm" class="slide level2">
-<h2>k-NN Algorithm</h2>
+<section id="knn-algorithm" class="slide level2 ml24-slide">
+<h2>k-NN Prediction Algorithm</h2>
+<p>Let <span class="math inline">D</span> contain <span class="math inline">N</span> stored <code>(features, label)</code> pairs. <code>mostVotes</code> returns the most frequent label. Assume <span class="math inline">1\leq k\leq N</span>.</p>
 <div class="pseudo-code">
 <div class="pseudo-line">
-<span class="pseudo-kw">function</span> <span class="pseudo-fn">KNNPredict</span>(<span class="pseudo-var">query</span>, <span class="pseudo-var">trainingData</span>, <span class="pseudo-var">k</span>)
+<span class="pseudo-kw">function</span> <span class="pseudo-fn">KNNPredict</span>(<span class="pseudo-var">q</span>, <span class="pseudo-var">D</span>, <span class="pseudo-var">k</span>)
 </div>
-<div class="pseudo-line fragment indent-1">
+<div class="pseudo-line indent-1">
 <span class="pseudo-var">distances</span> <span class="pseudo-op">=</span> []
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">for each</span> (<span class="pseudo-var">x</span>, <span class="pseudo-var">label</span>) <span class="pseudo-op">in</span> <span class="pseudo-var">trainingData</span>
+<div class="pseudo-line fragment indent-1" data-fragment-index="0">
+<span class="pseudo-kw">for each</span> (<span class="pseudo-var">x</span>, <span class="pseudo-var">label</span>) <span class="pseudo-kw">in</span> <span class="pseudo-var">D</span>
 </div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-fn">append</span>(<span class="pseudo-var">distances</span>, (<span class="pseudo-fn">distance</span>(<span class="pseudo-var">query</span>, <span class="pseudo-var">x</span>), <span class="pseudo-var">label</span>))
+<div class="pseudo-line fragment indent-2" data-fragment-index="0">
+<span class="pseudo-fn">append</span>(<span class="pseudo-var">distances</span>, (<span class="pseudo-fn">d</span>(<span class="pseudo-var">q</span>, <span class="pseudo-var">x</span>), <span class="pseudo-var">label</span>))
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">neighbors</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">kSmallest</span>(<span class="pseudo-var">distances</span>, <span class="pseudo-var">k</span>)
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-fn">sortAscendingByDistance</span>(<span class="pseudo-var">distances</span>)
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">return</span> <span class="pseudo-fn">majorityVote</span>(<span class="pseudo-var">neighbors</span>)
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-var">neighbors</span> <span class="pseudo-op">=</span> <span class="pseudo-kw">first</span> <span class="pseudo-var">k</span> <span class="pseudo-kw">entries of</span> <span class="pseudo-var">distances</span>
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-kw">return</span> <span class="pseudo-fn">mostVotes</span>(<span class="pseudo-var">neighbors</span>)
 </div>
 </div>
-</section>
-<section id="k-nn-picture" class="slide level2">
-<h2>k-NN Picture</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec23/k-nn-picture.svg" alt="k nearest neighbors scatter plot with blue points, red points, and query point"></p>
-</div>
+<p>Fix a rule for ties, such as a fixed class order. An odd <span class="math inline">k</span> does not prevent all ties when there are more than two classes.</p>
 <div class="takeaway">
-<p>The label depends on the local neighborhood and the choice of <span class="math inline">k</span>.</p>
+<p>Store examples during training. Compute distances and vote during prediction.</p>
 </div>
+<aside class="notes">
+<p>The pseudocode uses a fixed rule for equal distances as well as equal vote counts. The notebook sorts with NumPy and its Counter vote resolves equal counts by label encounter order. The details of tie-breaking can affect predictions. Full sorting is a simple implementation, not a requirement for every k-NN algorithm. The stored-example search is different from fitting neural-network weights.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="pca" class="slide level2">
-<h2>PCA</h2>
-<p>Principal Component Analysis is an unsupervised method for dimensionality reduction.</p>
-<p>It finds new axes that capture as much variance as possible.</p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="why-use-it">Why use it?</h3>
-<ul>
-<li>Reduce dimension.</li>
-<li>Remove redundancy.</li>
-<li>Improve efficiency.</li>
-<li>Visualize high-dimensional data.</li>
-</ul>
-</div><div class="column" style="width:48%;">
-<h3 id="key-operation">Key operation</h3>
-<p>Project data onto a smaller number of principal components.</p>
-</div></div>
-</section>
-<section id="pca-and-svd" class="slide level2">
-<h2>PCA and SVD</h2>
-<p>PCA can be computed using singular value decomposition:</p>
-<p><span class="math display">
-X=U\Sigma V^T
-</span></p>
+<section id="feature-scales" class="slide level2 ml24-slide">
+<h2>Feature Scales Change the Neighbors</h2>
+<p>Suppose the features are an object’s height and mass.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Matrix</th>
-<th>Role</th>
+<th>Object</th>
+<th style="text-align: right;">Height (cm)</th>
+<th style="text-align: right;">Mass (g)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><span class="math inline">U</span></td>
-<td>Left singular vectors</td>
+<td>Query</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">100</td>
 </tr>
 <tr class="even">
-<td><span class="math inline">\Sigma</span></td>
-<td>Singular values, related to variance</td>
+<td>A</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">150</td>
 </tr>
 <tr class="odd">
-<td><span class="math inline">V</span></td>
-<td>Right singular vectors, principal components</td>
+<td>B</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">102</td>
 </tr>
 </tbody>
 </table>
-<div class="takeaway">
-<p>The principal components are the directions in <span class="math inline">V</span>.</p>
+<div class="fragment" data-fragment-index="0">
+<p>Using cm and g: distance to A <span class="math inline">\approx50.01</span>, to B <span class="math inline">\approx10.20</span>. <strong>B is closer.</strong></p>
 </div>
+<div class="fragment" data-fragment-index="1">
+<p>Convert mass to kg: distance to A <span class="math inline">\approx1.001</span>, to B <span class="math inline">\approx10.000</span>. <strong>A is closer.</strong></p>
+</div>
+<div class="takeaway">
+<p>Choose meaningful feature scales. Estimate any scaling settings from training data, then apply the same transformation to new inputs.</p>
+</div>
+<aside class="notes">
+<p>Raw distances are sqrt(1^2 + 50^2) and sqrt(10^2 + 2^2). After conversion to kg they are sqrt(1^2 + .05^2) and sqrt(10^2 + .002^2). This illustrates how relative feature scales weight the distance. Applying the same nonzero scale factor to every feature does not change Euclidean neighbor ordering. In particular, the notebook’s common transformation from pixel range [0,1] to [-1,1] scales all pixel differences equally.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="rl-example-robot-navigation" class="slide level2">
-<h2>RL Example: Robot Navigation</h2>
-<p>A robot explores a maze and learns how to reach the exit.</p>
+<section id="evaluation" class="slide level2 ml24-slide">
+<h2>Evaluation on Unseen Examples</h2>
+<p><strong>Generalization</strong> means performing well on new examples. A <strong>hyperparameter</strong> is a chosen setting, such as <span class="math inline">k</span>.</p>
 <table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>RL component</th>
-<th>Maze example</th>
+<th>Data split</th>
+<th>Purpose</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Agent</td>
-<td>Robot</td>
+<td><strong>Training</strong></td>
+<td>Fit a model, or store reference examples for k-NN</td>
 </tr>
 <tr class="even">
-<td>Environment</td>
-<td>Maze</td>
+<td><strong>Validation</strong></td>
+<td>Compare choices such as different values of <span class="math inline">k</span></td>
 </tr>
 <tr class="odd">
-<td>State</td>
-<td>Current position</td>
-</tr>
-<tr class="even">
-<td>Action</td>
-<td>Up, down, left, right</td>
-</tr>
-<tr class="odd">
-<td>Reward</td>
-<td>+10 for exit, -1 for wall</td>
-</tr>
-<tr class="even">
-<td>Policy</td>
-<td>Strategy for choosing actions</td>
+<td><strong>Test</strong></td>
+<td>Evaluate the final choice without using these answers to select it</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Accuracy</strong> is the fraction of predictions that match the labels:</p>
+<p><span class="math display">\text{accuracy}=\frac{\text{number correct}}{\text{number evaluated}};\qquad \frac{12}{15}=0.80.</span></p>
+<div class="takeaway">
+<p>A test score stops being an independent final check if we repeatedly use it to choose <span class="math inline">k</span>.</p>
+</div>
+<aside class="notes">
+<p>The 12-of-15 count is illustrative. The notebook fixes k=3 and uses the provided MNIST training/test split. It does not create a validation split or tune k. To compare hyperparameters, reserve validation data from the training portion. If preprocessing learns statistics, fit them without using the validation or test examples. AIMA Section 19.2.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="policy-improvement" class="slide level2">
-<h2>Policy Improvement</h2>
-<div class="fragment">
-<h3 id="initial-policy">Initial policy</h3>
-<p>Move randomly; turn when blocked.</p>
+<section id="unsupervised" class="slide level2 ml24-slide">
+<h2>Unsupervised Learning Tasks</h2>
+<p>We have inputs but no supplied target answers.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Clustering</strong></td>
+<td>Group similar examples</td>
+<td>Group handwriting styles without digit labels</td>
+</tr>
+<tr class="even">
+<td><strong>Dimensionality reduction</strong></td>
+<td>Represent inputs with fewer coordinates</td>
+<td>Compress hundreds of pixel features</td>
+</tr>
+<tr class="odd">
+<td><strong>Anomaly detection</strong></td>
+<td>Find examples unusual relative to the data</td>
+<td>Flag an unusual image for inspection</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>A discovered group or unusual example still needs interpretation. An unusual transaction, for example, is not automatically fraud.</p>
 </div>
-<div class="fragment">
-<h3 id="intermediate-policy">Intermediate policy</h3>
-<p>Avoid walls; avoid paths that previously failed.</p>
+<aside class="notes">
+<p>These methods may also be used inside larger supervised pipelines. Calling a method unsupervised describes which target information it uses, not whether its output is automatically meaningful. AIMA Section 19.1.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="pca" class="slide level2 ml24-slide">
+<h2>Principal Component Analysis (PCA)</h2>
+<p>PCA reduces the number of coordinates. First <strong>center</strong> the data: subtract each feature’s mean.</p>
+<div class="ml24-example">
+<p><img data-src="imgs/drawio/lec24/pca-projection.png" class="ml24-pca" alt="Centered points are spread mostly along a diagonal. Dashed perpendicular lines project them onto the first principal component, PC1. The small spread perpendicular to that line is discarded."></p>
+<div>
+<ul>
+<li><strong>Variance</strong> measures spread around the mean.</li>
+<li>The first <strong>principal component (PC1)</strong> is the direction with greatest variance.</li>
+<li><strong>Projection</strong> drops each point onto that line, giving one coordinate instead of two.</li>
+</ul>
+<p>Gray: original points. Gold: projected points.</p>
 </div>
-<div class="fragment">
-<h3 id="learned-policy">Learned policy</h3>
-<p>Prefer high-reward paths while still exploring enough to improve.</p>
 </div>
 <div class="takeaway">
-<p>RL is learning from consequences, not from labeled answers.</p>
+<p>Preserving spread does not guarantee preserving the information needed to predict a label.</p>
+</div>
+<aside class="notes">
+<p>The constructed centered points are (-3,-2), (-2,-3), (-1,0), (0,-1), (0,1), (1,0), (2,3), (3,2). Their first principal direction is (1,1)/sqrt(2). The projections shown are orthogonal and exact. Scaling the original features can change PCA too.</p>
+<p>Singular Value Decomposition (SVD) computes PCA from a centered matrix X with one example per row. In X = U Sigma V^T, V contains feature-space directions, Sigma contains singular values, and U contains example-space directions. Coordinates along the principal directions are given by X V = U Sigma. The columns of V are principal directions, ordered by singular value. With n examples, the corresponding sample variances are sigma_j^2/(n-1). Keeping the leading columns yields fewer coordinates. This is a computational connection, not a claim that high variance guarantees better classification. Reference: https://scikit-learn.org/stable/modules/decomposition.html#pca.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reinforcement-learning" class="slide level2 ml24-slide">
+<h2>Reinforcement Learning Through Interaction</h2>
+<p>In <strong>reinforcement learning</strong>, an <strong>agent</strong> (the learner) acts in an <strong>environment</strong> (the world it interacts with).</p>
+<p><img data-src="imgs/drawio/lec24/rl-interaction.png" class="ml24-flow" alt="An agent, here a robot, sends an action to the environment, here a maze. The environment returns the next state and a numerical reward."></p>
+<ul>
+<li><strong>State:</strong> the current situation, such as the robot’s position.</li>
+<li><strong>Action:</strong> a choice, such as moving up or right.</li>
+<li><strong>Policy:</strong> the rule used to choose actions from states.</li>
+</ul>
+<div class="takeaway">
+<p>The goal is high total reward over time. A reward may arrive later and need not tell us which action was correct.</p>
+</div>
+<aside class="notes">
+<p>The diagram uses a fully observed toy maze, so position is a sufficient state. In general an agent may receive only observations rather than the full environment state. Reward is numerical feedback, not necessarily a labeled answer or a guarantee of progress. The detailed reinforcement-learning algorithms appear later in the course. AIMA Chapter 22 in the U.S. fourth edition, Chapter 23 in the Global fourth edition.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="robot-rewards" class="slide level2 ml24-slide">
+<h2>Robot Navigation: Rewards and a Policy</h2>
+<p>A policy chooses up, down, left, or right for each square. Reaching the exit ends the run.</p>
+<div class="ml24-example">
+<p><img data-src="imgs/drawio/lec24/robot-route.png" class="ml24-maze" alt="A three-by-five grid has robot R at row 2 column 1, goal G at row 2 column 5, and a wall at row 2 column 3. An indicated six-move route goes up, right four times, then down to G."></p>
+<div>
+<p>Illustrative rewards:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Outcome</th>
+<th style="text-align: right;">Reward</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ordinary move</td>
+<td style="text-align: right;"><span class="math inline">-1</span></td>
+</tr>
+<tr class="even">
+<td>Attempt to enter a wall: stay put</td>
+<td style="text-align: right;"><span class="math inline">-3</span></td>
+</tr>
+<tr class="odd">
+<td>Enter the exit</td>
+<td style="text-align: right;"><span class="math inline">+10</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fragment" data-fragment-index="0">
+<p>The marked route has six moves: five ordinary moves, then the exit. Total reward: <span class="math inline">5(-1)+10=5</span>.</p>
+</div>
+<div class="takeaway">
+<p>The robot learns which moves lead to reward. We do not supply a correct-move label for every square.</p>
+</div>
+<aside class="notes">
+<p>Rewards are mutually exclusive per transition: entering the exit yields +10 rather than +10 and a separate -1. The displayed route is illustrative, not an experimental learned policy. A policy maps every relevant state to an action, whereas a route is one resulting sequence of actions. For this fully known deterministic maze, search could compute a path directly; RL illustrates learning from interaction when transitions or useful decisions are not supplied in advance. Exploration means trying actions to gain information, while exploitation means using what has already been learned. Improvement is not guaranteed after every interaction.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="learning-practice" class="slide level2 ml24-slide scrollable">
+<h2>Quick Check: What Feedback Is Available?</h2>
+<ol type="1">
+<li>Predict tomorrow’s temperature using past weather records paired with the next day’s temperature.</li>
+<li>Group handwriting images without being given their digit labels.</li>
+<li>Let a robot try moves and receive rewards for reaching an exit.</li>
+</ol>
+<div class="fragment" data-fragment-index="0">
+<p><strong>1. Supervised regression:</strong> the training examples have numerical targets.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>2. Unsupervised clustering:</strong> no target groups are supplied.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p><strong>3. Reinforcement learning:</strong> feedback comes from interaction.</p>
 </div>
 </section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
+<section id="takeaways" class="slide level2 ml24-slide">
+<h2>Takeaways</h2>
 <ul>
-<li>Machine learning builds models from data.</li>
-<li>Supervised learning uses labels; unsupervised learning finds structure; RL learns from reward.</li>
-<li>k-NN classifies by local similarity.</li>
-<li>PCA reduces dimension by finding high-variance directions.</li>
-<li>RL connects learning with sequential decision-making.</li>
+<li>Features describe inputs. Labels supply targets in supervised learning.</li>
+<li>k-NN predicts using nearby stored examples. The choice of features, scales, and <span class="math inline">k</span> matters.</li>
+<li>Validation helps choose settings. Unseen test examples check the final choice.</li>
+<li>PCA finds directions of large variation without using labels.</li>
+<li>Reinforcement learning uses rewards from interaction to learn decisions.</li>
 </ul>
+<div class="takeaway">
+<p>A useful model must work on new examples, beyond the data used to prepare or choose it.</p>
+</div>
+</section>
+<section id="mnist-demo" class="slide level2 ml24-slide">
+<h2>Notebook Example: Handwritten Digits</h2>
+<p><strong>MNIST</strong> (Modified National Institute of Standards and Technology) contains <span class="math inline">28\times28</span> grayscale digit images.</p>
+<p><img data-src="imgs/lec24/mnist-notebook-examples.png" class="ml24-digits" alt="Five handwritten digit images with true and predicted labels, reproduced from the saved KNN notebook output."></p>
+<ul>
+<li><strong>Features:</strong> flatten the image into <span class="math inline">28\times28=784</span> pixel values. The distance compares all 784 values.</li>
+<li><strong>Label:</strong> the digit category, 0 through 9.</li>
+<li>This notebook stores <strong>10,000 training examples</strong>, then predicts using <span class="math inline">k=3</span>. Its <code>fit</code> method stores examples rather than learning weights.</li>
+</ul>
+<p><a href="../code_and_homework/KNN_MNIST.html" target="_blank" rel="noopener">KNN on MNIST notebook</a></p>
 <p><a href="../asset_credits.html#lec24" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
+<aside class="notes">
+<p>The figure is an unchanged saved output from the course notebook, not a newly run experiment. The code takes the first shuffled batch of 10,000 training images, not the entire MNIST training set. Prediction uses NumPy on the CPU even when the setup prints another available device. Test labels are used only in evaluation and result display, not in finding neighbors. The notebook includes its own runnable code, explanations, and saved results. Dataset reference: https://docs.pytorch.org/vision/stable/generated/torchvision.datasets.MNIST.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 </section>

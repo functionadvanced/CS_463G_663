@@ -1,0 +1,16 @@
+Lecture 25 delivery cartoons
+Generated: 2026-10-25
+Tool: Codex built-in image generator (not the fallback CLI).
+Both assets were requested with a transparent background. Original generated PNGs
+were copied into this folder without editing. These conceptual cartoons are not
+photographs, measured data, or depictions of actual people or campus events.
+
+Asset 1: delivery-campus-cartoon.png
+Original output: exec-ccf0948a-ac97-4825-a194-a4d172cbf09c.png
+Final prompt:
+Use case: illustration-story. Create one compact, clean cartoon illustration for a university AI lecture's running example: predicting campus delivery times from route distance and number of stops. A friendly adult student courier wearing a teal helmet rides a simple bicycle with two small parcel boxes securely on its rear rack, moving toward two small campus buildings. Thick smooth charcoal outlines, flat teal, muted raspberry, mustard accents, and white, modern simple educational editorial cartoon, uncluttered and friendly rather than childish. Wide composition, roughly 3:2. Entire courier and bicycle visible, plenty of breathing room, transparent background with no white rectangle, no scene frame, no shadow cloud, no text, no letters, no numbers, no logos, no watermark. This is a decorative context illustration, not a mathematical chart; do not add arrows, formulas, statistics, labels, or panels. It must remain recognizable at 240 pixels wide on a white slide.
+
+Asset 2: delivery-waiting-cartoon.png
+Original output: exec-0a055fe2-034b-44fe-83f7-8a2a84da2e81.png
+Final prompt:
+Use case: illustration-story. One simple matching educational cartoon for a university AI slide about unpredictable waiting in delivery times. An adult female campus bicycle courier, brown wavy ponytail, teal helmet, teal shirt, charcoal trousers and mustard backpack, waits beside a closed campus building door with a raspberry-colored parcel tucked under one arm, gently checking a plain wristwatch with the other hand. Friendly mildly puzzled expression, not worried. Just the courier, parcel, small closed door and doorbell; no bicycle needed. Thick smooth charcoal outlines, clean flat color with very limited shading, teal/raspberry/mustard accents matching a modern classroom cartoon, clear and uncluttered, roughly square overall composition. Full subject visible with breathing room. True transparent background with clean alpha, no rectangular white backdrop, no colored glow, no cast shadow, no floor gradient, no lettering, words, numerals, logos, watermark, speech bubbles, chart arrows or formulas. Must read clearly at 220 pixels wide. This is a conceptual cartoon, not measured data.

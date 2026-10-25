@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec25_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,127 +164,571 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="bias-variance-and-overfitting" class="slide level2 section-slide">
-<h2>Bias, Variance, and Overfitting</h2>
-<p>How complex should a learned model be?</p>
-</section>
-<section id="parameterized-models" class="slide level2">
-<h2>Parameterized Models</h2>
-<p>A model is often defined by parameters <span class="math inline">\theta</span> learned from data.</p>
-<p><span class="math display">
-y=f(x;\theta)
-</span></p>
-<p>Examples:</p>
+<section id="delivery-task" class="slide level2 reg25-slide">
+<h2>Predicting Campus Delivery Times</h2>
+<p>A campus courier team wants to predict a route’s duration <strong>before departure</strong>.</p>
+<div class="reg25-context">
+<div>
 <ul>
-<li>Linear regression coefficients.</li>
-<li>Neural network weights.</li>
-<li>Decision-tree split choices.</li>
+<li><strong>Inputs:</strong> planned distance <span class="math inline">z</span> (km) and stops <span class="math inline">c</span>.</li>
+<li><strong>Output:</strong> recorded route duration <span class="math inline">y</span> (minutes).</li>
+<li><strong>One observation:</strong> one completed route.</li>
 </ul>
-<div class="takeaway">
-<p>Learning means choosing parameters that perform well beyond the training data.</p>
 </div>
-</section>
-<section id="training-error-vs.-test-error" class="slide level2">
-<h2>Training Error vs.&nbsp;Test Error</h2>
+<p><img data-src="imgs/lec25/delivery-campus-cartoon.png" class="reg25-campus-cartoon" alt="Cartoon of a helmeted bicycle courier carrying parcels toward campus buildings."></p>
+</div>
+<p>We have <strong>50 training routes</strong>. Here are three one-stop routes from the records:</p>
 <table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Error</th>
-<th>Measured on</th>
-<th>What it tells us</th>
+<th>Route</th>
+<th style="text-align: right;">Distance <span class="math inline">z</span> (km)</th>
+<th style="text-align: right;">Stops <span class="math inline">c</span></th>
+<th style="text-align: right;">Duration <span class="math inline">y</span> (min)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Training error</td>
-<td>Data used for fitting</td>
-<td>How well the model fits examples it saw</td>
+<td>A</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11</td>
 </tr>
 <tr class="even">
-<td>Test error</td>
-<td>Unseen data</td>
-<td>How well the model generalizes</td>
+<td>B</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr class="odd">
+<td>C</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">16</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>These are invented teaching records, not measured campus data.</p>
+</div>
+<aside class="notes">
+<p>This running example is a realistic prediction task with deliberately constructed numbers, not a claim about an actual courier service. Only inputs known before departure are eligible features. Actual travel duration, eventual waiting time, and completion timestamps would not be valid inputs for predicting the same route before it starts. The three displayed routes are a small excerpt; the full illustrative training set contains 50 routes with varying distances and stop counts. No complete 50-route dataset or real fitted model is claimed. Later we explicitly assume a simple data-generating rule to make the otherwise unknown meaning of s visible.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="generalization" class="slide level2 reg25-slide">
+<h2>Fitting Data and Generalizing</h2>
+<p><strong>Generalization</strong> means predicting well on new routes. Observations may include <strong>noise</strong>: variation not predictable from the recorded inputs, such as random waiting delays.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Data</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Training</td>
+<td>Fit coefficients using our 50 completed routes</td>
+</tr>
+<tr class="even">
+<td>Validation</td>
+<td>Compare model choices on separate routes, without refitting</td>
+</tr>
+<tr class="odd">
+<td>Test</td>
+<td>Check the final choice on further routes used for neither fitting nor choosing</td>
 </tr>
 </tbody>
 </table>
 <div class="question">
-<p>A model can have low training error and still fail the real task.</p>
+<p>If a model remembers every training route’s duration, must it predict the next route accurately?</p>
 </div>
+<div class="fragment takeaway" data-fragment-index="0">
+<p>No.&nbsp;Matching the training observations can include matching their noise.</p>
+</div>
+<aside class="notes">
+<p>The supplied Spring 2025 lecture motivates generalization through linear regression. The examples here assume fresh examples come from the same distribution as training data. A representative independent test set estimates generalization performance, but is not a guarantee about every future input. The notebook’s comparisons across many model sizes are an experiment, not a procedure for selecting a deployed model using its test set.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="linear-regression" class="slide level2">
-<h2>Linear Regression</h2>
-<p>Linear regression predicts a continuous output using a weighted sum of features.</p>
-<p><span class="math display">
-\hat{y}=\beta_1x_1+\beta_2x_2+\cdots+\beta_px_p
-=
-\mathbf{x}^T\boldsymbol{\beta}
-</span></p>
-<div class="example-box">
-<p>Temperature prediction:</p>
+<section id="linear-model" class="slide level2 reg25-slide">
+<h2>Linear Regression and Its Parameters</h2>
+<p>A <strong>parameter</strong> is a number fitted from data. For one-stop routes, try predicting duration from distance alone:</p>
+<p><span class="math display">\hat y=b+wz.</span></p>
+<div class="reg25-example">
+<p><img data-src="imgs/drawio/lec25/linear-model.png" class="reg25-line" alt="Invented one-stop delivery records at distances 1, 2, and 3 km take 11, 11, and 16 minutes. The candidate line predicts 8+2z minutes. At 3 km, the prediction is 14 minutes and the observed duration is 16 minutes."></p>
+<div>
 <ul>
-<li><span class="math inline">x_1=1</span></li>
-<li><span class="math inline">x_2=</span> humidity</li>
-<li><span class="math inline">x_3=</span> wind speed</li>
-<li><span class="math inline">x_4=</span> humidity squared</li>
+<li><span class="math inline">b</span>: <strong>intercept</strong>, predicted minutes at <span class="math inline">z=0</span>.</li>
+<li><span class="math inline">w</span>: <strong>slope</strong>, extra minutes per kilometer.</li>
+<li><span class="math inline">\hat y</span>: predicted duration; <span class="math inline">y</span>: recorded duration.</li>
 </ul>
+<p>The dots are observations. The line is one candidate model.</p>
 </div>
+</div>
+<div class="fragment takeaway" data-fragment-index="0">
+<p>For <span class="math inline">b=8</span>, <span class="math inline">w=2</span>, and a 3 km route: <span class="math inline">\hat y=8+2(3)=14</span> minutes.</p>
+</div>
+<aside class="notes">
+<p>The displayed line is a candidate, not the least-squares optimum for these three observations. Its intercept is the model’s prediction at z=0, an extrapolated baseline, not a claim that zero-distance deliveries necessarily occur. The later constructed full rule is 5+2z+3c. For the one-stop subset c=1, its mean is 8+2z, so this candidate agrees with the assumed mean but need not minimize the observed noisy sample loss. In neural-network terminology an intercept is sometimes called a bias parameter; that is different from the statistical bias discussed later. The letter z is route distance; later x denotes a vector of features.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="learning-the-parameters" class="slide level2">
-<h2>Learning the Parameters</h2>
-<p>Given <span class="math inline">n</span> training examples, mean squared error is:</p>
+<section id="mse" class="slide level2 reg25-slide">
+<h2>Residuals and Mean Squared Error</h2>
+<p>A <strong>residual</strong> is observed minus predicted output: <span class="math inline">y_i-\hat y_i</span>. Here <span class="math inline">i</span> identifies an observation, and <span class="math inline">n</span> is the number of observations.</p>
+<p><strong>Mean squared error (MSE)</strong> averages the squared residuals:</p>
+<p><span class="math display">\text{MSE}=\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat y_i)^2.</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Distance (km)</th>
+<th style="text-align: right;">Observed (min)</th>
+<th style="text-align: right;">Predicted (min)</th>
+<th style="text-align: right;">Squared residual</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">4</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment takeaway" data-fragment-index="0">
+<p><span class="math inline">\text{MSE}=(1+1+4)/3=2\ \text{min}^2</span>. Minimizing this loss is <strong>least squares</strong>.</p>
+</div>
+<aside class="notes">
+<p>These predictions use b=8, w=2 from the previous slide. The residuals are 1,-1,2 minutes, with squared residuals 1,1,4. These are the three displayed training examples, not a complete 50-route error estimate. Squaring prevents positive and negative residuals from canceling and penalizes large errors more strongly. MSE has squared-output units. Minimizing mean squared error and minimizing the sum of squared residuals have the same minimizers when n is fixed.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="design-matrix" class="slide level2 reg25-slide">
+<h2>Features and the Design Matrix</h2>
+<p><strong>Features</strong> are input numbers. For the distance-only model, use <span class="math inline">\mathbf x=(1,z)^T</span> and coefficients <span class="math inline">\boldsymbol\beta=(b,w)^T</span>. There are <span class="math inline">p=2</span> features, including the constant <span class="math inline">1</span>.</p>
+<p><strong>Transpose</strong> (<span class="math inline">T</span>) swaps rows and columns.</p>
+<p><span class="math display">\hat y=\mathbf x^T\boldsymbol\beta.</span></p>
+<p>A <strong>design matrix</strong> stores all inputs. We use <strong>features as rows and observations as columns</strong>:</p>
 <p><span class="math display">
-\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat{y}_i)^2
+X=\begin{bmatrix}1&amp;1&amp;1\\1&amp;2&amp;3\end{bmatrix},\qquad
+\boldsymbol\beta=\begin{bmatrix}8\\2\end{bmatrix},\qquad
+\hat{\mathbf y}=X^T\boldsymbol\beta=\begin{bmatrix}10\\12\\14\end{bmatrix}.
 </span></p>
-<p>Matrix form:</p>
-<p><span class="math display">
-\min_{\boldsymbol{\beta}}
-\frac{1}{n}\left\|X^T\boldsymbol{\beta}-\mathbf{y}\right\|_2^2
-</span></p>
+<p>This excerpt has <span class="math inline">n=3</span> routes. The full training set has <span class="math inline">n=50</span>. In general, <span class="math inline">X</span> has shape <span class="math inline">p\times n</span>.</p>
 <div class="takeaway">
-<p>Training is an optimization problem.</p>
+<p>Each column is one route. Each row is one feature used for every route.</p>
 </div>
+<aside class="notes">
+<p>For the example x=(1,z), beta=(b,w), and the three distances are z=1,2,3. The output vector has n entries. The n=3 matrix is only the displayed excerpt, not the full n=50 experiment. Many other libraries store examples in rows, the opposite convention. In the notebook, the candidate features are independent Gaussian inputs and there is no added constant feature. A constant counts as a feature when one is included, as in this illustration. Linear regression is linear in the coefficients; constructed features such as z^2 can represent a curved relationship.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="optimization" class="slide level2">
-<h2>Optimization</h2>
-<p>For many ML models, parameters are learned with gradient descent or variants such as stochastic gradient descent.</p>
-<p>When linear regression has enough well-behaved samples, it also has a closed-form solution:</p>
-<p><span class="math display">
-\tilde{\boldsymbol{\beta}}=(XX^T)^{-1}X\mathbf{y}
-</span></p>
-<div class="question">
-<p>Even when optimization succeeds, generalization is a separate question.</p>
+<section id="pseudoinverse" class="slide level2 reg25-slide">
+<h2>Fitting with a Pseudoinverse</h2>
+<p><strong>Optimization</strong> chooses parameters to minimize a loss. Here we minimize training MSE.</p>
+<p>The <strong>Moore-Penrose pseudoinverse</strong> is a matrix operation that provides a least-squares solution even when an ordinary inverse is unavailable:</p>
+<p><span class="math display">\hat{\boldsymbol\beta}=(X^T)^\dagger\mathbf y.</span></p>
+<ul>
+<li>Superscript <span class="math inline">\dagger</span> denotes the pseudoinverse.</li>
+<li><span class="math inline">\mathbf y</span> holds the <span class="math inline">n</span> observed training outputs.</li>
+<li>If several fits have the same minimum loss, this chooses the <strong>minimum-norm</strong> one: the coefficient vector with the smallest Euclidean length.</li>
+</ul>
+<div class="fragment takeaway" data-fragment-index="0">
+<p>For the three displayed routes, least squares gives <span class="math inline">\hat b=23/3\approx7.67</span> and <span class="math inline">\hat w=2.5</span>. Their training MSE falls from <span class="math inline">2</span> to <span class="math inline">25/18\approx1.39\ \text{min}^2</span>.</p>
 </div>
+<aside class="notes">
+<p>For the three displayed routes only, the design has rows (1,1,1) and (1,2,3), with observed outputs (11,11,16). The pseudoinverse gives beta=(23/3,5/2), predictions (61/6,76/6,91/6), and residuals (5/6,-10/6,5/6). Its training MSE is 25/18, below the chosen candidate’s MSE 2. Fitting the observed sample better does not establish better prediction on fresh routes. These values are not claimed estimates from all 50 routes.</p>
+<p>The Euclidean length of beta is sqrt(sum_j beta_j^2). For an underdetermined constraint beta_1+beta_2=2, (1,1) has smaller length than (2,0); the minimum-norm solution is (1,1). NumPy’s pinv uses singular value decomposition with a numerical cutoff for very small singular values. Reference: https://numpy.org/doc/stable/reference/generated/numpy.linalg.pinv.html.</p>
+<p>With this feature-row convention, the ordinary unique least-squares formula is (X X<sup>T)</sup>(-1) X y when X has full row rank p, so p cannot exceed n.&nbsp;Merely having more observations than features does not guarantee this independence condition. The pseudoinverse handles both sides of the interpolation threshold. Gradient descent is a different optimization method that repeatedly adjusts parameters using loss derivatives; stochastic gradient descent uses subsets of examples for its updates. Neither algorithm is required by this notebook.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="bias-and-variance" class="slide level2">
-<h2>Bias and Variance</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="bias">Bias</h3>
-<p>Error from overly simple assumptions.</p>
-<p>High bias can cause underfitting.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="variance">Variance</h3>
-<p>Error from sensitivity to the training sample.</p>
-<p>High variance can cause overfitting.</p>
-</div></div>
+<section id="model-size" class="slide level2 reg25-slide">
+<h2>Model Size: Delivery Inputs</h2>
+<p><strong>Model complexity</strong> means flexibility. Each selected feature gets one fitted coefficient, counted in <span class="math inline">p</span>, including the intercept.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Size</th>
+<th>Features</th>
+<th>Candidate prediction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">p=1</span></td>
+<td>Constant <span class="math inline">1</span></td>
+<td><span class="math inline">\hat y=b</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">p=2</span></td>
+<td><span class="math inline">1,z</span></td>
+<td><span class="math inline">\hat y=b+w_1z</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">p=3</span></td>
+<td><span class="math inline">1,z,c</span></td>
+<td><span class="math inline">\hat y=b+w_1z+w_2c</span></td>
+</tr>
+</tbody>
+</table>
+<p>From the <strong>same observation</strong>, we can construct several features:</p>
+<p><span class="math display">\mathbf x=(1,z,z^2,c,c^2,c^3)^T,\qquad p=6.</span></p>
+<p>These powers allow curves while the model remains <strong>linear in its coefficients</strong>.</p>
 <div class="takeaway">
-<p>The classical story: better generalization often requires balancing bias and variance.</p>
+<p>For <span class="math inline">z=2,c=2</span>, the features are <span class="math inline">(1,2,4,2,4,8)^T</span>. This is still <strong>one observation</strong>. Our 50 routes still give <span class="math inline">n=50</span>.</p>
 </div>
+<aside class="notes">
+<p>These are candidate models with different feature sets, not claimed estimates from a real dataset. In the three-feature model, x_1=1, x_2=z, and x_3=c; p counts the intercept as well as slopes. For b=5, w_1=2, w_2=3, a 2 km, two-stop route has predicted duration 5+2(2)+3(2)=15 minutes. The one-stop version of 5+2z+3c is 8+2z, matching the preceding illustration.</p>
+<p>Constructed features are numerical functions of the same recorded inputs, not extra observations. The six-feature predictor is b+w_1<em>z+w_2</em>z<sup>2+w_3<em>c+w_4</em>c</sup>2+w_5*c^3. Its dependence on the fitted coefficients is linear even though it can curve with distance and stop count. For z=2,c=2, its feature vector is (1,2,4,2,4,8). The equal values in this one vector do not mean these features agree across all possible routes. With our feature-row matrix convention, adding three constructed features changes the full matrix from 3 by 50 to 6 by 50. It does not create more training information or guarantee independent feature rows. Under the later assumed true rule 5+2z+3c, the extra power terms have zero true coefficients; increasing p does not automatically increase s. Adding flexibility can reduce bias but also increase sensitivity to training data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="bias-variance-tradeoff" class="slide level2">
-<h2>Bias-Variance Tradeoff</h2>
-<svg viewbox="0 0 760 390" role="img" aria-label="Training error decreases with model complexity while test error forms a U shape">
-<defs> <marker id="arrow24" markerwidth="10" markerheight="10" refx="8" refy="3" orient="auto" markerunits="userSpaceOnUse"> <path d="M0,0 L0,6 L9,3 z" fill="#202124"></path> </marker> </defs> <line x1="80" y1="330" x2="700" y2="330" stroke="#202124" stroke-width="3" marker-end="url(#arrow24)"></line> <line x1="80" y1="330" x2="80" y2="50" stroke="#202124" stroke-width="3" marker-end="url(#arrow24)"></line> <text x="560" y="370" font-size="22" fill="#202124">Model complexity</text> <text x="20" y="65" font-size="22" fill="#202124">Error</text> <path d="M120,280 C230,210 330,145 450,95 C540,70 610,55 665,48" fill="none" stroke="#007c89" stroke-width="6"></path> <path d="M120,295 C230,220 330,150 430,135 C520,130 590,190 660,240" fill="none" stroke="#b8325f" stroke-width="6"></path> <line x1="430" y1="60" x2="430" y2="330" stroke="#b7791f" stroke-width="3" stroke-dasharray="8 8"></line> <text x="520" y="72" font-size="22" fill="#b8325f">Test error</text> <text x="520" y="112" font-size="22" fill="#007c89">Training error</text> <text x="135" y="105" font-size="24" fill="#b7791f">High bias</text> <text x="545" y="290" font-size="24" fill="#b7791f">High variance</text> <text x="360" y="360" font-size="20" fill="#5d6470">Classical sweet spot</text>
-</svg>
+<section id="delivery-counts" class="slide level2 reg25-slide">
+<h2>Delivery Data: <span class="math inline">n</span>, <span class="math inline">p</span>, and <span class="math inline">s</span></h2>
+<p>To make the unknown <strong>true rule</strong> visible, suppose our teaching data follow:</p>
+<p><span class="math display">y=\underbrace{5+2z+3c}_{\text{mean duration in minutes}}+\varepsilon.</span></p>
+<p>Here <span class="math inline">\varepsilon</span> is unpredictable variation around the mean, such as random waiting. It has mean zero and standard deviation 2 minutes.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Meaning in this example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">n=50</span></td>
+<td>Fifty completed routes used for fitting</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">s=3</span></td>
+<td>Three nonzero true terms: constant <span class="math inline">1</span>, distance <span class="math inline">z</span>, and stops <span class="math inline">c</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">p</span></td>
+<td>Terms we choose to fit: <span class="math inline">2</span> for <span class="math inline">1,z</span> or <span class="math inline">3</span> for <span class="math inline">1,z,c</span></td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>We choose <span class="math inline">p</span>. The true rule determines <span class="math inline">s</span>, which we usually do not know in real data. Both counts include the constant here.</p>
+</div>
+<aside class="notes">
+<p>All numerical values and the true rule are explicit teaching assumptions. A feature is relevant here if its coefficient in this specified conditional mean is nonzero. We count the constant as a feature, so s=3 includes the baseline; the number of varying relevant inputs is two. The extra job tags are five numeric random values assigned independently of distance, stops, duration noise, and other routes before departure, with true coefficients zero. Their apparent association with observed delays in a finite training sample is accidental. The full distribution of waiting noise is not important for the definitions; assume independent zero-mean noise with standard deviation 2 minutes. Negative noise means a faster-than-average trip, not a negative duration. Actual delivery data need not follow this simple rule, and a realistic study would investigate the feature set and data distribution rather than claiming s is known.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="linear-regression-cases" class="slide level2">
-<h2>Linear Regression Cases</h2>
-<p>Suppose the true relationship is linear.</p>
+<section id="under-overfit" class="slide level2 reg25-slide">
+<h2>Underfitting and Overfitting</h2>
+<p><strong>Underfitting:</strong> the model is too rigid to capture the broad pattern.</p>
+<p><strong>Overfitting:</strong> matching training-specific fluctuations harms prediction on new examples.</p>
+<p>For this separate curved-pattern illustration, <strong>polynomial degree</strong> is the largest power of the input. Degree 2 is <strong>quadratic</strong>. These models are linear in their coefficients.</p>
+<p><img data-src="imgs/drawio/lec25/fitting-comparison.png" class="reg25-fits" alt="The same seven noisy observations are fit by a line, a quadratic, and a degree-six polynomial. The line misses the underlying U-shaped pattern. The quadratic follows it. The degree-six polynomial passes through every observation but bends away between them. Gray dashed curves show the underlying pattern."></p>
+<p>Dots are the same seven observations in each panel. The dashed gray curve is the underlying pattern.</p>
+<div class="takeaway">
+<p>A perfect fit to the dots can be a poor fit to the pattern between them.</p>
+</div>
+<aside class="notes">
+<p>This constructed example uses the noise-free rule y=z^2 and observed points z=-3,-2,-1,0,1,2,3 with y=9,5,0,1,0,5,9. The fitted degree-one model is 29/7 with zero slope. The fitted quadratic is 1/21+(43/42)z^2. The interpolating polynomial is 1-(181/90)z<sup>2+(79/72)z</sup>4-(31/360)z^6. All are linear least-squares models in their chosen polynomial features. Their training MSEs are about 13.265, 0.687, and zero. Degree alone is not a universal diagnosis of underfitting or overfitting.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="delivery-fit" class="slide level2 reg25-slide">
+<h2>Delivery Models: Missing Stops or Fitting Delays</h2>
+<p>Compare two 2 km routes under our assumed mean rule <span class="math inline">5+2z+3c</span>:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Stops</th>
+<th style="text-align: right;">Mean duration</th>
+<th style="text-align: right;">Distance-only <span class="math inline">8+2z</span></th>
+<th style="text-align: right;">Distance + stops <span class="math inline">5+2z+3c</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12 min</td>
+<td style="text-align: right;">12 min</td>
+<td style="text-align: right;">12 min</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">18 min</td>
+<td style="text-align: right;">12 min</td>
+<td style="text-align: right;">18 min</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Underfitting:</strong> the distance-only model cannot distinguish these routes. It misses the added stop delays.</li>
+<li><strong>Overfitting risk:</strong> five extra random numeric job tags give <span class="math inline">p=8</span>. They may fit accidental training delays, but cannot predict the next route’s delay.</li>
+</ul>
+<div class="takeaway">
+<p>Useful inputs capture a repeatable pattern. More inputs also create opportunities to fit coincidences.</p>
+</div>
+<aside class="notes">
+<p>The table compares chosen candidate predictors with the assumed noise-free mean, not measured test outcomes. A distance-only model predicts the same value for equal distances regardless of its fitted intercept and slope. It therefore cannot represent a true mean that differs with stop count at a fixed distance. The 8+2z candidate happens to be correct for one-stop routes and is six minutes too low for three-stop routes at the same distance. The three-feature candidate uses the assumed true coefficients here for an easily checked comparison; finite-data estimates would generally differ. Random job tags are independent numerical inputs, not an encoded target or a unique identifier seen only after completion. They have no true predictive information by construction but may correlate with noise in a finite sample. Extra inputs create a risk of overfitting, not a guarantee that every larger model performs worse.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bias-and-variance" class="slide level2 reg25-slide">
+<h2>Bias and Variance Across Training Sets</h2>
+<p>Fix a <strong>2 km, two-stop route</strong>, whose mean duration is <strong>15 minutes</strong>. Imagine refitting on fresh sets of 50 training routes.</p>
+<ul>
+<li><strong>Bias:</strong> average prediction minus the true noise-free mean output.</li>
+<li><strong>Variance:</strong> how much the prediction changes across those training datasets.</li>
+</ul>
+<p><img data-src="imgs/drawio/lec25/bias-variance.png" class="reg25-bias" alt="Predictions in minutes for the same two-kilometer, two-stop route after retraining. Its mean duration is 15 minutes. Model A predicts 9,9.5,10,10.5,11, clustered around 10. Model B predicts 9,12,15,18,21, spread around 15. These are illustrative outcomes, not measured experiments."></p>
+<div class="takeaway">
+<p>A is about 5 minutes too low on average. B changes more across training sets. The route stays the same; the training records change.</p>
+</div>
+<aside class="notes">
+<p>The five displayed predictions per method are constructed values, not estimates from actual courier experiments or the notebook. Treating these five equally likely outcomes as an illustrative distribution gives mean 10 minutes, bias -5 minutes and variance .5 squared minutes for A, versus mean 15 minutes, bias 0 and variance 18 squared minutes for B. Each point is the prediction from a different training dataset for the identical fixed route, not a different route or the same model tested on five days. Bias and variance are properties of a learning procedure at an input under repeated training samples. Reference: https://scikit-learn.org/stable/auto_examples/ensemble/plot_bias_variance.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="noise-decomposition" class="slide level2 reg25-slide">
+<h2>Prediction Error and Irreducible Noise</h2>
+<p><strong>Irreducible noise</strong> is output variation that the available features cannot predict, even if we know the true mean rule.</p>
+<p>Here <strong>expected</strong> means averaged over fresh training datasets and fresh independent output noise, at a fixed input:</p>
+<p><span class="math display">
+\begin{aligned}
+\text{Expected squared error}
+&amp;=\text{bias}^2+\text{variance}\\
+&amp;\quad+\text{noise variance}.
+\end{aligned}
+</span></p>
+<div class="reg25-noise-context">
+<div>
+<p>The noise <strong>standard deviation</strong> <span class="math inline">\sigma</span> is the square root of its variance. In our delivery example, <span class="math inline">\sigma=2</span> minutes, so <span class="math inline">\sigma^2=4\ \text{min}^2</span>.</p>
+<div class="takeaway">
+<p>Even a perfect 15-minute mean prediction cannot foresee this route’s random waiting delay.</p>
+</div>
+</div>
+<p><img data-src="imgs/lec25/delivery-waiting-cartoon.png" class="reg25-waiting-cartoon" alt="Cartoon of a campus courier checking her watch while waiting at a closed delivery door, illustrating unpredictable waiting time."></p>
+</div>
+<aside class="notes">
+<p>Assume observed output Y=f(x)+epsilon with independent zero-mean noise epsilon. Bias is E_D[f_hat_D(x)]-f(x), variance is E_D[(f_hat_D(x)-E_D[f_hat_D(x)])^2], and noise variance is E[epsilon^2]. The identity concerns squared prediction error, not arbitrary losses, and follows by expanding the square. Averaging further over test inputs gives an integrated version. In the delivery illustration, even knowledge of the true mean rule leaves expected squared error 4 min^2 on a fresh noisy route. The separate notebook uses noise standard deviation .2 in its own output units, so its corresponding noise variance is .04. The bias-variance identity remains valid when a model displays double descent.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="complexity-errors" class="slide level2 reg25-slide">
+<h2>Model Complexity and Validation</h2>
+<p>Compare delivery models on the <strong>same training routes</strong>. Horizontal: increasing <span class="math inline">p</span>. Vertical: MSE. The curves are schematic, not measured delivery results.</p>
+<p><img data-src="imgs/drawio/lec25/complexity-errors.png" class="reg25-errors" alt="Schematic: as complexity increases, training error decreases while validation error first decreases and then increases. The curves illustrate a possible pattern, not measured results."></p>
+<ul>
+<li><strong>Training error:</strong> MSE on the examples used to fit the coefficients.</li>
+<li><strong>Validation error:</strong> MSE on held-out examples; no refitting on them.</li>
+</ul>
+<div class="takeaway">
+<p>Choose <span class="math inline">p</span> using the lowest validation MSE. Keep the test set for the final check.</p>
+</div>
+<aside class="notes">
+<p>For nested feature sets, fixed training examples, and unregularized least squares solved to the global optimum, the minimum achievable training MSE cannot increase when features are added: setting the new coefficients to zero preserves the old solution. Unseen error has no corresponding monotonicity guarantee. The curves illustrate a possible validation pattern and are not fitted to the notebook results. Reducing complexity, collecting more informative data, and regularization can help; regularization means adding a penalty or constraint to the fitting procedure, such as discouraging large coefficients. A held-out validation estimate itself has sampling uncertainty.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="experiment-setup" class="slide level2 reg25-slide">
+<h2>A Separate Controlled Experiment</h2>
+<p>Each observation now has 250 independent random inputs, <span class="math inline">x_1,\ldots,x_{250}</span>. Only the first ten affect the output. We include <strong>no constant feature</strong>:</p>
+<p><span class="math display">y=a_1x_1+\cdots+a_{10}x_{10}+\varepsilon.</span></p>
+<p>The <span class="math inline">a_1,\ldots,a_{10}</span> are fixed, nonzero <strong>true coefficients</strong>. Independent, zero-mean noise <span class="math inline">\varepsilon</span> has standard deviation <span class="math inline">0.2</span> in this experiment’s output units.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Meaning</th>
+<th>Value or choice</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">n</span></td>
+<td>Number of training observations</td>
+<td><span class="math inline">50</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">s</span></td>
+<td>Number of features that truly affect the output</td>
+<td><span class="math inline">10</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">p</span></td>
+<td>Number of features we let the fitted model use</td>
+<td><span class="math inline">1</span> to <span class="math inline">250</span></td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>The delivery rule had <span class="math inline">s=3</span>, counting the constant. This separate experiment has <span class="math inline">s=10</span> and no constant. The meaning of <span class="math inline">s</span> is unchanged.</p>
+</div>
+<aside class="notes">
+<p>This is a new constructed example with measured random features, rather than polynomial features of one z. In the experiment and its later notebook demonstration, all input coordinates are independent standard normal variables. The ten true coefficients have Euclidean length 1. The remaining 240 true coefficients are zero. Independent zero-mean Gaussian output noise has standard deviation .2. The data-generating coefficients stay fixed across training and test datasets, and no constant feature is added. The noise-free mean output is the sum of the first ten contributions. The word true refers to this constructed rule, not to what a fitted model discovers. Index j identifies a feature. In a real dataset we usually do not know the true rule or which features matter.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="parameter-counts" class="slide level2 reg25-slide">
+<h2>Fitted Features and True Features</h2>
+<p>Recall: <span class="math inline">n=50</span> training observations, <span class="math inline">s=10</span> truly relevant features. We fit one coefficient for each of the first <span class="math inline">p</span> inputs:</p>
+<p><span class="math display">\hat y=\hat\beta_1x_1+\cdots+\hat\beta_px_p.</span></p>
+<p>The <span class="math inline">\hat\beta</span> coefficients are estimates fitted from training data.</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -292,78 +737,159 @@ y=f(x;\theta)
 </colgroup>
 <thead>
 <tr class="header">
-<th>Case</th>
-<th>Interpretation</th>
-<th>Classical behavior</th>
+<th>Choice of <span class="math inline">p</span></th>
+<th>Comparison</th>
+<th>What the model can use</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
+<td><span class="math inline">5</span></td>
 <td><span class="math inline">p&lt;s</span></td>
-<td>Too few features</td>
-<td>High bias, low variance</td>
+<td>Only <span class="math inline">x_1,\ldots,x_5</span>; misses five relevant features</td>
 </tr>
 <tr class="even">
-<td><span class="math inline">s \leq p &lt; n</span></td>
-<td>Enough features, fewer than samples</td>
-<td>Low bias, rising variance</td>
+<td><span class="math inline">20</span></td>
+<td><span class="math inline">s\leq p&lt;n</span></td>
+<td>All ten relevant features, plus ten irrelevant ones</td>
 </tr>
 <tr class="odd">
+<td><span class="math inline">80</span></td>
 <td><span class="math inline">p&gt;n</span></td>
-<td>More features than samples</td>
-<td>Overparameterized</td>
+<td>All ten relevant features, plus seventy irrelevant ones</td>
 </tr>
 </tbody>
 </table>
-<p>where <span class="math inline">s</span> is the number of true features, <span class="math inline">p</span> is selected features, and <span class="math inline">n</span> is samples.</p>
-</section>
-<section id="double-descent" class="slide level2">
-<h2>Double Descent</h2>
-<p>Classical bias-variance says test error eventually rises as complexity increases.</p>
-<p>Modern models can show double descent:</p>
-<ul>
-<li>Test error first decreases.</li>
-<li>Then spikes near the interpolation threshold.</li>
-<li>Then decreases again as the model becomes even more overparameterized.</li>
-</ul>
-<div class="question">
-<p>This challenges the simple claim that all overfitting is harmful.</p>
+<p><strong>Underparameterized</strong> means <span class="math inline">p&lt;n</span>. <strong>Overparameterized</strong> means <span class="math inline">p&gt;n</span>.</p>
+<div class="takeaway">
+<p><span class="math inline">s</span> describes the true rule. <span class="math inline">p</span> describes the model we choose.</p>
 </div>
+<aside class="notes">
+<p>The hat on beta indicates coefficients estimated from the training data. In this controlled experiment, the first s features are precisely the relevant ones. Thus p&gt;=s includes all relevant features only because of this specified ordering; an arbitrary selection of p&gt;=s inputs need not do so. Irrelevant means a zero coefficient in the true conditional mean, not necessarily a fitted coefficient of zero. The least-squares fit can assign nonzero coefficients to these inputs by matching chance associations with training noise. Underparameterized is not a synonym for underfitting, and overparameterized is not a synonym for harmful overfitting. The p=5 fit cannot recover the omitted independent inputs from the included ones.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="double-descent-curve" class="slide level2">
-<h2>Double Descent Curve</h2>
-<svg viewbox="0 0 780 400" role="img" aria-label="Double descent error curve with interpolation threshold">
-<defs> <marker id="arrow24b" markerwidth="10" markerheight="10" refx="8" refy="3" orient="auto" markerunits="userSpaceOnUse"> <path d="M0,0 L0,6 L9,3 z" fill="#202124"></path> </marker> </defs> <line x1="80" y1="340" x2="715" y2="340" stroke="#202124" stroke-width="3" marker-end="url(#arrow24b)"></line> <line x1="80" y1="340" x2="80" y2="50" stroke="#202124" stroke-width="3" marker-end="url(#arrow24b)"></line> <text x="565" y="378" font-size="22" fill="#202124">Model complexity</text> <text x="22" y="65" font-size="22" fill="#202124">Error</text> <path d="M120,285 C230,215 330,145 450,80 C505,48 575,45 675,45" fill="none" stroke="#007c89" stroke-width="6"></path> <path d="M120,300 C250,215 350,145 445,135 C495,130 520,45 548,62 C595,90 625,205 695,165" fill="none" stroke="#b8325f" stroke-width="6"></path> <line x1="535" y1="52" x2="535" y2="340" stroke="#b7791f" stroke-width="3" stroke-dasharray="8 8"></line> <text x="462" y="370" font-size="20" fill="#5d6470">Interpolation threshold</text> <text x="610" y="85" font-size="22" fill="#007c89">Training error</text> <text x="610" y="190" font-size="22" fill="#b8325f">Test error</text> <text x="125" y="105" font-size="24" fill="#b7791f">High bias</text> <text x="500" y="38" font-size="22" fill="#b8325f">Peak</text> <text x="610" y="250" font-size="24" fill="#b7791f">Benign?</text>
-</svg>
+<section id="interpolation" class="slide level2 reg25-slide">
+<h2>Interpolation: Zero Training Error</h2>
+<p><strong>Interpolation</strong> means matching every observed training output exactly, including its noise:</p>
+<p><span class="math display">\hat y_i=y_i\quad\text{for every training observation }i.</span></p>
+<p>Each of the <span class="math inline">n</span> observations gives one equation to satisfy. We have <span class="math inline">p</span> fitted coefficients available.</p>
+<ul>
+<li>With <span class="math inline">p&lt;n</span>, we generally cannot satisfy all <span class="math inline">n</span> noisy equations exactly.</li>
+<li>In our independent random-feature example, exact fitting becomes possible at <span class="math inline">p=n=50</span>: the <strong>interpolation threshold</strong>.</li>
+<li>With <span class="math inline">p&gt;n</span>, many exact fits exist. The pseudoinverse selects the minimum-norm one.</li>
+</ul>
+<div class="fragment takeaway" data-fragment-index="0">
+<p>The earlier degree-6 polynomial also interpolates: its seven coefficients fit all seven dots. Zero training MSE says nothing by itself about new dots.</p>
+</div>
+<aside class="notes">
+<p>The selected training design has shape n by p after transposing our feature-row matrix. Independent Gaussian entries give rank min(n,p) with probability one. Thus at p=n it is invertible almost surely and can match any response vector; for p&gt;n it has full row rank and has infinitely many solutions. For p&lt;n, the n noisy constraints are generally inconsistent. The parameter-count argument requires independent constraints and a sufficiently expressive design: repeating one feature many times would not produce this threshold. The earlier seven distinct input locations give an invertible degree-six Vandermonde design. Exact arithmetic is assumed in this explanation; numerical training MSE may be near rather than identically zero.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="benign-overfitting" class="slide level2">
-<h2>Benign Overfitting</h2>
-<p>Classical theory suggests overfitting harms test performance.</p>
-<p>In modern deep learning, some models can fit the training data extremely well and still generalize.</p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="what-happens">What happens?</h3>
-<ul>
-<li>Training error approaches zero.</li>
-<li>Test error remains acceptable.</li>
-</ul>
-</div><div class="column" style="width:48%;">
-<h3 id="why-it-matters">Why it matters</h3>
-<ul>
-<li>It complicates regularization.</li>
-<li>It motivates newer theories of generalization.</li>
-</ul>
-</div></div>
+<section id="double-descent" class="slide level2 reg25-slide">
+<h2>Double Descent</h2>
+<p><strong>Double descent:</strong> unseen error can fall, rise near interpolation, then fall again for larger models.</p>
+<p><img data-src="imgs/drawio/lec25/double-descent.png" class="reg25-double" alt="Schematic: training error falls to zero at the interpolation threshold and stays there. Test error falls, peaks near the threshold, and then falls a second time. This is a possible shape, not the notebook's measured curve."></p>
+<p>Near <span class="math inline">p=n</span>, small changes in noisy training outputs can cause large coefficient changes and unstable new predictions.</p>
+<p><strong>Benign overfitting</strong> describes settings where fitting even the training noise still permits accurate prediction on new data.</p>
+<div class="takeaway">
+<p><span class="math inline">p&gt;n</span> alone guarantees neither double descent nor benign overfitting.</p>
+</div>
+<aside class="notes">
+<p>The figure is deliberately schematic. Belkin, Hsu, Ma, and Mandal, Reconciling modern machine learning practice and the bias-variance trade-off: https://arxiv.org/abs/1812.11118. Bartlett, Long, Lugosi, and Tsigler, Benign Overfitting in Linear Regression: https://arxiv.org/abs/1906.11300. Benign overfitting can yield near-optimal prediction under particular distributional conditions; exact training fit alone is insufficient evidence. The phenomenon occurs in some linear models as well as more complex learners.</p>
+<p>The notebook’s isotropic Gaussian, fixed-signal experiment need not improve indefinitely after interpolation. Its overparameterized expected-error formula has a growing signal-bias contribution and a decreasing noise-amplification contribution. Consequently the large-p branch can turn upward again. The schematic is not a promise that arbitrary further enlargement improves that experiment.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
+<section id="notebook-experiment" class="slide level2 reg25-slide">
+<h2>Notebook: Linear Regression and Generalization</h2>
+<p>We vary the number of fitted features while keeping the data-generating rule fixed.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Setting</th>
+<th>Notebook value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Observations per training dataset, <span class="math inline">n</span></td>
+<td>50</td>
+</tr>
+<tr class="even">
+<td>Features that truly affect the output, <span class="math inline">s</span></td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td>Candidate feature count, <span class="math inline">p</span></td>
+<td>1-48 and 52-250</td>
+</tr>
+<tr class="even">
+<td>Noise standard deviation, <span class="math inline">\sigma</span></td>
+<td>0.2</td>
+</tr>
+<tr class="odd">
+<td>Independent train/test trials</td>
+<td>20</td>
+</tr>
+</tbody>
+</table>
+<p>The shaded band shows the <strong>smallest to largest error across trials</strong>. Read plot colors as <span class="math inline">p&lt;n</span> versus <span class="math inline">p&gt;n</span>, not as proof of underfitting or overfitting.</p>
+<p><a href="../code_and_homework/linear_regression.html" target="_blank" rel="noopener">Linear regression notebook</a></p>
+<aside class="notes">
+<p>Each trial generates independent training and test data with the same normalized true coefficient vector. Each fit uses the first p rows of the feature-by-observation matrix and the pseudoinverse of its transpose. Values 49, 50, and 51 are omitted around the singular expected-error threshold. The shaded min-to-max range is neither a confidence interval nor a standard-deviation band. The recorded figure legends use underfitting/overfitting for the two parameter-count ranges, so the distinction on this slide matters. Both axes of the notebook’s test-error figures are logarithmic, while the training-error plot has a linear vertical axis. The large-p test-error branch can rise again. More features alone do not guarantee benign overfitting.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="takeaways" class="slide level2 reg25-slide">
+<h2>Takeaways</h2>
 <ul>
-<li>Training error and test error answer different questions.</li>
-<li>Bias is error from simplicity; variance is error from sensitivity.</li>
-<li>Overfitting means fitting training-specific noise or quirks.</li>
-<li>Classical generalization has a bias-variance tradeoff.</li>
-<li>Modern overparameterized models can show double descent and benign overfitting.</li>
+<li><span class="math inline">n</span> counts training cases; <span class="math inline">p</span> fitted terms; <span class="math inline">s</span> nonzero true terms.</li>
+<li>Bias describes systematic offset. Variance describes sensitivity to the training dataset.</li>
+<li>Unpredictable output noise remains even with a correct mean model.</li>
+<li>Parameter count, interpolation, and harmful overfitting are different concepts.</li>
+<li>Evaluate on fresh data. A perfect training fit is not a certificate of generalization.</li>
 </ul>
+<div class="takeaway">
+<p>For delivery models, the final check is accurate timing on new routes, beyond the records used to fit or choose the model.</p>
+</div>
 <p><a href="../asset_credits.html#lec25" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
 
 
