@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec26_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -151,7 +152,7 @@
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title"><p>CS 463G &amp; CS 663<br>
 (Intro to) AI</p></h1>
-  <p class="subtitle">Lecture 26: Decision Trees</p>
+  <p class="subtitle">Lecture 26: Decision Trees and Random Forests</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -163,30 +164,71 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="decision-trees" class="slide level2 section-slide">
-<h2>Decision Trees</h2>
-<p>Decision trees classify by asking a sequence of attribute questions.</p>
-</section>
-<section id="what-is-a-decision-tree" class="slide level2">
-<h2>What Is a Decision Tree?</h2>
-<p>Given attributes and a class label, a decision tree is a directed tree:</p>
+<section id="tennis-task" class="slide level2 tree26-slide">
+<h2>Will the Tennis Group Play?</h2>
+<p>Predict whether a group will play tennis from the day’s weather.</p>
+<div class="tree26-context">
+<div>
 <ul>
-<li>Each non-leaf node tests an attribute.</li>
-<li>Each outgoing edge corresponds to a possible attribute value.</li>
-<li>Each leaf node predicts a class label.</li>
+<li>A <strong>feature</strong> (or <strong>attribute</strong>) is an input description.</li>
+<li>A <strong>label</strong> is the recorded answer: Play = Yes or No.</li>
+<li>One <strong>observation</strong> is one previous day.</li>
 </ul>
-<div class="takeaway">
-<p>The path from root to leaf is an interpretable rule.</p>
 </div>
+<p><img data-src="imgs/lec26_trees/tennis-weather-cartoon.png" class="tree26-cartoon" alt="Cartoon of two adult students holding tennis rackets and looking at a sun partly behind a cloud."></p>
+</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Possible values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Outlook: sky conditions</td>
+<td>Sunny, Overcast (fully cloudy), Rain</td>
+</tr>
+<tr class="even">
+<td>Temperature</td>
+<td>Hot, Mild, Cool</td>
+</tr>
+<tr class="odd">
+<td>Humidity: moisture in the air</td>
+<td>High, Normal</td>
+</tr>
+<tr class="even">
+<td>Wind</td>
+<td>Weak, Strong</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p><strong>Classification</strong> means predicting a category. These are teaching records.</p>
+</div>
+<aside class="notes">
+<p>The 14-day tennis table and its categorical tree come from the supplied Spring 2025 Beamer lecture. The records are a teaching dataset, not a real campus study. The target is the group’s recorded decision, not a weather forecast or safety recommendation. Day identifiers are row labels, not predictive features. The later forest examples illustrate a method, not measured evidence that this tiny dataset supports a real-world application.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="tennis-dataset" class="slide level2 compact">
-<h2>Tennis Dataset</h2>
+<section id="training-records" class="slide level2 tree26-slide">
+<h2>Training Records</h2>
+<p>The full training set has <strong>14 days: 9 Yes and 5 No</strong>. Six example rows:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th>Day</th>
 <th>Outlook</th>
-<th>Temp.</th>
+<th>Temperature</th>
 <th>Humidity</th>
 <th>Wind</th>
 <th>Play?</th>
@@ -202,14 +244,6 @@ Peizhong Ju
 <td>No</td>
 </tr>
 <tr class="even">
-<td>D2</td>
-<td>Sunny</td>
-<td>Hot</td>
-<td>High</td>
-<td>Strong</td>
-<td>No</td>
-</tr>
-<tr class="odd">
 <td>D3</td>
 <td>Overcast</td>
 <td>Hot</td>
@@ -217,23 +251,7 @@ Peizhong Ju
 <td>Weak</td>
 <td>Yes</td>
 </tr>
-<tr class="even">
-<td>D4</td>
-<td>Rain</td>
-<td>Mild</td>
-<td>High</td>
-<td>Weak</td>
-<td>Yes</td>
-</tr>
 <tr class="odd">
-<td>D5</td>
-<td>Rain</td>
-<td>Cool</td>
-<td>Normal</td>
-<td>Weak</td>
-<td>Yes</td>
-</tr>
-<tr class="even">
 <td>D6</td>
 <td>Rain</td>
 <td>Cool</td>
@@ -241,34 +259,10 @@ Peizhong Ju
 <td>Strong</td>
 <td>No</td>
 </tr>
-<tr class="odd">
-<td>D7</td>
-<td>Overcast</td>
-<td>Cool</td>
-<td>Normal</td>
-<td>Strong</td>
-<td>Yes</td>
-</tr>
 <tr class="even">
-<td>D8</td>
-<td>Sunny</td>
-<td>Mild</td>
-<td>High</td>
-<td>Weak</td>
-<td>No</td>
-</tr>
-<tr class="odd">
 <td>D9</td>
 <td>Sunny</td>
 <td>Cool</td>
-<td>Normal</td>
-<td>Weak</td>
-<td>Yes</td>
-</tr>
-<tr class="even">
-<td>D10</td>
-<td>Rain</td>
-<td>Mild</td>
 <td>Normal</td>
 <td>Weak</td>
 <td>Yes</td>
@@ -282,22 +276,6 @@ Peizhong Ju
 <td>Yes</td>
 </tr>
 <tr class="even">
-<td>D12</td>
-<td>Overcast</td>
-<td>Mild</td>
-<td>High</td>
-<td>Strong</td>
-<td>Yes</td>
-</tr>
-<tr class="odd">
-<td>D13</td>
-<td>Overcast</td>
-<td>Hot</td>
-<td>Normal</td>
-<td>Weak</td>
-<td>Yes</td>
-</tr>
-<tr class="even">
 <td>D14</td>
 <td>Rain</td>
 <td>Mild</td>
@@ -307,286 +285,478 @@ Peizhong Ju
 </tr>
 </tbody>
 </table>
-</section>
-<section id="decision-tree-example" class="slide level2">
-<h2>Decision Tree Example</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec25/decision-tree-example.svg" alt="Decision tree for play tennis: Outlook branches to Humidity, Yes, or Wind"></p>
+<p>We <strong>learn</strong> the questions from labeled records. For a new day, its label is unknown.</p>
+<p><a href="imgs/drawio/lec26/tennis-records.csv" download="lec26-tennis-records.csv" target="_blank" rel="noopener">Download all 14 records (CSV)</a></p>
+<div class="takeaway">
+<p>All split calculations use the full 14-day table, not just these six displayed rows.</p>
 </div>
+<aside class="notes">
+<p>CSV means comma-separated values: a plain-text table. The complete download preserves all 14 rows from the original Beamer source. The six displayed rows are an excerpt for readability, not a separate training sample. Validation and test examples must remain separate, as in Lecture 25.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="classifying-an-observation" class="slide level2 scrollable">
-<h2>Classifying an Observation</h2>
-<p>Observation:</p>
+<section id="tree-structure" class="slide level2 tree26-slide">
+<h2>A Decision Tree</h2>
+<p>A <strong>decision tree</strong> predicts by following feature tests.</p>
+<p><img data-src="imgs/drawio/lec26/tree-structure.png" class="tree26-tree" alt="Complete tennis tree. Outlook is the root. Sunny leads to Humidity: High predicts No and Normal predicts Yes. Overcast predicts Yes. Rain leads to Wind: Strong predicts No and Weak predicts Yes."></p>
+<ul>
+<li><strong>Root:</strong> the first test. <strong>Branch:</strong> one test outcome.</li>
+<li><strong>Leaf:</strong> a final prediction, with no further question.</li>
+</ul>
+<div class="takeaway">
+<p>One root-to-leaf path is a rule. For example: Sunny and Normal humidity predicts Yes.</p>
+</div>
+<aside class="notes">
+<p>The tree follows the supplied Spring 2025 tennis example. An internal node asks a question; a child is a node reached by a branch from its parent. This tree uses multiway categorical splits, including three Outlook branches. Software such as scikit-learn commonly uses binary splits instead. A prediction is not a guarantee about the next group’s choice. Background: AIMA fourth edition, Section 19.3, and https://scikit-learn.org/stable/modules/tree.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="prediction-trace" class="slide level2 tree26-slide">
+<h2>Following One Prediction</h2>
+<p>New day: <strong>Sunny, Mild temperature, Normal humidity, Strong wind</strong>. Play = ?</p>
+<div class="r-stack tree26-trace">
+<p><img data-src="imgs/drawio/lec26/trace-root.png" alt="Step 1: highlight the Outlook root; read Sunny from the new day's features."></p>
+<p><img data-src="imgs/drawio/lec26/trace-sunny.png" class="fragment" data-fragment-index="0" alt="Step 2: highlight the Sunny branch from Outlook to Humidity."></p>
+<p><img data-src="imgs/drawio/lec26/trace-normal.png" class="fragment" data-fragment-index="1" alt="Step 3: highlight the Normal branch from Humidity to the Yes leaf."></p>
+</div>
+<div class="takeaway">
+<p>Only questions on this path matter. This tree does not ask about wind on a Sunny day.</p>
+</div>
+<aside class="notes">
+<p>Begin at Outlook, then follow Sunny to Humidity, then Normal to Yes. A future day can share all feature values with a training day while remaining a distinct observation with an unknown actual label. The path answers the model’s prediction only.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="purity" class="slide level2 tree26-slide">
+<h2>Choosing a Split: Pure or Mixed?</h2>
+<p>A <strong>split</strong> divides training records according to a feature test.</p>
+<p>A group is <strong>pure</strong> when all its labels agree. <strong>Entropy</strong> measures how mixed, or uncertain, the labels are.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Outlook</th>
-<th>Temperature</th>
-<th>Humidity</th>
-<th>Wind</th>
-<th>Play?</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Sunny</td>
-<td>Mild</td>
-<td>Normal</td>
-<td>Strong</td>
-<td>?</td>
-</tr>
-</tbody>
-</table>
-<div class="fragment">
-<ol type="1">
-<li>Start at root: <span class="math inline">\text{Outlook}=\text{Sunny}</span>.</li>
-</ol>
-</div>
-<div class="fragment">
-<ol start="2" type="1">
-<li>Follow Sunny edge to <span class="math inline">Humidity</span>.</li>
-</ol>
-</div>
-<div class="fragment">
-<ol start="3" type="1">
-<li><span class="math inline">Humidity=Normal</span>, so follow Normal edge to leaf.</li>
-</ol>
-</div>
-<div class="fragment takeaway">
-<p>Prediction: <strong>Yes</strong>.</p>
-</div>
-</section>
-<section id="learning-decision-trees" class="slide level2">
-<h2>Learning Decision Trees</h2>
-<p>We want a tree that is:</p>
-<ul>
-<li>Accurate on training examples.</li>
-<li>Small enough to generalize.</li>
-<li>Cheap enough to build.</li>
-<li>Fast enough to evaluate.</li>
-</ul>
-<div class="question">
-<p>But the space of possible trees is enormous.</p>
-</div>
-</section>
-<section id="space-of-trees" class="slide level2">
-<h2>Space of Trees</h2>
-<p>With <span class="math inline">n</span> Boolean attributes, the number of possible decision trees is more than:</p>
-<p><span class="math display">
-2^{2^n}
-</span></p>
-<p>So we do not search exhaustively.</p>
-<div class="takeaway">
-<p>Decision-tree learning usually uses a greedy construction method: choose one split, recurse, and do not backtrack.</p>
-</div>
-</section>
-<section id="decision-tree-induction" class="slide level2">
-<h2>Decision Tree Induction</h2>
-<div class="pseudo-code">
-<div class="pseudo-line">
-<span class="pseudo-kw">function</span> <span class="pseudo-fn">LearnTree</span>(<span class="pseudo-var">examples</span>, <span class="pseudo-var">attributes</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">if</span> all <span class="pseudo-var">examples</span> have same label
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-kw">return</span> <span class="pseudo-fn">Leaf</span>(that label)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">attributes</span> <span class="pseudo-op">is empty</span>
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-kw">return</span> <span class="pseudo-fn">Leaf</span>(majority label)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">A</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">attributeWithHighestInformationGain</span>(<span class="pseudo-var">examples</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">node</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">DecisionNode</span>(<span class="pseudo-var">A</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">for each</span> value <span class="pseudo-var">v</span> of <span class="pseudo-var">A</span>: add child <span class="pseudo-fn">LearnTree</span>(matching examples, remaining attributes)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">return</span> <span class="pseudo-var">node</span>
-</div>
-</div>
-</section>
-<section id="purity-and-entropy" class="slide level2">
-<h2>Purity and Entropy</h2>
-<p>We want splits that create pure groups.</p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="low-entropy">Low entropy</h3>
-<p>Most examples have the same label.</p>
-<p>Prediction is easier.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="high-entropy">High entropy</h3>
-<p>Labels are mixed.</p>
-<p>Prediction is uncertain.</p>
-</div></div>
-<div class="takeaway">
-<p>Information gain measures how much a split reduces entropy.</p>
-</div>
-</section>
-<section id="entropy" class="slide level2">
-<h2>Entropy</h2>
-<p>Entropy of a set <span class="math inline">S</span>:</p>
-<p><span class="math display">
-H(S)=-\sum_{i=1}^{m} p_i\log_2 p_i
-</span></p>
-<p>where <span class="math inline">p_i</span> is the fraction of examples with class label <span class="math inline">i</span>.</p>
-<p>Examples:</p>
-<ul>
-<li>Fair coin: <span class="math inline">1</span> bit.</li>
-<li>Two-headed coin: <span class="math inline">0</span> bits.</li>
-<li>99 percent heads coin: about <span class="math inline">0.0808</span> bits.</li>
-</ul>
-</section>
-<section id="information-gain" class="slide level2 compact">
-<h2>Information Gain</h2>
-<p>For an attribute <span class="math inline">A</span>:</p>
-<p><span class="math display">
-IG(S,A)=H(S)-\sum_{v \in \text{Values}(A)}\frac{|S_v|}{|S|}H(S_v)
-</span></p>
-<p>where <span class="math inline">S_v</span> is the subset with <span class="math inline">A=v</span>.</p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec25/information-gain.svg" alt="Information gain chooses the split that turns a mixed parent set into purer child sets"></p>
-</div>
-<div class="question">
-<p>Choose the split that most reduces expected entropy.</p>
-</div>
-</section>
-<section id="information-gain-before-split" class="slide level2">
-<h2>Information Gain: Before Split</h2>
-<p>In the tennis data:</p>
-<ul>
-<li>14 total days.</li>
-<li>9 Yes.</li>
-<li>5 No.</li>
-</ul>
-<p><span class="math display">
-H(\text{before})
-=
--\frac{9}{14}\log_2\frac{9}{14}
--\frac{5}{14}\log_2\frac{5}{14}
-\approx 0.94
-</span></p>
-</section>
-<section id="information-gain-split-on-outlook" class="slide level2">
-<h2>Information Gain: Split on Outlook</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Outlook value</th>
-<th>Counts</th>
+<th>Example group</th>
+<th>Label fractions</th>
 <th style="text-align: right;">Entropy</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Sunny</td>
-<td>2 Yes, 3 No</td>
-<td style="text-align: right;">0.97</td>
+<td>4 Yes, 0 No</td>
+<td>All agree</td>
+<td style="text-align: right;">0 bits</td>
 </tr>
 <tr class="even">
-<td>Overcast</td>
-<td>4 Yes, 0 No</td>
-<td style="text-align: right;">0</td>
+<td>7 Yes, 7 No</td>
+<td>Evenly mixed</td>
+<td style="text-align: right;">1 bit</td>
 </tr>
 <tr class="odd">
-<td>Rain</td>
-<td>3 Yes, 2 No</td>
-<td style="text-align: right;">0.97</td>
+<td>9 Yes, 5 No</td>
+<td>Mixed, with more Yes</td>
+<td style="text-align: right;">About 0.940 bits</td>
 </tr>
 </tbody>
 </table>
-<div class="fragment">
-<p><span class="math display">
-H(\text{Outlook})
-=
-\frac{5}{14}(0.97)+\frac{4}{14}(0)+\frac{5}{14}(0.97)
-\approx 0.69
-</span></p>
+<p>The unit <strong>bit</strong> comes from measuring information with base-2 logarithms.</p>
+<div class="takeaway">
+<p>A useful split tends to make its children purer. A pure training group does not guarantee certainty on new data.</p>
 </div>
-<div class="fragment">
-<p><span class="math display">
-IG(\text{Outlook})=0.94-0.69=0.25
-</span></p>
-</div>
+<aside class="notes">
+<p>Purity describes observed labels, not noise-free truth. For two classes, entropy is largest at equal proportions and zero when all labels agree. Only the 9 Yes, 5 No group is the full tennis set; the other two groups illustrate the endpoints. Other impurity scores exist, but the worked example uses entropy.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="choose-the-root" class="slide level2">
-<h2>Choose the Root</h2>
-<p>Information gains:</p>
+<section id="entropy" class="slide level2 tree26-slide">
+<h2>Entropy: A Worked Calculation</h2>
+<p>Let <span class="math inline">S</span> be a group of records and <span class="math inline">q</span> its <strong>fraction of Yes labels</strong>. The No fraction is <span class="math inline">1-q</span>.</p>
+<p><span class="math display">H(S)=-q\log_2 q-(1-q)\log_2(1-q).</span></p>
+<p>Here <span class="math inline">H(S)</span> is the group’s entropy. A zero-probability term contributes zero: <span class="math inline">0\log_2 0=0</span> by convention.</p>
+<p>For all 14 tennis days, <span class="math inline">q=9/14</span>:</p>
+<p><span class="math display">H(S)=-\frac{9}{14}\log_2\frac{9}{14}-\frac{5}{14}\log_2\frac{5}{14}\approx0.940\ \text{bits}.</span></p>
+<div class="question">
+<p>What happens if a group contains only Yes labels?</p>
+</div>
+<div class="fragment takeaway" data-fragment-index="0">
+<p><span class="math inline">q=1</span>, so the entropy is zero. No uncertainty remains about the labels in that training group.</p>
+</div>
+<aside class="notes">
+<p>The zero term uses the continuous extension of x log x at zero, not a direct evaluation of log(0). This is the two-class special case of entropy. We use q to avoid confusing a class fraction with Lecture 25’s feature count p.&nbsp;The unrounded full-set entropy is 0.9402859586706311 bits. Empirical entropy is not a calibrated certainty guarantee for future examples.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="outlook-gain" class="slide level2 tree26-slide">
+<h2>Information Gain: Split on Outlook</h2>
+<p><strong>Information gain (IG)</strong> is parent entropy minus the <strong>weighted average</strong> child entropy. Each child is weighted by its share of the 14 records.</p>
+<p><img data-src="imgs/drawio/lec26/outlook-gain.png" class="tree26-gain" alt="Parent: 14 days, 9 Yes and 5 No. Outlook splits into Sunny: 5 days, 2 Yes and 3 No, entropy .971; Overcast: 4 days, all Yes, entropy 0; Rain: 5 days, 3 Yes and 2 No, entropy .971."></p>
+<div class="fragment" data-fragment-index="0">
+<p><span class="math display">H(\text{after})=\frac{5}{14}(0.971)+\frac{4}{14}(0)+\frac{5}{14}(0.971)\approx0.694.</span></p>
+</div>
+<div class="fragment takeaway" data-fragment-index="1">
+<p><span class="math inline">\operatorname{IG}=H(\text{before})-H(\text{after})\approx0.247</span> bits, using unrounded values.</p>
+</div>
+<aside class="notes">
+<p>Sunny and Rain each have entropy 0.9709505944546686 bits. The weighted child entropy is 0.6935361388961918, and information gain is 0.24674981977443933. Displayed rounded values can differ in the last digit when subtracted; the gain uses unrounded quantities. H(after) is conditional label uncertainty averaged over branches, not the entropy of the Outlook feature.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="choose-root" class="slide level2 tree26-slide">
+<h2>Choosing the Root</h2>
+<p>Compare the feature questions on the <strong>same 14 training records</strong>:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Attribute</th>
-<th style="text-align: right;">Information gain</th>
+<th>Candidate feature</th>
+<th style="text-align: right;">Information gain (bits)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Outlook</td>
-<td style="text-align: right;">0.246</td>
+<td style="text-align: right;"><strong>0.247</strong></td>
+</tr>
+<tr class="even">
+<td>Humidity</td>
+<td style="text-align: right;">0.152</td>
+</tr>
+<tr class="odd">
+<td>Wind</td>
+<td style="text-align: right;">0.048</td>
 </tr>
 <tr class="even">
 <td>Temperature</td>
 <td style="text-align: right;">0.029</td>
 </tr>
+</tbody>
+</table>
+<div class="fragment" data-fragment-index="0">
+<p>Choose <strong>Outlook</strong>. Overcast is already pure. For Sunny and Rain, choose another question using only records that reach that child.</p>
+</div>
+<div class="takeaway">
+<p>This is <strong>greedy learning</strong>: choose the best split now, then repeat within children. It need not produce the globally best tree.</p>
+</div>
+<aside class="notes">
+<p>Unrounded gains: Outlook .24674981977443933, Humidity .15183550136234159, Wind .04812703040826949, Temperature .02922256565895487. Recompute the criterion within each child subset, not over all 14 rows after choosing a branch. Sunny then splits on Humidity and Rain on Wind. This construction does not backtrack. A unique day ID could look informative by isolating every row; it is not among the four candidate weather features.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="growing-tree" class="slide level2 tree26-slide">
+<h2>Growing a Categorical Tree</h2>
+<p><strong>Majority label:</strong> the most frequent label. <code>rows</code> holds the current records and <code>features</code> holds available questions. <code>fallback</code> is the parent’s majority label.</p>
+<div class="pseudo-code">
+<div class="pseudo-line">
+<span class="pseudo-kw">function</span> <span class="pseudo-fn">LearnTree</span>(<span class="pseudo-var">rows</span>, <span class="pseudo-var">features</span>, <span class="pseudo-var">fallback</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="0">
+<span class="pseudo-kw">if</span> <span class="pseudo-var">rows</span> is empty: <span class="pseudo-kw">return</span> <span class="pseudo-fn">Leaf</span>(<span class="pseudo-var">fallback</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="0">
+<span class="pseudo-var">answer</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">majorityLabel</span>(<span class="pseudo-var">rows</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-kw">if</span> labels all agree <span class="pseudo-kw">or</span> <span class="pseudo-var">features</span> is empty:
+</div>
+<div class="pseudo-line fragment indent-2" data-fragment-index="1">
+<span class="pseudo-kw">return</span> <span class="pseudo-fn">Leaf</span>(<span class="pseudo-var">answer</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-var">A</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">featureWithLargestGain</span>(<span class="pseudo-var">rows</span>, <span class="pseudo-var">features</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-var">node</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">Test</span>(<span class="pseudo-var">A</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="3">
+<span class="pseudo-kw">for each</span> value <span class="pseudo-var">v</span> of <span class="pseudo-var">A</span>:
+</div>
+<div class="pseudo-line fragment indent-2" data-fragment-index="3">
+add child <span class="pseudo-fn">LearnTree</span>(<span class="pseudo-var">rows</span> where <span class="pseudo-var">A</span>=<span class="pseudo-var">v</span>, <span class="pseudo-var">features</span> without <span class="pseudo-var">A</span>, <span class="pseudo-var">answer</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="3">
+<span class="pseudo-kw">return</span> <span class="pseudo-var">node</span>
+</div>
+</div>
+<div class="takeaway">
+<p><code>Test(A)</code> creates a question node. <code>Leaf(answer)</code> creates a prediction. Each child repeats on its own records.</p>
+</div>
+<aside class="notes">
+<p>rows is the current group of labeled observations; features is the remaining collection of candidate categorical attributes. Test(A) creates a question node; Leaf(label) creates a prediction. At the root, initialize fallback with the full training majority. Known attribute domains define children even when one has no matching examples; it uses the parent’s majority. Resolve majority and gain ties with a fixed rule. This simplified multiway categorical learner differs from scikit-learn’s Classification and Regression Trees (CART) implementation. Numeric threshold learners can reuse a feature at later nodes, so removing A is specific to this categorical version. Practical stopping settings follow the numeric example.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="regression-tree" class="slide level2 tree26-slide">
+<h2>Numeric Inputs and Regression Trees</h2>
+<p>A <strong>threshold</strong> is a numeric cut point, such as distance <span class="math inline">\leq3</span> km.</p>
+<p>A <strong>regression tree</strong> predicts a number. For squared-error fitting, each leaf predicts the <strong>mean</strong> training output in that leaf.</p>
+<p><img data-src="imgs/drawio/lec26/regression-tree.png" class="tree26-regression" alt="Illustrative delivery-time tree. Distance at most 3 km reaches durations 10,12,14 minutes and predicts mean 12. Longer distances reach durations 18,20,22 and predict mean 20 minutes."></p>
+<div class="fragment takeaway" data-fragment-index="0">
+<p>A new 4 km delivery route reaches the right leaf: predict <strong>20 minutes</strong>. The output is a duration, not a Yes/No label.</p>
+</div>
+<aside class="notes">
+<p>In this invented example, training distances 1,2,3,4,5,6 km have durations 10,12,14,18,20,22 minutes. Thresholds 3 and 3.5 produce the same training partition. Each leaf mean minimizes that child’s squared residual sum. Compare numeric splits using squared errors rather than label entropy. Predictions are constant within a leaf, not sloping fitted lines. Reference: https://scikit-learn.org/stable/modules/tree.html#regression.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="overfitting" class="slide level2 tree26-slide">
+<h2>Overfitting and Pruning</h2>
+<p>A deep tree can memorize accidental details instead of repeatable patterns.</p>
+<ul>
+<li><strong>Depth:</strong> the number of questions along a path. Maximum depth limits the longest path.</li>
+<li>A <strong>minimum leaf size</strong> requires enough records to support a prediction.</li>
+<li><strong>Pruning:</strong> remove branches after growing a tree, replacing them with a simpler prediction.</li>
+</ul>
+<p>Splitting on a unique <strong>Day identifier (ID)</strong> can memorize all 14 labels without providing a useful weather rule for a new day.</p>
+<div class="takeaway">
+<p>Choose tree size using validation data. Pruning can help, but a simpler tree is not automatically more accurate.</p>
+</div>
+<aside class="notes">
+<p>Maximum-depth and minimum-leaf-size settings restrict growth; post-pruning simplifies an already-grown tree. A pruned classification subtree can use the majority label reaching it; a regression subtree can use their mean. A weak immediate split can enable a useful later interaction, so early stopping and post-pruning need not give the same result. Day ID is a tempting memorization feature, not one used in the worked tree. Validation comparisons also have sampling uncertainty.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ensembles" class="slide level2 tree26-slide">
+<h2>Why Combine Several Trees?</h2>
+<p>An <strong>ensemble</strong> combines several models’ predictions.</p>
+<div class="tree26-context">
+<div>
+<p>A single learned tree can change substantially when a few training records change. This sensitivity is <strong>variance</strong>, as in Lecture 25.</p>
+<p>Combining useful but different trees can reduce that sensitivity because their errors need not line up.</p>
+</div>
+<p><img data-src="imgs/lec26_trees/ensemble-committee-cartoon.png" class="tree26-cartoon" alt="Cartoon of three adults comparing separate clipboards, a committee analogy for combining different models."></p>
+</div>
+<div class="question">
+<p>Would 100 identical copies of one tree give that benefit?</p>
+</div>
+<div class="fragment takeaway" data-fragment-index="0">
+<p>No.&nbsp;Identical trees give identical predictions. The ensemble needs useful differences among its members.</p>
+</div>
+<aside class="notes">
+<p>The committee is an analogy, not an implementation. Predictive variability after retraining is estimator variance. Averaging can reduce it when errors are not perfectly correlated, but cannot automatically remove systematic bias or fix bad labels. Breiman’s original random-forest paper relates performance to individual tree strength and dependence between errors: https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="forest-training" class="slide level2 tree26-slide scrollable">
+<h2>Random Forests: Two Sources of Randomness</h2>
+<p>A <strong>random forest</strong> combines randomized decision trees. Their collection is the <strong>forest</strong>.</p>
+<ol type="1">
+<li><strong>Bootstrap sample:</strong> draw 14 times from the 14 training rows, allowing repeats. This is sampling <strong>with replacement</strong>.</li>
+<li><strong>Random feature subset:</strong> at each node, select some features and learn the best split among them.</li>
+</ol>
+<p><img data-src="imgs/drawio/lec26/forest-training.png" class="tree26-forest-training" alt="Fourteen training records produce three bootstrap samples of 14 draws each, allowing duplicates. Their first nodes consider different example pairs of weather features; later nodes draw fresh candidate subsets."></p>
+<div class="takeaway">
+<p>Resample rows for each tree and candidate features for each node.</p>
+</div>
+<aside class="notes">
+<p>With replacement means a row can be chosen again after an earlier draw. Bootstrapping adds no new measured information or labels. The diagram’s two-feature examples apply at the first node; repeat feature sampling at every later node, not just once per tree. Implementations can offer settings that use all features or disable bootstrap sampling; we show the standard two-randomization construction. Two is illustrative, not a universal default. Sources: Breiman, https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf, and https://scikit-learn.org/stable/modules/ensemble.html#random-forests.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="forest-prediction" class="slide level2 tree26-slide">
+<h2>Combining Forest Predictions</h2>
+<p>Use the same new day: <strong>Sunny, Mild, Normal humidity, Strong wind</strong>.</p>
+<p>A leaf may remain mixed when growth is limited. Its class fractions estimate probabilities. These are <strong>illustrative outputs</strong>:</p>
+<p><img data-src="imgs/drawio/lec26/forest-prediction.png" class="tree26-forest-prediction" alt="Three illustrative leaf outputs: 4 Yes and 1 No, 3 Yes and 2 No, and 1 Yes and 4 No. Their Yes probability estimates are .8,.6,.2."></p>
+<p><span class="math display">\text{Mean Yes probability}=\frac{0.8+0.6+0.2}{3}\approx0.533.</span></p>
+<p>Predict <strong>Yes</strong>, the larger average class probability. Some forests instead use majority votes from tree labels.</p>
+<div class="takeaway">
+<p>For regression, average the numbers: trees A, B, and C predicting 18, 20, and 22 minutes for one route give <strong>20 minutes</strong>.</p>
+</div>
+<aside class="notes">
+<p>The leaf counts are invented, not claimed results from fitting the tennis table. A leaf’s class fraction is its class count divided by all counts in that leaf. Depth or leaf-size constraints can leave mixed labels in a final leaf. Averaging .8,.6,.2 gives 8/15 for Yes and 7/15 for No.&nbsp;This matches scikit-learn’s probability averaging. Breiman’s original classifier uses majority votes; these methods can disagree, though they agree here. The separate regression illustration averages three tree outputs for the same route: (18+20+22)/3=20 minutes. These are predictions from separate trees, not a list of training records. Estimated probabilities need not be perfectly calibrated. References: https://scikit-learn.org/stable/modules/ensemble.html#random-forests and https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier.predict_proba.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="forest-practice" class="slide level2 tree26-slide">
+<h2>Using a Random Forest</h2>
+<p>In <strong>tabular data</strong>, rows are observations and input columns are features.</p>
+<p><strong>Hyperparameters</strong> are settings chosen before fitting. Split rules are learned from records.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Setting</th>
+<th>What it controls</th>
+</tr>
+</thead>
+<tbody>
 <tr class="odd">
-<td>Humidity</td>
-<td style="text-align: right;">0.151</td>
+<td>Number of trees</td>
+<td>More averaging, with more computation and memory</td>
 </tr>
 <tr class="even">
-<td>Wind</td>
-<td style="text-align: right;">0.048</td>
+<td>Candidate features per node</td>
+<td>How much the trees can differ</td>
+</tr>
+<tr class="odd">
+<td>Depth / minimum leaf size</td>
+<td>How detailed individual trees can become</td>
 </tr>
 </tbody>
 </table>
+<ul>
+<li>Benefit: can capture nonlinear patterns and feature combinations.</li>
+<li>Cost: harder to explain than one small tree. More trees do not fix bad data.</li>
+</ul>
 <div class="takeaway">
-<p>The best root is <strong>Outlook</strong> because it has the largest information gain.</p>
+<p>Choose settings with validation data and assess the final forest on separate test records.</p>
+</div>
+<aside class="notes">
+<p>The toy tennis set does not establish real-world performance. More trees can stabilize predictions, but accuracy need not improve indefinitely. Candidate-feature and leaf-size choices affect bias and variance. Libraries differ in categorical support: scikit-learn’s tree estimators need numeric representations, so Sunny-like strings need suitable encoding. Fit preprocessing on training data only. Tracing one tree is easier than explaining an entire forest; feature importance is not proof of causation. Practical API: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="quick-check" class="slide level2 tree26-slide scrollable">
+<h2>Quick Check</h2>
+<ol type="1">
+<li>Our Sunny, Normal-humidity day reaches a Yes leaf. Does this tree still inspect wind?</li>
+<li>In a forest, do we choose the final split entirely at random?</li>
+<li>Does a pure leaf prove that the next day’s label is certain?</li>
+</ol>
+<div class="fragment" data-fragment-index="0">
+<p><strong>1. No.</strong> Follow one path and stop at its leaf.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>2. No.</strong> Randomize candidate features, then compare splits using the training records.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p><strong>3. No.</strong> Purity describes that leaf’s training records. New examples can still differ.</p>
 </div>
 </section>
-<section id="overfitting-and-pruning" class="slide level2">
-<h2>Overfitting and Pruning</h2>
-<p>Decision trees can overfit by creating branches that explain noise.</p>
-<p>Pruning simplifies a tree after it is built.</p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="benefits">Benefits</h3>
+<section id="takeaways" class="slide level2 tree26-slide">
+<h2>Takeaways</h2>
 <ul>
-<li>Smaller trees.</li>
-<li>Easier interpretation.</li>
-<li>Better generalization.</li>
+<li>A tree follows feature tests from a root to a prediction leaf.</li>
+<li>Entropy measures label mixture. Information gain measures its reduction from a split.</li>
+<li>Greedy learning builds locally. Size limits and pruning help control overfitting.</li>
+<li>A forest combines trees randomized through training rows and candidate features.</li>
+<li>Classification can combine probabilities or votes. Regression averages numeric predictions.</li>
 </ul>
-</div><div class="column" style="width:48%;">
-<h3 id="chi2-pruning"><span class="math inline">\chi^2</span> pruning</h3>
-<p>Remove a split if its reduction in impurity is not statistically significant.</p>
-</div></div>
-</section>
-<section id="why-not-prune-early" class="slide level2">
-<h2>Why Not Prune Early?</h2>
-<p>If a split has low immediate information gain, why not avoid it?</p>
-<div class="fragment">
-<p>Because some useful patterns require combinations of attributes.</p>
+<div class="takeaway">
+<p>A readable rule and a strong ensemble are both useful. Judge either one on new observations.</p>
 </div>
-<div class="fragment">
-<p>A first split might look weak, but it can enable a strong second split.</p>
-</div>
-<div class="fragment takeaway">
-<p>Post-pruning lets the tree discover interactions before simplifying.</p>
-</div>
-</section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
-<ul>
-<li>Decision trees classify by following attribute tests from root to leaf.</li>
-<li>Greedy tree induction avoids exhaustive search.</li>
-<li>Entropy measures label uncertainty.</li>
-<li>Information gain measures entropy reduction from a split.</li>
-<li>Pruning combats overfitting and can improve generalization.</li>
-</ul>
 <p><a href="../asset_credits.html#lec26" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
 
 

@@ -676,7 +676,7 @@
     "href": "index.html#course-schedule",
     "title": "CS 463G & CS 663: (Intro to) Artificial Intelligence",
     "section": "Course Schedule",
-    "text": "Course Schedule\nThis schedule (including homework) is tentative and may be adjusted as the semester unfolds. The course website is the source for assignment specifications, dates, starter files, and updates; Canvas is used for submissions, grading, and lecture recordings. Official university dates are listed on the UK Academic Calendar, and the final exam period follows the UK Examination Schedule.\n\n\n\n#\nDate\nContent\n\n\n\n\n1\nMon, Aug 24\nCourse introduction, syllabus, grading, and course logisticsLecture 0: Language and ToolsTextbook: Artificial Intelligence: A Modern Approach\n\n\n2\nWed, Aug 26\nLecture 1: Introduction to AIAIMA 1.1-1.2\n\n\n3\nFri, Aug 28\nLecture 2: Agents and EnvironmentsAIMA 2.1-2.2\n\n\n4\nMon, Aug 31\nLecture 2b: Designing Intelligent AgentsPEAS, agent architectures, and a Python vacuum-agent demonstrationAIMA 2.3-2.4Code: Vacuum agents demo\n\n\n5\nWed, Sep 2\nLecture 3: The Nature of EnvironmentsAttendance Verification on Canvas\n\n\n6\nFri, Sep 4\nLecture 4: Introduction to SearchAIMA 3.1-3.2\n\n\n-\nMon, Sep 7\nNo class: Labor Day\n\n\n7\nWed, Sep 9\nLecture 5: BFS and DFSAIMA 3.4; practice BFS/DFS problemsCode: BFS and DFSHomework announced: Homework 1 - Keys, Doors, and Shortest Paths\n\n\n8\nFri, Sep 11\nLecture 6: Uniform-Cost SearchPractice Dijkstra’s algorithmCode: Uniform-cost search\n\n\n9\nMon, Sep 14\nLecture 7: Informed SearchAIMA 3.5Code: A* search\n\n\n10\nWed, Sep 16\nLecture 8: Search Review\n\n\n11\nFri, Sep 18\nLecture 9: Adversarial SearchAIMA U.S. 5.1-5.3 or AIMA Global 6.1-6.3Code: Tic-tac-toe\n\n\n12\nMon, Sep 21\nLecture 10: Alpha-Beta PruningCode: Alpha-beta pruningHomework announced: Homework 2 - Reversi Agents\n\n\n13\nWed, Sep 23\nLecture 11: Local SearchAIMA 4.1-4.2Code: Simulated annealing, 8-puzzleHomework due: Homework 1\n\n\n14\nFri, Sep 25\nLecture 12: Genetic AlgorithmCode: Genetic 8-queens\n\n\n15\nMon, Sep 28\nLecture 13: Constraint Satisfaction ProblemsAIMA U.S. 6.1-6.3 or AIMA Global 5.1-5.3\n\n\n16\nWed, Sep 30\nLecture 14: CSP ConsistencyCode: AC-3\n\n\n17\nFri, Oct 2\nLecture 15: CSP SearchCode: Sudoku\n\n\n18\nMon, Oct 5\nLecture 16: LogicPropositions, connectives, translation, truth tables, and equivalenceAIMA 7.1-7.4Homework due: Homework 2\n\n\n19\nWed, Oct 7\nLecture 17: Propositional InferenceModels, entailment, CNF, and resolution; worked examples and practiceAIMA 7.4-7.6\n\n\n20\nFri, Oct 9\nLecture 18: First-Order LogicMidterm review: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Homework announced: Homework 3 - Logic Toolkit\n\n\n21\nMon, Oct 12\nMidterm exam in classPreparation: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Scope: Lectures 1–16, including Lecture 2b; Lectures 17 and 18 are excluded.\n\n\n22\nWed, Oct 14\nLecture 19: PlanningAIMA 11.1: Definition of Classical Planning\n\n\n23\nFri, Oct 16\nLecture 20: Planning AlgorithmsAIMA 11.2-11.4: Classical planning algorithms, heuristics, and hierarchical planning\n\n\n24\nMon, Oct 19\nLecture 21: ProbabilityNo in-person class. The lecture recording has been uploaded to Canvas under Files. Please watch it instead.AIMA Appendix A.3; AIMA 12.1-12.5Homework announced: Homework 4 - Probability in Motion\n\n\n25\nWed, Oct 21\nLecture 22: Probabilistic InferenceAIMA 12.3-12.5; preview of 13.1-13.2\n\n\n26\nFri, Oct 23\nLecture 23: Bayes NetsAIMA 13.1-13.4Homework due: Homework 3\n\n\n-\nMon, Oct 26\nNo class: Fall Break\n\n\n27\nWed, Oct 28\nLecture 24: Machine LearningAIMA 19.1-19.2Code: KNN on MNIST\n\n\n28\nFri, Oct 30\nLecture 25: Bias, Variance, and OverfittingCode: Linear regression\n\n\n29\nMon, Nov 2\nLecture 26: Decision TreesAIMA 19.3Homework due: Homework 4\n\n\n30\nWed, Nov 4\nLecture 27: Practical PyTorchTensors, data loaders, models, autograd, training, evaluation, and debugging\n\n\n31\nFri, Nov 6\nLecture 28: Deep LearningAIMA U.S. 21.1 or AIMA Global 22.1Code: Backpropagation\n\n\n32\nMon, Nov 9\nLecture 29: Convolutional Neural NetworksCode: CNNHomework announced: Homework 5 - Two-Digit MNIST with a CNN\n\n\n33\nWed, Nov 11\nLecture 30: Reinforcement LearningAIMA 16.1-16.3 and 16.5\n\n\n34\nFri, Nov 13\nLecture 31: Multi-Armed Bandits\n\n\n35\nMon, Nov 16\nLecture 32: Value-Based Model-Free RL\n\n\n36\nWed, Nov 18\nLecture 33: Policy-Based Model-Free RLHomework announced: Homework 6 - Actor-Critic for Buckshot Roulette\n\n\n37\nFri, Nov 20\nLecture 34: PPO and GRPO\n\n\n38\nMon, Nov 23\nLecture 35: Generative Machine LearningAIMA 25.1 and 25.4Homework due: Homework 5\n\n\n-\nWed, Nov 25\nNo class: Thanksgiving Break\n\n\n-\nFri, Nov 27\nNo class: Thanksgiving Break\n\n\n39\nMon, Nov 30\nLecture 36: Autoregressive Models\n\n\n40\nWed, Dec 2\nLecture 37: TransformersHomework due: Homework 6\n\n\n41\nFri, Dec 4\nLecture 38: Transformers continued\n\n\n42\nMon, Dec 7\nLecture 39: Cutting-Edge AI TopicsLoRA, DPO, agent skills, evaluation harnessesPrep Day: no major assignments, quizzes, or exams\n\n\n43\nWed, Dec 9\nNew topic placeholder: student questions, demos, or optional wrap-upPrep Day; last day of classesFinal exam review\n\n\n\nFinal exam: Monday, December 14, 2026, 10:30 AM-12:30 PM (official UK examination schedule)."
+    "text": "Course Schedule\nThis schedule (including homework) is tentative and may be adjusted as the semester unfolds. The course website is the source for assignment specifications, dates, starter files, and updates; Canvas is used for submissions, grading, and lecture recordings. Official university dates are listed on the UK Academic Calendar, and the final exam period follows the UK Examination Schedule.\n\n\n\n#\nDate\nContent\n\n\n\n\n1\nMon, Aug 24\nCourse introduction, syllabus, grading, and course logisticsLecture 0: Language and ToolsTextbook: Artificial Intelligence: A Modern Approach\n\n\n2\nWed, Aug 26\nLecture 1: Introduction to AIAIMA 1.1-1.2\n\n\n3\nFri, Aug 28\nLecture 2: Agents and EnvironmentsAIMA 2.1-2.2\n\n\n4\nMon, Aug 31\nLecture 2b: Designing Intelligent AgentsPEAS, agent architectures, and a Python vacuum-agent demonstrationAIMA 2.3-2.4Code: Vacuum agents demo\n\n\n5\nWed, Sep 2\nLecture 3: The Nature of EnvironmentsAttendance Verification on Canvas\n\n\n6\nFri, Sep 4\nLecture 4: Introduction to SearchAIMA 3.1-3.2\n\n\n-\nMon, Sep 7\nNo class: Labor Day\n\n\n7\nWed, Sep 9\nLecture 5: BFS and DFSAIMA 3.4; practice BFS/DFS problemsCode: BFS and DFSHomework announced: Homework 1 - Keys, Doors, and Shortest Paths\n\n\n8\nFri, Sep 11\nLecture 6: Uniform-Cost SearchPractice Dijkstra’s algorithmCode: Uniform-cost search\n\n\n9\nMon, Sep 14\nLecture 7: Informed SearchAIMA 3.5Code: A* search\n\n\n10\nWed, Sep 16\nLecture 8: Search Review\n\n\n11\nFri, Sep 18\nLecture 9: Adversarial SearchAIMA U.S. 5.1-5.3 or AIMA Global 6.1-6.3Code: Tic-tac-toe\n\n\n12\nMon, Sep 21\nLecture 10: Alpha-Beta PruningCode: Alpha-beta pruningHomework announced: Homework 2 - Reversi Agents\n\n\n13\nWed, Sep 23\nLecture 11: Local SearchAIMA 4.1-4.2Code: Simulated annealing, 8-puzzleHomework due: Homework 1\n\n\n14\nFri, Sep 25\nLecture 12: Genetic AlgorithmCode: Genetic 8-queens\n\n\n15\nMon, Sep 28\nLecture 13: Constraint Satisfaction ProblemsAIMA U.S. 6.1-6.3 or AIMA Global 5.1-5.3\n\n\n16\nWed, Sep 30\nLecture 14: CSP ConsistencyCode: AC-3\n\n\n17\nFri, Oct 2\nLecture 15: CSP SearchCode: Sudoku\n\n\n18\nMon, Oct 5\nLecture 16: LogicPropositions, connectives, translation, truth tables, and equivalenceAIMA 7.1-7.4Homework due: Homework 2\n\n\n19\nWed, Oct 7\nLecture 17: Propositional InferenceModels, entailment, CNF, and resolution; worked examples and practiceAIMA 7.4-7.6\n\n\n20\nFri, Oct 9\nLecture 18: First-Order LogicMidterm review: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Homework announced: Homework 3 - Logic Toolkit\n\n\n21\nMon, Oct 12\nMidterm exam in classPreparation: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Scope: Lectures 1–16, including Lecture 2b; Lectures 17 and 18 are excluded.\n\n\n22\nWed, Oct 14\nLecture 19: PlanningAIMA 11.1: Definition of Classical Planning\n\n\n23\nFri, Oct 16\nLecture 20: Planning AlgorithmsAIMA 11.2-11.4: Classical planning algorithms, heuristics, and hierarchical planning\n\n\n24\nMon, Oct 19\nLecture 21: ProbabilityNo in-person class. The lecture recording has been uploaded to Canvas under Files. Please watch it instead.AIMA Appendix A.3; AIMA 12.1-12.5Homework announced: Homework 4 - Probability in Motion\n\n\n25\nWed, Oct 21\nLecture 22: Probabilistic InferenceAIMA 12.3-12.5; preview of 13.1-13.2\n\n\n26\nFri, Oct 23\nLecture 23: Bayes NetsAIMA 13.1-13.4Homework due: Homework 3\n\n\n-\nMon, Oct 26\nNo class: Fall Break\n\n\n27\nWed, Oct 28\nLecture 24: Machine LearningAIMA 19.1-19.2Code: KNN on MNIST\n\n\n28\nFri, Oct 30\nLecture 25: Bias, Variance, and OverfittingCode: Linear regression\n\n\n29\nMon, Nov 2\nLecture 26: Decision Trees and Random ForestsAIMA 19.3Homework due: Homework 4\n\n\n30\nWed, Nov 4\nLecture 27: Practical PyTorchTensors, data loaders, models, autograd, training, evaluation, and debugging\n\n\n31\nFri, Nov 6\nLecture 28: Deep LearningAIMA U.S. 21.1 or AIMA Global 22.1Code: Backpropagation\n\n\n32\nMon, Nov 9\nLecture 29: Convolutional Neural NetworksCode: CNNHomework announced: Homework 5 - Two-Digit MNIST with a CNN\n\n\n33\nWed, Nov 11\nLecture 30: Reinforcement LearningAIMA 16.1-16.3 and 16.5\n\n\n34\nFri, Nov 13\nLecture 31: Multi-Armed Bandits\n\n\n35\nMon, Nov 16\nLecture 32: Value-Based Model-Free RL\n\n\n36\nWed, Nov 18\nLecture 33: Policy-Based Model-Free RLHomework announced: Homework 6 - Actor-Critic for Buckshot Roulette\n\n\n37\nFri, Nov 20\nLecture 34: PPO and GRPO\n\n\n38\nMon, Nov 23\nLecture 35: Generative Machine LearningAIMA 25.1 and 25.4Homework due: Homework 5\n\n\n-\nWed, Nov 25\nNo class: Thanksgiving Break\n\n\n-\nFri, Nov 27\nNo class: Thanksgiving Break\n\n\n39\nMon, Nov 30\nLecture 36: Autoregressive Models\n\n\n40\nWed, Dec 2\nLecture 37: TransformersHomework due: Homework 6\n\n\n41\nFri, Dec 4\nLecture 38: Transformers continued\n\n\n42\nMon, Dec 7\nLecture 39: Cutting-Edge AI TopicsLoRA, DPO, agent skills, evaluation harnessesPrep Day: no major assignments, quizzes, or exams\n\n\n43\nWed, Dec 9\nNew topic placeholder: student questions, demos, or optional wrap-upPrep Day; last day of classesFinal exam review\n\n\n\nFinal exam: Monday, December 14, 2026, 10:30 AM-12:30 PM (official UK examination schedule)."
   },
   {
     "objectID": "index.html#references",
@@ -1130,8 +1130,8 @@
     "objectID": "asset_credits.html#lec26",
     "href": "asset_credits.html#lec26",
     "title": "Visual Asset Credits",
-    "section": "Lecture 26: Decision Trees",
-    "text": "Lecture 26: Decision Trees\nNo external visual assets. Diagrams are drawn directly in the Quarto source."
+    "section": "Lecture 26: Decision Trees and Random Forests",
+    "text": "Lecture 26: Decision Trees and Random Forests\nThe tennis tree, three prediction-trace frames, Outlook split counts, delivery-time regression tree, bootstrap/feature-selection workflow, and forest leaf-output comparison are original editable draw.io diagrams. Their source is decision-forest-examples.drawio; the slides use PNG exports. The complete 14-day tennis table preserves the records supplied in the Spring 2025 Beamer lecture. The delivery values and forest leaf counts are invented teaching examples, not measured model results.\nThe tennis/weather cartoon and committee cartoon were generated for this lecture with Codex’s built-in image generator. They depict classroom concepts, not actual people or events. Their generation prompts and provenance are included with the assets.\nDecision-tree concepts follow Artificial Intelligence: A Modern Approach, fourth edition, Section 19.3, and the supplied Spring 2025 material. Random-forest references are Breiman’s Random Forests (2001), the scikit-learn guide to decision trees, and its guide to random forests. The slides distinguish original majority voting from scikit-learn’s probability averaging."
   },
   {
     "objectID": "asset_credits.html#lec27",
@@ -3094,123 +3094,11 @@
     "text": "What to Remember\n\nDeep networks learn layered representations.\nA neuron computes a weighted sum, bias, and nonlinear activation.\nTraining alternates forward pass, loss, backpropagation, and optimization.\nBackpropagation uses the chain rule to compute gradients.\nLearning rate controls update size.\n\nAsset credits"
   },
   {
-    "objectID": "slides/lec26_Decision_Tree.html#decision-trees",
-    "href": "slides/lec26_Decision_Tree.html#decision-trees",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Decision Trees",
-    "text": "Decision Trees\nDecision trees classify by asking a sequence of attribute questions."
-  },
-  {
-    "objectID": "slides/lec26_Decision_Tree.html#what-is-a-decision-tree",
-    "href": "slides/lec26_Decision_Tree.html#what-is-a-decision-tree",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What Is a Decision Tree?",
-    "text": "What Is a Decision Tree?\nGiven attributes and a class label, a decision tree is a directed tree:\n\nEach non-leaf node tests an attribute.\nEach outgoing edge corresponds to a possible attribute value.\nEach leaf node predicts a class label.\n\n\nThe path from root to leaf is an interpretable rule."
-  },
-  {
-    "objectID": "slides/lec26_Decision_Tree.html#tennis-dataset",
-    "href": "slides/lec26_Decision_Tree.html#tennis-dataset",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Tennis Dataset",
-    "text": "Tennis Dataset\n\n\n\nDay\nOutlook\nTemp.\nHumidity\nWind\nPlay?\n\n\n\n\nD1\nSunny\nHot\nHigh\nWeak\nNo\n\n\nD2\nSunny\nHot\nHigh\nStrong\nNo\n\n\nD3\nOvercast\nHot\nHigh\nWeak\nYes\n\n\nD4\nRain\nMild\nHigh\nWeak\nYes\n\n\nD5\nRain\nCool\nNormal\nWeak\nYes\n\n\nD6\nRain\nCool\nNormal\nStrong\nNo\n\n\nD7\nOvercast\nCool\nNormal\nStrong\nYes\n\n\nD8\nSunny\nMild\nHigh\nWeak\nNo\n\n\nD9\nSunny\nCool\nNormal\nWeak\nYes\n\n\nD10\nRain\nMild\nNormal\nWeak\nYes\n\n\nD11\nSunny\nMild\nNormal\nStrong\nYes\n\n\nD12\nOvercast\nMild\nHigh\nStrong\nYes\n\n\nD13\nOvercast\nHot\nNormal\nWeak\nYes\n\n\nD14\nRain\nMild\nHigh\nStrong\nNo"
-  },
-  {
-    "objectID": "slides/lec26_Decision_Tree.html#decision-tree-example",
-    "href": "slides/lec26_Decision_Tree.html#decision-tree-example",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Decision Tree Example",
-    "text": "Decision Tree Example"
-  },
-  {
-    "objectID": "slides/lec26_Decision_Tree.html#classifying-an-observation",
-    "href": "slides/lec26_Decision_Tree.html#classifying-an-observation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Classifying an Observation",
-    "text": "Classifying an Observation\nObservation:\n\n\n\nOutlook\nTemperature\nHumidity\nWind\nPlay?\n\n\n\n\nSunny\nMild\nNormal\nStrong\n?\n\n\n\n\n\nStart at root: \\text{Outlook}=\\text{Sunny}.\n\n\n\n\nFollow Sunny edge to Humidity.\n\n\n\n\nHumidity=Normal, so follow Normal edge to leaf.\n\n\n\nPrediction: Yes."
-  },
-  {
-    "objectID": "slides/lec26_Decision_Tree.html#learning-decision-trees",
-    "href": "slides/lec26_Decision_Tree.html#learning-decision-trees",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Learning Decision Trees",
-    "text": "Learning Decision Trees\nWe want a tree that is:\n\nAccurate on training examples.\nSmall enough to generalize.\nCheap enough to build.\nFast enough to evaluate.\n\n\nBut the space of possible trees is enormous."
-  },
-  {
-    "objectID": "slides/lec26_Decision_Tree.html#space-of-trees",
-    "href": "slides/lec26_Decision_Tree.html#space-of-trees",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Space of Trees",
-    "text": "Space of Trees\nWith n Boolean attributes, the number of possible decision trees is more than:\n\n2^{2^n}\n\nSo we do not search exhaustively.\n\nDecision-tree learning usually uses a greedy construction method: choose one split, recurse, and do not backtrack."
-  },
-  {
-    "objectID": "slides/lec26_Decision_Tree.html#decision-tree-induction",
-    "href": "slides/lec26_Decision_Tree.html#decision-tree-induction",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Decision Tree Induction",
-    "text": "Decision Tree Induction\n\n\nfunction LearnTree(examples, attributes)\n\n\nif all examples have same label\n\n\nreturn Leaf(that label)\n\n\nif attributes is empty\n\n\nreturn Leaf(majority label)\n\n\nA = attributeWithHighestInformationGain(examples)\n\n\nnode = DecisionNode(A)\n\n\nfor each value v of A: add child LearnTree(matching examples, remaining attributes)\n\n\nreturn node"
-  },
-  {
-    "objectID": "slides/lec26_Decision_Tree.html#purity-and-entropy",
-    "href": "slides/lec26_Decision_Tree.html#purity-and-entropy",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Purity and Entropy",
-    "text": "Purity and Entropy\nWe want splits that create pure groups.\n\n\nLow entropy\nMost examples have the same label.\nPrediction is easier.\n\nHigh entropy\nLabels are mixed.\nPrediction is uncertain.\n\n\nInformation gain measures how much a split reduces entropy."
-  },
-  {
     "objectID": "slides/lec26_Decision_Tree.html#entropy",
     "href": "slides/lec26_Decision_Tree.html#entropy",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Entropy",
-    "text": "Entropy\nEntropy of a set S:\n\nH(S)=-\\sum_{i=1}^{m} p_i\\log_2 p_i\n\nwhere p_i is the fraction of examples with class label i.\nExamples:\n\nFair coin: 1 bit.\nTwo-headed coin: 0 bits.\n99 percent heads coin: about 0.0808 bits."
-  },
-  {
-    "objectID": "slides/lec26_Decision_Tree.html#information-gain",
-    "href": "slides/lec26_Decision_Tree.html#information-gain",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Information Gain",
-    "text": "Information Gain\nFor an attribute A:\n\nIG(S,A)=H(S)-\\sum_{v \\in \\text{Values}(A)}\\frac{|S_v|}{|S|}H(S_v)\n\nwhere S_v is the subset with A=v.\n\n\n\n\nChoose the split that most reduces expected entropy."
-  },
-  {
-    "objectID": "slides/lec26_Decision_Tree.html#information-gain-before-split",
-    "href": "slides/lec26_Decision_Tree.html#information-gain-before-split",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Information Gain: Before Split",
-    "text": "Information Gain: Before Split\nIn the tennis data:\n\n14 total days.\n9 Yes.\n5 No.\n\n\nH(\\text{before})\n=\n-\\frac{9}{14}\\log_2\\frac{9}{14}\n-\\frac{5}{14}\\log_2\\frac{5}{14}\n\\approx 0.94"
-  },
-  {
-    "objectID": "slides/lec26_Decision_Tree.html#information-gain-split-on-outlook",
-    "href": "slides/lec26_Decision_Tree.html#information-gain-split-on-outlook",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Information Gain: Split on Outlook",
-    "text": "Information Gain: Split on Outlook\n\n\n\nOutlook value\nCounts\nEntropy\n\n\n\n\nSunny\n2 Yes, 3 No\n0.97\n\n\nOvercast\n4 Yes, 0 No\n0\n\n\nRain\n3 Yes, 2 No\n0.97\n\n\n\n\n\nH(\\text{Outlook})\n=\n\\frac{5}{14}(0.97)+\\frac{4}{14}(0)+\\frac{5}{14}(0.97)\n\\approx 0.69\n\n\n\n\nIG(\\text{Outlook})=0.94-0.69=0.25"
-  },
-  {
-    "objectID": "slides/lec26_Decision_Tree.html#choose-the-root",
-    "href": "slides/lec26_Decision_Tree.html#choose-the-root",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Choose the Root",
-    "text": "Choose the Root\nInformation gains:\n\n\n\nAttribute\nInformation gain\n\n\n\n\nOutlook\n0.246\n\n\nTemperature\n0.029\n\n\nHumidity\n0.151\n\n\nWind\n0.048\n\n\n\n\nThe best root is Outlook because it has the largest information gain."
-  },
-  {
-    "objectID": "slides/lec26_Decision_Tree.html#overfitting-and-pruning",
-    "href": "slides/lec26_Decision_Tree.html#overfitting-and-pruning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Overfitting and Pruning",
-    "text": "Overfitting and Pruning\nDecision trees can overfit by creating branches that explain noise.\nPruning simplifies a tree after it is built.\n\n\nBenefits\n\nSmaller trees.\nEasier interpretation.\nBetter generalization.\n\n\n\\chi^2 pruning\nRemove a split if its reduction in impurity is not statistically significant."
-  },
-  {
-    "objectID": "slides/lec26_Decision_Tree.html#why-not-prune-early",
-    "href": "slides/lec26_Decision_Tree.html#why-not-prune-early",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why Not Prune Early?",
-    "text": "Why Not Prune Early?\nIf a split has low immediate information gain, why not avoid it?\n\nBecause some useful patterns require combinations of attributes.\n\n\nA first split might look weak, but it can enable a strong second split.\n\n\nPost-pruning lets the tree discover interactions before simplifying."
-  },
-  {
-    "objectID": "slides/lec26_Decision_Tree.html#what-to-remember",
-    "href": "slides/lec26_Decision_Tree.html#what-to-remember",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What to Remember",
-    "text": "What to Remember\n\nDecision trees classify by following attribute tests from root to leaf.\nGreedy tree induction avoids exhaustive search.\nEntropy measures label uncertainty.\nInformation gain measures entropy reduction from a split.\nPruning combats overfitting and can improve generalization.\n\nAsset credits"
+    "section": "Entropy: A Worked Calculation",
+    "text": "Entropy: A Worked Calculation\nLet S be a group of records and q its fraction of Yes labels. The No fraction is 1-q.\nH(S)=-q\\log_2 q-(1-q)\\log_2(1-q).\nHere H(S) is the group’s entropy. A zero-probability term contributes zero: 0\\log_2 0=0 by convention.\nFor all 14 tennis days, q=9/14:\nH(S)=-\\frac{9}{14}\\log_2\\frac{9}{14}-\\frac{5}{14}\\log_2\\frac{5}{14}\\approx0.940\\ \\text{bits}.\n\nWhat happens if a group contains only Yes labels?\n\n\nq=1, so the entropy is zero. No uncertainty remains about the labels in that training group.\n\n\nThe zero term uses the continuous extension of x log x at zero, not a direct evaluation of log(0). This is the two-class special case of entropy. We use q to avoid confusing a class fraction with Lecture 25’s feature count p. The unrounded full-set entropy is 0.9402859586706311 bits. Empirical entropy is not a calibrated certainty guarantee for future examples."
   },
   {
     "objectID": "slides/lec24_Machine_Learning.html#why-learning",
@@ -8083,5 +7971,117 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Delivery Models: Missing Stops or Fitting Delays",
     "text": "Delivery Models: Missing Stops or Fitting Delays\nCompare two 2 km routes under our assumed mean rule 5+2z+3c:\n\n\n\n\n\n\n\n\n\nStops\nMean duration\nDistance-only 8+2z\nDistance + stops 5+2z+3c\n\n\n\n\n1\n12 min\n12 min\n12 min\n\n\n3\n18 min\n12 min\n18 min\n\n\n\n\nUnderfitting: the distance-only model cannot distinguish these routes. It misses the added stop delays.\nOverfitting risk: five extra random numeric job tags give p=8. They may fit accidental training delays, but cannot predict the next route’s delay.\n\n\nUseful inputs capture a repeatable pattern. More inputs also create opportunities to fit coincidences.\n\n\nThe table compares chosen candidate predictors with the assumed noise-free mean, not measured test outcomes. A distance-only model predicts the same value for equal distances regardless of its fitted intercept and slope. It therefore cannot represent a true mean that differs with stop count at a fixed distance. The 8+2z candidate happens to be correct for one-stop routes and is six minutes too low for three-stop routes at the same distance. The three-feature candidate uses the assumed true coefficients here for an easily checked comparison; finite-data estimates would generally differ. Random job tags are independent numerical inputs, not an encoded target or a unique identifier seen only after completion. They have no true predictive information by construction but may correlate with noise in a finite sample. Extra inputs create a risk of overfitting, not a guarantee that every larger model performs worse."
+  },
+  {
+    "objectID": "slides/lec26_Decision_Tree.html#tennis-task",
+    "href": "slides/lec26_Decision_Tree.html#tennis-task",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Will the Tennis Group Play?",
+    "text": "Will the Tennis Group Play?\nPredict whether a group will play tennis from the day’s weather.\n\n\n\nA feature (or attribute) is an input description.\nA label is the recorded answer: Play = Yes or No.\nOne observation is one previous day.\n\n\n\n\n\n\n\nFeature\nPossible values\n\n\n\n\nOutlook: sky conditions\nSunny, Overcast (fully cloudy), Rain\n\n\nTemperature\nHot, Mild, Cool\n\n\nHumidity: moisture in the air\nHigh, Normal\n\n\nWind\nWeak, Strong\n\n\n\n\nClassification means predicting a category. These are teaching records.\n\n\nThe 14-day tennis table and its categorical tree come from the supplied Spring 2025 Beamer lecture. The records are a teaching dataset, not a real campus study. The target is the group’s recorded decision, not a weather forecast or safety recommendation. Day identifiers are row labels, not predictive features. The later forest examples illustrate a method, not measured evidence that this tiny dataset supports a real-world application."
+  },
+  {
+    "objectID": "slides/lec26_Decision_Tree.html#training-records",
+    "href": "slides/lec26_Decision_Tree.html#training-records",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Training Records",
+    "text": "Training Records\nThe full training set has 14 days: 9 Yes and 5 No. Six example rows:\n\n\n\nDay\nOutlook\nTemperature\nHumidity\nWind\nPlay?\n\n\n\n\nD1\nSunny\nHot\nHigh\nWeak\nNo\n\n\nD3\nOvercast\nHot\nHigh\nWeak\nYes\n\n\nD6\nRain\nCool\nNormal\nStrong\nNo\n\n\nD9\nSunny\nCool\nNormal\nWeak\nYes\n\n\nD11\nSunny\nMild\nNormal\nStrong\nYes\n\n\nD14\nRain\nMild\nHigh\nStrong\nNo\n\n\n\nWe learn the questions from labeled records. For a new day, its label is unknown.\nDownload all 14 records (CSV)\n\nAll split calculations use the full 14-day table, not just these six displayed rows.\n\n\nCSV means comma-separated values: a plain-text table. The complete download preserves all 14 rows from the original Beamer source. The six displayed rows are an excerpt for readability, not a separate training sample. Validation and test examples must remain separate, as in Lecture 25."
+  },
+  {
+    "objectID": "slides/lec26_Decision_Tree.html#tree-structure",
+    "href": "slides/lec26_Decision_Tree.html#tree-structure",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Decision Tree",
+    "text": "A Decision Tree\nA decision tree predicts by following feature tests.\n\n\nRoot: the first test. Branch: one test outcome.\nLeaf: a final prediction, with no further question.\n\n\nOne root-to-leaf path is a rule. For example: Sunny and Normal humidity predicts Yes.\n\n\nThe tree follows the supplied Spring 2025 tennis example. An internal node asks a question; a child is a node reached by a branch from its parent. This tree uses multiway categorical splits, including three Outlook branches. Software such as scikit-learn commonly uses binary splits instead. A prediction is not a guarantee about the next group’s choice. Background: AIMA fourth edition, Section 19.3, and https://scikit-learn.org/stable/modules/tree.html."
+  },
+  {
+    "objectID": "slides/lec26_Decision_Tree.html#prediction-trace",
+    "href": "slides/lec26_Decision_Tree.html#prediction-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Following One Prediction",
+    "text": "Following One Prediction\nNew day: Sunny, Mild temperature, Normal humidity, Strong wind. Play = ?\n\n\n\n\n\n\nOnly questions on this path matter. This tree does not ask about wind on a Sunny day.\n\n\nBegin at Outlook, then follow Sunny to Humidity, then Normal to Yes. A future day can share all feature values with a training day while remaining a distinct observation with an unknown actual label. The path answers the model’s prediction only."
+  },
+  {
+    "objectID": "slides/lec26_Decision_Tree.html#purity",
+    "href": "slides/lec26_Decision_Tree.html#purity",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Choosing a Split: Pure or Mixed?",
+    "text": "Choosing a Split: Pure or Mixed?\nA split divides training records according to a feature test.\nA group is pure when all its labels agree. Entropy measures how mixed, or uncertain, the labels are.\n\n\n\nExample group\nLabel fractions\nEntropy\n\n\n\n\n4 Yes, 0 No\nAll agree\n0 bits\n\n\n7 Yes, 7 No\nEvenly mixed\n1 bit\n\n\n9 Yes, 5 No\nMixed, with more Yes\nAbout 0.940 bits\n\n\n\nThe unit bit comes from measuring information with base-2 logarithms.\n\nA useful split tends to make its children purer. A pure training group does not guarantee certainty on new data.\n\n\nPurity describes observed labels, not noise-free truth. For two classes, entropy is largest at equal proportions and zero when all labels agree. Only the 9 Yes, 5 No group is the full tennis set; the other two groups illustrate the endpoints. Other impurity scores exist, but the worked example uses entropy."
+  },
+  {
+    "objectID": "slides/lec26_Decision_Tree.html#outlook-gain",
+    "href": "slides/lec26_Decision_Tree.html#outlook-gain",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Information Gain: Split on Outlook",
+    "text": "Information Gain: Split on Outlook\nInformation gain (IG) is parent entropy minus the weighted average child entropy. Each child is weighted by its share of the 14 records.\n\n\nH(\\text{after})=\\frac{5}{14}(0.971)+\\frac{4}{14}(0)+\\frac{5}{14}(0.971)\\approx0.694.\n\n\n\\operatorname{IG}=H(\\text{before})-H(\\text{after})\\approx0.247 bits, using unrounded values.\n\n\nSunny and Rain each have entropy 0.9709505944546686 bits. The weighted child entropy is 0.6935361388961918, and information gain is 0.24674981977443933. Displayed rounded values can differ in the last digit when subtracted; the gain uses unrounded quantities. H(after) is conditional label uncertainty averaged over branches, not the entropy of the Outlook feature."
+  },
+  {
+    "objectID": "slides/lec26_Decision_Tree.html#choose-root",
+    "href": "slides/lec26_Decision_Tree.html#choose-root",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Choosing the Root",
+    "text": "Choosing the Root\nCompare the feature questions on the same 14 training records:\n\n\n\nCandidate feature\nInformation gain (bits)\n\n\n\n\nOutlook\n0.247\n\n\nHumidity\n0.152\n\n\nWind\n0.048\n\n\nTemperature\n0.029\n\n\n\n\nChoose Outlook. Overcast is already pure. For Sunny and Rain, choose another question using only records that reach that child.\n\n\nThis is greedy learning: choose the best split now, then repeat within children. It need not produce the globally best tree.\n\n\nUnrounded gains: Outlook .24674981977443933, Humidity .15183550136234159, Wind .04812703040826949, Temperature .02922256565895487. Recompute the criterion within each child subset, not over all 14 rows after choosing a branch. Sunny then splits on Humidity and Rain on Wind. This construction does not backtrack. A unique day ID could look informative by isolating every row; it is not among the four candidate weather features."
+  },
+  {
+    "objectID": "slides/lec26_Decision_Tree.html#growing-tree",
+    "href": "slides/lec26_Decision_Tree.html#growing-tree",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Growing a Categorical Tree",
+    "text": "Growing a Categorical Tree\nMajority label: the most frequent label. rows holds the current records and features holds available questions. fallback is the parent’s majority label.\n\n\nfunction LearnTree(rows, features, fallback)\n\n\nif rows is empty: return Leaf(fallback)\n\n\nanswer = majorityLabel(rows)\n\n\nif labels all agree or features is empty:\n\n\nreturn Leaf(answer)\n\n\nA = featureWithLargestGain(rows, features)\n\n\nnode = Test(A)\n\n\nfor each value v of A:\n\n\nadd child LearnTree(rows where A=v, features without A, answer)\n\n\nreturn node\n\n\n\nTest(A) creates a question node. Leaf(answer) creates a prediction. Each child repeats on its own records.\n\n\nrows is the current group of labeled observations; features is the remaining collection of candidate categorical attributes. Test(A) creates a question node; Leaf(label) creates a prediction. At the root, initialize fallback with the full training majority. Known attribute domains define children even when one has no matching examples; it uses the parent’s majority. Resolve majority and gain ties with a fixed rule. This simplified multiway categorical learner differs from scikit-learn’s Classification and Regression Trees (CART) implementation. Numeric threshold learners can reuse a feature at later nodes, so removing A is specific to this categorical version. Practical stopping settings follow the numeric example."
+  },
+  {
+    "objectID": "slides/lec26_Decision_Tree.html#regression-tree",
+    "href": "slides/lec26_Decision_Tree.html#regression-tree",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Numeric Inputs and Regression Trees",
+    "text": "Numeric Inputs and Regression Trees\nA threshold is a numeric cut point, such as distance \\leq3 km.\nA regression tree predicts a number. For squared-error fitting, each leaf predicts the mean training output in that leaf.\n\n\nA new 4 km delivery route reaches the right leaf: predict 20 minutes. The output is a duration, not a Yes/No label.\n\n\nIn this invented example, training distances 1,2,3,4,5,6 km have durations 10,12,14,18,20,22 minutes. Thresholds 3 and 3.5 produce the same training partition. Each leaf mean minimizes that child’s squared residual sum. Compare numeric splits using squared errors rather than label entropy. Predictions are constant within a leaf, not sloping fitted lines. Reference: https://scikit-learn.org/stable/modules/tree.html#regression."
+  },
+  {
+    "objectID": "slides/lec26_Decision_Tree.html#overfitting",
+    "href": "slides/lec26_Decision_Tree.html#overfitting",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Overfitting and Pruning",
+    "text": "Overfitting and Pruning\nA deep tree can memorize accidental details instead of repeatable patterns.\n\nDepth: the number of questions along a path. Maximum depth limits the longest path.\nA minimum leaf size requires enough records to support a prediction.\nPruning: remove branches after growing a tree, replacing them with a simpler prediction.\n\nSplitting on a unique Day identifier (ID) can memorize all 14 labels without providing a useful weather rule for a new day.\n\nChoose tree size using validation data. Pruning can help, but a simpler tree is not automatically more accurate.\n\n\nMaximum-depth and minimum-leaf-size settings restrict growth; post-pruning simplifies an already-grown tree. A pruned classification subtree can use the majority label reaching it; a regression subtree can use their mean. A weak immediate split can enable a useful later interaction, so early stopping and post-pruning need not give the same result. Day ID is a tempting memorization feature, not one used in the worked tree. Validation comparisons also have sampling uncertainty."
+  },
+  {
+    "objectID": "slides/lec26_Decision_Tree.html#ensembles",
+    "href": "slides/lec26_Decision_Tree.html#ensembles",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Why Combine Several Trees?",
+    "text": "Why Combine Several Trees?\nAn ensemble combines several models’ predictions.\n\n\nA single learned tree can change substantially when a few training records change. This sensitivity is variance, as in Lecture 25.\nCombining useful but different trees can reduce that sensitivity because their errors need not line up.\n\n\n\n\nWould 100 identical copies of one tree give that benefit?\n\n\nNo. Identical trees give identical predictions. The ensemble needs useful differences among its members.\n\n\nThe committee is an analogy, not an implementation. Predictive variability after retraining is estimator variance. Averaging can reduce it when errors are not perfectly correlated, but cannot automatically remove systematic bias or fix bad labels. Breiman’s original random-forest paper relates performance to individual tree strength and dependence between errors: https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf."
+  },
+  {
+    "objectID": "slides/lec26_Decision_Tree.html#forest-training",
+    "href": "slides/lec26_Decision_Tree.html#forest-training",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Random Forests: Two Sources of Randomness",
+    "text": "Random Forests: Two Sources of Randomness\nA random forest combines randomized decision trees. Their collection is the forest.\n\nBootstrap sample: draw 14 times from the 14 training rows, allowing repeats. This is sampling with replacement.\nRandom feature subset: at each node, select some features and learn the best split among them.\n\n\n\nResample rows for each tree and candidate features for each node.\n\n\nWith replacement means a row can be chosen again after an earlier draw. Bootstrapping adds no new measured information or labels. The diagram’s two-feature examples apply at the first node; repeat feature sampling at every later node, not just once per tree. Implementations can offer settings that use all features or disable bootstrap sampling; we show the standard two-randomization construction. Two is illustrative, not a universal default. Sources: Breiman, https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf, and https://scikit-learn.org/stable/modules/ensemble.html#random-forests."
+  },
+  {
+    "objectID": "slides/lec26_Decision_Tree.html#forest-prediction",
+    "href": "slides/lec26_Decision_Tree.html#forest-prediction",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Combining Forest Predictions",
+    "text": "Combining Forest Predictions\nUse the same new day: Sunny, Mild, Normal humidity, Strong wind.\nA leaf may remain mixed when growth is limited. Its class fractions estimate probabilities. These are illustrative outputs:\n\n\\text{Mean Yes probability}=\\frac{0.8+0.6+0.2}{3}\\approx0.533.\nPredict Yes, the larger average class probability. Some forests instead use majority votes from tree labels.\n\nFor regression, average the numbers: trees A, B, and C predicting 18, 20, and 22 minutes for one route give 20 minutes.\n\n\nThe leaf counts are invented, not claimed results from fitting the tennis table. A leaf’s class fraction is its class count divided by all counts in that leaf. Depth or leaf-size constraints can leave mixed labels in a final leaf. Averaging .8,.6,.2 gives 8/15 for Yes and 7/15 for No. This matches scikit-learn’s probability averaging. Breiman’s original classifier uses majority votes; these methods can disagree, though they agree here. The separate regression illustration averages three tree outputs for the same route: (18+20+22)/3=20 minutes. These are predictions from separate trees, not a list of training records. Estimated probabilities need not be perfectly calibrated. References: https://scikit-learn.org/stable/modules/ensemble.html#random-forests and https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier.predict_proba."
+  },
+  {
+    "objectID": "slides/lec26_Decision_Tree.html#forest-practice",
+    "href": "slides/lec26_Decision_Tree.html#forest-practice",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Using a Random Forest",
+    "text": "Using a Random Forest\nIn tabular data, rows are observations and input columns are features.\nHyperparameters are settings chosen before fitting. Split rules are learned from records.\n\n\n\nSetting\nWhat it controls\n\n\n\n\nNumber of trees\nMore averaging, with more computation and memory\n\n\nCandidate features per node\nHow much the trees can differ\n\n\nDepth / minimum leaf size\nHow detailed individual trees can become\n\n\n\n\nBenefit: can capture nonlinear patterns and feature combinations.\nCost: harder to explain than one small tree. More trees do not fix bad data.\n\n\nChoose settings with validation data and assess the final forest on separate test records.\n\n\nThe toy tennis set does not establish real-world performance. More trees can stabilize predictions, but accuracy need not improve indefinitely. Candidate-feature and leaf-size choices affect bias and variance. Libraries differ in categorical support: scikit-learn’s tree estimators need numeric representations, so Sunny-like strings need suitable encoding. Fit preprocessing on training data only. Tracing one tree is easier than explaining an entire forest; feature importance is not proof of causation. Practical API: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html."
+  },
+  {
+    "objectID": "slides/lec26_Decision_Tree.html#quick-check",
+    "href": "slides/lec26_Decision_Tree.html#quick-check",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Quick Check",
+    "text": "Quick Check\n\nOur Sunny, Normal-humidity day reaches a Yes leaf. Does this tree still inspect wind?\nIn a forest, do we choose the final split entirely at random?\nDoes a pure leaf prove that the next day’s label is certain?\n\n\n1. No. Follow one path and stop at its leaf.\n\n\n2. No. Randomize candidate features, then compare splits using the training records.\n\n\n3. No. Purity describes that leaf’s training records. New examples can still differ."
+  },
+  {
+    "objectID": "slides/lec26_Decision_Tree.html#takeaways",
+    "href": "slides/lec26_Decision_Tree.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nA tree follows feature tests from a root to a prediction leaf.\nEntropy measures label mixture. Information gain measures its reduction from a split.\nGreedy learning builds locally. Size limits and pruning help control overfitting.\nA forest combines trees randomized through training rows and candidate features.\nClassification can combine probabilities or votes. Regression averages numeric predictions.\n\n\nA readable rule and a strong ensemble are both useful. Judge either one on new observations.\n\nAsset credits"
   }
 ]

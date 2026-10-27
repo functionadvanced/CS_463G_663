@@ -1,0 +1,16 @@
+Lecture 26 cartoon illustrations
+Generated: 2026-10-26
+Tool: Codex built-in image generator (not the fallback CLI).
+Both PNGs were requested with transparent backgrounds and copied unchanged into
+this project. They are conceptual illustrations, not measured data or depictions
+of actual people or events. Mathematical diagrams remain editable draw.io files.
+
+Asset 1: tennis-weather-cartoon.png
+Original output: exec-82f38995-9184-44cb-b34d-bc4c82032a4f.png
+Final prompt:
+Use case: illustration-story. A compact, clean educational cartoon for a university AI lecture about deciding whether a campus tennis group will play based on weather. Two friendly adult university students, one woman and one man, holding tennis rackets beside a short tennis net and one tennis ball, looking up at a small sun partly behind a cloud. Casual teal and raspberry sportswear with mustard accents, inclusive natural skin tones, simple thick charcoal outlines, flat editorial cartoon, minimal shading. Uncluttered, roughly landscape 3:2 composition, full people and rackets visible, no large scenery. Genuine transparent background with clean edges; no rectangular backdrop, gradients, glow, ground shadow, text, numerals, letters, logos, watermark, speech bubbles, arrows or equations. Decorative context only, not a statistical diagram. Recognizable at 260 pixels wide on a white classroom slide.
+
+Asset 2: ensemble-committee-cartoon.png
+Original output: exec-ae79d79e-32cc-4c33-bd79-3bb2574c709e.png
+Final prompt:
+Use case: illustration-story. A simple friendly classroom cartoon illustrating a committee analogy for combining several predictive models. Exactly three adult university students stand together comparing three separate plain clipboards, thoughtfully discussing the weather; each holds their own clipboard, and a small sun and cloud floats over the group. Their expressions show independent thought and cooperation, not unanimous cheering. Different natural skin tones, teal, raspberry and mustard clothing accents, thick clean charcoal outlines, flat editorial illustration with minimal shading, compact landscape composition. Show full figures and clear separated hands. Transparent background, no scenery, floor, colored glow, gradients, shadow cloud, border, text, letters, numerals, checkmarks, voting signs, logos, watermark, speech bubbles, arrows, equations, trees or statistical diagrams. The clipboards are blank, because all mathematical details will be editable slide text. Recognizable at 300 pixels wide on a white university lecture slide.

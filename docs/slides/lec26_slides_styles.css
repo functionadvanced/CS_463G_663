@@ -1,0 +1,64 @@
+.reveal section.tree26-slide { font-size: 0.9em; }
+.reveal section.tree26-slide h2 { margin-top: 0; }
+.reveal section.tree26-slide p { margin: 0.35em 0; }
+.reveal section.tree26-slide .math.inline { white-space: nowrap; }
+.reveal section.tree26-slide .katex-display { margin: 0.45em 0; }
+.reveal section.tree26-slide table { font-size: 0.85em; line-height: 1.25; }
+.reveal section.tree26-slide th,
+.reveal section.tree26-slide td { padding: 0.42em 0.5em; }
+.reveal section.tree26-slide .question,
+.reveal section.tree26-slide .takeaway { margin: 0.45em 0; padding: 0.45em 0.65em; }
+.reveal section.tree26-slide .question p,
+.reveal section.tree26-slide .takeaway p { margin: 0; }
+.reveal section.tree26-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin: 0.2em auto;
+  border: 0;
+  box-shadow: none;
+}
+.reveal section.tree26-slide .tree26-context {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 26px;
+  align-items: center;
+}
+.reveal section.tree26-slide .tree26-context > p { margin: 0; }
+.reveal section.tree26-slide .tree26-cartoon { max-height: 205px; }
+.reveal section.tree26-slide .tree26-tree { max-height: 350px; }
+.reveal section.tree26-slide .tree26-trace {
+  display: grid;
+  grid-template-rows: 100%;
+  height: 420px;
+}
+.reveal section.tree26-slide .tree26-trace p {
+  grid-area: 1 / 1;
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+}
+.reveal section.tree26-slide .tree26-trace img { max-height: 420px; margin: 0; }
+.reveal section.tree26-slide .tree26-trace .fragment { transition: none; }
+.reveal section.tree26-slide .tree26-gain { max-height: 275px; }
+.reveal section.tree26-slide .tree26-regression { max-height: 300px; }
+.reveal section.tree26-slide .tree26-forest-training { max-height: 280px; }
+.reveal section.tree26-slide .tree26-forest-prediction { max-height: 175px; }
+.reveal section.tree26-slide .pseudo-code { font-size: 0.7em; line-height: 1.4; }
+.reveal section.tree26-slide .pseudo-line { min-height: 1.4em; white-space: nowrap; }
+.reveal #training-records table { table-layout: fixed; font-size: 0.78em; }
+.reveal #training-records col:first-child { width: 10% !important; }
+.reveal #training-records col:nth-child(2) { width: 20% !important; }
+.reveal #training-records col:nth-child(3) { width: 21% !important; }
+.reveal #training-records col:nth-child(4) { width: 20% !important; }
+.reveal #training-records col:nth-child(5) { width: 18% !important; }
+.reveal #training-records col:last-child { width: 11% !important; }
+.reveal #tennis-task table,
+.reveal #purity table,
+.reveal #choose-root table,
+.reveal #forest-practice table { table-layout: fixed; }
+.reveal #tennis-task col:first-child { width: 43% !important; }
+.reveal #tennis-task col:last-child { width: 57% !important; }
+.reveal #forest-practice col:first-child { width: 38% !important; }
+.reveal #forest-practice col:last-child { width: 62% !important; }
