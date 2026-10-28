@@ -1,0 +1,41 @@
+.reveal section.tr38-slide { font-size: 0.9em; }
+.reveal section.tr38-slide h2 { margin-top: 0; }
+.reveal section.tr38-slide p { margin: 0.4em 0; }
+.reveal section.tr38-slide .math.inline { white-space: nowrap; }
+.reveal section.tr38-slide .katex-display { margin: 0.4em 0; }
+.reveal section.tr38-slide .question,
+.reveal section.tr38-slide .takeaway { margin: 0.45em 0; padding: 0.45em 0.65em; }
+.reveal section.tr38-slide .question p,
+.reveal section.tr38-slide .takeaway p { margin: 0; }
+.reveal section.tr38-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin: 0.25em auto;
+  border: 0;
+  box-shadow: none;
+}
+.reveal section.tr38-slide .tr38-pipeline { max-height: 180px; }
+.reveal section.tr38-slide .tr38-heads { max-height: 245px; }
+.reveal section.tr38-slide .tr38-targets { max-height: 190px; }
+.reveal section.tr38-slide .tr38-mask { max-height: 205px; }
+.reveal section.tr38-slide .tr38-order { max-height: 200px; }
+.reveal section.tr38-slide .tr38-frequencies { max-height: 200px; }
+.reveal section.tr38-slide .tr38-rotary { max-height: 200px; }
+.reveal section.tr38-slide .tr38-residual { max-height: 170px; }
+.reveal section.tr38-slide .tr38-normalization { max-height: 155px; }
+.reveal section.tr38-slide .tr38-block { max-height: 265px; }
+.reveal section.tr38-slide .tr38-output { max-height: 195px; }
+.reveal section.tr38-slide .tr38-temperature { max-height: 200px; }
+.reveal section.tr38-slide .tr38-top-k { max-height: 190px; }
+.reveal section.tr38-slide .tr38-cache { max-height: 225px; }
+.reveal section.tr38-slide .tr38-perplexity { max-height: 155px; }
+.reveal section.tr38-slide .tr38-patches { max-height: 235px; }
+.reveal section.tr38-slide .tr38-diffusion { max-height: 240px; }
+.reveal section.tr38-slide .tr38-summary { max-height: 155px; }
+.reveal section.tr38-slide .tr38-paper { font-size: 0.7em; line-height: 1.25; margin-top: 0.6em; }
+.reveal section.tr38-slide .pseudo-code { font-size: 0.7em; line-height: 1.4; }
+.reveal section.tr38-slide .pseudo-line { min-height: 1.4em; white-space: nowrap; }
+.reveal section.tr38-slide#feedforward-residuals > p,
+.reveal section.tr38-slide#temperature > p { margin: 0.2em 0; }

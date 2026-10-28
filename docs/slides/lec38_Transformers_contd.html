@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec38_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,585 +164,495 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="transformers-continued" class="slide level2 section-slide">
-<h2>Transformers, Continued</h2>
-<p>Today: multi-head attention, decoding, causal training, positional encodings, transformer blocks, and transformers beyond language.</p>
+<section id="model-overview" class="slide level2 tr38-slide">
+<h2>From Attention to a Language Model</h2>
+<p>Recall: queries <span class="math inline">Q</span> and keys <span class="math inline">K</span> set weights; values <span class="math inline">V</span> supply content. Each vector is a <strong>column</strong>, and <span class="math inline">d_k</span> is the number of key/query features:</p>
+<p><span class="math display">O=V\,\operatorname{softmax}_{\text{columns}}\!\left(\frac{K^TQ}{\sqrt{d_k}}\right).</span></p>
+<p><img data-src="imgs/drawio/lec38/model-pipeline.png" class="tr38-pipeline" alt="A text prefix passes through token and position representation, repeated Transformer blocks, and a vocabulary prediction head to produce a next-token distribution."></p>
+<p>A <strong>block</strong> is a repeated group of neural-network operations. A language model needs complete blocks and an output head, not just one attention calculation.</p>
+<aside class="notes">
+<p>The pipeline is a decoder-only autoregressive language model. Encoder-only and encoder-decoder Transformers also exist. Softmax runs down each score column across keys, as in Lecture 37. The generic token/position stage includes either added position vectors or position-aware operations inside attention. The lecture develops the supplied Beamer and TikZ source, with the same column-vector convention. Reference: Vaswani et al.&nbsp;(2017), Attention Is All You Need, https://arxiv.org/abs/1706.03762.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="recall-scaled-dot-product-attention" class="slide level2">
-<h2>Recall: Scaled Dot-Product Attention</h2>
-<p><span class="math display">
-\operatorname{Attention}(Q,K,V)
-=
-V\cdot \operatorname{softmax}\left(\frac{K^TQ}{\sqrt{d_k}}\right)
-</span></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Term</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">K^TQ</span></td>
-<td>similarity scores</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\operatorname{softmax}</span></td>
-<td>converts scores into weights</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">V</span></td>
-<td>content being mixed</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\sqrt{d_k}</span></td>
-<td>stabilizing scale</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="multi-head-attention" class="slide level2">
-<h2>Multi-Head Attention</h2>
-<p>Instead of one attention head, use many heads with different projections.</p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec35/multi-head-attention.svg" alt="Multi-head attention projects inputs into several heads, concatenates them, and applies an output projection"></p>
-</div>
+<section id="multiple-heads" class="slide level2 tr38-slide">
+<h2>Several Attention Heads</h2>
+<p>An <strong>attention head</strong> is one attention computation with its own learned query, key, and value projections. <strong>Multi-head attention (MHA)</strong> runs several heads on the same input.</p>
+<p><img data-src="imgs/drawio/lec38/parallel-heads.png" class="tr38-heads" alt="The same input X enters two attention heads with separate learned Q, K, V projections. Their output vectors are stacked and passed through learned output projection W_O."></p>
+<p><strong>Concatenate</strong> means stack the head outputs end to end, preserving their separate coordinates. A learned output projection <span class="math inline">W_O</span> mixes those coordinates.</p>
 <div class="takeaway">
-<p>Different heads can attend to different relationships in the same sequence.</p>
+<p>Heads can learn different relationships. They are not required to specialize in predefined roles or to produce different attention patterns.</p>
 </div>
+<aside class="notes">
+<p>Each head uses the single-head computation from Lecture 37. For self-attention all heads receive the same source sequence, but their projection parameters differ. Concatenation stacks features, not positions. For H heads with d_v output features each, W_O has shape d_e by H*d_v. With n query positions the final output has shape d_e by n.&nbsp;H is the number of heads, not the query count. Reference: Vaswani et al., Section 3.2.2.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="multi-head-formula" class="slide level2">
-<h2>Multi-Head Formula</h2>
-<p><span class="math display">
-\operatorname{MultiHead}(\mathcal{W},X,X_Q)
-=
-W_O
-\begin{bmatrix}
-\operatorname{Attn}(W_{K,1},W_{Q,1},W_{V,1},X,X_Q)\\
-\operatorname{Attn}(W_{K,2},W_{Q,2},W_{V,2},X,X_Q)\\
-\vdots\\
-\operatorname{Attn}(W_{K,m},W_{Q,m},W_{V,m},X,X_Q)
-\end{bmatrix}
-</span></p>
-<p>The output projection <span class="math inline">W_O</span> brings the concatenated heads back to the desired embedding dimension.</p>
-</section>
-<section id="self-attention" class="slide level2">
-<h2>Self-Attention</h2>
-<p>Self-attention means the sequence attends to itself:</p>
-<p><span class="math display">
-X_Q=X
-</span></p>
-<p>In autoregressive language modeling:</p>
-<ul>
-<li>Each position builds a latent representation.</li>
-<li>It should use previous context.</li>
-<li>It should not see future tokens.</li>
-</ul>
+<section id="head-example" class="slide level2 tr38-slide">
+<h2>A Two-Head Example</h2>
+<p>For <strong>one query</strong>, suppose the head outputs are <span class="math inline">u_1=(2,0)^T</span> and <span class="math inline">u_2=(0,3)^T</span>.</p>
+<p>Concatenation gives <strong>four features</strong>, not their two-feature sum:</p>
+<p><span class="math display">c=\begin{bmatrix}u_1\\u_2\end{bmatrix}
+=\begin{bmatrix}2\\0\\0\\3\end{bmatrix}.</span></p>
 <div class="question">
-<p>That last condition is why we need causal masking.</p>
+<p>With output projection <span class="math inline">W_O=\begin{bmatrix}1&amp;0&amp;1&amp;0\\0&amp;1&amp;0&amp;1\end{bmatrix}</span>, what is <span class="math inline">W_Oc</span>?</p>
 </div>
-</section>
-<section id="inference-next-token" class="slide level2">
-<h2>Inference: Next Token</h2>
-<p>Given a hidden representation <span class="math inline">h</span>:</p>
-<p><span class="math display">
-h=\operatorname{MultiHead}(\mathcal{W},X,x_n)
-</span></p>
-<p>Predict the next-token distribution:</p>
-<p><span class="math display">
-\operatorname{softmax}(B^Th)
-</span></p>
-<p>where <span class="math inline">B</span> contains token embeddings for the vocabulary.</p>
-</section>
-<section id="temperature-sampling" class="slide level2">
-<h2>Temperature Sampling</h2>
-<p>Logits <span class="math inline">\ell_i</span> become probabilities through a temperature-scaled softmax:</p>
-<p><span class="math display">
-p_i=
-\frac{\exp(\ell_i/T)}
-{\sum_j \exp(\ell_j/T)}
-</span></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Temperature</th>
-<th>Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>low <span class="math inline">T</span></td>
-<td>sharper, more deterministic</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">T=1</span></td>
-<td>ordinary softmax</td>
-</tr>
-<tr class="odd">
-<td>high <span class="math inline">T</span></td>
-<td>flatter, more diverse</td>
-</tr>
-</tbody>
-</table>
-<div class="takeaway">
-<p>Temperature changes only the sampling distribution, not the model weights.</p>
+<div class="fragment takeaway">
+<p><span class="math inline">W_Oc=(2,3)^T</span>. The <span class="math inline">2\times4</span> projection returns two features. Learned weights can mix the head coordinates differently.</p>
 </div>
+<aside class="notes">
+<p>These head outputs and the output matrix are constructed examples, not trained parameters. W_O is not required to sum coordinates. In a real model it is learned jointly with the per-head projections. For multiple queries, the same output projection acts on each concatenated output column independently.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="top-k-sampling" class="slide level2">
-<h2>Top-<span class="math inline">K</span> Sampling</h2>
-<p>Full-vocabulary sampling includes a long tail of tiny probabilities.</p>
-<p>Top-<span class="math inline">K</span> keeps only the <span class="math inline">K</span> most likely tokens:</p>
-<p><span class="math display">
-\tilde{s}_i=
-\begin{cases}
-s_i, &amp; \text{if } i \text{ is among the top-}K \text{ logits},\\
--\infty, &amp; \text{otherwise}.
-\end{cases}
-</span></p>
+<section id="shifted-targets" class="slide level2 tr38-slide">
+<h2>Training Targets Are Shifted</h2>
+<p><strong>Teacher forcing</strong> uses the correct earlier tokens from a training example. For the sentence <strong>“The sky is blue”</strong>, the target at each input position is the <strong>next</strong> token:</p>
+<p><img data-src="imgs/drawio/lec38/shifted-targets.png" class="tr38-targets" alt="Inputs The, sky, is at positions 1,2,3 have targets sky, is, blue at those same output positions. Earlier inputs form the available prefix for each prediction."></p>
+<p>A <strong>causal mask</strong> blocks attention to later input positions. All training inputs may be loaded together, but each prediction must use only its allowed prefix.</p>
 <div class="question">
-<p>Temperature controls sharpness; top-<span class="math inline">K</span> controls which candidate tokens are even allowed.</p>
+<p>At input position 2 (<code>sky</code>), can the model read input position 3 (<code>is</code>) to predict <code>is</code>?</p>
 </div>
+<div class="fragment takeaway">
+<p>No.&nbsp;That would reveal the target itself. Position 2 may read only <code>The</code> and <code>sky</code>.</p>
+</div>
+<aside class="notes">
+<p>Positions in this example are numbered from 1. The input at i predicts the token at i+1. Beginning and end tokens can also be trained; the diagram shows an interior three-target segment. A causal mask must be respected at every self-attention layer, not only at the final prediction. Teacher forcing does not authorize future-token leakage.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="training-by-next-token-prediction" class="slide level2">
-<h2>Training by Next-Token Prediction</h2>
-<p>Sentence:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>token 0</th>
-<th>token 1</th>
-<th>token 2</th>
-<th>token 3</th>
-<th>token 4</th>
-<th>token 5</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>&lt;start&gt;</code></td>
-<td>Attention</td>
-<td>is</td>
-<td>all</td>
-<td>you</td>
-<td>need</td>
-</tr>
-</tbody>
-</table>
-<p>Training examples:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Prefix</th>
-<th>Query token</th>
-<th>Target next token</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>&lt;start&gt;</code></td>
-<td><code>&lt;start&gt;</code></td>
-<td>Attention</td>
-</tr>
-<tr class="even">
-<td><code>&lt;start&gt;</code> Attention</td>
-<td>Attention</td>
-<td>is</td>
-</tr>
-<tr class="odd">
-<td><code>&lt;start&gt;</code> Attention is</td>
-<td>is</td>
-<td>all</td>
-</tr>
-<tr class="even">
-<td><code>&lt;start&gt;</code> Attention is all</td>
-<td>all</td>
-<td>you</td>
-</tr>
-</tbody>
-</table>
+<section id="causal-mask" class="slide level2 tr38-slide">
+<h2>The Mask in Column-Vector Notation</h2>
+<p>In the score matrix, row <span class="math inline">j</span> is a <strong>key</strong> position and column <span class="math inline">i</span> is a <strong>query</strong> position. The additive mask has <span class="math inline">M_{j,i}=0</span> when <span class="math inline">j\le i</span>, and <span class="math inline">-\infty</span> otherwise.</p>
+<p><span class="math display">A=\operatorname{softmax}_{\text{columns}}\!\left(\frac{K^TQ}{\sqrt{d_k}}+M\right).</span></p>
+<p><img data-src="imgs/drawio/lec38/column-causal-mask.png" class="tr38-mask" alt="Three-by-three additive mask with keys as rows and queries as columns. Row 1 is 0,0,0; row 2 is negative infinity,0,0; row 3 is negative infinity,negative infinity,0. Allowed entries are on and above the diagonal."></p>
+<p>If the three scores in query column 2 were all zero <strong>before masking</strong>, what weights would result?</p>
+<div class="fragment takeaway">
+<p><span class="math inline">(1/2,1/2,0)^T</span>. Mask <strong>before</strong> softmax: blocked positions receive zero weight, and allowed weights still sum to one.</p>
+</div>
+<aside class="notes">
+<p>The allowed triangle is upper triangular because this lecture puts keys in rows and queries in columns. It is transposed in common row-vector formulas. Column 2 permits key positions 1 and 2, blocking key 3. An ordinary finite score of zero is not a blocked score: exp(0)=1, while exp(-infinity)=0. Do not simply zero some weights after softmax without renormalizing. Every query here can attend to itself, so no column is completely masked. Padding masks, batching, and dropout are omitted.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="causal-masking" class="slide level2">
-<h2>Causal Masking</h2>
-<p>Rather than slicing every prefix separately, train all positions at once with a mask.</p>
+<section id="masked-attention-algorithm" class="slide level2 tr38-slide">
+<h2>Causal Attention Computation</h2>
+<p>Inputs are already projected for one sequence. <code>@</code> is matrix multiplication; <code>n</code> counts positions and <code>dk</code> counts key/query features.</p>
 <div class="pseudo-code">
 <div class="pseudo-line">
-<span class="pseudo-var">scores</span> <span class="pseudo-op">=</span> <span class="pseudo-var">K</span><sup>T</sup><span class="pseudo-var">Q</span> <span class="pseudo-op">/</span> sqrt(<span class="pseudo-var">d_k</span>)
+<span class="pseudo-kw">function</span> <span class="pseudo-fn">CausalAttention</span>(<span class="pseudo-var">Q</span>, <span class="pseudo-var">K</span>, <span class="pseudo-var">V</span>)
 </div>
-<div class="pseudo-line fragment">
-<span class="pseudo-kw">for each</span> query position <span class="pseudo-var">i</span>
+<div class="pseudo-line fragment indent-1" data-fragment-index="0">
+<span class="pseudo-var">n</span>, <span class="pseudo-var">dk</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">Columns</span>(<span class="pseudo-var">Q</span>), <span class="pseudo-fn">Rows</span>(<span class="pseudo-var">K</span>)
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">for each</span> key position <span class="pseudo-var">j</span>
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-var">scores</span> <span class="pseudo-op">=</span> (<span class="pseudo-fn">Transpose</span>(<span class="pseudo-var">K</span>) <span class="pseudo-op">@</span> <span class="pseudo-var">Q</span>) <span class="pseudo-op">/</span> <span class="pseudo-fn">sqrt</span>(<span class="pseudo-var">dk</span>)
 </div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">j</span> <span class="pseudo-op">&gt;</span> <span class="pseudo-var">i</span>: <span class="pseudo-var">scores</span>[<span class="pseudo-var">j</span>, <span class="pseudo-var">i</span>] <span class="pseudo-op">=</span> -infinity
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-kw">for</span> <span class="pseudo-var">i</span> <span class="pseudo-op">=</span> <span class="pseudo-num">1</span>, …, <span class="pseudo-var">n</span>
 </div>
-<div class="pseudo-line fragment">
-<span class="pseudo-var">weights</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">softmax</span>(<span class="pseudo-var">scores</span>)
+<div class="pseudo-line fragment indent-2" data-fragment-index="2">
+<span class="pseudo-kw">for</span> <span class="pseudo-var">j</span> <span class="pseudo-op">=</span> <span class="pseudo-var">i</span> <span class="pseudo-op">+</span> <span class="pseudo-num">1</span>, …, <span class="pseudo-var">n</span>
+</div>
+<div class="pseudo-line fragment indent-3" data-fragment-index="3">
+<span class="pseudo-var">scores</span>[<span class="pseudo-var">j</span>, <span class="pseudo-var">i</span>] <span class="pseudo-op">=</span> <span class="pseudo-lit">-infinity</span>
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="4">
+<span class="pseudo-var">weights</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">Softmax</span>(<span class="pseudo-var">scores</span>, <span class="pseudo-var">axis</span><span class="pseudo-op">=</span><span class="pseudo-num">0</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="4">
+<span class="pseudo-kw">return</span> <span class="pseudo-var">V</span> <span class="pseudo-op">@</span> <span class="pseudo-var">weights</span>
 </div>
 </div>
-</section>
-<section id="causal-mask-matrix" class="slide level2">
-<h2>Causal Mask Matrix</h2>
-<p>Future positions receive <span class="math inline">-\infty</span> before softmax.</p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec35/causal-mask-matrix.svg" alt="Causal mask matrix where lower triangular cells are allowed and future cells are blocked"></p>
-</div>
+<p>Axis <code>0</code> normalizes <strong>down each query column</strong>, across keys. The inner loop is empty when <code>i = n</code>.</p>
 <div class="takeaway">
-<p>Each token can attend only to itself and earlier tokens.</p>
+<p>The mask permits parallel training positions without allowing a prediction to use future input.</p>
 </div>
+<aside class="notes">
+<p>This is one-based pseudocode for equally many key and query positions, not runnable Python or a cached single-query decode call. A vectorized library operation normally constructs the same mask without these explicit loops. Rows are keys and columns are queries; use scores[j,i], not scores[i,j]. Reveal the dimensions, scores, index loops, blocked entries, then normalization and value mixture. Stable softmax subtracts a finite allowed maximum before exponentiation. Apply the causal restriction within every self-attention head at every layer.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="layer-normalization" class="slide level2">
+<section id="position-signals" class="slide level2 tr38-slide">
+<h2>Token Order Needs a Signal</h2>
+<p>Attention alone, without position information or a causal mask, has no built-in coordinates for <strong>first</strong>, <strong>second</strong>, or <strong>third</strong>. Order can change meaning:</p>
+<p><img data-src="imgs/drawio/lec38/order-signal.png" class="tr38-order" alt="At positions 1,2,3 the tokens five,minus,two mean 3, while two,minus,five mean negative 3. The words are the same but their positions differ."></p>
+<p>A <strong>positional encoding</strong> supplies location information. One approach adds position vector <span class="math inline">p_t</span> to token embedding <span class="math inline">e_t</span>:</p>
+<p><span class="math display">z_t=e_t+p_t.</span></p>
+<div class="takeaway">
+<p>Content says <strong>which token</strong>; a position signal says <strong>where it occurs</strong>. Position vectors may be learned or computed from a fixed rule.</p>
+</div>
+<aside class="notes">
+<p>Without positional signals or order-dependent masks, jointly permuting the inputs of self-attention permutes its outputs in the same way: permutation equivariance, not invariance of the entire output sequence. With a fixed query, consistently permuting key/value pairs leaves their weighted sum unchanged. A causal mask already introduces an order-dependent restriction, so do not claim that any causal model without added positional vectors is completely order-blind. The arithmetic results in the diagram illustrate meaning, not actual model outputs.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sinusoidal-positions" class="slide level2 tr38-slide">
+<h2>Sinusoidal Position Vectors</h2>
+<p>A <strong>sinusoid</strong> is a sine or cosine wave. The original Transformer uses pairs of waves that vary at different rates. For even embedding size <span class="math inline">d_e</span>:</p>
+<p><span class="math display">p_t[2r]=\sin(t\omega_r),\qquad p_t[2r+1]=\cos(t\omega_r),
+\qquad \omega_r=10000^{-2r/d_e}.</span></p>
+<p>Here <span class="math inline">t=0,1,\ldots</span> is position, <span class="math inline">r=0,\ldots,d_e/2-1</span> indexes feature pairs, and <span class="math inline">\omega_r</span> is the angle change per position in radians.</p>
+<p><img data-src="imgs/drawio/lec38/positional-frequencies.png" class="tr38-frequencies" alt="Precisely sampled sine curves show sin(t) changing rapidly and sin(0.1t) changing slowly over positions 0 through 20. These are two feature rates when embedding size is 8."></p>
+<p>For the first pair, <span class="math inline">t=0</span> gives <span class="math inline">(0,1)</span> and <span class="math inline">t=1</span> gives approximately <span class="math inline">(0.841,0.540)</span>. Multiple rates supply position signals at different scales.</p>
+<aside class="notes">
+<p>The figure uses d_e=8, for which omega_0=1 and omega_1=0.1; the other pairs have rates 0.01 and 0.001. Curves show the continuous functions for intuition, but sequence positions are integers. Sine and cosine in the same pair share a rate. The two-dimensional pair at t+delta is a rotation of that at t with angle depending on delta; the trigonometric derivation is optional. Fixed encodings can be evaluated outside the training length, but that alone does not guarantee reliable long-context extrapolation. Reference: Vaswani et al., Section 3.5.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rotary-positions" class="slide level2 tr38-slide">
+<h2>Rotary Position Embedding</h2>
+<p><strong>Rotary Position Embedding (RoPE)</strong> rotates feature pairs in <strong>queries and keys</strong>. Let <span class="math inline">R(\phi)</span> be a 2D rotation by angle <span class="math inline">\phi</span>, <span class="math inline">i,j</span> the query/key positions, and <span class="math inline">\theta</span> the angle step per position:</p>
+<p><span class="math display">\tilde q_i=R(i\theta)q_i,\qquad \tilde k_j=R(j\theta)k_j.</span></p>
+<p>Below, use <span class="math inline">q_i=k_j=(1,0)^T</span> and <span class="math inline">\theta=\pi/2</span>: a quarter turn per position.</p>
+<p><img data-src="imgs/drawio/lec38/rotary-positions.png" class="tr38-rotary" alt="With unrotated query and key both (1,0) and a quarter-turn per position, positions 0 and 1 give rotated vectors (1,0) and (0,1). Shifting both to positions 1 and 2 gives (0,1) and (-1,0). Both dot products are zero."></p>
+<p><span class="math display">\tilde q_i^T\tilde k_j=q_i^T R((j-i)\theta)k_j.</span></p>
+<p>The <strong>positional factor</strong> uses offset <span class="math inline">j-i</span>; query/key content still matters.</p>
+<div class="tr38-paper">
+<p>Jianlin Su et al.&nbsp;(2021), <a href="https://arxiv.org/abs/2104.09864" target="_blank" rel="noopener"><em>RoFormer: Enhanced Transformer with Rotary Position Embedding</em></a>.</p>
+</div>
+<aside class="notes">
+<p>The toy figure uses theta=pi/2 to make quarter-turns visible; actual RoPE uses multiple rates across feature pairs, not this angle for every pair. Here i is a query position and j a key position. For R(phi)=[[cos(phi),-sin(phi)],[sin(phi),cos(phi)]], R(i theta)^T R(j theta)=R((j-i)theta). The content vectors in this example are held fixed while both positions shift; general contextualized queries and keys need not be fixed when the input changes. RoPE does not guarantee successful extrapolation to arbitrary context lengths.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="feedforward-residuals" class="slide level2 tr38-slide">
+<h2>Feedforward Layers and Residuals</h2>
+<p>A <strong>feedforward network (FFN)</strong> transforms each position independently:</p>
+<p><span class="math display">f(x)=W_2\,\operatorname{ReLU}(W_1x+b_1)+b_2.</span></p>
+<p><span class="math inline">W_1,W_2</span> are learned matrices and <span class="math inline">b_1,b_2</span> are biases. <strong>ReLU</strong> (rectified linear unit) is <span class="math inline">\max(0,a)</span> for each feature <span class="math inline">a</span>.</p>
+<p><img data-src="imgs/drawio/lec38/residual-update.png" class="tr38-residual" alt="A residual connection adds input x=(1,-2) to a chosen FFN output f(x)=(1,0), giving y=(2,-2). A skip path carries x directly to the addition."></p>
+<p>A <strong>residual connection</strong> (or <strong>skip connection</strong>) adds the input back: <span class="math inline">y=x+f(x)</span>. If <span class="math inline">f(x)=0</span>, then <span class="math inline">y=x</span>.</p>
+<div class="takeaway">
+<p>Attention mixes <strong>positions</strong>; the FFN transforms <strong>features</strong>. Residuals add refinements to the input.</p>
+</div>
+<aside class="notes">
+<p>The illustrated f(x)=(1,0)^T is obtained, for example, with two identity weight matrices and zero biases, so f reduces to ReLU. That is a toy choice, not a trained FFN or the usual expanded intermediate dimension. In a full model the FFN normally has a larger intermediate feature size; activation variants also exist. A residual addition requires matching input and output dimensions. The direct identity path helps information and gradients propagate, without guaranteeing optimization success. Residual additions are also used around attention, not only around the FFN.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="layer-normalization" class="slide level2 tr38-slide">
 <h2>Layer Normalization</h2>
-<p>Layer normalization stabilizes training.</p>
-<p>For embedding <span class="math inline">x\in\mathbb{R}^{d_e}</span>:</p>
-<p><span class="math display">
-y=
-\frac{x-\mathbb{E}[x]}
-{\sqrt{\operatorname{Var}[x]+\epsilon}}
-\gamma+\beta
-</span></p>
-<p>where <span class="math inline">\gamma</span> and <span class="math inline">\beta</span> are trainable scale and shift parameters.</p>
+<p><strong>Layer normalization (LN)</strong> normalizes the features of <strong>one token vector</strong>, rather than averaging different sequence positions.</p>
+<p>For feature <span class="math inline">x_a</span>, let <span class="math inline">\mu</span> be the mean of that vector’s features and <span class="math inline">v</span> their mean squared deviation from <span class="math inline">\mu</span>:</p>
+<p><span class="math display">y_a=\gamma_a\frac{x_a-\mu}{\sqrt{v+\epsilon}}+\beta_a.</span></p>
+<p><span class="math inline">\gamma_a</span> and <span class="math inline">\beta_a</span> are learned scale and shift parameters; <span class="math inline">\epsilon&gt;0</span> is a small constant that prevents division by zero.</p>
+<p><img data-src="imgs/drawio/lec38/layernorm-example.png" class="tr38-normalization" alt="For vector (1,3), the feature mean is 2 and variance is 1. With unit scale, zero shift, and epsilon ignored only for hand arithmetic, normalization gives approximately (-1,1)."></p>
+<p>The example uses unit scales and zero shifts, ignoring <span class="math inline">\epsilon</span> only for hand arithmetic. Actual implementations retain it.</p>
+<aside class="notes">
+<p>For a d_e-feature vector, mu=(sum_a x_a)/d_e and v=(sum_a (x_a-mu)^2)/d_e. This is the population/biased variance, not the sample estimator with denominator d_e-1. LN computes these statistics separately for each token, in both training and inference. Learned scale and shift mean the final output need not itself have zero mean or unit variance. Reference: https://docs.pytorch.org/docs/stable/generated/torch.nn.LayerNorm.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="transformer-block" class="slide level2 tr38-slide">
+<h2>A Complete Pre-LN Block</h2>
+<p><strong>Pre-LN</strong> means layer normalization comes <strong>before</strong> each attention or FFN operation. For input matrix <span class="math inline">X</span>, call the intermediate result <span class="math inline">U</span> and output <span class="math inline">Y</span>:</p>
+<p><img data-src="imgs/drawio/lec38/pre-ln-block.png" class="tr38-block" alt="First residual stage: X passes through LN and causal MHA, then is added to the original X to form U. Second stage: U passes through LN and FFN, then is added to the original U to form Y. Each stage uses its own input on the skip path."></p>
+<p><span class="math display">\begin{aligned}
+U&amp;=X+\operatorname{MHA}_{\text{causal}}(\operatorname{LN}(X)),\\
+Y&amp;=U+\operatorname{FFN}(\operatorname{LN}(U)).
+\end{aligned}</span></p>
+<p>LN and FFN act on each column; causal MHA mixes allowed columns. Stack several blocks to build the model.</p>
+<aside class="notes">
+<p>Both additions preserve the embedding dimension. The second residual uses U, not the original X, which is why the equations name the intermediate explicitly. The MHA function here includes its learned projections, concatenation, output projection, and causal mask. LN has separate learned parameters at the two sites. A common decoder-only pre-LN model has another final LN before its output head. In the original post-LN Transformer, normalization follows each residual sum: U=LN(X+MHA(X)), Y=LN(U+FFN(U)). This lecture illustrates one common block layout, not every architecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="next-token-head" class="slide level2 tr38-slide">
+<h2>From the Final Vector to a Token</h2>
+<p><strong>Inference</strong> uses a trained model without updating its parameters. Let <span class="math inline">h_n</span> be the final normalized representation at the <strong>last prefix position</strong>, after all blocks.</p>
+<p>The <strong>vocabulary</strong> is the set of output tokens. An output head produces <strong>logits</strong>, unnormalized scores for those tokens:</p>
+<p><span class="math display">\ell=W_{\text{vocab}}h_n+b,\qquad p=\operatorname{softmax}(\ell).</span></p>
+<p><img data-src="imgs/drawio/lec38/output-distribution.png" class="tr38-output" alt="A toy three-token output head assigns logits log 4, log 2, and 0 to blue, gray, and green. Softmax gives probabilities 4/7,2/7,1/7, approximately 0.571,0.286,0.143."></p>
+<p><span class="math inline">W_{\text{vocab}}</span> and <span class="math inline">b</span> are learned weights and biases. These probabilities are over <strong>vocabulary tokens</strong>, not attention’s context positions.</p>
+<aside class="notes">
+<p>The three-token vocabulary and logits are constructed examples. The complete model produces h_n; a single attention-head output should not be presented as the whole final language-model state. Some models tie output weights to the token embedding matrix, but that is optional, not a requirement of attention. The softmax here runs over vocabulary entries, unlike the column-wise context-position softmax. Logarithms in the toy logits are natural logs: exp(log 4)=4, exp(log 2)=2, and exp(0)=1.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="temperature" class="slide level2 tr38-slide">
+<h2>Temperature Changes the Distribution</h2>
+<p><strong>Temperature</strong> is a positive sampling setting <span class="math inline">T</span>. For vocabulary logit <span class="math inline">\ell_i</span>:</p>
+<p><span class="math display">p_i(T)=\frac{\exp(\ell_i/T)}{\sum_j\exp(\ell_j/T)},\qquad T&gt;0.</span></p>
+<p>Using the same toy logits <span class="math inline">(\log4,\log2,0)</span> for <code>blue</code>, <code>gray</code>, and <code>green</code>:</p>
+<p><img data-src="imgs/drawio/lec38/temperature-distributions.png" class="tr38-temperature" alt="Three proportional bars show blue,gray,green probabilities. At T=0.5: 0.762,0.190,0.048. At T=1: 0.571,0.286,0.143. At T=2: 0.453,0.320,0.227."></p>
+<p>Lower <span class="math inline">T</span> sharpens; higher <span class="math inline">T</span> flattens. <strong>Greedy decoding</strong> chooses a highest-scoring token instead of sampling.</p>
+<div class="takeaway">
+<p>Low positive temperature still allows randomness. It does not change learned weights or guarantee correctness.</p>
+</div>
+<aside class="notes">
+<p>The bars use unrounded probabilities; labels round to three decimals. At T=0.5 the unnormalized masses are 16,4,1; at T=2 they are 2,sqrt(2),1. Positive temperature preserves logit ranking. As T approaches zero a unique maximum gets probability approaching one; ties require care. Software may treat T=0 as a special greedy option, but it is not a valid substitution into this formula. Higher temperature is not a guarantee of useful creativity or factuality.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="top-k" class="slide level2 tr38-slide">
+<h2>Top-k Sampling Removes Candidates</h2>
+<p><strong>Top-k sampling</strong> keeps the <span class="math inline">k</span> highest-scoring vocabulary tokens, removes the others, and <strong>renormalizes</strong> the remaining probabilities so they sum to <span class="math inline">1</span>.</p>
+<p>For <span class="math inline">T=1</span> and <span class="math inline">k=2</span>, retain <code>blue</code> and <code>gray</code> from the same toy distribution:</p>
+<p><img data-src="imgs/drawio/lec38/top-k-sampling.png" class="tr38-top-k" alt="The full distribution has blue 4/7,gray 2/7,green 1/7. Blue and gray are marked Keep, while green is marked Remove. Renormalization will redistribute the retained probability mass."></p>
 <div class="question">
-<p>Normalization keeps intermediate activations in a better numerical range.</p>
+<p>What are the new probabilities? What happens when <span class="math inline">k=1</span>?</p>
 </div>
-</section>
-<section id="attention-is-permutation-invariant" class="slide level2">
-<h2>Attention Is Permutation-Invariant</h2>
-<p>For any permutation matrix <span class="math inline">P</span>:</p>
-<p><span class="math display">
-\operatorname{Attn}(W_K,W_Q,W_V,XP,X_Q)
-=
-\operatorname{Attn}(W_K,W_Q,W_V,X,X_Q)
-</span></p>
-<p>Meaning: attention over a set of key/value tokens has no built-in notion of order.</p>
-<div class="example-box">
-<p><code>five minus two</code> and <code>two minus five</code> contain similar words, but order changes the meaning.</p>
+<div class="fragment takeaway">
+<p><span class="math inline">p'(\text{blue})=(4/7)/(6/7)=2/3</span>, <span class="math inline">p'(\text{gray})=1/3</span>, and <span class="math inline">p'(\text{green})=0</span>. With <span class="math inline">k=1</span>, only one top token remains: greedy decoding, after resolving any tie.</p>
 </div>
+<aside class="notes">
+<p>The figure displays the filtering and retained mass, not the answer probabilities, until the answer reveal. One implementation sets excluded logits to -infinity before softmax. Lowercase k is the candidate cutoff, not the key matrix K. Positive temperature and top-k play different roles: one changes relative probabilities, the other changes the permitted set. This slide does not prescribe a universally best cutoff or temperature.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="positional-encoding" class="slide level2">
-<h2>Positional Encoding</h2>
-<p>Add a position-dependent vector to each token embedding:</p>
-<p><span class="math display">
-\text{embedding}(x_i,i)
-=
-\text{token encoding}(x_i)
-+
-\text{positional encoding}(i)
-</span></p>
-<p>Sinusoidal positional encoding:</p>
-<p><span class="math display">
-[\operatorname{PE}(t)]_j=
-\begin{cases}
-\sin\left(\frac{t}{10000^{2k/d_e}}\right),&amp;\text{if } j=2k,\\
-\cos\left(\frac{t}{10000^{2k/d_e}}\right),&amp;\text{if } j=2k+1.
-\end{cases}
-</span></p>
-</section>
-<section id="sinusoidal-intuition" class="slide level2">
-<h2>Sinusoidal Intuition</h2>
-<p>A sine wave has frequency and phase:</p>
-<p><span class="math display">
-x(t)=a\sin(2\pi ft+\phi)
-</span></p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec35/sinusoidal-intuition.svg" alt="A sinusoidal curve illustrating amplitude and wavelength"></p>
-</div>
-<p>Different dimensions use different frequencies, so the model receives both local and long-range position signals.</p>
-</section>
-<section id="relative-position-property" class="slide level2">
-<h2>Relative Position Property</h2>
-<p>For any offset <span class="math inline">t'</span>:</p>
-<p><span class="math display">
-\sin(a+b)=\sin(a)\cos(b)+\cos(a)\sin(b)
-</span></p>
-<p><span class="math display">
-\cos(a+b)=\cos(a)\cos(b)-\sin(a)\sin(b)
-</span></p>
-<p>Therefore, for a sine/cosine pair with frequency <span class="math inline">\omega_k</span>:</p>
-<p><span class="math display">
-[\operatorname{PE}(t+t')]_{2k:2k+1}
-=
-\begin{bmatrix}
-\cos(t'\omega_k)&amp;\sin(t'\omega_k)\\
--\sin(t'\omega_k)&amp;\cos(t'\omega_k)
-\end{bmatrix}
-[\operatorname{PE}(t)]_{2k:2k+1}
-</span></p>
+<section id="kv-cache" class="slide level2 tr38-slide">
+<h2>Reuse Keys and Values During Generation</h2>
+<p>A <strong>key-value (KV) cache</strong> stores earlier keys and values <strong>at each attention layer</strong>. With causal attention and fixed parameters, future tokens cannot change those earlier representations.</p>
+<p><img data-src="imgs/drawio/lec38/kv-cache.png" class="tr38-cache" alt="After processing prompt The sky is, a layer has three cached key-value pairs. When blue is appended, its new query reads the three old pairs plus its own new pair; the cache grows to four pairs."></p>
+<p><strong>Prefill</strong> processes the prompt once. Subsequent <strong>decode steps</strong> add a token, compute its new per-layer projections, and reuse cached earlier pairs.</p>
 <div class="takeaway">
-<p>The transformation depends on the relative offset <span class="math inline">t'</span>, not the absolute position alone.</p>
+<p>Caching avoids recomputing the old prefix. The new query still reads growing context, so cache memory and attention work per new token still grow with context length.</p>
 </div>
+<aside class="notes">
+<p>The diagram follows one layer; every layer maintains its own cache. At a decode step the model computes the latest token’s representation through the layers and predicts the following token. Cached keys include the position transformation when the architecture uses it. For fixed head dimensions, dense single-query attention has work linear in the number of cached positions, and KV storage grows linearly with that number; total model cost also includes projections and FFNs. Cache validity assumes unchanged causal model, prefix, and position conventions. It is not a general reuse rule for bidirectional encoders. Reference: https://huggingface.co/docs/transformers/en/cache_explanation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="rotary-positional-embedding-rope" class="slide level2">
-<h2>Rotary Positional Embedding (RoPE)</h2>
-<p>RoPE applies position information inside attention by rotating query and key vectors.</p>
-<p><span class="math display">
-R_\theta(i)=
-\begin{bmatrix}
-\cos(i\theta)&amp;-\sin(i\theta)\\
-\sin(i\theta)&amp;\cos(i\theta)
-\end{bmatrix}
-</span></p>
-<p><span class="math display">
-\tilde{q}_i=R_\theta(i)q_i,\qquad
-\tilde{k}_j=R_\theta(j)k_j
-</span></p>
+<section id="perplexity" class="slide level2 tr38-slide">
+<h2>Perplexity Checks Token Prediction</h2>
+<p><strong>Perplexity (PPL)</strong> measures prediction of the true tokens in <strong>held-out data</strong>, meaning data not used to fit the parameters. It exponentiates the average negative log probability:</p>
+<p><span class="math display">\operatorname{PPL}=\exp\!\left(-\frac1N\sum_{t=1}^N\log p(x_t\mid x_{&lt;t})\right).</span></p>
+<p>Here <span class="math inline">N</span> is the number of scored tokens, <span class="math inline">x_{&lt;t}</span> is their true earlier context, and <span class="math inline">\log</span> is the natural logarithm.</p>
+<p><img data-src="imgs/drawio/lec38/perplexity-example.png" class="tr38-perplexity" alt="With fixed prompt The sky, a toy model gives the true next token is probability 0.5 and then true token blue probability 0.25. The probability product for these two scored tokens is 0.125."></p>
+<div class="fragment takeaway">
+<p>For these two tokens, <span class="math inline">\operatorname{PPL}=(0.5\times0.25)^{-1/2}=\sqrt8\approx2.828</span>. Lower is better prediction on the <strong>same data and tokenization</strong>, not proof of factual correctness.</p>
+</div>
+<aside class="notes">
+<p>The prompt is a fixed condition and is not one of the two scored tokens. This scores an observed continuation, not the probability of a sampled answer. The true prefix includes is before scoring blue. Training uses the same likelihood principle; held-out evaluation tests generalization without parameter updates. Compared scores also need compatible context-window and evaluation protocols. Reference: https://huggingface.co/docs/transformers/en/perplexity. BLEU and ROUGE are other task-specific text metrics; this concise lecture focuses on next-token likelihood rather than introducing their detailed definitions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="vision-transformer" class="slide level2 tr38-slide">
+<h2>Image Patches Can Be Tokens</h2>
+<p>A <strong>Vision Transformer (ViT)</strong> represents an image as a sequence of small <strong>patches</strong>, rectangular image regions, rather than word IDs.</p>
+<p><img data-src="imgs/drawio/lec38/image-patches.png" class="tr38-patches" alt="A toy eight-by-eight grayscale image is split into four four-by-four patches. Each patch contains sixteen pixel values, flattened into a vector and projected to an eight-feature token. Position information is added before Transformer processing."></p>
+<p>For this <span class="math inline">8\times8</span> grayscale image, <span class="math inline">4\times4</span> patches give <strong>4 patch tokens</strong>. <strong>Flattening</strong> lists a patch’s <span class="math inline">16</span> pixel values in a fixed order. A learned linear projection maps each vector to <span class="math inline">8</span> features, then adds its position vector.</p>
+<p>An extra learned vector, the <strong>class token</strong>, can collect image information whose final representation is used for classification.</p>
+<div class="tr38-paper">
+<p>Alexey Dosovitskiy et al.&nbsp;(2020/2021), <a href="https://arxiv.org/abs/2010.11929" target="_blank" rel="noopener"><em>An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale</em></a>.</p>
+</div>
+<aside class="notes">
+<p>The bitmap is an invented teaching pattern, not a dataset image or trained model output. Grayscale means one pixel channel. With four non-overlapping 4-by-4 patches, each flattened patch has length 16; a projection to dimension 8 has weight shape 8 by 16, plus an 8-feature bias. Every patch uses the same learned projection. Positional vectors preserve spatial layout; a class token is an additional token, so this toy sequence would have five inputs if it includes that token. Original ViT uses an encoder with attention over the whole image, not a causal language-model mask. Its paper title’s 16x16 patch size is not the patch size of our toy example.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="diffusion-transformer" class="slide level2 tr38-slide">
+<h2>Diffusion Can Use a Transformer</h2>
+<p>A <strong>Diffusion Transformer (DiT)</strong> uses Transformer blocks as a <strong>denoiser</strong>, a model for iterative noise removal. It operates on patches of a <strong>latent</strong>, a compressed image representation.</p>
+<p><img data-src="imgs/drawio/lec38/diffusion-transformer.png" class="tr38-diffusion" alt="Noisy latent patches enter a Transformer denoiser conditioned on the current noise timestep and desired class label. A noise prediction is used by a sampler update to make a cleaner latent. Denoising repeats, and an image decoder converts the final latent to pixels."></p>
+<p><strong>Conditioning</strong> supplies extra information: the noise timestep and desired class label. Repeat sampler updates using predicted noise, then decode the final latent to pixels.</p>
 <div class="takeaway">
-<p>Many modern LLMs use RoPE because attention scores can encode relative position differences.</p>
+<p>The denoiser mixes all image patches together; it does not generate words or patches left to right.</p>
+</div>
+<div class="tr38-paper">
+<p>William Peebles and Saining Xie (2022), <a href="https://arxiv.org/abs/2212.09748" target="_blank" rel="noopener"><em>Scalable Diffusion Models with Transformers</em></a>.</p>
+</div>
+<aside class="notes">
+<p>This is a simplified redrawing of the supplied DiT material. The original model predicts noise and a variance-related output in latent space. Conditioning enters its blocks through adaptive normalization and residual scaling; those details are not required to read the pipeline. A U-Net is another possible denoising backbone, using spatial downsampling/upsampling and skip connections rather than a sequence of patch-attention blocks. DiT does not replace the diffusion sampler or the image decoder. The original supplied architecture figure remains available at imgs/lec35/DiT_structure.png and is credited on the asset page. Do not infer that every current image-generation product uses this exact architecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="quick-check" class="slide level2 tr38-slide">
+<h2>Quick Check</h2>
+<p><strong>1.</strong> Why mask scores before softmax, instead of just setting some final weights to zero?</p>
+<div class="fragment takeaway" data-fragment-index="0">
+<p>Allowed positions must still have weights summing to <span class="math inline">1</span>. Pre-softmax masking excludes future keys while normalizing the permitted ones.</p>
+</div>
+<p><strong>2.</strong> In the second residual stage, should the skip path add <span class="math inline">X</span> or the intermediate <span class="math inline">U</span>?</p>
+<div class="fragment takeaway" data-fragment-index="1">
+<p>Add <strong><span class="math inline">U</span></strong>: <span class="math inline">Y=U+\operatorname{FFN}(\operatorname{LN}(U))</span>.</p>
+</div>
+<p><strong>3.</strong> Does a KV cache make future autoregressive tokens independent?</p>
+<div class="fragment takeaway" data-fragment-index="2">
+<p>No.&nbsp;It reuses earlier calculations. The next distribution still depends on the actual prefix chosen so far.</p>
 </div>
 </section>
-<section id="rope-relative-position" class="slide level2">
-<h2>RoPE Relative Position</h2>
-<p>Using rotation identities:</p>
-<p><span class="math display">
-\langle \tilde{q}_i,\tilde{k}_j\rangle
-=
-\langle q_i,R_\theta(j-i)k_j\rangle
-</span></p>
-<p>Result:</p>
+<section id="takeaways" class="slide level2 tr38-slide">
+<h2>Takeaways</h2>
+<p><img data-src="imgs/drawio/lec38/transformer-summary.png" class="tr38-summary" alt="Transformer components: heads mix context, masks restrict access, position signals locate tokens, and feedforward layers with normalization and residuals refine representations."></p>
 <ul>
-<li>The dot product depends on the offset <span class="math inline">(j-i)</span>.</li>
-<li>Relative position enters the attention score directly.</li>
-<li>This helps long-context extrapolation and relative reasoning.</li>
-</ul>
-</section>
-<section id="transformer-block-overview" class="slide level2">
-<h2>Transformer Block Overview</h2>
-<p>A transformer block combines:</p>
-<ul>
-<li>Multi-head self-attention (MHSA).</li>
-<li>Feed-forward network (FFN).</li>
-<li>Residual connections.</li>
-<li>Layer normalization.</li>
-</ul>
-<div class="takeaway">
-<p>Residuals let each layer learn a refinement instead of relearning the entire representation.</p>
-</div>
-</section>
-<section id="transformer-block-diagram" class="slide level2">
-<h2>Transformer Block Diagram</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec35/transformer-block-diagram.svg" alt="Pre-layer-normalization transformer block with residual connections"></p>
-</div>
-</section>
-<section id="pre-ln-vs.-post-ln" class="slide level2">
-<h2>Pre-LN vs.&nbsp;Post-LN</h2>
-<p><strong>Pre-LN (common in modern deep transformers)</strong></p>
-<p><span class="math display">
-x+\operatorname{MHSA}(\operatorname{LN}(x))
-\rightarrow
-x+\operatorname{FFN}(\operatorname{LN}(x))
-</span></p>
-<p><strong>Post-LN (original Transformer style)</strong></p>
-<p><span class="math display">
-\operatorname{LN}(x+\operatorname{MHSA}(x))
-\rightarrow
-\operatorname{LN}(x+\operatorname{FFN}(x))
-</span></p>
-<div class="question">
-<p>Pre-LN is usually easier to optimize for very deep models.</p>
-</div>
-</section>
-<section id="key-value-kv-cache" class="slide level2">
-<h2>Key-Value (KV) Cache</h2>
-<p>During autoregressive generation, tokens are produced one at a time.</p>
-<p>Without caching, the model recomputes keys and values for all previous tokens at every step.</p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec35/key-value-kv-cache.svg" alt="Key-Value (KV) Cache process diagram"></p>
-</div>
-<div class="takeaway">
-<p>KV cache is one reason deployed LLM inference can be fast enough for interactive use.</p>
-</div>
-</section>
-<section id="prompt-engineering" class="slide level2">
-<h2>Prompt Engineering</h2>
-<p>Prompt engineering is the practice of designing inputs to guide LLM outputs.</p>
-<p>Useful habits:</p>
-<ul>
-<li>Be explicit about the task.</li>
-<li>Provide structure or templates.</li>
-<li>Include examples when format matters.</li>
-<li>Restrict ambiguity.</li>
-<li>Iterate and refine.</li>
-</ul>
-<div class="example-box">
-<p>Instead of <code>Explain Transformers</code>, try <code>Explain Transformers in 3 bullet points suitable for a first-year CS student</code>.</p>
-</div>
-</section>
-<section id="types-of-prompting" class="slide level2">
-<h2>Types of Prompting</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Type</th>
-<th>Idea</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>zero-shot</td>
-<td>no examples, only an instruction</td>
-</tr>
-<tr class="even">
-<td>few-shot</td>
-<td>show input-output examples</td>
-</tr>
-<tr class="odd">
-<td>chain-of-thought style</td>
-<td>ask for step-by-step reasoning when appropriate</td>
-</tr>
-<tr class="even">
-<td>system/instruction design</td>
-<td>set high-level behavior, role, or constraints</td>
-</tr>
-<tr class="odd">
-<td>structured output</td>
-<td>require JSON, tables, bullets, or schemas</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="evaluating-language-models" class="slide level2">
-<h2>Evaluating Language Models</h2>
-<p>Perplexity measures how well a model predicts a ground-truth sequence:</p>
-<p><span class="math display">
-\operatorname{Perplexity}
-=
-\exp\left(
--\frac{1}{N}
-\sum_{i=1}^N
-\log p(w_i\mid w_{&lt;i})
-\right)
-</span></p>
-<p>Other common text metrics:</p>
-<ul>
-<li>BLEU: precision-oriented <span class="math inline">n</span>-gram overlap, common in translation.</li>
-<li>ROUGE: recall-oriented overlap, common in summarization.</li>
-</ul>
-<div class="question">
-<p>Metrics are useful, but they rarely capture everything humans care about.</p>
-</div>
-</section>
-<section id="transformers-beyond-language" class="slide level2">
-<h2>Transformers Beyond Language</h2>
-<p>Transformers are not just for text.</p>
-<p>They can be applied whenever data can be represented as a sequence of tokens:</p>
-<ul>
-<li>image patches,</li>
-<li>audio frames,</li>
-<li>video tokens,</li>
-<li>graph or trajectory tokens,</li>
-<li>multimodal inputs.</li>
-</ul>
-</section>
-<section id="vision-transformers-vit" class="slide level2">
-<h2>Vision Transformers (ViT)</h2>
-<p>Vision Transformer (ViT) treats an image as a sequence of patches.</p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec35/vision-transformers-vit.svg" alt="Vision transformer converts image patches into tokens and processes them with a transformer encoder"></p>
-</div>
-</section>
-<section id="linear-patch-encoding" class="slide level2 scrollable">
-<h2>Linear Patch Encoding</h2>
-<p>For an image <span class="math inline">x\in\mathbb{R}^{H\times W\times C}</span>:</p>
-<ol type="1">
-<li>Split into <span class="math inline">N</span> fixed-size patches.</li>
-<li>Flatten each patch:</li>
-</ol>
-<p><span class="math display">
-\operatorname{patch}_i\in\mathbb{R}^{P^2C}
-</span></p>
-<ol start="3" type="1">
-<li>Project to the embedding space:</li>
-</ol>
-<p><span class="math display">
-z_i=W\operatorname{patch}_i+b,\qquad W\in\mathbb{R}^{d\times P^2C}
-</span></p>
-<p>The resulting patch embeddings act like tokens.</p>
-</section>
-<section id="diffusion-transformers-dit" class="slide level2">
-<h2>Diffusion Transformers (DiT)</h2>
-<p>Diffusion Transformers replace the convolutional denoising backbone with a transformer over latent image patches.</p>
-<p>Paper: <em>Scalable Diffusion Models with Transformers</em>, Peebles and Xie, 2022.</p>
-<p>Key idea:</p>
-<ul>
-<li>patchify the noisy latent,</li>
-<li>add timestep/class conditioning,</li>
-<li>process tokens with DiT blocks,</li>
-<li>reshape outputs back to latent noise predictions.</li>
-</ul>
-</section>
-<section id="u-net-vs.-dit" class="slide level2">
-<h2>U-Net vs.&nbsp;DiT</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Backbone</th>
-<th>Main structure</th>
-<th>Strength</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>U-Net</td>
-<td>encoder-decoder with skip connections</td>
-<td>strong spatial inductive bias</td>
-</tr>
-<tr class="even">
-<td>DiT</td>
-<td>transformer over latent patches</td>
-<td>scalable global token mixing</td>
-</tr>
-</tbody>
-</table>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec35/u-net-vs-dit.svg" alt="U-Net encoder decoder compared with DiT patch tokens"></p>
-</div>
-</section>
-<section id="dit-architecture" class="slide level2">
-<h2>DiT Architecture</h2>
-<img class="paper-figure" src="imgs/lec35/DiT_structure.png" alt="Latent Diffusion Transformer and DiT block with adaptive layer normalization zero conditioning">
-<div class="takeaway">
-<p>DiT applies transformer blocks to noisy latent patches and uses timestep/class conditioning inside the block.</p>
-</div>
-</section>
-<section id="latent-diffusion-models" class="slide level2">
-<h2>Latent Diffusion Models</h2>
-<p>Instead of running diffusion in pixel space, diffuse in a compressed latent space.</p>
-<p><span class="math display">
-z=E(x)
-</span></p>
-<p>Forward noising:</p>
-<p><span class="math display">
-z_t=\sqrt{\bar{\alpha}_t}z+\sqrt{1-\bar{\alpha}_t}\epsilon
-</span></p>
-<p>A U-Net or DiT predicts the noise in latent space, then a decoder reconstructs:</p>
-<p><span class="math display">
-\hat{x}=D(z_0)
-</span></p>
-<div class="takeaway">
-<p>Latent diffusion lowers memory cost and makes high-resolution generation more practical.</p>
-</div>
-</section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
-<ul>
-<li>Multi-head attention lets different heads learn different relations.</li>
-<li>Sampling controls such as temperature and top-<span class="math inline">K</span> affect generation behavior.</li>
-<li>Causal masking prevents future-token leakage during parallel training.</li>
-<li>Positional encodings and RoPE give transformers order information.</li>
-<li>Transformer blocks combine attention, FFNs, residuals, and normalization.</li>
-<li>ViT and DiT show how transformer tokens can represent image patches.</li>
+<li><strong>Multiple heads</strong> learn separate query/key/value projections; concatenate, then project their outputs.</li>
+<li><strong>Causal masks</strong> protect next-token training; <strong>position signals</strong> encode location.</li>
+<li><strong>FFNs, residuals, and LN</strong> turn attention into stackable blocks.</li>
+<li><strong>Sampling settings</strong> change choices; <strong>KV caches</strong> reuse earlier work.</li>
+<li><strong>ViT and DiT</strong> apply Transformer computations to image patches.</li>
 </ul>
 <p><a href="../asset_credits.html#lec38" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
 
@@ -923,6 +834,13 @@ z_t=\sqrt{\bar{\alpha}_t}z+\sqrt{1-\bar{\alpha}_t}\epsilon
         // devices. It is advisable to set this to a lower number than
         // viewDistance in order to save resources.
         mobileViewDistance: 2,
+
+        // Enable scroll view
+        view: 'slide',
+        scrollProgress: true,
+        scrollActivationWidth: 0,
+        scrollSnap: 'mandatory',
+        scrollLayout: 'full',
 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be

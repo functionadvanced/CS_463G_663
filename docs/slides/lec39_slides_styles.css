@@ -1,0 +1,39 @@
+.reveal section.front39-slide { font-size: 0.9em; }
+.reveal section.front39-slide h2 { margin-top: 0; }
+.reveal section.front39-slide p { margin: 0.35em 0; }
+.reveal section.front39-slide .math.inline { white-space: nowrap; }
+.reveal section.front39-slide .katex-display { margin: 0.35em 0; }
+.reveal section.front39-slide .question,
+.reveal section.front39-slide .takeaway { margin: 0.4em 0; padding: 0.45em 0.65em; }
+.reveal section.front39-slide .question p,
+.reveal section.front39-slide .takeaway p { margin: 0; }
+.reveal section.front39-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin: 0.2em auto;
+  border: 0;
+  box-shadow: none;
+}
+.reveal section.front39-slide .front39-system { max-height: 210px; }
+.reveal section.front39-slide .front39-choices { max-height: 205px; }
+.reveal section.front39-slide .front39-lora { max-height: 190px; }
+.reveal section.front39-slide .front39-quantization { max-height: 145px; }
+.reveal section.front39-slide .front39-roles { max-height: 205px; }
+.reveal section.front39-slide .front39-skill { max-height: 220px; }
+.reveal section.front39-slide .front39-cli { max-height: 200px; }
+.reveal section.front39-slide .front39-mcp { max-height: 170px; }
+.reveal section.front39-slide .front39-trust { max-height: 210px; }
+.reveal section.front39-slide .front39-harness { max-height: 215px; }
+.reveal section.front39-slide .front39-trace { max-height: 215px; }
+.reveal section.front39-slide .front39-evaluation { max-height: 185px; }
+.reveal section.front39-slide .front39-vibe { max-height: 200px; }
+.reveal section.front39-slide .front39-tests { max-height: 215px; }
+.reveal section.front39-slide .front39-summary { max-height: 150px; }
+.reveal section.front39-slide .front39-paper { font-size: 0.7em; line-height: 1.25; margin-top: 0.5em; }
+.reveal section.front39-slide .pseudo-code { font-size: 0.68em; line-height: 1.35; }
+.reveal section.front39-slide .pseudo-line { min-height: 1.35em; white-space: nowrap; }
+.reveal section.front39-slide .front39-json h3 { font-size: 0.85em; }
+.reveal section.front39-slide .front39-json pre { font-size: 0.58em; line-height: 1.35; }
+.reveal section.front39-slide .front39-json .column > p { font-size: 0.85em; }

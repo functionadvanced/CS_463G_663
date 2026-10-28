@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec36_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,347 +164,500 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="autoregressive-models" class="slide level2 section-slide">
-<h2>Autoregressive Models</h2>
-<p>Autoregressive models generate structured data one piece at a time, conditioning on what they already generated.</p>
-</section>
-<section id="what-is-a-modality" class="slide level2">
-<h2>What Is a Modality?</h2>
-<p>A modality is a type or form of data.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Modality</th>
-<th>Examples</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Text</td>
-<td>sentences, documents</td>
-</tr>
-<tr class="even">
-<td>Image</td>
-<td>photographs, medical scans</td>
-</tr>
-<tr class="odd">
-<td>Audio</td>
-<td>speech, music</td>
-</tr>
-<tr class="even">
-<td>Video</td>
-<td>image sequences over time</td>
-</tr>
-<tr class="odd">
-<td>Multimodal</td>
-<td>image plus text, video plus audio</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="generative-task-formats" class="slide level2">
-<h2>Generative Task Formats</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Input</th>
-<th>Output</th>
-<th>Examples</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Text</td>
-<td>Text</td>
-<td>Translation, summarization, question answering</td>
-</tr>
-<tr class="even">
-<td>Text</td>
-<td>Image</td>
-<td>Text-to-image synthesis</td>
-</tr>
-<tr class="odd">
-<td>Text</td>
-<td>Audio</td>
-<td>Speech or music generation</td>
-</tr>
-<tr class="even">
-<td>Image</td>
-<td>Text</td>
-<td>Captioning, visual QA</td>
-</tr>
-<tr class="odd">
-<td>Image</td>
-<td>Image</td>
-<td>Super-resolution, inpainting</td>
-</tr>
-<tr class="even">
-<td>Audio</td>
-<td>Text</td>
-<td>Speech recognition</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="text-vs.-images" class="slide level2">
-<h2>Text vs.&nbsp;Images</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Text</th>
-<th>Images</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Sequential</td>
-<td>Spatial</td>
-</tr>
-<tr class="even">
-<td>1D token structure</td>
-<td>2D pixels, often 3D with channels</td>
-</tr>
-<tr class="odd">
-<td>Sparse and discrete</td>
-<td>Dense and continuous</td>
-</tr>
-<tr class="even">
-<td>Variable length</td>
-<td>Often resized to fixed size</td>
-</tr>
-<tr class="odd">
-<td>RNNs, LSTMs, transformers</td>
-<td>CNNs, diffusion, vision transformers</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="what-means-autoregressive" class="slide level2">
-<h2>What Means Autoregressive?</h2>
-<p>“Auto” means the model uses its own previous outputs.</p>
-<p>For a sequence:</p>
-<p><span class="math display">
-p(x_1,\ldots,x_T)
-=
-\prod_{t=1}^{T}p(x_t\mid x_1,\ldots,x_{t-1})
-</span></p>
+<section id="autoregression" class="slide level2 ar36-slide">
+<h2>One Piece at a Time</h2>
+<p>An <strong>autoregressive (AR) model</strong> predicts each piece of an ordered sequence from its earlier pieces, called the <strong>prefix</strong>. “Auto” refers to the history of the same sequence; outputs need not be numeric regression targets.</p>
+<p><img data-src="imgs/drawio/lec36/generation-cycle.png" class="ar36-cycle" alt="A text prefix enters a model, which predicts a next-token distribution. A selected token is appended to form the next prefix."></p>
+<p>A <strong>token</strong> is a text piece, such as a word or part of a word. We use one word per token in our toy examples.</p>
+<p>A <strong>modality</strong> is a form of data. Text tokens and image pixels can both be ordered into sequences.</p>
 <div class="takeaway">
-<p>Generation becomes repeated conditional prediction.</p>
+<p>During generation, the model’s sampled outputs become part of the next input.</p>
 </div>
+<aside class="notes">
+<p>The lecture develops the supplied Spring 2025 autoregressive-model material. The diagrams and probabilities are constructed examples, not outputs of a trained language model. Real tokenizers need not split at word boundaries. Autoregression specifies conditional dependence along an ordering; it does not require an RNN or a numeric regression loss. Training can use observed prefixes rather than sampled ones, as explained under teacher forcing.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="next-token-prediction" class="slide level2">
-<h2>Next-Token Prediction</h2>
-<p>Example:</p>
-<p><span class="math display">
-p(\text{blue}\mid \text{The sky is})
-</span></p>
-<div class="token-row">
-<p><span class="token-chip">The</span> <span class="token-chip">sky</span> <span class="token-chip">is</span> <span class="token-chip" style="background:#fff4db;border-color:#e0b664;">?</span> <span class="token-chip" style="background:#fdecef;border-color:#e9a8ba;">blue</span></p>
+<section id="chain-rule" class="slide level2 ar36-slide">
+<h2>The Probability Chain Rule</h2>
+<p>Let <span class="math inline">x_1,\ldots,x_T</span> be a sequence of length <span class="math inline">T</span>. Write <span class="math inline">x_{&lt;t}</span> for the pieces before position <span class="math inline">t</span>, and <span class="math inline">\theta</span> for learned model parameters.</p>
+<p><span class="math display">p_\theta(x_1,\ldots,x_T)=\prod_{t=1}^{T}p_\theta(x_t\mid x_{&lt;t}).</span></p>
+<p>For three pieces, this means</p>
+<p><span class="math display">p_\theta(x_1,x_2,x_3)=p_\theta(x_1)\,
+p_\theta(x_2\mid x_1)\,
+p_\theta(x_3\mid x_1,x_2).</span></p>
+<p>The first factor has no earlier piece to condition on. A conditional generator can also include a prompt in every factor.</p>
+<div class="takeaway">
+<p>The chain rule does not assume independent pieces. We learn conditional distributions that can depend on the earlier context.</p>
 </div>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec33/next-token-prediction.svg" alt="Autoregressive model predicts one token, appends it, and then predicts again"></p>
-</div>
+<aside class="notes">
+<p>The factorization is an identity for any joint distribution, on prefixes with positive probability. A particular architecture can restrict how much context it effectively uses. For variable-length sequences, include termination in the modeled sequence; a length budget can separately bound decoding. A fixed prompt is a condition, not an additional probability factor when calculating the probability of a completion given that prompt.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="autoregressive-generation-loop" class="slide level2">
-<h2>Autoregressive Generation Loop</h2>
+<section id="sequence-probability" class="slide level2 ar36-slide">
+<h2>A Completion Probability</h2>
+<p>Fix the prompt <strong>“The sky is”</strong>. A special <strong>end-of-sequence (EOS) token</strong> tells the generator to stop.</p>
+<p>Suppose a toy model assigns probability <span class="math inline">0.6</span> to <code>blue</code> after this prompt, then probability <span class="math inline">0.8</span> to <code>EOS</code> after <strong>“The sky is blue”</strong>.</p>
+<p><img data-src="imgs/drawio/lec36/sequence-probability.png" class="ar36-probability" alt="One completion path: prompt The sky is, token blue with conditional probability 0.6, then EOS with conditional probability 0.8."></p>
+<p>What is the probability of this complete two-token continuation?</p>
+<div class="fragment takeaway">
+<p><span class="math display">p_\theta(\text{blue},\text{EOS}\mid\text{The sky is})=0.6\times0.8=0.48.</span> The second probability uses the updated prefix. This is not the probability of the prompt itself.</p>
+</div>
+<aside class="notes">
+<p>Only one branch is drawn. Other next-token outcomes have the remaining mass at each prefix. The initial color distribution used in the next slide is blue .6, gray .3, green .1. After blue, EOS has probability .8 and a possible longer continuation has total probability .2. The probability of just the first token blue is .6; the probability of blue followed immediately by termination is .48.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sampling" class="slide level2 ar36-slide">
+<h2>Sampling and Greedy Decoding</h2>
+<p><strong>Decoding</strong> selects outputs from the model’s distributions. <strong>Greedy decoding</strong> picks the highest-probability token. <strong>Sampling</strong> makes a random choice using those probabilities.</p>
+<p>For a color-only choice after <strong>“The sky is”</strong>, use this toy distribution:</p>
+<p><img data-src="imgs/drawio/lec36/sampling-intervals.png" class="ar36-sampling" alt="A cumulative sampling bar assigns blue to 0 through 0.6, gray to 0.6 through 0.9, and green to 0.9 through 1, using half-open intervals."></p>
+<p>Draw <span class="math inline">u</span> uniformly from <span class="math inline">[0,1)</span>. What token does <span class="math inline">u=0.75</span> select, and what would greedy decoding choose?</p>
+<div class="fragment takeaway">
+<p>Sampling selects <code>gray</code>; greedy decoding selects <code>blue</code>. Greedy choices do not necessarily give the most probable complete sequence.</p>
+</div>
+<aside class="notes">
+<p>The probabilities sum to one. The half-open intervals place .6 in gray and .9 in green. Greedy decoding optimizes the current choice, not the full product of later conditionals. This slide does not claim that random sampling guarantees useful or correct content. Temperature and truncated sampling can be introduced separately when needed.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="generation-loop" class="slide level2 ar36-slide">
+<h2>The Generation Loop</h2>
+<p>Start with a prompt. <code>maxNewTokens</code> is a chosen limit on how many additional tokens may be generated.</p>
 <div class="pseudo-code">
+<div class="pseudo-line fragment" data-fragment-index="0">
+<span class="pseudo-var">sequence</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">Copy</span>(<span class="pseudo-var">prompt</span>)
+</div>
 <div class="pseudo-line">
-<span class="pseudo-kw">function</span> <span class="pseudo-fn">Generate</span>(<span class="pseudo-var">prompt</span>, <span class="pseudo-var">model</span>)
+<span class="pseudo-kw">for</span> <span class="pseudo-var">t</span> <span class="pseudo-op">=</span> <span class="pseudo-num">1</span>, …, <span class="pseudo-var">maxNewTokens</span>
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">sequence</span> <span class="pseudo-op">=</span> <span class="pseudo-var">prompt</span>
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-var">distribution</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">Model</span>(<span class="pseudo-var">sequence</span>)
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">while</span> not finished
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-var">token</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">Sample</span>(<span class="pseudo-var">distribution</span>)
 </div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-var">distribution</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">model</span>(<span class="pseudo-var">sequence</span>)
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-kw">if</span> <span class="pseudo-var">token</span> <span class="pseudo-op">==</span> <span class="pseudo-lit">EOS</span>: <span class="pseudo-kw">break</span>
 </div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-var">next</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">sample</span>(<span class="pseudo-var">distribution</span>)
+<div class="pseudo-line fragment indent-1" data-fragment-index="3">
+<span class="pseudo-fn">Append</span>(<span class="pseudo-var">sequence</span>, <span class="pseudo-var">token</span>)
 </div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-fn">append</span>(<span class="pseudo-var">sequence</span>, <span class="pseudo-var">next</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
+<div class="pseudo-line fragment" data-fragment-index="3">
 <span class="pseudo-kw">return</span> <span class="pseudo-var">sequence</span>
 </div>
 </div>
+<p>The model’s parameters stay fixed. Each new distribution conditions on the actual prefix accumulated so far.</p>
+<div class="takeaway">
+<p>Stop at EOS or the length limit. Sampling does not guarantee that EOS will arrive quickly.</p>
+</div>
+<aside class="notes">
+<p>This is architecture-independent pseudocode. The returned sequence includes the prompt and excludes EOS. No later call is made after an EOS sample. An RNN can cache and update its hidden state rather than recomputing every prefix from scratch. A Transformer can cache intermediate representations. Those optimizations do not change the conditional sampling logic.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="types-of-autoregressive-models" class="slide level2">
-<h2>Types of Autoregressive Models</h2>
+<section id="teacher-forcing" class="slide level2 ar36-slide">
+<h2>Training with the Correct Prefix</h2>
+<p><strong>Teacher forcing</strong> trains next-token predictions using the true earlier tokens from a dataset, rather than the model’s sampled earlier tokens.</p>
+<p><img data-src="imgs/drawio/lec36/teacher-forcing.png" class="ar36-teacher" alt="Training pairs use true prefixes: The predicts sky, The sky predicts is, and The sky is predicts blue. Targets are shifted one position after the input tokens."></p>
+<p>Average <strong>negative log-likelihood (NLL)</strong> on a training sequence is</p>
+<p><span class="math display">L(\theta)=-\frac{1}{T}\sum_{t=1}^{T}\log p_\theta(x_t\mid x_{&lt;t}).</span></p>
+<p>EOS is also a target. Each prediction sees only the earlier tokens.</p>
+<div class="takeaway">
+<p>Generation uses sampled prefixes, so early mistakes can change later predictions.</p>
+</div>
+<aside class="notes">
+<p>The examples show three positions from a longer sequence. Training also handles the initial-token and termination predictions. NLL is the same likelihood principle introduced in Lecture 35, applied to conditional token probabilities. Full sequence training can evaluate many target positions together when the architecture permits it; a standard RNN still has sequential hidden-state dependencies. A known full training sentence does not authorize using future tokens in a next-token prediction.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rnn" class="slide level2 ar36-slide">
+<h2>Recurrent Neural Networks</h2>
+<p>A <strong>recurrent neural network (RNN)</strong> repeatedly updates a <strong>hidden state</strong> <span class="math inline">h_t</span>, a fixed-size vector summarizing the prefix. The same update parameters are reused at every position.</p>
+<p>An <strong>embedding</strong> <span class="math inline">e_t</span> is a learned numeric vector representing input token <span class="math inline">x_t</span>:</p>
+<p><span class="math display">h_t=F_\theta(e_t,h_{t-1}).</span></p>
+<p><img data-src="imgs/drawio/lec36/rnn-unrolled.png" class="ar36-rnn" alt="The same recurrent update reads The, then sky, then is. Hidden states h1, h2, h3 pass forward, with each state producing the next-token distribution."></p>
+<p>After reading <span class="math inline">x_t</span>, state <span class="math inline">h_t</span> helps predict <span class="math inline">x_{t+1}</span>. The state need not preserve every detail of the prefix.</p>
+<aside class="notes">
+<p>The diagram is an unrolled view: three applications of one parameter-shared update, not three separately trained models. The initial state h0 is specified or learned; the numerical example uses zero. An output head converts states into token probabilities. RNNs can also serve classification tasks; the recurrent architecture itself is not inherently generative. Reference: https://docs.pytorch.org/docs/stable/generated/torch.nn.RNN.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="scalar-rnn" class="slide level2 ar36-slide">
+<h2>A Small Recurrent Update</h2>
+<p>Use a toy scalar state instead of a vector:</p>
+<p><span class="math display">h_t=\tanh(0.5h_{t-1}+e_t).</span></p>
+<p>The <strong>hyperbolic tangent</strong>, <span class="math inline">\tanh</span>, maps real inputs into <span class="math inline">(-1,1)</span>. Here the chosen weights and token inputs are illustrative, not learned from text.</p>
+<p>Starting at <span class="math inline">h_0=0</span>, let the input for <code>The</code> be <span class="math inline">e_1=1</span>: <span class="math inline">h_1=\tanh(1)\approx0.762</span>.</p>
+<p><img data-src="imgs/drawio/lec36/scalar-recurrence.png" class="ar36-scalar" alt="The previous state about 0.762 is scaled by 0.5, added to the current input 0.5, and passed through tanh to produce the next state."></p>
+<p>For <code>sky</code>, let <span class="math inline">e_2=0.5</span>. What is <span class="math inline">h_2</span>?</p>
+<div class="fragment takeaway">
+<p><span class="math inline">h_2=\tanh(0.5\times0.762+0.5)\approx0.707</span>. The update combines old context with the new input.</p>
+</div>
+<aside class="notes">
+<p>Using the unrounded h1 gives h2 approximately .706818. The recurrent coefficient is .5 and the input coefficient is 1, with zero bias. In a real model these are learned matrices and vectors. These scalar inputs are a separate recurrence calculation, not a claim that a real embedding assigns these values to the displayed words.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="output-head" class="slide level2 ar36-slide">
+<h2>Hidden States to Token Probabilities</h2>
+<p>An <strong>output head</strong> assigns a <strong>logit</strong>, or unnormalized score <span class="math inline">a_j</span>, to token <span class="math inline">j</span>. The <strong>vocabulary</strong> is the set of <span class="math inline">V</span> allowed tokens.</p>
+<p><strong>Softmax</strong> gives token <span class="math inline">j</span>’s probability <span class="math inline">p_j</span>:</p>
+<p><span class="math display">p_j=\frac{e^{a_j}}{\sum_{k=1}^{V}e^{a_k}}.</span></p>
+<p><img data-src="imgs/drawio/lec36/output-head.png" class="ar36-head" alt="A hidden state enters an output head with toy logits log 6, log 3, and 0 for blue, gray, and green. Softmax produces probabilities 0.6, 0.3, and 0.1."></p>
+<p>In this three-color illustration, logits <span class="math inline">(\log6,\log3,0)</span> give exponentials <span class="math inline">(6,3,1)</span>. Dividing by their sum <span class="math inline">10</span> gives <span class="math inline">(0.6,0.3,0.1)</span>.</p>
+<aside class="notes">
+<p>This is a restricted three-color output head illustrating normalization, not the complete vocabulary of a language generator. A full text generator also needs tokens for other words and termination. The logits are stipulated, not derived from the separate scalar RNN exercise. Natural logarithms are used. For numerical stability, real implementations subtract the maximum score before exponentiating, or use log-softmax. Adding the same constant to all logits does not change softmax.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="long-dependency" class="slide level2 ar36-slide">
+<h2>Long Dependencies and Gradients</h2>
+<p>A <strong>dependency</strong> is a relationship between sequence positions. Here the singular subject <code>key</code> calls for <code>is</code>, despite the nearer plural word <code>cabinets</code>.</p>
+<p><img data-src="imgs/drawio/lec36/long-dependency.png" class="ar36-dependency" alt="In The key near the cabinets is missing, an arrow connects key to is across the intervening words near the cabinets."></p>
+<p>Training backpropagates through repeated state updates. <strong>Vanishing gradients</strong> shrink the learning signal to earlier steps; <strong>exploding gradients</strong> make it grow excessively.</p>
+<p>Repeated derivative factors illustrate the issue:</p>
+<p><span class="math display">0.5^{10}\approx0.001,\qquad 1.5^{10}\approx57.7.</span></p>
+<div class="takeaway">
+<p>Recurrent memory must retain relevant information through many updates. Gated architectures help control that information flow.</p>
+</div>
+<aside class="notes">
+<p>The sentence illustrates a grammatical relationship, not a measured language-model failure. The powers are scalar illustrations of gradient products, not a claim that every RNN repeatedly multiplies by a fixed scalar. Hidden-state compression and gradient propagation are related challenges but not identical phenomena. Gates do not guarantee perfect long-term memory or solve all optimization problems.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lstm" class="slide level2 ar36-slide">
+<h2>Long Short-Term Memory</h2>
+<p><strong>Long Short-Term Memory (LSTM)</strong> is a gated recurrent architecture. It carries a <strong>cell state</strong> <span class="math inline">c_t</span> as a memory path, alongside hidden state <span class="math inline">h_t</span> used for prediction.</p>
+<p>A <strong>gate</strong> controls information flow component by component. Sigmoid <span class="math inline">\sigma(v)=1/(1+e^{-v})</span> produces values between <span class="math inline">0</span> and <span class="math inline">1</span>.</p>
+<ul>
+<li><strong>Forget gate</strong> <span class="math inline">f_t</span>: keep old cell memory.</li>
+<li><strong>Input gate</strong> <span class="math inline">i_t</span>: write proposed content <span class="math inline">g_t</span>, the <strong>candidate</strong> produced with <span class="math inline">\tanh</span>.</li>
+<li><strong>Output gate</strong> <span class="math inline">o_t</span>: expose transformed cell memory as hidden state.</li>
+</ul>
+<p><img data-src="imgs/drawio/lec36/lstm-memory.png" class="ar36-lstm" alt="Old cell memory is kept using the forget gate, new candidate content is added through the input gate, and the new cell state passes through tanh and the output gate to form the hidden state."></p>
+<aside class="notes">
+<p>The state diagram shows the two memory roles and the core update, rather than every connection used to compute each gate. All gates and the candidate depend on current input and previous hidden state. The next slide states those computations, including the output gate. Gate values are vectors in a real model. Reference: https://docs.pytorch.org/docs/stable/generated/torch.nn.LSTM.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lstm-update" class="slide level2 ar36-slide">
+<h2>LSTM Updates and a Worked Step</h2>
+<p>Let <span class="math inline">v_t=[e_t;h_{t-1}]</span>: <strong>concatenation</strong> appends the two vectors. The <span class="math inline">W</span> matrices and <span class="math inline">b</span> bias vectors below are learned parameters; <span class="math inline">\odot</span> means elementwise multiplication.</p>
+<p><span class="math display">\begin{aligned}
+f_t&amp;=\sigma(W_fv_t+b_f),&amp; i_t&amp;=\sigma(W_iv_t+b_i),\\
+o_t&amp;=\sigma(W_ov_t+b_o),&amp; g_t&amp;=\tanh(W_gv_t+b_g),\\
+c_t&amp;=f_t\odot c_{t-1}+i_t\odot g_t,&amp; h_t&amp;=o_t\odot\tanh(c_t).
+\end{aligned}</span></p>
+<p>For one scalar component, suppose <span class="math inline">c_{t-1}=0.8</span> and the computed gate/candidate values are <span class="math inline">f_t=0.9</span>, <span class="math inline">i_t=0.2</span>, <span class="math inline">g_t=0.5</span>, <span class="math inline">o_t=0.7</span>.</p>
+<div class="fragment takeaway">
+<p><span class="math display">c_t=0.9(0.8)+0.2(0.5)=0.82,</span> <span class="math display">h_t=0.7\tanh(0.82)\approx0.473.</span> Keeping memory and exposing it are different operations.</p>
+</div>
+<aside class="notes">
+<p>Concatenating the input and previous hidden state combines the separate input-to-state and hidden-to-state affine maps into one matrix per gate. Biases can likewise be combined. The output-gate equation is required for the displayed h update. The numerical gates and candidate are assumed outputs of their learned maps; this is not a calculation of those values from a supplied input. This shows a standard non-peephole, non-projected LSTM. The direct cell path helps regulate gradient propagation but is not a guarantee against forgetting.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="gru" class="slide level2 ar36-slide">
+<h2>Gated Recurrent Units</h2>
+<p>A <strong>gated recurrent unit (GRU)</strong> has one recurrent hidden state, without a separate LSTM-style cell state.</p>
+<ul>
+<li>The <strong>reset gate</strong> <span class="math inline">r_t</span> controls use of old state when computing candidate <span class="math inline">n_t</span>.</li>
+<li>The <strong>update gate</strong> <span class="math inline">z_t</span> blends the candidate and old state. Using the PyTorch convention,</li>
+</ul>
+<p><span class="math display">h_t=(1-z_t)\odot n_t+z_t\odot h_{t-1}.</span></p>
+<p><img data-src="imgs/drawio/lec36/gru-update.png" class="ar36-gru" alt="A GRU update blends old state 0.8 with weight 0.9 and candidate 0.1 with weight 0.1. The contributions are added to form the new hidden state."></p>
+<div class="fragment takeaway">
+<p><span class="math inline">h_t=0.1(0.1)+0.9(0.8)=0.73</span>. In this convention, an update gate near <span class="math inline">1</span> preserves more old state.</p>
+</div>
+<aside class="notes">
+<p>Some sources reverse the naming or complement of the update coefficient; the displayed equation fixes the convention. The reset and update gates are learned sigmoid outputs, and n is a tanh candidate. The reset gate influences the candidate, not the final blend coefficient. PyTorch’s placement of the reset gate inside its candidate computation differs slightly from the original GRU formulation. This introductory slide does not compare speed or accuracy across architectures. Reference: https://docs.pytorch.org/docs/stable/generated/torch.nn.GRU.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="pixelcnn" class="slide level2 ar36-slide">
+<h2>Images as Ordered Sequences</h2>
+<p><strong>PixelCNN</strong> uses a <strong>convolutional neural network (CNN)</strong> to predict pixels autoregressively. <strong>Raster order</strong> means left to right across each row, then top to bottom.</p>
+<p><img data-src="imgs/drawio/lec36/image-order.png" class="ar36-image-order" alt="A binary two-by-two image with top row 1 1 and bottom row 0 0 becomes the ordered pixel sequence x1 equals 1, x2 equals 1, x3 equals 0, x4 equals 0."></p>
+<p>For this four-pixel image,</p>
+<p><span class="math display">p(x_1,x_2,x_3,x_4)=p(x_1)p(x_2\mid x_1)p(x_3\mid x_1,x_2)p(x_4\mid x_1,x_2,x_3).</span></p>
+<p>The image is spatial data; the generation procedure imposes an ordering on it.</p>
+<div class="ar36-paper">
+<p>Aaron van den Oord, Nal Kalchbrenner, and Koray Kavukcuoglu (2016), <a href="https://arxiv.org/abs/1601.06759" target="_blank" rel="noopener"><em>Pixel Recurrent Neural Networks</em></a>. The paper also introduces PixelCNN.</p>
+</div>
+<aside class="notes">
+<p>The example is binary and single-channel, avoiding RGB channel ordering. The original PixelCNN uses discrete pixel-channel predictions and masked convolutions. The displayed factorization specifies permitted dependence; a finite convolutional receptive field may capture only part of the full preceding context. The diagram is a constructed image, not a generated sample from a trained PixelCNN.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="causal-mask" class="slide level2 ar36-slide">
+<h2>Causal Masks Prevent Peeking</h2>
+<p><strong>Causal</strong> prediction uses earlier positions, not the target or future values. A <strong>mask</strong> fixes selected convolution weights to zero so forbidden inputs cannot affect the prediction.</p>
+<p><img data-src="imgs/drawio/lec36/causal-mask.png" class="ar36-mask" alt="A three-by-three first-layer convolution mask allows the three positions in the top row and the left position in the middle row. The center target and all later positions are blocked."></p>
+<p>At the raw-input layer, the current pixel must also be excluded. Otherwise the network could copy the answer it is supposed to predict.</p>
+<div class="takeaway">
+<p>Training knows the full image, but predictions must respect the mask. Generation still fills pixels in order.</p>
+</div>
+<aside class="notes">
+<p>The displayed spatial mask is the single-channel first-layer, type-A idea. Later type-B masks can include the current hidden position without exposing the raw target value, provided all earlier layers preserve causality. Color channels require an additional within-pixel ordering. A correct local mask does not imply an unlimited receptive field. PixelCNN can evaluate many training positions in parallel, but ordinary sampling has sequential dependencies. Source: van den Oord et al., Sections 2.1, 3.4, and 3.5.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="pixel-probability" class="slide level2 ar36-slide">
+<h2>A Pixel-by-Pixel Probability</h2>
+<p><img data-src="imgs/drawio/lec36/binary-patterns.png" class="ar36-patterns" alt="Binary image A is 11 on the top row and 00 on the bottom, with probability 0.5. B is 00 then 11, with probability 0.3. C is 10 then 01, with probability 0.2."></p>
+<p><span class="math inline">A</span> and <span class="math inline">C</span> start with <span class="math inline">1</span>: <span class="math inline">0.5+0.2=0.7</span>. Only <span class="math inline">A</span> has prefix <span class="math inline">(1,1)</span>, giving conditional probability <span class="math inline">0.5/0.7=5/7</span> for the second pixel.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Model</th>
-<th>Core mechanism</th>
+<th>Event along the branch for <span class="math inline">A</span></th>
+<th style="text-align: right;">Conditional probability</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>RNN</td>
-<td>Hidden state updated step by step</td>
+<td><span class="math inline">x_1=1</span></td>
+<td style="text-align: right;"><span class="math inline">0.7</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">x_2=1</span> given <span class="math inline">x_1=1</span></td>
+<td style="text-align: right;"><span class="math inline">5/7</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">(x_3,x_4)=(0,0)</span> given prefix <span class="math inline">(1,1)</span></td>
+<td style="text-align: right;"><span class="math inline">1\times1</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment takeaway">
+<p><span class="math display">p(A)=0.7\times(5/7)\times1\times1=0.5.</span></p>
+</div>
+<aside class="notes">
+<p>This is the exact categorical distribution from Lecture 35, expressed autoregressively rather than obtained by fitting a PixelCNN. A=(1,1,0,0), B=(0,0,1,1), and C=(1,0,0,1). Under the first-pixel-one branch, the masses of A and C are .5 and .2; normalizing gives 5/7 and 2/7. Once the prefix is (1,1), only A remains. This example does not assume independent pixels and does not claim that a particular local mask learns every dependency exactly.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="architectures" class="slide level2 ar36-slide">
+<h2>One Factorization, Different Architectures</h2>
+<p>Autoregression specifies <strong>which context is allowed</strong>. The architecture determines <strong>how that context is represented</strong>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Architecture</th>
+<th>How it uses the prefix</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Basic RNN</td>
+<td>One recurrent hidden-state vector</td>
 </tr>
 <tr class="even">
 <td>LSTM</td>
-<td>RNN with gates and cell state for long dependencies</td>
+<td>Hidden state plus gated cell memory</td>
 </tr>
 <tr class="odd">
 <td>GRU</td>
-<td>Simpler gated recurrent unit</td>
+<td>One gated recurrent state</td>
 </tr>
 <tr class="even">
-<td>Transformer decoder</td>
-<td>Self-attention over previous tokens</td>
-</tr>
-<tr class="odd">
 <td>PixelCNN</td>
-<td>Masked convolution over previous pixels</td>
+<td>Masked convolutions over earlier pixels</td>
+</tr>
+<tr class="odd">
+<td>Transformer decoder</td>
+<td>Attention over earlier token representations</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Attention</strong> forms weighted combinations of representations. The next lecture develops this idea for Transformers.</p>
+<p><strong>Stacking</strong> recurrent layers adds depth at each position; each layer still maintains its own state across positions.</p>
+<aside class="notes">
+<p>Architectures are not interchangeable performance guarantees. A Transformer decoder used autoregressively must prevent future-token access. Attention and its query/key/value mechanics are introduced in the next lecture, rather than assumed here. Stacking is distinct from stepping through time. A recurrent network can also be bidirectional for non-autoregressive tasks; such future access would violate the left-to-right conditional model illustrated here.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="recurrent-neural-network" class="slide level2">
-<h2>Recurrent Neural Network</h2>
-<p>An RNN maps:</p>
-<p><span class="math display">
-f_\theta:(x_t,h_{t-1})\mapsto(y_t,h_t)
-</span></p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec33/recurrent-neural-network.svg" alt="RNN hidden state carries information from h t to h t plus one while inputs produce outputs"></p>
+<section id="quick-check" class="slide level2 ar36-slide scrollable">
+<h2>Quick Check</h2>
+<ol type="1">
+<li>At generation time, should the next input use a sampled token or an unavailable correct answer?</li>
+<li>Is the LSTM cell state <span class="math inline">c_t</span> the same object as its hidden state <span class="math inline">h_t</span>?</li>
+<li>Can an autoregressive image model predict a pixel using that same raw pixel as input?</li>
+</ol>
+<div class="fragment" data-fragment-index="0">
+<p><strong>1. The sampled token.</strong> Teacher forcing uses correct earlier tokens during training, not ordinary generation.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>2. No.</strong> The cell carries memory; the output gate controls how it is exposed as the hidden state.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p><strong>3. No.</strong> That leaks the target. The causal mask must block it.</p>
 </div>
 </section>
-<section id="stacked-recurrent-networks" class="slide level2">
-<h2>Stacked Recurrent Networks</h2>
-<p>Stacking adds depth at each time step.</p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec33/stacked-recurrent-networks.svg" alt="Stacked recurrent network from input through RNN layer one and layer two to output"></p>
-</div>
-<div class="takeaway">
-<p>Depth helps learn more abstract sequence representations.</p>
-</div>
-</section>
-<section id="lstm" class="slide level2">
-<h2>LSTM</h2>
-<p>LSTMs add gates and a cell state.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Component</th>
-<th>Role</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Input gate <span class="math inline">i_t</span></td>
-<td>Controls new information</td>
-</tr>
-<tr class="even">
-<td>Forget gate <span class="math inline">f_t</span></td>
-<td>Controls what to erase</td>
-</tr>
-<tr class="odd">
-<td>Candidate <span class="math inline">g_t</span></td>
-<td>Proposed new content</td>
-</tr>
-<tr class="even">
-<td>Output gate <span class="math inline">o_t</span></td>
-<td>Controls exposed hidden state</td>
-</tr>
-<tr class="odd">
-<td>Cell state <span class="math inline">c_t</span></td>
-<td>Long-term memory path</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="lstm-updates" class="slide level2 compact">
-<h2>LSTM Updates</h2>
-<p><span class="math display">
-i_t=\sigma(W_{ii}x_t+b_{ii}+W_{hi}h_{t-1}+b_{hi})
-</span></p>
-<p><span class="math display">
-f_t=\sigma(W_{if}x_t+b_{if}+W_{hf}h_{t-1}+b_{hf})
-</span></p>
-<p><span class="math display">
-g_t=\tanh(W_{ig}x_t+b_{ig}+W_{hg}h_{t-1}+b_{hg})
-</span></p>
-<p><span class="math display">
-c_t=f_t\odot c_{t-1}+i_t\odot g_t,\qquad
-h_t=o_t\odot\tanh(c_t)
-</span></p>
-</section>
-<section id="gru" class="slide level2">
-<h2>GRU</h2>
-<p>GRU is a simpler gated recurrent unit.</p>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Gate</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Update gate</td>
-<td>Controls how much previous state is kept</td>
-</tr>
-<tr class="even">
-<td>Reset gate</td>
-<td>Controls how much previous state is used in candidate update</td>
-</tr>
-</tbody>
-</table>
-<div class="takeaway">
-<p>GRUs often train faster than LSTMs while keeping much of the benefit of gated memory.</p>
-</div>
-</section>
-<section id="pixelcnn" class="slide level2">
-<h2>PixelCNN</h2>
-<p>PixelCNN generates images pixel by pixel in raster order.</p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec33/pixelcnn.svg" alt="PixelCNN loop from previous pixels to masked convolution, current pixel prediction, append pixel, and repeat"></p>
-</div>
-<p>Masked filters prevent the model from looking at future pixels.</p>
-</section>
-<section id="pixel-mask-intuition" class="slide level2">
-<h2>Pixel Mask Intuition</h2>
-<table class="caption-top">
-<tbody>
-<tr class="odd">
-<td>seen</td>
-<td>seen</td>
-<td>seen</td>
-</tr>
-<tr class="even">
-<td>seen</td>
-<td>current</td>
-<td>future</td>
-</tr>
-<tr class="odd">
-<td>future</td>
-<td>future</td>
-<td>future</td>
-</tr>
-</tbody>
-</table>
-<div class="takeaway">
-<p>Autoregressive image generation imposes an ordering on pixels, just like text imposes an ordering on tokens.</p>
-</div>
-</section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
+<section id="takeaways" class="slide level2 ar36-slide">
+<h2>Takeaways</h2>
 <ul>
-<li>Autoregressive models factor a joint distribution into sequential conditionals.</li>
-<li>Generation repeats prediction and sampling.</li>
-<li>RNNs summarize history with hidden states.</li>
-<li>LSTMs and GRUs improve recurrent memory with gates.</li>
-<li>PixelCNN applies autoregression to images using masks.</li>
-<li>Transformers will modernize this idea with self-attention.</li>
+<li>Autoregressive models factor a sequence probability into conditional probabilities.</li>
+<li>Training uses known next-token targets; generation repeatedly chooses and appends outputs.</li>
+<li>EOS and a length budget give explicit stopping rules.</li>
+<li>RNNs summarize the prefix; LSTMs and GRUs control recurrent information with gates.</li>
+<li>PixelCNN imposes an ordering and masks forbidden pixel inputs.</li>
+<li>The same generation principle can use different neural architectures, including Transformers.</li>
 </ul>
 <p><a href="../asset_credits.html#lec36" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
 
@@ -685,6 +839,13 @@ h_t=o_t\odot\tanh(c_t)
         // devices. It is advisable to set this to a lower number than
         // viewDistance in order to save resources.
         mobileViewDistance: 2,
+
+        // Enable scroll view
+        view: 'slide',
+        scrollProgress: true,
+        scrollActivationWidth: 0,
+        scrollSnap: 'mandatory',
+        scrollLayout: 'full',
 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be

@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec37_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -143,11 +144,6 @@
       margin-right: 0; 
     }
   </style>
-  <style>
-  .reveal table { font-size: 0.76em; line-height: 1.22; }
-  .reveal th, .reveal td { padding: 0.4em 0.48em; }
-  .reveal .attention-figure svg { display: block; width: 100%; max-height: 290px; }
-  </style>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -168,19 +164,16 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="context-changes-a-tokens-representation" class="slide level2">
-<h2>Context Changes a Token’s Representation</h2>
-<p>Consider the word <strong>bank</strong> in two sentences:</p>
-<ul>
-<li>“We rested on the river bank.”</li>
-<li>“We deposited money at the bank.”</li>
-</ul>
-<div class="question">
-<p>The initial token embedding may be the same. How can the surrounding words change its representation?</p>
+<section id="context" class="slide level2 att37-slide">
+<h2>Context Changes a Word’s Meaning</h2>
+<p>A <strong>Transformer</strong> is a neural-network architecture that uses <strong>attention</strong> to combine information from different sequence positions, without recurrent state updates.</p>
+<p><img data-src="imgs/drawio/lec37/bank-context.png" class="att37-context" alt="Two illustrative contexts for bank: river points toward a riverbank interpretation, and money points toward a financial-bank interpretation. These are schematic relationships, not measured attention weights."></p>
+<p>Attention produces a <strong>contextual representation</strong>: a numeric vector influenced by the surrounding input, not only by the word itself.</p>
+<div class="att37-paper">
+<p>Introduced by Ashish Vaswani et al.&nbsp;(2017), <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener"><em>Attention Is All You Need</em></a>.</p>
 </div>
-<p>Attention lets a position combine information from other positions.</p>
 <aside class="notes">
-<p>50-minute plan: context and embeddings, 8 minutes; projections and shapes, 9; worked attention calculation, 14; student practice, 7; self-attention, parallelism, and cost, 8; exit discussion, 4. HW6 is due today, not newly released. No separate notebook demo is scheduled. This lecture and Lecture 38 use a column-vector convention. Keys index rows of the score matrix, queries index columns. Original numeric examples and inline SVGs. References: Vaswani et al., Attention Is All You Need, https://arxiv.org/abs/1706.03762; PyTorch scaled-dot-product attention documentation, https://docs.pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html.</p>
+<p>The river/money connections illustrate possible contextual relationships; they are not observations from a trained model, nor a claim that a single attention weight explains a prediction. A real tokenizer can split words into subword pieces. This lecture develops the supplied Beamer attention material using column vectors, consistent with Lecture 38. The full Transformer also includes feedforward layers, residual connections, normalization, and positional information; it is not just one attention operation. The original paper contains an encoder-decoder architecture, while other Transformers can be encoder-only or decoder-only.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -193,394 +186,182 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="overview" class="slide level2">
-<h2>Overview</h2>
-<p>Transformers were introduced in <em>Attention Is All You Need</em> in 2017.</p>
-<p>Applications include:</p>
-<ul>
-<li>Machine translation.</li>
-<li>Summarization.</li>
-<li>Text generation.</li>
-<li>Language understanding.</li>
-<li>Vision, audio, and multimodal modeling.</li>
-</ul>
-<p>The original model used an encoder and a decoder. Other systems use only one of those components.</p>
-</section>
-<section id="transformers-as-autoregressive-models" class="slide level2">
-<h2>Transformers as Autoregressive Models</h2>
-<p>Decoder-only transformers generate left to right:</p>
-<p><span class="math display">
-p(x_1,\ldots,x_T)=\prod_{t=1}^{T}p(x_t\mid x_{&lt;t})
-</span></p>
-<div class="attention-figure">
-<svg viewbox="0 0 1000 265" role="img" aria-label="Autoregressive generation: a token prefix enters a transformer, which predicts a next-token distribution. Sample a token, append it to the prefix, and repeat.">
-<defs><marker id="transformer-generation-arrow" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="9" markerheight="9" markerunits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#5d6470"></path></marker></defs>
-<g stroke="#5d6470" stroke-width="3" fill="none" marker-end="url(#transformer-generation-arrow)"><path d="M260 82H340"></path><path d="M630 82H705"></path><path d="M850 151V225H135V158"></path></g>
-<g stroke-width="2"><rect x="10" y="20" width="250" height="130" rx="7" fill="#fff4db" stroke="#b7791f"></rect><rect x="345" y="20" width="285" height="130" rx="7" fill="#e8f6f5" stroke="#007c89"></rect><rect x="710" y="20" width="285" height="130" rx="7" fill="#fdecef" stroke="#b8325f"></rect></g>
-<g font-family="sans-serif" text-anchor="middle" fill="#202124" font-size="28"><text x="135" y="89">Token prefix</text><text x="487" y="89">Transformer</text><text x="852" y="71">Next-token</text><text x="852" y="108">distribution</text><text x="500" y="210">Sample a token and append it to the prefix</text></g>
-</svg>
-</div>
-</section>
-<section id="short-history" class="slide level2">
-<h2>Short History</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Year</th>
-<th>Model/paper</th>
-<th>Contribution</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>2017</td>
-<td>Attention Is All You Need</td>
-<td>Transformer architecture</td>
-</tr>
-<tr class="even">
-<td>2018</td>
-<td>BERT</td>
-<td>Bidirectional Encoder Representations from Transformers</td>
-</tr>
-<tr class="odd">
-<td>2019</td>
-<td>GPT-2</td>
-<td>Generative Pre-trained Transformer, second version</td>
-</tr>
-<tr class="even">
-<td>2019</td>
-<td>T5</td>
-<td>Text-to-Text Transfer Transformer</td>
-</tr>
-<tr class="odd">
-<td>2020</td>
-<td>GPT-3</td>
-<td>Few-shot language-model scaling</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="why-transformers" class="slide level2">
-<h2>Why Transformers?</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="recurrent-neural-network-rnn">Recurrent neural network (RNN)</h3>
-<ul>
-<li>Processes tokens sequentially.</li>
-<li>Hidden state is a bottleneck.</li>
-<li>Hard to parallelize.</li>
-</ul>
-</div><div class="column" style="width:48%;">
-<h3 id="transformer-advantage">Transformer advantage</h3>
-<ul>
-<li>Uses self-attention.</li>
-<li>Processes known sequence positions in parallel during training.</li>
-<li>Captures long-range dependencies.</li>
-</ul>
-</div></div>
-</section>
-<section id="token-embedding" class="slide level2">
-<h2>Token Embedding</h2>
-<p>Given tokens:</p>
-<p><span class="math display">
-a_1,a_2,\ldots,a_n
-</span></p>
-<p>Each token maps to a vector:</p>
-<p><span class="math display">
-x_i\in \mathbb{R}^{d_e}
-</span></p>
-<p>Matrix representation:</p>
-<p><span class="math display">
-X=
-\begin{bmatrix}
-x_1 &amp; x_2 &amp; \cdots &amp; x_n
-\end{bmatrix}
-\in \mathbb{R}^{d_e\times n}
-</span></p>
-</section>
-<section id="embedding-choices" class="slide level2">
-<h2>Embedding Choices</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Encoding</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>One-hot</td>
-<td>Sparse, high-dimensional, fixed</td>
-</tr>
-<tr class="even">
-<td>Learned embedding</td>
-<td>Dense vectors trained end-to-end</td>
-</tr>
-<tr class="odd">
-<td>Pretrained embedding</td>
-<td>Initialized from existing language representations</td>
-</tr>
-</tbody>
-</table>
+<section id="transformer-generation" class="slide level2 att37-slide">
+<h2>From Recurrence to Attention</h2>
+<p>A <strong>recurrent neural network (RNN)</strong> passes a hidden state through positions one by one. Attention compares a position directly with other available positions; known positions can be processed together.</p>
+<p><img data-src="imgs/drawio/lec37/transformer-generation.png" class="att37-generation" alt="The prefix The sky is enters token embedding and Transformer layers, followed by an output head producing a next-token distribution. A selected token blue is appended to the prefix."></p>
+<p>For an <strong>autoregressive</strong> Transformer, generation still chooses one new token at a time. The <strong>prefix</strong> is the sequence chosen so far.</p>
 <div class="takeaway">
-<p>Embeddings turn discrete tokens into continuous vectors that neural networks can manipulate.</p>
+<p>Attention returns feature vectors. An <strong>output head</strong> maps the final representations to next-token scores; <strong>softmax</strong> normalizes those scores into probabilities.</p>
 </div>
+<aside class="notes">
+<p>The diagram summarizes a decoder-only language model, not every Transformer. The output head is the final prediction mapping, followed by softmax over the vocabulary. The attention weights discussed later instead normalize over context positions. A feedforward computation across layers is still sequential in depth; parallel positions do not mean all computation happens at once. A conventional autoregressive decoder must wait for the actual previous sampled token. Caching does not remove that dependency.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="a-small-embedding-lookup" class="slide level2">
-<h2>A Small Embedding Lookup</h2>
-<p>Three token IDs index columns of an embedding matrix:</p>
-<p><span class="math display">E=\begin{bmatrix}1&amp;0&amp;1\\0&amp;1&amp;1\end{bmatrix}.</span></p>
-<p>For token IDs <span class="math inline">[2,0,2]</span>, using zero-based indexing:</p>
-<p><span class="math display">X=\begin{bmatrix}1&amp;1&amp;1\\1&amp;0&amp;1\end{bmatrix}\in\mathbb{R}^{2\times3}.</span></p>
-<div class="question">
-<p>Why do the first and third positions have the same vector here?</p>
-</div>
-<div class="fragment">
-<p>They use the same lookup entry. Position information and subsequent attention layers distinguish their contexts.</p>
-</div>
+<section id="embeddings" class="slide level2 att37-slide">
+<h2>Tokens Become Embedding Vectors</h2>
+<p>A <strong>token</strong> is a text piece, such as a word or subword. An <strong>embedding</strong> maps its integer ID to a learned vector by looking up a column of a matrix <span class="math inline">E</span>.</p>
+<p><img data-src="imgs/drawio/lec37/embedding-lookup.png" class="att37-embedding" alt="A lookup table has token ID 0 mapped to vector (1,0), ID 1 to (0,1), and ID 2 to (1,1). The sequence of IDs 2,0,2 selects vectors (1,1),(1,0),(1,1)."></p>
+<p>For <span class="math inline">n</span> positions and embedding dimension <span class="math inline">d_e</span>, we place one vector <span class="math inline">x_i</span> in each <strong>column</strong>:</p>
+<p><span class="math display">X=[x_1\ \cdots\ x_n]\in\mathbb R^{d_e\times n},\qquad
+X=\begin{bmatrix}1&amp;1&amp;1\\1&amp;0&amp;1\end{bmatrix}\text{ in this example}.</span></p>
+<p>The repeated ID has the same lookup vector. Position information and later attention distinguish its occurrences.</p>
+<aside class="notes">
+<p>The table uses zero-based IDs and invented two-dimensional embeddings, not learned word meanings. Here n=3 and d_e=2. Embeddings are parameters trained by gradient descent, not usually one-hot vectors. Positional information is separate from the token lookup; Lecture 38 develops it. Keep column-vector layouts throughout this lecture, even though many library interfaces use sequence positions as rows.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="attention-setup" class="slide level2">
-<h2>Attention Setup</h2>
-<p>We have context embeddings <span class="math inline">X</span> and query embeddings <span class="math inline">X_Q</span>.</p>
-<p>Learned projections create:</p>
-<p><span class="math display">
-K=W_KX,\qquad Q=W_QX_Q,\qquad V=W_VX
-</span></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Symbol</th>
-<th>Role</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Query</td>
-<td>What am I looking for?</td>
-</tr>
-<tr class="even">
-<td>Key</td>
-<td>What information is available?</td>
-</tr>
-<tr class="odd">
-<td>Value</td>
-<td>What content should be returned?</td>
-</tr>
-</tbody>
-</table>
-<p><span class="math inline">Q</span>, <span class="math inline">K</span>, and <span class="math inline">V</span> abbreviate <strong>query</strong>, <strong>key</strong>, and <strong>value</strong>. The projection matrices are learned during training.</p>
-</section>
-<section id="query-key-value-diagram" class="slide level2">
-<h2>Query-Key-Value Diagram</h2>
-<div class="attention-figure">
-<svg viewbox="0 0 1000 275" role="img" aria-label="Queries and keys produce matching scores. Softmax converts scores into weights. Those weights combine the values to produce an output.">
-<defs><marker id="transformer-qkv-arrow" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="9" markerheight="9" markerunits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#5d6470"></path></marker></defs>
-<g stroke="#5d6470" stroke-width="3" fill="none" marker-end="url(#transformer-qkv-arrow)"><path d="M175 55H230V125H278"></path><path d="M175 185H230V125"></path><path d="M475 125H533"></path><path d="M730 125H785"></path><path d="M630 228H895V171"></path></g>
-<g stroke-width="2"><rect x="5" y="20" width="170" height="70" rx="7" fill="#fff4db" stroke="#b7791f"></rect><rect x="5" y="150" width="170" height="70" rx="7" fill="#fff4db" stroke="#b7791f"></rect><rect x="285" y="83" width="190" height="85" rx="7" fill="#e8f6f5" stroke="#007c89"></rect><rect x="540" y="83" width="190" height="85" rx="7" fill="#e8f6f5" stroke="#007c89"></rect><rect x="790" y="83" width="205" height="85" rx="7" fill="#fdecef" stroke="#b8325f"></rect><rect x="460" y="198" width="170" height="63" rx="7" fill="#fff4db" stroke="#b7791f"></rect></g>
-<g font-family="sans-serif" font-size="28" text-anchor="middle" fill="#202124"><text x="90" y="65">Queries Q</text><text x="90" y="195">Keys K</text><text x="380" y="137">Scores</text><text x="635" y="137">Weights</text><text x="895" y="137">Output</text><text x="545" y="239">Values V</text><text x="635" y="63">softmax</text></g>
-</svg>
-</div>
-<p>Matching uses <strong>keys</strong>. Mixing uses <strong>values</strong>. They need not have the same feature dimension.</p>
-</section>
-<section id="shapes-before-numbers" class="slide level2">
-<h2>Shapes Before Numbers</h2>
-<p>One vector per <strong>column</strong>. There are <span class="math inline">n</span> context positions and <span class="math inline">m</span> queries.</p>
-<p>Feature dimensions: <span class="math inline">d_e</span> for embeddings, <span class="math inline">d_k</span> for keys/queries, <span class="math inline">d_v</span> for values.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Quantity</th>
-<th>Shape</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Context <span class="math inline">X</span>, queries <span class="math inline">X_Q</span></td>
-<td><span class="math inline">d_e\times n</span>, <span class="math inline">d_e\times m</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">W_K</span>, <span class="math inline">W_Q</span></td>
-<td><span class="math inline">d_k\times d_e</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">K=W_KX</span>, <span class="math inline">Q=W_QX_Q</span></td>
-<td><span class="math inline">d_k\times n</span>, <span class="math inline">d_k\times m</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">V=W_VX</span></td>
-<td><span class="math inline">d_v\times n</span></td>
-</tr>
-<tr class="odd">
-<td>Scores <span class="math inline">K^TQ</span></td>
-<td><span class="math inline">n\times m</span></td>
-</tr>
-<tr class="even">
-<td>Output</td>
-<td><span class="math inline">d_v\times m</span></td>
-</tr>
-</tbody>
-</table>
-<p>Each query receives its own distribution over the <span class="math inline">n</span> context positions.</p>
-</section>
-<section id="softmax-function" class="slide level2">
-<h2>Softmax Function</h2>
-<p>Softmax converts scores into a probability distribution:</p>
-<p><span class="math display">
-\operatorname{softmax}(z)_i
-=
-\frac{e^{z_i}}{\sum_{j=1}^{n} e^{z_j}}
-</span></p>
-<p>Properties:</p>
+<section id="qkv-roles" class="slide level2 att37-slide">
+<h2>Query, Key, and Value</h2>
+<p>Think of retrieving information from a station noticeboard:</p>
+<p><img data-src="imgs/drawio/lec37/query-key-value.png" class="att37-roles" alt="A query asks when the train leaves. Two key-value records contain Departure paired with 08:10 and Platform paired with 3. Matching the departure key identifies the relevant time value."></p>
 <ul>
-<li>Each output is non-negative.</li>
-<li>The outputs sum to <span class="math inline">1</span>.</li>
-<li>Larger scores receive larger probabilities.</li>
+<li>A <strong>query</strong> describes what the current position seeks.</li>
+<li>A <strong>key</strong> describes what a stored position can match.</li>
+<li>A <strong>value</strong> carries the content to combine into the answer.</li>
 </ul>
 <div class="takeaway">
-<p>In attention, softmax turns similarity scores into mixing weights.</p>
+<p>In neural attention, all three are vectors. Query-key matches set weights; those weights mix the values rather than copying one database record.</p>
 </div>
+<aside class="notes">
+<p>The noticeboard is an analogy for the three roles, not an actual vector calculation or a fixed symbolic lookup algorithm. Keys and values are paired by context position. The learned projections on the next slide need not encode human-readable labels. The numeric example later uses constructed vectors, unrelated to real train times or text embeddings.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="scaled-dot-product-attention" class="slide level2">
-<h2>Scaled Dot-Product Attention</h2>
-<p><span class="math display">
-\operatorname{Attention}(Q,K,V)=
-V\cdot \operatorname{softmax}\left(\frac{K^TQ}{\sqrt{d_k}}\right)
-</span></p>
-<p>Interpretation:</p>
-<ul>
-<li><span class="math inline">K^TQ</span>: similarity scores.</li>
-<li><span class="math inline">\sqrt{d_k}</span>: controls the scale of dot products.</li>
-<li><span class="math inline">\operatorname{softmax}</span>: turns scores into weights.</li>
-<li><span class="math inline">V</span>: values are averaged using those weights.</li>
-</ul>
-<p><strong>Softmax runs down each column</strong>, across keys for one query.</p>
+<section id="projections" class="slide level2 att37-slide">
+<h2>Learned Projections Create Q, K, and V</h2>
+<p>Let <span class="math inline">X\in\mathbb R^{d_e\times n}</span> contain the <strong>context</strong> vectors to read, and <span class="math inline">X_Q\in\mathbb R^{d_e\times m}</span> the vectors making <span class="math inline">m</span> queries. A <strong>linear projection</strong> multiplies vectors by a learned matrix.</p>
+<p><img data-src="imgs/drawio/lec37/learned-projections.png" class="att37-projections" alt="Context X is multiplied by separate learned matrices W_K and W_V to produce keys K and values V. Query inputs X_Q are multiplied by W_Q to produce queries Q."></p>
+<p><span class="math display">K=W_KX,\qquad Q=W_QX_Q,\qquad V=W_VX.</span></p>
+<p>Keys and queries have <span class="math inline">d_k</span> features so they can be compared. Values have <span class="math inline">d_v</span> features; <span class="math inline">d_v</span> need not equal <span class="math inline">d_k</span>.</p>
+<aside class="notes">
+<p>Q, K, and V stand for query, key, and value. The matrices W_K and W_Q each have shape d_k by d_e, and W_V has shape d_v by d_e. This simple presentation uses the same input feature dimension for context and query sources. Biases are omitted. Projected vectors, not token IDs, enter the attention computation. The matrices are trained jointly with the model; they do not change during a single generation run.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="why-divide-by-the-square-root" class="slide level2">
-<h2>Why Divide by the Square Root?</h2>
-<p>The dot product adds <span class="math inline">d_k</span> terms:</p>
-<p><span class="math display">q^Tk=\sum_{r=1}^{d_k}q_rk_r.</span></p>
-<p>If the terms are independent, zero-mean, and unit-variance:</p>
-<p><span class="math display">\operatorname{Var}(q^Tk)=d_k,\qquad
-\operatorname{Var}\!\left(\frac{q^Tk}{\sqrt{d_k}}\right)=1.</span></p>
-<div class="takeaway">
-<p>Scaling helps prevent large dot products from making softmax excessively sharp. The independence assumptions explain the intuition, not an exact law for learned features.</p>
-</div>
-</section>
-<section id="worked-example-one-query-three-keys" class="slide level2">
-<h2>Worked Example: One Query, Three Keys</h2>
-<p>Use <span class="math inline">d_k=2</span>, query <span class="math inline">q=(1,0)^T</span>, and these already-projected vectors:</p>
+<section id="worked-example" class="slide level2 att37-slide">
+<h2>One Query, Three Key-Value Pairs</h2>
+<p>Use already-projected, invented vectors: <span class="math inline">n=3</span>, <span class="math inline">d_k=d_v=2</span>, and one query <span class="math inline">q=(1,0)^T</span>.</p>
+<p><img data-src="imgs/drawio/lec37/key-value-pairs.png" class="att37-pairs" alt="Three context positions pair key k1=(1,0) with value v1=(2,0), k2=(0,1) with v2=(0,2), and k3=(1,1) with v3=(2,2). A query q=(1,0) will read them."></p>
+<p>Placing the pairs in corresponding columns gives</p>
 <p><span class="math display">K=\begin{bmatrix}1&amp;0&amp;1\\0&amp;1&amp;1\end{bmatrix},\qquad
 V=\begin{bmatrix}2&amp;0&amp;2\\0&amp;2&amp;2\end{bmatrix}.</span></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Position</th>
-<th>Key</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td><span class="math inline">(1,0)^T</span></td>
-<td><span class="math inline">(2,0)^T</span></td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td><span class="math inline">(0,1)^T</span></td>
-<td><span class="math inline">(0,2)^T</span></td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td><span class="math inline">(1,1)^T</span></td>
-<td><span class="math inline">(2,2)^T</span></td>
-</tr>
-</tbody>
-</table>
-<p>These are invented feature vectors, not measurements of word meaning.</p>
+<p>We will <strong>compare keys</strong>, <strong>normalize scores</strong>, then <strong>mix values</strong>.</p>
+<aside class="notes">
+<p>The coordinates have no assigned linguistic meaning. The vectors are chosen so the dot products and weighted sum are easy to verify. Column j of K and column j of V describe the same context position. These are outputs of projections, so W matrices are not needed to run this calculation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="step-1-compare-the-query-with-every-key" class="slide level2">
-<h2>Step 1: Compare the Query with Every Key</h2>
-<p><span class="math display">K^Tq=\begin{bmatrix}1\\0\\1\end{bmatrix}.</span></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Position</th>
-<th style="text-align: right;">Dot product</th>
-<th style="text-align: right;">Scaled score</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td style="text-align: right;"><span class="math inline">1\cdot1+0\cdot0=1</span></td>
-<td style="text-align: right;"><span class="math inline">1/\sqrt2\approx0.707</span></td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td style="text-align: right;"><span class="math inline">0\cdot1+1\cdot0=0</span></td>
-<td style="text-align: right;"><span class="math inline">0</span></td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td style="text-align: right;"><span class="math inline">1\cdot1+1\cdot0=1</span></td>
-<td style="text-align: right;"><span class="math inline">1/\sqrt2\approx0.707</span></td>
-</tr>
-</tbody>
-</table>
-<p>Positions 1 and 3 match this query equally well.</p>
+<section id="matching-scores" class="slide level2 att37-slide">
+<h2>Step 1: Compute Matching Scores</h2>
+<p>The <strong>dot product</strong> <span class="math inline">k_i^Tq</span> compares key <span class="math inline">k_i</span> with query <span class="math inline">q=(1,0)^T</span>. Divide by <span class="math inline">\sqrt{d_k}=\sqrt2</span> to get a <strong>scaled score</strong> <span class="math inline">s_i</span>.</p>
+<p><img data-src="imgs/drawio/lec37/matching-scores.png" class="att37-scores" alt="With query (1,0), keys (1,0),(0,1),(1,1) give dot products 1,0,1 and scaled scores about 0.707,0,0.707."></p>
+<p><span class="math display">s=\frac{K^Tq}{\sqrt{d_k}}=
+\begin{bmatrix}1/\sqrt2\\0\\1/\sqrt2\end{bmatrix}
+\approx\begin{bmatrix}0.707\\0\\0.707\end{bmatrix}.</span></p>
+<p><strong>Why scale?</strong> Dot products tend to grow with the number of features. Scaling helps keep the next normalization from becoming excessively sharp.</p>
+<aside class="notes">
+<p>This matching score is not cosine similarity: vectors are not normalized to unit length. For independent zero-mean unit-variance query and key components, the dot product has variance d_k; division by sqrt(d_k) gives unit variance. This is intuition for the scaling, not an exact law for learned vectors. Values do not enter the matching score. References: Vaswani et al., Section 3.2.1 and its variance footnote.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="step-2-normalize-the-scores" class="slide level2">
-<h2>Step 2: Normalize the Scores</h2>
-<p><span class="math display">\alpha=\operatorname{softmax}\!\begin{bmatrix}0.707\\0\\0.707\end{bmatrix}
-\approx\begin{bmatrix}0.401\\0.198\\0.401\end{bmatrix}.</span></p>
-<div class="attention-figure">
-<svg viewbox="0 0 1000 135" role="img" aria-label="Attention weights for positions one, two, and three are approximately 0.401, 0.198, and 0.401. They add to one.">
-<rect x="20" y="20" width="385" height="70" fill="#e8f6f5" stroke="#007c89" stroke-width="2"></rect><rect x="405" y="20" width="190" height="70" fill="#fff4db" stroke="#b7791f" stroke-width="2"></rect><rect x="595" y="20" width="385" height="70" fill="#fdecef" stroke="#b8325f" stroke-width="2"></rect>
-<g font-family="sans-serif" font-size="28" text-anchor="middle" fill="#202124"><text x="212" y="64">Position 1: 0.401</text><text x="500" y="64">2: 0.198</text><text x="787" y="64">Position 3: 0.401</text></g>
-</svg>
+<section id="softmax-weights" class="slide level2 att37-slide">
+<h2>Step 2: Turn Scores into Weights</h2>
+<p><strong>Softmax</strong> converts the <span class="math inline">n</span> scores into nonnegative weights <span class="math inline">\alpha_i</span> that sum to <span class="math inline">1</span>:</p>
+<p><span class="math display">\alpha_i=\frac{e^{s_i}}{\sum_{j=1}^n e^{s_j}}.</span></p>
+<p>For <span class="math inline">s=(1/\sqrt2,0,1/\sqrt2)^T</span>, the common denominator is approximately <span class="math inline">2.028+1+2.028=5.056</span>.</p>
+<p><img data-src="imgs/drawio/lec37/attention-weights.png" class="att37-weights" alt="A proportional bar shows attention weights for positions 1,2,3 of approximately 0.401,0.198,0.401. Positions 1 and 3 receive the same share."></p>
+<div class="question">
+<p>Does the zero score at position 2 mean zero attention weight?</p>
 </div>
-<p>For example, <span class="math inline">\alpha_1=e^{0.707}/(e^{0.707}+1+e^{0.707})</span>.</p>
-<p>The weights sum to <span class="math inline">1</span>. A zero score still gets positive weight.</p>
+<div class="fragment takeaway">
+<p>No.&nbsp;<span class="math inline">e^0=1</span>, so position 2 still gets about <span class="math inline">0.198</span> of the weight.</p>
+</div>
+<aside class="notes">
+<p>For finite unmasked scores, softmax weights are strictly positive. Masking a position with negative infinity makes its weight zero; masks come later. The exact symmetric weights are computed before rounding the displayed values. Stable softmax subtracts the maximum score before exponentiation; that common shift leaves the result unchanged. The distribution here is over context positions, not next-token vocabulary entries.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="step-3-mix-the-values" class="slide level2">
+<section id="mix-values" class="slide level2 att37-slide">
 <h2>Step 3: Mix the Values</h2>
-<p><span class="math display">
-\begin{aligned}
-o&amp;=V\alpha=\alpha_1v_1+\alpha_2v_2+\alpha_3v_3\\[0.4em]
+<p>The <strong>output vector</strong> <span class="math inline">o</span> is the weighted sum of the paired values:</p>
+<p><img data-src="imgs/drawio/lec37/value-mixture.png" class="att37-mixture" alt="Values (2,0),(0,2),(2,2) are weighted by approximately 0.401,0.198,0.401, then added to produce one output vector."></p>
+<p><span class="math display">\begin{aligned}
+o=V\alpha
 &amp;\approx0.401\begin{bmatrix}2\\0\end{bmatrix}
 +0.198\begin{bmatrix}0\\2\end{bmatrix}
-+0.401\begin{bmatrix}2\\2\end{bmatrix}\\[0.4em]
++0.401\begin{bmatrix}2\\2\end{bmatrix}\\[0.3em]
 &amp;\approx\begin{bmatrix}1.604\\1.198\end{bmatrix}.
-\end{aligned}
-</span></p>
+\end{aligned}</span></p>
 <div class="takeaway">
-<p>The output is a new feature vector formed from the values. Attention does not have to select exactly one token.</p>
-</div>
-</section>
-<section id="practice-a-different-query" class="slide level2 scrollable">
-<h2>Practice: A Different Query</h2>
-<p>Keep the same <span class="math inline">K,V</span>, but change the query to <span class="math inline">q'=(0,1)^T</span>.</p>
-<p><span class="math display">K=\begin{bmatrix}1&amp;0&amp;1\\0&amp;1&amp;1\end{bmatrix},\qquad
-V=\begin{bmatrix}2&amp;0&amp;2\\0&amp;2&amp;2\end{bmatrix}.</span></p>
-<div class="question">
-<ol type="1">
-<li>Compute the three scaled scores.</li>
-<li>Which positions should receive equal weights?</li>
-<li>Compute the output vector. How does it differ from <span class="math inline">(1.604,1.198)^T</span>?</li>
-</ol>
+<p>The result blends content from several positions. It is a feature vector, not a selected token ID or a next-token probability distribution.</p>
 </div>
 <aside class="notes">
-<p>Allow three minutes. Students may reuse e^(1/sqrt(2)) approximately 2.028. Discuss why changing the query changes the mixture even though keys and values are identical.</p>
+<p>The first coordinate is 2 times (alpha_1+alpha_3), and the second is 2 times (alpha_2+alpha_3). Three-decimal output rounding agrees with the unrounded calculation. Attention averages values, not keys. Since the weights are nonnegative and sum to one, this single attention output lies in the convex hull of its value vectors; later projections and residual updates need not have that restriction relative to these values.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -593,179 +374,183 @@ V=\begin{bmatrix}2&amp;0&amp;2\\0&amp;2&amp;2\end{bmatrix}.</span></p>
           display:block!important;
       }</style></aside>
 </section>
-<section id="practice-answer-the-query-changes-the-mixture" class="slide level2">
-<h2>Practice Answer: The Query Changes the Mixture</h2>
-<p><span class="math display">s'\approx(0,0.707,0.707)^T,\qquad
-\alpha'\approx(0.198,0.401,0.401)^T.</span></p>
-<p><span class="math display">o'=V\alpha'\approx(1.198,1.604)^T.</span></p>
+<section id="different-query" class="slide level2 att37-slide">
+<h2>Practice: Change Only the Query</h2>
+<p>Keep the keys and values, but use <span class="math inline">q'=(0,1)^T</span>:</p>
+<p><span class="math display">K=\begin{bmatrix}1&amp;0&amp;1\\0&amp;1&amp;1\end{bmatrix},\qquad
+V=\begin{bmatrix}2&amp;0&amp;2\\0&amp;2&amp;2\end{bmatrix},\qquad d_k=2.</span></p>
 <div class="question">
-<p>What if the query were the zero vector?</p>
+<p>Which positions now match equally well? Compute the scaled scores, weights, and output. You may use <span class="math inline">e^{1/\sqrt2}\approx2.028</span>.</p>
 </div>
-<div class="fragment">
-<p>All scores would be zero, so weights would be <span class="math inline">(1/3,1/3,1/3)^T</span>. The output would be the average of all values: <span class="math inline">(4/3,4/3)^T</span>.</p>
+<div class="fragment takeaway" data-fragment-index="0">
+<p><span class="math inline">s'\approx(0,0.707,0.707)^T</span>, so positions <strong>2 and 3</strong> tie.</p>
+<p><span class="math inline">\alpha'\approx(0.198,0.401,0.401)^T</span> and <span class="math inline">o'\approx(1.198,1.604)^T</span>.</p>
 </div>
+<div class="fragment takeaway" data-fragment-index="1">
+<p>For <span class="math inline">q=0</span>, all scores are zero: <span class="math inline">\alpha=(1/3,1/3,1/3)^T</span> and <span class="math inline">o=(4/3,4/3)^T</span>.</p>
+</div>
+<aside class="notes">
+<p>Pause before revealing the first answer. The first output was approximately (1.604,1.198)^T; changing only the query swaps the two coordinates here because of the deliberately symmetric example. Ask about the zero-query case before revealing the second answer. A zero query gives uniform weights only over allowed positions; this example has no mask.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="attention-computation" class="slide level2">
+<section id="matrix-attention" class="slide level2 att37-slide">
+<h2>Many Queries in One Matrix Operation</h2>
+<p>Let <span class="math inline">Q=[q_1\ \cdots\ q_m]</span>. Each query gets a column of attention weights in <span class="math inline">A</span> and a column of outputs in <span class="math inline">O</span>:</p>
+<p><span class="math display">A=\operatorname{softmax}_{\text{columns}}\!\left(\frac{K^TQ}{\sqrt{d_k}}\right),
+\qquad O=VA.</span></p>
+<p><img data-src="imgs/drawio/lec37/column-normalization.png" class="att37-columns" alt="For three keys and two queries, a three-by-two attention-weight matrix has columns (0.401,0.198,0.401) and (0.198,0.401,0.401). Each column independently sums to one."></p>
+<p><span class="math inline">K:d_k\times n</span>, <span class="math inline">Q:d_k\times m</span>, <span class="math inline">V:d_v\times n</span>. Thus <span class="math inline">A:n\times m</span> and <span class="math inline">O:d_v\times m</span>.</p>
+<div class="takeaway">
+<p>Normalize <strong>down each column</strong>, over keys for one query. Do not normalize across different queries.</p>
+</div>
+<aside class="notes">
+<p>The diagram uses the two previous queries q and q’ as columns of Q. Its rows index context positions, and its columns index queries. Multiplication by V independently mixes the same value bank for each query. In the toy case O has columns (1.604,1.198)^T and (1.198,1.604)^T. Many implementations orient the matrices differently; the later row-layout slide makes that transpose explicit.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="attention-algorithm" class="slide level2 att37-slide">
 <h2>Attention Computation</h2>
+<p>Inputs are already projected. <code>@</code> means <strong>matrix multiplication</strong>, and <code>Rows(K)</code> counts key features.</p>
 <div class="pseudo-code">
 <div class="pseudo-line">
 <span class="pseudo-kw">function</span> <span class="pseudo-fn">Attention</span>(<span class="pseudo-var">Q</span>, <span class="pseudo-var">K</span>, <span class="pseudo-var">V</span>)
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">scores</span> <span class="pseudo-op">=</span> <span class="pseudo-var">K</span><sup>T</sup> <span class="pseudo-op">*</span> <span class="pseudo-var">Q</span>
+<div class="pseudo-line fragment indent-1" data-fragment-index="0">
+<span class="pseudo-var">dk</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">Rows</span>(<span class="pseudo-var">K</span>)
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">scaled</span> <span class="pseudo-op">=</span> <span class="pseudo-var">scores</span> <span class="pseudo-op">/</span> <span class="pseudo-fn">sqrt</span>(<span class="pseudo-var">d_k</span>)
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-var">scores</span> <span class="pseudo-op">=</span> (<span class="pseudo-fn">Transpose</span>(<span class="pseudo-var">K</span>) <span class="pseudo-op">@</span> <span class="pseudo-var">Q</span>) <span class="pseudo-op">/</span> <span class="pseudo-fn">sqrt</span>(<span class="pseudo-var">dk</span>)
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">weights</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">softmax</span>(<span class="pseudo-var">scaled</span>, <span class="pseudo-var">axis</span><span class="pseudo-op">=</span><span class="pseudo-num">0</span>)
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-var">weights</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">Softmax</span>(<span class="pseudo-var">scores</span>, <span class="pseudo-var">axis</span><span class="pseudo-op">=</span><span class="pseudo-num">0</span>)
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">return</span> <span class="pseudo-var">V</span> <span class="pseudo-op">*</span> <span class="pseudo-var">weights</span>
+<div class="pseudo-line fragment indent-1" data-fragment-index="3">
+<span class="pseudo-kw">return</span> <span class="pseudo-var">V</span> <span class="pseudo-op">@</span> <span class="pseudo-var">weights</span>
 </div>
 </div>
-<p><code>*</code> means matrix multiplication. With keys in rows of <code>scores</code>, axis <code>0</code> normalizes across keys.</p>
+<p>For this two-dimensional score matrix, axis <code>0</code> runs down rows: <strong>over keys</strong>, separately for each query column.</p>
+<div class="takeaway">
+<p>Queries and keys determine weights. Values determine the content combined using those weights.</p>
+</div>
+<aside class="notes">
+<p>This is pseudocode, not a notebook or a batched PyTorch implementation. It omits dropout and masking. Show the dimensional scaling, score computation, normalization, and value mixture in sequence. Softmax should use a numerically stable implementation, not naive exponentiation of large scores. Use matrix multiplication rather than elementwise multiplication. The function expects matching query/key dimensions and equal key/value position counts.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="shape-practice" class="slide level2">
-<h2>Shape Practice</h2>
-<p>Let <span class="math inline">d_e=64</span>, <span class="math inline">n=10</span>, <span class="math inline">m=4</span>, <span class="math inline">d_k=16</span>, and <span class="math inline">d_v=32</span>.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Quantity</th>
-<th>Shape to work out</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">K</span>, <span class="math inline">Q</span>, and <span class="math inline">V</span></td>
-<td>?</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">K^TQ</span> and its softmax</td>
-<td>?</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">V\operatorname{softmax}(K^TQ/\sqrt{d_k})</span></td>
-<td>?</td>
-</tr>
-</tbody>
-</table>
-<div class="fragment">
+<section id="shape-practice" class="slide level2 att37-slide">
+<h2>Check the Matrix Shapes</h2>
+<p>There are <span class="math inline">n=10</span> context positions and <span class="math inline">m=4</span> queries. Embeddings have <span class="math inline">d_e=64</span> features; keys/queries have <span class="math inline">d_k=16</span> and values have <span class="math inline">d_v=32</span>.</p>
+<div class="question">
+<p>What are the shapes of <span class="math inline">K,Q,V</span>, of the score/weight matrix, and of the output? Keep one vector per column.</p>
+</div>
+<div class="fragment takeaway" data-fragment-index="0">
 <p><span class="math inline">K:16\times10</span>, <span class="math inline">Q:16\times4</span>, <span class="math inline">V:32\times10</span>.</p>
-<p>Scores and weights: <span class="math inline">10\times4</span>. Output: <span class="math inline">32\times4</span>.</p>
 </div>
-<div class="takeaway">
-<p>The number of output vectors equals the number of queries, not the number of keys.</p>
+<div class="fragment takeaway" data-fragment-index="1">
+<p><span class="math inline">K^TQ:(10\times16)(16\times4)=10\times4</span>. Softmax keeps this shape.</p>
 </div>
+<div class="fragment takeaway" data-fragment-index="2">
+<p><span class="math inline">O=VA:(32\times10)(10\times4)=32\times4</span>: <strong>one output per query</strong>.</p>
+</div>
+<aside class="notes">
+<p>The embedding dimension determines the projection input dimensions, not the output vector count. As a follow-up, W_K and W_Q have shape 16 by 64, and W_V has shape 32 by 64. Four queries do not mean four stored values; each of the four outputs mixes the same ten values with its own weights.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="self-attention-and-cross-attention" class="slide level2">
+<section id="self-cross-attention" class="slide level2 att37-slide">
 <h2>Self-Attention and Cross-Attention</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Kind</th>
-<th>Query source</th>
-<th>Key and value source</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Self-attention</td>
-<td>The sequence itself</td>
-<td>The same sequence</td>
-</tr>
-<tr class="even">
-<td>Cross-attention</td>
-<td>One sequence</td>
-<td>Another sequence or representation</td>
-</tr>
-</tbody>
-</table>
-<p>For self-attention, <span class="math inline">X_Q=X</span>, but generally <span class="math inline">Q\ne K\ne V</span> because their projections differ.</p>
-<div class="question">
-<p>In translation, what might a decoder’s query attend to through cross-attention?</p>
-</div>
-<div class="fragment">
-<p>Representations of the source sentence produced by the encoder.</p>
-</div>
-</section>
-<section id="parallel-computation" class="slide level2">
-<h2>Parallel Computation</h2>
-<p>Attention for many queries can be computed together:</p>
-<p><span class="math display">
-\text{Attention}(X_Q)=
-\begin{bmatrix}
-\text{Attention}(\tilde{x}_1)&amp;\cdots&amp;\text{Attention}(\tilde{x}_{n_q})
-\end{bmatrix}
-</span></p>
+<p><strong>Self-attention</strong> draws queries, keys, and values from the <strong>same</strong> sequence. <strong>Cross-attention</strong> uses queries from one sequence and keys/values from <strong>another</strong>.</p>
+<p><img data-src="imgs/drawio/lec37/self-cross-attention.png" class="att37-self-cross" alt="Self-attention uses the same sequence for queries and for keys/values. In translation cross-attention, encoded French source representations supply keys and values, while the English output prefix supplies queries."></p>
+<p>In translation, an <strong>encoder</strong> represents the input sentence; a <strong>decoder</strong> builds the output sentence using the earlier output tokens and the encoded input.</p>
 <div class="takeaway">
-<p>All query positions can be processed in parallel, which is a major speed advantage over RNNs during training.</p>
+<p>Self-attention means <span class="math inline">X_Q=X</span>, not <span class="math inline">Q=K=V</span>. Separate learned projections can produce different vectors from the same input.</p>
 </div>
+<aside class="notes">
+<p>The figure illustrates source French Le train part and English prefix The train, not a trained alignment. A decoder normally contains causal self-attention as well as cross-attention in an encoder-decoder model. Decoder-only language models do not require this source-to-target cross-attention module. Neither different projection names nor common input imply that all projected values must be pairwise unequal; they can coincide in special cases.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="parallel-training-sequential-generation" class="slide level2">
+<section id="parallel-training" class="slide level2 att37-slide">
 <h2>Parallel Training, Sequential Generation</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Training on a known sentence</th>
-<th>Generating a new sentence</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>All input tokens are already available</td>
-<td>Future tokens have not been chosen</td>
-</tr>
-<tr class="even">
-<td>Compute many positions together</td>
-<td>Produce the next token, then extend the prefix</td>
-</tr>
-<tr class="odd">
-<td>A causal mask prevents looking ahead</td>
-<td>Each new token depends on the growing prefix</td>
-</tr>
-</tbody>
-</table>
+<p>During training, the full observed sentence is available. <strong>Teacher forcing</strong> uses its correct earlier tokens to predict each next token.</p>
+<p><img data-src="imgs/drawio/lec37/training-generation.png" class="att37-training" alt="Known training prefixes The, The sky, and The sky is predict sky, is, and blue and can be evaluated together. During generation The sky is must first produce a token before the new prefix can be evaluated."></p>
+<p>A <strong>causal mask</strong> blocks attention to later input positions, so a next-token prediction cannot read its own target or later tokens.</p>
 <div class="takeaway">
-<p>Parallel attention does not make ordinary autoregressive generation fully parallel across future tokens.</p>
+<p>Many training positions can run in parallel. Ordinary autoregressive generation still extends the actual prefix one token at a time.</p>
 </div>
-<p>The next lecture develops causal masks, multiple heads, and the complete transformer block.</p>
+<aside class="notes">
+<p>The target is shifted one position after its corresponding input. The representation after input position j may use positions up to j and predicts token j+1. Masking must apply at every attention layer, not just at the output. The next lecture develops the mask and full blocks. Parallel attention does not bypass dependencies between layers or between sampled future tokens. An RNN still has a recurrence dependency between training positions even when all inputs are known.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="the-cost-of-dense-attention" class="slide level2">
-<h2>The Cost of Dense Attention</h2>
-<p>Self-attention over <span class="math inline">n</span> positions forms an <span class="math inline">n\times n</span> score matrix per head.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: right;">Sequence length</th>
-<th style="text-align: right;">Number of scores</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;"><span class="math inline">1{,}000</span></td>
-<td style="text-align: right;"><span class="math inline">1{,}000{,}000</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: right;"><span class="math inline">2{,}000</span></td>
-<td style="text-align: right;"><span class="math inline">4{,}000{,}000</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;"><span class="math inline">4{,}000</span></td>
-<td style="text-align: right;"><span class="math inline">16{,}000{,}000</span></td>
-</tr>
-</tbody>
-</table>
+<section id="attention-cost" class="slide level2 att37-slide">
+<h2>Dense Attention Has Quadratic Cost</h2>
+<p><strong>Dense self-attention</strong> compares every position with every position, giving <span class="math inline">n^2</span> query-key scores for a sequence of length <span class="math inline">n</span>.</p>
+<p><img data-src="imgs/drawio/lec37/quadratic-cost.png" class="att37-cost" alt="A four-position sequence has a four-by-four grid of sixteen scores. Doubling to eight positions creates an eight-by-eight grid of sixty-four scores, four times as many."></p>
+<p>At <span class="math inline">n=1{,}000</span>, there are <span class="math inline">1</span> million scores; at <span class="math inline">n=2{,}000</span>, there are <span class="math inline">4</span> million.</p>
 <div class="question">
-<p>Why does doubling the context length create more than twice as many pairwise interactions?</p>
+<p>Why does doubling the sequence length quadruple the number of scores?</p>
+</div>
+<div class="fragment takeaway">
+<p>There are twice as many queries <strong>and</strong> twice as many keys: <span class="math inline">(2n)^2=4n^2</span>.</p>
 </div>
 <aside class="notes">
-<p>Every position compares with every position, so the count is quadratic. Dense attention arithmetic is O(n^2 d_k + n^2 d_v) per head, excluding projections. Optimized kernels can avoid storing the entire score matrix, so do not claim that every implementation allocates n^2 scores simultaneously.</p>
+<p>These counts describe one attention head before masking. A head is one attention computation; multiple heads are developed next lecture. Causal masking reduces the allowed pairs but does not remove quadratic scaling for dense computation. Arithmetic for scores and value mixing is O(n^2 d_k+n^2 d_v), excluding projections. Optimized attention kernels can avoid storing the full score matrix, so this is not a claim that every implementation allocates n^2 entries simultaneously. Sparse or other attention variants need not use every pair.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -778,17 +563,21 @@ V=\begin{bmatrix}2&amp;0&amp;2\\0&amp;2&amp;2\end{bmatrix}.</span></p>
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-formula-in-row-vector-notation" class="slide level2">
-<h2>The Formula in Row-Vector Notation</h2>
-<p>Many papers and libraries store positions as rows. Write <span class="math inline">Q_r=Q^T</span>, <span class="math inline">K_r=K^T</span>, and <span class="math inline">V_r=V^T</span>.</p>
-<p><span class="math display">O_r=\operatorname{softmax}\!\left(\frac{Q_rK_r^T}{\sqrt{d_k}}\right)V_r.</span></p>
-<ul>
-<li>Here softmax runs <strong>across each row</strong>.</li>
-<li>This is the transpose of the column-vector computation used today.</li>
-<li>Check the layout and normalization axis before translating a formula into code.</li>
-</ul>
+<section id="row-layout" class="slide level2 att37-slide">
+<h2>Reading the Row-Vector Formula</h2>
+<p>Today, positions are <strong>columns</strong> and softmax normalizes down each column:</p>
+<p><span class="math display">O=V\,\operatorname{softmax}_{\text{columns}}\!\left(\frac{K^TQ}{\sqrt{d_k}}\right).</span></p>
+<p>The original paper and common library layouts use <strong>rows</strong>. Define <span class="math inline">Q_r=Q^T</span>, <span class="math inline">K_r=K^T</span>, <span class="math inline">V_r=V^T</span>, and <span class="math inline">O_r=O^T</span>:</p>
+<p><span class="math display">O_r=\operatorname{softmax}_{\text{rows}}\!\left(\frac{Q_rK_r^T}{\sqrt{d_k}}\right)V_r.</span></p>
+<p>Here <span class="math inline">Q_r:m\times d_k</span>, <span class="math inline">K_r:n\times d_k</span>, and <span class="math inline">V_r:n\times d_v</span>. Normalize <strong>across each row</strong>, over its <span class="math inline">n</span> keys.</p>
+<div class="takeaway">
+<p>Same calculation, different storage layout. Do not mix one convention’s formula with the other’s normalization axis.</p>
+</div>
+<div class="att37-paper">
+<p>Library reference: <a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html" target="_blank" rel="noopener">PyTorch scaled dot-product attention</a>.</p>
+</div>
 <aside class="notes">
-<p>PyTorch’s scaled_dot_product_attention uses the row-oriented sequence and feature layout in its last dimensions. The numerical example is unchanged by transposing the inputs and output. This slide reconciles the course notation with the primary paper and software documentation without changing the convention in Lecture 38.</p>
+<p>The transpose of a column-wise softmax is a row-wise softmax of the transposed score matrix. The library function also supports leading batch/head dimensions and optional masks/dropout, omitted here. In its row layout the softmax dimension is the last score dimension. Lecture 38 continues with the column-vector convention, so this slide is a translation guide, not a notation switch.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -801,27 +590,33 @@ V=\begin{bmatrix}2&amp;0&amp;2\\0&amp;2&amp;2\end{bmatrix}.</span></p>
           display:block!important;
       }</style></aside>
 </section>
-<section id="exit-check" class="slide level2 scrollable">
-<h2>Exit Check</h2>
-<ol type="1">
-<li>Which objects determine the attention weights?</li>
-<li>Which objects are averaged to form the output?</li>
-<li>Does self-attention mean that queries and keys are identical?</li>
-</ol>
-<div class="fragment">
-<p><strong>Queries and keys</strong>, <strong>values</strong>, and <strong>no</strong>: self-attention uses the same source sequence but different learned projections.</p>
+<section id="quick-check" class="slide level2 att37-slide">
+<h2>Quick Check</h2>
+<p><strong>1.</strong> If only <span class="math inline">V</span> changes, do the attention weights change?</p>
+<div class="fragment takeaway" data-fragment-index="0">
+<p>No, if <span class="math inline">Q</span> and <span class="math inline">K</span> stay fixed. The weights stay the same, although the output may change.</p>
+</div>
+<p><strong>2.</strong> Does self-attention force <span class="math inline">Q</span> and <span class="math inline">K</span> to be identical?</p>
+<div class="fragment takeaway" data-fragment-index="1">
+<p>No.&nbsp;They come from the same sequence but use separate learned projections.</p>
+</div>
+<p><strong>3.</strong> Are attention weights probabilities over the vocabulary?</p>
+<div class="fragment takeaway" data-fragment-index="2">
+<p>No.&nbsp;They mix <strong>context positions</strong>. A language model’s output head predicts vocabulary probabilities.</p>
 </div>
 </section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
+<section id="takeaways" class="slide level2 att37-slide">
+<h2>Takeaways</h2>
+<p><img data-src="imgs/drawio/lec37/attention-summary.png" class="att37-summary" alt="Attention has three steps: match queries with keys, normalize the scores, and mix the values into output vectors."></p>
 <ul>
-<li>Transformers use attention instead of recurrence.</li>
-<li>Autoregressive transformers generate next tokens left to right.</li>
-<li>Token embeddings are continuous vector representations.</li>
-<li>Attention forms query, key, and value projections.</li>
-<li>Scaled dot-product attention computes weighted sums of values.</li>
-<li>Attention parallelizes sequence processing.</li>
+<li><strong>Embeddings</strong> represent tokens; attention makes representations depend on context.</li>
+<li><strong>Queries and keys</strong> determine weights; <strong>values</strong> supply the mixed content.</li>
+<li>With column vectors, normalize over keys <strong>down each score column</strong>.</li>
+<li><strong>Parallel training</strong> is compatible with <strong>sequential generation</strong>.</li>
 </ul>
+<div class="takeaway">
+<p>Next: multiple attention heads, position information, and the complete Transformer block.</p>
+</div>
 <p><a href="../asset_credits.html#lec37" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
 
 
@@ -1002,6 +797,13 @@ V=\begin{bmatrix}2&amp;0&amp;2\\0&amp;2&amp;2\end{bmatrix}.</span></p>
         // devices. It is advisable to set this to a lower number than
         // viewDistance in order to save resources.
         mobileViewDistance: 2,
+
+        // Enable scroll view
+        view: 'slide',
+        scrollProgress: true,
+        scrollActivationWidth: 0,
+        scrollSnap: 'mandatory',
+        scrollLayout: 'full',
 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be

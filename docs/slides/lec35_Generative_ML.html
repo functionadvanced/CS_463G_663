@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec35_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -143,12 +144,6 @@
       margin-right: 0; 
     }
   </style>
-  <style>
-  .reveal table { font-size: 0.76em; line-height: 1.22; }
-  .reveal th, .reveal td { padding: 0.4em 0.48em; }
-  .reveal .generative-figure svg { display: block; width: 100%; max-height: 280px; }
-  .reveal #diffusion-models img { max-height: 350px; }
-  </style>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -169,161 +164,17 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="learning-a-distribution" class="slide level2">
-<h2>Learning a Distribution</h2>
-<p>Homework 5 predicts a class for a given digit image. A generative model asks a different question:</p>
-<div class="question">
-<p>Can we produce a new digit image, and capture the variety of plausible handwriting?</p>
-</div>
-<p><strong>Generative machine learning (ML)</strong> learns a distribution from which we can sample data.</p>
-<aside class="notes">
-<p>50-minute plan: tiny distribution and sampling, 12 minutes; likelihood exercise, 8; model families and latent variables, 12; diffusion, 9; evaluation activity and wrap-up, 9. HW5 is due today, not newly released. Keep the last few minutes flexible for assignment questions. Detailed autoregressive and transformer architectures follow in later lectures. References: Kingma and Welling, Auto-Encoding Variational Bayes, https://arxiv.org/abs/1312.6114; Goodfellow et al., Generative Adversarial Networks, https://arxiv.org/abs/1406.2661; Ho et al., Denoising Diffusion Probabilistic Models, https://arxiv.org/abs/2006.11239. The categorical data, calculations, and inline SVGs here are original teaching examples.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="what-is-generative-ml" class="slide level2">
-<h2>What Is Generative ML?</h2>
-<p>Generative ML focuses on modeling:</p>
-<p><span class="math display">
-p_\theta(x)
-</span></p>
-<p>so that samples from <span class="math inline">p_\theta</span> look like samples from the real data distribution <span class="math inline">p(x)</span>.</p>
-<p>Applications:</p>
-<ul>
-<li>Image, video, music, and text generation.</li>
-<li>Drug discovery and materials science.</li>
-<li>Game assets and virtual environments.</li>
-<li>Data augmentation.</li>
-</ul>
-</section>
-<section id="where-generative-models-fit" class="slide level2">
-<h2>Where Generative Models Fit</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Term</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Artificial intelligence (AI)</td>
-<td>The broader field of intelligent systems</td>
-</tr>
-<tr class="even">
-<td>Machine learning (ML)</td>
-<td>Learning patterns or decisions from data</td>
-</tr>
-<tr class="odd">
-<td>Deep learning (DL)</td>
-<td>ML using multilayer neural networks</td>
-</tr>
-<tr class="even">
-<td>Generative modeling</td>
-<td>Learning a data distribution and producing samples</td>
-</tr>
-</tbody>
-</table>
+<section id="generation" class="slide level2 gen35-slide">
+<h2>Generation and Classification</h2>
+<p>A <strong>discriminative model</strong> predicts a label or decision from an input. The saved classifier below labels existing handwritten-digit images.</p>
+<p><img data-src="imgs/lec24/mnist-notebook-examples.png" class="gen35-digits" alt="Saved classification results from the earlier MNIST notebook. These are dataset images with true and predicted labels, not generated images."></p>
+<p>A <strong>generative model</strong> learns a data distribution and produces random draws called <strong>samples</strong>. For handwriting, it can produce another plausible digit image.</p>
+<p>Write <span class="math inline">p_\theta(x)</span> for the model’s distribution over images <span class="math inline">x</span>; <span class="math inline">\theta</span> denotes its learned parameters.</p>
 <div class="takeaway">
-<p>Generative models can be deep or non-deep. Even a fitted categorical distribution can generate samples.</p>
+<p>Classification asks for a label. Generation asks for an example drawn from a learned distribution.</p>
 </div>
-</section>
-<section id="generative-vs.-discriminative" class="slide level2">
-<h2>Generative vs.&nbsp;Discriminative</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Model type</th>
-<th>Learns</th>
-<th>Example output</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Discriminative</td>
-<td><span class="math inline">p(y\mid x)</span> or a decision boundary</td>
-<td>digit class <span class="math inline">3</span> vs.&nbsp;<span class="math inline">8</span></td>
-</tr>
-<tr class="even">
-<td>Generative</td>
-<td><span class="math inline">p(x)</span> or <span class="math inline">p(x\mid c)</span></td>
-<td>a new image, sentence, molecule</td>
-</tr>
-</tbody>
-</table>
-<div class="question">
-<p>Classification asks “what label?” Generation asks “what could a realistic example look like?”</p>
-</div>
-</section>
-<section id="a-tiny-dataset-we-can-model-exactly" class="slide level2">
-<h2>A Tiny Dataset We Can Model Exactly</h2>
-<p>Imagine three possible <span class="math inline">2\times2</span> binary images, called <span class="math inline">A</span>, <span class="math inline">B</span>, and <span class="math inline">C</span>.</p>
-<div class="generative-figure">
-<svg viewbox="0 0 1000 240" role="img" aria-label="Three binary images. A has a filled top row, B has a filled bottom row, C has a filled diagonal. They occur five, three, and two times in ten training examples.">
-<g fill="#fff" stroke="#5d6470" stroke-width="2"><rect x="90" y="25" width="130" height="130"></rect><rect x="435" y="25" width="130" height="130"></rect><rect x="780" y="25" width="130" height="130"></rect></g>
-<g fill="#007c89"><rect x="92" y="27" width="126" height="63"></rect><rect x="437" y="90" width="126" height="63"></rect><rect x="782" y="27" width="63" height="63"></rect><rect x="845" y="90" width="63" height="63"></rect></g>
-<g stroke="#5d6470" stroke-width="2"><path d="M155 25V155M90 90H220M500 25V155M435 90H565M845 25V155M780 90H910"></path></g>
-<g font-family="sans-serif" font-size="29" text-anchor="middle" fill="#202124"><text x="155" y="198">A: 5 examples</text><text x="500" y="198">B: 3 examples</text><text x="845" y="198">C: 2 examples</text></g>
-</svg>
-</div>
-<p>The empirical distribution is <span class="math inline">p(A)=0.5</span>, <span class="math inline">p(B)=0.3</span>, <span class="math inline">p(C)=0.2</span>.</p>
-<div class="question">
-<p>Would a generator that always returns <span class="math inline">A</span> reproduce this distribution?</p>
-</div>
-</section>
-<section id="sampling-is-different-from-taking-the-maximum" class="slide level2">
-<h2>Sampling Is Different from Taking the Maximum</h2>
-<p>Draw <span class="math inline">u</span> uniformly from <span class="math inline">[0,1)</span> and use cumulative probability intervals.</p>
-<div class="generative-figure">
-<svg viewbox="0 0 1000 150" role="img" aria-label="Categorical sampling intervals: A occupies zero to 0.5, B occupies 0.5 to 0.8, C occupies 0.8 to 1.">
-<rect x="30" y="25" width="470" height="65" fill="#e8f6f5" stroke="#007c89" stroke-width="2"></rect><rect x="500" y="25" width="282" height="65" fill="#fff4db" stroke="#b7791f" stroke-width="2"></rect><rect x="782" y="25" width="188" height="65" fill="#fdecef" stroke="#b8325f" stroke-width="2"></rect>
-<g font-family="sans-serif" font-size="29" fill="#202124" text-anchor="middle"><text x="265" y="68">A</text><text x="641" y="68">B</text><text x="876" y="68">C</text><text x="30" y="130">0</text><text x="500" y="130">0.5</text><text x="782" y="130">0.8</text><text x="970" y="130">1</text></g>
-</svg>
-</div>
-<div class="question">
-<p>Which images do <span class="math inline">u=0.12</span>, <span class="math inline">u=0.72</span>, and <span class="math inline">u=0.93</span> select?</p>
-</div>
-<div class="fragment">
-<p><span class="math inline">A</span>, <span class="math inline">B</span>, and <span class="math inline">C</span>. Always choosing <span class="math inline">\arg\max_x p(x)</span> would output only <span class="math inline">A</span>, eliminating the other valid patterns.</p>
-</div>
-</section>
-<section id="training-objective" class="slide level2">
-<h2>Training Objective</h2>
-<p>Goal:</p>
-<p><span class="math display">
-p_\theta(x)\approx p(x)
-</span></p>
-<p>A common objective is <strong>negative log-likelihood (NLL)</strong>:</p>
-<p><span class="math display">
-\mathcal{L}(\theta)=
-\mathbb{E}_{x\sim p(x)}
-[-\log p_\theta(x)]
-</span></p>
-<p>For a discrete distribution, this is:</p>
-<p><span class="math display">
-\mathcal{L}(\theta)=H(p)+D_{\mathrm{KL}}(p\parallel p_\theta).
-</span></p>
-<p><span class="math inline">H(p)</span> is entropy, independent of <span class="math inline">\theta</span>. <strong>Kullback-Leibler (KL) divergence</strong> measures distribution mismatch in this direction.</p>
 <aside class="notes">
-<p>This identity uses the true or empirical data distribution and appropriate support. We estimate the expectation with samples. Some generative models optimize a bound or a different objective rather than evaluating exact likelihood. For continuous data, p is a density, not a probability assigned to an exact point.</p>
+<p>The image is an unchanged saved result from the course KNN_MNIST notebook, using MNIST data distributed through Torchvision. It does not show a new experiment or generative-model outputs. Generative modeling also includes learning joint distributions used for prediction. The distinction here compares the output tasks rather than claiming a generative model cannot classify. The lecture develops the supplied Spring 2025 generative-ML material. In continuous settings p denotes a density; the next example is discrete.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -336,13 +187,61 @@ p_\theta(x)\approx p(x)
           display:block!important;
       }</style></aside>
 </section>
-<section id="likelihood-practice-which-model-fits" class="slide level2">
-<h2>Likelihood Practice: Which Model Fits?</h2>
-<p>Ten independent training samples contain five <span class="math inline">A</span>s, three <span class="math inline">B</span>s, and two <span class="math inline">C</span>s.</p>
+<section id="tiny-distribution" class="slide level2 gen35-slide">
+<h2>A Tiny Image Distribution</h2>
+<p>Our toy world contains three possible <span class="math inline">2\times2</span> <strong>binary images</strong>: each pixel is either <span class="math inline">0</span> (white) or <span class="math inline">1</span> (filled).</p>
+<p><img data-src="imgs/drawio/lec35/toy-patterns.png" class="gen35-patterns" alt="Pattern A has a filled top row and occurs five times. B has a filled bottom row and occurs three times. C has a filled diagonal and occurs twice."></p>
+<p>The <strong>empirical distribution</strong> uses observed frequencies. In these ten examples,</p>
+<p><span class="math display">p_{\text{data}}(A)=0.5,\qquad p_{\text{data}}(B)=0.3,\qquad p_{\text{data}}(C)=0.2.</span></p>
+<div class="takeaway">
+<p>A good fit captures the frequencies, not just the most common pattern. A new random draw can repeat an observed image.</p>
+</div>
+<aside class="notes">
+<p>These counts and binary patterns are constructed examples. This categorical model has only the three displayed outcomes, not all sixteen possible binary images. Repetition is expected in a finite sample space and does not, by itself, demonstrate memorization.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sampling" class="slide level2 gen35-slide">
+<h2>Sampling Instead of Taking the Maximum</h2>
+<p>Draw <span class="math inline">u</span> <strong>uniformly</strong> from <span class="math inline">[0,1)</span>: equal-length intervals are equally likely. Use intervals with lengths <span class="math inline">0.5</span>, <span class="math inline">0.3</span>, and <span class="math inline">0.2</span>.</p>
+<p><img data-src="imgs/drawio/lec35/sampling-intervals.png" class="gen35-intervals" alt="Categorical sampling intervals are A from 0 inclusive to 0.5 exclusive, B from 0.5 inclusive to 0.8 exclusive, and C from 0.8 inclusive to 1 exclusive."></p>
+<p>Which images do <span class="math inline">u=0.12</span>, <span class="math inline">u=0.72</span>, and <span class="math inline">u=0.93</span> select?</p>
+<div class="fragment takeaway">
+<p><span class="math inline">A</span>, <span class="math inline">B</span>, and <span class="math inline">C</span>. Always choosing the maximum-probability image would produce only <span class="math inline">A</span>, losing the other valid patterns.</p>
+</div>
+<aside class="notes">
+<p>The half-open intervals specify boundary behavior: .5 selects B and .8 selects C. Sampling reproduces the target proportions in expectation, not necessarily exactly in a small set of draws.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="likelihood" class="slide level2 gen35-slide">
+<h2>Likelihood and Training Loss</h2>
+<p><strong>Likelihood</strong> measures how much probability a model gives the observed data. Suppose <span class="math inline">x_1,\ldots,x_N</span> are <span class="math inline">N</span> independent training images.</p>
+<p>A common loss is average <strong>negative log-likelihood (NLL)</strong>:</p>
+<p><span class="math display">L(\theta)=-\frac{1}{N}\sum_{i=1}^{N}\log p_\theta(x_i).</span></p>
+<p>Use natural logarithms. Lower NLL means a better fit to these observations.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Model</th>
+<th>Candidate model</th>
 <th style="text-align: right;"><span class="math inline">p_\theta(A)</span></th>
 <th style="text-align: right;"><span class="math inline">p_\theta(B)</span></th>
 <th style="text-align: right;"><span class="math inline">p_\theta(C)</span></th>
@@ -363,38 +262,11 @@ p_\theta(x)\approx p(x)
 </tr>
 </tbody>
 </table>
-<p>Average NLL, using natural logarithms:</p>
-<p><span class="math display">-\frac1{10}\left[5\ln p_\theta(A)+3\ln p_\theta(B)+2\ln p_\theta(C)\right].</span></p>
 <div class="question">
-<p><span class="math inline">M_2</span> favors the most common pattern more strongly. Does that make it a better fit to the whole dataset?</p>
-</div>
-</section>
-<section id="likelihood-answer-every-observed-pattern-counts" class="slide level2">
-<h2>Likelihood Answer: Every Observed Pattern Counts</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Model</th>
-<th style="text-align: right;">Average NLL, in nats</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">M_1</span></td>
-<td style="text-align: right;"><span class="math inline">-(0.5\ln0.5+0.3\ln0.3+0.2\ln0.2)\approx1.030</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">M_2</span></td>
-<td style="text-align: right;"><span class="math inline">-(0.5\ln0.8+0.3\ln0.1+0.2\ln0.1)\approx1.263</span></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Lower is better.</strong> <span class="math inline">M_1</span> assigns more appropriate probability to <span class="math inline">B</span> and <span class="math inline">C</span>.</p>
-<div class="takeaway">
-<p>Matching the most common outcome is insufficient. A model must also account for less frequent observations.</p>
+<p>Does giving the most common image more probability make <span class="math inline">M_2</span> a better fit to the whole dataset?</p>
 </div>
 <aside class="notes">
-<p>If a model assigns zero probability to an observed discrete pattern, its NLL is infinite. This toy training calculation does not establish generalization. Compare held-out likelihood and other task-appropriate checks on new data.</p>
+<p>For independent samples the likelihood is the product of their probabilities. Taking the logarithm converts that product into a sum. We minimize its negative, averaged over examples. This is a training-set comparison, not evidence of held-out performance. Some generative models optimize a likelihood bound or another objective rather than an exact NLL. For a discrete target distribution this expected loss equals its entropy plus KL divergence to the model, but the numerical comparison does not require that identity.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -407,60 +279,16 @@ p_\theta(x)\approx p(x)
           display:block!important;
       }</style></aside>
 </section>
-<section id="evaluation-is-hard" class="slide level2">
-<h2>Evaluation Is Hard</h2>
-<p>Generative outputs are high-dimensional and often stochastic.</p>
-<p>Why simple accuracy does not work:</p>
-<ul>
-<li>There may be many valid outputs.</li>
-<li>Exact match can be meaningless.</li>
-<li>Human perception matters.</li>
-</ul>
-<p>Checks include held-out likelihood, sample quality, diversity, and whether the output matches its condition or prompt.</p>
-</section>
-<section id="quality-coverage-and-memorization" class="slide level2">
-<h2>Quality, Coverage, and Memorization</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Generator behavior</th>
-<th>What looks good?</th>
-<th>What is missing?</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Always returns a clean <span class="math inline">A</span></td>
-<td>Every sample is valid</td>
-<td>Coverage of <span class="math inline">B</span> and <span class="math inline">C</span></td>
-</tr>
-<tr class="even">
-<td>Returns many corrupted patterns</td>
-<td>Outputs differ</td>
-<td>Sample quality</td>
-</tr>
-<tr class="odd">
-<td>Copies training examples</td>
-<td>Familiar, convincing samples</td>
-<td>Evidence of generalization</td>
-</tr>
-<tr class="even">
-<td>Produces varied valid held-out-like patterns</td>
-<td>Quality and coverage</td>
-<td>Still needs systematic evaluation</td>
-</tr>
-</tbody>
-</table>
-<div class="question">
-<p>Which failure could you miss by inspecting only the single best generated image?</p>
+<section id="likelihood-example" class="slide level2 gen35-slide">
+<h2>A Likelihood Comparison</h2>
+<p>The dataset has five <span class="math inline">A</span>s, three <span class="math inline">B</span>s, and two <span class="math inline">C</span>s. Both models must account for every observed pattern.</p>
+<p><img data-src="imgs/drawio/lec35/probability-fit.png" class="gen35-probabilities" alt="Probability bars compare M1 with values 0.5, 0.3, 0.2 against M2 with values 0.8, 0.1, 0.1 for A, B, and C."></p>
+<p><span class="math display">L(M_1)=-(0.5\log0.5+0.3\log0.3+0.2\log0.2)\approx1.030,</span> <span class="math display">L(M_2)=-(0.5\log0.8+0.3\log0.1+0.2\log0.1)\approx1.263.</span></p>
+<div class="fragment takeaway">
+<p><span class="math inline">M_1</span> fits better. <span class="math inline">M_2</span> underweights <span class="math inline">B</span> and <span class="math inline">C</span>. Assigning zero probability to an observed pattern would make this discrete NLL infinite.</p>
 </div>
 <aside class="notes">
-<p>Discuss all three failures. In the tiny finite categorical example, repeating a pattern is expected; it does not establish memorization. For real high-dimensional datasets, inspect nearest training neighbors, duplicates, held-out performance, and privacy-sensitive content. Diverse samples alone do not prove novelty or correctness.</p>
+<p>The unrounded averages are 1.0296530140645737 and 1.2628643221541278. All probabilities sum to one within each model. The plot shows stipulated categorical probabilities, not measured learning curves. A model can generate valid individual samples while still modeling their frequencies badly.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -473,325 +301,270 @@ p_\theta(x)\approx p(x)
           display:block!important;
       }</style></aside>
 </section>
-<section id="what-common-metrics-measure" class="slide level2">
-<h2>What Common Metrics Measure</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Metric or method</th>
-<th>Meaning</th>
-<th>Limitation</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>NLL</td>
-<td>Negative log-likelihood on held-out data</td>
-<td>Not directly available for every model</td>
-</tr>
-<tr class="even">
-<td>FID</td>
-<td>Frechet Inception Distance: compares image-feature distributions</td>
-<td>Sensitive to features, sample count, and evaluation setup</td>
-</tr>
-<tr class="odd">
-<td>BLEU</td>
-<td>Bilingual Evaluation Understudy: reference n-gram overlap</td>
-<td>Useful mainly for reference-based text evaluation, not universal text quality</td>
-</tr>
-<tr class="even">
-<td>Human evaluation</td>
-<td>Ratings under a defined rubric</td>
-<td>Cost, variation, and evaluator bias</td>
-</tr>
-</tbody>
-</table>
-<p>Use the same evaluation setup when comparing models.</p>
-<aside class="notes">
-<p>Metric references: Heusel et al.&nbsp;(2017), https://arxiv.org/abs/1706.08500, introduces FID; Papineni et al.&nbsp;(2002), https://aclanthology.org/P02-1040/, introduces BLEU. Reference-based overlap does not measure all aspects of factual correctness or usefulness.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="model-families" class="slide level2">
-<h2>Model Families</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Family</th>
-<th>Core idea</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Variational autoencoders (VAEs)</td>
-<td>Learn a latent-variable probability model</td>
-</tr>
-<tr class="even">
-<td>Generative adversarial networks (GANs)</td>
-<td>Generator learns through a discriminator</td>
-</tr>
-<tr class="odd">
-<td>Autoregressive models</td>
-<td>Predict next token/pixel from previous ones</td>
-</tr>
-<tr class="even">
-<td>Normalizing flows</td>
-<td>Invertible transformations of simple distributions</td>
-</tr>
-<tr class="odd">
-<td>Energy-based models</td>
-<td>Assign low energy to realistic samples</td>
-</tr>
-<tr class="even">
-<td>Diffusion models</td>
-<td>Learn to reverse a noising process</td>
-</tr>
-</tbody>
-</table>
-<p>A <strong>transformer is an architecture</strong>, not a separate training objective. It can support autoregressive or diffusion models.</p>
-</section>
-<section id="autoencoders" class="slide level2">
-<h2>Autoencoders</h2>
-<div class="generative-figure">
-<svg viewbox="0 0 1000 210" role="img" aria-label="Autoencoder: input passes through an encoder to a latent code, and a decoder reconstructs the input.">
-<defs><marker id="generative-ae-arrow" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="9" markerheight="9" markerunits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#5d6470"></path></marker></defs>
-<g stroke="#5d6470" stroke-width="3" marker-end="url(#generative-ae-arrow)"><path d="M135 91H198"></path><path d="M380 91H443"></path><path d="M555 91H618"></path><path d="M800 91H858"></path></g>
-<path d="M205 30L380 65V117L205 154Z" fill="#e8f6f5" stroke="#007c89" stroke-width="2"></path><path d="M625 65L800 30V154L625 117Z" fill="#fdecef" stroke="#b8325f" stroke-width="2"></path>
-<rect x="450" y="60" width="105" height="64" rx="7" fill="#fff4db" stroke="#b7791f" stroke-width="2"></rect>
-<g font-family="sans-serif" fill="#202124" text-anchor="middle" font-size="27"><text x="75" y="100">Input x</text><text x="280" y="100">Encoder</text><text x="502" y="101">z</text><text x="724" y="100">Decoder</text><text x="930" y="88">Recon-</text><text x="930" y="120">struction</text></g>
-</svg>
-</div>
+<section id="autoencoder" class="slide level2 gen35-slide">
+<h2>Autoencoders and Latent Codes</h2>
+<p>An <strong>autoencoder</strong> learns to reconstruct its input. Its <strong>encoder</strong> compresses image <span class="math inline">x</span> into a <strong>latent code</strong> <span class="math inline">z</span>, a hidden representation. Its <strong>decoder</strong> maps that code back to an image <span class="math inline">\hat{x}</span>.</p>
+<p><img data-src="imgs/drawio/lec35/autoencoder.png" class="gen35-autoencoder" alt="An input binary image passes through an encoder into a compact latent code z and through a decoder to a reconstruction."></p>
 <p><span class="math display">z=f_\phi(x),\qquad \hat{x}=g_\theta(z).</span></p>
-<p>Purpose:</p>
-<ul>
-<li>Compress input into a representation.</li>
-<li>Reconstruct the input.</li>
-<li>Learn useful latent features.</li>
-</ul>
-</section>
-<section id="reconstruction-does-not-guarantee-generation" class="slide level2">
-<h2>Reconstruction Does Not Guarantee Generation</h2>
-<p>An ordinary autoencoder learns to reconstruct codes produced by its encoder.</p>
-<div class="question">
-<p>What happens if we draw a completely random latent vector and send it to the decoder?</p>
+<p><span class="math inline">\phi</span> and <span class="math inline">\theta</span> are encoder and decoder parameters. Reconstruction loss measures how well <span class="math inline">\hat{x}</span> matches <span class="math inline">x</span>.</p>
+<div class="takeaway">
+<p>A useful representation can compress an image without assigning human-readable meanings to individual code coordinates.</p>
 </div>
+<aside class="notes">
+<p>The compact code in the diagram is schematic, not a learned representation of the displayed binary pattern. A plain autoencoder can reconstruct deterministically; a probabilistic VAE decoder, introduced later, instead parameterizes an output distribution. Low reconstruction error alone is not a generative sampling procedure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="latent-gap" class="slide level2 gen35-slide">
+<h2>Why Random Codes Can Fail</h2>
+<p>An ordinary autoencoder trains its decoder on codes produced by the encoder. Arbitrary random codes may land elsewhere.</p>
+<p><img data-src="imgs/drawio/lec35/latent-gap.png" class="gen35-latent-gap" alt="A schematic latent axis has training-code clusters near 1 and 4. An arbitrary test code at 2.5 falls in an unvisited gap."></p>
+<p>If a random code lands at <span class="math inline">z=2.5</span>, has the reconstruction objective taught the decoder what to do there?</p>
+<div class="fragment takeaway">
+<p>Not necessarily. Good reconstruction at visited codes does not guarantee meaningful images at unvisited codes. Generation needs a useful distribution from which to draw codes.</p>
+</div>
+<aside class="notes">
+<p>The plotted code locations are a constructed counterexample to a guarantee, not an empirical latent-space measurement. A decoder can interpolate well in some cases, but reconstruction training alone does not ensure that arbitrary latent draws will be useful.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="vae" class="slide level2 gen35-slide">
+<h2>Variational Autoencoders</h2>
+<p>A <strong>variational autoencoder (VAE)</strong> learns an encoder distribution <span class="math inline">q_\phi(z\mid x)</span> over latent codes, rather than a single code.</p>
+<p>For a one-dimensional <strong>normal (Gaussian) distribution</strong> <span class="math inline">\mathcal N(\mu,\sigma^2)</span>, <span class="math inline">\mu</span> is the mean and <span class="math inline">\sigma&gt;0</span> the standard deviation, or spread.</p>
+<p><img data-src="imgs/drawio/lec35/vae-distribution.png" class="gen35-density" alt="A normal density over a scalar latent code, centered at mu equals 2 with standard deviation 0.5. The encoder predicts these distribution parameters."></p>
+<p>Draw <span class="math inline">\epsilon\sim\mathcal N(0,1)</span>, then <span class="math inline">z=\mu+\sigma\epsilon</span>. If <span class="math inline">\mu=2</span>, <span class="math inline">\sigma=0.5</span>, and <span class="math inline">\epsilon=-1.2</span>, what code goes to the decoder?</p>
 <div class="fragment">
-<p>It may fall in a region never visited during training. A small reconstruction error does not guarantee sensible outputs there.</p>
+<p><span class="math display">z=2+0.5(-1.2)=1.4.</span></p>
 </div>
-<div class="takeaway">
-<p>To generate reliably, we also need a useful distribution over latent codes.</p>
+<div class="gen35-paper">
+<p>Diederik P. Kingma and Max Welling (2013), <a href="https://arxiv.org/abs/1312.6114" target="_blank" rel="noopener"><em>Auto-Encoding Variational Bayes</em></a>.</p>
 </div>
+<aside class="notes">
+<p>The encoder approximates the posterior distribution of hidden codes. The displayed normal is a density, not the probability of an exact real-valued code. The construction z=mu+sigma*epsilon separates random standard-normal noise from the learned parameters, allowing gradients through mu and sigma. It is a training-time sample conditioned on the observed image, not a prior draw for unconditional generation. The scalar example avoids introducing covariance matrices before they are needed.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="autoencoder-vs.-vae-encoder" class="slide level2">
-<h2>Autoencoder vs.&nbsp;VAE Encoder</h2>
-<h3 id="autoencoder">Autoencoder</h3>
-<p>The encoder maps the input to one latent point: <span class="math inline">z=f_\phi(x)</span>.</p>
-<h3 id="variational-autoencoder">Variational autoencoder</h3>
-<p>Encoder maps input to a distribution:</p>
-<p><span class="math display">
-q_\phi(z\mid x)=\mathcal{N}\!\left(\mu_\phi(x),\operatorname{diag}(\sigma_\phi^2(x))\right)
-</span></p>
-<div class="takeaway">
-<p>VAE training balances reconstruction with a penalty that encourages the encoded distributions to match a chosen prior.</p>
-</div>
+<section id="vae-paths" class="slide level2 gen35-slide">
+<h2>VAE Training and Generation</h2>
+<p>A <strong>prior</strong> <span class="math inline">p(z)</span> is the chosen latent distribution before seeing an input. Here use <span class="math inline">\mathcal N(0,1)</span>: mean <span class="math inline">0</span>, standard deviation <span class="math inline">1</span>.</p>
+<p><img data-src="imgs/drawio/lec35/vae-paths.png" class="gen35-paths" alt="Training encodes an observed image, samples its encoder distribution, and decodes it. Generation samples a code from the prior and uses the trained decoder without an input image."></p>
+<p>The decoder distribution <span class="math inline">p_\theta(x\mid z)</span> describes possible images given code <span class="math inline">z</span>. A standard VAE loss balances</p>
+<p><span class="math display">\underbrace{\mathbb E_{z\sim q_\phi(z\mid x)}[-\log p_\theta(x\mid z)]}_{\text{reconstruction}}
++\underbrace{D_{\text{KL}}(q_\phi(z\mid x)\|p(z))}_{\text{prior matching}}.</span></p>
+<p><strong>Kullback-Leibler (KL) divergence</strong> penalizes distribution mismatch. The expectation averages over sampled encoder codes.</p>
+<aside class="notes">
+<p>This is the negative evidence lower bound for one observed image, averaged over images in training. The two terms update encoder and decoder jointly. Prior matching is a training pressure, not a guarantee that all prior draws yield excellent images. The decoder can report a reconstruction mean or probabilities for display; generation draws from its conditional distribution. No source image or encoder is required in the generation path. Gaussian priors here use fixed parameters, unlike the input-dependent encoder distribution.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="vae-training-and-generation" class="slide level2">
-<h2>VAE: Training and Generation</h2>
+<section id="gan" class="slide level2 gen35-slide">
+<h2>Generative Adversarial Networks</h2>
+<p>A <strong>generative adversarial network (GAN)</strong> trains two networks with competing goals:</p>
+<ul>
+<li>The <strong>generator</strong> turns random code <span class="math inline">z</span> into an image.</li>
+<li>The <strong>discriminator</strong> learns to distinguish training images from generated ones. The generator learns to make that distinction harder.</li>
+</ul>
+<p><img data-src="imgs/drawio/lec35/gan-training.png" class="gen35-gan" alt="Random code enters the generator. Generated images and real training images both enter a discriminator, whose training signal helps improve the generator."></p>
+<div class="takeaway">
+<p>After training, generation uses the generator and a random code. It does not require an encoder or discriminator.</p>
+</div>
+<div class="gen35-paper">
+<p>Ian Goodfellow et al.&nbsp;(2014), <a href="https://arxiv.org/abs/1406.2661" target="_blank" rel="noopener"><em>Generative Adversarial Networks</em></a>.</p>
+</div>
+<aside class="notes">
+<p>The networks receive different losses; the discriminator is not a fixed image-quality oracle. Generator learning uses the discriminator’s differentiable signal. Adversarial here means competing training objectives, not an adversarial security attack. The diagram shows information roles rather than a specific GAN loss or architecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="diffusion" class="slide level2 gen35-slide">
+<h2>Diffusion: Noise and Denoising</h2>
+<p>A <strong>diffusion model</strong> learns to generate by reversing gradual corruption with noise. <strong>Denoising</strong> means estimating cleaner structure from a noisy input.</p>
+<p><img data-src="imgs/drawio/lec35/diffusion-paths.png" class="gen35-diffusion" alt="A fixed forward process corrupts training data with increasing noise. A separate generation path starts from fresh noise and uses learned denoising updates to produce a sample."></p>
+<p>A <strong>denoising diffusion probabilistic model (DDPM)</strong> is one influential formulation. Its forward noise levels follow a chosen schedule.</p>
+<div class="takeaway">
+<p>Generation begins with fresh noise. It produces a plausible sample, not a unique original image hidden in that noise.</p>
+</div>
+<div class="gen35-paper">
+<p>Jonathan Ho, Ajay Jain, and Pieter Abbeel (2020), <a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noopener"><em>Denoising Diffusion Probabilistic Models</em></a>.</p>
+</div>
+<aside class="notes">
+<p>The process diagram is schematic, not a trained model’s output. With a suitable many-step schedule, the forward terminal distribution is approximately standard Gaussian. The learned reverse process models the data distribution rather than exactly inverting every realized forward-noise trajectory. Diffusion is a generative procedure; a U-Net or a Transformer may supply its denoising network.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="forward-step" class="slide level2 gen35-slide">
+<h2>One Forward Noising Step</h2>
+<p>Let <span class="math inline">t</span> be the step, <span class="math inline">x_{t-1}</span> the previous signal value, and <span class="math inline">\beta_t\in(0,1)</span> the chosen noise variance for this step:</p>
+<p><span class="math display">x_t=\sqrt{1-\beta_t}\,x_{t-1}+\sqrt{\beta_t}\,\epsilon,
+\qquad \epsilon\sim\mathcal N(0,1).</span></p>
+<p><img data-src="imgs/drawio/lec35/noising-step.png" class="gen35-noising" alt="For beta equals 0.36, previous value 1 is weighted by 0.8 and sampled noise minus 0.5 by 0.6. The two contributions are added to form x_t."></p>
+<p>For <span class="math inline">x_{t-1}=1</span>, <span class="math inline">\beta_t=0.36</span>, and sampled noise <span class="math inline">\epsilon=-0.5</span>:</p>
+<div class="fragment takeaway">
+<p><span class="math inline">x_t=0.8(1)+0.6(-0.5)=0.5</span>. Signal shrinks while noise enters. Apply this componentwise to image or latent vectors; noisy values need not remain in <span class="math inline">[0,1]</span>.</p>
+</div>
+<aside class="notes">
+<p>This is a scalar worked example of a forward Gaussian transition. The large variance .36 is chosen for transparent arithmetic, not as a recommended practical schedule. The two coefficients have squared values summing to one. The normal distribution has unit variance before scaling. Different steps use fresh noise. Pixel preprocessing and continuous intermediate values should not be confused with binary samples in the earlier categorical example.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="noise-predictor" class="slide level2 gen35-slide">
+<h2>Training a Noise Predictor</h2>
+<p>During training, the clean image, chosen step <span class="math inline">t</span>, and added noise <span class="math inline">\epsilon</span> are known. The network <span class="math inline">\epsilon_\theta(x_t,t)</span> predicts the noise from the noisy image <span class="math inline">x_t</span> and its step.</p>
+<p><img data-src="imgs/drawio/lec35/noise-predictor.png" class="gen35-predictor" alt="Known clean image, noise, and step construct a noisy image. The denoiser predicts noise, which is compared against the known added noise using squared error."></p>
+<p>A common <strong>noise-prediction loss</strong> is</p>
+<p><span class="math display">L_{\text{noise}}=\mathbb E\!\left[\|\epsilon-\epsilon_\theta(x_t,t)\|^2\right].</span></p>
+<p>The expectation averages over training images, noise levels, and random noise. The squared norm sums squared errors over components.</p>
+<aside class="notes">
+<p>This is the simplified DDPM noise-prediction objective. A noisy training example at a selected t can be formed directly using the cumulative forward schedule, rather than simulating every earlier step. The predicted noise is an estimate and is not guaranteed to equal the particular noise realization. The loss is not itself a reverse-sampling equation. Other parameterizations and samplers exist.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="diffusion-loop" class="slide level2 gen35-slide">
+<h2>Diffusion Generation Loop</h2>
+<p>A <strong>noise schedule</strong> specifies the noise levels across <span class="math inline">T</span> steps. A <strong>sampler</strong> uses that schedule and the trained denoiser to generate an image.</p>
+<div class="pseudo-code">
+<div class="pseudo-line fragment" data-fragment-index="0">
+<span class="pseudo-var">x</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">StandardNormal</span>(<span class="pseudo-var">imageShape</span>)
+</div>
+<div class="pseudo-line">
+<span class="pseudo-kw">for</span> <span class="pseudo-var">t</span> <span class="pseudo-op">=</span> <span class="pseudo-var">T</span>, …, <span class="pseudo-num">1</span>
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-var">predictedNoise</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">Denoiser</span>(<span class="pseudo-var">x</span>, <span class="pseudo-var">t</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-var">x</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">ReverseStep</span>(<span class="pseudo-var">x</span>, <span class="pseudo-var">t</span>, <span class="pseudo-var">predictedNoise</span>, <span class="pseudo-var">schedule</span>)
+</div>
+<div class="pseudo-line fragment" data-fragment-index="3">
+<span class="pseudo-kw">return</span> <span class="pseudo-var">x</span>
+</div>
+</div>
+<p><code>ReverseStep</code> applies the sampler’s update, which may also add fresh noise. It is not simply subtraction of the prediction. The denoiser’s parameters stay fixed during generation.</p>
+<div class="takeaway">
+<p>Training uses clean examples to create learning targets. Generation uses fresh noise and learned updates, with no clean input image.</p>
+</div>
+<aside class="notes">
+<p>The pseudocode summarizes a DDPM-style sampler, not a runnable implementation. ReverseStep includes schedule-dependent scaling and any prescribed random variance; the final step can omit added noise. This overview does not introduce a new exact reverse formula. All generated tensor components initially come from a standard-normal distribution. A different sampler may use fewer steps than the training schedule.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="conditioning" class="slide level2 gen35-slide">
+<h2>Conditional Generation</h2>
+<p><strong>Conditional generation</strong> supplies a condition <span class="math inline">c</span> and models <span class="math inline">p_\theta(x\mid c)</span> instead of <span class="math inline">p_\theta(x)</span>.</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
 <col style="width: 50%">
 </colgroup>
-<thead>
-<tr class="header">
-<th>During training</th>
-<th>During generation</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Encode an observed <span class="math inline">x</span> into <span class="math inline">q_\phi(z\mid x)</span></td>
-<td>Draw <span class="math inline">z\sim p(z)</span>, often <span class="math inline">\mathcal{N}(0,I)</span></td>
-</tr>
-<tr class="even">
-<td>Sample a latent code and reconstruct <span class="math inline">x</span></td>
-<td>Decode the sampled latent code</td>
-</tr>
-<tr class="odd">
-<td>Optimize reconstruction and KL terms</td>
-<td>No input image is required</td>
-</tr>
-</tbody>
-</table>
-<p>The standard negative evidence lower bound is</p>
-<p><span class="math display">\underbrace{\mathbb{E}_{q_\phi(z\mid x)}[-\log p_\theta(x\mid z)]}_{\text{reconstruction term}}
-+\underbrace{D_{\mathrm{KL}}(q_\phi(z\mid x)\parallel p(z))}_{\text{prior-matching term}}.</span></p>
-<aside class="notes">
-<p>The evidence lower bound is abbreviated ELBO in the literature. Only interpret the two terms today; do not derive variational inference. The reconstruction term is a negative conditional log-likelihood, not necessarily squared error. Prior matching encourages sampleable latent structure but does not guarantee perfect generations.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="a-latent-sampling-calculation" class="slide level2">
-<h2>A Latent-Sampling Calculation</h2>
-<p>For a one-dimensional example, the encoder predicts <span class="math inline">\mu=2</span> and <span class="math inline">\sigma=0.5</span>.</p>
-<p><span class="math display">\epsilon\sim\mathcal{N}(0,1),\qquad z=\mu+\sigma\epsilon.</span></p>
-<div class="question">
-<p>If <span class="math inline">\epsilon=-1.2</span>, what value goes into the decoder?</p>
-</div>
-<div class="fragment">
-<p><span class="math display">z=2+0.5(-1.2)=1.4.</span> This is a training-time sample conditioned on an input. Generation instead samples from the prior.</p>
-</div>
-</section>
-<section id="diffusion-models" class="slide level2">
-<h2>Diffusion Models</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:54%;">
-<p>Denoising diffusion models generate data by learning to reverse a gradual noising process.</p>
-<ul>
-<li>Forward process: add noise.</li>
-<li>Reverse process: remove noise step by step.</li>
-<li>Sampling starts from random noise.</li>
-</ul>
-</div><div class="column" style="width:38%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec32/samples.png" class="cc0-figure" style="width:90.0%"></p>
-<figcaption>Diffusion model samples</figcaption>
-</figure>
-</div>
-</div></div>
-</section>
-<section id="diffusion-forward-and-reverse" class="slide level2">
-<h2>Diffusion: Forward and Reverse</h2>
-<div class="generative-figure">
-<svg viewbox="0 0 1000 260" role="img" aria-label="Diffusion has a fixed forward process that adds noise from clean data to noisy data, and a learned reverse process that generates a sample starting from noise.">
-<defs><marker id="generative-noise-arrow" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="9" markerheight="9" markerunits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#5d6470"></path></marker></defs>
-<g font-family="sans-serif" font-size="27" fill="#202124" text-anchor="middle"><text x="500" y="34">Fixed noising process</text><text x="500" y="243">Learned denoising process</text></g>
-<g stroke="#5d6470" stroke-width="3" marker-end="url(#generative-noise-arrow)"><path d="M265 93H382"></path><path d="M615 93H732"></path><path d="M735 177H618"></path><path d="M385 177H268"></path></g>
-<g stroke-width="2"><rect x="15" y="65" width="250" height="130" rx="7" fill="#e8f6f5" stroke="#007c89"></rect><rect x="390" y="65" width="225" height="130" rx="7" fill="#fff4db" stroke="#b7791f"></rect><rect x="740" y="65" width="245" height="130" rx="7" fill="#fdecef" stroke="#b8325f"></rect></g>
-<g font-family="sans-serif" font-size="29" fill="#202124" text-anchor="middle"><text x="140" y="137">Clean data</text><text x="502" y="137">Noisy data</text><text x="862" y="118">Nearly pure</text><text x="862" y="155">noise</text></g>
-</svg>
-</div>
-<p>The reverse process generates a plausible sample. It does not recover a unique original image from arbitrary noise.</p>
-</section>
-<section id="one-forward-noising-step" class="slide level2">
-<h2>One Forward Noising Step</h2>
-<p>For a simple scalar example:</p>
-<p><span class="math display">x_t=\sqrt{1-\beta_t}\,x_{t-1}+\sqrt{\beta_t}\,\epsilon,\qquad \epsilon\sim\mathcal{N}(0,1).</span></p>
-<p>Let <span class="math inline">x_{t-1}=1</span>, <span class="math inline">\beta_t=0.36</span>, and sampled noise <span class="math inline">\epsilon=-0.5</span>.</p>
-<div class="fragment">
-<p><span class="math display">x_t=0.8(1)+0.6(-0.5)=0.5.</span> The old signal shrinks while random noise enters. Image diffusion applies the same idea to vectors of pixel or latent values.</p>
-</div>
-</section>
-<section id="what-the-denoiser-learns" class="slide level2">
-<h2>What the Denoiser Learns</h2>
-<p>During training, we know the clean example and the noise we added.</p>
-<p>A common parameterization predicts that noise:</p>
-<p><span class="math display">\mathcal{L}_{\text{noise}}=\mathbb{E}\!\left[\|\epsilon-\epsilon_\theta(x_t,t)\|^2\right].</span></p>
-<ul>
-<li><span class="math inline">t</span> tells the network how noisy the input is.</li>
-<li>A sampler uses the prediction and a noise schedule to update <span class="math inline">x_t</span>.</li>
-<li>Generation starts with fresh noise and repeats the updates.</li>
-</ul>
-<aside class="notes">
-<p>This is the simplified noise-prediction training objective associated with DDPM-style models. Denoising diffusion probabilistic model is abbreviated DDPM. Other parameterizations and samplers exist. The displayed loss is not a complete sampling equation.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="diffusion-paths" class="slide level2">
-<h2>Diffusion Paths</h2>
-<p>Forward noising:</p>
-<p><span class="math display">
-x_0 \rightarrow x_1 \rightarrow \cdots \rightarrow x_T
-</span></p>
-<p>Reverse denoising during generation:</p>
-<p><span class="math display">
-\tilde{x}_T \rightarrow \tilde{x}_{T-1} \rightarrow \cdots \rightarrow \tilde{x}_0
-</span></p>
-<div class="takeaway">
-<p>The model learns many small denoising steps instead of one huge generation step.</p>
-</div>
-</section>
-<section id="conditional-generation" class="slide level2">
-<h2>Conditional Generation</h2>
-<p>Instead of <span class="math inline">p_\theta(x)</span>, learn <span class="math inline">p_\theta(x\mid c)</span>.</p>
-<table class="caption-top">
 <thead>
 <tr class="header">
 <th>Condition <span class="math inline">c</span></th>
-<th>Generated object <span class="math inline">x</span></th>
+<th>Possible output <span class="math inline">x</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Digit label <span class="math inline">7</span></td>
-<td>A handwritten image of a seven</td>
+<td>A handwritten seven, with variable stroke and slant</td>
 </tr>
 <tr class="even">
+<td>Text: “a red bicycle”</td>
+<td>An image matching the description</td>
+</tr>
+<tr class="odd">
 <td>A partial sentence</td>
 <td>A plausible continuation</td>
 </tr>
-<tr class="odd">
-<td>A text description</td>
-<td>An image matching the description</td>
-</tr>
 </tbody>
 </table>
+<p>In conditional diffusion, the denoiser receives the noisy image, step, <strong>and condition</strong>: <span class="math inline">\epsilon_\theta(x_t,t,c)</span>.</p>
 <div class="takeaway">
-<p>Conditioning narrows the requested distribution. It does not eliminate randomness or guarantee factual correctness.</p>
-</div>
-</section>
-<section id="evaluation-activity" class="slide level2 scrollable">
-<h2>Evaluation Activity</h2>
-<p>You trained a generator for handwritten digits. It makes sharp images, but nearly every image is a <span class="math inline">1</span>.</p>
-<div class="question">
-<ol type="1">
-<li>What did visual sharpness fail to measure?</li>
-<li>What plot would reveal the problem?</li>
-<li>What additional check would you use for a label-conditioned generator?</li>
-</ol>
-</div>
-<div class="fragment">
-<p>Coverage is missing. Compare generated class frequencies with the target distribution. For conditional generation, also check whether each image matches the requested label.</p>
+<p>The condition guides which distribution to sample. It does not remove randomness or guarantee that every output follows the request.</p>
 </div>
 <aside class="notes">
-<p>Allow two minutes before revealing. A classifier can help estimate digit frequencies, but its own errors and distribution shift must be considered. Add a manual audit. Do not use the training set alone to claim generalization.</p>
+<p>This is an input/output description, not a specific text-conditioning architecture. Classifier-free guidance and cross-attention are not required to understand this slide. A Transformer is a neural-network architecture, not a competing definition of generative modeling. Autoregressive generation and Transformer architectures are covered in the following lectures.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -804,14 +577,105 @@ x_0 \rightarrow x_1 \rightarrow \cdots \rightarrow x_T
           display:block!important;
       }</style></aside>
 </section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
+<section id="coverage" class="slide level2 gen35-slide">
+<h2>Quality and Coverage</h2>
+<p><strong>Quality</strong> asks whether individual samples look valid. <strong>Coverage</strong> asks whether the generator represents the variety of valid cases.</p>
+<p><img data-src="imgs/drawio/lec35/quality-coverage.png" class="gen35-coverage" alt="The target probabilities are A 0.5, B 0.3, C 0.2. A collapsed generator puts probability one on A and zero on B and C, despite all its individual outputs being valid."></p>
+<p><strong>Mode collapse</strong> means producing too little of the data’s variety, for example generating only <span class="math inline">A</span> instead of all three patterns.</p>
+<div class="fragment takeaway">
+<p>A gallery’s single best image cannot establish coverage. Compare sample frequencies and inspect failures, not just selected successes.</p>
+</div>
+<aside class="notes">
+<p>The bars show a constructed failure, not a GAN training result. Mode collapse is a common GAN concern but poor coverage is relevant to other generators too. A diverse collection can still have low quality, and correct-looking samples can have the wrong frequencies. In a finite toy world, repeating A is expected; assigning all mass to A is the distributional failure.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="evaluation" class="slide level2 gen35-slide">
+<h2>Memorization and Evaluation</h2>
+<p><strong>Held-out data</strong> was not used in training. <strong>Memorization</strong> means learning particular training examples in detail, potentially copying them when generating.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Check</th>
+<th>What it can reveal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Held-out NLL, when available</td>
+<td>Probability assigned to new observations</td>
+</tr>
+<tr class="even">
+<td>Inspect samples and nearest training images</td>
+<td>Artifacts, near copies, or sensitive details</td>
+</tr>
+<tr class="odd">
+<td>Check conditions and sample frequencies</td>
+<td>Missed requests or poor coverage</td>
+</tr>
+<tr class="even">
+<td>Human ratings with explicit criteria</td>
+<td>Perceived quality and usefulness</td>
+</tr>
+</tbody>
+</table>
+<p>One common image metric is <strong>Frechet Inception Distance (FID)</strong>. It compares statistics of real and generated images after a feature network converts each image into a vector.</p>
+<div class="takeaway">
+<p>No single score checks everything. Repeated toy patterns are expected; realistic-looking copies of a real training set still need scrutiny.</p>
+</div>
+<aside class="notes">
+<p>FID is introduced by Heusel et al.&nbsp;(2017), GANs Trained by a Two Time-Scale Update Rule Converge to a Local Nash Equilibrium, https://arxiv.org/abs/1706.08500. Its feature representation and evaluation sample sizes matter, so compare models under the same setup. Feature statistics do not certify factual correctness, privacy, or full distributional coverage. Not every model provides a tractable exact held-out NLL. Nearest-neighbor inspection is one diagnostic, not proof of privacy or novelty.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="quick-check" class="slide level2 gen35-slide scrollable">
+<h2>Quick Check</h2>
+<ol type="1">
+<li>With our sampling intervals, which image does <span class="math inline">u=0.80</span> select?</li>
+<li>Does VAE generation require an input image and its encoder?</li>
+<li>Does a diffusion sampler recover a unique original image from fresh noise?</li>
+</ol>
+<div class="fragment" data-fragment-index="0">
+<p><strong>1. <span class="math inline">C</span>.</strong> Its interval begins at <span class="math inline">0.8</span> and ends just before <span class="math inline">1</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>2. No.</strong> Draw a code from the prior and use the trained decoder.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p><strong>3. No.</strong> Learned reverse updates produce a plausible draw from the modeled distribution.</p>
+</div>
+</section>
+<section id="takeaways" class="slide level2 gen35-slide">
+<h2>Takeaways</h2>
 <ul>
-<li>Generative models learn to produce realistic new samples.</li>
-<li>The target is a distribution, not just a label.</li>
-<li>Evaluation is difficult because many outputs can be valid.</li>
-<li>VAEs, GANs, autoregressive models, flows, and diffusion models are major families.</li>
-<li>Diffusion models generate by reversing noise.</li>
+<li>Generation models a distribution, including less frequent valid cases.</li>
+<li>Sampling preserves variety that maximum-probability selection can lose.</li>
+<li>A VAE trains a latent-variable model with reconstruction and prior matching.</li>
+<li>A GAN learns through competing generator and discriminator objectives.</li>
+<li>Diffusion learns denoising predictions and uses a sampler to generate from noise.</li>
+<li>Evaluate quality, coverage, condition following, and possible memorization together.</li>
 </ul>
 <p><a href="../asset_credits.html#lec35" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
 
@@ -993,6 +857,13 @@ x_0 \rightarrow x_1 \rightarrow \cdots \rightarrow x_T
         // devices. It is advisable to set this to a lower number than
         // viewDistance in order to save resources.
         mobileViewDistance: 2,
+
+        // Enable scroll view
+        view: 'slide',
+        scrollProgress: true,
+        scrollActivationWidth: 0,
+        scrollSnap: 'mandatory',
+        scrollLayout: 'full',
 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
