@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec33_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,284 +164,493 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="policy-based-model-free-rl" class="slide level2 section-slide">
-<h2>Policy-Based Model-Free RL</h2>
-<p>Instead of learning values first, policy-based methods optimize the policy directly.</p>
-</section>
-<section id="why-policy-based-methods" class="slide level2">
-<h2>Why Policy-Based Methods?</h2>
-<p>Learn a parameterized policy:</p>
-<p><span class="math display">
-\pi_\theta(a\mid s)
-</span></p>
-<p>Advantages:</p>
-<ul>
-<li>Works naturally with stochastic policies.</li>
-<li>Handles continuous or high-dimensional actions.</li>
-<li>Directly optimizes expected return.</li>
-<li>Does not require a model of environment dynamics.</li>
-</ul>
-</section>
-<section id="objective" class="slide level2">
-<h2>Objective</h2>
-<p>Policy objective:</p>
-<p><span class="math display">
-J(\theta)=
-\mathbb{E}_{\tau\sim\pi_\theta}
-\left[
-\sum_{t=0}^{T}\gamma^t r_t
-\right]
-</span></p>
-<p>Policy-gradient idea:</p>
-<p><span class="math display">
-\theta \leftarrow \theta+\alpha\nabla_\theta J(\theta)
-</span></p>
+<section id="direct-policy" class="slide level2 policy33-slide">
+<h2>Learning Action Probabilities</h2>
+<p>In <strong>policy-based reinforcement learning (RL)</strong>, learn a policy <span class="math inline">\pi_\theta(a\mid s)</span> directly. It gives the probability of choosing action <span class="math inline">a</span> in state <span class="math inline">s</span>, using parameters <span class="math inline">\theta</span>.</p>
+<div class="policy33-intro">
+<p><img data-src="imgs/lec1/toy_robot_openclipart.svg" class="policy33-robot" alt="Public-domain cartoon robot representing a learning agent."></p>
+<p><img data-src="imgs/drawio/lec33/direct-policy.png" class="policy33-policy" alt="The actor receives depot state D and outputs a probability of one half for the small job and one half for pickup."></p>
+</div>
+<p>A <strong>stochastic policy</strong> samples an action from these probabilities. <strong>Model-free</strong> learning uses experience without an explicit transition-and-reward model.</p>
 <div class="takeaway">
-<p>Increase the probability of actions that lead to high returns.</p>
+<p>Value-based methods learn action values and derive choices from them. Policy-based methods adjust the action rule itself.</p>
 </div>
+<aside class="notes">
+<p>Policy-based methods can still learn a value estimate, as actor-critic will show. A stochastic policy and a random environment are different sources of randomness. A policy may also describe continuous actions such as a real-valued steering angle, but today’s worked example uses two discrete choices. Original public-domain robot: https://openclipart.org/detail/325644/toy-robot. Background: supplied Spring 2025 Policy-Based RL Beamer lecture; Sutton and Barto, Reinforcement Learning: An Introduction, second edition, Chapter 13.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="reinforce" class="slide level2">
-<h2>REINFORCE</h2>
-<p>REINFORCE is a Monte Carlo policy-gradient method.</p>
-<p>Gradient estimator:</p>
-<p><span class="math display">
-\nabla_\theta J(\theta)
-=
-\mathbb{E}_{\tau}
-\left[
-\sum_{t=0}^{T}
-\nabla_\theta \log \pi_\theta(a_t\mid s_t)R_t
-\right]
-</span></p>
-<p>where <span class="math inline">R_t</span> is the return after time <span class="math inline">t</span>.</p>
-<div class="question">
-<p>The log-probability term tells us how to change policy parameters to make sampled actions more or less likely.</p>
-</div>
+<section id="delivery-choice" class="slide level2 policy33-slide">
+<h2>A Delivery Choice</h2>
+<p>At depot <span class="math inline">D</span>, choose a small job or pickup. For this example, always deliver after reaching pickup stop <span class="math inline">J</span>. Learn only the initial choice at <span class="math inline">D</span>.</p>
+<p><img data-src="imgs/drawio/lec33/delivery-choices.png" class="policy33-routes" alt="Small job goes from depot D to finished F with reward four. Pickup goes from D to J with reward minus one, then deliver goes from J to F with reward eight."></p>
+<p>An <strong>episode</strong> is one run ending at terminal state <span class="math inline">F</span>. The <strong>discount factor</strong> <span class="math inline">\gamma=0.9</span> gives later rewards less weight.</p>
+<p>The <strong>return</strong>, total discounted future reward, is <span class="math inline">4</span> for the small job and <span class="math inline">-1+0.9\cdot8=6.2</span> for pickup then delivery.</p>
+<aside class="notes">
+<p>This continues the fictional delivery setting from Lectures 30 and 32. All rewards are invented points. We restrict the policy at J to deliver with probability one, so only the choice at D is parameterized in the numerical policy-gradient example. The environment can have other actions, but this restricted policy family never selects return at J. Reward +8 arrives on entry to F, and later value at F is zero. The learner is not supplied the reward model; exact calculations here let us check its sample-based updates.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="derivation-log-derivative-trick" class="slide level2">
-<h2>Derivation: Log-Derivative Trick</h2>
-<p>Start with trajectories:</p>
-<p><span class="math display">
-J(\theta)=\int P_\theta(\tau)R(\tau)d\tau
-</span></p>
-<p>Take gradient:</p>
-<p><span class="math display">
-\nabla_\theta J(\theta)
-=
-\int \nabla_\theta P_\theta(\tau)R(\tau)d\tau
-</span></p>
-<p>Use:</p>
-<p><span class="math display">
-\nabla_\theta P_\theta(\tau)
-=
-P_\theta(\tau)\nabla_\theta\log P_\theta(\tau)
-</span></p>
+<section id="policy-parameter" class="slide level2 policy33-slide">
+<h2>A Parameterized Policy</h2>
+<p>A <strong>parameterized policy</strong> converts adjustable numbers into action probabilities. Use one real-valued <strong>logit</strong> <span class="math inline">\theta</span>, a preference score before conversion:</p>
+<p><span class="math display">p=\sigma(\theta)=\frac{1}{1+e^{-\theta}},\qquad
+\pi_\theta(\text{pickup}\mid D)=p,\quad
+\pi_\theta(\text{small}\mid D)=1-p.</span></p>
+<p>The <strong>sigmoid</strong> function <span class="math inline">\sigma</span> maps any real <span class="math inline">\theta</span> to a probability between <span class="math inline">0</span> and <span class="math inline">1</span>.</p>
+<p><img data-src="imgs/drawio/lec33/policy-probabilities.png" class="policy33-probabilities" alt="For theta minus one, zero, and one, pickup probabilities are approximately 0.269, 0.500, and 0.731. Small-job probabilities are the complementary portions of each bar."></p>
+<p>Start at <span class="math inline">\theta=0</span>, so both actions have probability <span class="math inline">0.5</span>.</p>
+<aside class="notes">
+<p>This is a one-parameter Bernoulli policy. A general neural policy can output a vector of logits and convert them to a categorical distribution. Here the scalar theta controls only the D choice; J’s deliver probability remains fixed. Increasing theta increases pickup probability and decreases small-job probability. The plotted probabilities come directly from the sigmoid formula, not training results. All subsequent alternative sample calculations restart at theta=0 unless a new value is explicitly stated.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="derivation-trajectory-probability" class="slide level2">
-<h2>Derivation: Trajectory Probability</h2>
-<p>Trajectory probability:</p>
-<p><span class="math display">
-P_\theta(\tau)
-=
-\rho(s_0)
-\prod_{t=0}^{T}
-\pi_\theta(a_t\mid s_t)P(s_{t+1}\mid s_t,a_t)
-</span></p>
-<p>Only <span class="math inline">\pi_\theta</span> depends on <span class="math inline">\theta</span>, so:</p>
-<p><span class="math display">
-\nabla_\theta\log P_\theta(\tau)
-=
-\sum_{t=0}^{T}
-\nabla_\theta\log \pi_\theta(a_t\mid s_t)
-</span></p>
-</section>
-<section id="return-to-go" class="slide level2 compact">
-<h2>Return-to-Go</h2>
-<p>Using full return is unbiased, but can have high variance.</p>
-<p>Return-to-go:</p>
-<p><span class="math display">
-R_t=\sum_{k=t}^{T}\gamma^{k-t}r_k
-</span></p>
-<p>Final estimator:</p>
-<p><span class="math display">
-\nabla_\theta J(\theta)
-=
-\mathbb{E}_{\tau}
-\left[
-\sum_{t=0}^{T}
-\nabla_\theta \log \pi_\theta(a_t\mid s_t)R_t
-\right]
-</span></p>
+<section id="objective" class="slide level2 policy33-slide">
+<h2>Expected Return</h2>
+<p>The <strong>objective</strong> <span class="math inline">J(\theta)</span> is the expected return from the starting state. The expectation <span class="math inline">\mathbb E_{\pi_\theta}</span> averages over episodes generated by the current policy:</p>
+<p><span class="math display">J(\theta)=\mathbb E_{\pi_\theta}[G_0].</span></p>
+<p>In our example, with pickup probability <span class="math inline">p</span>:</p>
+<p><span class="math display">J(\theta)=4(1-p)+6.2p=4+2.2p.</span></p>
+<p>At <span class="math inline">p=0.5</span>, expected return is <span class="math inline">5.1</span>, although an individual episode returns either <span class="math inline">4</span> or <span class="math inline">6.2</span>.</p>
 <div class="takeaway">
-<p>Past rewards do not depend on later actions, so return-to-go removes irrelevant noise.</p>
+<p>The learning goal is to improve average return over sampled episodes. A single good outcome does not identify the best policy.</p>
 </div>
+<aside class="notes">
+<p>The function J(theta), an objective, is distinct from the pickup-stop label J. We can compute the exact objective in this tiny deterministic environment, but a model-free agent normally lacks that formula. Each episode starts at D. G0 is its full discounted return. The expected-return comparison averages over policy randomness here; in a stochastic environment it also averages over transition and reward randomness. The numerical optimum within this policy family favors pickup, approached as theta tends to positive infinity.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="reinforce-algorithm" class="slide level2">
-<h2>REINFORCE Algorithm</h2>
+<section id="gradient-ascent" class="slide level2 policy33-slide">
+<h2>Policy-Gradient Ascent</h2>
+<p>A <strong>gradient</strong> <span class="math inline">\nabla_\theta J</span> describes how changing parameters changes expected return. <strong>Gradient ascent</strong> takes a small step in the increasing direction:</p>
+<p><span class="math display">\theta\leftarrow\theta+\alpha\nabla_\theta J(\theta).</span></p>
+<p>The <strong>learning rate</strong> <span class="math inline">\alpha&gt;0</span> sets the step size. With our single parameter:</p>
+<p><span class="math display">\frac{dJ}{d\theta}=2.2p(1-p)=0.55\quad\text{at }p=0.5.</span></p>
+<div class="fragment takeaway">
+<p>Using <span class="math inline">\alpha=0.1</span> and the exact gradient gives <span class="math inline">\theta=0.055</span>, so pickup probability rises from <span class="math inline">0.500</span> to about <span class="math inline">0.514</span>.</p>
+</div>
+<p>We will estimate this gradient from sampled episodes instead of needing the environment’s exact reward formula.</p>
+<aside class="notes">
+<p>The sigmoid derivative is p(1-p), so the chain rule gives <code>dJ/dtheta = 2.2*p*(1-p)</code>. This scalar calculation illustrates the vector-gradient update used by neural policies. An arbitrary finite step is not guaranteed to improve a general nonlinear objective, especially with noisy gradient estimates. We use a small positive learning rate for the arithmetic. The exact gradient is a comparison benchmark rather than information supplied to a model-free agent.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="returns" class="slide level2 policy33-slide">
+<h2>REINFORCE and Return-to-Go</h2>
+<p><strong>REINFORCE</strong> is a <strong>Monte Carlo policy-gradient</strong> method: collect a complete episode, then use its observed returns to update the policy.</p>
+<p><img data-src="imgs/drawio/lec33/episode-timeline.png" class="policy33-timeline" alt="An observed pickup episode: at step zero D chooses pickup, reward r1 is minus one, step one is J, deliver gives reward r2 eight, and step two is terminal F."></p>
+<p>The <strong>return-to-go</strong> <span class="math inline">G_t</span> counts rewards from step <span class="math inline">t</span> onward:</p>
+<p><span class="math display">G_t=\sum_{k=t}^{T-1}\gamma^{k-t}r_{k+1}.</span></p>
+<p><span class="math inline">T</span> is the number of actions before termination. Reward <span class="math inline">r_{t+1}</span> arrives after action <span class="math inline">t</span>. Here <span class="math inline">T=2</span>, <span class="math inline">G_0=6.2</span>, and <span class="math inline">G_1=8</span>.</p>
+<aside class="notes">
+<p>The dummy index k runs over action steps in the remaining episode. Earlier rewards do not belong to a later action’s return-to-go. We use r_(t+1) consistently, matching Lecture 32. The learner keeps the collection policy fixed during this REINFORCE episode. Reference: Ronald J. Williams (1992), Simple statistical gradient-following algorithms for connectionist reinforcement learning, https://doi.org/10.1007/BF00992696; Sutton and Barto, second edition, Section 13.3. The first paper defines the REINFORCE family; we present its standard episodic policy-gradient form.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reinforce-gradient" class="slide level2 policy33-slide">
+<h2>The Log-Probability Gradient</h2>
+<p>The log-derivative identity converts a probability derivative into a form we can sample:</p>
+<p><span class="math display">\nabla_\theta\pi_\theta(a\mid s)
+=\pi_\theta(a\mid s)\nabla_\theta\log\pi_\theta(a\mid s).</span></p>
+<p>Here <span class="math inline">\log</span> is the natural logarithm. REINFORCE estimates the objective’s gradient using:</p>
+<p><span class="math display">\hat g=\sum_{t=0}^{T-1}\gamma^tG_t\,
+\nabla_\theta\log\pi_\theta(a_t\mid s_t),\qquad
+\mathbb E[\hat g]=\nabla_\theta J.</span></p>
+<p>The <strong>log-probability gradient</strong> points toward making the sampled action more likely. Its return weights that direction.</p>
+<div class="takeaway">
+<p>Only policy probabilities need derivatives. The simulator supplies sampled states and rewards. The factor <span class="math inline">\gamma^t</span> preserves the discounted starting-state objective.</p>
+</div>
+<aside class="notes">
+<p>Assume a differentiable policy, theta-independent environment and initial-state distribution, and complete on-policy episodes with suitable regularity. Differentiating trajectory likelihood leaves only policy log-probabilities; no derivative of unknown dynamics is required. Conditional on the history before a_t, the expected log-probability gradient is zero. This makes terms from already observed rewards vanish in expectation and justifies return-to-go without falsely claiming that past rewards and future actions are unconditionally independent. For J=E[G0] with discounted Gt measured relative to t, retain the outer gamma^t. At D, t=0, so the numeric examples have weight one. At fixed-action J the score gradient is zero. Reference: supplied Beamer log-derivative argument, Sutton and Barto Chapter 13, and https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sample-updates" class="slide level2 policy33-slide">
+<h2>Two Possible Sampled Updates</h2>
+<p>Restart at <span class="math inline">\theta=0</span>, <span class="math inline">p=0.5</span>. At <span class="math inline">D</span>, the log-probability derivatives are <span class="math inline">1-p</span> for pickup and <span class="math inline">-p</span> for the small job. Also <span class="math inline">\gamma^0=1</span>.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 26%">
+<col style="width: 26%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Sampled action</th>
+<th style="text-align: right;">Return <span class="math inline">G_0</span></th>
+<th style="text-align: right;">Log-probability derivative</th>
+<th style="text-align: right;">Sample gradient <span class="math inline">g_0</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pickup</td>
+<td style="text-align: right;"><span class="math inline">6.2</span></td>
+<td style="text-align: right;"><span class="math inline">0.5</span></td>
+<td style="text-align: right;"><span class="math inline">3.1</span></td>
+</tr>
+<tr class="even">
+<td>Small job</td>
+<td style="text-align: right;"><span class="math inline">4</span></td>
+<td style="text-align: right;"><span class="math inline">-0.5</span></td>
+<td style="text-align: right;"><span class="math inline">-2</span></td>
+</tr>
+</tbody>
+</table>
+<p>With <span class="math inline">\alpha=0.1</span>, a pickup episode gives <span class="math inline">\theta=0.31</span>; a small-job episode gives <span class="math inline">\theta=-0.20</span>. Each raises its own sampled action’s probability.</p>
+<div class="fragment takeaway">
+<p>The average sample gradient is <span class="math inline">0.5(3.1)+0.5(-2)=0.55</span>, matching the exact gradient. Individual updates can point in different directions.</p>
+</div>
+<aside class="notes">
+<p>These are alternative one-episode updates from the same initial theta, not sequential episodes. The derivative of log p is 1-p, and that of log(1-p) is -p.&nbsp;After the pickup sample p becomes sigmoid(.31), about .576885; after the small-job sample p becomes sigmoid(-.2), about .450166. Both raw returns are positive, so the uncentered score update favors whichever action happened to occur. The expected gradient still favors pickup because its return is larger. No theorem says each stochastic update must improve the policy.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="baseline" class="slide level2 policy33-slide">
+<h2>A Baseline Reduces Update Noise</h2>
+<p>A <strong>baseline</strong> <span class="math inline">b(s)</span> is a state-dependent reference subtracted from the return. Choose it before the current action, and hold it fixed while computing the actor gradient.</p>
+<p>Use the illustrative baseline <span class="math inline">b(D)=5.1</span>, the current policy’s expected return:</p>
+<p><img data-src="imgs/drawio/lec33/return-baseline.png" class="policy33-baseline" alt="Return bars at four for the small job and 6.2 for pickup, with a reference line at baseline 5.1. Their differences from the baseline are minus 1.1 and plus 1.1."></p>
+<p>Replace <span class="math inline">G_t</span> by <span class="math inline">G_t-b(s_t)</span> in the policy-gradient estimate. An action-independent baseline leaves the <strong>expected</strong> gradient unchanged.</p>
+<div class="takeaway">
+<p>A well-chosen baseline reduces <strong>variance</strong>, the variation across sampled updates. The exact value <span class="math inline">5.1</span> is for our illustration; a learner usually estimates it.</p>
+</div>
+<aside class="notes">
+<p>At a fixed state, sum_a pi(a|s)*grad log pi(a|s)=grad sum_a pi(a|s)=0. Multiplying by an action-independent baseline therefore contributes zero in expectation. This statement holds while treating the baseline as fixed in the actor derivative. A learned baseline can be a function of state and past training data; avoid using an action-dependent quantity as though it were automatically an unbiased baseline. At p=.5, the two centered sample gradients here both equal .55, compared with 3.1 and -2 before centering. This perfect variance cancellation is special to this symmetric deterministic example, not a general promise. References: supplied Beamer baseline material; Sutton and Barto Section 13.4; Spinning Up, Baselines in Policy Gradients.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="advantage" class="slide level2 policy33-slide">
+<h2>Advantage and Its Estimate</h2>
+<p><span class="math inline">V^\pi(s)</span> is expected return following policy <span class="math inline">\pi</span>. <span class="math inline">Q^\pi(s,a)</span> is expected return after choosing <span class="math inline">a</span> once, then following <span class="math inline">\pi</span>.</p>
+<p>The <strong>advantage</strong> is the action’s expected improvement over that state baseline:</p>
+<p><span class="math display">A^\pi(s,a)=Q^\pi(s,a)-V^\pi(s).</span></p>
+<p>At <span class="math inline">p=0.5</span>, <span class="math inline">V^\pi(D)=5.1</span>:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Action</th>
+<th style="text-align: right;"><span class="math inline">Q^\pi(D,a)</span></th>
+<th style="text-align: right;">True advantage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Small job</td>
+<td style="text-align: right;"><span class="math inline">4</span></td>
+<td style="text-align: right;"><span class="math inline">-1.1</span></td>
+</tr>
+<tr class="even">
+<td>Pickup</td>
+<td style="text-align: right;"><span class="math inline">6.2</span></td>
+<td style="text-align: right;"><span class="math inline">1.1</span></td>
+</tr>
+</tbody>
+</table>
+<p>Using a learned estimate <span class="math inline">V(D)=5</span>, the pickup episode instead gives the <strong>sampled estimate</strong> <span class="math inline">\hat A_0=G_0-V(D)=1.2</span>.</p>
+<aside class="notes">
+<p>True advantage is a difference of expected values. A sampled return minus a learned value estimate need not equal it, even though it can provide a useful learning signal. In this deterministic example the discrepancy 1.2 versus 1.1 comes entirely from the inaccurate baseline 5 versus 5.1; stochastic future outcomes could add more noise. Positive reward does not imply positive advantage: the small job returns 4 but performs below the current policy’s mean. With the exact baseline, both alternative score-weighted updates at D become .55, preserving their expected gradient.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reinforce-algorithm" class="slide level2 policy33-slide policy33-loop">
+<h2>REINFORCE with a Baseline</h2>
+<p>Collect each episode with fixed <span class="math inline">\theta</span>. Use <span class="math inline">b(s)=0</span> or a previously learned state-value estimate.</p>
 <div class="pseudo-code">
 <div class="pseudo-line">
 <span class="pseudo-kw">for each</span> episode
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">trajectory</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">sampleEpisode</span>(<span class="pseudo-var">piTheta</span>)
+<div class="pseudo-line fragment indent-1" data-fragment-index="0">
+<span class="pseudo-var">trajectory</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">SampleEpisode</span>(<span class="pseudo-var">piTheta</span>)
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">for each</span> time step <span class="pseudo-var">t</span>
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-var">G</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">DiscountedReturns</span>(<span class="pseudo-var">trajectory</span>, <span class="pseudo-var">gamma</span>)
 </div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-var">R_t</span> <span class="pseudo-op">=</span> discounted return from <span class="pseudo-var">t</span>
+<div class="pseudo-line indent-1">
+<span class="pseudo-var">g</span> <span class="pseudo-op">=</span> <span class="pseudo-num">0</span>
 </div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-var">g_t</span> <span class="pseudo-op">=</span> ∇<sub>theta</sub> log <span class="pseudo-var">piTheta</span>(<span class="pseudo-var">a_t</span>|<span class="pseudo-var">s_t</span>) <span class="pseudo-op">*</span> <span class="pseudo-var">R_t</span>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-kw">for each</span> step <span class="pseudo-var">t</span> <span class="pseudo-kw">in</span> <span class="pseudo-var">trajectory</span>
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">theta</span> <span class="pseudo-op">=</span> <span class="pseudo-var">theta</span> <span class="pseudo-op">+</span> <span class="pseudo-var">alpha</span> <span class="pseudo-op">*</span> Σ<sub>t</sub> <span class="pseudo-var">g_t</span>
+<div class="pseudo-line fragment indent-2" data-fragment-index="3">
+<span class="pseudo-var">weight</span> <span class="pseudo-op">=</span> <span class="pseudo-var">gamma</span><sup>t</sup> <span class="pseudo-op">*</span> (<span class="pseudo-var">G_t</span> <span class="pseudo-op">-</span> <span class="pseudo-var">b</span>(<span class="pseudo-var">s_t</span>))
+</div>
+<div class="pseudo-line fragment indent-2" data-fragment-index="4">
+<span class="pseudo-var">g</span> <span class="pseudo-op">+=</span> <span class="pseudo-var">weight</span> <span class="pseudo-op">*</span> <span class="pseudo-fn">ScoreGradient</span>(<span class="pseudo-var">theta</span>, <span class="pseudo-var">s_t</span>, <span class="pseudo-var">a_t</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="5">
+<span class="pseudo-var">theta</span> <span class="pseudo-op">+=</span> <span class="pseudo-var">alpha</span> <span class="pseudo-op">*</span> <span class="pseudo-var">g</span>
 </div>
 </div>
+<p><code>ScoreGradient</code> means <span class="math inline">\nabla_\theta\log\pi_\theta(a_t\mid s_t)</span>. <code>DiscountedReturns</code> computes <span class="math inline">G_t=r_{t+1}+\gamma G_{t+1}</span> backward, starting from <span class="math inline">G_T=0</span>.</p>
+<div class="takeaway">
+<p>Use the same collection parameters for all gradients in this update, then collect fresh experience after changing the policy.</p>
+</div>
+<aside class="notes">
+<p>This is an on-policy episodic update. The baseline is held fixed during the actor-gradient calculation and learned separately if needed. A minibatch version averages sample gradients from several episodes collected with the same policy; we show one episode for clarity. Gamma^t is episode-relative, with t=0 at each start. Keep sampled actions fixed while differentiating their log-probabilities. The diagram/example policy at J has no learnable choice, but the algorithm applies to general differentiable stochastic policies.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="baselines" class="slide level2">
-<h2>Baselines</h2>
-<p>Subtract a baseline without changing the expected gradient:</p>
-<p><span class="math display">
-\nabla_\theta J(\theta)
-=
-\mathbb{E}
-\left[
-\nabla_\theta\log\pi_\theta(a_t\mid s_t)
-(R_t-b(s_t))
-\right]
-</span></p>
-<p>Why no bias?</p>
-<p><span class="math display">
-\mathbb{E}_{a\sim\pi_\theta}
-[\nabla_\theta\log\pi_\theta(a\mid s)]=0
-</span></p>
-<p>Common choice:</p>
-<p><span class="math display">
-b(s_t)=V^\pi(s_t)
-</span></p>
-</section>
-<section id="advantage" class="slide level2">
-<h2>Advantage</h2>
-<p>With a value baseline:</p>
-<p><span class="math display">
-A^\pi(s_t,a_t)=R_t-V^\pi(s_t)
-</span></p>
-<p>Interpretation:</p>
+<section id="actor-critic" class="slide level2 policy33-slide">
+<h2>Actor-Critic Roles</h2>
 <ul>
-<li>Positive advantage: action did better than expected.</li>
-<li>Negative advantage: action did worse than expected.</li>
+<li>The <strong>actor</strong> learns action probabilities <span class="math inline">\pi_\theta(a\mid s)</span>, with parameters <span class="math inline">\theta</span>.</li>
+<li>The <strong>critic</strong> learns a state-value estimate <span class="math inline">V_w(s)</span>, with parameters <span class="math inline">w</span>.</li>
 </ul>
+<p><img data-src="imgs/drawio/lec33/actor-critic-loop.png" class="policy33-loop-figure" alt="State feeds the actor, which samples an action for the environment. Reward and next state feed a critic. The critic forms a TD error that trains its value prediction and supplies an advantage estimate to the actor."></p>
+<p><strong>Temporal-difference (TD)</strong> learning forms a target from a reward and an estimated next-state value. The <strong>TD error</strong> compares that target with the current prediction, allowing updates after each transition.</p>
+<aside class="notes">
+<p>The actor chooses actions; the critic supplies a value estimate, not an ideal-action label or a transition simulator. A critic may be tabular or a neural network. Bootstrapping can reduce sample-update variability and allow earlier feedback, but an inaccurate critic can bias the actor’s signal. This is not a universal lower-variance or sample-efficiency guarantee. Reference: supplied actor-critic Beamer frames and Sutton and Barto Section 13.5. We use separate actor and critic parameters in the later losses.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="td-advantage" class="slide level2 policy33-slide">
+<h2>A TD Advantage Estimate</h2>
+<p><strong>Bootstrapping</strong> uses a current value prediction inside another learning target. For transition <span class="math inline">(s_t,a_t,r_{t+1},s_{t+1})</span>:</p>
+<p><span class="math display">y_t=r_{t+1}+\gamma V_w(s_{t+1}),\qquad
+\delta_t=y_t-V_w(s_t).</span></p>
+<p><span class="math inline">y_t</span> is the <strong>TD target</strong>. The <strong>TD error</strong> <span class="math inline">\delta_t</span> supplies an advantage estimate.</p>
+<p><img data-src="imgs/drawio/lec33/critic-transition.png" class="policy33-transition" alt="A pickup transition gives reward minus one from D to J. Current critic estimates are V(D)=5 and V(J)=8."></p>
+<div class="fragment takeaway">
+<p>With <span class="math inline">\gamma=0.9</span>: <span class="math inline">y_0=-1+0.9\cdot8=6.2</span>, so <span class="math inline">\delta_0=6.2-5=1.2</span>.</p>
+</div>
+<p>For a terminal next state, use <span class="math inline">y_t=r_{t+1}</span> with zero future value.</p>
+<aside class="notes">
+<p>The current critic values 5 and 8 are stipulated estimates, matching the learned-baseline example on the advantage slide. If V_w equals the true V^pi everywhere, the conditional expectation of the one-step TD error given s,a is A^pi(s,a). With an imperfect critic, delta is an approximate advantage signal, not an exact definition of advantage. The true advantage of pickup under p=.5 is 1.1; this critic produces 1.2 because its D baseline is low. Compute the target and error from pre-update predictions. The terminal reward is received once; do not add it again as a value at F or use the next episode’s start value.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="losses" class="slide level2 policy33-slide">
+<h2>Actor and Critic Losses</h2>
+<p>A <strong>loss</strong> is a quantity the optimizer minimizes. These losses implement policy ascent and value learning:</p>
+<p><span class="math display">L_{\text{actor}}=-\gamma^t\log\pi_\theta(a_t\mid s_t)\,
+\operatorname{stopgrad}(\delta_t).</span></p>
+<p><span class="math display">L_{\text{critic}}=\tfrac12\left[V_w(s_t)-\operatorname{stopgrad}(y_t)\right]^2.</span></p>
+<p><strong>Stop-gradient</strong> treats a value as a constant during differentiation. In PyTorch, use <code>.detach()</code> for this purpose.</p>
 <div class="takeaway">
-<p>Advantage tells the actor whether to increase or decrease the probability of the sampled action.</p>
+<p>The actor gradient flows through the selected action’s log-probability. The critic gradient flows through its current-state prediction. Compute the shared TD error before either update.</p>
 </div>
+<aside class="notes">
+<p>These are single-transition losses for separate actor and critic networks. Minimizing the negative log-probability loss implements <code>theta &lt;- theta + alpha*gamma^t*delta*grad log pi</code>. The critic’s detached target implements a semi-gradient value update. At t=0, theta=0, delta=1.2, and alpha=.1, the scalar actor update is theta=.06 and pickup probability becomes about .515. A tabular critic with step size beta=.5 would update V(D) from 5 to 5.6; a neural critic instead changes its weights via grad_w V_w(D). Neither loss should differentiate through sampled environment outcomes. For this discounted starting-state objective retain gamma^t; dropping that factor changes the time weighting. PyTorch detach reference: https://docs.pytorch.org/docs/stable/generated/torch.Tensor.detach.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="actor-critic" class="slide level2 compact">
-<h2>Actor-Critic</h2>
-<p>Actor-critic combines:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Component</th>
-<th>Learns</th>
-<th>Role</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Actor</td>
-<td><span class="math inline">\pi_\theta(a\mid s)</span></td>
-<td>Selects actions</td>
-</tr>
-<tr class="even">
-<td>Critic</td>
-<td><span class="math inline">V_w(s)</span> or <span class="math inline">Q_w(s,a)</span></td>
-<td>Evaluates actions</td>
-</tr>
-</tbody>
-</table>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec31/actor-critic.svg" alt="Actor critic loop where actor selects action and critic evaluates the outcome"></p>
-</div>
-<div class="takeaway">
-<p>The critic supplies a lower-variance learning signal for the actor.</p>
-</div>
-</section>
-<section id="actor-critic-updates" class="slide level2">
-<h2>Actor-Critic Updates</h2>
-<p>TD error:</p>
-<p><span class="math display">
-\delta_t=r_t+\gamma V_w(s_{t+1})-V_w(s_t)
-</span></p>
-<p>Critic update:</p>
-<p><span class="math display">
-w\leftarrow w+\beta\delta_t\nabla_w V_w(s_t)
-</span></p>
-<p>Actor update:</p>
-<p><span class="math display">
-\theta\leftarrow \theta+\alpha\delta_t\nabla_\theta\log\pi_\theta(a_t\mid s_t)
-</span></p>
-</section>
-<section id="actor-critic-algorithm" class="slide level2">
-<h2>Actor-Critic Algorithm</h2>
+<section id="online-algorithm" class="slide level2 policy33-slide policy33-loop">
+<h2>One Actor-Critic Step</h2>
+<p>At each episode start, set <code>s</code> to the initial state and <code>weight = 1</code>. Repeat until the task terminates.</p>
 <div class="pseudo-code">
-<div class="pseudo-line">
-<span class="pseudo-kw">observe</span> (<span class="pseudo-var">s_t</span>, <span class="pseudo-var">a_t</span>, <span class="pseudo-var">r_t</span>, <span class="pseudo-var">s_{t+1}</span>)
+<div class="pseudo-line fragment" data-fragment-index="0">
+(<span class="pseudo-var">a</span>, <span class="pseudo-var">logProb</span>) <span class="pseudo-op">=</span> <span class="pseudo-fn">SampleAction</span>(<span class="pseudo-var">piTheta</span>(<span class="pseudo-var">s</span>))
 </div>
-<div class="pseudo-line fragment">
-<span class="pseudo-var">delta</span> <span class="pseudo-op">=</span> <span class="pseudo-var">r_t</span> <span class="pseudo-op">+</span> <span class="pseudo-var">gamma</span><span class="pseudo-var">V_w</span>(<span class="pseudo-var">s_{t+1}</span>) <span class="pseudo-op">-</span> <span class="pseudo-var">V_w</span>(<span class="pseudo-var">s_t</span>)
+<div class="pseudo-line fragment" data-fragment-index="0">
+(<span class="pseudo-var">r</span>, <span class="pseudo-var">sNext</span>, <span class="pseudo-var">terminal</span>) <span class="pseudo-op">=</span> <span class="pseudo-fn">Step</span>(<span class="pseudo-var">a</span>)
 </div>
-<div class="pseudo-line fragment">
-<span class="pseudo-var">w</span> <span class="pseudo-op">=</span> <span class="pseudo-var">w</span> <span class="pseudo-op">+</span> <span class="pseudo-var">beta</span> <span class="pseudo-op"><em></em></span><em> <span class="pseudo-var">delta</span> <span class="pseudo-op"></span></em> ∇<sub>w</sub><span class="pseudo-var">V_w</span>(<span class="pseudo-var">s_t</span>)
+<div class="pseudo-line fragment" data-fragment-index="1">
+<span class="pseudo-var">target</span> <span class="pseudo-op">=</span> <span class="pseudo-var">r</span> <span class="pseudo-kw">if</span> <span class="pseudo-var">terminal</span> <span class="pseudo-kw">else</span> <span class="pseudo-var">r</span> <span class="pseudo-op">+</span> <span class="pseudo-var">gamma</span> <span class="pseudo-op">*</span> <span class="pseudo-var">Vw</span>(<span class="pseudo-var">sNext</span>)
 </div>
-<div class="pseudo-line fragment">
-<span class="pseudo-var">theta</span> <span class="pseudo-op">=</span> <span class="pseudo-var">theta</span> <span class="pseudo-op">+</span> <span class="pseudo-var">alpha</span> <span class="pseudo-op"><em></em></span><em> <span class="pseudo-var">delta</span> <span class="pseudo-op"></span></em> ∇<sub>theta</sub> log <span class="pseudo-var">piTheta</span>(<span class="pseudo-var">a_t</span>|<span class="pseudo-var">s_t</span>)
+<div class="pseudo-line fragment" data-fragment-index="1">
+<span class="pseudo-var">delta</span> <span class="pseudo-op">=</span> <span class="pseudo-var">target</span> <span class="pseudo-op">-</span> <span class="pseudo-var">Vw</span>(<span class="pseudo-var">s</span>)
+</div>
+<div class="pseudo-line fragment" data-fragment-index="2">
+<span class="pseudo-var">actorLoss</span> <span class="pseudo-op">=</span> <span class="pseudo-op">-</span><span class="pseudo-var">weight</span> <span class="pseudo-op">*</span> <span class="pseudo-var">logProb</span> <span class="pseudo-op">*</span> <span class="pseudo-fn">StopGrad</span>(<span class="pseudo-var">delta</span>)
+</div>
+<div class="pseudo-line fragment" data-fragment-index="2">
+<span class="pseudo-var">criticLoss</span> <span class="pseudo-op">=</span> (<span class="pseudo-var">Vw</span>(<span class="pseudo-var">s</span>) <span class="pseudo-op">-</span> <span class="pseudo-fn">StopGrad</span>(<span class="pseudo-var">target</span>))<sup>2</sup> <span class="pseudo-op">/</span> <span class="pseudo-num">2</span>
+</div>
+<div class="pseudo-line fragment" data-fragment-index="3">
+<span class="pseudo-fn">UpdateBoth</span>(<span class="pseudo-var">actorLoss</span>, <span class="pseudo-var">criticLoss</span>)
+</div>
+<div class="pseudo-line fragment" data-fragment-index="3">
+<span class="pseudo-var">weight</span> <span class="pseudo-op">*=</span> <span class="pseudo-var">gamma</span>
+</div>
+<div class="pseudo-line fragment" data-fragment-index="3">
+<span class="pseudo-var">s</span> <span class="pseudo-op">=</span> <span class="pseudo-var">sNext</span>
 </div>
 </div>
+<p><code>SampleAction</code> also saves the sampled action’s log-probability. <code>Step</code> performs the action. <code>UpdateBoth</code> minimizes each network’s loss. Here <code>weight</code> equals <span class="math inline">\gamma^t</span>.</p>
+<aside class="notes">
+<p>This is on-policy one-step actor-critic. SampleAction must use the correctly normalized available-action distribution, and logProb must come from that same distribution before parameters change. Both losses use pre-update predictions. For separate networks the detached actor advantage and critic target keep their intended gradient paths independent. Reset the state and weight at a true episode boundary. The terminal flag means task termination; arbitrary collection time limits may require different bootstrap handling. This is explanatory pseudocode, not the homework implementation or a claim about callback timing in the game driver.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="reinforce-vs.-actor-critic" class="slide level2">
-<h2>REINFORCE vs.&nbsp;Actor-Critic</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Method</th>
-<th>Update signal</th>
-<th>Tradeoff</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>REINFORCE</td>
-<td>Full return <span class="math inline">R_t</span></td>
-<td>Unbiased, high variance</td>
-</tr>
-<tr class="even">
-<td>REINFORCE with baseline</td>
-<td><span class="math inline">R_t-V(s_t)</span></td>
-<td>Lower variance</td>
-</tr>
-<tr class="odd">
-<td>Actor-critic</td>
-<td>TD error <span class="math inline">\delta_t</span></td>
-<td>More bias, better online learning</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
+<section id="homework-check" class="slide level2 policy33-slide">
+<h2>Homework 6: Actor-Critic</h2>
+<p>The <a href="../homeworks/hw6.html" target="_blank" rel="noopener">Homework 6 assignment and starter</a> apply these ideas to a game agent.</p>
 <ul>
-<li>Policy-based methods optimize <span class="math inline">\pi_\theta(a\mid s)</span> directly.</li>
-<li>REINFORCE uses Monte Carlo policy gradients.</li>
-<li>Return-to-go reduces variance.</li>
-<li>Baselines reduce variance without biasing the gradient.</li>
-<li>Actor-critic uses a critic to estimate advantage online.</li>
+<li><strong>Actor outputs:</strong> <strong>logits</strong>, unnormalized action scores, become probabilities for sampling.</li>
+<li><strong>Action mask:</strong> unavailable actions get probability zero. Renormalize over legal actions and save the chosen action’s log-probability from that same distribution.</li>
+<li><strong>Learning:</strong> detach the advantage and bootstrap target in the appropriate losses. Terminal targets use only the final reward.</li>
+<li><strong>Evaluation:</strong> freeze learning while measuring performance against the reference agent.</li>
 </ul>
+<div class="question">
+<p>Which network should receive a gradient from the selected action’s log-probability?</p>
+</div>
+<div class="fragment takeaway">
+<p>The <strong>actor</strong>. The critic learns from its own value-prediction loss.</p>
+</div>
+<aside class="notes">
+<p>The homework uses separate actor and critic networks, an available-action mask, and a supplied turn-based driver. Its 18-value observation, seven action indices, reward/callback contract, and evaluation requirements are defined in the linked page and starter. Follow that contract when deciding which observations form one agent transition; do not infer driver timing from a schematic RL loop. The assignment’s scheduled release is November 18, 2026.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="takeaways" class="slide level2 policy33-slide">
+<h2>Takeaways</h2>
+<ul>
+<li>A parameterized policy directly represents action probabilities.</li>
+<li>Policy gradients improve expected return using sampled experience.</li>
+<li>REINFORCE uses complete episodes and return-to-go.</li>
+<li>A state baseline can reduce update noise without changing the expected gradient.</li>
+<li>True advantage is an expected-value difference. Sampled or TD-based advantages are estimates.</li>
+<li>Actor-critic learns both a policy and a value predictor, using separate gradient paths.</li>
+</ul>
+<div class="takeaway">
+<p>Keep the sampled reward, return, baseline, and advantage estimate distinct when explaining an update.</p>
+</div>
 <p><a href="../asset_credits.html#lec33" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
 
 
@@ -621,6 +831,13 @@ w\leftarrow w+\beta\delta_t\nabla_w V_w(s_t)
         // devices. It is advisable to set this to a lower number than
         // viewDistance in order to save resources.
         mobileViewDistance: 2,
+
+        // Enable scroll view
+        view: 'slide',
+        scrollProgress: true,
+        scrollActivationWidth: 0,
+        scrollSnap: 'mandatory',
+        scrollLayout: 'full',
 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be

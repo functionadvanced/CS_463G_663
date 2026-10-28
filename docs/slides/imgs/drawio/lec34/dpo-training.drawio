@@ -1,0 +1,18 @@
+<mxfile host="Electron" type="device" version="28.0.6">
+  <diagram id="dpo-training" name="DPO training">
+    <mxGraphModel page="1" pageWidth="1050" pageHeight="200" background="#ffffff">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="background" value="" style="rounded=0;fillColor=#ffffff;strokeColor=none;" vertex="1" parent="1"><mxGeometry x="0" y="0" width="1050" height="200" as="geometry"/></mxCell>
+        <mxCell id="pairs" value="Saved pairs&#xa;chosen / rejected" style="rounded=0;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=28;fontColor=#202124;spacing=5;fillColor=#dff2ef;strokeColor=#007c89;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="10" y="35" width="220" height="120" as="geometry"/></mxCell>
+        <mxCell id="score" value="Policy + reference&#xa;score both answers" style="rounded=0;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=26;fontColor=#202124;spacing=5;fillColor=#fff2d5;strokeColor=#a36500;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="280" y="35" width="220" height="120" as="geometry"/></mxCell>
+        <mxCell id="loss" value="Preference loss&#xa;compare log ratios" style="rounded=0;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=26;fontColor=#202124;spacing=5;fillColor=#fde5ed;strokeColor=#b8325f;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="550" y="35" width="220" height="120" as="geometry"/></mxCell>
+        <mxCell id="update" value="Update policy&#xa;reference fixed" style="rounded=0;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=28;fontColor=#202124;spacing=5;fillColor=#dff2ef;strokeColor=#007c89;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="820" y="35" width="220" height="120" as="geometry"/></mxCell>
+        <mxCell id="arrow1" style="edgeStyle=none;strokeColor=#007c89;strokeWidth=2;endArrow=block;endSize=6;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="230" y="95" as="sourcePoint"/><mxPoint x="280" y="95" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="arrow2" style="edgeStyle=none;strokeColor=#007c89;strokeWidth=2;endArrow=block;endSize=6;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="500" y="95" as="sourcePoint"/><mxPoint x="550" y="95" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="arrow3" style="edgeStyle=none;strokeColor=#007c89;strokeWidth=2;endArrow=block;endSize=6;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="770" y="95" as="sourcePoint"/><mxPoint x="820" y="95" as="targetPoint"/></mxGeometry></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

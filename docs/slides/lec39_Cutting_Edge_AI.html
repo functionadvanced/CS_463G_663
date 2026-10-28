@@ -231,7 +231,7 @@ Peizhong Ju
 </section>
 <section id="cutting-edge-ai-topics" class="slide level2 section-slide">
 <h2>Cutting-Edge AI Topics</h2>
-<p>How modern AI systems are adapted, aligned, packaged into agents, and evaluated.</p>
+<p>How modern AI systems are adapted, connected to tools, packaged into agents, and evaluated.</p>
 </section>
 <section id="where-this-fits" class="slide level2">
 <h2>Where This Fits</h2>
@@ -242,10 +242,10 @@ Peizhong Ju
 <strong>Adaptation</strong><br>LoRA, PEFT, domain tuning
 </div>
 <div class="frontier-card">
-<strong>Alignment</strong><br>DPO, RLHF, preference data
+<strong>Interfaces</strong><br>tools, CLI, MCP
 </div>
 <div class="frontier-card">
-<strong>Agents</strong><br>tools, skills, MCP, vibe coding
+<strong>Agents</strong><br>skills, agent harnesses, vibe coding
 </div>
 <div class="frontier-card">
 <strong>Evaluation</strong><br>harnesses, benchmarks, red teams
@@ -282,24 +282,8 @@ Peizhong Ju
 <td>Parameter-Efficient Fine-Tuning</td>
 </tr>
 <tr class="even">
-<td>RLHF</td>
-<td>Reinforcement Learning from Human Feedback</td>
-</tr>
-<tr class="odd">
-<td>DPO</td>
-<td>Direct Preference Optimization</td>
-</tr>
-<tr class="even">
-<td>PPO</td>
-<td>Proximal Policy Optimization</td>
-</tr>
-<tr class="odd">
-<td>SFT</td>
-<td>Supervised Fine-Tuning</td>
-</tr>
-<tr class="even">
-<td>RM</td>
-<td>Reward Model</td>
+<td>CLI</td>
+<td>Command-Line Interface</td>
 </tr>
 <tr class="odd">
 <td>MCP</td>
@@ -312,7 +296,7 @@ Peizhong Ju
 </tbody>
 </table>
 <div class="takeaway">
-<p>Most frontier acronyms describe either how we adapt a model, align a model, or evaluate a model.</p>
+<p>These terms describe how we adapt models, connect tools, and build AI systems.</p>
 </div>
 </section>
 <section id="full-fine-tuning-vs.-lora" class="slide level2">
@@ -363,70 +347,6 @@ h = Wx + \Delta W x,\qquad \Delta W = BA
 </ul>
 <div class="concept-sketch drawio-figure">
 <p><img data-src="imgs/drawio/lec36/qlora-and-practical-fine-tuning.svg" alt="QLoRA stores the base model compactly and trains adapter weights"></p>
-</div>
-</section>
-<section id="preference-optimization" class="slide level2">
-<h2>Preference Optimization</h2>
-<p>Instruction tuning teaches a model to follow examples.</p>
-<p>Preference optimization teaches it to prefer one response over another.</p>
-<p>Data looks like:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Prompt</th>
-<th>Chosen response</th>
-<th>Rejected response</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">x</span></td>
-<td><span class="math inline">y_w</span></td>
-<td><span class="math inline">y_l</span></td>
-</tr>
-</tbody>
-</table>
-<div class="takeaway">
-<p>Preference data is often easier to collect than a perfect scalar reward.</p>
-</div>
-</section>
-<section id="rlhf-pipeline" class="slide level2">
-<h2>RLHF Pipeline</h2>
-<p>Reinforcement Learning from Human Feedback (RLHF) is a common alignment pipeline.</p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec36/rlhf-pipeline.svg" alt="RLHF pipeline from supervised fine-tuned model and human preferences to reward model, PPO update, and aligned policy"></p>
-</div>
-<p>RLHF can work well, but it has moving parts:</p>
-<ul>
-<li>Reward model quality matters.</li>
-<li>RL can be unstable.</li>
-<li>The model may exploit the reward model.</li>
-</ul>
-</section>
-<section id="direct-preference-optimization" class="slide level2">
-<h2>Direct Preference Optimization</h2>
-<p>Direct Preference Optimization (DPO) is an alternative that turns preference optimization into a supervised-style loss.</p>
-<p>It compares the model’s log-probability ratio for chosen and rejected responses.</p>
-<p><span class="math display">
-\mathcal{L}_{\text{DPO}}
-=
--\log \sigma\left(
-\beta \log \frac{\pi_\theta(y_w \mid x)}{\pi_{\text{ref}}(y_w \mid x)}
--
-\beta \log \frac{\pi_\theta(y_l \mid x)}{\pi_{\text{ref}}(y_l \mid x)}
-\right)
-</span></p>
-<div class="takeaway">
-<p>DPO keeps the reference model close while increasing preference for chosen responses.</p>
-</div>
-</section>
-<section id="dpo-intuition" class="slide level2">
-<h2>DPO Intuition</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec36/dpo-intuition.svg" alt="DPO Intuition process diagram"></p>
-</div>
-<div class="question">
-<p>DPO is simpler than PPO-style RLHF, but it still depends strongly on the quality and diversity of preference data.</p>
 </div>
 </section>
 <section id="agents-tools-vs.-skills" class="slide level2">
@@ -784,30 +704,26 @@ h = Wx + \Delta W x,\qquad \Delta W = BA
 <td>Overfitting small adapters; forgetting general behavior</td>
 </tr>
 <tr class="even">
-<td>DPO</td>
-<td>Preference data bias; rejected response not truly bad</td>
-</tr>
-<tr class="odd">
 <td>Skills</td>
 <td>Hidden assumptions; unsafe tool use</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>MCP</td>
 <td>Over-broad connectors; prompt injection through external context</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Vibe coding</td>
 <td>Plausible code, hidden bugs, weak tests</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Evaluation harnesses</td>
 <td>Benchmark leakage; brittle scoring</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Agent harnesses</td>
 <td>Over-broad permissions; missing stop rules; poor logs</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Agents</td>
 <td>Loops, tool errors, long-horizon drift</td>
 </tr>
@@ -834,7 +750,6 @@ h = Wx + \Delta W x,\qquad \Delta W = BA
 <h2>Useful References</h2>
 <ul>
 <li><a href="https://arxiv.org/abs/2106.09685">LoRA: Low-Rank Adaptation of Large Language Models</a>, Hu et al., 2021.</li>
-<li><a href="https://arxiv.org/abs/2305.18290">Direct Preference Optimization</a>, Rafailov et al., 2023.</li>
 <li><a href="https://arxiv.org/abs/2305.14314">QLoRA: Efficient Finetuning of Quantized LLMs</a>, Dettmers et al., 2023.</li>
 <li><a href="https://modelcontextprotocol.io/docs/getting-started/intro">Model Context Protocol documentation</a>.</li>
 <li><a href="https://github.com/EleutherAI/lm-evaluation-harness">EleutherAI LM Evaluation Harness</a>.</li>
@@ -845,7 +760,6 @@ h = Wx + \Delta W x,\qquad \Delta W = BA
 <h2>What to Remember</h2>
 <ul>
 <li>LoRA adapts large models by training small low-rank updates.</li>
-<li>DPO uses preference pairs to align behavior without a separate RL loop.</li>
 <li>Skills package reusable agent workflows.</li>
 <li>MCP standardizes how LLM interfaces discover and call external tools and resources.</li>
 <li>Vibe coding can accelerate prototypes, but tests and review still matter.</li>
@@ -1033,6 +947,13 @@ h = Wx + \Delta W x,\qquad \Delta W = BA
         // devices. It is advisable to set this to a lower number than
         // viewDistance in order to save resources.
         mobileViewDistance: 2,
+
+        // Enable scroll view
+        view: 'slide',
+        scrollProgress: true,
+        scrollActivationWidth: 0,
+        scrollSnap: 'mandatory',
+        scrollLayout: 'full',
 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be

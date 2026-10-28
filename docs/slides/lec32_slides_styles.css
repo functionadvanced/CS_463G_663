@@ -1,0 +1,40 @@
+.reveal section.value32-slide { font-size: 0.9em; }
+.reveal section.value32-slide h2 { margin-top: 0; }
+.reveal section.value32-slide p { margin: 0.4em 0; }
+.reveal section.value32-slide .math.inline { white-space: nowrap; }
+.reveal section.value32-slide .katex-display { margin: 0.4em 0; }
+.reveal section.value32-slide table { font-size: 0.85em; line-height: 1.25; }
+.reveal section.value32-slide th,
+.reveal section.value32-slide td { padding: 0.45em 0.5em; }
+.reveal section.value32-slide .question,
+.reveal section.value32-slide .takeaway { margin: 0.45em 0; padding: 0.45em 0.65em; }
+.reveal section.value32-slide .question p,
+.reveal section.value32-slide .takeaway p { margin: 0; }
+.reveal section.value32-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin: 0.25em auto;
+  border: 0;
+  box-shadow: none;
+}
+.reveal section.value32-slide .value32-intro {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 25px;
+  align-items: center;
+}
+.reveal section.value32-slide .value32-robot { max-height: 180px; }
+.reveal section.value32-slide .value32-sample { max-height: 185px; }
+.reveal section.value32-slide .value32-route { max-height: 220px; }
+.reveal section.value32-slide .value32-timing { max-height: 300px; }
+.reveal section.value32-slide .value32-choice { max-height: 200px; }
+.reveal section.value32-slide .value32-horizons { max-height: 235px; }
+.reveal section.value32-slide .value32-traces { max-height: 220px; }
+.reveal section.value32-slide .value32-network { max-height: 165px; }
+.reveal section.value32-slide .value32-paper { font-size: 0.75em; line-height: 1.25; margin-top: 0.65em; }
+.reveal #dqn-variants th:first-child { width: 29%; }
+.reveal section.value32-slide .pseudo-code { font-size: 0.75em; line-height: 1.4; }
+.reveal section.value32-slide .pseudo-line { min-height: 1.4em; white-space: nowrap; }
+.reveal section.value32-loop .pseudo-code { font-size: 0.68em; }

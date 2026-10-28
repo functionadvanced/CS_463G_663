@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec34_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -151,7 +152,7 @@
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title"><p>CS 463G &amp; CS 663<br>
 (Intro to) AI</p></h1>
-  <p class="subtitle">Lecture 34: PPO and GRPO</p>
+  <p class="subtitle">Lecture 34: PPO, RLHF, DPO, and GRPO</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -163,340 +164,667 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="ppo-and-grpo" class="slide level2 section-slide">
-<h2>PPO and GRPO</h2>
-<p>Policy-gradient methods are powerful, but naive policy updates can be unstable.</p>
-</section>
-<section id="where-we-are" class="slide level2">
-<h2>Where We Are</h2>
-<p>From policy gradients, the basic update is:</p>
-<p><span class="math display">
-\theta \leftarrow \theta + \alpha \nabla_\theta J(\theta)
-</span></p>
-<p>The problem:</p>
-<ul>
-<li>A gradient step can make the new policy very different from the old one.</li>
-<li>A once-good policy can collapse after one overly aggressive update.</li>
-<li>We want improvement, but not destructive policy movement.</li>
-</ul>
-<div class="takeaway">
-<p>PPO is built around a simple control knob: keep the new policy close to the policy that collected the data.</p>
+<section id="ppo" class="slide level2 opt34-slide">
+<h2>Proximal Policy Optimization</h2>
+<p><strong>Proximal Policy Optimization (PPO)</strong> improves a policy using sampled experience. “Proximal” means nearby: the update objective discourages large changes from the policy that collected the data.</p>
+<div class="opt34-intro">
+<p><img data-src="imgs/lec1/toy_robot_openclipart.svg" class="opt34-robot" alt="Public-domain cartoon robot representing the learning agent."></p>
+<p><img data-src="imgs/drawio/lec34/ppo-round.png" class="opt34-overview" alt="Collect experience with the old policy, update the current policy using that recent batch, then collect fresh experience."></p>
 </div>
+<p>Recall: <span class="math inline">\pi_\theta(a\mid s)</span> is action <span class="math inline">a</span>’s probability in state <span class="math inline">s</span>, with policy weights <span class="math inline">\theta</span>. An <strong>advantage estimate</strong> <span class="math inline">\hat A</span> compares its return with a state-value baseline.</p>
+<div class="opt34-paper">
+<p>John Schulman et al.&nbsp;(2017), <a href="https://arxiv.org/abs/1707.06347" target="_blank" rel="noopener"><em>Proximal Policy Optimization Algorithms</em></a>. We study the <strong>PPO-Clip</strong> form.</p>
+</div>
+<aside class="notes">
+<p>PPO is a family that also includes a KL-penalty formulation. This lecture focuses on the clipped surrogate. Proximal is motivation, not a hard distance guarantee. The actor has parameters theta; a standard actor-critic implementation also learns a value predictor. Advantage can be estimated by a complete discounted return minus a learned state value, or by multi-step TD methods. The supplied PPO Beamer material and the original paper provide the starting point. Public-domain robot: https://openclipart.org/detail/325644/toy-robot. Implementation background and clipping caveats: https://spinningup.openai.com/en/latest/algorithms/ppo.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="trust-region-intuition" class="slide level2">
-<h2>Trust Region Intuition</h2>
-<p>Trust Region Policy Optimization (TRPO) directly constrains policy change:</p>
-<p><span class="math display">
-\max_\theta \; \mathbb{E}_t
-\left[
-\frac{\pi_\theta(a_t\mid s_t)}
-{\pi_{\theta_{\text{old}}}(a_t\mid s_t)}
-A_t
-\right]
-\quad
-\text{s.t.}
-\quad
-D_{\mathrm{KL}}(\pi_{\theta_{\text{old}}}\,\|\,\pi_\theta)\leq\delta
-</span></p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="trpo">TRPO</h3>
-<ul>
-<li>Hard trust-region constraint</li>
-<li>More complex optimization</li>
-<li>Requires second-order information</li>
-</ul>
-</div><div class="column" style="width:48%;">
-<h3 id="ppo">PPO</h3>
-<ul>
-<li>Soft constraint through clipping</li>
-<li>Easier first-order optimization</li>
-<li>Widely used in practice</li>
-</ul>
-</div></div>
+<section id="ratio" class="slide level2 opt34-slide">
+<h2>The New-to-Old Probability Ratio</h2>
+<p>The <strong>old policy</strong> <span class="math inline">\pi_{\text{old}}</span> generated the current <strong>batch</strong>, a set of collected examples. <strong>Freeze</strong> it: hold its parameters fixed during updates to this batch.</p>
+<p><span class="math display">\rho_t(\theta)=\frac{\pi_\theta(a_t\mid s_t)}{\pi_{\text{old}}(a_t\mid s_t)}.</span></p>
+<p><img data-src="imgs/drawio/lec34/policy-ratio.png" class="opt34-ratio" alt="At depot D, old probabilities are 0.50 each for small job and pickup. Candidate probabilities are 0.35 for small job and 0.65 for pickup; both rows sum to one."></p>
+<p>For pickup, <span class="math inline">\rho=0.65/0.50=1.30</span>. For the small job, <span class="math inline">\rho=0.35/0.50=0.70</span>.</p>
+<p>The delivery returns are <span class="math inline">6.2</span> and <span class="math inline">4</span>. Using baseline <span class="math inline">5.1</span> gives advantages <strong><span class="math inline">+1.1</span> for pickup</strong> and <strong><span class="math inline">-1.1</span> for small</strong>.</p>
+<aside class="notes">
+<p>This reuses Lecture 33’s fictional delivery choice: pickup incurs -1 then delivery gives 8 with discount .9, while the small job immediately gives 4. The old policy chooses both with probability .5, so its exact state-value baseline is 5.1. These are stipulated examples, not measured learning results. The two candidate probabilities form the same normalized policy; positive and negative clipping examples below use this one candidate. Rho is a probability ratio, distinct from a reward r. The sampled action and state remain fixed while evaluating the candidate probability. Old probabilities must be positive for sampled actions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="probability-ratio" class="slide level2">
-<h2>Probability Ratio</h2>
-<p>PPO compares the new policy to the old policy with:</p>
-<p><span class="math display">
-r_t(\theta)
-=
-\frac{\pi_\theta(a_t\mid s_t)}
-{\pi_{\theta_{\text{old}}}(a_t\mid s_t)}
-</span></p>
-<p>Interpretation:</p>
+<section id="clipped-score" class="slide level2 opt34-slide">
+<h2>The Clipped Score</h2>
+<p>The <strong>clipping parameter</strong> <span class="math inline">\epsilon</span> sets a ratio band. Use <span class="math inline">\epsilon=0.2</span>, giving <span class="math inline">[0.8,1.2]</span>.</p>
+<p><span class="math inline">\operatorname{clip}(x,l,u)</span> replaces values below <span class="math inline">l</span> by <span class="math inline">l</span>, and values above <span class="math inline">u</span> by <span class="math inline">u</span>.</p>
+<p><span class="math display">\ell(\rho,\hat A)=\min\left\{\rho\hat A,\;
+\operatorname{clip}(\rho,1-\epsilon,1+\epsilon)\hat A\right\}.</span></p>
+<p>PPO maximizes the <strong>average</strong> of these scores over collected examples. The advantage estimate stays fixed during this batch’s policy updates.</p>
+<div class="takeaway">
+<p>The minimum makes the objective conservative. The flat region depends on whether the advantage is positive or negative.</p>
+</div>
+<aside class="notes">
+<p>This is the standard PPO-Clip empirical surrogate, not a claim that its minibatch gradient is identical to an exact discounted-start policy gradient at every parameter value. We use a per-sample score ell and average it over data; implementations also train a critic and may add entropy bonuses or other safeguards. The teaching value epsilon=.2 is not a universal best setting. Clip applies inside the objective. It does not directly project the actual action probabilities into a permitted interval. Source: Schulman et al.&nbsp;(2017), Equation 7, and the supplied Beamer clipping frame.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="positive" class="slide level2 opt34-slide">
+<h2>Positive Advantage: Pickup</h2>
+<p>Pickup has <span class="math inline">\hat A=+1.1</span>. Its probability rises from <span class="math inline">0.50</span> to <span class="math inline">0.65</span>, so <span class="math inline">\rho=1.30</span> lies above the upper band edge <span class="math inline">1.2</span>.</p>
+<p><img data-src="imgs/drawio/lec34/positive-clipping.png" class="opt34-curve" alt="For advantage plus 1.1, the unclipped score rises linearly. The PPO score rises until ratio 1.2, then stays at 1.32. The candidate ratio 1.3 is on this plateau."></p>
+<p><span class="math display">\ell=\min\{1.30\cdot1.1,\;1.20\cdot1.1\}=1.32.</span></p>
+<div class="fragment takeaway">
+<p>Further increasing this ratio adds no benefit to this sample’s clipped score. The actual probability can still be <span class="math inline">0.65</span>; clipping does not force it to <span class="math inline">0.60</span>.</p>
+</div>
+<aside class="notes">
+<p>Raw score is 1.43 and the clipped alternative is 1.32. For positive advantage the plateau begins at 1+epsilon, not at both band edges. Ratios below the lower edge still have the raw, smaller score. Other samples, shared parameters, and optimizer steps can move a probability even when this particular term is flat. Neither a hard KL bound nor monotonic performance improvement follows from clipping alone. The curves are exact piecewise-linear calculations, not training curves.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="negative" class="slide level2 opt34-slide">
+<h2>Negative Advantage: Small Job</h2>
+<p>The small job has <span class="math inline">\hat A=-1.1</span>. Under the same candidate policy, its probability falls from <span class="math inline">0.50</span> to <span class="math inline">0.35</span>, giving <span class="math inline">\rho=0.70</span>.</p>
+<p><img data-src="imgs/drawio/lec34/negative-clipping.png" class="opt34-curve" alt="For advantage minus 1.1, the raw score falls as the ratio grows. PPO stays at minus 0.88 below ratio 0.8 and follows the falling raw score above 0.8. The candidate ratio 0.7 lies on the plateau."></p>
+<p><span class="math display">\ell=\min\{0.70(-1.1),\;0.80(-1.1)\}=-0.88.</span></p>
+<div class="fragment takeaway">
+<p>The minimum selects <span class="math inline">-0.88</span>, not <span class="math inline">-0.77</span>. Reducing this bad action’s probability further brings no extra benefit to this term. Making it more likely still worsens the score.</p>
+</div>
+<aside class="notes">
+<p>Multiplying by a negative advantage reverses which ratio gives the smaller product. The plateau is below 1-epsilon for a negative advantage. Above that edge the objective keeps the raw negative slope, including above 1+epsilon. This is why replacing the minimum by a maximum, or describing clipping as a hard bound on probabilities, is incorrect. The positive and negative figures use the same ratio axis, epsilon, and absolute advantage. All values are constructed calculations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="ppo-loop" class="slide level2 opt34-slide opt34-loop">
+<h2>One PPO Training Round</h2>
+<p>A <strong>rollout</strong> is a sampled interaction sequence. An <strong>epoch</strong> is one pass through the collected batch; a <strong>minibatch</strong> is a smaller chunk used for one optimizer step.</p>
+<div class="pseudo-code">
+<div class="pseudo-line fragment" data-fragment-index="0">
+<span class="pseudo-var">old</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">FrozenCopy</span>(<span class="pseudo-var">policy</span>)
+</div>
+<div class="pseudo-line fragment" data-fragment-index="0">
+<span class="pseudo-var">batch</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">CollectRollouts</span>(<span class="pseudo-var">old</span>)
+</div>
+<div class="pseudo-line fragment" data-fragment-index="1">
+<span class="pseudo-var">targets</span>, <span class="pseudo-var">A</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">EstimateReturnsAndAdvantages</span>(<span class="pseudo-var">batch</span>, <span class="pseudo-var">critic</span>)
+</div>
+<div class="pseudo-line">
+<span class="pseudo-kw">for</span> <span class="pseudo-var">K</span> epochs, <span class="pseudo-kw">for each</span> minibatch
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-var">ratio</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">ActionRatios</span>(<span class="pseudo-var">policy</span>, <span class="pseudo-var">old</span>, <span class="pseudo-var">minibatch</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-var">actorLoss</span> <span class="pseudo-op">=</span> <span class="pseudo-op">-</span><span class="pseudo-fn">mean</span>(<span class="pseudo-fn">ClipScore</span>(<span class="pseudo-var">ratio</span>, <span class="pseudo-var">A</span>))
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-var">criticLoss</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">mean</span>((<span class="pseudo-var">V</span>(<span class="pseudo-var">s</span>) <span class="pseudo-op">-</span> <span class="pseudo-var">targets</span>)<sup>2</sup>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="3">
+<span class="pseudo-fn">UpdateActorAndCritic</span>(<span class="pseudo-var">actorLoss</span>, <span class="pseudo-var">criticLoss</span>)
+</div>
+</div>
+<p>The <strong>critic</strong> predicts state value <span class="math inline">V(s)</span>. For example, estimate advantage as discounted return minus <span class="math inline">V(s)</span>. <code>ClipScore</code> is <span class="math inline">\ell</span> from the preceding slides.</p>
+<div class="takeaway">
+<p>Keep <code>old</code>, targets, and advantages fixed for these <span class="math inline">K</span> passes. Then collect a new batch with the updated policy.</p>
+</div>
+<aside class="notes">
+<p>This shows the common actor-critic PPO form, not a claim that the clipped objective mathematically requires a learned critic. Stop gradients through advantage estimates, value targets, and old-policy probabilities. Each minibatch uses the matching subsets of A and targets. K is a chosen small number of passes, not permission to reuse arbitrary old data indefinitely. In practice saved old log-probabilities often replace a full duplicate old network, and ratios are exp(logp-logp_old). Learning-rate control and KL-based early stopping can provide extra safeguards. We omit GAE terminology and implementation details to keep the first presentation self-contained.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="language-policy" class="slide level2 opt34-slide">
+<h2>A Language Model as a Policy</h2>
+<p>A <strong>large language model (LLM)</strong> chooses text pieces called <strong>tokens</strong>. At each step, the state is the prompt plus text already generated, and the action is the next token.</p>
+<p><img data-src="imgs/drawio/lec34/token-policy.png" class="opt34-language" alt="Toy language-policy example: prompt and generated prefix 12 times 13 equals enter a language model, which assigns probabilities 0.6 to token 156, 0.2 to 144, and 0.2 to a question mark."></p>
+<p>Write <span class="math inline">q</span> for the prompt and <span class="math inline">y</span> for the completed response. Generating an answer is an episode ending when the response finishes.</p>
+<div class="takeaway">
+<p>A response-level score can train many token choices. Its source may be human preferences or an automatic correctness checker.</p>
+</div>
+<aside class="notes">
+<p>The figure uses an explicitly toy vocabulary containing the three shown text pieces; it does not claim a particular real tokenizer splits text this way. A production language model repeatedly conditions on the growing prefix and includes a stopping mechanism. We only need that sequential-policy view here, not a Transformer architecture. The numeric probabilities are hypothetical. A complete response probability factors into token probabilities, but the PPO/GRPO objectives introduced later clip token ratios individually rather than clipping one product for the whole response.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rlhf" class="slide level2 opt34-slide">
+<h2>RLHF: Learning from Human Preferences</h2>
+<p><strong>Reinforcement learning from human feedback (RLHF)</strong> uses human judgments to guide policy training. Here is the classic reward-model-and-PPO pipeline:</p>
+<p><img data-src="imgs/drawio/lec34/rlhf-pipeline.png" class="opt34-pipeline" alt="Three stages: supervised fine-tuning learns from example answers; a reward model learns from human comparisons; PPO improves the policy using that learned reward."></p>
+<p><strong>Supervised fine-tuning (SFT)</strong> continues an already trained model’s training on example answers. A <strong>reward model (RM)</strong> learns to score responses from human comparisons.</p>
+<div class="opt34-paper">
+<p>Long Ouyang et al.&nbsp;(2022), <a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener"><em>Training language models to follow instructions with human feedback</em></a>.</p>
+</div>
+<div class="takeaway">
+<p>RLHF is a feedback-based training pipeline. PPO is one optimizer that can be used inside it.</p>
+</div>
+<aside class="notes">
+<p>This is the classic InstructGPT-style pipeline, not a definition claiming every use of human preferences must include PPO or a separate learned reward model. First learn desired answer behavior from demonstrations, then collect rankings/comparisons of candidate answers, fit a reward model, and use RL to improve the policy against that model. The simplified diagram has three stages, with comparison collection included in reward-model training. We omit pretraining-data mixing and paper-specific implementation choices. Source: Ouyang et al.&nbsp;(2022), Sections 3.1 and 3.5, https://arxiv.org/html/2203.02155.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reward-model" class="slide level2 opt34-slide">
+<h2>Fitting the Reward Model</h2>
+<p>A <strong>preference pair</strong> has the same prompt <span class="math inline">q</span>, a human-preferred answer <span class="math inline">y^+</span>, and a rejected answer <span class="math inline">y^-</span>. Let <span class="math inline">s_\phi(q,y)</span> be the reward model’s scalar score, with weights <span class="math inline">\phi</span>.</p>
+<p><img data-src="imgs/drawio/lec34/preference-pair.png" class="opt34-pair" alt="For the prompt what is 12 times 13, explain briefly, a toy human preference favors 12 times 10 plus 12 times 3 equals 156 over the incorrect answer 144. Illustrative model scores are 2 and 0.5."></p>
+<p>For one pair, minimize:</p>
+<p><span class="math display">L_{\text{RM}}=-\log\sigma\!\left(s_\phi(q,y^+)-s_\phi(q,y^-)\right).</span></p>
+<p>The <strong>sigmoid</strong> <span class="math inline">\sigma(z)=1/(1+e^{-z})</span> converts the score difference to a modeled preference probability. Here <span class="math inline">2-0.5=1.5</span> gives <span class="math inline">\sigma(1.5)\approx0.818</span>.</p>
+<aside class="notes">
+<p>This is a constructed preference example, not collected human-labeling data or outputs of a trained model. The loss is averaged over many comparison pairs in training. Sigmoid(z)=1/(1+exp(-z)); natural log is used. The model scores themselves need not be probabilities or objectively calibrated quality measurements. Their difference parameterizes the modeled probability of the observed preference. Here the negative log-likelihood is about .201413. Reward-model fitting updates phi; in the subsequent RL stage we hold its weights fixed while policy and value predictions change. Source: Ouyang et al.&nbsp;reward-model loss, Equation 1. A value critic predicts expected return under a policy and has a different role from this preference scorer.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reference" class="slide level2 opt34-slide">
+<h2>Rollout Snapshot and Reference Policy</h2>
+<p>The <strong>reference policy</strong> <span class="math inline">\pi_{\text{ref}}</span> is a fixed SFT copy during this RLHF stage. It anchors behavior. The <strong>rollout snapshot</strong> <span class="math inline">\pi_{\text{old}}</span> is refreshed when collecting each new PPO batch.</p>
+<p><img data-src="imgs/drawio/lec34/policy-roles.png" class="opt34-roles" alt="The current trainable policy compares with the recent rollout snapshot for PPO probability ratios, and with the fixed SFT reference for KL regularization. These are different comparisons."></p>
+<p><strong>Kullback-Leibler (KL) divergence</strong> measures how one probability distribution differs from another. At a fixed text prefix, let <span class="math inline">P</span> be the current token distribution and <span class="math inline">Q</span> the reference:</p>
+<p><span class="math display">D_{\text{KL}}(P\|Q)=\sum_a P(a)\log\frac{P(a)}{Q(a)}.</span></p>
+<p>Optimize preference reward while penalizing this departure. A coefficient <span class="math inline">\beta\geq0</span> controls penalty strength. KL is zero for equal distributions and is asymmetric.</p>
+<aside class="notes">
+<p>The sum ranges over token actions. Assume the reference has positive probability wherever the current policy does. KL is nonnegative in expectation/distribution form, although an individual sampled log-ratio can be negative. In language-model RLHF, a sampled token penalty uses beta*log(pi_old(token|prefix)/pi_ref(token|prefix)) when forming the fixed rollout rewards; the expected log-ratio gives a KL cost under the collection policy. A score from the reward model is added at response completion. The reference anchors the SFT behavior; the old snapshot supplies fixed denominators for recent-data importance ratios. They coincide initially but generally differ after training. PPO clipping alone does not enforce either KL bound. Source: Ouyang et al., Equation 2 and the per-token penalty discussion.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rlhf-loop" class="slide level2 opt34-slide opt34-loop">
+<h2>An RLHF Training Round</h2>
+<p>Start from the SFT policy and initialize a trainable value critic. Keep the learned reward model and SFT reference fixed during this RL stage.</p>
+<div class="pseudo-code">
+<div class="pseudo-line">
+<span class="pseudo-kw">repeat</span>
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="0">
+<span class="pseudo-var">old</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">FrozenCopy</span>(<span class="pseudo-var">policy</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="0">
+<span class="pseudo-var">batch</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">GenerateAnswers</span>(<span class="pseudo-var">old</span>, <span class="pseudo-var">prompts</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-var">scores</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">RewardModel</span>(<span class="pseudo-var">prompts</span>, <span class="pseudo-var">batch</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-var">rewards</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">ShapeRewards</span>(<span class="pseudo-var">batch</span>, <span class="pseudo-var">scores</span>, <span class="pseudo-var">old</span>, <span class="pseudo-var">reference</span>, <span class="pseudo-var">beta</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-var">targets</span>, <span class="pseudo-var">A</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">EstimateReturnsAndAdvantages</span>(<span class="pseudo-var">batch</span>, <span class="pseudo-var">rewards</span>, <span class="pseudo-var">critic</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="3">
+<span class="pseudo-fn">PPOUpdate</span>(<span class="pseudo-var">policy</span>, <span class="pseudo-var">critic</span>, <span class="pseudo-var">batch</span>, <span class="pseudo-var">old</span>, <span class="pseudo-var">A</span>, <span class="pseudo-var">targets</span>)
+</div>
+</div>
+<p><code>ShapeRewards</code> adds the response score at the end and subtracts sampled reference-policy penalties at generated tokens. <code>PPOUpdate</code> performs a bounded number of passes over this batch.</p>
+<div class="takeaway">
+<p>Humans provide training comparisons. The fitted reward model can then score many RL rollouts without a new human judgment at every step.</p>
+</div>
+<aside class="notes">
+<p>The generation routine stores token actions, prefixes, old log-probabilities, and termination information, not just printable answer strings. For sampled token t, the shaped reward is minus beta times the old-to-reference log-probability ratio, with the learned response score added on the final token. Targets and advantages are detached and fixed during the PPO inner updates. The value critic learns returns from these shaped rewards. The reference and reward-model parameters receive no RL-stage gradient here. This is an algorithmic overview of the classic pipeline, not runnable library code. Refitting a reward model from new human data would be a separate outer stage.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dpo" class="slide level2 opt34-slide">
+<h2>Direct Preference Optimization</h2>
+<p><strong>Direct Preference Optimization (DPO)</strong> trains the policy directly from chosen/rejected answer pairs, without fitting a separate reward model or running a PPO rollout loop.</p>
+<p>Reuse prompt <span class="math inline">q</span>, preferred answer <span class="math inline">y^+</span>, and rejected answer <span class="math inline">y^-</span>. <strong>Offline</strong> means the comparisons are saved before this training stage.</p>
+<p><img data-src="imgs/drawio/lec34/dpo-training.png" class="opt34-dpo" alt="Saved preference pairs are scored by the trainable policy and a fixed reference. A preference loss compares their log ratios and updates only the policy."></p>
+<div class="opt34-paper">
+<p>Rafael Rafailov et al.&nbsp;(2023), <a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener"><em>Direct Preference Optimization: Your Language Model is Secretly a Reward Model</em></a>.</p>
+</div>
+<div class="takeaway">
+<p>DPO still uses a fixed reference policy and depends on the quality of the preference pairs.</p>
+</div>
+<aside class="notes">
+<p>This is the original offline DPO setup. Responses are generated and labeled before the illustrated optimization stage. Online variants are outside this introduction. Source: Rafailov et al., Sections 3 and 4. The policy is initialized from SFT, with a frozen copy as the reference.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dpo-loss" class="slide level2 opt34-slide">
+<h2>DPO Loss: A Worked Pair</h2>
+<p>Define reference-relative <strong>log-probability ratios</strong> for the two complete answers:</p>
+<p><span class="math display">u_\theta^\pm=\log\frac{\pi_\theta(y^\pm\mid q)}{\pi_{\text{ref}}(y^\pm\mid q)},\qquad
+L_{\text{DPO}}=-\log\sigma\!\left(\beta(u_\theta^+-u_\theta^-)\right).</span></p>
+<p>The <strong>preference margin</strong> is <span class="math inline">u_\theta^+-u_\theta^-</span>. The chosen <span class="math inline">\beta&gt;0</span> scales it; <span class="math inline">\sigma</span> is the sigmoid. Minimize the average pair loss.</p>
+<p>Toy probabilities for our preferred <span class="math inline">156</span> explanation and rejected <span class="math inline">144</span> answer:</p>
 <table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Ratio</th>
-<th>Meaning</th>
+<th>Model</th>
+<th style="text-align: right;"><span class="math inline">\pi(y^+\mid q)</span></th>
+<th style="text-align: right;"><span class="math inline">\pi(y^-\mid q)</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><span class="math inline">r_t(\theta)=1</span></td>
-<td>New policy gives the sampled action the same probability</td>
+<td>Fixed reference</td>
+<td style="text-align: right;"><span class="math inline">0.20</span></td>
+<td style="text-align: right;"><span class="math inline">0.20</span></td>
 </tr>
 <tr class="even">
-<td><span class="math inline">r_t(\theta)&gt;1</span></td>
-<td>New policy makes the sampled action more likely</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">r_t(\theta)&lt;1</span></td>
-<td>New policy makes the sampled action less likely</td>
+<td>Current policy</td>
+<td style="text-align: right;"><span class="math inline">0.40</span></td>
+<td style="text-align: right;"><span class="math inline">0.10</span></td>
 </tr>
 </tbody>
 </table>
+<div class="fragment takeaway">
+<p>With <span class="math inline">\beta=1</span>, the margin is <span class="math inline">\log 2-\log 0.5=\log 4</span>. Thus the modeled preference probability is <span class="math inline">0.8</span>, and <span class="math inline">L_{\text{DPO}}=-\log 0.8\approx0.223</span>.</p>
+</div>
+<aside class="notes">
+<p>All probabilities are constructed, not actual model outputs. Other answers have the remaining probability mass. Natural logarithms are used. The margin is u-plus minus u-minus. At initialization policy equals reference, giving margin zero and pair loss log(2), about .693. These are whole-response ratios, unlike PPO/GRPO token-level clipping. The reference-relative loss comes from a KL-regularized preference model; it is not a hard bound on policy distance. Increasing a pair margin does not guarantee that either answer’s absolute probability changes monotonically under shared model parameters. Equation 7 of the original DPO paper gives the dataset average of this pair loss.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="ppo-clipped-objective" class="slide level2 compact">
-<h2>PPO Clipped Objective</h2>
-<p>PPO maximizes:</p>
-<p><span class="math display">
-L^{\text{PPO}}(\theta)
-=
-\mathbb{E}_t
-\left[
-\min\left(
-r_t(\theta)A_t,\;
-\operatorname{clip}(r_t(\theta),1-\epsilon,1+\epsilon)A_t
-\right)
-\right]
-</span></p>
+<section id="dpo-loop" class="slide level2 opt34-slide opt34-loop">
+<h2>The DPO Training Loop</h2>
+<p>Initialize the policy from SFT. Hold the reference fixed throughout this offline training stage.</p>
+<div class="pseudo-code">
+<div class="pseudo-line fragment" data-fragment-index="0">
+<span class="pseudo-var">policy</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">Copy</span>(<span class="pseudo-var">SFT</span>)
+</div>
+<div class="pseudo-line fragment" data-fragment-index="0">
+<span class="pseudo-var">reference</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">FrozenCopy</span>(<span class="pseudo-var">SFT</span>)
+</div>
+<div class="pseudo-line">
+<span class="pseudo-kw">for each</span> minibatch (<span class="pseudo-var">q</span>, <span class="pseudo-var">yPlus</span>, <span class="pseudo-var">yMinus</span>) of saved preferences
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-var">uPlus</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">ResponseLogRatio</span>(<span class="pseudo-var">policy</span>, <span class="pseudo-var">reference</span>, <span class="pseudo-var">q</span>, <span class="pseudo-var">yPlus</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-var">uMinus</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">ResponseLogRatio</span>(<span class="pseudo-var">policy</span>, <span class="pseudo-var">reference</span>, <span class="pseudo-var">q</span>, <span class="pseudo-var">yMinus</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-var">loss</span> <span class="pseudo-op">=</span> <span class="pseudo-op">-</span><span class="pseudo-fn">mean</span>(<span class="pseudo-fn">log</span>(<span class="pseudo-fn">sigmoid</span>(<span class="pseudo-var">beta</span> <span class="pseudo-op">*</span> (<span class="pseudo-var">uPlus</span> <span class="pseudo-op">-</span> <span class="pseudo-var">uMinus</span>))))
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-fn">OptimizerStep</span>(<span class="pseudo-var">policy</span>, <span class="pseudo-var">loss</span>)
+</div>
+</div>
+<p><code>ResponseLogRatio</code> returns <span class="math inline">u_\theta^\pm</span> from the preceding slide. Score the <strong>saved answer tokens</strong>, conditioned on the prompt and their earlier tokens. Sum their log-probabilities for each complete answer, rather than sampling a new answer.</p>
 <div class="takeaway">
-<p>If the policy update tries to move too far, clipping removes the extra incentive.</p>
+<p>Only the policy is trained here. There is no separate reward-model training, value critic, or online rollout collection in this loop.</p>
 </div>
-<p><span class="math inline">\epsilon</span> is usually small, often around <span class="math inline">0.1</span> to <span class="math inline">0.2</span>.</p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec31b/ppo-clipped-objective.svg" alt="PPO objective grows with ratio inside the clip range and flattens outside it"></p>
-</div>
+<aside class="notes">
+<p>Sum response-token log-probabilities, not prompt-token probabilities, using consistent termination and padding masks for both models. Reference outputs are detached and can be precomputed for a fixed dataset. In code, use a numerically stable log-sigmoid instead of explicitly taking log(sigmoid(…)). The display uses the mathematical operations for clarity. This is algorithmic pseudocode, not a library API. There is no old-policy snapshot denominator and no clipping in this DPO loss.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="why-the-min-matters" class="slide level2">
-<h2>Why the Min Matters</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="positive-advantage">Positive advantage</h3>
-<p>If <span class="math inline">A_t&gt;0</span>, PPO wants to increase the probability of <span class="math inline">a_t</span>.</p>
-<p>Clipping prevents increasing it too much.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="negative-advantage">Negative advantage</h3>
-<p>If <span class="math inline">A_t&lt;0</span>, PPO wants to decrease the probability of <span class="math inline">a_t</span>.</p>
-<p>Clipping prevents decreasing it too much.</p>
-</div></div>
-<div class="question">
-<p>The objective is conservative on purpose: accept useful improvement, reject excessive movement.</p>
+<section id="grpo" class="slide level2 opt34-slide">
+<h2>Group Relative Policy Optimization</h2>
+<p><strong>Group Relative Policy Optimization (GRPO)</strong> estimates learning weights from a <strong>group</strong> of <span class="math inline">G</span> responses to the same prompt, instead of training a separate value critic.</p>
+<p><img data-src="imgs/drawio/lec34/response-group.png" class="opt34-group" alt="For 12 times 13, explain briefly, four toy responses receive final-answer rewards: 156 with explanation gets 1, 144 gets 0, 156 alone gets 1, and 120 gets 0."></p>
+<p>Here <span class="math inline">G=4</span>. A <strong>verifier</strong>, an automatic checker, gives <span class="math inline">1</span> for final answer <span class="math inline">156</span> and <span class="math inline">0</span> otherwise. This example uses checked correctness rather than human preference scores.</p>
+<div class="opt34-paper">
+<p>Zhihong Shao et al.&nbsp;(2024), <a href="https://arxiv.org/abs/2402.03300" target="_blank" rel="noopener"><em>DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models</em></a>.</p>
 </div>
+<aside class="notes">
+<p>The group is sampled from a frozen collection-policy snapshot. These answers and rewards are a constructed example, not DeepSeek outputs or benchmark results. The original paper studies reward models and both outcome and process supervision. We use one final-answer verifier reward per response for a minimal outcome-scored example; this choice of reward source is not the definition of GRPO. Critic-free does not mean reward-model-free: GRPO can also use a learned scorer. Its relative weights are not exact state-action advantages. Source: DeepSeekMath Section 4.1, https://arxiv.org/html/2402.03300.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="ppo-training-loop" class="slide level2">
-<h2>PPO Training Loop</h2>
-<div class="pseudo-code" role="img" aria-label="Animated pseudocode for proximal policy optimization">
+<section id="group-advantages" class="slide level2 opt34-slide">
+<h2>Group-Relative Learning Weights</h2>
+<p>For response rewards <span class="math inline">r_1,\ldots,r_G</span>, use group mean <span class="math inline">\mu</span> and population standard deviation <span class="math inline">\sigma_r</span>, which measures within-group spread:</p>
+<p><span class="math display">\mu=\operatorname{mean}_i r_i,\qquad
+\sigma_r=\sqrt{\operatorname{mean}_i[(r_i-\mu)^2]}.</span></p>
+<p>The <strong>group-relative advantage estimate</strong> is</p>
+<p><span class="math display">\hat A_i=\frac{r_i-\mu}{\sigma_r}\quad\text{when }\sigma_r&gt;0.</span></p>
+<p>For <span class="math inline">(r_1,r_2,r_3,r_4)=(1,0,1,0)</span>, <span class="math inline">\mu=0.5</span> and <span class="math inline">\sigma_r=0.5</span>.</p>
+<div class="fragment">
+<p>Thus <span class="math inline">(\hat A_1,\hat A_2,\hat A_3,\hat A_4)=(1,-1,1,-1)</span>.</p>
+</div>
+<div class="takeaway">
+<p>Equal rewards give zero spread and no relative reward signal. In our pseudocode, return zero weights for that group instead of dividing by zero.</p>
+</div>
+<aside class="notes">
+<p>Population standard deviation, with divisor G, is chosen explicitly for the arithmetic; software conventions must match the stated calculation. Implementations may instead use a numerical stabilizer or skip zero-variance groups. Here NormalizeOrZero returns all zeros exactly when sigma is zero. A KL regularization term can still produce a policy update in that case, so only the relative reward component vanishes. The group mean includes the current response and the random standard deviation rescales it; do not infer the unbiased action-independent-baseline identity from Lecture 33 for this normalized proxy. Above/below group mean is a relative comparison, not proof of absolute quality.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="token-update" class="slide level2 opt34-slide">
+<h2>GRPO Uses Token-Level Ratios</h2>
+<p>For response <span class="math inline">i</span>, let <span class="math inline">y_{i,t}</span> be token <span class="math inline">t</span> and <span class="math inline">y_{i,&lt;t}</span> the earlier tokens. The state <span class="math inline">s_{i,t}</span> contains prompt <span class="math inline">q</span> and that prefix.</p>
+<p><span class="math display">\rho_{i,t}=\frac{\pi_\theta(y_{i,t}\mid s_{i,t})}
+{\pi_{\text{old}}(y_{i,t}\mid s_{i,t})}.</span></p>
+<p>Use the same response weight <span class="math inline">\hat A_i</span> for its tokens in this final-reward example. Average the PPO-style scores <span class="math inline">\ell(\rho_{i,t},\hat A_i)</span> within each response, then across the group.</p>
+<p>For a token in a response with <span class="math inline">\hat A_i=1</span>, changing its probability from <span class="math inline">0.50</span> to <span class="math inline">0.65</span> gives <span class="math inline">\rho=1.3</span> and clipped score <span class="math inline">1.2</span>.</p>
+<div class="takeaway">
+<p>Clipping uses one ratio per generated token. The original GRPO objective adds a reference-policy KL penalty separately from the group-normalized reward.</p>
+</div>
+<aside class="notes">
+<p>This is the outcome-supervision form, where one final normalized score weights every token in a response. The original paper also considers process rewards, which give different per-token weights. The displayed ratio conditions on the full same prefix in numerator and denominator. It is not the product of ratios across a whole response. DeepSeekMath averages over tokens within each response and then responses, with a separate KL regularizer. Its sampled KL estimator uses u-log(u)-1 with u=pi_ref/pi_theta; the reference in that term is distinct from the old policy in the clipped ratio. A reference may be refreshed between outer training stages in the paper’s iterative variant; it stays fixed within the optimization stage illustrated here.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="grpo-loop" class="slide level2 opt34-slide opt34-loop">
+<h2>One GRPO Training Round</h2>
+<p>Fix a reference policy and a scoring rule for this stage. Score each response with a verifier or a frozen learned reward model.</p>
+<div class="pseudo-code">
+<div class="pseudo-line fragment" data-fragment-index="0">
+<span class="pseudo-var">old</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">FrozenCopy</span>(<span class="pseudo-var">policy</span>)
+</div>
+<div class="pseudo-line fragment" data-fragment-index="0">
+<span class="pseudo-var">groups</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">GenerateGroups</span>(<span class="pseudo-var">old</span>, <span class="pseudo-var">prompts</span>, <span class="pseudo-var">G</span>)
+</div>
 <div class="pseudo-line fragment" data-fragment-index="1">
-<span class="pseudo-var">theta</span>, <span class="pseudo-var">phi</span> <span class="pseudo-op">=</span> initial policy and value parameters
+<span class="pseudo-var">rewards</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">ScoreResponses</span>(<span class="pseudo-var">groups</span>)
 </div>
-<div class="pseudo-line fragment" data-fragment-index="2">
-<span class="pseudo-kw">for</span> <span class="pseudo-var">iteration</span> <span class="pseudo-op">=</span> <span class="pseudo-num">1</span>, <span class="pseudo-num">2</span>, …:
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="3">
-<span class="pseudo-var">D</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">collectTrajectories</span>(<span class="pseudo-var">pi_theta</span>)
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="4">
-<span class="pseudo-var">R_hat</span>, <span class="pseudo-var">A</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">estimateReturnsAndAdvantages</span>(<span class="pseudo-var">D</span>, <span class="pseudo-var">V_phi</span>)
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="5">
-<span class="pseudo-var">theta_old</span> <span class="pseudo-op">=</span> <span class="pseudo-var">theta</span>
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="6">
-<span class="pseudo-kw">for</span> <span class="pseudo-var">epoch</span> <span class="pseudo-kw">in</span> <span class="pseudo-num">1</span> … <span class="pseudo-var">K</span>:
-</div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="7">
-<span class="pseudo-kw">for</span> <span class="pseudo-var">batch</span> <span class="pseudo-kw">in</span> <span class="pseudo-fn">minibatches</span>(<span class="pseudo-var">D</span>):
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="8">
-<span class="pseudo-var">ratio</span> <span class="pseudo-op">=</span> <span class="pseudo-var">pi_theta</span>(<span class="pseudo-var">a</span>|<span class="pseudo-var">s</span>) <span class="pseudo-op">/</span> <span class="pseudo-var">pi_theta_old</span>(<span class="pseudo-var">a</span>|<span class="pseudo-var">s</span>)
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="9">
-<span class="pseudo-var">actorLoss</span> <span class="pseudo-op">=</span> <span class="pseudo-op">-</span><span class="pseudo-fn">mean</span>(<span class="pseudo-fn">min</span>(<span class="pseudo-var">ratio</span> <span class="pseudo-op"><em></em></span><em> <span class="pseudo-var">A</span>, <span class="pseudo-fn">clip</span>(<span class="pseudo-var">ratio</span>) <span class="pseudo-op"></span></em> <span class="pseudo-var">A</span>))
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="10">
-<span class="pseudo-var">criticLoss</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">mean</span>((<span class="pseudo-var">R_hat</span> <span class="pseudo-op">-</span> <span class="pseudo-var">V_phi</span>(<span class="pseudo-var">s</span>))<sup>2</sup>)
-</div>
-<div class="pseudo-line indent-3 fragment" data-fragment-index="11">
-<span class="pseudo-var">theta</span>, <span class="pseudo-var">phi</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">optimizerStep</span>(<span class="pseudo-var">actorLoss</span>, <span class="pseudo-var">criticLoss</span>)
-</div>
-</div>
-</section>
-<section id="why-ppo-works-well" class="slide level2 compact">
-<h2>Why PPO Works Well</h2>
-<ul>
-<li>Stable enough for long training runs.</li>
-<li>Simple enough to implement with standard gradient descent.</li>
-<li>Reuses collected trajectories for several epochs.</li>
-<li>Works with large neural policies.</li>
-</ul>
-<p>Common use cases:</p>
-<ul>
-<li>Robotics and continuous control</li>
-<li>Game playing</li>
-<li>RLHF-style language-model training</li>
-</ul>
-<div class="takeaway">
-<p>PPO became popular because it is a practical compromise: not the most theoretically exact, but robust and implementable.</p>
-</div>
-</section>
-<section id="from-ppo-to-grpo" class="slide level2">
-<h2>From PPO to GRPO</h2>
-<p>PPO usually uses both:</p>
-<ul>
-<li>A policy model, the actor.</li>
-<li>A value model, the critic.</li>
-</ul>
-<p>For large language models, the critic can be expensive:</p>
-<ul>
-<li>It adds memory cost.</li>
-<li>It adds training complexity.</li>
-<li>It can be hard to fit accurately for long reasoning traces.</li>
-</ul>
-<div class="question">
-<p>Can we estimate advantages without training a separate value model?</p>
-</div>
-</section>
-<section id="grpo-main-idea" class="slide level2">
-<h2>GRPO: Main Idea</h2>
-<p>Group Relative Policy Optimization (GRPO) samples several responses for the same prompt.</p>
-<p>For one prompt <span class="math inline">q_i</span>:</p>
-<p><span class="math display">
-\{o_{i,1}, o_{i,2}, \dots, o_{i,G}\}
-\sim
-\pi_\theta(\cdot\mid q_i)
-</span></p>
-<p>Then compute rewards:</p>
-<p><span class="math display">
-r_{i,j}=r(q_i,o_{i,j})
-</span></p>
-<div class="takeaway">
-<p>Instead of asking “how good is this response absolutely?”, GRPO asks “how good is this response compared with the other responses for the same prompt?”</p>
-</div>
-</section>
-<section id="group-relative-advantage" class="slide level2">
-<h2>Group-Relative Advantage</h2>
-<p>Normalize rewards within each group:</p>
-<p><span class="math display">
-A_{i,j}
-=
-\frac{
-r_{i,j}-\operatorname{mean}(\mathbf{r}_i)
-}{
-\operatorname{std}(\mathbf{r}_i)
-}
-,\qquad
-\mathbf{r}_i=\{r_{i,1},\dots,r_{i,G}\}
-</span></p>
-<p>Interpretation:</p>
-<ul>
-<li>Above-average response: positive advantage.</li>
-<li>Below-average response: negative advantage.</li>
-<li>No learned critic is needed.</li>
-</ul>
-</section>
-<section id="grpo-training-loop" class="slide level2">
-<h2>GRPO Training Loop</h2>
-<div class="pseudo-code" role="img" aria-label="Animated pseudocode for group relative policy optimization">
 <div class="pseudo-line fragment" data-fragment-index="1">
-<span class="pseudo-var">theta</span> <span class="pseudo-op">=</span> initial policy parameters
+<span class="pseudo-var">A</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">NormalizeOrZero</span>(<span class="pseudo-var">rewards</span>) <span class="pseudo-comment">// separately per prompt</span>
 </div>
-<div class="pseudo-line fragment" data-fragment-index="2">
-<span class="pseudo-kw">for</span> <span class="pseudo-var">iteration</span> <span class="pseudo-op">=</span> <span class="pseudo-num">1</span>, <span class="pseudo-num">2</span>, …:
+<div class="pseudo-line">
+<span class="pseudo-kw">for</span> <span class="pseudo-var">K</span> update passes
 </div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="3">
-<span class="pseudo-var">prompts</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">samplePromptBatch</span>()
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-var">ratio</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">TokenRatios</span>(<span class="pseudo-var">policy</span>, <span class="pseudo-var">old</span>, <span class="pseudo-var">groups</span>)
 </div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="4">
-<span class="pseudo-kw">for each</span> <span class="pseudo-var">prompt</span> <span class="pseudo-var">q_i</span> <span class="pseudo-kw">in</span> <span class="pseudo-var">prompts</span>:
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-var">gain</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">MeanByResponse</span>(<span class="pseudo-fn">ClipScore</span>(<span class="pseudo-var">ratio</span>, <span class="pseudo-var">A</span>))
 </div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="5">
-<span class="pseudo-var">responses</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">sampleGroup</span>(<span class="pseudo-var">pi_theta</span>, <span class="pseudo-var">q_i</span>, <span class="pseudo-var">G</span>)
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-var">penalty</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">ReferenceKL</span>(<span class="pseudo-var">policy</span>, <span class="pseudo-var">reference</span>, <span class="pseudo-var">groups</span>)
 </div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="6">
-<span class="pseudo-var">rewards</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">scoreResponses</span>(<span class="pseudo-var">q_i</span>, <span class="pseudo-var">responses</span>)
+<div class="pseudo-line fragment indent-1" data-fragment-index="3">
+<span class="pseudo-var">loss</span> <span class="pseudo-op">=</span> <span class="pseudo-op">-</span><span class="pseudo-fn">mean</span>(<span class="pseudo-var">gain</span>) <span class="pseudo-op">+</span> <span class="pseudo-var">beta</span> <span class="pseudo-op">*</span> <span class="pseudo-var">penalty</span>
 </div>
-<div class="pseudo-line indent-2 fragment" data-fragment-index="7">
-<span class="pseudo-var">advantages</span> <span class="pseudo-op">=</span> (<span class="pseudo-var">rewards</span> <span class="pseudo-op">-</span> <span class="pseudo-fn">mean</span>(<span class="pseudo-var">rewards</span>)) <span class="pseudo-op">/</span> <span class="pseudo-fn">std</span>(<span class="pseudo-var">rewards</span>)
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="8">
-<span class="pseudo-var">theta_old</span> <span class="pseudo-op">=</span> <span class="pseudo-var">theta</span>
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="9">
-<span class="pseudo-var">ratio</span> <span class="pseudo-op">=</span> <span class="pseudo-var">pi_theta</span>(<span class="pseudo-var">o</span>|<span class="pseudo-var">q</span>) <span class="pseudo-op">/</span> <span class="pseudo-var">pi_theta_old</span>(<span class="pseudo-var">o</span>|<span class="pseudo-var">q</span>)
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="10">
-<span class="pseudo-var">objective</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">ppoStyleClippedObjective</span>(<span class="pseudo-var">ratio</span>, <span class="pseudo-var">advantages</span>)
-</div>
-<div class="pseudo-line indent-1 fragment" data-fragment-index="11">
-<span class="pseudo-var">theta</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">optimizerStep</span>(<span class="pseudo-var">objective</span>)
+<div class="pseudo-line fragment indent-1" data-fragment-index="3">
+<span class="pseudo-fn">OptimizerStep</span>(<span class="pseudo-var">policy</span>, <span class="pseudo-var">loss</span>)
 </div>
 </div>
+<p><code>MeanByResponse</code> averages token scores within each answer. Keep the old probabilities and group weights fixed across the <span class="math inline">K</span> passes. Only the policy is trained here.</p>
+<aside class="notes">
+<p>GenerateGroups stores tokenized responses, their prefixes, and collection-policy log-probabilities. ScoreResponses may be a verifier or a reward-model inference call. NormalizeOrZero operates independently within each prompt group, never across unrelated prompts, and its output is detached during policy optimization. ClipScore is the same ell already defined. ReferenceKL denotes the separate reference regularizer, using the corresponding per-token estimation and response averaging. The illustrated stage has no value-critic loss or learned value baseline. A full outer procedure can collect new groups, refresh a reference, or retrain a scorer in separate stages. The graph and pseudocode are an introductory outcome-scored GRPO presentation, not a claim that all later GRPO variants are identical.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="ppo-vs.-grpo" class="slide level2">
-<h2>PPO vs.&nbsp;GRPO</h2>
+<section id="compare" class="slide level2 opt34-slide">
+<h2>Training Loops and Reward Sources</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Feature</th>
-<th>PPO</th>
-<th>GRPO</th>
+<th>Method</th>
+<th>Data for the policy update</th>
+<th>Value critic</th>
+<th>Separate reward model</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Policy update</td>
-<td>Clipped policy-ratio objective</td>
-<td>PPO-style clipped update</td>
+<td>Classic RLHF with PPO</td>
+<td>Fresh responses scored by the reward model</td>
+<td>Trained</td>
+<td>Yes</td>
 </tr>
 <tr class="even">
-<td>Advantage source</td>
-<td>Often uses value-function critic</td>
-<td>Group-relative rewards</td>
+<td>GRPO</td>
+<td>Fresh response groups; verifier or learned scores</td>
+<td>None</td>
+<td>Optional</td>
 </tr>
 <tr class="odd">
-<td>Extra model</td>
-<td>Critic/value model</td>
-<td>No separate critic</td>
-</tr>
-<tr class="even">
-<td>Natural setting</td>
-<td>General RL and RLHF</td>
-<td>LLM reasoning-style training</td>
+<td>Offline DPO</td>
+<td>Saved chosen/rejected answer pairs</td>
+<td>None</td>
+<td>None</td>
 </tr>
 </tbody>
 </table>
 <div class="takeaway">
-<p>GRPO keeps PPO’s conservative update idea, but changes how the advantage signal is estimated.</p>
+<p>A <strong>reward model</strong> scores response quality. A <strong>critic</strong> predicts expected return. Removing the critic does not automatically remove the reward model or reference policy.</p>
+</div>
+<p>Human preferences can train either PPO-based RLHF or DPO. GRPO with a purely automatic verifier is not, by itself, human-feedback learning.</p>
+<aside class="notes">
+<p>The first row is the classic actor-critic RLHF implementation shown here, not a mathematical requirement that every PPO surrogate must use a critic or reward model. A reward model may be frozen while a critic learns expected shaped return. Both GRPO and DPO retain a reference in the versions illustrated. DPO optimizes saved preference pairs without the online RL loop. The origin of the feedback and the optimization method are separate design decisions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="reward-quality" class="slide level2 opt34-slide">
+<h2>Reward Quality Still Matters</h2>
+<p>Prompt: <strong>“What is <span class="math inline">12\times13</span>? Explain briefly.”</strong></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Response</th>
+<th>Correct?</th>
+<th>Explanation?</th>
+<th style="text-align: right;">Verifier reward</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">12\times10+12\times3=156</span></td>
+<td>Yes</td>
+<td>Yes</td>
+<td style="text-align: right;"><span class="math inline">1</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">156</span></td>
+<td>Yes</td>
+<td>No</td>
+<td style="text-align: right;"><span class="math inline">1</span></td>
+</tr>
+</tbody>
+</table>
+<p>The checker rewards both equally because it tests only the final answer.</p>
+<p><strong>Reward hacking</strong> means exploiting a scoring rule while missing the intended goal. A learned preference scorer can also miss important aspects of quality.</p>
+<div class="takeaway">
+<p>Evaluate on <strong>held-out tasks</strong>, tasks not used in training, and check the behavior humans actually wanted. A rising training reward alone is insufficient evidence.</p>
+</div>
+<aside class="notes">
+<p>This is a deliberately limited verifier specification, not evidence that an actual model learned a reward exploit. It illustrates an omission an optimizer could exploit and connects to the reward-hacking/specification-gaming discussion earlier in the course. Correct final answers alone do not establish that a written explanation is faithful or that the model followed every instruction. Human comparisons can contain disagreement, coverage gaps, or bias; a reward model is a proxy for those collected judgments. We make no claim that RLHF guarantees truthfulness or that GRPO guarantees sound reasoning. Background: the limitations discussion in Ouyang et al.&nbsp;and the reward-function discussion in DeepSeekMath.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="quick-check" class="slide level2 opt34-slide scrollable">
+<h2>Quick Check</h2>
+<ol type="1">
+<li>If <span class="math inline">\pi_{\text{old}}(a\mid s)=0.5</span> and the candidate gives <span class="math inline">0.7</span>, does PPO clipping force the probability back to <span class="math inline">0.6</span> when <span class="math inline">\epsilon=0.2</span>?</li>
+<li>Does “GRPO has no value critic” imply it needs no reward model?</li>
+<li>What if a group receives rewards <span class="math inline">(1,1,1,1)</span>?</li>
+</ol>
+<div class="fragment" data-fragment-index="0">
+<p><strong>1. No.</strong> The ratio is <span class="math inline">1.4</span>. Clipping changes the score’s incentive, not the actual probability directly.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>2. No.</strong> The scorer may still be a learned reward model, or it may be an automatic verifier.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p><strong>3.</strong> All relative weights are zero under our guard. The reward component has no group contrast; a separate KL penalty may still act.</p>
 </div>
 </section>
-<section id="useful-references" class="slide level2">
-<h2>Useful References</h2>
-<ul>
-<li><a href="https://arxiv.org/abs/1502.05477">Trust Region Policy Optimization</a>, Schulman et al., 2015.</li>
-<li><a href="https://arxiv.org/abs/1707.06347">Proximal Policy Optimization Algorithms</a>, Schulman et al., 2017.</li>
-<li><a href="https://arxiv.org/abs/2402.03300">DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models</a>, Shao et al., 2024.</li>
-<li><a href="https://yugeten.github.io/posts/2025/01/ppogrpo/">A vision researcher’s guide to some RL stuff: PPO &amp; GRPO</a>, Yuge Shi.</li>
-</ul>
-</section>
-<section id="takeaways" class="slide level2">
+<section id="takeaways" class="slide level2 opt34-slide">
 <h2>Takeaways</h2>
 <ul>
-<li>PPO limits policy updates by clipping the policy ratio.</li>
-<li>The ratio compares the current policy to the policy that collected the data.</li>
-<li>GRPO removes the critic by comparing responses within the same prompt group.</li>
-<li>Both methods care about the same practical issue: stable policy improvement.</li>
+<li>PPO-Clip limits incentives for large favorable ratio changes, without a hard policy-distance guarantee.</li>
+<li>The old policy supplies fixed denominators for a recent batch.</li>
+<li>Classic RLHF fits a preference reward model, then improves a policy using it.</li>
+<li>DPO directly fits saved preference pairs using a reference-relative loss, without a separate reward model or RL rollout loop.</li>
+<li>Rollout snapshots, fixed references, reward models, and value critics have different roles.</li>
+<li>GRPO replaces the learned value baseline with group-relative reward weights.</li>
+<li>Equal-score groups and incomplete reward specifications need explicit handling.</li>
 </ul>
 <p><a href="../asset_credits.html#lec34" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
 
@@ -678,6 +1006,13 @@ r_{i,j}-\operatorname{mean}(\mathbf{r}_i)
         // devices. It is advisable to set this to a lower number than
         // viewDistance in order to save resources.
         mobileViewDistance: 2,
+
+        // Enable scroll view
+        view: 'slide',
+        scrollProgress: true,
+        scrollActivationWidth: 0,
+        scrollSnap: 'mandatory',
+        scrollLayout: 'full',
 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be

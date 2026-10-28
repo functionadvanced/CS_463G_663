@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec32_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,320 +164,572 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="value-based-model-free-rl" class="slide level2 section-slide">
-<h2>Value-Based Model-Free RL</h2>
-<p>Learn values from experience without knowing the transition or reward model.</p>
-</section>
-<section id="model-based-vs.-model-free" class="slide level2">
-<h2>Model-Based vs.&nbsp;Model-Free</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="model-based">Model-based</h3>
-<p>Assumes access to:</p>
-<p><span class="math display">
-P(s'\mid s,a), \qquad R(s,a)
-</span></p>
-<p>Then plans with the model.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="model-free">Model-free</h3>
-<p>Learns directly from interaction.</p>
-<p>No explicit <span class="math inline">P</span> or <span class="math inline">R</span> required.</p>
-</div></div>
-<div class="takeaway">
-<p>Model-free methods learn from sampled experience alone.</p>
+<section id="experience" class="slide level2 value32-slide">
+<h2>Learning from Experience</h2>
+<p><strong>Reinforcement learning (RL)</strong> learns how to act from rewards. <strong>Model-free</strong> methods learn values or a policy without constructing an explicit transition-and-reward model.</p>
+<div class="value32-intro">
+<p><img data-src="imgs/lec1/toy_robot_openclipart.svg" class="value32-robot" alt="Public-domain cartoon robot representing the learning agent."></p>
+<p><img data-src="imgs/drawio/lec32/observed-transition.png" class="value32-sample" alt="Observed experience: at depot D the robot takes pickup, receives reward minus one, and reaches pickup stop J."></p>
 </div>
+<p>A sample <span class="math inline">(s,a,r,s')</span> records the current <strong>state</strong>, <strong>action</strong>, observed <strong>reward</strong>, and <strong>next state</strong>.</p>
+<div class="takeaway">
+<p>Learning uses these samples, not a supplied table of transition probabilities or expected rewards.</p>
+</div>
+<aside class="notes">
+<p>The delivery setting continues Lecture 30. Diagrams explain the setting to the class; the learner is not given its complete dynamics. A simulator may generate samples without exposing its transition table to the algorithm. Model-based RL can instead learn such a model and plan with it. This does not mean model-free methods lack learned representations. Original public-domain robot: https://openclipart.org/detail/325644/toy-robot. Background: the supplied Spring 2025 Value-Based RL Beamer lecture and https://inst.eecs.berkeley.edu/~cs188/textbook/rl/rl.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="common-model-free-methods" class="slide level2">
-<h2>Common Model-Free Methods</h2>
+<section id="episode" class="slide level2 value32-slide">
+<h2>A Delivery Episode</h2>
+<p>A <strong>policy</strong> <span class="math inline">\pi</span> is an action rule. First evaluate a fixed policy: pick up at depot <span class="math inline">D</span>, then deliver from stop <span class="math inline">J</span>.</p>
+<p><img data-src="imgs/drawio/lec32/delivery-episode.png" class="value32-route" alt="One observed episode: D at step zero, pickup with reward minus one to J at step one, then deliver with reward eight to terminal F at step two."></p>
+<p>An <strong>episode</strong> is one run ending at terminal state <span class="math inline">F</span>. Its later value is zero: the task has finished.</p>
+<p>The <strong>return</strong> <span class="math inline">G_t</span> totals future rewards. The <strong>discount factor</strong> <span class="math inline">\gamma</span> weights each later reward by another factor. Use <strong><span class="math inline">\gamma=0.9</span></strong>:</p>
+<p><span class="math display">G_0=-1+0.9\cdot8=6.2,\qquad G_1=8.</span></p>
+<aside class="notes">
+<p>All rewards are fictional points. The small-job and return choices from Lecture 30 remain available, but the first prediction example follows the fixed pickup-then-deliver policy. Reward r_(t+1) arrives after the action at step t: r1=-1, r2=8. The +8 is received on entry to F; it is not also a terminal-state value. This two-transition episode is deterministic for easy arithmetic, not empirical robot data. After termination all further rewards and bootstrap values are zero.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="state-values" class="slide level2 value32-slide">
+<h2>What a State Value Predicts</h2>
+<p>The <strong>state value</strong> <span class="math inline">V^\pi(s)</span> is expected return when starting at <span class="math inline">s</span> and following policy <span class="math inline">\pi</span>:</p>
+<p><span class="math display">V^\pi(s)=\mathbb E_\pi[G_t\mid s_t=s].</span></p>
+<p><span class="math inline">\mathbb E_\pi</span> averages over outcomes under that policy. Write <span class="math inline">V(s)</span> for the learner’s <strong>current estimate</strong>, which may be wrong.</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 20%">
+<col style="width: 26%">
+<col style="width: 26%">
+<col style="width: 26%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Family</th>
-<th>Method</th>
+<th>Starting estimates for the comparison</th>
+<th style="text-align: right;"><span class="math inline">D</span>: depot</th>
+<th style="text-align: right;"><span class="math inline">J</span>: pickup stop</th>
+<th style="text-align: right;"><span class="math inline">F</span>: terminal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">V(s)</span></td>
+<td style="text-align: right;"><span class="math inline">0</span></td>
+<td style="text-align: right;"><span class="math inline">4</span></td>
+<td style="text-align: right;"><span class="math inline">0</span></td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p><strong>Policy evaluation</strong>, also called prediction, estimates how well a given policy does. It does not yet change which actions the policy selects.</p>
+</div>
+<aside class="notes">
+<p>The initial estimates are stipulated, not values obtained by planning or earlier updates in this lecture. The exact fixed-policy values in this deterministic example are 6.2 at D, 8 at J, and 0 at F. The learner must estimate them from samples. We compare Monte Carlo and one-step TD using separate copies of this same initial value table. State values concern accumulated future reward, not merely the next reward. Lowercase s_t denotes the state observed at time t; the conditioning notation has its usual random-variable interpretation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="monte-carlo" class="slide level2 value32-slide">
+<h2>Monte Carlo: Use the Complete Return</h2>
+<p><strong>Monte Carlo (MC)</strong> evaluation learns from complete sampled returns. Wait for the episode to end so <span class="math inline">G_t</span> is known, then move the estimate toward it:</p>
+<p><span class="math display">V(s_t)\leftarrow V(s_t)+\alpha[G_t-V(s_t)].</span></p>
+<p>The <strong>learning rate</strong> <span class="math inline">\alpha</span> controls the adjustment size. We use <strong><span class="math inline">\alpha=0.5</span></strong>: move halfway toward the target.</p>
+<p>For the completed delivery episode, <span class="math inline">G_0=6.2</span> and the old <span class="math inline">V(D)=0</span>.</p>
+<div class="fragment takeaway">
+<p><span class="math display">V(D)\leftarrow0+0.5(6.2-0)=3.1.</span> This is one update, not the exact value after learning has finished.</p>
+</div>
+<aside class="notes">
+<p>We use constant-step-size Monte Carlo prediction. A sample-average variant uses alpha=1/N on the Nth relevant return. For this route D and J each occur once, so first-visit and every-visit distinctions do not affect the example. J also updates from 4 toward its full return 8, yielding 6. MC uses no bootstrapped value in its target; stochastic long episodes can make full returns noisy. We do not claim that a finite constant-step-size estimate is unbiased or already converged. Source: supplied Beamer MC material, with the delivery example made explicit.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="td-zero" class="slide level2 value32-slide">
+<h2>Temporal-Difference Learning</h2>
+<p><strong>Temporal-difference (TD)</strong> learning updates after a transition. <strong>Bootstrapping</strong> means using an existing estimate to help construct another estimate’s target.</p>
+<p>For one-step <strong>TD(0)</strong>, observe reward <span class="math inline">r_{t+1}</span> and next state <span class="math inline">s_{t+1}</span>:</p>
+<p><span class="math display">y_t=r_{t+1}+\gamma V(s_{t+1}),\qquad
+\delta_t=y_t-V(s_t).</span></p>
+<p>Here <span class="math inline">y_t</span> is the <strong>target</strong> and <span class="math inline">\delta_t</span> is the <strong>TD error</strong>: target minus current estimate.</p>
+<p><span class="math display">V(s_t)\leftarrow V(s_t)+\alpha\delta_t.</span></p>
+<div class="takeaway">
+<p>One observed reward plus an estimated future value lets TD learn before the episode ends. For a terminal next state, the target is just <span class="math inline">r_{t+1}</span>.</p>
+</div>
+<aside class="notes">
+<p>The fixed-policy Bellman identity is V^pi(s)=E_pi[r_(t+1)+gamma V^pi(s_(t+1)) | s_t=s]. TD samples a transition and substitutes its current V for the unknown true future value. This explains both sampling and bootstrapping without requiring a transition model. TD(0) is a one-step method; the zero refers to the lambda=0 endpoint, introduced later, not to a zero-step return. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/rl/mfl.html and the supplied Beamer TD frames.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="timing" class="slide level2 value32-slide">
+<h2>Same Episode, Different Update Timing</h2>
+<p>Start both methods from <span class="math inline">V(D)=0</span>, <span class="math inline">V(J)=4</span>, <span class="math inline">V(F)=0</span>, with <span class="math inline">\gamma=0.9</span> and <span class="math inline">\alpha=0.5</span>.</p>
+<p><img data-src="imgs/drawio/lec32/update-timing.png" class="value32-timing" alt="Just after pickup with reward minus one: Monte Carlo waits for delivery; TD uses minus one plus 0.9 times the current J value four, giving target 2.6 and new D value 1.3."></p>
+<p>When delivery then gives <span class="math inline">8</span> and ends the episode:</p>
+<div class="fragment takeaway">
+<p><strong>MC:</strong> update <span class="math inline">V(D)</span> to <span class="math inline">3.1</span>. <strong>TD:</strong> leave <span class="math inline">V(D)=1.3</span> for now. Both update <span class="math inline">V(J)</span> to <span class="math inline">4+0.5(8-4)=6</span>.</p>
+</div>
+<aside class="notes">
+<p>For chronological one-step TD, the D update happens before the reward 8 is observed, using the old V(J)=4. Its target is -1+.9*4=2.6 and new value 1.3. At J the next state is terminal, so the second target is 8 and V(J) becomes 6. Ordinary one-step TD does not automatically revisit D at the end; it can propagate J’s improved value on a later visit. MC’s D update waits for the completed return and reaches 3.1 from its own untouched initial value. These are two different estimators on separate value tables, not sequential updates to one table.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="td-algorithm" class="slide level2 value32-slide">
+<h2>TD(0): One Transition</h2>
+<p>Follow the fixed policy <span class="math inline">\pi</span>. The environment reports whether <code>sNext</code> is a <strong>terminal next state</strong>.</p>
+<div class="pseudo-code">
+<div class="pseudo-line">
+<span class="pseudo-kw">function</span> <span class="pseudo-fn">TDUpdate</span>(<span class="pseudo-var">s</span>, <span class="pseudo-var">r</span>, <span class="pseudo-var">sNext</span>, <span class="pseudo-var">terminal</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="0">
+<span class="pseudo-kw">if</span> <span class="pseudo-var">terminal</span>: <span class="pseudo-var">target</span> <span class="pseudo-op">=</span> <span class="pseudo-var">r</span>
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-kw">else</span>: <span class="pseudo-var">target</span> <span class="pseudo-op">=</span> <span class="pseudo-var">r</span> <span class="pseudo-op">+</span> <span class="pseudo-var">gamma</span> <span class="pseudo-op">*</span> <span class="pseudo-var">V</span>(<span class="pseudo-var">sNext</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-var">delta</span> <span class="pseudo-op">=</span> <span class="pseudo-var">target</span> <span class="pseudo-op">-</span> <span class="pseudo-var">V</span>(<span class="pseudo-var">s</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="3">
+<span class="pseudo-var">V</span>(<span class="pseudo-var">s</span>) <span class="pseudo-op">=</span> <span class="pseudo-var">V</span>(<span class="pseudo-var">s</span>) <span class="pseudo-op">+</span> <span class="pseudo-var">alpha</span> <span class="pseudo-op">*</span> <span class="pseudo-var">delta</span>
+</div>
+</div>
+<div class="question">
+<p>If the robot receives <span class="math inline">8</span> on entering <span class="math inline">F</span>, should its target be <span class="math inline">8+0.9\cdot8</span>?</p>
+</div>
+<div class="fragment takeaway" data-fragment-index="4">
+<p>No.&nbsp;The target is <strong><span class="math inline">8</span></strong>. The delivery reward has already been received; <span class="math inline">V(F)=0</span> prevents counting it twice.</p>
+</div>
+<aside class="notes">
+<p>The function updates a shared current V table, with gamma and alpha supplied as learning parameters. The terminal flag means true task termination, not merely that a program stops collecting samples at an arbitrary time limit. A time-limit truncation can require bootstrapping if the underlying task continues. Do not reset to the new episode’s start state before constructing this transition’s target. No terminal action is chosen.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="control" class="slide level2 value32-slide">
+<h2>From Prediction to Control</h2>
+<p><strong>Control</strong> improves the action rule, rather than only evaluating a fixed one. An <strong>action value</strong> <span class="math inline">Q(s,a)</span> estimates return after choosing <span class="math inline">a</span> at <span class="math inline">s</span> and following the policy being evaluated afterward.</p>
+<p>A <strong>tabular</strong> method stores one number per state-action pair. Both methods below update toward a target <span class="math inline">y</span>:</p>
+<p><span class="math display">Q(s,a)\leftarrow Q(s,a)+\alpha[y-Q(s,a)].</span></p>
+<p>At <span class="math inline">D</span>, a small job finishes immediately; pickup goes to <span class="math inline">J</span>. A <strong>greedy</strong> choice takes the largest current <span class="math inline">Q</span>: if these estimates are <span class="math inline">4</span> and <span class="math inline">0</span>, it chooses the small job.</p>
+<p><strong>Epsilon-greedy</strong> explores with probability <span class="math inline">\epsilon</span> by choosing uniformly among all available actions; otherwise it is greedy.</p>
+<div class="takeaway">
+<p>The table is still an estimate. Exploration can collect evidence about an action whose current estimate is too low.</p>
+</div>
+<aside class="notes">
+<p>For fixed-policy prediction the formal target is Q^pi(s,a)=E_pi[G_t | s_t=s,a_t=a]. A control method updates values while improving its action rule. SARSA evaluates the policy used for behavior, while Q-learning uses an optimality target; this distinction follows on the next slides. This Q table is separate from the state-value V table in the MC/TD comparison. At D we set Q(small)=4 and Q(pickup)=0; at J the upcoming comparison sets Q(deliver)=6 and Q(return)=1. These are arbitrary current estimates, not exact solutions. Epsilon-greedy can select its greedy action during exploration too, as in Lecture 31. Random tie breaking is used if several actions share the largest estimate.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="policies" class="slide level2 value32-slide">
+<h2>Behavior and Target Policies</h2>
+<p>The <strong>behavior policy</strong> generates actions. The <strong>target policy</strong> is the action rule whose return is being learned.</p>
+<ul>
+<li><strong>On-policy:</strong> learn about the same policy used to act.</li>
+<li><strong>Off-policy:</strong> the target policy can differ from the behavior policy.</li>
+</ul>
+<p>At <span class="math inline">J</span>, deliver finishes the job; return goes back to <span class="math inline">D</span>. After pickup gives <span class="math inline">-1</span>, the robot reaches <span class="math inline">J</span> and explores by selecting <strong>return</strong>:</p>
+<p><img data-src="imgs/drawio/lec32/behavior-choice.png" class="value32-choice" alt="At J, current Q values are six for deliver and one for return. Behavior selects the exploratory return action, while the greedy action is deliver."></p>
+<aside class="notes">
+<p>This is a different experience from the earlier fixed pickup-then-deliver episode: after reaching J the behavior policy selects return. The first pickup at D can also be exploratory under the displayed Q table. For the next two numerical updates, start independently from Q(D,pickup)=0, Q(J,deliver)=6, Q(J,return)=1, gamma=.9, and alpha=.5. Off-policy is about the relationship between behavior and target, not a promise that the target is already good or that exploration is unnecessary. SARSA’s name and Q-learning are introduced on their own slides, not in an unexplained list of algorithms.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="sarsa" class="slide level2 value32-slide">
+<h2>SARSA: Use the Selected Next Action</h2>
+<p><strong>SARSA</strong> names the sample it uses: <strong>State, Action, Reward, State, Action</strong>, or <span class="math inline">(s,a,r,s',a')</span>. The next action <span class="math inline">a'</span> is the one actually selected by the behavior policy.</p>
+<p><img data-src="imgs/drawio/lec32/sarsa-target.png" class="value32-choice" alt="SARSA uses Q(J,return)=1 because return is the selected next action. Q(J,deliver)=6 remains visible but is not used in this target."></p>
+<p><span class="math display">y=r+\gamma Q(s',a')=-1+0.9\cdot1=-0.1.</span></p>
+<p>Start from <span class="math inline">Q(D,\text{pickup})=0</span> and <span class="math inline">\alpha=0.5</span>:</p>
+<div class="fragment takeaway">
+<p><span class="math display">Q(D,\text{pickup})\leftarrow0+0.5(-0.1-0)=-0.05.</span> SARSA is <strong>on-policy</strong>: its target includes the exploratory return action.</p>
+</div>
+<aside class="notes">
+<p>The shared action-value update is Q(s,a) &lt;- Q(s,a)+alpha[y-Q(s,a)]. The observed tuple for this update is (D,pickup,-1,J,return). We have selected the next action; SARSA need not wait for return’s subsequent reward to make this update. In an online loop that chosen action must then be executed, rather than silently resampled after the update. For a terminal next state no next action is selected and y=r. The negative estimate is possible because pickup incurs a cost and the current estimate for the exploratory continuation is low. It is not the true optimal return of the task. Reference: the supplied Beamer SARSA frame; Sutton and Barto, second edition, Section 6.4.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="q-learning" class="slide level2 value32-slide">
+<h2>Q-Learning: Use the Largest Next Estimate</h2>
+<p><strong>Q-learning</strong> learns action values using a <strong>greedy target</strong>, even if behavior chooses an exploratory action. Here <span class="math inline">a'</span> ranges over available actions at <span class="math inline">s'</span>.</p>
+<p><img data-src="imgs/drawio/lec32/q-learning-target.png" class="value32-choice" alt="Q-learning uses the larger next estimate Q(J,deliver)=6, although behavior selected return with estimate one."></p>
+<p><span class="math display">y=r+\gamma\max_{a'}Q(s',a')=-1+0.9\max\{6,1\}=4.4.</span></p>
+<p>Use the <strong>same starting</strong> <span class="math inline">Q(D,\text{pickup})=0</span>, not SARSA’s updated value:</p>
+<div class="fragment takeaway">
+<p><span class="math display">Q(D,\text{pickup})\leftarrow0+0.5(4.4-0)=2.2.</span> Q-learning is <strong>off-policy</strong>: its target uses deliver, although behavior chose return.</p>
+</div>
+<aside class="notes">
+<p>This is an alternative update from the same initial table and the same observed transition as SARSA, not a second update following it. The immediate observed reward remains -1; using max does not replace a sampled immediate reward with an imagined one. Q-learning targets optimal action values Q<em>, but a finite current Q table is not Q</em>. The method does not require that the behavior actually take the maximizing action at J for this update. For a terminal successor the target is r, with no max over terminal actions. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/rl/mfl.html; supplied Beamer Q-learning material; Sutton and Barto, second edition, Section 6.5.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="q-algorithm" class="slide level2 value32-slide value32-loop">
+<h2>A Tabular Q-Learning Loop</h2>
+<p>Start a fresh run. <code>Q(s)</code> denotes the row of estimates for actions available at state <code>s</code>.</p>
+<div class="pseudo-code">
+<div class="pseudo-line">
+<span class="pseudo-var">Q</span> <span class="pseudo-op">=</span> <span class="pseudo-num">0</span> <span class="pseudo-kw">for every</span> available state-action pair
+</div>
+<div class="pseudo-line">
+<span class="pseudo-kw">for each</span> episode
+</div>
+<div class="pseudo-line indent-1">
+<span class="pseudo-var">s</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">StartState</span>()
+</div>
+<div class="pseudo-line indent-1">
+<span class="pseudo-kw">while</span> <span class="pseudo-var">s</span> <span class="pseudo-kw">is not</span> terminal
+</div>
+<div class="pseudo-line fragment indent-2" data-fragment-index="0">
+<span class="pseudo-var">a</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">EpsilonGreedy</span>(<span class="pseudo-var">Q</span>(<span class="pseudo-var">s</span>), <span class="pseudo-var">epsilon</span>)
+</div>
+<div class="pseudo-line fragment indent-2" data-fragment-index="1">
+(<span class="pseudo-var">r</span>, <span class="pseudo-var">sNext</span>, <span class="pseudo-var">terminal</span>) <span class="pseudo-op">=</span> <span class="pseudo-fn">Step</span>(<span class="pseudo-var">a</span>)
+</div>
+<div class="pseudo-line fragment indent-2" data-fragment-index="2">
+<span class="pseudo-var">target</span> <span class="pseudo-op">=</span> <span class="pseudo-var">r</span>
+</div>
+<div class="pseudo-line fragment indent-2" data-fragment-index="3">
+<span class="pseudo-kw">if not</span> <span class="pseudo-var">terminal</span>: <span class="pseudo-var">target</span> <span class="pseudo-op">+=</span> <span class="pseudo-var">gamma</span> <span class="pseudo-op">*</span> <span class="pseudo-fn">max</span>(<span class="pseudo-var">Q</span>(<span class="pseudo-var">sNext</span>))
+</div>
+<div class="pseudo-line fragment indent-2" data-fragment-index="4">
+<span class="pseudo-var">Q</span>(<span class="pseudo-var">s</span>, <span class="pseudo-var">a</span>) <span class="pseudo-op">+=</span> <span class="pseudo-var">alpha</span> <span class="pseudo-op">*</span> (<span class="pseudo-var">target</span> <span class="pseudo-op">-</span> <span class="pseudo-var">Q</span>(<span class="pseudo-var">s</span>, <span class="pseudo-var">a</span>))
+</div>
+<div class="pseudo-line fragment indent-2" data-fragment-index="5">
+<span class="pseudo-var">s</span> <span class="pseudo-op">=</span> <span class="pseudo-var">sNext</span>
+</div>
+</div>
+<p><code>StartState</code> resets the task. <code>Step</code> executes the chosen action and returns its reward, next state, and terminal flag.</p>
+<div class="takeaway">
+<p>The action used for behavior can be exploratory; the nonterminal learning target still uses the largest next estimate.</p>
+</div>
+<aside class="notes">
+<p>Gamma, alpha, and epsilon are chosen learning parameters; epsilon-greedy includes every available action in its random branch. We distinguish this fresh zero-initialized run from the arbitrary current table in the preceding worked comparison. The update is in place for only the observed state-action pair. Do not take a max over an empty terminal-action set or bootstrap from the next episode’s reset state. The loop is intentionally tabular; it is not a neural-network or replay-buffer algorithm.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dqn" class="slide level2 value32-slide">
+<h2>Deep Q-Networks: From Tables to Networks</h2>
+<p>A <strong>deep Q-network (DQN)</strong> replaces a Q table with a neural network <span class="math inline">Q_\theta(s,a)</span>, where <span class="math inline">\theta</span> denotes learned weights. DQN uses Q-learning, but <strong>not all Q-learning is DQN</strong>.</p>
+<p><img data-src="imgs/drawio/lec32/deep-q-network.png" class="value32-network" alt="A numerical representation of depot state D enters a Q network with shared learned weights. Its outputs estimate values for the available small-job and pickup actions, not action probabilities."></p>
+<ul>
+<li><strong>Experience replay:</strong> store past transitions and train on randomly sampled batches.</li>
+<li><strong>Target network:</strong> a separate, periodically refreshed network supplies bootstrap estimates, helping stabilize learning.</li>
+</ul>
+<div class="value32-paper">
+<p>Volodymyr Mnih et al.&nbsp;(2015), <a href="https://doi.org/10.1038/nature14236" target="_blank" rel="noopener"><em>Human-level control through deep reinforcement learning</em></a>, <strong>Nature</strong>.</p>
+<p>Earlier paper: Volodymyr Mnih et al.&nbsp;(2013), <a href="https://arxiv.org/abs/1312.5602" target="_blank" rel="noopener"><em>Playing Atari with Deep Reinforcement Learning</em></a>.</p>
+</div>
+<aside class="notes">
+<p>DQN stands for deep Q-network, also used to name the associated algorithm/agent. Q-learning is the broader method: it can use a table or a function approximator. Canonical DQN uses a trained online network, stored transitions for uniform experience replay, and a separate target network whose weights are held fixed between periodic copies. At a terminal transition the target remains just r. The network is fitted to targets with gradient-based updates rather than directly overwriting an individual table entry. Its shared weights can change predictions for several states/actions. The diagram shows only actions available at D; a full implementation must respect state-dependent action availability. It is a schematic, not a trained network or performance result. The original Atari work used a fixed set of game actions and image inputs. References are shown on the slide at first introduction: Mnih et al.&nbsp;(2013), https://arxiv.org/abs/1312.5602, and Mnih et al.&nbsp;(2015), https://doi.org/10.1038/nature14236. The 2015 paper’s first three, equally contributing authors are Volodymyr Mnih, Koray Kavukcuoglu, and David Silver.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dqn-variants" class="slide level2 value32-slide">
+<h2>Common DQN Variants and Extensions</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Variant or extension</th>
 <th>Main idea</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Value-based</td>
-<td>Monte Carlo</td>
-<td>Learn from full returns</td>
+<td><a href="https://arxiv.org/abs/1509.06461" target="_blank" rel="noopener"><strong>Double DQN</strong></a></td>
+<td>Select the next action with the trained network; evaluate it with the target network. This reduces overly optimistic estimates.</td>
 </tr>
 <tr class="even">
-<td>Value-based</td>
-<td>TD</td>
-<td>Bootstrap from next-state estimate</td>
+<td><a href="https://arxiv.org/abs/1511.06581" target="_blank" rel="noopener"><strong>Dueling DQN</strong></a></td>
+<td>Learn state value and <strong>action advantage</strong>, an action’s score relative to that baseline, then combine both into Q estimates.</td>
 </tr>
 <tr class="odd">
-<td>Control</td>
-<td>SARSA</td>
-<td>On-policy action-value learning</td>
+<td><a href="https://arxiv.org/abs/1511.05952" target="_blank" rel="noopener"><strong>Prioritized experience replay (PER)</strong></a></td>
+<td>Replay transitions with larger TD errors more often; corrective weights compensate for unequal sampling.</td>
 </tr>
 <tr class="even">
-<td>Control</td>
-<td>Q-learning</td>
-<td>Off-policy optimal action-value learning</td>
-</tr>
-<tr class="odd">
-<td>Policy-based</td>
-<td>REINFORCE, actor-critic, PPO</td>
-<td>Directly learn a policy</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="monte-carlo-estimation" class="slide level2">
-<h2>Monte Carlo Estimation</h2>
-<p>Monte Carlo waits until an episode ends, then updates from the full return.</p>
-<p><span class="math display">
-G_t=r_{t+1}+\gamma r_{t+2}+\cdots+\gamma^{T-t-1}r_T
-</span></p>
-<p><span class="math display">
-V(s_t)\leftarrow V(s_t)+\alpha\left[G_t-V(s_t)\right]
-</span></p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="strength">Strength</h3>
-<p>Unbiased return estimate under the policy.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="weakness">Weakness</h3>
-<p>High variance; must wait for episode end.</p>
-</div></div>
-</section>
-<section id="monte-carlo-vs.-td-timing" class="slide level2">
-<h2>Monte Carlo vs.&nbsp;TD Timing</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec30/monte-carlo-vs-td-timing.svg" alt="Monte Carlo waits until episode end while temporal difference updates after one transition"></p>
-</div>
-</section>
-<section id="temporal-difference-learning" class="slide level2">
-<h2>Temporal-Difference Learning</h2>
-<p>TD learning updates before the episode ends.</p>
-<p>It combines:</p>
-<ul>
-<li>Learning from raw experience.</li>
-<li>Bootstrapping from current value estimates.</li>
-</ul>
-<div class="definition">
-<p>“Temporal difference” means the update is driven by the difference between a current estimate and a one-step target.</p>
-</div>
-</section>
-<section id="td0-target" class="slide level2">
-<h2>TD(0) Target</h2>
-<p>From the Bellman expectation equation:</p>
-<p><span class="math display">
-V^\pi(s)=\mathbb{E}_\pi[r_{t+1}+\gamma V^\pi(s_{t+1})\mid s_t=s]
-</span></p>
-<p>Use the sampled target:</p>
-<p><span class="math display">
-r_{t+1}+\gamma V(s_{t+1})
-</span></p>
-<p>TD(0) update:</p>
-<p><span class="math display">
-V(s_t)\leftarrow V(s_t)+\alpha\left[r_{t+1}+\gamma V(s_{t+1})-V(s_t)\right]
-</span></p>
-</section>
-<section id="td0-as-algorithm" class="slide level2">
-<h2>TD(0) as Algorithm</h2>
-<div class="pseudo-code">
-<div class="pseudo-line">
-<span class="pseudo-kw">observe</span> transition (<span class="pseudo-var">s</span>, <span class="pseudo-var">r</span>, <span class="pseudo-var">sNext</span>)
-</div>
-<div class="pseudo-line fragment">
-<span class="pseudo-var">target</span> <span class="pseudo-op">=</span> <span class="pseudo-var">r</span> <span class="pseudo-op">+</span> <span class="pseudo-var">gamma</span> <span class="pseudo-op">*</span> <span class="pseudo-var">V</span>(<span class="pseudo-var">sNext</span>)
-</div>
-<div class="pseudo-line fragment">
-<span class="pseudo-var">error</span> <span class="pseudo-op">=</span> <span class="pseudo-var">target</span> <span class="pseudo-op">-</span> <span class="pseudo-var">V</span>(<span class="pseudo-var">s</span>)
-</div>
-<div class="pseudo-line fragment">
-<span class="pseudo-var">V</span>(<span class="pseudo-var">s</span>) <span class="pseudo-op">=</span> <span class="pseudo-var">V</span>(<span class="pseudo-var">s</span>) <span class="pseudo-op">+</span> <span class="pseudo-var">alpha</span> <span class="pseudo-op">*</span> <span class="pseudo-var">error</span>
-</div>
-</div>
-</section>
-<section id="td0-example" class="slide level2">
-<h2>TD(0) Example</h2>
-<p>Trajectory:</p>
-<p><span class="math display">
-s_1 \xrightarrow{a_1,\;r=1} s_2 \xrightarrow{a_2,\;r=0} s_3
-</span></p>
-<p>Assume:</p>
-<p><span class="math display">
-\gamma=1,\quad \alpha=0.5,\quad V(s_1)=0,\quad V(s_2)=0.5
-</span></p>
-<div class="fragment">
-<p><span class="math display">
-V(s_1)\leftarrow 0+0.5[1+0.5-0]=0.75
-</span></p>
-</div>
-</section>
-<section id="on-policy-vs.-off-policy" class="slide level2">
-<h2>On-Policy vs.&nbsp;Off-Policy</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Type</th>
-<th>Learns value of</th>
-<th>Example</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>On-policy</td>
-<td>The policy being followed</td>
-<td>SARSA</td>
-</tr>
-<tr class="even">
-<td>Off-policy</td>
-<td>A target policy different from behavior</td>
-<td>Q-learning</td>
+<td><a href="https://arxiv.org/abs/1710.02298" target="_blank" rel="noopener"><strong>Rainbow</strong></a></td>
+<td>Combine several DQN improvements rather than choosing just one.</td>
 </tr>
 </tbody>
 </table>
 <div class="takeaway">
-<p>On-policy learns what you do; off-policy learns what you should do.</p>
+<p>Double DQN changes target action selection, not just the number of networks. These extensions can be combined.</p>
 </div>
+<aside class="notes">
+<p>The names link to primary papers. Double DQN: Hado van Hasselt, Arthur Guez, and David Silver, Deep Reinforcement Learning with Double Q-learning, AAAI 2016 (preprint 2015), https://arxiv.org/abs/1509.06461. Unlike standard DQN’s maximum over the target network’s own values, Double DQN selects a maximizing next action with the online network and evaluates that selected action with the target network. Dueling: Ziyu Wang, Tom Schaul, Matteo Hessel, Hado van Hasselt, Marc Lanctot, and Nando de Freitas, Dueling Network Architectures for Deep Reinforcement Learning, ICML 2016 (preprint 2015), https://arxiv.org/abs/1511.06581. The two streams are combined with an identifying normalization, typically subtracting the mean action-advantage output; a raw stream output should not be mistaken for an independently identified exact Q-minus-V. PER: Tom Schaul, John Quan, Ioannis Antonoglou, and David Silver, Prioritized Experience Replay, ICLR 2016 (preprint 2015), https://arxiv.org/abs/1511.05952. Importance-sampling weights correct the changed sampling distribution; partial correction is often annealed. Rainbow: Matteo Hessel et al., Rainbow: Combining Improvements in Deep Reinforcement Learning, AAAI 2018 (preprint 2017), https://arxiv.org/abs/1710.02298. It combines Double DQN, dueling architecture, prioritized replay, multi-step learning, distributional returns, and noisy-network exploration. These are established examples, not claims about the latest or universally best algorithm. PER is a replay extension, not a separate synonym for Q-learning.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="sarsa" class="slide level2">
-<h2>SARSA</h2>
-<p>SARSA uses the tuple:</p>
-<p><span class="math display">
-S \rightarrow A \rightarrow R \rightarrow S' \rightarrow A'
-</span></p>
-<p>Update:</p>
-<p><span class="math display">
-Q(s_t,a_t)\leftarrow Q(s_t,a_t)+
-\alpha\left[
-r_{t+1}+\gamma Q(s_{t+1},a_{t+1})-Q(s_t,a_t)
-\right]
-</span></p>
-<div class="question">
-<p>The next action <span class="math inline">a_{t+1}</span> is the action actually selected by the behavior policy.</p>
-</div>
-</section>
-<section id="q-learning" class="slide level2">
-<h2>Q-Learning</h2>
-<p>Q-learning bootstraps toward the best possible next action.</p>
-<p><span class="math display">
-Q(s_t,a_t)\leftarrow Q(s_t,a_t)+
-\alpha\left[
-r_{t+1}+
-\gamma\max_{a'}Q(s_{t+1},a')-
-Q(s_t,a_t)
-\right]
-</span></p>
+<section id="n-step" class="slide level2 value32-slide">
+<h2>Multi-Step Returns</h2>
+<p>An <strong><span class="math inline">n</span>-step return</strong> uses <span class="math inline">n</span> observed rewards, then an estimated continuation:</p>
+<p><span class="math display">G_t^{(n)}=\sum_{k=0}^{n-1}\gamma^k r_{t+k+1}+\gamma^n V(s_{t+n}).</span></p>
+<p>Here <span class="math inline">n=1,2,\ldots</span> and <span class="math inline">k</span> indexes the rewards. At termination, stop and use no future value.</p>
+<p><img data-src="imgs/drawio/lec32/return-horizons.png" class="value32-horizons" alt="With the original V(J)=4, the one-step target at D is minus one plus 0.9 times four, or 2.6. Waiting for two rewards reaches terminal F and gives minus one plus 0.9 times eight, or 6.2."></p>
 <div class="takeaway">
-<p>Q-learning is off-policy because the target is greedy even if the behavior was exploratory.</p>
+<p>TD(0) uses <span class="math inline">n=1</span>. More observed rewards require waiting longer.</p>
 </div>
+<aside class="notes">
+<p>Return to the original pickup-then-deliver episode and the original V(J)=4 for this horizon comparison. The bootstrapped value is a current estimate when the target is formed. The displayed formula applies when n transitions are available before or at termination; at termination V(F)=0. A general implementation truncates n at the remaining episode length. Larger n reduces dependence on a possibly inaccurate bootstrap estimate but adds sampled-reward variability; it is not universally better or a universal monotonic bias/variance theorem. Background: supplied Beamer n-step material and Sutton and Barto, second edition, Chapter 7.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="sarsa-vs.-q-learning" class="slide level2">
-<h2>SARSA vs.&nbsp;Q-Learning</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Method</th>
-<th>Target</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>SARSA</td>
-<td><span class="math inline">r+\gamma Q(s',a')</span> for the action actually taken</td>
-</tr>
-<tr class="even">
-<td>Q-learning</td>
-<td><span class="math inline">r+\gamma\max_{a'}Q(s',a')</span></td>
-</tr>
-</tbody>
-</table>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec30/sarsa-vs-q-learning.svg" alt="SARSA and Q-learning targets split after reward and next state"></p>
-</div>
-</section>
-<section id="tdn" class="slide level2">
-<h2>TD(n)</h2>
-<p>TD(<span class="math inline">n</span>) uses <span class="math inline">n</span> real rewards before bootstrapping:</p>
-<p><span class="math display">
-G_t^{(n)}
-=
-r_{t+1}+\gamma r_{t+2}
-\cdots+
-\gamma^{n-1}r_{t+n}
-\gamma^nV(s_{t+n})
-</span></p>
-<p>Update:</p>
-<p><span class="math display">
-V(s_t)\leftarrow V(s_t)+\alpha\left[G_t^{(n)}-V(s_t)\right]
-</span></p>
-<div class="takeaway">
-<p>Larger <span class="math inline">n</span> usually means lower bias and higher variance.</p>
-</div>
-</section>
-<section id="tdlambda" class="slide level2">
-<h2>TD(lambda)</h2>
-<p>TD(<span class="math inline">\lambda</span>) blends all <span class="math inline">n</span>-step returns:</p>
-<p><span class="math display">
-G_t^{(\lambda)}
-=
-(1-\lambda)\sum_{n=1}^{\infty}\lambda^{n-1}G_t^{(n)}
-</span></p>
+<section id="lambda" class="slide level2 value32-slide">
+<h2>TD-Lambda: Blend Return Horizons</h2>
+<p><strong>TD(<span class="math inline">\lambda</span>)</strong> mixes different return horizons. The parameter <span class="math inline">0\leq\lambda\leq1</span> controls how much weight longer returns receive.</p>
+<p>For our <strong>two-step episode</strong>, the blended target is exactly:</p>
+<p><span class="math display">G_0^{(\lambda)}=(1-\lambda)\,2.6+\lambda\,6.2.</span></p>
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th><span class="math inline">\lambda</span></th>
-<th>Behavior</th>
+<th style="text-align: right;">Target in this example</th>
+<th>Interpretation</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>0</td>
-<td>One-step TD</td>
+<td><span class="math inline">0</span></td>
+<td style="text-align: right;"><span class="math inline">2.6</span></td>
+<td>One-step TD target</td>
 </tr>
 <tr class="even">
-<td>1</td>
-<td>Monte Carlo-like</td>
+<td><span class="math inline">0.5</span></td>
+<td style="text-align: right;"><span class="math inline">4.4</span></td>
+<td>Equal mix of the two horizons</td>
 </tr>
 <tr class="odd">
-<td>Between</td>
-<td>Smooth bias-variance tradeoff</td>
+<td><span class="math inline">1</span></td>
+<td style="text-align: right;"><span class="math inline">6.2</span></td>
+<td>Complete episode return</td>
 </tr>
 </tbody>
 </table>
+<div class="takeaway">
+<p>The zero in TD(0) refers to <span class="math inline">\lambda=0</span>, not to observing zero rewards. Longer episodes blend more than two horizons.</p>
+</div>
+<aside class="notes">
+<p>This is the episodic forward-view lambda-return using the original estimates, not a claim that every online accumulating-trace update is identical to this fixed-target calculation. For H remaining transitions, the finite episodic weights are (1-lambda)*lambda^(n-1) for n=1,…,H-1 and residual lambda^(H-1) on the full return. They sum to one and correctly give the complete return at lambda=1. We deliberately avoid substituting lambda=1 into an unqualified infinite expression with prefactor 1-lambda. The target 4.4 at lambda=.5 coincides numerically with the earlier Q-learning target but arises from a different construction. References: Sutton and Barto, second edition, Chapter 12; https://www.davidsilver.uk/wp-content/uploads/2020/03/MC-TD.pdf.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="eligibility-traces" class="slide level2">
-<h2>Eligibility Traces</h2>
-<p>Eligibility traces implement TD(<span class="math inline">\lambda</span>) online.</p>
-<p>TD error:</p>
-<p><span class="math display">
-\delta_t=r_{t+1}+\gamma V(s_{t+1})-V(s_t)
-</span></p>
-<p>Trace update:</p>
-<p><span class="math display">
-e_t(s)=
-\begin{cases}
-\gamma\lambda e_{t-1}(s)+1,&amp;s=s_t\\
-\gamma\lambda e_{t-1}(s),&amp;\text{otherwise}
-\end{cases}
-</span></p>
-<p>Value update:</p>
-<p><span class="math display">
-V(s)\leftarrow V(s)+\alpha\delta_t e_t(s)
-</span></p>
+<section id="traces" class="slide level2 value32-slide">
+<h2>Eligibility Traces: Remember Recent States</h2>
+<p>An <strong>eligibility trace</strong> <span class="math inline">e(s)</span> is a temporary weight tracking recent visits. It lets a new TD error adjust earlier states too.</p>
+<p>Start traces at zero for each episode. Before each update, decay all traces by <span class="math inline">\gamma\lambda</span>, then add <span class="math inline">1</span> to the current state’s trace.</p>
+<p><img data-src="imgs/drawio/lec32/eligibility-traces.png" class="value32-traces" alt="After distinct visits D then J with gamma 0.9 and lambda 0.5, D's trace has decayed to 0.45 while current J has trace one. The TD error at J can adjust both states."></p>
+<p>Use the current TD error <span class="math inline">\delta_t</span> to update <strong>every</strong> state:</p>
+<p><span class="math display">V(s)\leftarrow V(s)+\alpha\delta_t e(s).</span></p>
+<aside class="notes">
+<p>This is accumulating tabular TD(lambda): compute delta from pre-update V, set all e(s) &lt;- gamma<em>lambda</em>e(s), increment e(current) by 1, then update all V(s) using that same delta. After D then J without revisits, e(D)=.9*.5=.45 and e(J)=1. These are trace weights, not action probabilities; with repeated visits accumulating traces can exceed one. Reset traces at each true episode boundary, not after every transition. The diagram illustrates credit assignment without asserting that standard online traces exactly match an arbitrary frozen-value forward return; exact online forward/backward equivalence requires the appropriate true-online method. Background: supplied accumulating-trace Beamer material, Sutton and Barto Chapter 12, and https://arxiv.org/abs/1512.04087.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
+<section id="learning-checks" class="slide level2 value32-slide">
+<h2>Checks for a Learning Implementation</h2>
 <ul>
-<li>Monte Carlo learns from full episode returns.</li>
-<li>TD learns online by bootstrapping.</li>
-<li>SARSA is on-policy.</li>
-<li>Q-learning is off-policy.</li>
-<li>TD(<span class="math inline">n</span>) and TD(<span class="math inline">\lambda</span>) trade bias and variance through multi-step returns.</li>
-<li>Eligibility traces assign credit to recently visited states.</li>
+<li><strong>Terminal target:</strong> use only the observed final reward, not a value from the next episode.</li>
+<li><strong>Correct continuation:</strong> SARSA uses the selected next action; Q-learning uses the largest next estimate.</li>
+<li><strong>Enough exploration:</strong> an untried action can remain badly estimated, even with an off-policy method.</li>
+<li><strong>Learning rate:</strong> <span class="math inline">\alpha=0.5</span> makes our arithmetic easy; a fixed learning rate does not guarantee exact convergence in a noisy task.</li>
 </ul>
+<div class="takeaway">
+<p>Tabular Q-learning’s convergence guarantees rely on repeated state-action visits and suitable learning rates. They are not guarantees for arbitrary behavior or arbitrary neural-network updates.</p>
+</div>
+<aside class="notes">
+<p>The usual finite discounted tabular Q-learning theorem assumes bounded rewards, every state-action pair updated infinitely often, and per-pair step sizes whose sum diverges while their squared sum converges, along with the standard sampling conditions. State-dependent action sets must be respected. Fixed epsilon may preserve exploration but does not make a SARSA behavior policy greedy in the limit. The goal here is to prevent overgeneralizing the original statement that off-policy learning works regardless of behavior, not to prove a convergence theorem. Function approximation can introduce separate stability issues.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="quick-check" class="slide level2 value32-slide scrollable">
+<h2>Quick Check</h2>
+<ol type="1">
+<li>After pickup, why can TD update <span class="math inline">V(D)</span> while MC waits?</li>
+<li>Behavior chooses return at <span class="math inline">J</span>. Which next estimate do SARSA and Q-learning use: <span class="math inline">1</span> or <span class="math inline">6</span>?</li>
+<li>If entering <span class="math inline">F</span> gives reward <span class="math inline">8</span>, what is the one-step target?</li>
+</ol>
+<div class="fragment" data-fragment-index="0">
+<p><strong>1.</strong> TD uses the observed <span class="math inline">-1</span> plus the current estimate for <span class="math inline">J</span>. MC needs the episode’s complete return.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>2.</strong> SARSA uses <strong><span class="math inline">1</span></strong>, for return. Q-learning uses <strong><span class="math inline">6</span></strong>, the largest next estimate, for deliver.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p><strong>3. <span class="math inline">8</span>.</strong> There is no future return after the terminal state.</p>
+</div>
+</section>
+<section id="takeaways" class="slide level2 value32-slide">
+<h2>Takeaways</h2>
+<ul>
+<li>MC waits for complete returns; TD bootstraps after a transition.</li>
+<li>State values evaluate a policy; action values help improve choices.</li>
+<li>SARSA uses the selected next action; Q-learning uses a greedy target.</li>
+<li>DQN uses a neural Q-network, experience replay, and a target network.</li>
+<li>Multi-step returns and TD(<span class="math inline">\lambda</span>) combine longer experience with estimates.</li>
+<li>Eligibility traces distribute a TD error across recently visited states.</li>
+</ul>
+<div class="takeaway">
+<p>Always identify the observed reward, the estimated continuation, and the policy that continuation represents.</p>
+</div>
 <p><a href="../asset_credits.html#lec32" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
 
 
@@ -657,6 +910,13 @@ V(s)\leftarrow V(s)+\alpha\delta_t e_t(s)
         // devices. It is advisable to set this to a lower number than
         // viewDistance in order to save resources.
         mobileViewDistance: 2,
+
+        // Enable scroll view
+        view: 'slide',
+        scrollProgress: true,
+        scrollActivationWidth: 0,
+        scrollSnap: 'mandatory',
+        scrollLayout: 'full',
 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be

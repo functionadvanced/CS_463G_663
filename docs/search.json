@@ -669,7 +669,7 @@
     "href": "index.html#course-schedule",
     "title": "CS 463G & CS 663: (Intro to) Artificial Intelligence",
     "section": "Course Schedule",
-    "text": "Course Schedule\nThis schedule (including homework) is tentative and may be adjusted as the semester unfolds. The course website is the source for assignment specifications, dates, starter files, and updates; Canvas is used for submissions, grading, and lecture recordings. Official university dates are listed on the UK Academic Calendar, and the final exam period follows the UK Examination Schedule.\n\n\n\n#\nDate\nContent\n\n\n\n\n1\nMon, Aug 24\nCourse introduction, syllabus, grading, and course logisticsLecture 0: Language and ToolsTextbook: Artificial Intelligence: A Modern Approach\n\n\n2\nWed, Aug 26\nLecture 1: Introduction to AIAIMA 1.1-1.2\n\n\n3\nFri, Aug 28\nLecture 2: Agents and EnvironmentsAIMA 2.1-2.2\n\n\n4\nMon, Aug 31\nLecture 2b: Designing Intelligent AgentsPEAS, agent architectures, and a Python vacuum-agent demonstrationAIMA 2.3-2.4Code: Vacuum agents demo\n\n\n5\nWed, Sep 2\nLecture 3: The Nature of EnvironmentsAttendance Verification on Canvas\n\n\n6\nFri, Sep 4\nLecture 4: Introduction to SearchAIMA 3.1-3.2\n\n\n-\nMon, Sep 7\nNo class: Labor Day\n\n\n7\nWed, Sep 9\nLecture 5: BFS and DFSAIMA 3.4; practice BFS/DFS problemsCode: BFS and DFSHomework announced: Homework 1 - Keys, Doors, and Shortest Paths\n\n\n8\nFri, Sep 11\nLecture 6: Uniform-Cost SearchPractice Dijkstra’s algorithmCode: Uniform-cost search\n\n\n9\nMon, Sep 14\nLecture 7: Informed SearchAIMA 3.5Code: A* search\n\n\n10\nWed, Sep 16\nLecture 8: Search Review\n\n\n11\nFri, Sep 18\nLecture 9: Adversarial SearchAIMA U.S. 5.1-5.3 or AIMA Global 6.1-6.3Code: Tic-tac-toe\n\n\n12\nMon, Sep 21\nLecture 10: Alpha-Beta PruningCode: Alpha-beta pruningHomework announced: Homework 2 - Reversi Agents\n\n\n13\nWed, Sep 23\nLecture 11: Local SearchAIMA 4.1-4.2Code: Simulated annealing, 8-puzzleHomework due: Homework 1\n\n\n14\nFri, Sep 25\nLecture 12: Genetic AlgorithmCode: Genetic 8-queens\n\n\n15\nMon, Sep 28\nLecture 13: Constraint Satisfaction ProblemsAIMA U.S. 6.1-6.3 or AIMA Global 5.1-5.3\n\n\n16\nWed, Sep 30\nLecture 14: CSP ConsistencyCode: AC-3\n\n\n17\nFri, Oct 2\nLecture 15: CSP SearchCode: Sudoku\n\n\n18\nMon, Oct 5\nLecture 16: LogicPropositions, connectives, translation, truth tables, and equivalenceAIMA 7.1-7.4Homework due: Homework 2\n\n\n19\nWed, Oct 7\nLecture 17: Propositional InferenceModels, entailment, CNF, and resolution; worked examples and practiceAIMA 7.4-7.6\n\n\n20\nFri, Oct 9\nLecture 18: First-Order LogicMidterm review: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Homework announced: Homework 3 - Logic Toolkit\n\n\n21\nMon, Oct 12\nMidterm exam in classPreparation: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Scope: Lectures 1–16, including Lecture 2b; Lectures 17 and 18 are excluded.\n\n\n22\nWed, Oct 14\nLecture 19: PlanningAIMA 11.1: Definition of Classical Planning\n\n\n23\nFri, Oct 16\nLecture 20: Planning AlgorithmsAIMA 11.2-11.4: Classical planning algorithms, heuristics, and hierarchical planning\n\n\n24\nMon, Oct 19\nLecture 21: ProbabilityNo in-person class. The lecture recording has been uploaded to Canvas under Files. Please watch it instead.AIMA Appendix A.3; AIMA 12.1-12.5Homework announced: Homework 4 - Probability in Motion\n\n\n25\nWed, Oct 21\nLecture 22: Probabilistic InferenceAIMA 12.3-12.5; preview of 13.1-13.2\n\n\n26\nFri, Oct 23\nLecture 23: Bayes NetsAIMA 13.1-13.4Homework due: Homework 3\n\n\n-\nMon, Oct 26\nNo class: Fall Break\n\n\n27\nWed, Oct 28\nLecture 24: Machine LearningAIMA 19.1-19.2Code: KNN on MNIST\n\n\n28\nFri, Oct 30\nLecture 25: Bias, Variance, and OverfittingCode: Linear regression\n\n\n29\nMon, Nov 2\nLecture 26: Decision Trees and Random ForestsAIMA 19.3Homework due: Homework 4\n\n\n30\nWed, Nov 4\nLecture 27: Practical PyTorchTensors, data loaders, models, autograd, training, evaluation, and debugging\n\n\n31\nFri, Nov 6\nLecture 28: Deep LearningAIMA U.S. 21.1 or AIMA Global 22.1Code: Backpropagation\n\n\n32\nMon, Nov 9\nLecture 29: Convolutional Neural NetworksCode: CNNHomework announced: Homework 5 - Two-Digit MNIST with a CNN\n\n\n33\nWed, Nov 11\nLecture 30: Reinforcement LearningAIMA 16.1-16.3 and 16.5\n\n\n34\nFri, Nov 13\nLecture 31: Multi-Armed Bandits\n\n\n35\nMon, Nov 16\nLecture 32: Value-Based Model-Free RL\n\n\n36\nWed, Nov 18\nLecture 33: Policy-Based Model-Free RLHomework announced: Homework 6 - Actor-Critic for Buckshot Roulette\n\n\n37\nFri, Nov 20\nLecture 34: PPO and GRPO\n\n\n38\nMon, Nov 23\nLecture 35: Generative Machine LearningAIMA 25.1 and 25.4Homework due: Homework 5\n\n\n-\nWed, Nov 25\nNo class: Thanksgiving Break\n\n\n-\nFri, Nov 27\nNo class: Thanksgiving Break\n\n\n39\nMon, Nov 30\nLecture 36: Autoregressive Models\n\n\n40\nWed, Dec 2\nLecture 37: TransformersHomework due: Homework 6\n\n\n41\nFri, Dec 4\nLecture 38: Transformers continued\n\n\n42\nMon, Dec 7\nLecture 39: Cutting-Edge AI TopicsLoRA, DPO, agent skills, evaluation harnessesPrep Day: no major assignments, quizzes, or exams\n\n\n43\nWed, Dec 9\nNew topic placeholder: student questions, demos, or optional wrap-upPrep Day; last day of classesFinal exam review\n\n\n\nFinal exam: Monday, December 14, 2026, 10:30 AM-12:30 PM (official UK examination schedule)."
+    "text": "Course Schedule\nThis schedule (including homework) is tentative and may be adjusted as the semester unfolds. The course website is the source for assignment specifications, dates, starter files, and updates; Canvas is used for submissions, grading, and lecture recordings. Official university dates are listed on the UK Academic Calendar, and the final exam period follows the UK Examination Schedule.\n\n\n\n#\nDate\nContent\n\n\n\n\n1\nMon, Aug 24\nCourse introduction, syllabus, grading, and course logisticsLecture 0: Language and ToolsTextbook: Artificial Intelligence: A Modern Approach\n\n\n2\nWed, Aug 26\nLecture 1: Introduction to AIAIMA 1.1-1.2\n\n\n3\nFri, Aug 28\nLecture 2: Agents and EnvironmentsAIMA 2.1-2.2\n\n\n4\nMon, Aug 31\nLecture 2b: Designing Intelligent AgentsPEAS, agent architectures, and a Python vacuum-agent demonstrationAIMA 2.3-2.4Code: Vacuum agents demo\n\n\n5\nWed, Sep 2\nLecture 3: The Nature of EnvironmentsAttendance Verification on Canvas\n\n\n6\nFri, Sep 4\nLecture 4: Introduction to SearchAIMA 3.1-3.2\n\n\n-\nMon, Sep 7\nNo class: Labor Day\n\n\n7\nWed, Sep 9\nLecture 5: BFS and DFSAIMA 3.4; practice BFS/DFS problemsCode: BFS and DFSHomework announced: Homework 1 - Keys, Doors, and Shortest Paths\n\n\n8\nFri, Sep 11\nLecture 6: Uniform-Cost SearchPractice Dijkstra’s algorithmCode: Uniform-cost search\n\n\n9\nMon, Sep 14\nLecture 7: Informed SearchAIMA 3.5Code: A* search\n\n\n10\nWed, Sep 16\nLecture 8: Search Review\n\n\n11\nFri, Sep 18\nLecture 9: Adversarial SearchAIMA U.S. 5.1-5.3 or AIMA Global 6.1-6.3Code: Tic-tac-toe\n\n\n12\nMon, Sep 21\nLecture 10: Alpha-Beta PruningCode: Alpha-beta pruningHomework announced: Homework 2 - Reversi Agents\n\n\n13\nWed, Sep 23\nLecture 11: Local SearchAIMA 4.1-4.2Code: Simulated annealing, 8-puzzleHomework due: Homework 1\n\n\n14\nFri, Sep 25\nLecture 12: Genetic AlgorithmCode: Genetic 8-queens\n\n\n15\nMon, Sep 28\nLecture 13: Constraint Satisfaction ProblemsAIMA U.S. 6.1-6.3 or AIMA Global 5.1-5.3\n\n\n16\nWed, Sep 30\nLecture 14: CSP ConsistencyCode: AC-3\n\n\n17\nFri, Oct 2\nLecture 15: CSP SearchCode: Sudoku\n\n\n18\nMon, Oct 5\nLecture 16: LogicPropositions, connectives, translation, truth tables, and equivalenceAIMA 7.1-7.4Homework due: Homework 2\n\n\n19\nWed, Oct 7\nLecture 17: Propositional InferenceModels, entailment, CNF, and resolution; worked examples and practiceAIMA 7.4-7.6\n\n\n20\nFri, Oct 9\nLecture 18: First-Order LogicMidterm review: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Homework announced: Homework 3 - Logic Toolkit\n\n\n21\nMon, Oct 12\nMidterm exam in classPreparation: Fall 2026 exam cover (PDF), Spring 2025 CS 463G midterm questions (PDF), Question-by-question preparation guide (PDF)Scope: Lectures 1–16, including Lecture 2b; Lectures 17 and 18 are excluded.\n\n\n22\nWed, Oct 14\nLecture 19: PlanningAIMA 11.1: Definition of Classical Planning\n\n\n23\nFri, Oct 16\nLecture 20: Planning AlgorithmsAIMA 11.2-11.4: Classical planning algorithms, heuristics, and hierarchical planning\n\n\n24\nMon, Oct 19\nLecture 21: ProbabilityNo in-person class. The lecture recording has been uploaded to Canvas under Files. Please watch it instead.AIMA Appendix A.3; AIMA 12.1-12.5Homework announced: Homework 4 - Probability in Motion\n\n\n25\nWed, Oct 21\nLecture 22: Probabilistic InferenceAIMA 12.3-12.5; preview of 13.1-13.2\n\n\n26\nFri, Oct 23\nLecture 23: Bayes NetsAIMA 13.1-13.4Homework due: Homework 3\n\n\n-\nMon, Oct 26\nNo class: Fall Break\n\n\n27\nWed, Oct 28\nLecture 24: Machine LearningAIMA 19.1-19.2Code: KNN on MNIST\n\n\n28\nFri, Oct 30\nLecture 25: Bias, Variance, and OverfittingCode: Linear regression\n\n\n29\nMon, Nov 2\nLecture 26: Decision Trees and Random ForestsAIMA 19.3Homework due: Homework 4\n\n\n30\nWed, Nov 4\nLecture 27: Practical PyTorchTensors, data loaders, models, autograd, training, evaluation, and debugging\n\n\n31\nFri, Nov 6\nLecture 28: Deep LearningAIMA U.S. 21.1 or AIMA Global 22.1Code: Backpropagation\n\n\n32\nMon, Nov 9\nLecture 29: Convolutional Neural NetworksCode: CNNHomework announced: Homework 5 - Two-Digit MNIST with a CNN\n\n\n33\nWed, Nov 11\nLecture 30: Reinforcement LearningAIMA 16.1-16.3 and 16.5\n\n\n34\nFri, Nov 13\nLecture 31: Multi-Armed Bandits\n\n\n35\nMon, Nov 16\nLecture 32: Value-Based Model-Free RL\n\n\n36\nWed, Nov 18\nLecture 33: Policy-Based Model-Free RLHomework announced: Homework 6 - Actor-Critic for Buckshot Roulette\n\n\n37\nFri, Nov 20\nLecture 34: PPO, RLHF, DPO, and GRPO\n\n\n38\nMon, Nov 23\nLecture 35: Generative Machine LearningAIMA 25.1 and 25.4Homework due: Homework 5\n\n\n-\nWed, Nov 25\nNo class: Thanksgiving Break\n\n\n-\nFri, Nov 27\nNo class: Thanksgiving Break\n\n\n39\nMon, Nov 30\nLecture 36: Autoregressive Models\n\n\n40\nWed, Dec 2\nLecture 37: TransformersHomework due: Homework 6\n\n\n41\nFri, Dec 4\nLecture 38: Transformers continued\n\n\n42\nMon, Dec 7\nLecture 39: Cutting-Edge AI TopicsLoRA, agent skills, MCP, evaluation and agent harnessesPrep Day: no major assignments, quizzes, or exams\n\n\n43\nWed, Dec 9\nNew topic placeholder: student questions, demos, or optional wrap-upPrep Day; last day of classesFinal exam review\n\n\n\nFinal exam: Monday, December 14, 2026, 10:30 AM-12:30 PM (official UK examination schedule)."
   },
   {
     "objectID": "index.html#references",
@@ -1173,21 +1173,21 @@
     "href": "asset_credits.html#lec32",
     "title": "Visual Asset Credits",
     "section": "Lecture 32: Value-Based Model-Free RL",
-    "text": "Lecture 32: Value-Based Model-Free RL\nNo external visual assets. Diagrams are drawn directly in the Quarto source."
+    "text": "Lecture 32: Value-Based Model-Free RL\nThe public-domain toy robot is reused from Lecture 1. It represents a fictional learning agent, not a deployed robot system.\nThe observed transition, delivery episode, MC/TD update timing, behavior choice, SARSA target, Q-learning target, return-horizon comparison, eligibility-trace weights, and schematic Q-network are original course diagrams. Their editable Draw.io source contains nine pages, exported as PNGs for the slides. All rewards and current estimates are constructed teaching examples. The delivery setting continues Lecture 30; no empirical learning results are claimed.\nThe lecture manually revises the supplied Spring 2025 value-based RL Beamer material. Background references: Sutton and Barto, Reinforcement Learning: An Introduction, second edition, Chapters 5-7 and 12; the UC Berkeley CS 188 notes on reinforcement learning and model-free learning; David Silver’s Model-Free Prediction; and van Seijen et al., True Online Temporal-Difference Learning, for the distinction between conventional online traces and exact forward-view equivalence.\nDQN and extensions: Volodymyr Mnih et al., Playing Atari with Deep Reinforcement Learning (2013) and Human-level control through deep reinforcement learning (2015); Hado van Hasselt, Arthur Guez, and David Silver, Deep Reinforcement Learning with Double Q-learning; Ziyu Wang et al., Dueling Network Architectures for Deep Reinforcement Learning; Tom Schaul et al., Prioritized Experience Replay; and Matteo Hessel et al., Rainbow: Combining Improvements in Deep Reinforcement Learning."
   },
   {
     "objectID": "asset_credits.html#lec33",
     "href": "asset_credits.html#lec33",
     "title": "Visual Asset Credits",
     "section": "Lecture 33: Policy-Based Model-Free RL",
-    "text": "Lecture 33: Policy-Based Model-Free RL\nNo external visual assets. Diagrams are drawn directly in the Quarto source."
+    "text": "Lecture 33: Policy-Based Model-Free RL\nThe public-domain toy robot is reused from Lecture 1 as an illustrative learning agent.\nThe direct policy, delivery choices, sigmoid-probability bars, episode timeline, return-versus-baseline chart, actor-critic loop, and critic transition are original course diagrams. Their editable Draw.io source contains seven pages, exported as PNGs for the slides. All rewards, parameter values, and numerical updates are hypothetical teaching calculations. The delivery setting continues Lectures 30 and 32, and no measured training performance is claimed.\nThe lecture manually revises the supplied Spring 2025 policy-based RL Beamer material. Background: Sutton and Barto, Reinforcement Learning: An Introduction, second edition, Chapter 13; Ronald J. Williams (1992), Simple statistical gradient-following algorithms for connectionist reinforcement learning; OpenAI Spinning Up’s Introduction to Policy Optimization; and the official PyTorch Tensor.detach documentation. The numerical walkthrough distinguishes expected advantage from sampled estimates, and uses explicit discount weights for its discounted starting-state objective."
   },
   {
     "objectID": "asset_credits.html#lec34",
     "href": "asset_credits.html#lec34",
     "title": "Visual Asset Credits",
-    "section": "Lecture 34: PPO and GRPO",
-    "text": "Lecture 34: PPO and GRPO\nNo local image assets. External reference links are included on the slides for PPO, TRPO, GRPO, and explanatory sources."
+    "section": "Lecture 34: PPO, RLHF, DPO, and GRPO",
+    "text": "Lecture 34: PPO, RLHF, DPO, and GRPO\nThe public-domain toy robot is reused from Lecture 1 as an illustrative agent.\nThe PPO round, old/candidate probability bars, positive and negative clipping curves, toy token policy, RLHF pipeline, preference pair, policy-role comparison, and response group are original course diagrams and calculated charts. Their editable Draw.io source contains nine pages, exported as PNGs for the slides. All probabilities, preferences, reward-model scores, and response groups are constructed teaching examples. They are not collected human feedback, outputs from a trained model, or measured training curves.\nThe DPO workflow is an additional original course diagram with its own editable Draw.io source. Its worked probability and loss values are constructed teaching examples, not measured model outputs.\nThe lecture manually revises the supplied PPO/GRPO Beamer material and adds an InstructGPT-style RLHF walkthrough and offline DPO. Primary references: John Schulman et al. (2017), PPO paper; Long Ouyang et al. (2022), InstructGPT/RLHF paper; Rafael Rafailov et al. (2023), DPO paper; and Zhihong Shao et al. (2024), DeepSeekMath/GRPO paper. The full paper titles and author credits appear at the methods’ first introductions in the deck. The official Spinning Up PPO explanation supports the clipping discussion. The curves distinguish positive and negative advantages and do not present clipping as a hard probability or KL bound."
   },
   {
     "objectID": "asset_credits.html#lec35",
@@ -2639,228 +2639,25 @@
     "text": "What to Remember\n\nAutoregressive models factor a joint distribution into sequential conditionals.\nGeneration repeats prediction and sampling.\nRNNs summarize history with hidden states.\nLSTMs and GRUs improve recurrent memory with gates.\nPixelCNN applies autoregression to images using masks.\nTransformers will modernize this idea with self-attention.\n\nAsset credits"
   },
   {
-    "objectID": "slides/lec34_PPO_GRPO.html#ppo-and-grpo",
-    "href": "slides/lec34_PPO_GRPO.html#ppo-and-grpo",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "PPO and GRPO",
-    "text": "PPO and GRPO\nPolicy-gradient methods are powerful, but naive policy updates can be unstable."
-  },
-  {
-    "objectID": "slides/lec34_PPO_GRPO.html#where-we-are",
-    "href": "slides/lec34_PPO_GRPO.html#where-we-are",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Where We Are",
-    "text": "Where We Are\nFrom policy gradients, the basic update is:\n\n\\theta \\leftarrow \\theta + \\alpha \\nabla_\\theta J(\\theta)\n\nThe problem:\n\nA gradient step can make the new policy very different from the old one.\nA once-good policy can collapse after one overly aggressive update.\nWe want improvement, but not destructive policy movement.\n\n\nPPO is built around a simple control knob: keep the new policy close to the policy that collected the data."
-  },
-  {
-    "objectID": "slides/lec34_PPO_GRPO.html#trust-region-intuition",
-    "href": "slides/lec34_PPO_GRPO.html#trust-region-intuition",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Trust Region Intuition",
-    "text": "Trust Region Intuition\nTrust Region Policy Optimization (TRPO) directly constrains policy change:\n\n\\max_\\theta \\; \\mathbb{E}_t\n\\left[\n\\frac{\\pi_\\theta(a_t\\mid s_t)}\n{\\pi_{\\theta_{\\text{old}}}(a_t\\mid s_t)}\nA_t\n\\right]\n\\quad\n\\text{s.t.}\n\\quad\nD_{\\mathrm{KL}}(\\pi_{\\theta_{\\text{old}}}\\,\\|\\,\\pi_\\theta)\\leq\\delta\n\n\n\nTRPO\n\nHard trust-region constraint\nMore complex optimization\nRequires second-order information\n\n\nPPO\n\nSoft constraint through clipping\nEasier first-order optimization\nWidely used in practice"
-  },
-  {
-    "objectID": "slides/lec34_PPO_GRPO.html#probability-ratio",
-    "href": "slides/lec34_PPO_GRPO.html#probability-ratio",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Probability Ratio",
-    "text": "Probability Ratio\nPPO compares the new policy to the old policy with:\n\nr_t(\\theta)\n=\n\\frac{\\pi_\\theta(a_t\\mid s_t)}\n{\\pi_{\\theta_{\\text{old}}}(a_t\\mid s_t)}\n\nInterpretation:\n\n\n\n\n\n\n\nRatio\nMeaning\n\n\n\n\nr_t(\\theta)=1\nNew policy gives the sampled action the same probability\n\n\nr_t(\\theta)&gt;1\nNew policy makes the sampled action more likely\n\n\nr_t(\\theta)&lt;1\nNew policy makes the sampled action less likely"
-  },
-  {
-    "objectID": "slides/lec34_PPO_GRPO.html#ppo-clipped-objective",
-    "href": "slides/lec34_PPO_GRPO.html#ppo-clipped-objective",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "PPO Clipped Objective",
-    "text": "PPO Clipped Objective\nPPO maximizes:\n\nL^{\\text{PPO}}(\\theta)\n=\n\\mathbb{E}_t\n\\left[\n\\min\\left(\nr_t(\\theta)A_t,\\;\n\\operatorname{clip}(r_t(\\theta),1-\\epsilon,1+\\epsilon)A_t\n\\right)\n\\right]\n\n\nIf the policy update tries to move too far, clipping removes the extra incentive.\n\n\\epsilon is usually small, often around 0.1 to 0.2."
-  },
-  {
-    "objectID": "slides/lec34_PPO_GRPO.html#why-the-min-matters",
-    "href": "slides/lec34_PPO_GRPO.html#why-the-min-matters",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why the Min Matters",
-    "text": "Why the Min Matters\n\n\nPositive advantage\nIf A_t&gt;0, PPO wants to increase the probability of a_t.\nClipping prevents increasing it too much.\n\nNegative advantage\nIf A_t&lt;0, PPO wants to decrease the probability of a_t.\nClipping prevents decreasing it too much.\n\n\nThe objective is conservative on purpose: accept useful improvement, reject excessive movement."
-  },
-  {
-    "objectID": "slides/lec34_PPO_GRPO.html#ppo-training-loop",
-    "href": "slides/lec34_PPO_GRPO.html#ppo-training-loop",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "PPO Training Loop",
-    "text": "PPO Training Loop\n\n\ntheta, phi = initial policy and value parameters\n\n\nfor iteration = 1, 2, …:\n\n\nD = collectTrajectories(pi_theta)\n\n\nR_hat, A = estimateReturnsAndAdvantages(D, V_phi)\n\n\ntheta_old = theta\n\n\nfor epoch in 1 … K:\n\n\nfor batch in minibatches(D):\n\n\nratio = pi_theta(a|s) / pi_theta_old(a|s)\n\n\nactorLoss = -mean(min(ratio  A, clip(ratio)  A))\n\n\ncriticLoss = mean((R_hat - V_phi(s))2)\n\n\ntheta, phi = optimizerStep(actorLoss, criticLoss)"
-  },
-  {
-    "objectID": "slides/lec34_PPO_GRPO.html#why-ppo-works-well",
-    "href": "slides/lec34_PPO_GRPO.html#why-ppo-works-well",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why PPO Works Well",
-    "text": "Why PPO Works Well\n\nStable enough for long training runs.\nSimple enough to implement with standard gradient descent.\nReuses collected trajectories for several epochs.\nWorks with large neural policies.\n\nCommon use cases:\n\nRobotics and continuous control\nGame playing\nRLHF-style language-model training\n\n\nPPO became popular because it is a practical compromise: not the most theoretically exact, but robust and implementable."
-  },
-  {
-    "objectID": "slides/lec34_PPO_GRPO.html#from-ppo-to-grpo",
-    "href": "slides/lec34_PPO_GRPO.html#from-ppo-to-grpo",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "From PPO to GRPO",
-    "text": "From PPO to GRPO\nPPO usually uses both:\n\nA policy model, the actor.\nA value model, the critic.\n\nFor large language models, the critic can be expensive:\n\nIt adds memory cost.\nIt adds training complexity.\nIt can be hard to fit accurately for long reasoning traces.\n\n\nCan we estimate advantages without training a separate value model?"
-  },
-  {
-    "objectID": "slides/lec34_PPO_GRPO.html#grpo-main-idea",
-    "href": "slides/lec34_PPO_GRPO.html#grpo-main-idea",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "GRPO: Main Idea",
-    "text": "GRPO: Main Idea\nGroup Relative Policy Optimization (GRPO) samples several responses for the same prompt.\nFor one prompt q_i:\n\n\\{o_{i,1}, o_{i,2}, \\dots, o_{i,G}\\}\n\\sim\n\\pi_\\theta(\\cdot\\mid q_i)\n\nThen compute rewards:\n\nr_{i,j}=r(q_i,o_{i,j})\n\n\nInstead of asking “how good is this response absolutely?”, GRPO asks “how good is this response compared with the other responses for the same prompt?”"
-  },
-  {
-    "objectID": "slides/lec34_PPO_GRPO.html#group-relative-advantage",
-    "href": "slides/lec34_PPO_GRPO.html#group-relative-advantage",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Group-Relative Advantage",
-    "text": "Group-Relative Advantage\nNormalize rewards within each group:\n\nA_{i,j}\n=\n\\frac{\nr_{i,j}-\\operatorname{mean}(\\mathbf{r}_i)\n}{\n\\operatorname{std}(\\mathbf{r}_i)\n}\n,\\qquad\n\\mathbf{r}_i=\\{r_{i,1},\\dots,r_{i,G}\\}\n\nInterpretation:\n\nAbove-average response: positive advantage.\nBelow-average response: negative advantage.\nNo learned critic is needed."
-  },
-  {
-    "objectID": "slides/lec34_PPO_GRPO.html#grpo-training-loop",
-    "href": "slides/lec34_PPO_GRPO.html#grpo-training-loop",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "GRPO Training Loop",
-    "text": "GRPO Training Loop\n\n\ntheta = initial policy parameters\n\n\nfor iteration = 1, 2, …:\n\n\nprompts = samplePromptBatch()\n\n\nfor each prompt q_i in prompts:\n\n\nresponses = sampleGroup(pi_theta, q_i, G)\n\n\nrewards = scoreResponses(q_i, responses)\n\n\nadvantages = (rewards - mean(rewards)) / std(rewards)\n\n\ntheta_old = theta\n\n\nratio = pi_theta(o|q) / pi_theta_old(o|q)\n\n\nobjective = ppoStyleClippedObjective(ratio, advantages)\n\n\ntheta = optimizerStep(objective)"
-  },
-  {
-    "objectID": "slides/lec34_PPO_GRPO.html#ppo-vs.-grpo",
-    "href": "slides/lec34_PPO_GRPO.html#ppo-vs.-grpo",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "PPO vs. GRPO",
-    "text": "PPO vs. GRPO\n\n\n\n\n\n\n\n\nFeature\nPPO\nGRPO\n\n\n\n\nPolicy update\nClipped policy-ratio objective\nPPO-style clipped update\n\n\nAdvantage source\nOften uses value-function critic\nGroup-relative rewards\n\n\nExtra model\nCritic/value model\nNo separate critic\n\n\nNatural setting\nGeneral RL and RLHF\nLLM reasoning-style training\n\n\n\n\nGRPO keeps PPO’s conservative update idea, but changes how the advantage signal is estimated."
-  },
-  {
-    "objectID": "slides/lec34_PPO_GRPO.html#useful-references",
-    "href": "slides/lec34_PPO_GRPO.html#useful-references",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Useful References",
-    "text": "Useful References\n\nTrust Region Policy Optimization, Schulman et al., 2015.\nProximal Policy Optimization Algorithms, Schulman et al., 2017.\nDeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models, Shao et al., 2024.\nA vision researcher’s guide to some RL stuff: PPO & GRPO, Yuge Shi."
-  },
-  {
     "objectID": "slides/lec34_PPO_GRPO.html#takeaways",
     "href": "slides/lec34_PPO_GRPO.html#takeaways",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Takeaways",
-    "text": "Takeaways\n\nPPO limits policy updates by clipping the policy ratio.\nThe ratio compares the current policy to the policy that collected the data.\nGRPO removes the critic by comparing responses within the same prompt group.\nBoth methods care about the same practical issue: stable policy improvement.\n\nAsset credits"
-  },
-  {
-    "objectID": "slides/lec32_Value_Based_RL.html#value-based-model-free-rl",
-    "href": "slides/lec32_Value_Based_RL.html#value-based-model-free-rl",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Value-Based Model-Free RL",
-    "text": "Value-Based Model-Free RL\nLearn values from experience without knowing the transition or reward model."
-  },
-  {
-    "objectID": "slides/lec32_Value_Based_RL.html#model-based-vs.-model-free",
-    "href": "slides/lec32_Value_Based_RL.html#model-based-vs.-model-free",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Model-Based vs. Model-Free",
-    "text": "Model-Based vs. Model-Free\n\n\nModel-based\nAssumes access to:\n\nP(s'\\mid s,a), \\qquad R(s,a)\n\nThen plans with the model.\n\nModel-free\nLearns directly from interaction.\nNo explicit P or R required.\n\n\nModel-free methods learn from sampled experience alone."
-  },
-  {
-    "objectID": "slides/lec32_Value_Based_RL.html#common-model-free-methods",
-    "href": "slides/lec32_Value_Based_RL.html#common-model-free-methods",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Common Model-Free Methods",
-    "text": "Common Model-Free Methods\n\n\n\n\n\n\n\n\nFamily\nMethod\nMain idea\n\n\n\n\nValue-based\nMonte Carlo\nLearn from full returns\n\n\nValue-based\nTD\nBootstrap from next-state estimate\n\n\nControl\nSARSA\nOn-policy action-value learning\n\n\nControl\nQ-learning\nOff-policy optimal action-value learning\n\n\nPolicy-based\nREINFORCE, actor-critic, PPO\nDirectly learn a policy"
-  },
-  {
-    "objectID": "slides/lec32_Value_Based_RL.html#monte-carlo-estimation",
-    "href": "slides/lec32_Value_Based_RL.html#monte-carlo-estimation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Monte Carlo Estimation",
-    "text": "Monte Carlo Estimation\nMonte Carlo waits until an episode ends, then updates from the full return.\n\nG_t=r_{t+1}+\\gamma r_{t+2}+\\cdots+\\gamma^{T-t-1}r_T\n\n\nV(s_t)\\leftarrow V(s_t)+\\alpha\\left[G_t-V(s_t)\\right]\n\n\n\nStrength\nUnbiased return estimate under the policy.\n\nWeakness\nHigh variance; must wait for episode end."
-  },
-  {
-    "objectID": "slides/lec32_Value_Based_RL.html#monte-carlo-vs.-td-timing",
-    "href": "slides/lec32_Value_Based_RL.html#monte-carlo-vs.-td-timing",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Monte Carlo vs. TD Timing",
-    "text": "Monte Carlo vs. TD Timing"
-  },
-  {
-    "objectID": "slides/lec32_Value_Based_RL.html#temporal-difference-learning",
-    "href": "slides/lec32_Value_Based_RL.html#temporal-difference-learning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Temporal-Difference Learning",
-    "text": "Temporal-Difference Learning\nTD learning updates before the episode ends.\nIt combines:\n\nLearning from raw experience.\nBootstrapping from current value estimates.\n\n\n“Temporal difference” means the update is driven by the difference between a current estimate and a one-step target."
-  },
-  {
-    "objectID": "slides/lec32_Value_Based_RL.html#td0-target",
-    "href": "slides/lec32_Value_Based_RL.html#td0-target",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "TD(0) Target",
-    "text": "TD(0) Target\nFrom the Bellman expectation equation:\n\nV^\\pi(s)=\\mathbb{E}_\\pi[r_{t+1}+\\gamma V^\\pi(s_{t+1})\\mid s_t=s]\n\nUse the sampled target:\n\nr_{t+1}+\\gamma V(s_{t+1})\n\nTD(0) update:\n\nV(s_t)\\leftarrow V(s_t)+\\alpha\\left[r_{t+1}+\\gamma V(s_{t+1})-V(s_t)\\right]"
-  },
-  {
-    "objectID": "slides/lec32_Value_Based_RL.html#td0-as-algorithm",
-    "href": "slides/lec32_Value_Based_RL.html#td0-as-algorithm",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "TD(0) as Algorithm",
-    "text": "TD(0) as Algorithm\n\n\nobserve transition (s, r, sNext)\n\n\ntarget = r + gamma * V(sNext)\n\n\nerror = target - V(s)\n\n\nV(s) = V(s) + alpha * error"
-  },
-  {
-    "objectID": "slides/lec32_Value_Based_RL.html#td0-example",
-    "href": "slides/lec32_Value_Based_RL.html#td0-example",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "TD(0) Example",
-    "text": "TD(0) Example\nTrajectory:\n\ns_1 \\xrightarrow{a_1,\\;r=1} s_2 \\xrightarrow{a_2,\\;r=0} s_3\n\nAssume:\n\n\\gamma=1,\\quad \\alpha=0.5,\\quad V(s_1)=0,\\quad V(s_2)=0.5\n\n\n\nV(s_1)\\leftarrow 0+0.5[1+0.5-0]=0.75"
-  },
-  {
-    "objectID": "slides/lec32_Value_Based_RL.html#on-policy-vs.-off-policy",
-    "href": "slides/lec32_Value_Based_RL.html#on-policy-vs.-off-policy",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "On-Policy vs. Off-Policy",
-    "text": "On-Policy vs. Off-Policy\n\n\n\nType\nLearns value of\nExample\n\n\n\n\nOn-policy\nThe policy being followed\nSARSA\n\n\nOff-policy\nA target policy different from behavior\nQ-learning\n\n\n\n\nOn-policy learns what you do; off-policy learns what you should do."
+    "text": "Takeaways\n\nPPO-Clip limits incentives for large favorable ratio changes, without a hard policy-distance guarantee.\nThe old policy supplies fixed denominators for a recent batch.\nClassic RLHF fits a preference reward model, then improves a policy using it.\nDPO directly fits saved preference pairs using a reference-relative loss, without a separate reward model or RL rollout loop.\nRollout snapshots, fixed references, reward models, and value critics have different roles.\nGRPO replaces the learned value baseline with group-relative reward weights.\nEqual-score groups and incomplete reward specifications need explicit handling.\n\nAsset credits"
   },
   {
     "objectID": "slides/lec32_Value_Based_RL.html#sarsa",
     "href": "slides/lec32_Value_Based_RL.html#sarsa",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "SARSA",
-    "text": "SARSA\nSARSA uses the tuple:\n\nS \\rightarrow A \\rightarrow R \\rightarrow S' \\rightarrow A'\n\nUpdate:\n\nQ(s_t,a_t)\\leftarrow Q(s_t,a_t)+\n\\alpha\\left[\nr_{t+1}+\\gamma Q(s_{t+1},a_{t+1})-Q(s_t,a_t)\n\\right]\n\n\nThe next action a_{t+1} is the action actually selected by the behavior policy."
+    "section": "SARSA: Use the Selected Next Action",
+    "text": "SARSA: Use the Selected Next Action\nSARSA names the sample it uses: State, Action, Reward, State, Action, or (s,a,r,s',a'). The next action a' is the one actually selected by the behavior policy.\n\ny=r+\\gamma Q(s',a')=-1+0.9\\cdot1=-0.1.\nStart from Q(D,\\text{pickup})=0 and \\alpha=0.5:\n\nQ(D,\\text{pickup})\\leftarrow0+0.5(-0.1-0)=-0.05. SARSA is on-policy: its target includes the exploratory return action.\n\n\nThe shared action-value update is Q(s,a) &lt;- Q(s,a)+alpha[y-Q(s,a)]. The observed tuple for this update is (D,pickup,-1,J,return). We have selected the next action; SARSA need not wait for return’s subsequent reward to make this update. In an online loop that chosen action must then be executed, rather than silently resampled after the update. For a terminal next state no next action is selected and y=r. The negative estimate is possible because pickup incurs a cost and the current estimate for the exploratory continuation is low. It is not the true optimal return of the task. Reference: the supplied Beamer SARSA frame; Sutton and Barto, second edition, Section 6.4."
   },
   {
     "objectID": "slides/lec32_Value_Based_RL.html#q-learning",
     "href": "slides/lec32_Value_Based_RL.html#q-learning",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Q-Learning",
-    "text": "Q-Learning\nQ-learning bootstraps toward the best possible next action.\n\nQ(s_t,a_t)\\leftarrow Q(s_t,a_t)+\n\\alpha\\left[\nr_{t+1}+\n\\gamma\\max_{a'}Q(s_{t+1},a')-\nQ(s_t,a_t)\n\\right]\n\n\nQ-learning is off-policy because the target is greedy even if the behavior was exploratory."
-  },
-  {
-    "objectID": "slides/lec32_Value_Based_RL.html#sarsa-vs.-q-learning",
-    "href": "slides/lec32_Value_Based_RL.html#sarsa-vs.-q-learning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "SARSA vs. Q-Learning",
-    "text": "SARSA vs. Q-Learning\n\n\n\nMethod\nTarget\n\n\n\n\nSARSA\nr+\\gamma Q(s',a') for the action actually taken\n\n\nQ-learning\nr+\\gamma\\max_{a'}Q(s',a')"
-  },
-  {
-    "objectID": "slides/lec32_Value_Based_RL.html#tdn",
-    "href": "slides/lec32_Value_Based_RL.html#tdn",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "TD(n)",
-    "text": "TD(n)\nTD(n) uses n real rewards before bootstrapping:\n\nG_t^{(n)}\n=\nr_{t+1}+\\gamma r_{t+2}\n\\cdots+\n\\gamma^{n-1}r_{t+n}\n\\gamma^nV(s_{t+n})\n\nUpdate:\n\nV(s_t)\\leftarrow V(s_t)+\\alpha\\left[G_t^{(n)}-V(s_t)\\right]\n\n\nLarger n usually means lower bias and higher variance."
-  },
-  {
-    "objectID": "slides/lec32_Value_Based_RL.html#tdlambda",
-    "href": "slides/lec32_Value_Based_RL.html#tdlambda",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "TD(lambda)",
-    "text": "TD(lambda)\nTD(\\lambda) blends all n-step returns:\n\nG_t^{(\\lambda)}\n=\n(1-\\lambda)\\sum_{n=1}^{\\infty}\\lambda^{n-1}G_t^{(n)}\n\n\n\n\n\\lambda\nBehavior\n\n\n\n\n0\nOne-step TD\n\n\n1\nMonte Carlo-like\n\n\nBetween\nSmooth bias-variance tradeoff"
-  },
-  {
-    "objectID": "slides/lec32_Value_Based_RL.html#eligibility-traces",
-    "href": "slides/lec32_Value_Based_RL.html#eligibility-traces",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Eligibility Traces",
-    "text": "Eligibility Traces\nEligibility traces implement TD(\\lambda) online.\nTD error:\n\n\\delta_t=r_{t+1}+\\gamma V(s_{t+1})-V(s_t)\n\nTrace update:\n\ne_t(s)=\n\\begin{cases}\n\\gamma\\lambda e_{t-1}(s)+1,&s=s_t\\\\\n\\gamma\\lambda e_{t-1}(s),&\\text{otherwise}\n\\end{cases}\n\nValue update:\n\nV(s)\\leftarrow V(s)+\\alpha\\delta_t e_t(s)"
-  },
-  {
-    "objectID": "slides/lec32_Value_Based_RL.html#what-to-remember",
-    "href": "slides/lec32_Value_Based_RL.html#what-to-remember",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What to Remember",
-    "text": "What to Remember\n\nMonte Carlo learns from full episode returns.\nTD learns online by bootstrapping.\nSARSA is on-policy.\nQ-learning is off-policy.\nTD(n) and TD(\\lambda) trade bias and variance through multi-step returns.\nEligibility traces assign credit to recently visited states.\n\nAsset credits"
+    "section": "Q-Learning: Use the Largest Next Estimate",
+    "text": "Q-Learning: Use the Largest Next Estimate\nQ-learning learns action values using a greedy target, even if behavior chooses an exploratory action. Here a' ranges over available actions at s'.\n\ny=r+\\gamma\\max_{a'}Q(s',a')=-1+0.9\\max\\{6,1\\}=4.4.\nUse the same starting Q(D,\\text{pickup})=0, not SARSA’s updated value:\n\nQ(D,\\text{pickup})\\leftarrow0+0.5(4.4-0)=2.2. Q-learning is off-policy: its target uses deliver, although behavior chose return.\n\n\nThis is an alternative update from the same initial table and the same observed transition as SARSA, not a second update following it. The immediate observed reward remains -1; using max does not replace a sampled immediate reward with an imagined one. Q-learning targets optimal action values Q, but a finite current Q table is not Q. The method does not require that the behavior actually take the maximizing action at J for this update. For a terminal successor the target is r, with no max over terminal actions. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/rl/mfl.html; supplied Beamer Q-learning material; Sutton and Barto, second edition, Section 6.5."
   },
   {
     "objectID": "slides/lec30_RL.html#value-iteration",
@@ -3059,109 +2856,32 @@
     "text": "Regret: Reward Missed While Learning\nThe best mean is \\mu^*=\\max_a\\mu_a. Expected regret compares a learner with always choosing an arm having that best mean:\n\\operatorname{Regret}(T)=T\\mu^*-\\mathbb E\\left[\\sum_{t=1}^{T}R_t\\right].\nHere T is the number of rounds, and \\mathbb E averages over random rewards and action choices.\n\nA pull of arm a loses \\mu^*-\\mu_a expected reward relative to the benchmark.\nA learner pays for poor choices along the way, even if it identifies the best arm at the end.\n\n\nThe true means are usually unknown to the learner. A simulator can reveal them to an evaluator without giving them to the algorithm.\n\n\nThis is expected pseudo-regret for the stationary stochastic model, not regret against the best noisy realized reward sequence. With counts defined before each round, the equivalent decomposition is sum_a (mu-mu_a) E[N_{T+1}(a)]. We omit that extra notation from the slide. A single realized reward total can exceed Tmu* through luck; that does not contradict nonnegative expected regret. The benchmark is an evaluator’s reference, not a resource the learner has access to."
   },
   {
-    "objectID": "slides/lec33_Policy_Based_RL.html#policy-based-model-free-rl",
-    "href": "slides/lec33_Policy_Based_RL.html#policy-based-model-free-rl",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Policy-Based Model-Free RL",
-    "text": "Policy-Based Model-Free RL\nInstead of learning values first, policy-based methods optimize the policy directly."
-  },
-  {
-    "objectID": "slides/lec33_Policy_Based_RL.html#why-policy-based-methods",
-    "href": "slides/lec33_Policy_Based_RL.html#why-policy-based-methods",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why Policy-Based Methods?",
-    "text": "Why Policy-Based Methods?\nLearn a parameterized policy:\n\n\\pi_\\theta(a\\mid s)\n\nAdvantages:\n\nWorks naturally with stochastic policies.\nHandles continuous or high-dimensional actions.\nDirectly optimizes expected return.\nDoes not require a model of environment dynamics."
-  },
-  {
     "objectID": "slides/lec33_Policy_Based_RL.html#objective",
     "href": "slides/lec33_Policy_Based_RL.html#objective",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Objective",
-    "text": "Objective\nPolicy objective:\n\nJ(\\theta)=\n\\mathbb{E}_{\\tau\\sim\\pi_\\theta}\n\\left[\n\\sum_{t=0}^{T}\\gamma^t r_t\n\\right]\n\nPolicy-gradient idea:\n\n\\theta \\leftarrow \\theta+\\alpha\\nabla_\\theta J(\\theta)\n\n\nIncrease the probability of actions that lead to high returns."
-  },
-  {
-    "objectID": "slides/lec33_Policy_Based_RL.html#reinforce",
-    "href": "slides/lec33_Policy_Based_RL.html#reinforce",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "REINFORCE",
-    "text": "REINFORCE\nREINFORCE is a Monte Carlo policy-gradient method.\nGradient estimator:\n\n\\nabla_\\theta J(\\theta)\n=\n\\mathbb{E}_{\\tau}\n\\left[\n\\sum_{t=0}^{T}\n\\nabla_\\theta \\log \\pi_\\theta(a_t\\mid s_t)R_t\n\\right]\n\nwhere R_t is the return after time t.\n\nThe log-probability term tells us how to change policy parameters to make sampled actions more or less likely."
-  },
-  {
-    "objectID": "slides/lec33_Policy_Based_RL.html#derivation-log-derivative-trick",
-    "href": "slides/lec33_Policy_Based_RL.html#derivation-log-derivative-trick",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Derivation: Log-Derivative Trick",
-    "text": "Derivation: Log-Derivative Trick\nStart with trajectories:\n\nJ(\\theta)=\\int P_\\theta(\\tau)R(\\tau)d\\tau\n\nTake gradient:\n\n\\nabla_\\theta J(\\theta)\n=\n\\int \\nabla_\\theta P_\\theta(\\tau)R(\\tau)d\\tau\n\nUse:\n\n\\nabla_\\theta P_\\theta(\\tau)\n=\nP_\\theta(\\tau)\\nabla_\\theta\\log P_\\theta(\\tau)"
-  },
-  {
-    "objectID": "slides/lec33_Policy_Based_RL.html#derivation-trajectory-probability",
-    "href": "slides/lec33_Policy_Based_RL.html#derivation-trajectory-probability",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Derivation: Trajectory Probability",
-    "text": "Derivation: Trajectory Probability\nTrajectory probability:\n\nP_\\theta(\\tau)\n=\n\\rho(s_0)\n\\prod_{t=0}^{T}\n\\pi_\\theta(a_t\\mid s_t)P(s_{t+1}\\mid s_t,a_t)\n\nOnly \\pi_\\theta depends on \\theta, so:\n\n\\nabla_\\theta\\log P_\\theta(\\tau)\n=\n\\sum_{t=0}^{T}\n\\nabla_\\theta\\log \\pi_\\theta(a_t\\mid s_t)"
-  },
-  {
-    "objectID": "slides/lec33_Policy_Based_RL.html#return-to-go",
-    "href": "slides/lec33_Policy_Based_RL.html#return-to-go",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Return-to-Go",
-    "text": "Return-to-Go\nUsing full return is unbiased, but can have high variance.\nReturn-to-go:\n\nR_t=\\sum_{k=t}^{T}\\gamma^{k-t}r_k\n\nFinal estimator:\n\n\\nabla_\\theta J(\\theta)\n=\n\\mathbb{E}_{\\tau}\n\\left[\n\\sum_{t=0}^{T}\n\\nabla_\\theta \\log \\pi_\\theta(a_t\\mid s_t)R_t\n\\right]\n\n\nPast rewards do not depend on later actions, so return-to-go removes irrelevant noise."
+    "section": "Expected Return",
+    "text": "Expected Return\nThe objective J(\\theta) is the expected return from the starting state. The expectation \\mathbb E_{\\pi_\\theta} averages over episodes generated by the current policy:\nJ(\\theta)=\\mathbb E_{\\pi_\\theta}[G_0].\nIn our example, with pickup probability p:\nJ(\\theta)=4(1-p)+6.2p=4+2.2p.\nAt p=0.5, expected return is 5.1, although an individual episode returns either 4 or 6.2.\n\nThe learning goal is to improve average return over sampled episodes. A single good outcome does not identify the best policy.\n\n\nThe function J(theta), an objective, is distinct from the pickup-stop label J. We can compute the exact objective in this tiny deterministic environment, but a model-free agent normally lacks that formula. Each episode starts at D. G0 is its full discounted return. The expected-return comparison averages over policy randomness here; in a stochastic environment it also averages over transition and reward randomness. The numerical optimum within this policy family favors pickup, approached as theta tends to positive infinity."
   },
   {
     "objectID": "slides/lec33_Policy_Based_RL.html#reinforce-algorithm",
     "href": "slides/lec33_Policy_Based_RL.html#reinforce-algorithm",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "REINFORCE Algorithm",
-    "text": "REINFORCE Algorithm\n\n\nfor each episode\n\n\ntrajectory = sampleEpisode(piTheta)\n\n\nfor each time step t\n\n\nR_t = discounted return from t\n\n\ng_t = ∇theta log piTheta(a_t|s_t) * R_t\n\n\ntheta = theta + alpha * Σt g_t"
-  },
-  {
-    "objectID": "slides/lec33_Policy_Based_RL.html#baselines",
-    "href": "slides/lec33_Policy_Based_RL.html#baselines",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Baselines",
-    "text": "Baselines\nSubtract a baseline without changing the expected gradient:\n\n\\nabla_\\theta J(\\theta)\n=\n\\mathbb{E}\n\\left[\n\\nabla_\\theta\\log\\pi_\\theta(a_t\\mid s_t)\n(R_t-b(s_t))\n\\right]\n\nWhy no bias?\n\n\\mathbb{E}_{a\\sim\\pi_\\theta}\n[\\nabla_\\theta\\log\\pi_\\theta(a\\mid s)]=0\n\nCommon choice:\n\nb(s_t)=V^\\pi(s_t)"
+    "section": "REINFORCE with a Baseline",
+    "text": "REINFORCE with a Baseline\nCollect each episode with fixed \\theta. Use b(s)=0 or a previously learned state-value estimate.\n\n\nfor each episode\n\n\ntrajectory = SampleEpisode(piTheta)\n\n\nG = DiscountedReturns(trajectory, gamma)\n\n\ng = 0\n\n\nfor each step t in trajectory\n\n\nweight = gammat * (G_t - b(s_t))\n\n\ng += weight * ScoreGradient(theta, s_t, a_t)\n\n\ntheta += alpha * g\n\n\nScoreGradient means \\nabla_\\theta\\log\\pi_\\theta(a_t\\mid s_t). DiscountedReturns computes G_t=r_{t+1}+\\gamma G_{t+1} backward, starting from G_T=0.\n\nUse the same collection parameters for all gradients in this update, then collect fresh experience after changing the policy.\n\n\nThis is an on-policy episodic update. The baseline is held fixed during the actor-gradient calculation and learned separately if needed. A minibatch version averages sample gradients from several episodes collected with the same policy; we show one episode for clarity. Gamma^t is episode-relative, with t=0 at each start. Keep sampled actions fixed while differentiating their log-probabilities. The diagram/example policy at J has no learnable choice, but the algorithm applies to general differentiable stochastic policies."
   },
   {
     "objectID": "slides/lec33_Policy_Based_RL.html#advantage",
     "href": "slides/lec33_Policy_Based_RL.html#advantage",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Advantage",
-    "text": "Advantage\nWith a value baseline:\n\nA^\\pi(s_t,a_t)=R_t-V^\\pi(s_t)\n\nInterpretation:\n\nPositive advantage: action did better than expected.\nNegative advantage: action did worse than expected.\n\n\nAdvantage tells the actor whether to increase or decrease the probability of the sampled action."
+    "section": "Advantage and Its Estimate",
+    "text": "Advantage and Its Estimate\nV^\\pi(s) is expected return following policy \\pi. Q^\\pi(s,a) is expected return after choosing a once, then following \\pi.\nThe advantage is the action’s expected improvement over that state baseline:\nA^\\pi(s,a)=Q^\\pi(s,a)-V^\\pi(s).\nAt p=0.5, V^\\pi(D)=5.1:\n\n\n\nAction\nQ^\\pi(D,a)\nTrue advantage\n\n\n\n\nSmall job\n4\n-1.1\n\n\nPickup\n6.2\n1.1\n\n\n\nUsing a learned estimate V(D)=5, the pickup episode instead gives the sampled estimate \\hat A_0=G_0-V(D)=1.2.\n\nTrue advantage is a difference of expected values. A sampled return minus a learned value estimate need not equal it, even though it can provide a useful learning signal. In this deterministic example the discrepancy 1.2 versus 1.1 comes entirely from the inaccurate baseline 5 versus 5.1; stochastic future outcomes could add more noise. Positive reward does not imply positive advantage: the small job returns 4 but performs below the current policy’s mean. With the exact baseline, both alternative score-weighted updates at D become .55, preserving their expected gradient."
   },
   {
     "objectID": "slides/lec33_Policy_Based_RL.html#actor-critic",
     "href": "slides/lec33_Policy_Based_RL.html#actor-critic",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Actor-Critic",
-    "text": "Actor-Critic\nActor-critic combines:\n\n\n\nComponent\nLearns\nRole\n\n\n\n\nActor\n\\pi_\\theta(a\\mid s)\nSelects actions\n\n\nCritic\nV_w(s) or Q_w(s,a)\nEvaluates actions\n\n\n\n\n\n\n\nThe critic supplies a lower-variance learning signal for the actor."
-  },
-  {
-    "objectID": "slides/lec33_Policy_Based_RL.html#actor-critic-updates",
-    "href": "slides/lec33_Policy_Based_RL.html#actor-critic-updates",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Actor-Critic Updates",
-    "text": "Actor-Critic Updates\nTD error:\n\n\\delta_t=r_t+\\gamma V_w(s_{t+1})-V_w(s_t)\n\nCritic update:\n\nw\\leftarrow w+\\beta\\delta_t\\nabla_w V_w(s_t)\n\nActor update:\n\n\\theta\\leftarrow \\theta+\\alpha\\delta_t\\nabla_\\theta\\log\\pi_\\theta(a_t\\mid s_t)"
-  },
-  {
-    "objectID": "slides/lec33_Policy_Based_RL.html#actor-critic-algorithm",
-    "href": "slides/lec33_Policy_Based_RL.html#actor-critic-algorithm",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Actor-Critic Algorithm",
-    "text": "Actor-Critic Algorithm\n\n\nobserve (s_t, a_t, r_t, s_{t+1})\n\n\ndelta = r_t + gammaV_w(s_{t+1}) - V_w(s_t)\n\n\nw = w + beta  delta  ∇wV_w(s_t)\n\n\ntheta = theta + alpha  delta  ∇theta log piTheta(a_t|s_t)"
-  },
-  {
-    "objectID": "slides/lec33_Policy_Based_RL.html#reinforce-vs.-actor-critic",
-    "href": "slides/lec33_Policy_Based_RL.html#reinforce-vs.-actor-critic",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "REINFORCE vs. Actor-Critic",
-    "text": "REINFORCE vs. Actor-Critic\n\n\n\n\n\n\n\n\nMethod\nUpdate signal\nTradeoff\n\n\n\n\nREINFORCE\nFull return R_t\nUnbiased, high variance\n\n\nREINFORCE with baseline\nR_t-V(s_t)\nLower variance\n\n\nActor-critic\nTD error \\delta_t\nMore bias, better online learning"
-  },
-  {
-    "objectID": "slides/lec33_Policy_Based_RL.html#what-to-remember",
-    "href": "slides/lec33_Policy_Based_RL.html#what-to-remember",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What to Remember",
-    "text": "What to Remember\n\nPolicy-based methods optimize \\pi_\\theta(a\\mid s) directly.\nREINFORCE uses Monte Carlo policy gradients.\nReturn-to-go reduces variance.\nBaselines reduce variance without biasing the gradient.\nActor-critic uses a critic to estimate advantage online.\n\nAsset credits"
+    "section": "Actor-Critic Roles",
+    "text": "Actor-Critic Roles\n\nThe actor learns action probabilities \\pi_\\theta(a\\mid s), with parameters \\theta.\nThe critic learns a state-value estimate V_w(s), with parameters w.\n\n\nTemporal-difference (TD) learning forms a target from a reward and an estimated next-state value. The TD error compares that target with the current prediction, allowing updates after each transition.\n\nThe actor chooses actions; the critic supplies a value estimate, not an ideal-action label or a transition simulator. A critic may be tabular or a neural network. Bootstrapping can reduce sample-update variability and allow earlier feedback, but an inaccurate critic can bias the actor’s signal. This is not a universal lower-variance or sample-efficiency guarantee. Reference: supplied actor-critic Beamer frames and Sutton and Barto Section 13.5. We use separate actor and critic parameters in the later losses."
   },
   {
     "objectID": "slides/lec35_Generative_ML.html#generative-machine-learning",
@@ -3371,21 +3091,21 @@
     "href": "slides/lec39_Cutting_Edge_AI.html#cutting-edge-ai-topics",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Cutting-Edge AI Topics",
-    "text": "Cutting-Edge AI Topics\nHow modern AI systems are adapted, aligned, packaged into agents, and evaluated."
+    "text": "Cutting-Edge AI Topics\nHow modern AI systems are adapted, connected to tools, packaged into agents, and evaluated."
   },
   {
     "objectID": "slides/lec39_Cutting_Edge_AI.html#where-this-fits",
     "href": "slides/lec39_Cutting_Edge_AI.html#where-this-fits",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Where This Fits",
-    "text": "Where This Fits\nWe have studied search, logic, probability, ML, deep learning, RL, generative models, and transformers.\nToday is about the layer above the base model:\n\n\nAdaptationLoRA, PEFT, domain tuning\n\n\nAlignmentDPO, RLHF, preference data\n\n\nAgentstools, skills, MCP, vibe coding\n\n\nEvaluationharnesses, benchmarks, red teams\n\n\n\nThe frontier is less about one magic model and more about the system around the model."
+    "text": "Where This Fits\nWe have studied search, logic, probability, ML, deep learning, RL, generative models, and transformers.\nToday is about the layer above the base model:\n\n\nAdaptationLoRA, PEFT, domain tuning\n\n\nInterfacestools, CLI, MCP\n\n\nAgentsskills, agent harnesses, vibe coding\n\n\nEvaluationharnesses, benchmarks, red teams\n\n\n\nThe frontier is less about one magic model and more about the system around the model."
   },
   {
     "objectID": "slides/lec39_Cutting_Edge_AI.html#quick-glossary",
     "href": "slides/lec39_Cutting_Edge_AI.html#quick-glossary",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Quick Glossary",
-    "text": "Quick Glossary\n\n\n\n\n\n\n\nTerm\nFull name / meaning\n\n\n\n\nLoRA\nLow-Rank Adaptation\n\n\nQLoRA\nQuantized LoRA\n\n\nPEFT\nParameter-Efficient Fine-Tuning\n\n\nRLHF\nReinforcement Learning from Human Feedback\n\n\nDPO\nDirect Preference Optimization\n\n\nPPO\nProximal Policy Optimization\n\n\nSFT\nSupervised Fine-Tuning\n\n\nRM\nReward Model\n\n\nMCP\nModel Context Protocol\n\n\nVibe coding\nAI-assisted exploratory programming by steering with intent and checking results\n\n\n\n\nMost frontier acronyms describe either how we adapt a model, align a model, or evaluate a model."
+    "text": "Quick Glossary\n\n\n\n\n\n\n\nTerm\nFull name / meaning\n\n\n\n\nLoRA\nLow-Rank Adaptation\n\n\nQLoRA\nQuantized LoRA\n\n\nPEFT\nParameter-Efficient Fine-Tuning\n\n\nCLI\nCommand-Line Interface\n\n\nMCP\nModel Context Protocol\n\n\nVibe coding\nAI-assisted exploratory programming by steering with intent and checking results\n\n\n\n\nThese terms describe how we adapt models, connect tools, and build AI systems."
   },
   {
     "objectID": "slides/lec39_Cutting_Edge_AI.html#full-fine-tuning-vs.-lora",
@@ -3414,34 +3134,6 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "QLoRA and Practical Fine-Tuning",
     "text": "QLoRA and Practical Fine-Tuning\nQuantized LoRA (QLoRA) combines quantization with LoRA-style adaptation.\nConceptually:\n\nStore the base model in low precision.\nBackpropagate through it.\nTrain small adapter weights."
-  },
-  {
-    "objectID": "slides/lec39_Cutting_Edge_AI.html#preference-optimization",
-    "href": "slides/lec39_Cutting_Edge_AI.html#preference-optimization",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Preference Optimization",
-    "text": "Preference Optimization\nInstruction tuning teaches a model to follow examples.\nPreference optimization teaches it to prefer one response over another.\nData looks like:\n\n\n\nPrompt\nChosen response\nRejected response\n\n\n\n\nx\ny_w\ny_l\n\n\n\n\nPreference data is often easier to collect than a perfect scalar reward."
-  },
-  {
-    "objectID": "slides/lec39_Cutting_Edge_AI.html#rlhf-pipeline",
-    "href": "slides/lec39_Cutting_Edge_AI.html#rlhf-pipeline",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "RLHF Pipeline",
-    "text": "RLHF Pipeline\nReinforcement Learning from Human Feedback (RLHF) is a common alignment pipeline.\n\n\n\nRLHF can work well, but it has moving parts:\n\nReward model quality matters.\nRL can be unstable.\nThe model may exploit the reward model."
-  },
-  {
-    "objectID": "slides/lec39_Cutting_Edge_AI.html#direct-preference-optimization",
-    "href": "slides/lec39_Cutting_Edge_AI.html#direct-preference-optimization",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Direct Preference Optimization",
-    "text": "Direct Preference Optimization\nDirect Preference Optimization (DPO) is an alternative that turns preference optimization into a supervised-style loss.\nIt compares the model’s log-probability ratio for chosen and rejected responses.\n\n\\mathcal{L}_{\\text{DPO}}\n=\n-\\log \\sigma\\left(\n\\beta \\log \\frac{\\pi_\\theta(y_w \\mid x)}{\\pi_{\\text{ref}}(y_w \\mid x)}\n-\n\\beta \\log \\frac{\\pi_\\theta(y_l \\mid x)}{\\pi_{\\text{ref}}(y_l \\mid x)}\n\\right)\n\n\nDPO keeps the reference model close while increasing preference for chosen responses."
-  },
-  {
-    "objectID": "slides/lec39_Cutting_Edge_AI.html#dpo-intuition",
-    "href": "slides/lec39_Cutting_Edge_AI.html#dpo-intuition",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "DPO Intuition",
-    "text": "DPO Intuition\n\n\n\n\nDPO is simpler than PPO-style RLHF, but it still depends strongly on the quality and diversity of preference data."
   },
   {
     "objectID": "slides/lec39_Cutting_Edge_AI.html#agents-tools-vs.-skills",
@@ -3546,7 +3238,7 @@
     "href": "slides/lec39_Cutting_Edge_AI.html#what-can-go-wrong",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "What Can Go Wrong?",
-    "text": "What Can Go Wrong?\nFrontier systems fail in different ways than textbook classifiers.\n\n\n\n\n\n\n\nArea\nFailure mode\n\n\n\n\nLoRA\nOverfitting small adapters; forgetting general behavior\n\n\nDPO\nPreference data bias; rejected response not truly bad\n\n\nSkills\nHidden assumptions; unsafe tool use\n\n\nMCP\nOver-broad connectors; prompt injection through external context\n\n\nVibe coding\nPlausible code, hidden bugs, weak tests\n\n\nEvaluation harnesses\nBenchmark leakage; brittle scoring\n\n\nAgent harnesses\nOver-broad permissions; missing stop rules; poor logs\n\n\nAgents\nLoops, tool errors, long-horizon drift"
+    "text": "What Can Go Wrong?\nFrontier systems fail in different ways than textbook classifiers.\n\n\n\n\n\n\n\nArea\nFailure mode\n\n\n\n\nLoRA\nOverfitting small adapters; forgetting general behavior\n\n\nSkills\nHidden assumptions; unsafe tool use\n\n\nMCP\nOver-broad connectors; prompt injection through external context\n\n\nVibe coding\nPlausible code, hidden bugs, weak tests\n\n\nEvaluation harnesses\nBenchmark leakage; brittle scoring\n\n\nAgent harnesses\nOver-broad permissions; missing stop rules; poor logs\n\n\nAgents\nLoops, tool errors, long-horizon drift"
   },
   {
     "objectID": "slides/lec39_Cutting_Edge_AI.html#practical-advice",
@@ -3560,14 +3252,14 @@
     "href": "slides/lec39_Cutting_Edge_AI.html#useful-references",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Useful References",
-    "text": "Useful References\n\nLoRA: Low-Rank Adaptation of Large Language Models, Hu et al., 2021.\nDirect Preference Optimization, Rafailov et al., 2023.\nQLoRA: Efficient Finetuning of Quantized LLMs, Dettmers et al., 2023.\nModel Context Protocol documentation.\nEleutherAI LM Evaluation Harness.\nOpenAI Evals."
+    "text": "Useful References\n\nLoRA: Low-Rank Adaptation of Large Language Models, Hu et al., 2021.\nQLoRA: Efficient Finetuning of Quantized LLMs, Dettmers et al., 2023.\nModel Context Protocol documentation.\nEleutherAI LM Evaluation Harness.\nOpenAI Evals."
   },
   {
     "objectID": "slides/lec39_Cutting_Edge_AI.html#what-to-remember",
     "href": "slides/lec39_Cutting_Edge_AI.html#what-to-remember",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "What to Remember",
-    "text": "What to Remember\n\nLoRA adapts large models by training small low-rank updates.\nDPO uses preference pairs to align behavior without a separate RL loop.\nSkills package reusable agent workflows.\nMCP standardizes how LLM interfaces discover and call external tools and resources.\nVibe coding can accelerate prototypes, but tests and review still matter.\nEvaluation harnesses make tests repeatable.\nAgent harnesses make tool-using agents controllable, observable, and safer.\nCutting-edge systems are model plus data plus tools plus evaluation.\n\nAsset credits"
+    "text": "What to Remember\n\nLoRA adapts large models by training small low-rank updates.\nSkills package reusable agent workflows.\nMCP standardizes how LLM interfaces discover and call external tools and resources.\nVibe coding can accelerate prototypes, but tests and review still matter.\nEvaluation harnesses make tests repeatable.\nAgent harnesses make tool-using agents controllable, observable, and safer.\nCutting-edge systems are model plus data plus tools plus evaluation.\n\nAsset credits"
   },
   {
     "objectID": "asset_credits.html#lec37",
@@ -8027,5 +7719,369 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Takeaways",
     "text": "Takeaways\n\nAn arm is a choice, and a pull reveals only that choice’s reward.\nSample averages estimate unknown reward means.\nExploitation uses current estimates. Exploration gathers more evidence.\nEpsilon-greedy explores uniformly with probability \\epsilon.\nUCB adds a bonus that reflects limited sampling.\nRegret includes the reward missed throughout learning.\n\n\nKeep observed rewards, estimated means, unknown true means, and selection scores distinct.\n\nAsset credits"
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#experience",
+    "href": "slides/lec32_Value_Based_RL.html#experience",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Learning from Experience",
+    "text": "Learning from Experience\nReinforcement learning (RL) learns how to act from rewards. Model-free methods learn values or a policy without constructing an explicit transition-and-reward model.\n\n\n\n\nA sample (s,a,r,s') records the current state, action, observed reward, and next state.\n\nLearning uses these samples, not a supplied table of transition probabilities or expected rewards.\n\n\nThe delivery setting continues Lecture 30. Diagrams explain the setting to the class; the learner is not given its complete dynamics. A simulator may generate samples without exposing its transition table to the algorithm. Model-based RL can instead learn such a model and plan with it. This does not mean model-free methods lack learned representations. Original public-domain robot: https://openclipart.org/detail/325644/toy-robot. Background: the supplied Spring 2025 Value-Based RL Beamer lecture and https://inst.eecs.berkeley.edu/~cs188/textbook/rl/rl.html."
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#episode",
+    "href": "slides/lec32_Value_Based_RL.html#episode",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Delivery Episode",
+    "text": "A Delivery Episode\nA policy \\pi is an action rule. First evaluate a fixed policy: pick up at depot D, then deliver from stop J.\n\nAn episode is one run ending at terminal state F. Its later value is zero: the task has finished.\nThe return G_t totals future rewards. The discount factor \\gamma weights each later reward by another factor. Use \\gamma=0.9:\nG_0=-1+0.9\\cdot8=6.2,\\qquad G_1=8.\n\nAll rewards are fictional points. The small-job and return choices from Lecture 30 remain available, but the first prediction example follows the fixed pickup-then-deliver policy. Reward r_(t+1) arrives after the action at step t: r1=-1, r2=8. The +8 is received on entry to F; it is not also a terminal-state value. This two-transition episode is deterministic for easy arithmetic, not empirical robot data. After termination all further rewards and bootstrap values are zero."
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#state-values",
+    "href": "slides/lec32_Value_Based_RL.html#state-values",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "What a State Value Predicts",
+    "text": "What a State Value Predicts\nThe state value V^\\pi(s) is expected return when starting at s and following policy \\pi:\nV^\\pi(s)=\\mathbb E_\\pi[G_t\\mid s_t=s].\n\\mathbb E_\\pi averages over outcomes under that policy. Write V(s) for the learner’s current estimate, which may be wrong.\n\n\n\n\n\n\n\n\n\nStarting estimates for the comparison\nD: depot\nJ: pickup stop\nF: terminal\n\n\n\n\nV(s)\n0\n4\n0\n\n\n\n\nPolicy evaluation, also called prediction, estimates how well a given policy does. It does not yet change which actions the policy selects.\n\n\nThe initial estimates are stipulated, not values obtained by planning or earlier updates in this lecture. The exact fixed-policy values in this deterministic example are 6.2 at D, 8 at J, and 0 at F. The learner must estimate them from samples. We compare Monte Carlo and one-step TD using separate copies of this same initial value table. State values concern accumulated future reward, not merely the next reward. Lowercase s_t denotes the state observed at time t; the conditioning notation has its usual random-variable interpretation."
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#monte-carlo",
+    "href": "slides/lec32_Value_Based_RL.html#monte-carlo",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Monte Carlo: Use the Complete Return",
+    "text": "Monte Carlo: Use the Complete Return\nMonte Carlo (MC) evaluation learns from complete sampled returns. Wait for the episode to end so G_t is known, then move the estimate toward it:\nV(s_t)\\leftarrow V(s_t)+\\alpha[G_t-V(s_t)].\nThe learning rate \\alpha controls the adjustment size. We use \\alpha=0.5: move halfway toward the target.\nFor the completed delivery episode, G_0=6.2 and the old V(D)=0.\n\nV(D)\\leftarrow0+0.5(6.2-0)=3.1. This is one update, not the exact value after learning has finished.\n\n\nWe use constant-step-size Monte Carlo prediction. A sample-average variant uses alpha=1/N on the Nth relevant return. For this route D and J each occur once, so first-visit and every-visit distinctions do not affect the example. J also updates from 4 toward its full return 8, yielding 6. MC uses no bootstrapped value in its target; stochastic long episodes can make full returns noisy. We do not claim that a finite constant-step-size estimate is unbiased or already converged. Source: supplied Beamer MC material, with the delivery example made explicit."
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#td-zero",
+    "href": "slides/lec32_Value_Based_RL.html#td-zero",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Temporal-Difference Learning",
+    "text": "Temporal-Difference Learning\nTemporal-difference (TD) learning updates after a transition. Bootstrapping means using an existing estimate to help construct another estimate’s target.\nFor one-step TD(0), observe reward r_{t+1} and next state s_{t+1}:\ny_t=r_{t+1}+\\gamma V(s_{t+1}),\\qquad\n\\delta_t=y_t-V(s_t).\nHere y_t is the target and \\delta_t is the TD error: target minus current estimate.\nV(s_t)\\leftarrow V(s_t)+\\alpha\\delta_t.\n\nOne observed reward plus an estimated future value lets TD learn before the episode ends. For a terminal next state, the target is just r_{t+1}.\n\n\nThe fixed-policy Bellman identity is V^pi(s)=E_pi[r_(t+1)+gamma V^pi(s_(t+1)) | s_t=s]. TD samples a transition and substitutes its current V for the unknown true future value. This explains both sampling and bootstrapping without requiring a transition model. TD(0) is a one-step method; the zero refers to the lambda=0 endpoint, introduced later, not to a zero-step return. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/rl/mfl.html and the supplied Beamer TD frames."
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#timing",
+    "href": "slides/lec32_Value_Based_RL.html#timing",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Same Episode, Different Update Timing",
+    "text": "Same Episode, Different Update Timing\nStart both methods from V(D)=0, V(J)=4, V(F)=0, with \\gamma=0.9 and \\alpha=0.5.\n\nWhen delivery then gives 8 and ends the episode:\n\nMC: update V(D) to 3.1. TD: leave V(D)=1.3 for now. Both update V(J) to 4+0.5(8-4)=6.\n\n\nFor chronological one-step TD, the D update happens before the reward 8 is observed, using the old V(J)=4. Its target is -1+.9*4=2.6 and new value 1.3. At J the next state is terminal, so the second target is 8 and V(J) becomes 6. Ordinary one-step TD does not automatically revisit D at the end; it can propagate J’s improved value on a later visit. MC’s D update waits for the completed return and reaches 3.1 from its own untouched initial value. These are two different estimators on separate value tables, not sequential updates to one table."
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#td-algorithm",
+    "href": "slides/lec32_Value_Based_RL.html#td-algorithm",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "TD(0): One Transition",
+    "text": "TD(0): One Transition\nFollow the fixed policy \\pi. The environment reports whether sNext is a terminal next state.\n\n\nfunction TDUpdate(s, r, sNext, terminal)\n\n\nif terminal: target = r\n\n\nelse: target = r + gamma * V(sNext)\n\n\ndelta = target - V(s)\n\n\nV(s) = V(s) + alpha * delta\n\n\n\nIf the robot receives 8 on entering F, should its target be 8+0.9\\cdot8?\n\n\nNo. The target is 8. The delivery reward has already been received; V(F)=0 prevents counting it twice.\n\n\nThe function updates a shared current V table, with gamma and alpha supplied as learning parameters. The terminal flag means true task termination, not merely that a program stops collecting samples at an arbitrary time limit. A time-limit truncation can require bootstrapping if the underlying task continues. Do not reset to the new episode’s start state before constructing this transition’s target. No terminal action is chosen."
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#control",
+    "href": "slides/lec32_Value_Based_RL.html#control",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "From Prediction to Control",
+    "text": "From Prediction to Control\nControl improves the action rule, rather than only evaluating a fixed one. An action value Q(s,a) estimates return after choosing a at s and following the policy being evaluated afterward.\nA tabular method stores one number per state-action pair. Both methods below update toward a target y:\nQ(s,a)\\leftarrow Q(s,a)+\\alpha[y-Q(s,a)].\nAt D, a small job finishes immediately; pickup goes to J. A greedy choice takes the largest current Q: if these estimates are 4 and 0, it chooses the small job.\nEpsilon-greedy explores with probability \\epsilon by choosing uniformly among all available actions; otherwise it is greedy.\n\nThe table is still an estimate. Exploration can collect evidence about an action whose current estimate is too low.\n\n\nFor fixed-policy prediction the formal target is Q^pi(s,a)=E_pi[G_t | s_t=s,a_t=a]. A control method updates values while improving its action rule. SARSA evaluates the policy used for behavior, while Q-learning uses an optimality target; this distinction follows on the next slides. This Q table is separate from the state-value V table in the MC/TD comparison. At D we set Q(small)=4 and Q(pickup)=0; at J the upcoming comparison sets Q(deliver)=6 and Q(return)=1. These are arbitrary current estimates, not exact solutions. Epsilon-greedy can select its greedy action during exploration too, as in Lecture 31. Random tie breaking is used if several actions share the largest estimate."
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#policies",
+    "href": "slides/lec32_Value_Based_RL.html#policies",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Behavior and Target Policies",
+    "text": "Behavior and Target Policies\nThe behavior policy generates actions. The target policy is the action rule whose return is being learned.\n\nOn-policy: learn about the same policy used to act.\nOff-policy: the target policy can differ from the behavior policy.\n\nAt J, deliver finishes the job; return goes back to D. After pickup gives -1, the robot reaches J and explores by selecting return:\n\n\nThis is a different experience from the earlier fixed pickup-then-deliver episode: after reaching J the behavior policy selects return. The first pickup at D can also be exploratory under the displayed Q table. For the next two numerical updates, start independently from Q(D,pickup)=0, Q(J,deliver)=6, Q(J,return)=1, gamma=.9, and alpha=.5. Off-policy is about the relationship between behavior and target, not a promise that the target is already good or that exploration is unnecessary. SARSA’s name and Q-learning are introduced on their own slides, not in an unexplained list of algorithms."
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#q-algorithm",
+    "href": "slides/lec32_Value_Based_RL.html#q-algorithm",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Tabular Q-Learning Loop",
+    "text": "A Tabular Q-Learning Loop\nStart a fresh run. Q(s) denotes the row of estimates for actions available at state s.\n\n\nQ = 0 for every available state-action pair\n\n\nfor each episode\n\n\ns = StartState()\n\n\nwhile s is not terminal\n\n\na = EpsilonGreedy(Q(s), epsilon)\n\n\n(r, sNext, terminal) = Step(a)\n\n\ntarget = r\n\n\nif not terminal: target += gamma * max(Q(sNext))\n\n\nQ(s, a) += alpha * (target - Q(s, a))\n\n\ns = sNext\n\n\nStartState resets the task. Step executes the chosen action and returns its reward, next state, and terminal flag.\n\nThe action used for behavior can be exploratory; the nonterminal learning target still uses the largest next estimate.\n\n\nGamma, alpha, and epsilon are chosen learning parameters; epsilon-greedy includes every available action in its random branch. We distinguish this fresh zero-initialized run from the arbitrary current table in the preceding worked comparison. The update is in place for only the observed state-action pair. Do not take a max over an empty terminal-action set or bootstrap from the next episode’s reset state. The loop is intentionally tabular; it is not a neural-network or replay-buffer algorithm."
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#n-step",
+    "href": "slides/lec32_Value_Based_RL.html#n-step",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Multi-Step Returns",
+    "text": "Multi-Step Returns\nAn n-step return uses n observed rewards, then an estimated continuation:\nG_t^{(n)}=\\sum_{k=0}^{n-1}\\gamma^k r_{t+k+1}+\\gamma^n V(s_{t+n}).\nHere n=1,2,\\ldots and k indexes the rewards. At termination, stop and use no future value.\n\n\nTD(0) uses n=1. More observed rewards require waiting longer.\n\n\nReturn to the original pickup-then-deliver episode and the original V(J)=4 for this horizon comparison. The bootstrapped value is a current estimate when the target is formed. The displayed formula applies when n transitions are available before or at termination; at termination V(F)=0. A general implementation truncates n at the remaining episode length. Larger n reduces dependence on a possibly inaccurate bootstrap estimate but adds sampled-reward variability; it is not universally better or a universal monotonic bias/variance theorem. Background: supplied Beamer n-step material and Sutton and Barto, second edition, Chapter 7."
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#lambda",
+    "href": "slides/lec32_Value_Based_RL.html#lambda",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "TD-Lambda: Blend Return Horizons",
+    "text": "TD-Lambda: Blend Return Horizons\nTD(\\lambda) mixes different return horizons. The parameter 0\\leq\\lambda\\leq1 controls how much weight longer returns receive.\nFor our two-step episode, the blended target is exactly:\nG_0^{(\\lambda)}=(1-\\lambda)\\,2.6+\\lambda\\,6.2.\n\n\n\n\\lambda\nTarget in this example\nInterpretation\n\n\n\n\n0\n2.6\nOne-step TD target\n\n\n0.5\n4.4\nEqual mix of the two horizons\n\n\n1\n6.2\nComplete episode return\n\n\n\n\nThe zero in TD(0) refers to \\lambda=0, not to observing zero rewards. Longer episodes blend more than two horizons.\n\n\nThis is the episodic forward-view lambda-return using the original estimates, not a claim that every online accumulating-trace update is identical to this fixed-target calculation. For H remaining transitions, the finite episodic weights are (1-lambda)*lambda^(n-1) for n=1,…,H-1 and residual lambda^(H-1) on the full return. They sum to one and correctly give the complete return at lambda=1. We deliberately avoid substituting lambda=1 into an unqualified infinite expression with prefactor 1-lambda. The target 4.4 at lambda=.5 coincides numerically with the earlier Q-learning target but arises from a different construction. References: Sutton and Barto, second edition, Chapter 12; https://www.davidsilver.uk/wp-content/uploads/2020/03/MC-TD.pdf."
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#traces",
+    "href": "slides/lec32_Value_Based_RL.html#traces",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Eligibility Traces: Remember Recent States",
+    "text": "Eligibility Traces: Remember Recent States\nAn eligibility trace e(s) is a temporary weight tracking recent visits. It lets a new TD error adjust earlier states too.\nStart traces at zero for each episode. Before each update, decay all traces by \\gamma\\lambda, then add 1 to the current state’s trace.\n\nUse the current TD error \\delta_t to update every state:\nV(s)\\leftarrow V(s)+\\alpha\\delta_t e(s).\n\nThis is accumulating tabular TD(lambda): compute delta from pre-update V, set all e(s) &lt;- gammalambdae(s), increment e(current) by 1, then update all V(s) using that same delta. After D then J without revisits, e(D)=.9*.5=.45 and e(J)=1. These are trace weights, not action probabilities; with repeated visits accumulating traces can exceed one. Reset traces at each true episode boundary, not after every transition. The diagram illustrates credit assignment without asserting that standard online traces exactly match an arbitrary frozen-value forward return; exact online forward/backward equivalence requires the appropriate true-online method. Background: supplied accumulating-trace Beamer material, Sutton and Barto Chapter 12, and https://arxiv.org/abs/1512.04087."
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#learning-checks",
+    "href": "slides/lec32_Value_Based_RL.html#learning-checks",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Checks for a Learning Implementation",
+    "text": "Checks for a Learning Implementation\n\nTerminal target: use only the observed final reward, not a value from the next episode.\nCorrect continuation: SARSA uses the selected next action; Q-learning uses the largest next estimate.\nEnough exploration: an untried action can remain badly estimated, even with an off-policy method.\nLearning rate: \\alpha=0.5 makes our arithmetic easy; a fixed learning rate does not guarantee exact convergence in a noisy task.\n\n\nTabular Q-learning’s convergence guarantees rely on repeated state-action visits and suitable learning rates. They are not guarantees for arbitrary behavior or arbitrary neural-network updates.\n\n\nThe usual finite discounted tabular Q-learning theorem assumes bounded rewards, every state-action pair updated infinitely often, and per-pair step sizes whose sum diverges while their squared sum converges, along with the standard sampling conditions. State-dependent action sets must be respected. Fixed epsilon may preserve exploration but does not make a SARSA behavior policy greedy in the limit. The goal here is to prevent overgeneralizing the original statement that off-policy learning works regardless of behavior, not to prove a convergence theorem. Function approximation can introduce separate stability issues."
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#quick-check",
+    "href": "slides/lec32_Value_Based_RL.html#quick-check",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Quick Check",
+    "text": "Quick Check\n\nAfter pickup, why can TD update V(D) while MC waits?\nBehavior chooses return at J. Which next estimate do SARSA and Q-learning use: 1 or 6?\nIf entering F gives reward 8, what is the one-step target?\n\n\n1. TD uses the observed -1 plus the current estimate for J. MC needs the episode’s complete return.\n\n\n2. SARSA uses 1, for return. Q-learning uses 6, the largest next estimate, for deliver.\n\n\n3. 8. There is no future return after the terminal state."
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#takeaways",
+    "href": "slides/lec32_Value_Based_RL.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nMC waits for complete returns; TD bootstraps after a transition.\nState values evaluate a policy; action values help improve choices.\nSARSA uses the selected next action; Q-learning uses a greedy target.\nDQN uses a neural Q-network, experience replay, and a target network.\nMulti-step returns and TD(\\lambda) combine longer experience with estimates.\nEligibility traces distribute a TD error across recently visited states.\n\n\nAlways identify the observed reward, the estimated continuation, and the policy that continuation represents.\n\nAsset credits"
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#dqn",
+    "href": "slides/lec32_Value_Based_RL.html#dqn",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Deep Q-Networks: From Tables to Networks",
+    "text": "Deep Q-Networks: From Tables to Networks\nA deep Q-network (DQN) replaces a Q table with a neural network Q_\\theta(s,a), where \\theta denotes learned weights. DQN uses Q-learning, but not all Q-learning is DQN.\n\n\nExperience replay: store past transitions and train on randomly sampled batches.\nTarget network: a separate, periodically refreshed network supplies bootstrap estimates, helping stabilize learning.\n\n\nVolodymyr Mnih et al. (2015), Human-level control through deep reinforcement learning, Nature.\nEarlier paper: Volodymyr Mnih et al. (2013), Playing Atari with Deep Reinforcement Learning.\n\n\nDQN stands for deep Q-network, also used to name the associated algorithm/agent. Q-learning is the broader method: it can use a table or a function approximator. Canonical DQN uses a trained online network, stored transitions for uniform experience replay, and a separate target network whose weights are held fixed between periodic copies. At a terminal transition the target remains just r. The network is fitted to targets with gradient-based updates rather than directly overwriting an individual table entry. Its shared weights can change predictions for several states/actions. The diagram shows only actions available at D; a full implementation must respect state-dependent action availability. It is a schematic, not a trained network or performance result. The original Atari work used a fixed set of game actions and image inputs. References are shown on the slide at first introduction: Mnih et al. (2013), https://arxiv.org/abs/1312.5602, and Mnih et al. (2015), https://doi.org/10.1038/nature14236. The 2015 paper’s first three, equally contributing authors are Volodymyr Mnih, Koray Kavukcuoglu, and David Silver."
+  },
+  {
+    "objectID": "slides/lec32_Value_Based_RL.html#dqn-variants",
+    "href": "slides/lec32_Value_Based_RL.html#dqn-variants",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Common DQN Variants and Extensions",
+    "text": "Common DQN Variants and Extensions\n\n\n\nVariant or extension\nMain idea\n\n\n\n\nDouble DQN\nSelect the next action with the trained network; evaluate it with the target network. This reduces overly optimistic estimates.\n\n\nDueling DQN\nLearn state value and action advantage, an action’s score relative to that baseline, then combine both into Q estimates.\n\n\nPrioritized experience replay (PER)\nReplay transitions with larger TD errors more often; corrective weights compensate for unequal sampling.\n\n\nRainbow\nCombine several DQN improvements rather than choosing just one.\n\n\n\n\nDouble DQN changes target action selection, not just the number of networks. These extensions can be combined.\n\n\nThe names link to primary papers. Double DQN: Hado van Hasselt, Arthur Guez, and David Silver, Deep Reinforcement Learning with Double Q-learning, AAAI 2016 (preprint 2015), https://arxiv.org/abs/1509.06461. Unlike standard DQN’s maximum over the target network’s own values, Double DQN selects a maximizing next action with the online network and evaluates that selected action with the target network. Dueling: Ziyu Wang, Tom Schaul, Matteo Hessel, Hado van Hasselt, Marc Lanctot, and Nando de Freitas, Dueling Network Architectures for Deep Reinforcement Learning, ICML 2016 (preprint 2015), https://arxiv.org/abs/1511.06581. The two streams are combined with an identifying normalization, typically subtracting the mean action-advantage output; a raw stream output should not be mistaken for an independently identified exact Q-minus-V. PER: Tom Schaul, John Quan, Ioannis Antonoglou, and David Silver, Prioritized Experience Replay, ICLR 2016 (preprint 2015), https://arxiv.org/abs/1511.05952. Importance-sampling weights correct the changed sampling distribution; partial correction is often annealed. Rainbow: Matteo Hessel et al., Rainbow: Combining Improvements in Deep Reinforcement Learning, AAAI 2018 (preprint 2017), https://arxiv.org/abs/1710.02298. It combines Double DQN, dueling architecture, prioritized replay, multi-step learning, distributional returns, and noisy-network exploration. These are established examples, not claims about the latest or universally best algorithm. PER is a replay extension, not a separate synonym for Q-learning."
+  },
+  {
+    "objectID": "slides/lec33_Policy_Based_RL.html#direct-policy",
+    "href": "slides/lec33_Policy_Based_RL.html#direct-policy",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Learning Action Probabilities",
+    "text": "Learning Action Probabilities\nIn policy-based reinforcement learning (RL), learn a policy \\pi_\\theta(a\\mid s) directly. It gives the probability of choosing action a in state s, using parameters \\theta.\n\n\n\n\nA stochastic policy samples an action from these probabilities. Model-free learning uses experience without an explicit transition-and-reward model.\n\nValue-based methods learn action values and derive choices from them. Policy-based methods adjust the action rule itself.\n\n\nPolicy-based methods can still learn a value estimate, as actor-critic will show. A stochastic policy and a random environment are different sources of randomness. A policy may also describe continuous actions such as a real-valued steering angle, but today’s worked example uses two discrete choices. Original public-domain robot: https://openclipart.org/detail/325644/toy-robot. Background: supplied Spring 2025 Policy-Based RL Beamer lecture; Sutton and Barto, Reinforcement Learning: An Introduction, second edition, Chapter 13."
+  },
+  {
+    "objectID": "slides/lec33_Policy_Based_RL.html#delivery-choice",
+    "href": "slides/lec33_Policy_Based_RL.html#delivery-choice",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Delivery Choice",
+    "text": "A Delivery Choice\nAt depot D, choose a small job or pickup. For this example, always deliver after reaching pickup stop J. Learn only the initial choice at D.\n\nAn episode is one run ending at terminal state F. The discount factor \\gamma=0.9 gives later rewards less weight.\nThe return, total discounted future reward, is 4 for the small job and -1+0.9\\cdot8=6.2 for pickup then delivery.\n\nThis continues the fictional delivery setting from Lectures 30 and 32. All rewards are invented points. We restrict the policy at J to deliver with probability one, so only the choice at D is parameterized in the numerical policy-gradient example. The environment can have other actions, but this restricted policy family never selects return at J. Reward +8 arrives on entry to F, and later value at F is zero. The learner is not supplied the reward model; exact calculations here let us check its sample-based updates."
+  },
+  {
+    "objectID": "slides/lec33_Policy_Based_RL.html#policy-parameter",
+    "href": "slides/lec33_Policy_Based_RL.html#policy-parameter",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Parameterized Policy",
+    "text": "A Parameterized Policy\nA parameterized policy converts adjustable numbers into action probabilities. Use one real-valued logit \\theta, a preference score before conversion:\np=\\sigma(\\theta)=\\frac{1}{1+e^{-\\theta}},\\qquad\n\\pi_\\theta(\\text{pickup}\\mid D)=p,\\quad\n\\pi_\\theta(\\text{small}\\mid D)=1-p.\nThe sigmoid function \\sigma maps any real \\theta to a probability between 0 and 1.\n\nStart at \\theta=0, so both actions have probability 0.5.\n\nThis is a one-parameter Bernoulli policy. A general neural policy can output a vector of logits and convert them to a categorical distribution. Here the scalar theta controls only the D choice; J’s deliver probability remains fixed. Increasing theta increases pickup probability and decreases small-job probability. The plotted probabilities come directly from the sigmoid formula, not training results. All subsequent alternative sample calculations restart at theta=0 unless a new value is explicitly stated."
+  },
+  {
+    "objectID": "slides/lec33_Policy_Based_RL.html#gradient-ascent",
+    "href": "slides/lec33_Policy_Based_RL.html#gradient-ascent",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Policy-Gradient Ascent",
+    "text": "Policy-Gradient Ascent\nA gradient \\nabla_\\theta J describes how changing parameters changes expected return. Gradient ascent takes a small step in the increasing direction:\n\\theta\\leftarrow\\theta+\\alpha\\nabla_\\theta J(\\theta).\nThe learning rate \\alpha&gt;0 sets the step size. With our single parameter:\n\\frac{dJ}{d\\theta}=2.2p(1-p)=0.55\\quad\\text{at }p=0.5.\n\nUsing \\alpha=0.1 and the exact gradient gives \\theta=0.055, so pickup probability rises from 0.500 to about 0.514.\n\nWe will estimate this gradient from sampled episodes instead of needing the environment’s exact reward formula.\n\nThe sigmoid derivative is p(1-p), so the chain rule gives dJ/dtheta = 2.2*p*(1-p). This scalar calculation illustrates the vector-gradient update used by neural policies. An arbitrary finite step is not guaranteed to improve a general nonlinear objective, especially with noisy gradient estimates. We use a small positive learning rate for the arithmetic. The exact gradient is a comparison benchmark rather than information supplied to a model-free agent."
+  },
+  {
+    "objectID": "slides/lec33_Policy_Based_RL.html#returns",
+    "href": "slides/lec33_Policy_Based_RL.html#returns",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "REINFORCE and Return-to-Go",
+    "text": "REINFORCE and Return-to-Go\nREINFORCE is a Monte Carlo policy-gradient method: collect a complete episode, then use its observed returns to update the policy.\n\nThe return-to-go G_t counts rewards from step t onward:\nG_t=\\sum_{k=t}^{T-1}\\gamma^{k-t}r_{k+1}.\nT is the number of actions before termination. Reward r_{t+1} arrives after action t. Here T=2, G_0=6.2, and G_1=8.\n\nThe dummy index k runs over action steps in the remaining episode. Earlier rewards do not belong to a later action’s return-to-go. We use r_(t+1) consistently, matching Lecture 32. The learner keeps the collection policy fixed during this REINFORCE episode. Reference: Ronald J. Williams (1992), Simple statistical gradient-following algorithms for connectionist reinforcement learning, https://doi.org/10.1007/BF00992696; Sutton and Barto, second edition, Section 13.3. The first paper defines the REINFORCE family; we present its standard episodic policy-gradient form."
+  },
+  {
+    "objectID": "slides/lec33_Policy_Based_RL.html#reinforce-gradient",
+    "href": "slides/lec33_Policy_Based_RL.html#reinforce-gradient",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Log-Probability Gradient",
+    "text": "The Log-Probability Gradient\nThe log-derivative identity converts a probability derivative into a form we can sample:\n\\nabla_\\theta\\pi_\\theta(a\\mid s)\n=\\pi_\\theta(a\\mid s)\\nabla_\\theta\\log\\pi_\\theta(a\\mid s).\nHere \\log is the natural logarithm. REINFORCE estimates the objective’s gradient using:\n\\hat g=\\sum_{t=0}^{T-1}\\gamma^tG_t\\,\n\\nabla_\\theta\\log\\pi_\\theta(a_t\\mid s_t),\\qquad\n\\mathbb E[\\hat g]=\\nabla_\\theta J.\nThe log-probability gradient points toward making the sampled action more likely. Its return weights that direction.\n\nOnly policy probabilities need derivatives. The simulator supplies sampled states and rewards. The factor \\gamma^t preserves the discounted starting-state objective.\n\n\nAssume a differentiable policy, theta-independent environment and initial-state distribution, and complete on-policy episodes with suitable regularity. Differentiating trajectory likelihood leaves only policy log-probabilities; no derivative of unknown dynamics is required. Conditional on the history before a_t, the expected log-probability gradient is zero. This makes terms from already observed rewards vanish in expectation and justifies return-to-go without falsely claiming that past rewards and future actions are unconditionally independent. For J=E[G0] with discounted Gt measured relative to t, retain the outer gamma^t. At D, t=0, so the numeric examples have weight one. At fixed-action J the score gradient is zero. Reference: supplied Beamer log-derivative argument, Sutton and Barto Chapter 13, and https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html."
+  },
+  {
+    "objectID": "slides/lec33_Policy_Based_RL.html#sample-updates",
+    "href": "slides/lec33_Policy_Based_RL.html#sample-updates",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Two Possible Sampled Updates",
+    "text": "Two Possible Sampled Updates\nRestart at \\theta=0, p=0.5. At D, the log-probability derivatives are 1-p for pickup and -p for the small job. Also \\gamma^0=1.\n\n\n\n\n\n\n\n\n\nSampled action\nReturn G_0\nLog-probability derivative\nSample gradient g_0\n\n\n\n\nPickup\n6.2\n0.5\n3.1\n\n\nSmall job\n4\n-0.5\n-2\n\n\n\nWith \\alpha=0.1, a pickup episode gives \\theta=0.31; a small-job episode gives \\theta=-0.20. Each raises its own sampled action’s probability.\n\nThe average sample gradient is 0.5(3.1)+0.5(-2)=0.55, matching the exact gradient. Individual updates can point in different directions.\n\n\nThese are alternative one-episode updates from the same initial theta, not sequential episodes. The derivative of log p is 1-p, and that of log(1-p) is -p. After the pickup sample p becomes sigmoid(.31), about .576885; after the small-job sample p becomes sigmoid(-.2), about .450166. Both raw returns are positive, so the uncentered score update favors whichever action happened to occur. The expected gradient still favors pickup because its return is larger. No theorem says each stochastic update must improve the policy."
+  },
+  {
+    "objectID": "slides/lec33_Policy_Based_RL.html#baseline",
+    "href": "slides/lec33_Policy_Based_RL.html#baseline",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Baseline Reduces Update Noise",
+    "text": "A Baseline Reduces Update Noise\nA baseline b(s) is a state-dependent reference subtracted from the return. Choose it before the current action, and hold it fixed while computing the actor gradient.\nUse the illustrative baseline b(D)=5.1, the current policy’s expected return:\n\nReplace G_t by G_t-b(s_t) in the policy-gradient estimate. An action-independent baseline leaves the expected gradient unchanged.\n\nA well-chosen baseline reduces variance, the variation across sampled updates. The exact value 5.1 is for our illustration; a learner usually estimates it.\n\n\nAt a fixed state, sum_a pi(a|s)*grad log pi(a|s)=grad sum_a pi(a|s)=0. Multiplying by an action-independent baseline therefore contributes zero in expectation. This statement holds while treating the baseline as fixed in the actor derivative. A learned baseline can be a function of state and past training data; avoid using an action-dependent quantity as though it were automatically an unbiased baseline. At p=.5, the two centered sample gradients here both equal .55, compared with 3.1 and -2 before centering. This perfect variance cancellation is special to this symmetric deterministic example, not a general promise. References: supplied Beamer baseline material; Sutton and Barto Section 13.4; Spinning Up, Baselines in Policy Gradients."
+  },
+  {
+    "objectID": "slides/lec33_Policy_Based_RL.html#td-advantage",
+    "href": "slides/lec33_Policy_Based_RL.html#td-advantage",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A TD Advantage Estimate",
+    "text": "A TD Advantage Estimate\nBootstrapping uses a current value prediction inside another learning target. For transition (s_t,a_t,r_{t+1},s_{t+1}):\ny_t=r_{t+1}+\\gamma V_w(s_{t+1}),\\qquad\n\\delta_t=y_t-V_w(s_t).\ny_t is the TD target. The TD error \\delta_t supplies an advantage estimate.\n\n\nWith \\gamma=0.9: y_0=-1+0.9\\cdot8=6.2, so \\delta_0=6.2-5=1.2.\n\nFor a terminal next state, use y_t=r_{t+1} with zero future value.\n\nThe current critic values 5 and 8 are stipulated estimates, matching the learned-baseline example on the advantage slide. If V_w equals the true V^pi everywhere, the conditional expectation of the one-step TD error given s,a is A^pi(s,a). With an imperfect critic, delta is an approximate advantage signal, not an exact definition of advantage. The true advantage of pickup under p=.5 is 1.1; this critic produces 1.2 because its D baseline is low. Compute the target and error from pre-update predictions. The terminal reward is received once; do not add it again as a value at F or use the next episode’s start value."
+  },
+  {
+    "objectID": "slides/lec33_Policy_Based_RL.html#losses",
+    "href": "slides/lec33_Policy_Based_RL.html#losses",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Actor and Critic Losses",
+    "text": "Actor and Critic Losses\nA loss is a quantity the optimizer minimizes. These losses implement policy ascent and value learning:\nL_{\\text{actor}}=-\\gamma^t\\log\\pi_\\theta(a_t\\mid s_t)\\,\n\\operatorname{stopgrad}(\\delta_t).\nL_{\\text{critic}}=\\tfrac12\\left[V_w(s_t)-\\operatorname{stopgrad}(y_t)\\right]^2.\nStop-gradient treats a value as a constant during differentiation. In PyTorch, use .detach() for this purpose.\n\nThe actor gradient flows through the selected action’s log-probability. The critic gradient flows through its current-state prediction. Compute the shared TD error before either update.\n\n\nThese are single-transition losses for separate actor and critic networks. Minimizing the negative log-probability loss implements theta &lt;- theta + alpha*gamma^t*delta*grad log pi. The critic’s detached target implements a semi-gradient value update. At t=0, theta=0, delta=1.2, and alpha=.1, the scalar actor update is theta=.06 and pickup probability becomes about .515. A tabular critic with step size beta=.5 would update V(D) from 5 to 5.6; a neural critic instead changes its weights via grad_w V_w(D). Neither loss should differentiate through sampled environment outcomes. For this discounted starting-state objective retain gamma^t; dropping that factor changes the time weighting. PyTorch detach reference: https://docs.pytorch.org/docs/stable/generated/torch.Tensor.detach.html."
+  },
+  {
+    "objectID": "slides/lec33_Policy_Based_RL.html#online-algorithm",
+    "href": "slides/lec33_Policy_Based_RL.html#online-algorithm",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "One Actor-Critic Step",
+    "text": "One Actor-Critic Step\nAt each episode start, set s to the initial state and weight = 1. Repeat until the task terminates.\n\n\n(a, logProb) = SampleAction(piTheta(s))\n\n\n(r, sNext, terminal) = Step(a)\n\n\ntarget = r if terminal else r + gamma * Vw(sNext)\n\n\ndelta = target - Vw(s)\n\n\nactorLoss = -weight * logProb * StopGrad(delta)\n\n\ncriticLoss = (Vw(s) - StopGrad(target))2 / 2\n\n\nUpdateBoth(actorLoss, criticLoss)\n\n\nweight *= gamma\n\n\ns = sNext\n\n\nSampleAction also saves the sampled action’s log-probability. Step performs the action. UpdateBoth minimizes each network’s loss. Here weight equals \\gamma^t.\n\nThis is on-policy one-step actor-critic. SampleAction must use the correctly normalized available-action distribution, and logProb must come from that same distribution before parameters change. Both losses use pre-update predictions. For separate networks the detached actor advantage and critic target keep their intended gradient paths independent. Reset the state and weight at a true episode boundary. The terminal flag means task termination; arbitrary collection time limits may require different bootstrap handling. This is explanatory pseudocode, not the homework implementation or a claim about callback timing in the game driver."
+  },
+  {
+    "objectID": "slides/lec33_Policy_Based_RL.html#homework-check",
+    "href": "slides/lec33_Policy_Based_RL.html#homework-check",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Homework 6: Actor-Critic",
+    "text": "Homework 6: Actor-Critic\nThe Homework 6 assignment and starter apply these ideas to a game agent.\n\nActor outputs: logits, unnormalized action scores, become probabilities for sampling.\nAction mask: unavailable actions get probability zero. Renormalize over legal actions and save the chosen action’s log-probability from that same distribution.\nLearning: detach the advantage and bootstrap target in the appropriate losses. Terminal targets use only the final reward.\nEvaluation: freeze learning while measuring performance against the reference agent.\n\n\nWhich network should receive a gradient from the selected action’s log-probability?\n\n\nThe actor. The critic learns from its own value-prediction loss.\n\n\nThe homework uses separate actor and critic networks, an available-action mask, and a supplied turn-based driver. Its 18-value observation, seven action indices, reward/callback contract, and evaluation requirements are defined in the linked page and starter. Follow that contract when deciding which observations form one agent transition; do not infer driver timing from a schematic RL loop. The assignment’s scheduled release is November 18, 2026."
+  },
+  {
+    "objectID": "slides/lec33_Policy_Based_RL.html#takeaways",
+    "href": "slides/lec33_Policy_Based_RL.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nA parameterized policy directly represents action probabilities.\nPolicy gradients improve expected return using sampled experience.\nREINFORCE uses complete episodes and return-to-go.\nA state baseline can reduce update noise without changing the expected gradient.\nTrue advantage is an expected-value difference. Sampled or TD-based advantages are estimates.\nActor-critic learns both a policy and a value predictor, using separate gradient paths.\n\n\nKeep the sampled reward, return, baseline, and advantage estimate distinct when explaining an update.\n\nAsset credits"
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#ppo",
+    "href": "slides/lec34_PPO_GRPO.html#ppo",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Proximal Policy Optimization",
+    "text": "Proximal Policy Optimization\nProximal Policy Optimization (PPO) improves a policy using sampled experience. “Proximal” means nearby: the update objective discourages large changes from the policy that collected the data.\n\n\n\n\nRecall: \\pi_\\theta(a\\mid s) is action a’s probability in state s, with policy weights \\theta. An advantage estimate \\hat A compares its return with a state-value baseline.\n\nJohn Schulman et al. (2017), Proximal Policy Optimization Algorithms. We study the PPO-Clip form.\n\n\nPPO is a family that also includes a KL-penalty formulation. This lecture focuses on the clipped surrogate. Proximal is motivation, not a hard distance guarantee. The actor has parameters theta; a standard actor-critic implementation also learns a value predictor. Advantage can be estimated by a complete discounted return minus a learned state value, or by multi-step TD methods. The supplied PPO Beamer material and the original paper provide the starting point. Public-domain robot: https://openclipart.org/detail/325644/toy-robot. Implementation background and clipping caveats: https://spinningup.openai.com/en/latest/algorithms/ppo.html."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#ratio",
+    "href": "slides/lec34_PPO_GRPO.html#ratio",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The New-to-Old Probability Ratio",
+    "text": "The New-to-Old Probability Ratio\nThe old policy \\pi_{\\text{old}} generated the current batch, a set of collected examples. Freeze it: hold its parameters fixed during updates to this batch.\n\\rho_t(\\theta)=\\frac{\\pi_\\theta(a_t\\mid s_t)}{\\pi_{\\text{old}}(a_t\\mid s_t)}.\n\nFor pickup, \\rho=0.65/0.50=1.30. For the small job, \\rho=0.35/0.50=0.70.\nThe delivery returns are 6.2 and 4. Using baseline 5.1 gives advantages +1.1 for pickup and -1.1 for small.\n\nThis reuses Lecture 33’s fictional delivery choice: pickup incurs -1 then delivery gives 8 with discount .9, while the small job immediately gives 4. The old policy chooses both with probability .5, so its exact state-value baseline is 5.1. These are stipulated examples, not measured learning results. The two candidate probabilities form the same normalized policy; positive and negative clipping examples below use this one candidate. Rho is a probability ratio, distinct from a reward r. The sampled action and state remain fixed while evaluating the candidate probability. Old probabilities must be positive for sampled actions."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#clipped-score",
+    "href": "slides/lec34_PPO_GRPO.html#clipped-score",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Clipped Score",
+    "text": "The Clipped Score\nThe clipping parameter \\epsilon sets a ratio band. Use \\epsilon=0.2, giving [0.8,1.2].\n\\operatorname{clip}(x,l,u) replaces values below l by l, and values above u by u.\n\\ell(\\rho,\\hat A)=\\min\\left\\{\\rho\\hat A,\\;\n\\operatorname{clip}(\\rho,1-\\epsilon,1+\\epsilon)\\hat A\\right\\}.\nPPO maximizes the average of these scores over collected examples. The advantage estimate stays fixed during this batch’s policy updates.\n\nThe minimum makes the objective conservative. The flat region depends on whether the advantage is positive or negative.\n\n\nThis is the standard PPO-Clip empirical surrogate, not a claim that its minibatch gradient is identical to an exact discounted-start policy gradient at every parameter value. We use a per-sample score ell and average it over data; implementations also train a critic and may add entropy bonuses or other safeguards. The teaching value epsilon=.2 is not a universal best setting. Clip applies inside the objective. It does not directly project the actual action probabilities into a permitted interval. Source: Schulman et al. (2017), Equation 7, and the supplied Beamer clipping frame."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#positive",
+    "href": "slides/lec34_PPO_GRPO.html#positive",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Positive Advantage: Pickup",
+    "text": "Positive Advantage: Pickup\nPickup has \\hat A=+1.1. Its probability rises from 0.50 to 0.65, so \\rho=1.30 lies above the upper band edge 1.2.\n\n\\ell=\\min\\{1.30\\cdot1.1,\\;1.20\\cdot1.1\\}=1.32.\n\nFurther increasing this ratio adds no benefit to this sample’s clipped score. The actual probability can still be 0.65; clipping does not force it to 0.60.\n\n\nRaw score is 1.43 and the clipped alternative is 1.32. For positive advantage the plateau begins at 1+epsilon, not at both band edges. Ratios below the lower edge still have the raw, smaller score. Other samples, shared parameters, and optimizer steps can move a probability even when this particular term is flat. Neither a hard KL bound nor monotonic performance improvement follows from clipping alone. The curves are exact piecewise-linear calculations, not training curves."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#negative",
+    "href": "slides/lec34_PPO_GRPO.html#negative",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Negative Advantage: Small Job",
+    "text": "Negative Advantage: Small Job\nThe small job has \\hat A=-1.1. Under the same candidate policy, its probability falls from 0.50 to 0.35, giving \\rho=0.70.\n\n\\ell=\\min\\{0.70(-1.1),\\;0.80(-1.1)\\}=-0.88.\n\nThe minimum selects -0.88, not -0.77. Reducing this bad action’s probability further brings no extra benefit to this term. Making it more likely still worsens the score.\n\n\nMultiplying by a negative advantage reverses which ratio gives the smaller product. The plateau is below 1-epsilon for a negative advantage. Above that edge the objective keeps the raw negative slope, including above 1+epsilon. This is why replacing the minimum by a maximum, or describing clipping as a hard bound on probabilities, is incorrect. The positive and negative figures use the same ratio axis, epsilon, and absolute advantage. All values are constructed calculations."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#ppo-loop",
+    "href": "slides/lec34_PPO_GRPO.html#ppo-loop",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "One PPO Training Round",
+    "text": "One PPO Training Round\nA rollout is a sampled interaction sequence. An epoch is one pass through the collected batch; a minibatch is a smaller chunk used for one optimizer step.\n\n\nold = FrozenCopy(policy)\n\n\nbatch = CollectRollouts(old)\n\n\ntargets, A = EstimateReturnsAndAdvantages(batch, critic)\n\n\nfor K epochs, for each minibatch\n\n\nratio = ActionRatios(policy, old, minibatch)\n\n\nactorLoss = -mean(ClipScore(ratio, A))\n\n\ncriticLoss = mean((V(s) - targets)2)\n\n\nUpdateActorAndCritic(actorLoss, criticLoss)\n\n\nThe critic predicts state value V(s). For example, estimate advantage as discounted return minus V(s). ClipScore is \\ell from the preceding slides.\n\nKeep old, targets, and advantages fixed for these K passes. Then collect a new batch with the updated policy.\n\n\nThis shows the common actor-critic PPO form, not a claim that the clipped objective mathematically requires a learned critic. Stop gradients through advantage estimates, value targets, and old-policy probabilities. Each minibatch uses the matching subsets of A and targets. K is a chosen small number of passes, not permission to reuse arbitrary old data indefinitely. In practice saved old log-probabilities often replace a full duplicate old network, and ratios are exp(logp-logp_old). Learning-rate control and KL-based early stopping can provide extra safeguards. We omit GAE terminology and implementation details to keep the first presentation self-contained."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#language-policy",
+    "href": "slides/lec34_PPO_GRPO.html#language-policy",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Language Model as a Policy",
+    "text": "A Language Model as a Policy\nA large language model (LLM) chooses text pieces called tokens. At each step, the state is the prompt plus text already generated, and the action is the next token.\n\nWrite q for the prompt and y for the completed response. Generating an answer is an episode ending when the response finishes.\n\nA response-level score can train many token choices. Its source may be human preferences or an automatic correctness checker.\n\n\nThe figure uses an explicitly toy vocabulary containing the three shown text pieces; it does not claim a particular real tokenizer splits text this way. A production language model repeatedly conditions on the growing prefix and includes a stopping mechanism. We only need that sequential-policy view here, not a Transformer architecture. The numeric probabilities are hypothetical. A complete response probability factors into token probabilities, but the PPO/GRPO objectives introduced later clip token ratios individually rather than clipping one product for the whole response."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#rlhf",
+    "href": "slides/lec34_PPO_GRPO.html#rlhf",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "RLHF: Learning from Human Preferences",
+    "text": "RLHF: Learning from Human Preferences\nReinforcement learning from human feedback (RLHF) uses human judgments to guide policy training. Here is the classic reward-model-and-PPO pipeline:\n\nSupervised fine-tuning (SFT) continues an already trained model’s training on example answers. A reward model (RM) learns to score responses from human comparisons.\n\nLong Ouyang et al. (2022), Training language models to follow instructions with human feedback.\n\n\nRLHF is a feedback-based training pipeline. PPO is one optimizer that can be used inside it.\n\n\nThis is the classic InstructGPT-style pipeline, not a definition claiming every use of human preferences must include PPO or a separate learned reward model. First learn desired answer behavior from demonstrations, then collect rankings/comparisons of candidate answers, fit a reward model, and use RL to improve the policy against that model. The simplified diagram has three stages, with comparison collection included in reward-model training. We omit pretraining-data mixing and paper-specific implementation choices. Source: Ouyang et al. (2022), Sections 3.1 and 3.5, https://arxiv.org/html/2203.02155."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#reward-model",
+    "href": "slides/lec34_PPO_GRPO.html#reward-model",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Fitting the Reward Model",
+    "text": "Fitting the Reward Model\nA preference pair has the same prompt q, a human-preferred answer y^+, and a rejected answer y^-. Let s_\\phi(q,y) be the reward model’s scalar score, with weights \\phi.\n\nFor one pair, minimize:\nL_{\\text{RM}}=-\\log\\sigma\\!\\left(s_\\phi(q,y^+)-s_\\phi(q,y^-)\\right).\nThe sigmoid \\sigma(z)=1/(1+e^{-z}) converts the score difference to a modeled preference probability. Here 2-0.5=1.5 gives \\sigma(1.5)\\approx0.818.\n\nThis is a constructed preference example, not collected human-labeling data or outputs of a trained model. The loss is averaged over many comparison pairs in training. Sigmoid(z)=1/(1+exp(-z)); natural log is used. The model scores themselves need not be probabilities or objectively calibrated quality measurements. Their difference parameterizes the modeled probability of the observed preference. Here the negative log-likelihood is about .201413. Reward-model fitting updates phi; in the subsequent RL stage we hold its weights fixed while policy and value predictions change. Source: Ouyang et al. reward-model loss, Equation 1. A value critic predicts expected return under a policy and has a different role from this preference scorer."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#reference",
+    "href": "slides/lec34_PPO_GRPO.html#reference",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Rollout Snapshot and Reference Policy",
+    "text": "Rollout Snapshot and Reference Policy\nThe reference policy \\pi_{\\text{ref}} is a fixed SFT copy during this RLHF stage. It anchors behavior. The rollout snapshot \\pi_{\\text{old}} is refreshed when collecting each new PPO batch.\n\nKullback-Leibler (KL) divergence measures how one probability distribution differs from another. At a fixed text prefix, let P be the current token distribution and Q the reference:\nD_{\\text{KL}}(P\\|Q)=\\sum_a P(a)\\log\\frac{P(a)}{Q(a)}.\nOptimize preference reward while penalizing this departure. A coefficient \\beta\\geq0 controls penalty strength. KL is zero for equal distributions and is asymmetric.\n\nThe sum ranges over token actions. Assume the reference has positive probability wherever the current policy does. KL is nonnegative in expectation/distribution form, although an individual sampled log-ratio can be negative. In language-model RLHF, a sampled token penalty uses beta*log(pi_old(token|prefix)/pi_ref(token|prefix)) when forming the fixed rollout rewards; the expected log-ratio gives a KL cost under the collection policy. A score from the reward model is added at response completion. The reference anchors the SFT behavior; the old snapshot supplies fixed denominators for recent-data importance ratios. They coincide initially but generally differ after training. PPO clipping alone does not enforce either KL bound. Source: Ouyang et al., Equation 2 and the per-token penalty discussion."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#rlhf-loop",
+    "href": "slides/lec34_PPO_GRPO.html#rlhf-loop",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "An RLHF Training Round",
+    "text": "An RLHF Training Round\nStart from the SFT policy and initialize a trainable value critic. Keep the learned reward model and SFT reference fixed during this RL stage.\n\n\nrepeat\n\n\nold = FrozenCopy(policy)\n\n\nbatch = GenerateAnswers(old, prompts)\n\n\nscores = RewardModel(prompts, batch)\n\n\nrewards = ShapeRewards(batch, scores, old, reference, beta)\n\n\ntargets, A = EstimateReturnsAndAdvantages(batch, rewards, critic)\n\n\nPPOUpdate(policy, critic, batch, old, A, targets)\n\n\nShapeRewards adds the response score at the end and subtracts sampled reference-policy penalties at generated tokens. PPOUpdate performs a bounded number of passes over this batch.\n\nHumans provide training comparisons. The fitted reward model can then score many RL rollouts without a new human judgment at every step.\n\n\nThe generation routine stores token actions, prefixes, old log-probabilities, and termination information, not just printable answer strings. For sampled token t, the shaped reward is minus beta times the old-to-reference log-probability ratio, with the learned response score added on the final token. Targets and advantages are detached and fixed during the PPO inner updates. The value critic learns returns from these shaped rewards. The reference and reward-model parameters receive no RL-stage gradient here. This is an algorithmic overview of the classic pipeline, not runnable library code. Refitting a reward model from new human data would be a separate outer stage."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#grpo",
+    "href": "slides/lec34_PPO_GRPO.html#grpo",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Group Relative Policy Optimization",
+    "text": "Group Relative Policy Optimization\nGroup Relative Policy Optimization (GRPO) estimates learning weights from a group of G responses to the same prompt, instead of training a separate value critic.\n\nHere G=4. A verifier, an automatic checker, gives 1 for final answer 156 and 0 otherwise. This example uses checked correctness rather than human preference scores.\n\nZhihong Shao et al. (2024), DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models.\n\n\nThe group is sampled from a frozen collection-policy snapshot. These answers and rewards are a constructed example, not DeepSeek outputs or benchmark results. The original paper studies reward models and both outcome and process supervision. We use one final-answer verifier reward per response for a minimal outcome-scored example; this choice of reward source is not the definition of GRPO. Critic-free does not mean reward-model-free: GRPO can also use a learned scorer. Its relative weights are not exact state-action advantages. Source: DeepSeekMath Section 4.1, https://arxiv.org/html/2402.03300."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#group-advantages",
+    "href": "slides/lec34_PPO_GRPO.html#group-advantages",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Group-Relative Learning Weights",
+    "text": "Group-Relative Learning Weights\nFor response rewards r_1,\\ldots,r_G, use group mean \\mu and population standard deviation \\sigma_r, which measures within-group spread:\n\\mu=\\operatorname{mean}_i r_i,\\qquad\n\\sigma_r=\\sqrt{\\operatorname{mean}_i[(r_i-\\mu)^2]}.\nThe group-relative advantage estimate is\n\\hat A_i=\\frac{r_i-\\mu}{\\sigma_r}\\quad\\text{when }\\sigma_r&gt;0.\nFor (r_1,r_2,r_3,r_4)=(1,0,1,0), \\mu=0.5 and \\sigma_r=0.5.\n\nThus (\\hat A_1,\\hat A_2,\\hat A_3,\\hat A_4)=(1,-1,1,-1).\n\n\nEqual rewards give zero spread and no relative reward signal. In our pseudocode, return zero weights for that group instead of dividing by zero.\n\n\nPopulation standard deviation, with divisor G, is chosen explicitly for the arithmetic; software conventions must match the stated calculation. Implementations may instead use a numerical stabilizer or skip zero-variance groups. Here NormalizeOrZero returns all zeros exactly when sigma is zero. A KL regularization term can still produce a policy update in that case, so only the relative reward component vanishes. The group mean includes the current response and the random standard deviation rescales it; do not infer the unbiased action-independent-baseline identity from Lecture 33 for this normalized proxy. Above/below group mean is a relative comparison, not proof of absolute quality."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#token-update",
+    "href": "slides/lec34_PPO_GRPO.html#token-update",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "GRPO Uses Token-Level Ratios",
+    "text": "GRPO Uses Token-Level Ratios\nFor response i, let y_{i,t} be token t and y_{i,&lt;t} the earlier tokens. The state s_{i,t} contains prompt q and that prefix.\n\\rho_{i,t}=\\frac{\\pi_\\theta(y_{i,t}\\mid s_{i,t})}\n{\\pi_{\\text{old}}(y_{i,t}\\mid s_{i,t})}.\nUse the same response weight \\hat A_i for its tokens in this final-reward example. Average the PPO-style scores \\ell(\\rho_{i,t},\\hat A_i) within each response, then across the group.\nFor a token in a response with \\hat A_i=1, changing its probability from 0.50 to 0.65 gives \\rho=1.3 and clipped score 1.2.\n\nClipping uses one ratio per generated token. The original GRPO objective adds a reference-policy KL penalty separately from the group-normalized reward.\n\n\nThis is the outcome-supervision form, where one final normalized score weights every token in a response. The original paper also considers process rewards, which give different per-token weights. The displayed ratio conditions on the full same prefix in numerator and denominator. It is not the product of ratios across a whole response. DeepSeekMath averages over tokens within each response and then responses, with a separate KL regularizer. Its sampled KL estimator uses u-log(u)-1 with u=pi_ref/pi_theta; the reference in that term is distinct from the old policy in the clipped ratio. A reference may be refreshed between outer training stages in the paper’s iterative variant; it stays fixed within the optimization stage illustrated here."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#grpo-loop",
+    "href": "slides/lec34_PPO_GRPO.html#grpo-loop",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "One GRPO Training Round",
+    "text": "One GRPO Training Round\nFix a reference policy and a scoring rule for this stage. Score each response with a verifier or a frozen learned reward model.\n\n\nold = FrozenCopy(policy)\n\n\ngroups = GenerateGroups(old, prompts, G)\n\n\nrewards = ScoreResponses(groups)\n\n\nA = NormalizeOrZero(rewards) // separately per prompt\n\n\nfor K update passes\n\n\nratio = TokenRatios(policy, old, groups)\n\n\ngain = MeanByResponse(ClipScore(ratio, A))\n\n\npenalty = ReferenceKL(policy, reference, groups)\n\n\nloss = -mean(gain) + beta * penalty\n\n\nOptimizerStep(policy, loss)\n\n\nMeanByResponse averages token scores within each answer. Keep the old probabilities and group weights fixed across the K passes. Only the policy is trained here.\n\nGenerateGroups stores tokenized responses, their prefixes, and collection-policy log-probabilities. ScoreResponses may be a verifier or a reward-model inference call. NormalizeOrZero operates independently within each prompt group, never across unrelated prompts, and its output is detached during policy optimization. ClipScore is the same ell already defined. ReferenceKL denotes the separate reference regularizer, using the corresponding per-token estimation and response averaging. The illustrated stage has no value-critic loss or learned value baseline. A full outer procedure can collect new groups, refresh a reference, or retrain a scorer in separate stages. The graph and pseudocode are an introductory outcome-scored GRPO presentation, not a claim that all later GRPO variants are identical."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#compare",
+    "href": "slides/lec34_PPO_GRPO.html#compare",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Training Loops and Reward Sources",
+    "text": "Training Loops and Reward Sources\n\n\n\n\n\n\n\n\n\nMethod\nData for the policy update\nValue critic\nSeparate reward model\n\n\n\n\nClassic RLHF with PPO\nFresh responses scored by the reward model\nTrained\nYes\n\n\nGRPO\nFresh response groups; verifier or learned scores\nNone\nOptional\n\n\nOffline DPO\nSaved chosen/rejected answer pairs\nNone\nNone\n\n\n\n\nA reward model scores response quality. A critic predicts expected return. Removing the critic does not automatically remove the reward model or reference policy.\n\nHuman preferences can train either PPO-based RLHF or DPO. GRPO with a purely automatic verifier is not, by itself, human-feedback learning.\n\nThe first row is the classic actor-critic RLHF implementation shown here, not a mathematical requirement that every PPO surrogate must use a critic or reward model. A reward model may be frozen while a critic learns expected shaped return. Both GRPO and DPO retain a reference in the versions illustrated. DPO optimizes saved preference pairs without the online RL loop. The origin of the feedback and the optimization method are separate design decisions."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#reward-quality",
+    "href": "slides/lec34_PPO_GRPO.html#reward-quality",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Reward Quality Still Matters",
+    "text": "Reward Quality Still Matters\nPrompt: “What is 12\\times13? Explain briefly.”\n\n\n\nResponse\nCorrect?\nExplanation?\nVerifier reward\n\n\n\n\n12\\times10+12\\times3=156\nYes\nYes\n1\n\n\n156\nYes\nNo\n1\n\n\n\nThe checker rewards both equally because it tests only the final answer.\nReward hacking means exploiting a scoring rule while missing the intended goal. A learned preference scorer can also miss important aspects of quality.\n\nEvaluate on held-out tasks, tasks not used in training, and check the behavior humans actually wanted. A rising training reward alone is insufficient evidence.\n\n\nThis is a deliberately limited verifier specification, not evidence that an actual model learned a reward exploit. It illustrates an omission an optimizer could exploit and connects to the reward-hacking/specification-gaming discussion earlier in the course. Correct final answers alone do not establish that a written explanation is faithful or that the model followed every instruction. Human comparisons can contain disagreement, coverage gaps, or bias; a reward model is a proxy for those collected judgments. We make no claim that RLHF guarantees truthfulness or that GRPO guarantees sound reasoning. Background: the limitations discussion in Ouyang et al. and the reward-function discussion in DeepSeekMath."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#quick-check",
+    "href": "slides/lec34_PPO_GRPO.html#quick-check",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Quick Check",
+    "text": "Quick Check\n\nIf \\pi_{\\text{old}}(a\\mid s)=0.5 and the candidate gives 0.7, does PPO clipping force the probability back to 0.6 when \\epsilon=0.2?\nDoes “GRPO has no value critic” imply it needs no reward model?\nWhat if a group receives rewards (1,1,1,1)?\n\n\n1. No. The ratio is 1.4. Clipping changes the score’s incentive, not the actual probability directly.\n\n\n2. No. The scorer may still be a learned reward model, or it may be an automatic verifier.\n\n\n3. All relative weights are zero under our guard. The reward component has no group contrast; a separate KL penalty may still act."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#dpo",
+    "href": "slides/lec34_PPO_GRPO.html#dpo",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Direct Preference Optimization",
+    "text": "Direct Preference Optimization\nDirect Preference Optimization (DPO) trains the policy directly from chosen/rejected answer pairs, without fitting a separate reward model or running a PPO rollout loop.\nReuse prompt q, preferred answer y^+, and rejected answer y^-. Offline means the comparisons are saved before this training stage.\n\n\nRafael Rafailov et al. (2023), Direct Preference Optimization: Your Language Model is Secretly a Reward Model.\n\n\nDPO still uses a fixed reference policy and depends on the quality of the preference pairs.\n\n\nThis is the original offline DPO setup. Responses are generated and labeled before the illustrated optimization stage. Online variants are outside this introduction. Source: Rafailov et al., Sections 3 and 4. The policy is initialized from SFT, with a frozen copy as the reference."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#dpo-loss",
+    "href": "slides/lec34_PPO_GRPO.html#dpo-loss",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "DPO Loss: A Worked Pair",
+    "text": "DPO Loss: A Worked Pair\nDefine reference-relative log-probability ratios for the two complete answers:\nu_\\theta^\\pm=\\log\\frac{\\pi_\\theta(y^\\pm\\mid q)}{\\pi_{\\text{ref}}(y^\\pm\\mid q)},\\qquad\nL_{\\text{DPO}}=-\\log\\sigma\\!\\left(\\beta(u_\\theta^+-u_\\theta^-)\\right).\nThe preference margin is u_\\theta^+-u_\\theta^-. The chosen \\beta&gt;0 scales it; \\sigma is the sigmoid. Minimize the average pair loss.\nToy probabilities for our preferred 156 explanation and rejected 144 answer:\n\n\n\nModel\n\\pi(y^+\\mid q)\n\\pi(y^-\\mid q)\n\n\n\n\nFixed reference\n0.20\n0.20\n\n\nCurrent policy\n0.40\n0.10\n\n\n\n\nWith \\beta=1, the margin is \\log 2-\\log 0.5=\\log 4. Thus the modeled preference probability is 0.8, and L_{\\text{DPO}}=-\\log 0.8\\approx0.223.\n\n\nAll probabilities are constructed, not actual model outputs. Other answers have the remaining probability mass. Natural logarithms are used. The margin is u-plus minus u-minus. At initialization policy equals reference, giving margin zero and pair loss log(2), about .693. These are whole-response ratios, unlike PPO/GRPO token-level clipping. The reference-relative loss comes from a KL-regularized preference model; it is not a hard bound on policy distance. Increasing a pair margin does not guarantee that either answer’s absolute probability changes monotonically under shared model parameters. Equation 7 of the original DPO paper gives the dataset average of this pair loss."
+  },
+  {
+    "objectID": "slides/lec34_PPO_GRPO.html#dpo-loop",
+    "href": "slides/lec34_PPO_GRPO.html#dpo-loop",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The DPO Training Loop",
+    "text": "The DPO Training Loop\nInitialize the policy from SFT. Hold the reference fixed throughout this offline training stage.\n\n\npolicy = Copy(SFT)\n\n\nreference = FrozenCopy(SFT)\n\n\nfor each minibatch (q, yPlus, yMinus) of saved preferences\n\n\nuPlus = ResponseLogRatio(policy, reference, q, yPlus)\n\n\nuMinus = ResponseLogRatio(policy, reference, q, yMinus)\n\n\nloss = -mean(log(sigmoid(beta * (uPlus - uMinus))))\n\n\nOptimizerStep(policy, loss)\n\n\nResponseLogRatio returns u_\\theta^\\pm from the preceding slide. Score the saved answer tokens, conditioned on the prompt and their earlier tokens. Sum their log-probabilities for each complete answer, rather than sampling a new answer.\n\nOnly the policy is trained here. There is no separate reward-model training, value critic, or online rollout collection in this loop.\n\n\nSum response-token log-probabilities, not prompt-token probabilities, using consistent termination and padding masks for both models. Reference outputs are detached and can be precomputed for a fixed dataset. In code, use a numerically stable log-sigmoid instead of explicitly taking log(sigmoid(…)). The display uses the mathematical operations for clarity. This is algorithmic pseudocode, not a library API. There is no old-policy snapshot denominator and no clipping in this DPO loss."
   }
 ]
