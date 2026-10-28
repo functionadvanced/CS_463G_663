@@ -1159,7 +1159,7 @@
     "href": "asset_credits.html#lec31",
     "title": "Visual Asset Credits",
     "section": "Lecture 31: Multi-Armed Bandits",
-    "text": "Lecture 31: Multi-Armed Bandits\nCarried-over asset needing source verification: MAB.png.\nThe feedback-loop and exploration-bonus SVG diagrams are original course illustrations. Numerical examples are hypothetical calculations, not experimental results. Background: Sutton and Barto, Reinforcement Learning: An Introduction, Chapter 2, and Auer, Cesa-Bianchi, and Fischer, Finite-time Analysis of the Multiarmed Bandit Problem."
+    "text": "Lecture 31: Multi-Armed Bandits\nThe bandit cartoon is reused unchanged from the supplied Spring 2025 Beamer project. The original Beamer frame explicitly credits ChatGPT as its creator; the original generation prompt is unavailable. It is not presented as a CC0 asset.\nThe resource choices, feedback loop, observed-rating history, epsilon-greedy probabilities, two UCB score charts, sample-mean update, allocation comparison, and evaluation procedure are original course diagrams. Their editable Draw.io source contains nine pages, exported as PNGs for the slides. All reward histories, true means, and allocations are hypothetical teaching examples, not experiments with students or measured algorithm performance.\nThe lecture manually revises the supplied Spring 2025 bandit Beamer material. Background: Sutton and Barto, Reinforcement Learning: An Introduction, Chapter 2; Auer, Cesa-Bianchi, and Fischer, Finite-time Analysis of the Multiarmed Bandit Problem; and the authors’ Upper Confidence Bound exposition."
   },
   {
     "objectID": "asset_credits.html#lec31b",
@@ -3045,109 +3045,18 @@
     "text": "Double Descent\nDouble descent: unseen error can fall, rise near interpolation, then fall again for larger models.\n\nNear p=n, small changes in noisy training outputs can cause large coefficient changes and unstable new predictions.\nBenign overfitting describes settings where fitting even the training noise still permits accurate prediction on new data.\n\np&gt;n alone guarantees neither double descent nor benign overfitting.\n\n\nThe figure is deliberately schematic. Belkin, Hsu, Ma, and Mandal, Reconciling modern machine learning practice and the bias-variance trade-off: https://arxiv.org/abs/1812.11118. Bartlett, Long, Lugosi, and Tsigler, Benign Overfitting in Linear Regression: https://arxiv.org/abs/1906.11300. Benign overfitting can yield near-optimal prediction under particular distributional conditions; exact training fit alone is insufficient evidence. The phenomenon occurs in some linear models as well as more complex learners.\nThe notebook’s isotropic Gaussian, fixed-signal experiment need not improve indefinitely after interpolation. Its overparameterized expected-error formula has a growing signal-bias contribution and a decreasing noise-amplification contribution. Consequently the large-p branch can turn upward again. The schematic is not a promise that arbitrary further enlargement improves that experiment."
   },
   {
-    "objectID": "slides/lec31_MAB.html#multi-armed-bandits",
-    "href": "slides/lec31_MAB.html#multi-armed-bandits",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Multi-Armed Bandits",
-    "text": "Multi-Armed Bandits\nBandits isolate the core RL dilemma: explore unknown actions or exploit the best action so far?"
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#the-bandit-setting",
-    "href": "slides/lec31_MAB.html#the-bandit-setting",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "The Bandit Setting",
-    "text": "The Bandit Setting\n\n\n\n\n\nMulti-armed bandit illustration\n\n\n\nA multi-armed bandit has:\n\nk actions, called arms.\nUnknown reward distribution for each arm.\nOne chosen arm per time step.\nImmediate reward after each choice.\n\n\nThe basic model has no changing state or context. You observe the reward only for the arm you choose."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#why-study-bandits",
-    "href": "slides/lec31_MAB.html#why-study-bandits",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why Study Bandits?",
-    "text": "Why Study Bandits?\n\n\n\nApplication\nArm\nReward\n\n\n\n\nTutorial selection\nTutorial variant\nUseful rating\n\n\nOnline ads\nAd variant\nClick or conversion\n\n\nRecommendation\nItem\nEngagement\n\n\nGames\nStrategy\nScore\n\n\n\nCommon structure:\n\nTry actions.\nObserve outcomes.\nImprove future choices."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#recommendation-as-a-bandit",
-    "href": "slides/lec31_MAB.html#recommendation-as-a-bandit",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Recommendation as a Bandit",
-    "text": "Recommendation as a Bandit\n\n\n\n\n\nChoose an itemObserve its rewardUpdate its estimateUse the new information at the next decision\n\n\n\nRecommendations happen online, so learning and acting are intertwined."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#formal-problem",
-    "href": "slides/lec31_MAB.html#formal-problem",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Formal Problem",
-    "text": "Formal Problem\nAt time t:\n\nChoose arm A_t \\in \\{a_1,\\ldots,a_k\\}.\nReceive reward R_t \\sim \\mathcal{R}(A_t).\n\nIn today’s stationary stochastic model, each arm has a fixed reward distribution with unknown mean \\mu_a.\nGoal over horizon T:\n\n\\max \\mathbb{E}\\left[\\sum_{t=1}^T R_t\\right]"
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#exploration-vs.-exploitation",
-    "href": "slides/lec31_MAB.html#exploration-vs.-exploitation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Exploration vs. Exploitation",
-    "text": "Exploration vs. Exploitation\n\n\nExploitation\nChoose the arm with the highest estimated value.\nGood short-term reward.\n\nExploration\nTry uncertain arms to learn more.\nPotentially better long-term reward.\n\n\nExploit too early and you may miss the best arm; explore too much and you waste reward."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#optimism-under-uncertainty",
-    "href": "slides/lec31_MAB.html#optimism-under-uncertainty",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Optimism Under Uncertainty",
-    "text": "Optimism Under Uncertainty"
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#bandits-vs.-full-rl",
-    "href": "slides/lec31_MAB.html#bandits-vs.-full-rl",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Bandits vs. Full RL",
-    "text": "Bandits vs. Full RL\n\n\n\nBandits\nReinforcement learning\n\n\n\n\nNo state transitions\nActions affect future states\n\n\nImmediate reward\nDelayed consequences\n\n\nLearn action values\nLearn policies or value functions\n\n\nCore exploration problem\nExploration plus sequential planning"
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#action-value-estimation",
-    "href": "slides/lec31_MAB.html#action-value-estimation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Action-Value Estimation",
-    "text": "Action-Value Estimation\nBefore round t, N_t(a) is the number of times arm a has been pulled.\n\nQ_t(a)\\approx\\mu_a\n\nSample average:\n\nQ_t(a)=\n\\frac{\\sum_{i=1}^{t-1}\\mathbf{1}\\{A_i=a\\}R_i}{N_t(a)},\\qquad N_t(a)&gt;0.\n\nIncremental update:\n\nQ_{t+1}(a)=Q_t(a)+\\frac{R_t-Q_t(a)}{N_t(a)+1},\\qquad a=A_t.\n\nOnly the selected arm’s estimate and count change."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#greedy-action-selection",
-    "href": "slides/lec31_MAB.html#greedy-action-selection",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Greedy Action Selection",
-    "text": "Greedy Action Selection\nAlways choose:\n\nA_t=\\arg\\max_a Q_t(a)\n\nPros:\n\nSimple.\nExploits current knowledge.\n\nCons:\n\nNo deliberate exploration.\nCan lock onto a bad early estimate."
-  },
-  {
     "objectID": "slides/lec31_MAB.html#epsilon-greedy",
     "href": "slides/lec31_MAB.html#epsilon-greedy",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Epsilon-Greedy",
-    "text": "Epsilon-Greedy\n\n\nfunction EpsilonGreedy(Q, epsilon)\n\n\nu = Uniform(0, 1)\n\n\nif u &lt; epsilon\n\n\nreturn random arm // explore\n\n\nelse\n\n\nreturn argmaxa Q(a) // exploit\n\n\nExploration samples uniformly from all arms, including the current best."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#upper-confidence-bound",
-    "href": "slides/lec31_MAB.html#upper-confidence-bound",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Upper Confidence Bound",
-    "text": "Upper Confidence Bound\nUpper confidence bound (UCB) adds an uncertainty bonus:\n\nA_t=\n\\arg\\max_a\n\\left[\nQ_t(a)+c\\sqrt{\\frac{\\ln t}{N_t(a)}}\n\\right]\n\n\n\n\nTerm\nRole\n\n\n\n\nQ_t(a)\nExploitation\n\n\n\\sqrt{\\ln t/N_t(a)}\nExploration bonus\n\n\nc\nExploration strength\n\n\n\nTry each arm once first so N_t(a)&gt;0. Here \\ln is the natural logarithm.\n\nThe familiar UCB1 bonus for rewards in [0,1] uses c=sqrt(2). The next numerical exercise uses c=1 to illustrate the decision rule, not to claim UCB1’s exact theorem or a calibrated 95-percent confidence interval. Rewards and c must use compatible scales."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#ucb-intuition",
-    "href": "slides/lec31_MAB.html#ucb-intuition",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "UCB Intuition",
-    "text": "UCB Intuition\n\n\nfor each arm a\n\n\nscore(a) = Q(a) + explorationBonus(a)\n\n\nchoose arm with largest score\n\n\n\nRarely tried arms get larger bonuses; uncertainty shrinks as N_t(a) grows."
+    "text": "Epsilon-Greedy\nEpsilon-greedy uses a random-choice branch with probability \\epsilon, where 0\\leq\\epsilon\\leq1. Otherwise it exploits the current estimates Q.\n\n\nfunction EpsilonGreedy(Q, epsilon)\n\n\nwith probability epsilon\n\n\nreturn UniformChoice(allArms) // explore\n\n\notherwise\n\n\nreturn BestArm(Q) // exploit\n\n\nUniformChoice makes every arm equally likely, including the current best. BestArm chooses the largest estimate and breaks ties uniformly at random.\n\nA larger \\epsilon gathers more random experience, but also spends more choices on options with lower current estimates.\n\n\nThe input Q is the current table of Q_t(a) values. Fixed positive epsilon keeps random exploration active; it does not make all choices eventually optimal. We do not assert a universal best epsilon or automatically transfer a convergence claim from an infinite-horizon setting to this finite exercise. Uniform exploration includes all three arms, not only the non-greedy ones. Source: the supplied Beamer epsilon-greedy material, revised to make probabilities and tie handling explicit."
   },
   {
     "objectID": "slides/lec31_MAB.html#regret",
     "href": "slides/lec31_MAB.html#regret",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Regret",
-    "text": "Regret\nRegret measures reward missed relative to always choosing the best arm.\n\n\\operatorname{Regret}(T)=T\\mu^*-\\mathbb{E}\\!\\left[\\sum_{t=1}^{T}R_t\\right].\n\nwhere:\n\n\\mu^* is the expected reward of the best arm.\nT is the horizon.\n\n\nGood bandit algorithms aim for low regret, not just good final estimates."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#what-to-remember",
-    "href": "slides/lec31_MAB.html#what-to-remember",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What to Remember",
-    "text": "What to Remember\n\nBasic bandits remove changing state and delayed consequences.\nExploration gathers information; exploitation uses current knowledge.\nAction-value estimates summarize observed rewards.\nEpsilon-greedy explores randomly some fraction of the time.\nUCB explores actions with high uncertainty.\nRegret measures the cost of not knowing the best arm.\n\nAsset credits"
+    "section": "Regret: Reward Missed While Learning",
+    "text": "Regret: Reward Missed While Learning\nThe best mean is \\mu^*=\\max_a\\mu_a. Expected regret compares a learner with always choosing an arm having that best mean:\n\\operatorname{Regret}(T)=T\\mu^*-\\mathbb E\\left[\\sum_{t=1}^{T}R_t\\right].\nHere T is the number of rounds, and \\mathbb E averages over random rewards and action choices.\n\nA pull of arm a loses \\mu^*-\\mu_a expected reward relative to the benchmark.\nA learner pays for poor choices along the way, even if it identifies the best arm at the end.\n\n\nThe true means are usually unknown to the learner. A simulator can reveal them to an evaluator without giving them to the algorithm.\n\n\nThis is expected pseudo-regret for the stationary stochastic model, not regret against the best noisy realized reward sequence. With counts defined before each round, the equivalent decomposition is sum_a (mu-mu_a) E[N_{T+1}(a)]. We omit that extra notation from the slide. A single realized reward total can exceed Tmu* through luck; that does not contradict nonnegative expected regret. The benchmark is an evaluator’s reference, not a resource the learner has access to."
   },
   {
     "objectID": "slides/lec33_Policy_Based_RL.html#policy-based-model-free-rl",
@@ -3995,90 +3904,6 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Unary, Binary, and Global Constraints",
     "text": "Unary, Binary, and Global Constraints\nThe arity of a constraint is the number of variables it involves.\n\n\n\n\n\n\n\n\nKind\nExample\nMeaning\n\n\n\n\nUnary\nX_A=1\nA rule on one variable\n\n\nBinary\nX_A\\ne X_B\nA rule on two variables\n\n\nGlobal\n\\operatorname{AllDifferent}(X_1,\\ldots,X_9)\nA structured rule on a collection\n\n\n\n\\operatorname{AllDifferent}(X,Y,Z) requires every pair to differ:\nX\\ne Y\\quad\\land\\quad X\\ne Z\\quad\\land\\quad Y\\ne Z.\n\nDo X\\ne Y and Y\\ne Z alone imply all three are different?  No: (X,Y,Z)=(1,2,1) satisfies both.\n\n\nThe symbol land means logical AND. Global is not simply an arity of three; it names a structured constraint over a collection, potentially of varying size. AllDifferent is logically equivalent to all pairwise inequalities, but a specialized propagation algorithm may use its global structure more effectively. Source: AIMA CSP formulations."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#which-option-should-we-try-next",
-    "href": "slides/lec31_MAB.html#which-option-should-we-try-next",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Which Option Should We Try Next?",
-    "text": "Which Option Should We Try Next?\nThree tutorial recommendations have different, unknown chances of receiving a useful rating.\n\nWould you always recommend the option with the highest average rating so far, even if another has been tried only once?\n\nMulti-armed bandits (MABs) isolate a central reinforcement learning (RL) dilemma: explore uncertain actions or exploit current knowledge.\n\n50-minute plan: setting and feedback, 7 minutes; value estimation and greedy failure, 10; epsilon-greedy calculation, 7; UCB example and practice, 12; regret and evaluation, 9; extensions and exit check, 5. No separate code demonstration or homework release today. References: Sutton and Barto, Reinforcement Learning: An Introduction, second edition, Chapter 2; Auer, Cesa-Bianchi, and Fischer (2002), Finite-time Analysis of the Multiarmed Bandit Problem, https://doi.org/10.1023/A:1013689704352. Numerical examples and SVG diagrams are original, hypothetical teaching examples, not experimental results."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#updating-an-estimate-by-hand",
-    "href": "slides/lec31_MAB.html#updating-an-estimate-by-hand",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Updating an Estimate by Hand",
-    "text": "Updating an Estimate by Hand\nOne arm produced rewards 1,0,1,1. Its sample mean is 3/4=0.75.\nThe next reward is 0:\nN_{\\text{new}}=5,\\qquad Q_{\\text{new}}=0.75+\\frac{0-0.75}{5}=0.60.\n\nIf the following reward is 1, what is the next estimate?\n\n\nQ_{\\text{next}}=0.60+\\frac{1-0.60}{6}=\\frac46\\approx0.667. The incremental update matches recomputing the average from all six rewards."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#a-lucky-first-pull-can-mislead-greedy-search",
-    "href": "slides/lec31_MAB.html#a-lucky-first-pull-can-mislead-greedy-search",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "A Lucky First Pull Can Mislead Greedy Search",
-    "text": "A Lucky First Pull Can Mislead Greedy Search\nSuppose each arm is tried once before greedy selection starts.\n\n\n\n\n\n\n\n\n\nArm\nTrue mean, hidden from learner\nFirst reward\nInitial estimate\n\n\n\n\nA\n0.4\n1\n1\n\n\nB\n0.6\n0\n0\n\n\nC\n0.8\n0\n0\n\n\n\n\nPure greedy keeps choosing A. Its sample mean stays positive at every finite step because of the first success, while B and C stay at zero.\n\n\nThese are Bernoulli rewards, either zero or one. The true means are shown only for classroom evaluation. The learner does not know them. The displayed unlucky initialization has positive probability, and establishes a genuine failure mode of sample-average greedy selection."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#epsilon-greedy-actual-selection-probabilities",
-    "href": "slides/lec31_MAB.html#epsilon-greedy-actual-selection-probabilities",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Epsilon-Greedy: Actual Selection Probabilities",
-    "text": "Epsilon-Greedy: Actual Selection Probabilities\nLet k=3, \\epsilon=0.15, and suppose A is the unique greedy arm.\nP(A)=1-\\epsilon+\\frac{\\epsilon}{k}=0.85+0.05=0.90. P(B)=P(C)=\\frac{\\epsilon}{k}=0.05.\n\nWhy is the probability of selecting A larger than 1-\\epsilon?\n\n\nExploration can also select A. The probability of exploring and the probability of choosing a nongreedy arm are different."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#ucb-a-numerical-decision",
-    "href": "slides/lec31_MAB.html#ucb-a-numerical-decision",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "UCB: A Numerical Decision",
-    "text": "UCB: A Numerical Decision\nBefore round t=11, ten pulls have produced these statistics. Use c=1 and \\ln 11\\approx2.398.\n\n\n\nArm\nN_t(a)\nQ_t(a)\n\\sqrt{\\ln(11)/N_t(a)}\nTotal score\n\n\n\n\nA\n6\n0.500\n0.632\n1.132\n\n\nB\n3\n0.333\n0.894\n1.227\n\n\nC\n1\n0.000\n1.549\n1.549\n\n\n\n\nUCB chooses C, although it has the lowest sample mean. One failure leaves substantial uncertainty about its true mean.\n\nScores above 1 are allowed. These are selection scores, not probabilities."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#estimates-and-exploration-bonuses",
-    "href": "slides/lec31_MAB.html#estimates-and-exploration-bonuses",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Estimates and Exploration Bonuses",
-    "text": "Estimates and Exploration Bonuses\nThe dot is the estimate. The line extends to its UCB score in the preceding example.\n\n\n\n\n\nABC1.1321.2271.54901.01.5\n\n\nThis bonus shrinks with an arm’s pull count, but grows slowly with time if that arm remains ignored."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#practice-the-next-ucb-round",
-    "href": "slides/lec31_MAB.html#practice-the-next-ucb-round",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Practice: The Next UCB Round",
-    "text": "Practice: The Next UCB Round\nAt round 11, choose C and observe reward 1.\n\n\nWhat are N_{12}(C) and Q_{12}(C)?\nUsing \\ln12\\approx2.485 and c=1, which arm wins next?\n\n\n\nN_{12}(C)=2 and Q_{12}(C)=0.5. Other estimates stay unchanged.\n\n\n\nArm\nNext score\n\n\n\n\nA\n0.500+\\sqrt{2.485/6}\\approx1.144\n\n\nB\n0.333+\\sqrt{2.485/3}\\approx1.243\n\n\nC\n0.500+\\sqrt{2.485/2}\\approx1.615\n\n\n\nChoose C again: its higher estimate outweighs the smaller bonus."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#regret-as-the-cost-of-each-pull",
-    "href": "slides/lec31_MAB.html#regret-as-the-cost-of-each-pull",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Regret as the Cost of Each Pull",
-    "text": "Regret as the Cost of Each Pull\nLet \\Delta_a=\\mu^*-\\mu_a be the gap between arm a and the best mean.\n\\operatorname{Regret}(T)=\\sum_a\\Delta_a\\,\\mathbb{E}[N_{T+1}(a)].\nFor means (0.4,0.6,0.8) and a fixed 100-pull allocation:\n\n\n\nArm\nPulls\nGap\nExpected reward lost\n\n\n\n\nA\n50\n0.4\n20\n\n\nB\n30\n0.2\n6\n\n\nC\n20\n0\n0\n\n\n\nTotal expected regret: 26. Expected reward: 80-26=54."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#comparing-two-allocations",
-    "href": "slides/lec31_MAB.html#comparing-two-allocations",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Comparing Two Allocations",
-    "text": "Comparing Two Allocations\nThese are hypothetical fixed allocations, not results from a simulation.\n\n\n\nAllocation over (A,B,C)\nExpected reward\nExpected regret\n\n\n\n\n(50,30,20)\n54\n26\n\n\n(20,20,60)\n68\n12\n\n\n\n\nIf two learners both identify C as best on the last round, did they perform equally well?\n\n\nNo. Learning cost includes the rewards missed along the way. A single lucky run also cannot establish which algorithm is better.\n\n\nAsk how to compare algorithms experimentally: same arm distributions and horizon, many independent runs, cumulative reward/regret, and variation across runs. In simulation the true means are available to the evaluator. In an application they usually are not directly known."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#when-reward-distributions-change",
-    "href": "slides/lec31_MAB.html#when-reward-distributions-change",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "When Reward Distributions Change",
-    "text": "When Reward Distributions Change\nAn old tutorial may become less useful after the course material changes.\n\nA sample average gives all previous rewards equal weight.\nA constant step size emphasizes recent observations:\n\nQ_{\\text{new}}(a)=Q_{\\text{old}}(a)+\\alpha\\bigl[r-Q_{\\text{old}}(a)\\bigr].\nFor Q_{\\text{old}}=0.8, r=0, and \\alpha=0.2, the new value is 0.64.\n\nAdapting to change requires continued exploration. Stationary-bandit guarantees do not automatically apply."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#context-changes-the-best-choice",
-    "href": "slides/lec31_MAB.html#context-changes-the-best-choice",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Context Changes the Best Choice",
-    "text": "Context Changes the Best Choice\nA tutorial that helps a beginner may not help an experienced student.\n\n\n\n\n\n\n\nModel\nInformation before acting\n\n\n\n\nBasic bandit\nOne shared set of arm estimates\n\n\nContextual bandit\nUser or task features, then a context-dependent choice\n\n\nFull RL\nA state whose future can change because of the action\n\n\n\n\nIf a recommendation changes what a student learns and therefore later decisions, what does a one-step bandit model leave out?\n\n\nThe long-term effect on the student’s state and future rewards."
-  },
-  {
-    "objectID": "slides/lec31_MAB.html#exit-check",
-    "href": "slides/lec31_MAB.html#exit-check",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Exit Check",
-    "text": "Exit Check\n\nFour arms, \\epsilon=0.2, unique greedy arm: what is its selection probability?\nDoes a zero reward prove that an arm has zero expected reward?\nIs a UCB score of 1.4 an invalid probability?\n\n\n\n0.8+0.2/4=0.85.\nNo. A sample is not the distribution’s mean.\nIt is a selection score, not a probability."
   },
   {
     "objectID": "slides/lec35_Generative_ML.html#learning-a-distribution",
@@ -8097,5 +7922,110 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Takeaways",
     "text": "Takeaways\n\nRL improves action choices through interaction and reward.\nAn MDP specifies states, actions, transition probabilities, rewards, and discounting.\nA policy chooses actions. Its value predicts expected return.\nBellman equations connect current value to successor-state values.\nValue iteration updates estimates using the best lookahead score.\nPolicy iteration evaluates a policy, then improves its choices.\n\n\nSeparate immediate reward, long-term return, and the policy that determines future actions.\n\nNext: deciding when to try an uncertain action rather than always using the current favorite.\nAsset credits"
+  },
+  {
+    "objectID": "slides/lec31_MAB.html#recommendation",
+    "href": "slides/lec31_MAB.html#recommendation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Recommending a Python Help Resource",
+    "text": "Recommending a Python Help Resource\nA multi-armed bandit (MAB) problem repeatedly chooses among options with unknown rewards. Each option is an arm, and choosing it is a pull.\n\nFor each request, recommend one resource. Reward is 1 if the student rates it useful, and 0 otherwise.\n\nThe highest rating average so far may belong to the best resource, or simply to the one that got lucky early.\n\n\nAll resource descriptions, reward sequences, means, and allocations in this lecture are constructed teaching examples, not an experiment with students. We use one basic stationary three-arm recommendation model throughout the main calculations. This simplification does not model how a recommendation changes a student’s future knowledge or which students need different resources. Those limitations return near the end."
+  },
+  {
+    "objectID": "slides/lec31_MAB.html#bandit-name",
+    "href": "slides/lec31_MAB.html#bandit-name",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Why the Name “Bandit”?",
+    "text": "Why the Name “Bandit”?\n\n\n\nA lever-operated slot machine is nicknamed a one-armed bandit: its lever is the arm, and its uncertain payouts can take the player’s money.\nThe mathematical problem offers several unknown reward options.\nIn our example:\n\nArm: a resource format.\nPull: recommend that format.\nReward: its usefulness rating.\n\n\n\n\nThe name explanation comes from the supplied original Beamer lecture. The unchanged MAB.png cartoon was already in that project; its Beamer frame explicitly credits ChatGPT as its creator. Its original generation prompt is unavailable. It illustrates the nickname, not a literal model of the recommendation task."
+  },
+  {
+    "objectID": "slides/lec31_MAB.html#feedback",
+    "href": "slides/lec31_MAB.html#feedback",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Feedback and the Basic Assumptions",
+    "text": "Feedback and the Basic Assumptions\nAt round t, choose arm A_t and observe reward R_t only for that arm.\n\n\nStochastic means the reward is random. Our 0-or-1 reward is a Bernoulli reward.\nStationary means each arm’s reward distribution stays fixed. Assume independent requests from the same population and immediate feedback.\n\nThe horizon T is the number of rounds. The goal is high expected total reward over those T choices.\n\nIn the basic bandit model there is no changing external state whose transition depends on the action. The learner’s information still changes after each observation, so actions affect what it knows for future decisions. Conditional on a selected arm, rewards here are independent samples from that arm’s fixed Bernoulli distribution. We cannot observe which rating an unchosen resource would have received. This is an assumed simplified setting, not a claim that all real recommendation feedback is stationary or immediate."
+  },
+  {
+    "objectID": "slides/lec31_MAB.html#estimates",
+    "href": "slides/lec31_MAB.html#estimates",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Counts, Estimates, and Unknown Means",
+    "text": "Counts, Estimates, and Unknown Means\nBefore round t, N_t(a) counts earlier pulls of arm a. Its sample mean Q_t(a) averages the rewards observed for that arm:\nQ_t(a)=\\frac{\\text{total observed reward from }a}{N_t(a)},\\qquad N_t(a)&gt;0.\n\nThe true mean \\mu_a is the arm’s unknown average reward, here its probability of a useful rating. An observed Q_t(a) can differ from \\mu_a.\n\nThe ten displayed observations form one hypothetical record before round t=11: counts sum to t-1. Every subsequent numerical choice/update uses this record or its explicitly updated round-12 version. The per-arm rows need not specify a full interleaving of all ten choices; the displayed counts and reward totals are sufficient for the rules we study. Q is an estimate of a one-round reward mean here, rather than the full state/action return of Lecture 30. Do not confuse an empirical fraction with a known success probability."
+  },
+  {
+    "objectID": "slides/lec31_MAB.html#exploration",
+    "href": "slides/lec31_MAB.html#exploration",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Exploitation and Exploration",
+    "text": "Exploitation and Exploration\nExploitation uses current estimates to choose a high-reward arm. A greedy rule always chooses an arm with the largest Q_t(a), breaking ties randomly.\n\n\n\nArm before round 11\nPulls\nEstimated mean\n\n\n\n\nA: guide\n6\n0.500\n\n\nB: worked example\n3\n0.333\n\n\nC: video\n1\n0\n\n\n\nGreedy chooses A. But the single failure for C leaves little evidence about its true mean.\n\nExploration tries options to gain information. It may cost reward now while helping later choices. A zero observation does not establish a zero reward probability.\n\n\nWe do not claim that greedy must choose A forever under this particular ten-observation history; its means can change and B has a positive estimate. The point is that greedy action selection has no deliberate mechanism for gathering evidence about ignored C. Exploration and exploitation describe purposes/selection rules, not disjoint sets of arm identities: exploration may also choose the currently greedy arm."
+  },
+  {
+    "objectID": "slides/lec31_MAB.html#epsilon-probabilities",
+    "href": "slides/lec31_MAB.html#epsilon-probabilities",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Actual Selection Probabilities",
+    "text": "Actual Selection Probabilities\nReturn to the record where A is the unique highest estimate. With three arms and \\epsilon=0.15, each arm gets 0.15/3=0.05 probability from exploration.\n\nP(A)=1-\\epsilon+\\epsilon/3=0.90,\\qquad P(B)=P(C)=0.05.\n\nWhy is selecting A more likely than 1-\\epsilon=0.85?\n\n\nThe random branch can select A too. Exploring and choosing a nongreedy arm are different events.\n\n\nThe probability labels P(A), P(B), and P(C) refer to choosing those arm identities at the current decision, not their success probabilities. The unique-greedy-arm condition matters. With several tied best arms and random tie breaking, the exploitation mass is divided among them. The colored bar shows the probability mass of the four selection routes, not arm reward distributions."
+  },
+  {
+    "objectID": "slides/lec31_MAB.html#ucb",
+    "href": "slides/lec31_MAB.html#ucb",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Upper Confidence Bound",
+    "text": "Upper Confidence Bound\nUpper confidence bound (UCB) adds an exploration bonus to the estimated reward, favoring arms that may be better than limited data suggests:\nA_t=\\arg\\max_a\\left[Q_t(a)+c\\sqrt{\\frac{\\ln t}{N_t(a)}}\\right].\n\n\\arg\\max returns an arm with the largest score.\nt is the current round, N_t(a) its earlier pull count, and \\ln the natural logarithm.\nc&gt;0 controls bonus strength. We use c=1 for the calculations.\n\nTry every arm once before using the formula, so every denominator is positive.\n\nThe bonus rewards uncertainty. The total is a selection score, not a probability or a guaranteed confidence percentage.\n\n\nThe classic UCB1 rule for rewards bounded in [0,1] corresponds to c=sqrt(2) in this parameterization. Our c=1 exercise illustrates the index calculation, not that exact theorem or a calibrated 95-percent interval. For fixed t the bonus decreases as N grows. If an arm is ignored, its count stays fixed while ln(t) grows. Reference: Auer, Cesa-Bianchi, and Fischer (2002), https://doi.org/10.1023/A:1013689704352, and the authors’ exposition at https://www.banditalgs.com/2016/09/18/the-upper-confidence-bound-algorithm/."
+  },
+  {
+    "objectID": "slides/lec31_MAB.html#ucb-choice",
+    "href": "slides/lec31_MAB.html#ucb-choice",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "UCB Chooses the Video",
+    "text": "UCB Chooses the Video\nBefore round t=11, use the same ten observations. A dot marks Q_t(a), and the line adds its bonus to reach the labeled score.\n\nFor C, the score is 0+\\sqrt{\\ln(11)/1}\\approx1.549.\n\nChoose C, despite its lowest sample mean. One observed failure still leaves a large exploration bonus.\n\nScores above 1 are allowed. They are not reward probabilities.\n\nAll plotted values are calculated, not empirical uncertainty intervals. Use ln(11)=2.3978952728 and exact Q(B)=1/3 before rounding. Scores are approximately 1.132178149, 1.227368246, and 1.548513892. The estimate dots and bonus lengths share one numeric axis. No real student experiment was run."
+  },
+  {
+    "objectID": "slides/lec31_MAB.html#update",
+    "href": "slides/lec31_MAB.html#update",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Updating the Chosen Arm",
+    "text": "Updating the Chosen Arm\nSuppose the chosen video C now receives reward R_{11}=1. Only its count and mean change.\n\nFor the chosen arm a=A_t, the incremental update computes the same average without storing all past ratings:\nN_{t+1}(a)=N_t(a)+1,\\qquad\nQ_{t+1}(a)=Q_t(a)+\\frac{R_t-Q_t(a)}{N_t(a)+1}.\n\nN_{12}(C)=2 and Q_{12}(C)=0+(1-0)/2=0.5. The statistics for A and B stay unchanged.\n\n\nCounts are defined before round t throughout the lecture. The denominator uses the new count N_t(a)+1, not the old count. For a first observation, this rule with initial Q=0 and N=0 sets Q to the observed reward. The new reward 1 is a stipulated possible outcome, not a claim that choosing C guarantees success. C’s actual two observed rewards are now 0,1. This formula is a sample-average update, not the constant-step-size variant for nonstationary problems."
+  },
+  {
+    "objectID": "slides/lec31_MAB.html#next-round",
+    "href": "slides/lec31_MAB.html#next-round",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Next UCB Round",
+    "text": "The Next UCB Round\nBefore round 12, counts are (6,3,2) and estimates are (0.5,1/3,0.5). Recompute all bonuses using \\ln(12).\n\n\nWhich arm wins now, even though C’s bonus became smaller?\n\n\nC again. Its new score is 0.5+\\sqrt{\\ln(12)/2}\\approx1.615. The increase in its sample mean outweighs the smaller bonus.\n\n\nUse ln(12)=2.4849066498. Scores are approximately 1.143545731, 1.243444435, and 1.614653904. A and B keep their sample means and counts, but their bonuses increase slightly because the round number changed. For C, the bonus drops from sqrt(ln11) to sqrt(ln12/2), while its mean rises by 0.5. The chart preserves the same axis scale and colors as the preceding UCB chart."
+  },
+  {
+    "objectID": "slides/lec31_MAB.html#allocations",
+    "href": "slides/lec31_MAB.html#allocations",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Two Different Learning Costs",
+    "text": "Two Different Learning Costs\nFor evaluation, suppose hidden true means are (\\mu_A,\\mu_B,\\mu_C)=(0.4,0.6,0.8). Always choosing C would give 100\\cdot0.8=80 expected reward over 100 rounds.\n\nFor the first allocation: 50\\cdot0.4+30\\cdot0.6+20\\cdot0.8=54, so expected regret is 80-54=26.\n\nBoth allocations might finish by recommending C, yet they missed different amounts of reward along the way.\n\n\nThese are hypothetical fixed 100-pull allocations, not simulations or measured results from epsilon-greedy/UCB. They are not continuations of the exact ten-round history used in the action-selection walkthrough. All figures concern the same three resource identities and an illustrative stationary world. The second allocation gives .420+.620+.8*60=68 expected reward and regret 12. The true means here differ from the noisy empirical estimates earlier; the learner has not been allowed to use them."
+  },
+  {
+    "objectID": "slides/lec31_MAB.html#evaluation",
+    "href": "slides/lec31_MAB.html#evaluation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Comparing Bandit Algorithms",
+    "text": "Comparing Bandit Algorithms\nUse the same arm distributions and horizon T for every algorithm.\n\n\nIndependent runs restart learning with fresh random outcomes.\nCompare cumulative reward or regret and the variation across runs.\nKeep the true means available only to the evaluator.\n\n\nCompare performance across runs, not one lucky run or only the final recommendation.\n\n\nThe diagram is an evaluation procedure, not an empirical performance comparison. Independent runs quantify how sensitive results are to stochastic rewards and algorithm randomness. Paired common random numbers can be a useful experimental design, but are not required for this introduction. No real application reveals all unchosen rewards or the true arm means merely because we wish to evaluate a bandit algorithm."
+  },
+  {
+    "objectID": "slides/lec31_MAB.html#extensions",
+    "href": "slides/lec31_MAB.html#extensions",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "When the Basic Model Is Too Simple",
+    "text": "When the Basic Model Is Too Simple\n\n\n\n\n\n\n\n\nNew term\nMeaning\nResource example\n\n\n\n\nNonstationary bandit\nReward distributions change over time.\nA video becomes outdated after a library update.\n\n\nContextual bandit\nObserve features before choosing, then learn which actions work for that context.\nBeginners and experienced students may prefer different formats.\n\n\n\nChanging rewards can require more emphasis on recent feedback. Context-dependent choices can require separate predictions for different requests.\n\nIf a recommendation changes a student’s future knowledge and rewards, a one-step bandit omits that sequential effect. Full reinforcement learning (RL) can model action-dependent future states.\n\n\nNonstationarity and context are different extensions: a contextual problem can be stationary conditional on the context. The table supplies names and motivation, not a new algorithm or a claim that stationary UCB guarantees automatically apply. A contextual bandit ordinarily treats the context sequence as outside the learner’s action-dependent state dynamics. If actions influence future contexts, the one-step abstraction can miss long-term consequences. More recent feedback can be emphasized with a constant-step-size estimate, deferred to a context where that update is needed."
+  },
+  {
+    "objectID": "slides/lec31_MAB.html#quick-check",
+    "href": "slides/lec31_MAB.html#quick-check",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Quick Check",
+    "text": "Quick Check\n\nFour arms, \\epsilon=0.2, and one unique greedy arm: what is its selection probability?\nDoes one zero reward prove that an arm’s true mean is zero?\nIs a UCB score of 1.4 invalid because reward is only 0 or 1?\n\n\n1. 0.85. Exploitation gives 0.8, and exploration adds 0.2/4=0.05.\n\n\n2. No. One observation is evidence about a distribution, not its true mean.\n\n\n3. No. UCB compares estimate-plus-bonus scores. Those scores need not lie in [0,1]."
+  },
+  {
+    "objectID": "slides/lec31_MAB.html#takeaways",
+    "href": "slides/lec31_MAB.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nAn arm is a choice, and a pull reveals only that choice’s reward.\nSample averages estimate unknown reward means.\nExploitation uses current estimates. Exploration gathers more evidence.\nEpsilon-greedy explores uniformly with probability \\epsilon.\nUCB adds a bonus that reflects limited sampling.\nRegret includes the reward missed throughout learning.\n\n\nKeep observed rewards, estimated means, unknown true means, and selection scores distinct.\n\nAsset credits"
   }
 ]

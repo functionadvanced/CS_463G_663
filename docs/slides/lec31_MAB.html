@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec31_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -143,12 +144,6 @@
       margin-right: 0; 
     }
   </style>
-  <style>
-  .reveal table { font-size: 0.76em; line-height: 1.22; }
-  .reveal th, .reveal td { padding: 0.4em 0.48em; }
-  .reveal .bandit-figure svg { display: block; width: 100%; max-height: 300px; }
-  .reveal #the-bandit-setting img { max-height: 300px; }
-  </style>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -169,15 +164,16 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="which-option-should-we-try-next" class="slide level2">
-<h2>Which Option Should We Try Next?</h2>
-<p>Three tutorial recommendations have different, unknown chances of receiving a useful rating.</p>
-<div class="question">
-<p>Would you always recommend the option with the highest average rating so far, even if another has been tried only once?</p>
+<section id="recommendation" class="slide level2 bandit31-slide">
+<h2>Recommending a Python Help Resource</h2>
+<p>A <strong>multi-armed bandit (MAB)</strong> problem repeatedly chooses among options with unknown rewards. Each option is an <strong>arm</strong>, and choosing it is a <strong>pull</strong>.</p>
+<p><img data-src="imgs/drawio/lec31/resources.png" class="bandit31-options" alt="Three help-resource options: arm A is a written guide, arm B a worked example, and arm C a short video."></p>
+<p>For each request, recommend one resource. Reward is <span class="math inline">1</span> if the student rates it useful, and <span class="math inline">0</span> otherwise.</p>
+<div class="takeaway">
+<p>The highest rating average so far may belong to the best resource, or simply to the one that got lucky early.</p>
 </div>
-<p><strong>Multi-armed bandits (MABs)</strong> isolate a central <strong>reinforcement learning (RL)</strong> dilemma: explore uncertain actions or exploit current knowledge.</p>
 <aside class="notes">
-<p>50-minute plan: setting and feedback, 7 minutes; value estimation and greedy failure, 10; epsilon-greedy calculation, 7; UCB example and practice, 12; regret and evaluation, 9; extensions and exit check, 5. No separate code demonstration or homework release today. References: Sutton and Barto, Reinforcement Learning: An Introduction, second edition, Chapter 2; Auer, Cesa-Bianchi, and Fischer (2002), Finite-time Analysis of the Multiarmed Bandit Problem, https://doi.org/10.1023/A:1013689704352. Numerical examples and SVG diagrams are original, hypothetical teaching examples, not experimental results.</p>
+<p>All resource descriptions, reward sequences, means, and allocations in this lecture are constructed teaching examples, not an experiment with students. We use one basic stationary three-arm recommendation model throughout the main calculations. This simplification does not model how a recommendation changes a student’s future knowledge or which students need different resources. Those limitations return near the end.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -190,231 +186,23 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-bandit-setting" class="slide level2">
-<h2>The Bandit Setting</h2>
-<div class="columns visual-pair">
-<div class="column" style="width:38%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="imgs/lec29/MAB.png" class="cc0-figure"></p>
-<figcaption>Multi-armed bandit illustration</figcaption>
-</figure>
-</div>
-</div><div class="column" style="width:56%;">
-<p>A multi-armed bandit has:</p>
+<section id="bandit-name" class="slide level2 bandit31-slide">
+<h2>Why the Name “Bandit”?</h2>
+<div class="bandit31-origin">
+<p><img data-src="imgs/lec29/MAB.png" class="bandit31-cartoon" alt="Cartoon slot machine with several arms, illustrating the historical bandit nickname."></p>
+<div>
+<p>A lever-operated slot machine is nicknamed a <strong>one-armed bandit</strong>: its lever is the arm, and its uncertain payouts can take the player’s money.</p>
+<p>The mathematical problem offers several unknown reward options.</p>
+<p>In our example:</p>
 <ul>
-<li><span class="math inline">k</span> actions, called arms.</li>
-<li>Unknown reward distribution for each arm.</li>
-<li>One chosen arm per time step.</li>
-<li>Immediate reward after each choice.</li>
+<li><strong>Arm:</strong> a resource format.</li>
+<li><strong>Pull:</strong> recommend that format.</li>
+<li><strong>Reward:</strong> its usefulness rating.</li>
 </ul>
-<div class="takeaway">
-<p>The basic model has no changing state or context. You observe the reward only for the arm you choose.</p>
 </div>
-</div></div>
-</section>
-<section id="why-study-bandits" class="slide level2">
-<h2>Why Study Bandits?</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Application</th>
-<th>Arm</th>
-<th>Reward</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Tutorial selection</td>
-<td>Tutorial variant</td>
-<td>Useful rating</td>
-</tr>
-<tr class="even">
-<td>Online ads</td>
-<td>Ad variant</td>
-<td>Click or conversion</td>
-</tr>
-<tr class="odd">
-<td>Recommendation</td>
-<td>Item</td>
-<td>Engagement</td>
-</tr>
-<tr class="even">
-<td>Games</td>
-<td>Strategy</td>
-<td>Score</td>
-</tr>
-</tbody>
-</table>
-<p>Common structure:</p>
-<ul>
-<li>Try actions.</li>
-<li>Observe outcomes.</li>
-<li>Improve future choices.</li>
-</ul>
-</section>
-<section id="recommendation-as-a-bandit" class="slide level2">
-<h2>Recommendation as a Bandit</h2>
-<div class="bandit-figure">
-<svg viewbox="0 0 1000 280" role="img" aria-label="Bandit feedback loop: choose one item, observe its reward, update that item's estimate, then choose again. Rewards for unchosen items are not observed.">
-<defs><marker id="bandit-loop-arrow" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="9" markerheight="9" markerunits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#5d6470"></path></marker></defs>
-<g fill="none" stroke="#5d6470" stroke-width="3" marker-end="url(#bandit-loop-arrow)"><path d="M290 83H347"></path><path d="M645 83H702"></path><path d="M845 150V230H150V157"></path></g>
-<g stroke-width="2"><rect x="5" y="25" width="285" height="125" rx="7" fill="#e8f6f5" stroke="#007c89"></rect><rect x="355" y="25" width="290" height="125" rx="7" fill="#fff4db" stroke="#b7791f"></rect><rect x="710" y="25" width="285" height="125" rx="7" fill="#fdecef" stroke="#b8325f"></rect></g>
-<g font-family="sans-serif" fill="#202124" text-anchor="middle" font-size="28"><text x="147" y="79">Choose an item</text><text x="500" y="79">Observe its reward</text><text x="852" y="79">Update its estimate</text><text x="500" y="216">Use the new information at the next decision</text></g>
-</svg>
-</div>
-<div class="takeaway">
-<p>Recommendations happen online, so learning and acting are intertwined.</p>
-</div>
-</section>
-<section id="formal-problem" class="slide level2">
-<h2>Formal Problem</h2>
-<p>At time <span class="math inline">t</span>:</p>
-<ul>
-<li>Choose arm <span class="math inline">A_t \in \{a_1,\ldots,a_k\}</span>.</li>
-<li>Receive reward <span class="math inline">R_t \sim \mathcal{R}(A_t)</span>.</li>
-</ul>
-<p>In today’s <strong>stationary stochastic</strong> model, each arm has a fixed reward distribution with unknown mean <span class="math inline">\mu_a</span>.</p>
-<p>Goal over horizon <span class="math inline">T</span>:</p>
-<p><span class="math display">
-\max \mathbb{E}\left[\sum_{t=1}^T R_t\right]
-</span></p>
-</section>
-<section id="exploration-vs.-exploitation" class="slide level2">
-<h2>Exploration vs.&nbsp;Exploitation</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="exploitation">Exploitation</h3>
-<p>Choose the arm with the highest estimated value.</p>
-<p>Good short-term reward.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="exploration">Exploration</h3>
-<p>Try uncertain arms to learn more.</p>
-<p>Potentially better long-term reward.</p>
-</div></div>
-<div class="takeaway">
-<p>Exploit too early and you may miss the best arm; explore too much and you waste reward.</p>
-</div>
-</section>
-<section id="bandits-vs.-full-rl" class="slide level2">
-<h2>Bandits vs.&nbsp;Full RL</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Bandits</th>
-<th>Reinforcement learning</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>No state transitions</td>
-<td>Actions affect future states</td>
-</tr>
-<tr class="even">
-<td>Immediate reward</td>
-<td>Delayed consequences</td>
-</tr>
-<tr class="odd">
-<td>Learn action values</td>
-<td>Learn policies or value functions</td>
-</tr>
-<tr class="even">
-<td>Core exploration problem</td>
-<td>Exploration plus sequential planning</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="action-value-estimation" class="slide level2">
-<h2>Action-Value Estimation</h2>
-<p>Before round <span class="math inline">t</span>, <span class="math inline">N_t(a)</span> is the number of times arm <span class="math inline">a</span> has been pulled.</p>
-<p><span class="math display">
-Q_t(a)\approx\mu_a
-</span></p>
-<p>Sample average:</p>
-<p><span class="math display">
-Q_t(a)=
-\frac{\sum_{i=1}^{t-1}\mathbf{1}\{A_i=a\}R_i}{N_t(a)},\qquad N_t(a)&gt;0.
-</span></p>
-<p>Incremental update:</p>
-<p><span class="math display">
-Q_{t+1}(a)=Q_t(a)+\frac{R_t-Q_t(a)}{N_t(a)+1},\qquad a=A_t.
-</span></p>
-<p>Only the selected arm’s estimate and count change.</p>
-</section>
-<section id="updating-an-estimate-by-hand" class="slide level2">
-<h2>Updating an Estimate by Hand</h2>
-<p>One arm produced rewards <span class="math inline">1,0,1,1</span>. Its sample mean is <span class="math inline">3/4=0.75</span>.</p>
-<p>The next reward is <span class="math inline">0</span>:</p>
-<p><span class="math display">N_{\text{new}}=5,\qquad Q_{\text{new}}=0.75+\frac{0-0.75}{5}=0.60.</span></p>
-<div class="question">
-<p>If the following reward is <span class="math inline">1</span>, what is the next estimate?</p>
-</div>
-<div class="fragment">
-<p><span class="math display">Q_{\text{next}}=0.60+\frac{1-0.60}{6}=\frac46\approx0.667.</span> The incremental update matches recomputing the average from all six rewards.</p>
-</div>
-</section>
-<section id="greedy-action-selection" class="slide level2">
-<h2>Greedy Action Selection</h2>
-<p>Always choose:</p>
-<p><span class="math display">
-A_t=\arg\max_a Q_t(a)
-</span></p>
-<p>Pros:</p>
-<ul>
-<li>Simple.</li>
-<li>Exploits current knowledge.</li>
-</ul>
-<p>Cons:</p>
-<ul>
-<li>No deliberate exploration.</li>
-<li>Can lock onto a bad early estimate.</li>
-</ul>
-</section>
-<section id="a-lucky-first-pull-can-mislead-greedy-search" class="slide level2">
-<h2>A Lucky First Pull Can Mislead Greedy Search</h2>
-<p>Suppose each arm is tried once before greedy selection starts.</p>
-<table class="caption-top">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 26%">
-<col style="width: 26%">
-<col style="width: 26%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Arm</th>
-<th style="text-align: right;">True mean, hidden from learner</th>
-<th style="text-align: right;">First reward</th>
-<th style="text-align: right;">Initial estimate</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">A</span></td>
-<td style="text-align: right;"><span class="math inline">0.4</span></td>
-<td style="text-align: right;"><span class="math inline">1</span></td>
-<td style="text-align: right;"><span class="math inline">1</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">B</span></td>
-<td style="text-align: right;"><span class="math inline">0.6</span></td>
-<td style="text-align: right;"><span class="math inline">0</span></td>
-<td style="text-align: right;"><span class="math inline">0</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">C</span></td>
-<td style="text-align: right;"><span class="math inline">0.8</span></td>
-<td style="text-align: right;"><span class="math inline">0</span></td>
-<td style="text-align: right;"><span class="math inline">0</span></td>
-</tr>
-</tbody>
-</table>
-<div class="fragment takeaway">
-<p>Pure greedy keeps choosing <span class="math inline">A</span>. Its sample mean stays positive at every finite step because of the first success, while <span class="math inline">B</span> and <span class="math inline">C</span> stay at zero.</p>
 </div>
 <aside class="notes">
-<p>These are Bernoulli rewards, either zero or one. The true means are shown only for classroom evaluation. The learner does not know them. The displayed unlucky initialization has positive probability, and establishes a genuine failure mode of sample-average greedy selection.</p>
+<p>The name explanation comes from the supplied original Beamer lecture. The unchanged MAB.png cartoon was already in that project; its Beamer frame explicitly credits ChatGPT as its creator. Its original generation prompt is unavailable. It illustrates the nickname, not a literal model of the recommendation task.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -427,76 +215,174 @@ A_t=\arg\max_a Q_t(a)
           display:block!important;
       }</style></aside>
 </section>
-<section id="epsilon-greedy" class="slide level2">
+<section id="feedback" class="slide level2 bandit31-slide">
+<h2>Feedback and the Basic Assumptions</h2>
+<p>At round <span class="math inline">t</span>, choose arm <span class="math inline">A_t</span> and observe reward <span class="math inline">R_t</span> <strong>only for that arm</strong>.</p>
+<p><img data-src="imgs/drawio/lec31/feedback-loop.png" class="bandit31-loop" alt="Choose one resource, observe its rating, update only that resource's statistics, and use that information at the next round."></p>
+<ul>
+<li><strong>Stochastic</strong> means the reward is random. Our <span class="math inline">0</span>-or-<span class="math inline">1</span> reward is a <strong>Bernoulli reward</strong>.</li>
+<li><strong>Stationary</strong> means each arm’s reward distribution stays fixed. Assume independent requests from the same population and immediate feedback.</li>
+</ul>
+<p>The <strong>horizon</strong> <span class="math inline">T</span> is the number of rounds. The goal is high expected total reward over those <span class="math inline">T</span> choices.</p>
+<aside class="notes">
+<p>In the basic bandit model there is no changing external state whose transition depends on the action. The learner’s information still changes after each observation, so actions affect what it knows for future decisions. Conditional on a selected arm, rewards here are independent samples from that arm’s fixed Bernoulli distribution. We cannot observe which rating an unchosen resource would have received. This is an assumed simplified setting, not a claim that all real recommendation feedback is stationary or immediate.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="estimates" class="slide level2 bandit31-slide">
+<h2>Counts, Estimates, and Unknown Means</h2>
+<p>Before round <span class="math inline">t</span>, <span class="math inline">N_t(a)</span> counts earlier pulls of arm <span class="math inline">a</span>. Its <strong>sample mean</strong> <span class="math inline">Q_t(a)</span> averages the rewards observed for that arm:</p>
+<p><span class="math display">Q_t(a)=\frac{\text{total observed reward from }a}{N_t(a)},\qquad N_t(a)&gt;0.</span></p>
+<p><img data-src="imgs/drawio/lec31/rating-history.png" class="bandit31-history" alt="Before round 11, A has rewards 1,0,1,0,1,0, giving 3 of 6 and mean 0.5. B has 1,0,0, giving 1 of 3 and mean one third. C has one zero reward and mean zero."></p>
+<p>The <strong>true mean</strong> <span class="math inline">\mu_a</span> is the arm’s unknown average reward, here its probability of a useful rating. An observed <span class="math inline">Q_t(a)</span> can differ from <span class="math inline">\mu_a</span>.</p>
+<aside class="notes">
+<p>The ten displayed observations form one hypothetical record before round t=11: counts sum to t-1. Every subsequent numerical choice/update uses this record or its explicitly updated round-12 version. The per-arm rows need not specify a full interleaving of all ten choices; the displayed counts and reward totals are sufficient for the rules we study. Q is an estimate of a one-round reward mean here, rather than the full state/action return of Lecture 30. Do not confuse an empirical fraction with a known success probability.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="exploration" class="slide level2 bandit31-slide">
+<h2>Exploitation and Exploration</h2>
+<p><strong>Exploitation</strong> uses current estimates to choose a high-reward arm. A <strong>greedy rule</strong> always chooses an arm with the largest <span class="math inline">Q_t(a)</span>, breaking ties randomly.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Arm before round 11</th>
+<th style="text-align: right;">Pulls</th>
+<th style="text-align: right;">Estimated mean</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">A</span>: guide</td>
+<td style="text-align: right;"><span class="math inline">6</span></td>
+<td style="text-align: right;"><span class="math inline">0.500</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">B</span>: worked example</td>
+<td style="text-align: right;"><span class="math inline">3</span></td>
+<td style="text-align: right;"><span class="math inline">0.333</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">C</span>: video</td>
+<td style="text-align: right;"><span class="math inline">1</span></td>
+<td style="text-align: right;"><span class="math inline">0</span></td>
+</tr>
+</tbody>
+</table>
+<p>Greedy chooses <strong><span class="math inline">A</span></strong>. But the single failure for <span class="math inline">C</span> leaves little evidence about its true mean.</p>
+<div class="takeaway">
+<p><strong>Exploration</strong> tries options to gain information. It may cost reward now while helping later choices. A zero observation does not establish a zero reward probability.</p>
+</div>
+<aside class="notes">
+<p>We do not claim that greedy must choose A forever under this particular ten-observation history; its means can change and B has a positive estimate. The point is that greedy action selection has no deliberate mechanism for gathering evidence about ignored C. Exploration and exploitation describe purposes/selection rules, not disjoint sets of arm identities: exploration may also choose the currently greedy arm.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="epsilon-greedy" class="slide level2 bandit31-slide">
 <h2>Epsilon-Greedy</h2>
+<p><strong>Epsilon-greedy</strong> uses a random-choice branch with probability <span class="math inline">\epsilon</span>, where <span class="math inline">0\leq\epsilon\leq1</span>. Otherwise it exploits the current estimates <span class="math inline">Q</span>.</p>
 <div class="pseudo-code">
 <div class="pseudo-line">
 <span class="pseudo-kw">function</span> <span class="pseudo-fn">EpsilonGreedy</span>(<span class="pseudo-var">Q</span>, <span class="pseudo-var">epsilon</span>)
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">u</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">Uniform</span>(<span class="pseudo-num">0</span>, <span class="pseudo-num">1</span>)
+<div class="pseudo-line fragment indent-1" data-fragment-index="0">
+<span class="pseudo-kw">with probability</span> <span class="pseudo-var">epsilon</span>
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">u</span> <span class="pseudo-op">&lt;</span> <span class="pseudo-var">epsilon</span>
+<div class="pseudo-line fragment indent-2" data-fragment-index="1">
+<span class="pseudo-kw">return</span> <span class="pseudo-fn">UniformChoice</span>(<span class="pseudo-var">allArms</span>) <span class="pseudo-comment">// explore</span>
 </div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-kw">return</span> random arm <span class="pseudo-comment">// explore</span>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-kw">otherwise</span>
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">else</span>
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-kw">return</span> <span class="pseudo-fn">argmax</span><sub>a</sub> <span class="pseudo-var">Q</span>(<span class="pseudo-var">a</span>) <span class="pseudo-comment">// exploit</span>
+<div class="pseudo-line fragment indent-2" data-fragment-index="3">
+<span class="pseudo-kw">return</span> <span class="pseudo-fn">BestArm</span>(<span class="pseudo-var">Q</span>) <span class="pseudo-comment">// exploit</span>
 </div>
 </div>
-<p>Exploration samples uniformly from <strong>all</strong> arms, including the current best.</p>
+<p><code>UniformChoice</code> makes every arm equally likely, <strong>including the current best</strong>. <code>BestArm</code> chooses the largest estimate and breaks ties uniformly at random.</p>
+<div class="takeaway">
+<p>A larger <span class="math inline">\epsilon</span> gathers more random experience, but also spends more choices on options with lower current estimates.</p>
+</div>
+<aside class="notes">
+<p>The input Q is the current table of Q_t(a) values. Fixed positive epsilon keeps random exploration active; it does not make all choices eventually optimal. We do not assert a universal best epsilon or automatically transfer a convergence claim from an infinite-horizon setting to this finite exercise. Uniform exploration includes all three arms, not only the non-greedy ones. Source: the supplied Beamer epsilon-greedy material, revised to make probabilities and tie handling explicit.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="epsilon-greedy-actual-selection-probabilities" class="slide level2">
-<h2>Epsilon-Greedy: Actual Selection Probabilities</h2>
-<p>Let <span class="math inline">k=3</span>, <span class="math inline">\epsilon=0.15</span>, and suppose <span class="math inline">A</span> is the unique greedy arm.</p>
-<p><span class="math display">P(A)=1-\epsilon+\frac{\epsilon}{k}=0.85+0.05=0.90.</span> <span class="math display">P(B)=P(C)=\frac{\epsilon}{k}=0.05.</span></p>
+<section id="epsilon-probabilities" class="slide level2 bandit31-slide">
+<h2>Actual Selection Probabilities</h2>
+<p>Return to the record where <span class="math inline">A</span> is the unique highest estimate. With three arms and <span class="math inline">\epsilon=0.15</span>, each arm gets <span class="math inline">0.15/3=0.05</span> probability from exploration.</p>
+<p><img data-src="imgs/drawio/lec31/epsilon-mass.png" class="bandit31-probability" alt="Selection probability consists of 0.85 exploitation on A, plus exploration mass 0.05 each on A, B, and C."></p>
+<p><span class="math display">P(A)=1-\epsilon+\epsilon/3=0.90,\qquad P(B)=P(C)=0.05.</span></p>
 <div class="question">
-<p>Why is the probability of selecting <span class="math inline">A</span> larger than <span class="math inline">1-\epsilon</span>?</p>
+<p>Why is selecting <span class="math inline">A</span> more likely than <span class="math inline">1-\epsilon=0.85</span>?</p>
 </div>
 <div class="fragment">
-<p>Exploration can also select <span class="math inline">A</span>. The probability of exploring and the probability of choosing a nongreedy arm are different.</p>
+<p>The random branch can select <span class="math inline">A</span> too. Exploring and choosing a nongreedy arm are different events.</p>
 </div>
+<aside class="notes">
+<p>The probability labels P(A), P(B), and P(C) refer to choosing those arm identities at the current decision, not their success probabilities. The unique-greedy-arm condition matters. With several tied best arms and random tie breaking, the exploitation mass is divided among them. The colored bar shows the probability mass of the four selection routes, not arm reward distributions.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="upper-confidence-bound" class="slide level2">
+<section id="ucb" class="slide level2 bandit31-slide">
 <h2>Upper Confidence Bound</h2>
-<p><strong>Upper confidence bound (UCB)</strong> adds an uncertainty bonus:</p>
-<p><span class="math display">
-A_t=
-\arg\max_a
-\left[
-Q_t(a)+c\sqrt{\frac{\ln t}{N_t(a)}}
-\right]
-</span></p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Term</th>
-<th>Role</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">Q_t(a)</span></td>
-<td>Exploitation</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\sqrt{\ln t/N_t(a)}</span></td>
-<td>Exploration bonus</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">c</span></td>
-<td>Exploration strength</td>
-</tr>
-</tbody>
-</table>
-<p>Try each arm once first so <span class="math inline">N_t(a)&gt;0</span>. Here <span class="math inline">\ln</span> is the natural logarithm.</p>
+<p><strong>Upper confidence bound (UCB)</strong> adds an <strong>exploration bonus</strong> to the estimated reward, favoring arms that may be better than limited data suggests:</p>
+<p><span class="math display">A_t=\arg\max_a\left[Q_t(a)+c\sqrt{\frac{\ln t}{N_t(a)}}\right].</span></p>
+<ul>
+<li><span class="math inline">\arg\max</span> returns an arm with the largest score.</li>
+<li><span class="math inline">t</span> is the current round, <span class="math inline">N_t(a)</span> its earlier pull count, and <span class="math inline">\ln</span> the natural logarithm.</li>
+<li><span class="math inline">c&gt;0</span> controls bonus strength. We use <strong><span class="math inline">c=1</span></strong> for the calculations.</li>
+</ul>
+<p>Try every arm once before using the formula, so every denominator is positive.</p>
+<div class="takeaway">
+<p>The bonus rewards uncertainty. The total is a selection score, not a probability or a guaranteed confidence percentage.</p>
+</div>
 <aside class="notes">
-<p>The familiar UCB1 bonus for rewards in [0,1] uses c=sqrt(2). The next numerical exercise uses c=1 to illustrate the decision rule, not to claim UCB1’s exact theorem or a calibrated 95-percent confidence interval. Rewards and c must use compatible scales.</p>
+<p>The classic UCB1 rule for rewards bounded in [0,1] corresponds to c=sqrt(2) in this parameterization. Our c=1 exercise illustrates the index calculation, not that exact theorem or a calibrated 95-percent interval. For fixed t the bonus decreases as N grows. If an arm is ignored, its count stays fixed while ln(t) grows. Reference: Auer, Cesa-Bianchi, and Fischer (2002), https://doi.org/10.1023/A:1013689704352, and the authors’ exposition at https://www.banditalgs.com/2016/09/18/the-upper-confidence-bound-algorithm/.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -509,198 +395,41 @@ Q_t(a)+c\sqrt{\frac{\ln t}{N_t(a)}}
           display:block!important;
       }</style></aside>
 </section>
-<section id="ucb-a-numerical-decision" class="slide level2">
-<h2>UCB: A Numerical Decision</h2>
-<p>Before round <span class="math inline">t=11</span>, ten pulls have produced these statistics. Use <span class="math inline">c=1</span> and <span class="math inline">\ln 11\approx2.398</span>.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Arm</th>
-<th style="text-align: right;"><span class="math inline">N_t(a)</span></th>
-<th style="text-align: right;"><span class="math inline">Q_t(a)</span></th>
-<th style="text-align: right;"><span class="math inline">\sqrt{\ln(11)/N_t(a)}</span></th>
-<th style="text-align: right;">Total score</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">A</span></td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;"><span class="math inline">0.500</span></td>
-<td style="text-align: right;"><span class="math inline">0.632</span></td>
-<td style="text-align: right;"><span class="math inline">1.132</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">B</span></td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;"><span class="math inline">0.333</span></td>
-<td style="text-align: right;"><span class="math inline">0.894</span></td>
-<td style="text-align: right;"><span class="math inline">1.227</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">C</span></td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;"><span class="math inline">0.000</span></td>
-<td style="text-align: right;"><span class="math inline">1.549</span></td>
-<td style="text-align: right;"><strong><span class="math inline">1.549</span></strong></td>
-</tr>
-</tbody>
-</table>
+<section id="ucb-choice" class="slide level2 bandit31-slide">
+<h2>UCB Chooses the Video</h2>
+<p>Before round <span class="math inline">t=11</span>, use the same ten observations. A dot marks <span class="math inline">Q_t(a)</span>, and the line adds its bonus to reach the labeled score.</p>
+<p><img data-src="imgs/drawio/lec31/ucb-round11.png" class="bandit31-chart" alt="At round 11, A has count 6, mean 0.500, score 1.132; B has count 3, mean 0.333, score 1.227; C has count 1, mean 0, score 1.549. C has the highest UCB score."></p>
+<p>For <span class="math inline">C</span>, the score is <span class="math inline">0+\sqrt{\ln(11)/1}\approx1.549</span>.</p>
 <div class="fragment takeaway">
-<p>UCB chooses <span class="math inline">C</span>, although it has the lowest sample mean. One failure leaves substantial uncertainty about its true mean.</p>
+<p>Choose <strong><span class="math inline">C</span></strong>, despite its lowest sample mean. One observed failure still leaves a large exploration bonus.</p>
 </div>
-<p>Scores above <span class="math inline">1</span> are allowed. These are selection scores, not probabilities.</p>
+<p>Scores above <span class="math inline">1</span> are allowed. They are not reward probabilities.</p>
+<aside class="notes">
+<p>All plotted values are calculated, not empirical uncertainty intervals. Use ln(11)=2.3978952728 and exact Q(B)=1/3 before rounding. Scores are approximately 1.132178149, 1.227368246, and 1.548513892. The estimate dots and bonus lengths share one numeric axis. No real student experiment was run.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="estimates-and-exploration-bonuses" class="slide level2">
-<h2>Estimates and Exploration Bonuses</h2>
-<p>The dot is the estimate. The line extends to its UCB score in the preceding example.</p>
-<div class="bandit-figure">
-<svg viewbox="0 0 1000 280" role="img" aria-label="Arm A has mean 0.5 and UCB score 1.132, B has mean 0.333 and score 1.227, C has mean zero and score 1.549. C has the largest exploration bonus.">
-<path d="M100 240H930" stroke="#5d6470" stroke-width="2"></path>
-<g stroke-width="8" stroke-linecap="round"><path d="M350 50H666" stroke="#007c89"></path><path d="M267 115H714" stroke="#b7791f"></path><path d="M100 180H874" stroke="#b8325f"></path></g>
-<g fill="#202124"><circle cx="350" cy="50" r="10"></circle><circle cx="267" cy="115" r="10"></circle><circle cx="100" cy="180" r="10"></circle></g>
-<g font-family="sans-serif" font-size="27" fill="#202124"><text x="35" y="59">A</text><text x="35" y="124">B</text><text x="35" y="189">C</text><text x="684" y="59">1.132</text><text x="732" y="124">1.227</text><text x="890" y="189">1.549</text><text x="94" y="275">0</text><text x="590" y="275">1.0</text><text x="841" y="275">1.5</text></g>
-</svg>
-</div>
-<p>This bonus shrinks with an arm’s pull count, but grows slowly with time if that arm remains ignored.</p>
-</section>
-<section id="ucb-intuition" class="slide level2">
-<h2>UCB Intuition</h2>
-<div class="pseudo-code">
-<div class="pseudo-line">
-<span class="pseudo-kw">for each</span> arm <span class="pseudo-var">a</span>
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">score</span>(<span class="pseudo-var">a</span>) <span class="pseudo-op">=</span> <span class="pseudo-var">Q</span>(<span class="pseudo-var">a</span>) <span class="pseudo-op">+</span> explorationBonus(<span class="pseudo-var">a</span>)
-</div>
-<div class="pseudo-line fragment">
-<span class="pseudo-kw">choose</span> arm with largest <span class="pseudo-var">score</span>
-</div>
-</div>
-<div class="takeaway">
-<p>Rarely tried arms get larger bonuses; uncertainty shrinks as <span class="math inline">N_t(a)</span> grows.</p>
-</div>
-</section>
-<section id="practice-the-next-ucb-round" class="slide level2 scrollable">
-<h2>Practice: The Next UCB Round</h2>
-<p>At round <span class="math inline">11</span>, choose <span class="math inline">C</span> and observe reward <span class="math inline">1</span>.</p>
-<div class="question">
-<ol type="1">
-<li>What are <span class="math inline">N_{12}(C)</span> and <span class="math inline">Q_{12}(C)</span>?</li>
-<li>Using <span class="math inline">\ln12\approx2.485</span> and <span class="math inline">c=1</span>, which arm wins next?</li>
-</ol>
-</div>
+<section id="update" class="slide level2 bandit31-slide">
+<h2>Updating the Chosen Arm</h2>
+<p>Suppose the chosen video <span class="math inline">C</span> now receives reward <span class="math inline">R_{11}=1</span>. Only its count and mean change.</p>
+<p><img data-src="imgs/drawio/lec31/chosen-arm-update.png" class="bandit31-update" alt="C starts with one pull and total reward zero. A new reward of one makes two pulls, total reward one, and mean 0.5."></p>
+<p>For the chosen arm <span class="math inline">a=A_t</span>, the <strong>incremental update</strong> computes the same average without storing all past ratings:</p>
+<p><span class="math display">N_{t+1}(a)=N_t(a)+1,\qquad
+Q_{t+1}(a)=Q_t(a)+\frac{R_t-Q_t(a)}{N_t(a)+1}.</span></p>
 <div class="fragment">
-<p><span class="math inline">N_{12}(C)=2</span> and <span class="math inline">Q_{12}(C)=0.5</span>. Other estimates stay unchanged.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Arm</th>
-<th style="text-align: right;">Next score</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">A</span></td>
-<td style="text-align: right;"><span class="math inline">0.500+\sqrt{2.485/6}\approx1.144</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">B</span></td>
-<td style="text-align: right;"><span class="math inline">0.333+\sqrt{2.485/3}\approx1.243</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">C</span></td>
-<td style="text-align: right;"><span class="math inline">0.500+\sqrt{2.485/2}\approx1.615</span></td>
-</tr>
-</tbody>
-</table>
-<p>Choose <span class="math inline">C</span> again: its higher estimate outweighs the smaller bonus.</p>
-</div>
-</section>
-<section id="regret" class="slide level2">
-<h2>Regret</h2>
-<p>Regret measures reward missed relative to always choosing the best arm.</p>
-<p><span class="math display">
-\operatorname{Regret}(T)=T\mu^*-\mathbb{E}\!\left[\sum_{t=1}^{T}R_t\right].
-</span></p>
-<p>where:</p>
-<ul>
-<li><span class="math inline">\mu^*</span> is the expected reward of the best arm.</li>
-<li><span class="math inline">T</span> is the horizon.</li>
-</ul>
-<div class="question">
-<p>Good bandit algorithms aim for low regret, not just good final estimates.</p>
-</div>
-</section>
-<section id="regret-as-the-cost-of-each-pull" class="slide level2">
-<h2>Regret as the Cost of Each Pull</h2>
-<p>Let <span class="math inline">\Delta_a=\mu^*-\mu_a</span> be the gap between arm <span class="math inline">a</span> and the best mean.</p>
-<p><span class="math display">\operatorname{Regret}(T)=\sum_a\Delta_a\,\mathbb{E}[N_{T+1}(a)].</span></p>
-<p>For means <span class="math inline">(0.4,0.6,0.8)</span> and a fixed 100-pull allocation:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Arm</th>
-<th style="text-align: right;">Pulls</th>
-<th style="text-align: right;">Gap</th>
-<th style="text-align: right;">Expected reward lost</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">A</span></td>
-<td style="text-align: right;">50</td>
-<td style="text-align: right;"><span class="math inline">0.4</span></td>
-<td style="text-align: right;"><span class="math inline">20</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">B</span></td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;"><span class="math inline">0.2</span></td>
-<td style="text-align: right;"><span class="math inline">6</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">C</span></td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;"><span class="math inline">0</span></td>
-<td style="text-align: right;"><span class="math inline">0</span></td>
-</tr>
-</tbody>
-</table>
-<p>Total expected regret: <strong><span class="math inline">26</span></strong>. Expected reward: <span class="math inline">80-26=54</span>.</p>
-</section>
-<section id="comparing-two-allocations" class="slide level2">
-<h2>Comparing Two Allocations</h2>
-<p>These are hypothetical fixed allocations, not results from a simulation.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Allocation over <span class="math inline">(A,B,C)</span></th>
-<th style="text-align: right;">Expected reward</th>
-<th style="text-align: right;">Expected regret</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">(50,30,20)</span></td>
-<td style="text-align: right;"><span class="math inline">54</span></td>
-<td style="text-align: right;"><span class="math inline">26</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">(20,20,60)</span></td>
-<td style="text-align: right;"><span class="math inline">68</span></td>
-<td style="text-align: right;"><span class="math inline">12</span></td>
-</tr>
-</tbody>
-</table>
-<div class="question">
-<p>If two learners both identify <span class="math inline">C</span> as best on the last round, did they perform equally well?</p>
-</div>
-<div class="fragment takeaway">
-<p>No.&nbsp;Learning cost includes the rewards missed along the way. A single lucky run also cannot establish which algorithm is better.</p>
+<p><span class="math inline">N_{12}(C)=2</span> and <span class="math inline">Q_{12}(C)=0+(1-0)/2=0.5</span>. The statistics for <span class="math inline">A</span> and <span class="math inline">B</span> stay unchanged.</p>
 </div>
 <aside class="notes">
-<p>Ask how to compare algorithms experimentally: same arm distributions and horizon, many independent runs, cumulative reward/regret, and variation across runs. In simulation the true means are available to the evaluator. In an application they usually are not directly known.</p>
+<p>Counts are defined before round t throughout the lecture. The denominator uses the new count N_t(a)+1, not the old count. For a first observation, this rule with initial Q=0 and N=0 sets Q to the observed reward. The new reward 1 is a stipulated possible outcome, not a claim that choosing C guarantees success. C’s actual two observed rewards are now 0,1. This formula is a sample-average update, not the constant-step-size variant for nonstationary problems.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -713,80 +442,180 @@ Q_t(a)+c\sqrt{\frac{\ln t}{N_t(a)}}
           display:block!important;
       }</style></aside>
 </section>
-<section id="when-reward-distributions-change" class="slide level2">
-<h2>When Reward Distributions Change</h2>
-<p>An old tutorial may become less useful after the course material changes.</p>
-<ul>
-<li>A sample average gives all previous rewards equal weight.</li>
-<li>A constant step size emphasizes recent observations:</li>
-</ul>
-<p><span class="math display">Q_{\text{new}}(a)=Q_{\text{old}}(a)+\alpha\bigl[r-Q_{\text{old}}(a)\bigr].</span></p>
-<p>For <span class="math inline">Q_{\text{old}}=0.8</span>, <span class="math inline">r=0</span>, and <span class="math inline">\alpha=0.2</span>, the new value is <span class="math inline">0.64</span>.</p>
-<div class="takeaway">
-<p>Adapting to change requires continued exploration. Stationary-bandit guarantees do not automatically apply.</p>
+<section id="next-round" class="slide level2 bandit31-slide">
+<h2>The Next UCB Round</h2>
+<p>Before round <span class="math inline">12</span>, counts are <span class="math inline">(6,3,2)</span> and estimates are <span class="math inline">(0.5,1/3,0.5)</span>. Recompute all bonuses using <span class="math inline">\ln(12)</span>.</p>
+<p><img data-src="imgs/drawio/lec31/ucb-round12.png" class="bandit31-chart" alt="At round 12, A has score 1.144, B has score 1.243, and C has score 1.615. C's mean has increased to 0.5 and its bonus is smaller than before."></p>
+<div class="question">
+<p>Which arm wins now, even though <span class="math inline">C</span>’s bonus became smaller?</p>
 </div>
+<div class="fragment takeaway">
+<p><strong><span class="math inline">C</span> again.</strong> Its new score is <span class="math inline">0.5+\sqrt{\ln(12)/2}\approx1.615</span>. The increase in its sample mean outweighs the smaller bonus.</p>
+</div>
+<aside class="notes">
+<p>Use ln(12)=2.4849066498. Scores are approximately 1.143545731, 1.243444435, and 1.614653904. A and B keep their sample means and counts, but their bonuses increase slightly because the round number changed. For C, the bonus drops from sqrt(ln11) to sqrt(ln12/2), while its mean rises by 0.5. The chart preserves the same axis scale and colors as the preceding UCB chart.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="context-changes-the-best-choice" class="slide level2">
-<h2>Context Changes the Best Choice</h2>
-<p>A tutorial that helps a beginner may not help an experienced student.</p>
+<section id="regret" class="slide level2 bandit31-slide">
+<h2>Regret: Reward Missed While Learning</h2>
+<p>The <strong>best mean</strong> is <span class="math inline">\mu^*=\max_a\mu_a</span>. <strong>Expected regret</strong> compares a learner with always choosing an arm having that best mean:</p>
+<p><span class="math display">\operatorname{Regret}(T)=T\mu^*-\mathbb E\left[\sum_{t=1}^{T}R_t\right].</span></p>
+<p>Here <span class="math inline">T</span> is the number of rounds, and <span class="math inline">\mathbb E</span> averages over random rewards and action choices.</p>
+<ul>
+<li>A pull of arm <span class="math inline">a</span> loses <span class="math inline">\mu^*-\mu_a</span> expected reward relative to the benchmark.</li>
+<li>A learner pays for poor choices along the way, even if it identifies the best arm at the end.</li>
+</ul>
+<div class="takeaway">
+<p>The true means are usually unknown to the learner. A simulator can reveal them to an evaluator without giving them to the algorithm.</p>
+</div>
+<aside class="notes">
+<p>This is expected pseudo-regret for the stationary stochastic model, not regret against the best noisy realized reward sequence. With counts defined before each round, the equivalent decomposition is sum_a (mu<em>-mu_a) E[N_{T+1}(a)]. We omit that extra notation from the slide. A single realized reward total can exceed T</em>mu* through luck; that does not contradict nonnegative expected regret. The benchmark is an evaluator’s reference, not a resource the learner has access to.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="allocations" class="slide level2 bandit31-slide">
+<h2>Two Different Learning Costs</h2>
+<p>For evaluation, suppose hidden true means are <span class="math inline">(\mu_A,\mu_B,\mu_C)=(0.4,0.6,0.8)</span>. Always choosing <span class="math inline">C</span> would give <span class="math inline">100\cdot0.8=80</span> expected reward over <span class="math inline">100</span> rounds.</p>
+<p><img data-src="imgs/drawio/lec31/allocations.png" class="bandit31-allocation" alt="Two hypothetical fixed allocations across A, B, and C. Fifty, thirty, twenty pulls give expected reward 54 and regret 26. Twenty, twenty, sixty pulls give expected reward 68 and regret 12."></p>
+<p>For the first allocation: <span class="math inline">50\cdot0.4+30\cdot0.6+20\cdot0.8=54</span>, so expected regret is <span class="math inline">80-54=26</span>.</p>
+<div class="takeaway">
+<p>Both allocations might finish by recommending <span class="math inline">C</span>, yet they missed different amounts of reward along the way.</p>
+</div>
+<aside class="notes">
+<p>These are hypothetical fixed 100-pull allocations, not simulations or measured results from epsilon-greedy/UCB. They are not continuations of the exact ten-round history used in the action-selection walkthrough. All figures concern the same three resource identities and an illustrative stationary world. The second allocation gives .4<em>20+.6</em>20+.8*60=68 expected reward and regret 12. The true means here differ from the noisy empirical estimates earlier; the learner has not been allowed to use them.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="evaluation" class="slide level2 bandit31-slide">
+<h2>Comparing Bandit Algorithms</h2>
+<p>Use the same arm distributions and horizon <span class="math inline">T</span> for every algorithm.</p>
+<p><img data-src="imgs/drawio/lec31/evaluation.png" class="bandit31-evaluation" alt="Compare two algorithms on the same arm distributions and horizon, restarting each across independent runs and comparing reward or regret together with variation across runs."></p>
+<ul>
+<li><strong>Independent runs</strong> restart learning with fresh random outcomes.</li>
+<li>Compare cumulative reward or regret and the variation across runs.</li>
+<li>Keep the true means available only to the evaluator.</li>
+</ul>
+<div class="takeaway">
+<p>Compare performance across runs, not one lucky run or only the final recommendation.</p>
+</div>
+<aside class="notes">
+<p>The diagram is an evaluation procedure, not an empirical performance comparison. Independent runs quantify how sensitive results are to stochastic rewards and algorithm randomness. Paired common random numbers can be a useful experimental design, but are not required for this introduction. No real application reveals all unchosen rewards or the true arm means merely because we wish to evaluate a bandit algorithm.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="extensions" class="slide level2 bandit31-slide">
+<h2>When the Basic Model Is Too Simple</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Model</th>
-<th>Information before acting</th>
+<th>New term</th>
+<th>Meaning</th>
+<th>Resource example</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Basic bandit</td>
-<td>One shared set of arm estimates</td>
+<td><strong>Nonstationary bandit</strong></td>
+<td>Reward distributions change over time.</td>
+<td>A video becomes outdated after a library update.</td>
 </tr>
 <tr class="even">
-<td>Contextual bandit</td>
-<td>User or task features, then a context-dependent choice</td>
-</tr>
-<tr class="odd">
-<td>Full RL</td>
-<td>A state whose future can change because of the action</td>
+<td><strong>Contextual bandit</strong></td>
+<td>Observe features before choosing, then learn which actions work for that context.</td>
+<td>Beginners and experienced students may prefer different formats.</td>
 </tr>
 </tbody>
 </table>
-<div class="question">
-<p>If a recommendation changes what a student learns and therefore later decisions, what does a one-step bandit model leave out?</p>
+<p>Changing rewards can require more emphasis on recent feedback. Context-dependent choices can require separate predictions for different requests.</p>
+<div class="takeaway">
+<p>If a recommendation changes a student’s future knowledge and rewards, a one-step bandit omits that sequential effect. Full <strong>reinforcement learning (RL)</strong> can model action-dependent future states.</p>
 </div>
-<div class="fragment">
-<p>The long-term effect on the student’s state and future rewards.</p>
+<aside class="notes">
+<p>Nonstationarity and context are different extensions: a contextual problem can be stationary conditional on the context. The table supplies names and motivation, not a new algorithm or a claim that stationary UCB guarantees automatically apply. A contextual bandit ordinarily treats the context sequence as outside the learner’s action-dependent state dynamics. If actions influence future contexts, the one-step abstraction can miss long-term consequences. More recent feedback can be emphasized with a constant-step-size estimate, deferred to a context where that update is needed.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="quick-check" class="slide level2 bandit31-slide scrollable">
+<h2>Quick Check</h2>
+<ol type="1">
+<li>Four arms, <span class="math inline">\epsilon=0.2</span>, and one unique greedy arm: what is its selection probability?</li>
+<li>Does one zero reward prove that an arm’s true mean is zero?</li>
+<li>Is a UCB score of <span class="math inline">1.4</span> invalid because reward is only <span class="math inline">0</span> or <span class="math inline">1</span>?</li>
+</ol>
+<div class="fragment" data-fragment-index="0">
+<p><strong>1. <span class="math inline">0.85</span>.</strong> Exploitation gives <span class="math inline">0.8</span>, and exploration adds <span class="math inline">0.2/4=0.05</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>2. No.</strong> One observation is evidence about a distribution, not its true mean.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p><strong>3. No.</strong> UCB compares estimate-plus-bonus scores. Those scores need not lie in <span class="math inline">[0,1]</span>.</p>
 </div>
 </section>
-<section id="exit-check" class="slide level2 scrollable">
-<h2>Exit Check</h2>
-<ol type="1">
-<li>Four arms, <span class="math inline">\epsilon=0.2</span>, unique greedy arm: what is its selection probability?</li>
-<li>Does a zero reward prove that an arm has zero expected reward?</li>
-<li>Is a UCB score of <span class="math inline">1.4</span> an invalid probability?</li>
-</ol>
-<div class="fragment">
-<ol type="1">
-<li><span class="math inline">0.8+0.2/4=0.85</span>.</li>
-<li>No.&nbsp;A sample is not the distribution’s mean.</li>
-<li>It is a selection score, not a probability.</li>
-</ol>
-</div>
-</section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
+<section id="takeaways" class="slide level2 bandit31-slide">
+<h2>Takeaways</h2>
 <ul>
-<li>Basic bandits remove changing state and delayed consequences.</li>
-<li>Exploration gathers information; exploitation uses current knowledge.</li>
-<li>Action-value estimates summarize observed rewards.</li>
-<li>Epsilon-greedy explores randomly some fraction of the time.</li>
-<li>UCB explores actions with high uncertainty.</li>
-<li>Regret measures the cost of not knowing the best arm.</li>
+<li>An arm is a choice, and a pull reveals only that choice’s reward.</li>
+<li>Sample averages estimate unknown reward means.</li>
+<li>Exploitation uses current estimates. Exploration gathers more evidence.</li>
+<li>Epsilon-greedy explores uniformly with probability <span class="math inline">\epsilon</span>.</li>
+<li>UCB adds a bonus that reflects limited sampling.</li>
+<li>Regret includes the reward missed throughout learning.</li>
 </ul>
+<div class="takeaway">
+<p>Keep observed rewards, estimated means, unknown true means, and selection scores distinct.</p>
+</div>
 <p><a href="../asset_credits.html#lec31" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
 
 
@@ -967,6 +796,13 @@ Q_t(a)+c\sqrt{\frac{\ln t}{N_t(a)}}
         // devices. It is advisable to set this to a lower number than
         // viewDistance in order to save resources.
         mobileViewDistance: 2,
+
+        // Enable scroll view
+        view: 'slide',
+        scrollProgress: true,
+        scrollActivationWidth: 0,
+        scrollSnap: 'mandatory',
+        scrollLayout: 'full',
 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
