@@ -1,0 +1,18 @@
+Lecture 27: PyTorch syntax and components
+Generated: 2026-10-27
+Tool: Codex built-in image generator (not CLI/API fallback).
+The two transparent PNGs are used unchanged. The people are conceptual cartoons.
+
+Asset: components-toolbox-cartoon.png
+Original: exec-ac6940e6-d4b4-4ceb-a8ec-3041758a8525.png
+Prompt:
+Use case: illustration-story. Asset type: a small educational cartoon cutout for a university lecture about PyTorch syntax and software components. An adult student in a teal sweater works at a laptop beside an open toolbox containing a few neat, simple colorful blocks and a small blank two-by-three grid tile. The image is a friendly conceptual metaphor for assembling software components, NOT image recognition or handwriting. Flat editorial cartoon, thick charcoal outlines, teal and raspberry accents with a little mustard, clean white areas and sparse details. Compact square composition, complete objects visible, generous genuinely transparent background. No letters, digits, words, labels, captions, logos, watermarks, code, equations, diagrams, or user-interface panels.
+
+Asset: tensor-check-cartoon.png
+Original: exec-6e14b45e-4591-4c8d-8c9c-543a8ab232ac.png
+Prompt:
+Use case: illustration-story. Asset type: small educational cartoon cutout for a university lecture on PyTorch syntax and debugging. An adult student with short dark hair and a raspberry shirt uses a magnifying glass to inspect a blank two-row, three-column grid tile beside an open laptop. On the desk is a plain clipboard with one simple teal checkmark. The grid consists of six empty colored cells and has no handwriting. This is a conceptual illustration of checking tensor shapes and software components, NOT recognizing handwritten characters or digits. Flat simple editorial cartoon, thick charcoal outlines, teal and raspberry accents, a little mustard, clean white areas, sparse details. Compact square silhouette with complete objects visible and genuinely transparent background. No text, letters, numbers, captions, labels, logos, code, equations, watermarks, or interface panels.
+
+The editable draw.io file ../drawio/lec27/pytorch-examples.drawio supplies the
+tensor-indexing, linear-layer-shape, and scalar-gradient diagrams. Their values
+are small constructed syntax/arithmetic examples, not measured model results.

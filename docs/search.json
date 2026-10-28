@@ -67,14 +67,7 @@
     "href": "code_and_homework/backpropagation.html",
     "title": "Backpropagation by Hand",
     "section": "",
-    "text": "Download notebook (.ipynb)\n  Download page (.html)\nThis notebook computes the same gradients in two ways: PyTorch’s automatic differentiation and an explicit application of the chain rule. The network has two input features, one hidden unit, and one scalar output.\nRun the cells in order with PyTorch installed. One final gradient-descent update shows how gradients change predictions; this is one optimization step, not a full training run."
-  },
-  {
-    "objectID": "code_and_homework/backpropagation.html#forward-pass-with-autograd",
-    "href": "code_and_homework/backpropagation.html#forward-pass-with-autograd",
-    "title": "Backpropagation by Hand",
-    "section": "Forward Pass with Autograd",
-    "text": "Forward Pass with Autograd\nThis cell builds a small network, computes the loss, and lets PyTorch calculate gradients.\n\nimport torch\n\n# Set random seed for reproducibility\ntorch.manual_seed(42)\n\n# Define input (2 features) and target output (scalar)\nX = torch.tensor([[0.5, 1.0]], dtype=torch.float32)  # Input shape: (1,2)\ny = torch.tensor([[1.0]], dtype=torch.float32)       # Target shape: (1,1)\n\n# Initialize weights and bias\nw1 = torch.randn((2, 1), requires_grad=True)  # Weights for input layer (2 → 1 hidden unit)\nb1 = torch.zeros(1, requires_grad=True)       # Bias for hidden layer\n\nw2 = torch.randn((1, 1), requires_grad=True)  # Weights for hidden layer → output\nb2 = torch.zeros(1, requires_grad=True)       # Bias for output layer\n\n# Learning rate\nlr = 0.1\n\n# Step 1: Forward Pass (Layer 1 - Hidden Layer)\nz1 = X @ w1 + b1  # Linear transformation\na1 = torch.relu(z1)  # Activation function (ReLU)\n\n# Step 2: Forward Pass (Layer 2 - Output Layer)\nz2 = a1 @ w2 + b2  # Linear transformation\noutput = z2  # Final output\n\n# Step 3: Compute Loss (Mean Squared Error)\nloss = torch.mean((output - y) ** 2)\n\n# Print forward pass results\nprint(f\"Output before backpropagation: {output.item():.4f}\")\nprint(f\"Loss before backpropagation: {loss.item():.4f}\")\n\n# Step 4: Backward Pass (Compute Gradients)\nloss.backward()  # Automatically computes gradients using backpropagation\n\nOutput before backpropagation: 0.0697\nLoss before backpropagation: 0.8655\n\n\n\nBreakdown of Manual Gradient Calculation\nWe use the chain rule to manually compute gradients:\n\n1. Compute Loss Derivative\nThe Mean Squared Error (MSE) loss is defined as: \\[\nL = \\frac{1}{2} (O - y)^2\n\\] The derivative of the loss with respect to the output \\(O\\) is: \\[\n\\frac{\\partial L}{\\partial O} = O - y\n\\]\n\n\n2. Compute Gradients for the Output Layer\nThe output layer is directly connected to the final output: \\[\nz_2 = a_1 w_2 + b_2\n\\] where \\(a_1\\) is the output from the hidden layer.\nThe gradient of the loss with respect to \\(z_2\\) is: \\[\n\\frac{\\partial L}{\\partial z_2} = \\frac{\\partial L}{\\partial O} \\cdot \\frac{\\partial O}{\\partial z_2} = (O-y) \\cdot 1\n\\] Since the output \\(O = z_2\\), the derivative of \\(O\\) with respect to \\(z_2\\) is 1.\nNow, the gradients for the weights and biases in the output layer are: \\[\n\\frac{\\partial L}{\\partial w_2} = \\frac{\\partial L}{\\partial z_2} \\cdot \\frac{\\partial z_2}{\\partial w_2} = \\frac{\\partial L}{\\partial z_2} \\cdot a_1\n\\] \\[\n\\frac{\\partial L}{\\partial b_2} = \\frac{\\partial L}{\\partial z_2} \\cdot \\frac{\\partial z_2}{\\partial b}= \\frac{\\partial L}{\\partial z_2} \\cdot 1\n\\]\n\n\n3. Compute Gradients for the Hidden Layer\nThe hidden layer neurons are activated by the ReLU activation function: \\[\na_1 = \\text{ReLU}(z_1)\n\\] where \\(z_1 = X w_1 + b_1\\) is the linear transformation.\nThe derivative of the activation function is: \\[\n\\frac{\\partial a_1}{\\partial z_1} =\\text{ReLU}'(z_1)=\n\\begin{cases}\n1 & \\text{if } z_1 &gt; 0 \\\\\n0 & \\text{if } z_1 \\leq 0\n\\end{cases}\n\\]\nNow, apply the chain rule to compute the gradients for the hidden layer: \\[\n\\frac{\\partial L}{\\partial z_1} = \\frac{\\partial L}{\\partial z_2} \\cdot \\frac{\\partial z_2}{\\partial a_1} \\cdot \\frac{\\partial a_1}{\\partial z_1}\n\\] Since \\(z_2 = a_1 w_2 + b_2\\), we have: \\[\n\\frac{\\partial z_2}{\\partial a_1} = w_2\n\\] Thus, the gradient for \\(z_1\\) is: \\[\n\\frac{\\partial L}{\\partial z_1} = \\frac{\\partial L}{\\partial z_2} \\cdot w_2 \\cdot \\text{ReLU}'(z_1)\n\\]\nThe gradients for the weights and biases in the hidden layer are: \\[\n\\frac{\\partial L}{\\partial w_1} = \\frac{\\partial L}{\\partial z_1} \\cdot X^T\n\\] \\[\n\\frac{\\partial L}{\\partial b_1} = \\frac{\\partial L}{\\partial z_1} \\cdot 1\n\\]\n\nwith torch.no_grad():\n    # Step 5: Compute Manual Gradients\n    dL_dO = 2 * (output - y) / 1  # Derivative of MSE loss w.r.t. output\n    dO_dz2 = 1  # Since output = z2, its derivative is 1\n    dL_dz2 = dL_dO * dO_dz2  # Chain rule\n\n    # Gradients for w2 and b2 (Output layer)\n    dL_dw2 = dL_dz2 * a1  # dL/dw2 = dL/dz2 * da1/dw2\n    dL_db2 = dL_dz2 * 1    # dL/db2 = dL/dz2 * db2/db2\n\n    # Gradients for w1 and b1 (Hidden layer)\n    dz2_da1 = w2  # Derivative of z2 w.r.t. a1 (weights from hidden to output layer)\n    da1_dz1 = (z1 &gt; 0).float()  # ReLU derivative (1 if z1 &gt; 0, else 0)\n\n    dL_dz1 = dL_dz2 * dz2_da1 * da1_dz1  # Chain rule: dL/dz1 = dL/dz2 * dz2/da1 * da1/dz1\n    dL_dw1 = dL_dz1 * X.T  # dL/dw1 = dL/dz1 * X\n    dL_db1 = dL_dz1 * 1  # dL/db1 = dL/dz1 * db1/db1\n\n# Print Gradients\nprint(\"\\nAutomatic Gradients (PyTorch):\")\nprint(f\"dL/dw1: {w1.grad}\")\nprint(f\"dL/db1: {b1.grad}\")\nprint(f\"dL/dw2: {w2.grad}\")\nprint(f\"dL/db2: {b2.grad}\")\n\nprint(\"\\nManual Gradients (Calculated using Chain Rule):\")\nprint(f\"dL/dw1: {dL_dw1}\")\nprint(f\"dL/db1: {dL_db1}\")\nprint(f\"dL/dw2: {dL_dw2}\")\nprint(f\"dL/db2: {dL_db2}\")\n\n# Step 6: Verify Matching\nprint(\"\\nChecking if manual and automatic gradients match:\")\nprint(torch.allclose(w1.grad, dL_dw1), \"for dL/dw1\")\nprint(torch.allclose(b1.grad, dL_db1), \"for dL/db1\")\nprint(torch.allclose(w2.grad, dL_dw2), \"for dL/dw2\")\nprint(torch.allclose(b2.grad, dL_db2), \"for dL/db2\")\n\n# Step 7: Update Weights (Gradient Descent)\nwith torch.no_grad():\n    w1 -= lr * w1.grad\n    b1 -= lr * b1.grad\n    w2 -= lr * w2.grad\n    b2 -= lr * b2.grad\n\n    # Zero out gradients after update\n    w1.grad.zero_()\n    b1.grad.zero_()\n    w2.grad.zero_()\n    b2.grad.zero_()\n\n# Step 8: Forward Pass Again (After Weight Update)\nz1 = X @ w1 + b1\na1 = torch.relu(z1)\nz2 = a1 @ w2 + b2\nnew_output = z2\n\n# Compute new loss\nnew_loss = torch.mean((new_output - y) ** 2)\n\n# Print updated results\nprint(f\"\\nOutput after weight update: {new_output.item():.4f}\")\nprint(f\"Loss after weight update: {new_loss.item():.4f}\")\n\n\nAutomatic Gradients (PyTorch):\ndL/dw1: tensor([[-0.2181],\n        [-0.4363]])\ndL/db1: tensor([-0.4363])\ndL/dw2: tensor([[-0.5529]])\ndL/db2: tensor([-1.8607])\n\nManual Gradients (Calculated using Chain Rule):\ndL/dw1: tensor([[-0.2181],\n        [-0.4363]])\ndL/db1: tensor([[-0.4363]])\ndL/dw2: tensor([[-0.5529]])\ndL/db2: tensor([[-1.8607]])\n\nChecking if manual and automatic gradients match:\nTrue for dL/dw1\nTrue for dL/db1\nTrue for dL/dw2\nTrue for dL/db2\n\nOutput after weight update: 0.3006\nLoss after weight update: 0.4891"
+    "text": "Download notebook (.ipynb)\n  Download page (.html)\nCalculate the same gradients with the chain rule and PyTorch autograd, then apply one gradient-descent update. The network has two inputs, one ReLU hidden unit, and one linear output. It is deliberately small, not itself a deep network.\nThe constructed delivery example matches Lecture 28: distance 1 km, 2 stops, and target time 4 minutes. These are teaching values, not measured delivery data. One improved prediction does not demonstrate generalization.\nRun the cells in order with PyTorch installed. This small CPU calculation uses float64 (64-bit floating point) to make numerical gradient comparisons precise; many ordinary training examples instead use float32."
   },
   {
     "objectID": "code_and_homework/alpha_beta.html",
@@ -1138,14 +1131,14 @@
     "href": "asset_credits.html#lec27",
     "title": "Visual Asset Credits",
     "section": "Lecture 27: Practical PyTorch",
-    "text": "Lecture 27: Practical PyTorch\nNo external visual assets. Diagrams are drawn directly in the Quarto source; technical references link to the official PyTorch documentation."
+    "text": "Lecture 27: Practical PyTorch\nThe components/toolbox cartoon and tensor-check cartoon were generated using Codex’s built-in image generator. They illustrate software components and checking tensor shapes, not real people or reported experiments. The generation prompts and provenance are included.\nThe tensor-indexing, linear-layer-shape, and scalar-gradient figures are original editable draw.io diagrams, published as PNGs. Their source is pytorch-examples.drawio. The numerical arrays and derivatives are small constructed examples for learning syntax, not measured model results.\nTechnical references: PyTorch’s beginner quickstart, tensors, broadcasting, reshaping, datasets and data loaders, modules, linear layers, autograd, mean squared error, cross-entropy loss, gradient clearing, inference mode, checkpoint serialization, and reproducibility. Optional-tool references are TorchVision transforms v2, torch.compile, and automatic mixed precision. Working older interfaces such as no_grad() are not presented as deprecated."
   },
   {
     "objectID": "asset_credits.html#lec28",
     "href": "asset_credits.html#lec28",
     "title": "Visual Asset Credits",
     "section": "Lecture 28: Deep Learning",
-    "text": "Lecture 28: Deep Learning\nNo external visual assets. Diagrams are drawn directly in the Quarto source."
+    "text": "Lecture 28: Deep Learning\nThe campus courier cartoon is reused unchanged from Lecture 25, where its generation prompts and provenance are recorded. The courier illustrates the delivery setting; the inputs, targets, initial parameters, derivatives, and updated predictions in this lecture are constructed teaching values, not measured delivery data.\nThe deep-layer overview and the five tiny-network views (parameter names, forward values, output gradients, hidden gradients, and inactive ReLU) are original editable draw.io diagrams, published as PNGs. Their source is neural-learning.drawio.\nThe lecture revises the supplied Spring 2025 Deep Learning Beamer source and follows Artificial Intelligence: A Modern Approach, U.S. fourth edition Section 21.1 / Global fourth edition Section 22.1. The Backpropagation notebook uses the same numeric example and unhalved mean-squared-error convention as the slides. Technical references are PyTorch’s autograd tutorial, MSELoss, ReLU, and SGD."
   },
   {
     "objectID": "asset_credits.html#lec29",
@@ -3010,88 +3003,18 @@
     "text": "What to Remember\n\nRL learns policies from interaction and reward.\nMDPs formalize states, actions, transitions, rewards, and discounting.\nBellman equations express values recursively.\nValue iteration updates values directly.\nPolicy iteration alternates evaluation and improvement.\n\nAsset credits"
   },
   {
-    "objectID": "slides/lec28_Deep_Learning.html#deep-learning",
-    "href": "slides/lec28_Deep_Learning.html#deep-learning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Deep Learning",
-    "text": "Deep Learning\nDeep learning uses neural networks with many layers to learn hierarchical representations from data."
-  },
-  {
-    "objectID": "slides/lec28_Deep_Learning.html#why-deep-learning",
-    "href": "slides/lec28_Deep_Learning.html#why-deep-learning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why Deep Learning?",
-    "text": "Why Deep Learning?\nDeep learning matters because it:\n\nLearns features from raw data.\nScales with large datasets and compute.\nWorks especially well on images, text, audio, and other unstructured data.\nPowers systems in vision, speech, language, medical diagnosis, autonomous driving, and generative AI.\n\n\nThe central promise: replace hand-designed features with learned representations."
-  },
-  {
-    "objectID": "slides/lec28_Deep_Learning.html#traditional-ml-vs.-deep-learning",
-    "href": "slides/lec28_Deep_Learning.html#traditional-ml-vs.-deep-learning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Traditional ML vs. Deep Learning",
-    "text": "Traditional ML vs. Deep Learning\n\n\n\nTraditional ML\nDeep learning\n\n\n\n\nOften needs feature engineering\nLearns features automatically\n\n\nWorks well with structured tables\nExcels on images, text, audio\n\n\nDecision trees, SVMs, regression\nDeep neural networks\n\n\nLess data and compute hungry\nOften improves with scale"
-  },
-  {
-    "objectID": "slides/lec28_Deep_Learning.html#deep-neural-networks",
-    "href": "slides/lec28_Deep_Learning.html#deep-neural-networks",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Deep Neural Networks",
-    "text": "Deep Neural Networks\nA deep neural network has multiple hidden layers.\n\n                   Input Hidden 1 Hidden 2 Output"
-  },
-  {
-    "objectID": "slides/lec28_Deep_Learning.html#a-single-neuron",
-    "href": "slides/lec28_Deep_Learning.html#a-single-neuron",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "A Single Neuron",
-    "text": "A Single Neuron\n\n      I1 I2 b  Σ  ReLU O1      w1 w2\n\n\nO_1=ReLU(w_1I_1+w_2I_2+b), \\qquad ReLU(z)=\\max(0,z)"
-  },
-  {
-    "objectID": "slides/lec28_Deep_Learning.html#types-of-neural-networks",
-    "href": "slides/lec28_Deep_Learning.html#types-of-neural-networks",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Types of Neural Networks",
-    "text": "Types of Neural Networks\n\n\n\n\n\n\n\n\nArchitecture\nBest suited for\nKey idea\n\n\n\n\nFeedforward neural network\nClassification/regression\nInformation flows input to output\n\n\nConvolutional neural network\nImages/spatial data\nLocal filters detect patterns\n\n\nRecurrent neural network\nSequences\nState carries temporal memory\n\n\nTransformer\nSequences and multimodal data\nSelf-attention connects tokens"
-  },
-  {
     "objectID": "slides/lec28_Deep_Learning.html#training-loop",
     "href": "slides/lec28_Deep_Learning.html#training-loop",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Training Loop",
-    "text": "Training Loop\n\n\nfor epoch in 1..E\n\n\npredictions = forward(network, inputs)\n\n\nloss = Loss(predictions, targets)\n\n\ngradients = backpropagate(loss)\n\n\nupdate(weights, gradients, learningRate)\n\n\nif stoppingCriterion() break"
+    "section": "Training: Differentiate, Then Update",
+    "text": "Training: Differentiate, Then Update\nA gradient measures how loss changes with a parameter. Backpropagation computes these derivatives backward through the network.\n\n\nfor each batch in trainingData\n\n\nclearGradients(parameters)\n\n\nprediction = forward(inputs, parameters)\n\n\nloss = MSE(prediction, targets)\n\n\ngradients = backpropagate(loss)\n\n\nupdate(parameters, gradients, learningRate)\n\n\nA batch groups examples; an epoch is one pass through the training dataset. Repeat passes as needed.\n\nBackpropagation computes gradients. The optimizer uses them to change parameters. These are separate operations.\n\n\nFor the numerical walkthrough the batch contains one example. The pseudocode intentionally separates clearing stored gradients, evaluating the current computation, differentiating, and updating. A model can have correctly computed gradients and still make a poor optimization step if the learning rate is too large. Source: https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial.html."
   },
   {
     "objectID": "slides/lec28_Deep_Learning.html#forward-pass",
     "href": "slides/lec28_Deep_Learning.html#forward-pass",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Forward Pass",
-    "text": "Forward Pass\nThe forward pass computes predictions.\nFor a single neuron:\n\nz=w_1I_1+w_2I_2+b\n\n\nO=\\text{ReLU}(z)=\\max(0,z)\n\nFor a layered network:\n\nEach layer computes weighted sums.\nEach hidden layer applies nonlinear activations.\nThe final layer produces the prediction."
-  },
-  {
-    "objectID": "slides/lec28_Deep_Learning.html#loss-calculation",
-    "href": "slides/lec28_Deep_Learning.html#loss-calculation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Loss Calculation",
-    "text": "Loss Calculation\nLoss measures prediction error.\n\n\nRegression\n\nL=\\frac{1}{N}\\sum_{i=1}^{N}(y_i-\\hat{y}_i)^2\n\n\nClassification\n\nL=-\\sum_{i=1}^{N} y_i\\log(\\hat{y}_i)\n\n\n\nIf \\hat{y}=0.8 and y=1, cross-entropy is -\\log(0.8)\\approx 0.22."
-  },
-  {
-    "objectID": "slides/lec28_Deep_Learning.html#gradients-for-one-neuron",
-    "href": "slides/lec28_Deep_Learning.html#gradients-for-one-neuron",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Gradients for One Neuron",
-    "text": "Gradients for One Neuron\nLet:\n\nz=w_1I_1+w_2I_2+b,\\quad O=\\text{ReLU}(z),\\quad L=\\frac{1}{2}(O-y)^2\n\n\n\n\\frac{\\partial L}{\\partial O}=O-y\n\n\n\n\n\\frac{\\partial O}{\\partial z}=\\text{ReLU}'(z)=\n\\begin{cases}\n1, & z&gt;0\\\\\n0, & z\\leq 0\n\\end{cases}\n\n\n\n\n\\frac{\\partial L}{\\partial w_1}=(O-y)\\text{ReLU}'(z)I_1"
-  },
-  {
-    "objectID": "slides/lec28_Deep_Learning.html#weight-update",
-    "href": "slides/lec28_Deep_Learning.html#weight-update",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Weight Update",
-    "text": "Weight Update\nGradient descent updates each parameter in the direction that reduces loss:\n\nw_i := w_i-\\eta\\frac{\\partial L}{\\partial w_i}\n\nFor the single neuron:\n\nw_1 := w_1-\\eta(O-y)\\text{ReLU}'(z)I_1\n\n\nb := b-\\eta(O-y)\\text{ReLU}'(z)\n\n\nIf \\eta is too large, training can diverge. If it is too small, training is slow."
-  },
-  {
-    "objectID": "slides/lec28_Deep_Learning.html#what-to-remember",
-    "href": "slides/lec28_Deep_Learning.html#what-to-remember",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What to Remember",
-    "text": "What to Remember\n\nDeep networks learn layered representations.\nA neuron computes a weighted sum, bias, and nonlinear activation.\nTraining alternates forward pass, loss, backpropagation, and optimization.\nBackpropagation uses the chain rule to compute gradients.\nLearning rate controls update size.\n\nAsset credits"
+    "section": "Forward Pass: Compute the Prediction",
+    "text": "Forward Pass: Compute the Prediction\nThe forward pass evaluates the network with its current parameters.\n\n\nz=0.5\\cdot1+0.25\\cdot2+0=1, so h=\\max(0,1)=1.\n\n\n\\hat y=2\\cdot1+0=2 minutes. The target is 4 minutes.\n\n\nNo parameter changes during the forward pass. The input weights, output weight, and both biases are the initial values from the preceding slide. The numerical diagram also supplies a visual reference during the later derivative calculations."
   },
   {
     "objectID": "slides/lec26_Decision_Tree.html#entropy",
@@ -3239,139 +3162,6 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Double Descent",
     "text": "Double Descent\nDouble descent: unseen error can fall, rise near interpolation, then fall again for larger models.\n\nNear p=n, small changes in noisy training outputs can cause large coefficient changes and unstable new predictions.\nBenign overfitting describes settings where fitting even the training noise still permits accurate prediction on new data.\n\np&gt;n alone guarantees neither double descent nor benign overfitting.\n\n\nThe figure is deliberately schematic. Belkin, Hsu, Ma, and Mandal, Reconciling modern machine learning practice and the bias-variance trade-off: https://arxiv.org/abs/1812.11118. Bartlett, Long, Lugosi, and Tsigler, Benign Overfitting in Linear Regression: https://arxiv.org/abs/1906.11300. Benign overfitting can yield near-optimal prediction under particular distributional conditions; exact training fit alone is insufficient evidence. The phenomenon occurs in some linear models as well as more complex learners.\nThe notebook’s isotropic Gaussian, fixed-signal experiment need not improve indefinitely after interpolation. Its overparameterized expected-error formula has a growing signal-bias contribution and a decreasing noise-amplification contribution. Consequently the large-p branch can turn upward again. The schematic is not a promise that arbitrary further enlargement improves that experiment."
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#practical-pytorch",
-    "href": "slides/lec27_Practical_PyTorch.html#practical-pytorch",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Practical PyTorch",
-    "text": "Practical PyTorch\nFrom tensors to a training loop you can read, debug, and adapt."
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#the-workflow-is-one-connected-loop",
-    "href": "slides/lec27_Practical_PyTorch.html#the-workflow-is-one-connected-loop",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "The Workflow Is One Connected Loop",
-    "text": "The Workflow Is One Connected Loop\n\n                   Dataset+ loader Tensors Model Logits+ loss Gradients Optimizer  Evaluation uses the same data and model path, without parameter updates.\n\n\nMost PyTorch bugs are broken contracts between adjacent steps: wrong shape, dtype, device, mode, or update order."
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#choose-a-setup-you-can-reproduce",
-    "href": "slides/lec27_Practical_PyTorch.html#choose-a-setup-you-can-reproduce",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Choose a Setup You Can Reproduce",
-    "text": "Choose a Setup You Can Reproduce\n\n\nFastest start: Colab\n\nOpen a notebook in Google Colab.\nSelect a GPU runtime only when needed.\nKeep installation cells at the top.\nRestart and run all before submitting.\n\n\nLocal environment\nUse the command generated by the official installer selector for your OS and accelerator.\npython -m pip install torch torchvision\n\nVerify before building anything larger:\nimport torch\n\nprint(torch.__version__)\nprint(torch.rand(2, 3))\nprint(\"CUDA:\", torch.cuda.is_available())"
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#tensors-carry-values-and-metadata",
-    "href": "slides/lec27_Practical_PyTorch.html#tensors-carry-values-and-metadata",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Tensors Carry Values and Metadata",
-    "text": "Tensors Carry Values and Metadata\nimport torch\n\nx = torch.tensor(\n    [[1.0, 2.0, 3.0],\n     [4.0, 5.0, 6.0]],\n    dtype=torch.float32,\n)\n\nprint(x.shape)   # torch.Size([2, 3])\nprint(x.dtype)   # torch.float32\nprint(x.device)  # usually cpu at first\n\n\n\nProperty\nQuestion to ask\n\n\n\n\nshape\nWhat does each axis mean?\n\n\ndtype\nFloating-point feature or integer class label?\n\n\ndevice\nCPU, CUDA GPU, or Apple GPU?\n\n\nrequires_grad\nShould autograd track operations on this tensor?"
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#shapes-are-contracts",
-    "href": "slides/lec27_Practical_PyTorch.html#shapes-are-contracts",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Shapes Are Contracts",
-    "text": "Shapes Are Contracts\n\n\n\n\n\nData\nTypical shape\n\n\n\n\nFeature vector\n(features,)\n\n\nTabular batch\n(batch, features)\n\n\nImage batch\n(batch, channels, height, width)\n\n\nClass logits\n(batch, classes)\n\n\nClass labels\n(batch,)\n\n\n\n\nName every axis before writing the model.\n\n\n\n      batchheightwidth channel"
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#operations-must-preserve-the-intended-axes",
-    "href": "slides/lec27_Practical_PyTorch.html#operations-must-preserve-the-intended-axes",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Operations Must Preserve the Intended Axes",
-    "text": "Operations Must Preserve the Intended Axes\nbatch = torch.randn(32, 10)\nweights = torch.randn(10, 4)\n\nlogits = batch @ weights       # (32, 4)\nbias = torch.randn(4)\nlogits = logits + bias         # broadcasts over batch\n\nimages = torch.randn(32, 1, 28, 56)\nflat = images.flatten(start_dim=1)\nprint(flat.shape)              # (32, 1568)\n\n@ performs matrix multiplication.\nBroadcasting expands compatible size-1 or missing leading axes.\nflatten(start_dim=1) keeps the batch axis intact.\nPrefer reshape or flatten when the intended result is explicit.\n\n\nNever remove the batch dimension accidentally."
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#keep-model-and-batches-on-one-device",
-    "href": "slides/lec27_Practical_PyTorch.html#keep-model-and-batches-on-one-device",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Keep Model and Batches on One Device",
-    "text": "Keep Model and Batches on One Device\nif torch.cuda.is_available():\n    device = torch.device(\"cuda\")\nelif torch.backends.mps.is_available():\n    device = torch.device(\"mps\")\nelse:\n    device = torch.device(\"cpu\")\n\nmodel = model.to(device)\n\nfor features, labels in loader:\n    features = features.to(device)\n    labels = labels.to(device)\n    logits = model(features)\n\nExpected all tensors to be on the same device means at least one model parameter, input, label, or newly created tensor is elsewhere."
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#dataset-gives-examples-dataloader-gives-batches",
-    "href": "slides/lec27_Practical_PyTorch.html#dataset-gives-examples-dataloader-gives-batches",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Dataset Gives Examples; DataLoader Gives Batches",
-    "text": "Dataset Gives Examples; DataLoader Gives Batches\nfrom torch.utils.data import DataLoader, TensorDataset\n\nfeatures = torch.randn(1000, 20)\nlabels = torch.randint(0, 4, (1000,))\n\ndataset = TensorDataset(features, labels)\nloader = DataLoader(\n    dataset,\n    batch_size=64,\n    shuffle=True,\n)\n\nfeatures_batch, labels_batch = next(iter(loader))\nprint(features_batch.shape, labels_batch.shape)\n\nA Dataset implements the meaning of one indexed example.\nA DataLoader batches, optionally shuffles, and iterates.\nShuffle training data; do not shuffle merely to evaluate it."
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#nn.module-packages-trainable-computation",
-    "href": "slides/lec27_Practical_PyTorch.html#nn.module-packages-trainable-computation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "nn.Module Packages Trainable Computation",
-    "text": "nn.Module Packages Trainable Computation\nfrom torch import nn\n\n\nclass Classifier(nn.Module):\n    def __init__(self, input_dim, num_classes):\n        super().__init__()\n        self.network = nn.Sequential(\n            nn.Linear(input_dim, 64),\n            nn.ReLU(),\n            nn.Linear(64, num_classes),\n        )\n\n    def forward(self, features):\n        return self.network(features)\nmodel.parameters() exposes the trainable tensors to an optimizer. Calling model(features) invokes forward while preserving PyTorch’s module behavior."
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#the-forward-pass-returns-raw-logits",
-    "href": "slides/lec27_Practical_PyTorch.html#the-forward-pass-returns-raw-logits",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "The Forward Pass Returns Raw Logits",
-    "text": "The Forward Pass Returns Raw Logits\nmodel = Classifier(input_dim=20, num_classes=4)\nfeatures = torch.randn(32, 20)\nlabels = torch.randint(0, 4, (32,), dtype=torch.int64)\n\nlogits = model(features)\nloss_fn = torch.nn.CrossEntropyLoss()\nloss = loss_fn(logits, labels)\n\nprint(logits.shape)  # (32, 4)\nprint(loss.shape)    # scalar: ()\n\n\n\nInput to CrossEntropyLoss\nRequired contract\n\n\n\n\nLogits\nRaw floating-point scores, (batch, classes)\n\n\nLabels\nInteger class indices, (batch,), usually torch.int64\n\n\n\n\nDo not apply softmax before CrossEntropyLoss; it already performs the appropriate log-softmax calculation internally."
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#autograd-builds-the-backward-pass",
-    "href": "slides/lec27_Practical_PyTorch.html#autograd-builds-the-backward-pass",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Autograd Builds the Backward Pass",
-    "text": "Autograd Builds the Backward Pass\n\n\nw = torch.tensor(2.0, requires_grad=True)\nx = torch.tensor(3.0)\ny = torch.tensor(10.0)\n\nprediction = w * x\nloss = (prediction - y) ** 2\nloss.backward()\n\nprint(w.grad)  # d(loss) / d(w)\n\n\n                wxw xloss  backward: gradients flow to parameters"
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#an-optimizer-step-has-a-fixed-order",
-    "href": "slides/lec27_Practical_PyTorch.html#an-optimizer-step-has-a-fixed-order",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "An Optimizer Step Has a Fixed Order",
-    "text": "An Optimizer Step Has a Fixed Order\n\n                1. Cleargradients 2. Forwardlogits 3. Computeloss 4. Backwardgradients 5. Updateparameters   zero_grad()model(x)loss_fn(…)backward()step() \n\n\nGradients accumulate by default. Forgetting zero_grad() silently changes the algorithm."
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#one-complete-training-epoch",
-    "href": "slides/lec27_Practical_PyTorch.html#one-complete-training-epoch",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "One Complete Training Epoch",
-    "text": "One Complete Training Epoch\nmodel.train()\n\nfor features, labels in train_loader:\n    features = features.to(device)\n    labels = labels.to(device)\n\n    optimizer.zero_grad()\n    logits = model(features)\n    loss = loss_fn(logits, labels)\n    loss.backward()\n    optimizer.step()\n\n    batch_size = features.shape[0]\n    total_loss += loss.item() * batch_size\n    total_examples += batch_size\n\nmean_loss = total_loss / total_examples\n\nChoose and report a consistent averaging convention. Multiplying the batch mean by batch size handles a smaller final batch correctly."
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#evaluation-changes-mode-and-stops-gradients",
-    "href": "slides/lec27_Practical_PyTorch.html#evaluation-changes-mode-and-stops-gradients",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Evaluation Changes Mode and Stops Gradients",
-    "text": "Evaluation Changes Mode and Stops Gradients\nmodel.eval()\ncorrect = 0\ntotal = 0\n\nwith torch.no_grad():\n    for features, labels in test_loader:\n        features = features.to(device)\n        labels = labels.to(device)\n\n        logits = model(features)\n        predictions = logits.argmax(dim=1)\n        correct += (predictions == labels).sum().item()\n        total += labels.numel()\n\naccuracy = correct / total\n\nmodel.eval() changes layers such as dropout and batch normalization.\ntorch.no_grad() prevents gradient tracking and reduces memory use.\nNeither one replaces the other."
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#action-masks-operate-on-logits",
-    "href": "slides/lec27_Practical_PyTorch.html#action-masks-operate-on-logits",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Action Masks Operate on Logits",
-    "text": "Action Masks Operate on Logits\nHomework 6 uses a categorical policy with actions that can be unavailable.\nfrom torch.distributions import Categorical\n\nlogits = actor(observation)\nlegal = legal_action_mask(observation)\n\nmasked_logits = logits.masked_fill(\n    ~legal,\n    float(\"-inf\"),\n)\npolicy = Categorical(logits=masked_logits)\naction = policy.sample()\nlog_probability = policy.log_prob(action)\n\nMask before constructing the distribution. Post-hoc resampling silently creates a different policy."
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#debug-one-batch-before-a-long-run",
-    "href": "slides/lec27_Practical_PyTorch.html#debug-one-batch-before-a-long-run",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Debug One Batch Before a Long Run",
-    "text": "Debug One Batch Before a Long Run\nimages, labels = next(iter(train_loader))\n\nassert images.ndim == 4\nassert images.shape[1:] == (1, 28, 56)\nassert labels.dtype == torch.int64\n\nimages = images.to(device)\nlabels = labels.to(device)\nlogits = model(images)\n\nassert logits.shape == (images.shape[0], 100)\nloss = loss_fn(logits, labels)\nassert torch.isfinite(loss)\nCheck this tiny path first: one batch → one forward pass → one finite loss → one backward pass."
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#common-failures-are-usually-local",
-    "href": "slides/lec27_Practical_PyTorch.html#common-failures-are-usually-local",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Common Failures Are Usually Local",
-    "text": "Common Failures Are Usually Local\n\n\n\n\n\n\n\n\nSymptom\nLikely cause\nFirst check\n\n\n\n\nShape mismatch in a linear layer\nFlattened size is wrong\nPrint shapes after each layer\n\n\nExpected Long labels\nClass labels are floating point\nlabels.dtype\n\n\nTensors on different devices\nA batch or model was not moved\n.device on inputs and parameters\n\n\nLoss becomes nan\nInvalid values or unstable update\nInputs, loss, learning rate\n\n\nAccuracy changes during evaluation\nModel remains in training mode\nCall model.eval()\n\n\nGPU memory grows every batch\nGraph-carrying tensors are stored\nSave loss.item() or detached values\n\n\n\n\nRead the final line of the traceback first, then inspect the nearest tensor contract."
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#make-the-experiment-reproducible",
-    "href": "slides/lec27_Practical_PyTorch.html#make-the-experiment-reproducible",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Make the Experiment Reproducible",
-    "text": "Make the Experiment Reproducible\nimport random\nimport torch\n\nseed = 42\nrandom.seed(seed)\ntorch.manual_seed(seed)\nif torch.cuda.is_available():\n    torch.cuda.manual_seed_all(seed)\n\ntorch.save(model.state_dict(), \"model.pt\")\n\nrestored = Classifier(input_dim=20, num_classes=4)\nstate = torch.load(\"model.pt\", weights_only=True)\nrestored.load_state_dict(state)\nrestored.eval()\nReport the seed, device, PyTorch version, batch size, optimizer, learning rate, epochs, and architecture. Saving a state_dict preserves learned parameters without coupling the file to a particular Python object layout."
-  },
-  {
-    "objectID": "slides/lec27_Practical_PyTorch.html#you-are-homework-ready-when",
-    "href": "slides/lec27_Practical_PyTorch.html#you-are-homework-ready-when",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "You Are Homework-Ready When…",
-    "text": "You Are Homework-Ready When…\n\nYou can explain every axis in your input and output tensors.\nYou can write Dataset/DataLoader, nn.Module, training, and evaluation skeletons without guessing their order.\nYou know why classification models return logits rather than probabilities.\nYou can diagnose shape, dtype, device, mode, and gradient errors one batch at a time.\nYou can reproduce a run and save its learned parameters.\n\nOfficial references:\n\nPyTorch: Learn the Basics\nPyTorch Quickstart\nSaving and Loading Models\n\nAsset credits"
   },
   {
     "objectID": "slides/lec29_CNN.html#convolutional-neural-networks",
@@ -5663,74 +5453,11 @@
     "text": "Questions to Explore\n\nWhy does using fewer than ten features omit part of the true signal?\nWhy can training error keep falling while test error rises?\nChange the noise level and rerun the experiment. Which part of the theoretical expression changes?\nWhy might a small number of trials give an unstable average near interpolation?\n\n\n\nAnswers and discussion\n\n\nThe omitted features carry real signal. The response uses the first ten feature coordinates with nonzero coefficients. A fit with p &lt; 10 cannot represent the contribution from coordinates p through 9. Because the features are independent Gaussian variables, that omitted contribution has variance sum(beta_star[p:] ** 2) and cannot be recovered from the included features alone.\nFitting noise is not generalization. Adding features cannot worsen the best achievable training least-squares fit, and enough features can interpolate the noisy training responses. Near the interpolation threshold, poorly determined directions can amplify noise and make predictions unstable on independent test examples. Thus training error can fall while test error rises; the full test-error curve need not be monotone on either side of the threshold.\nThe noise-dependent terms change with sigma squared. The omitted-signal term and coefficient norm stay fixed. The irreducible noise variance and the noise-amplification terms all depend on sigma ** 2. Doubling sigma quadruples those contributions; for example, the irreducible error changes from 0.04 to 0.16. It does not quadruple any separate signal-bias contribution.\nRare unstable fits can dominate a small average. Near interpolation, a random design can have very small singular values. Taking their reciprocals in the pseudoinverse amplifies noise and can produce exceptionally large test errors. A small set of trials may include or miss such cases, making its mean and min-to-max band unstable. More trials help away from the excluded singular cases, but do not turn a divergent expected error into a finite one.\n\n\nTakeaway: training fit, model size, and generalization are not interchangeable. The estimator and the data-generating assumptions matter."
   },
   {
-    "objectID": "code_and_homework/backpropagation.html#inputs-parameters-and-learning-rate",
-    "href": "code_and_homework/backpropagation.html#inputs-parameters-and-learning-rate",
-    "title": "Backpropagation by Hand",
-    "section": "Inputs, Parameters, and Learning Rate",
-    "text": "Inputs, Parameters, and Learning Rate\nThe input has shape (1, 2) and the target has shape (1, 1): one example with two features and one response. requires_grad=True tells PyTorch to track operations on the learnable weights and biases.\nThe hidden weight matrix has shape (2, 1); the output weight has shape (1, 1). Biases are added by broadcasting. The seed reproduces initialization, and the learning rate sets the size of the eventual update.\n\nimport torch\n\n# Set random seed for reproducibility\ntorch.manual_seed(42)\n\n# Define input (2 features) and target output (scalar)\nX = torch.tensor([[0.5, 1.0]], dtype=torch.float32)  # Input shape: (1,2)\ny = torch.tensor([[1.0]], dtype=torch.float32)       # Target shape: (1,1)\n\n# Initialize weights and bias\nw1 = torch.randn((2, 1), requires_grad=True)  # Weights for input layer (2 → 1 hidden unit)\nb1 = torch.zeros(1, requires_grad=True)       # Bias for hidden layer\n\nw2 = torch.randn((1, 1), requires_grad=True)  # Weights for hidden layer → output\nb2 = torch.zeros(1, requires_grad=True)       # Bias for output layer\n\n# Learning rate\nlr = 0.1"
-  },
-  {
-    "objectID": "code_and_homework/backpropagation.html#hidden-layer",
-    "href": "code_and_homework/backpropagation.html#hidden-layer",
-    "title": "Backpropagation by Hand",
-    "section": "Hidden Layer",
-    "text": "Hidden Layer\nFirst compute z_1=Xw_1+b_1. The rectified linear unit (ReLU) activation keeps positive values and replaces negative ones with zero: a_1=\\max(0,z_1).\nFor this one-unit network, both intermediate tensors have shape (1, 1).\n\n# Step 1: Forward Pass (Layer 1 - Hidden Layer)\nz1 = X @ w1 + b1  # Linear transformation\na1 = torch.relu(z1)  # Activation function (ReLU)"
-  },
-  {
-    "objectID": "code_and_homework/backpropagation.html#output-and-loss",
-    "href": "code_and_homework/backpropagation.html#output-and-loss",
-    "title": "Backpropagation by Hand",
-    "section": "Output and Loss",
-    "text": "Output and Loss\nThe output layer is linear: O=a_1w_2+b_2. The code uses mean squared error (MSE) with no factor of one half. There is one scalar prediction, so L=(O-y)^2 and \\partial L/\\partial O=2(O-y).\nThe printed prediction and loss are measured before any parameter update.\n\n# Step 2: Forward Pass (Layer 2 - Output Layer)\nz2 = a1 @ w2 + b2  # Linear transformation\noutput = z2  # Final output\n\n# Step 3: Compute Loss (Mean Squared Error)\nloss = torch.mean((output - y) ** 2)\n\n# Print forward pass results\nprint(f\"Output before backpropagation: {output.item():.4f}\")\nprint(f\"Loss before backpropagation: {loss.item():.4f}\")\n\n\nOutput before backpropagation: 0.0697\nLoss before backpropagation: 0.8655"
-  },
-  {
-    "objectID": "code_and_homework/backpropagation.html#ask-autograd-for-gradients",
-    "href": "code_and_homework/backpropagation.html#ask-autograd-for-gradients",
-    "title": "Backpropagation by Hand",
-    "section": "Ask Autograd for Gradients",
-    "text": "Ask Autograd for Gradients\nloss.backward() traverses the computation graph and accumulates derivatives in each leaf parameter’s .grad field. It does not change parameter values. We retain these gradients to compare against the manual calculation.\n\n# Step 4: Backward Pass (Compute Gradients)\nloss.backward()  # Automatically computes gradients using backpropagation"
-  },
-  {
-    "objectID": "code_and_homework/backpropagation.html#compute-the-chain-rule-manually",
-    "href": "code_and_homework/backpropagation.html#compute-the-chain-rule-manually",
-    "title": "Backpropagation by Hand",
-    "section": "Compute the Chain Rule Manually",
-    "text": "Compute the Chain Rule Manually\nLet \\delta_2=2(O-y). The output is linear, so\n\\frac{\\partial L}{\\partial w_2}=a_1\\delta_2, \\qquad \\frac{\\partial L}{\\partial b_2}=\\delta_2.\nThe hidden error is \\delta_1=\\delta_2 w_2\\,\\mathbb{1}[z_1&gt;0], giving\n\\frac{\\partial L}{\\partial w_1}=X^\\top\\delta_1, \\qquad \\frac{\\partial L}{\\partial b_1}=\\delta_1.\nPyTorch uses derivative zero for ReLU at zero. The code’s Boolean mask follows that convention. torch.no_grad() prevents these manual calculations from creating another autograd graph.\nThe elementwise products below work for this single-example, single-hidden-unit network. Larger batches and layers require appropriate matrix products and sums over examples.\n\nwith torch.no_grad():\n    # Step 5: Compute Manual Gradients\n    dL_dO = 2 * (output - y) / 1  # Derivative of MSE loss w.r.t. output\n    dO_dz2 = 1  # Since output = z2, its derivative is 1\n    dL_dz2 = dL_dO * dO_dz2  # Chain rule\n\n    # Gradients for w2 and b2 (Output layer)\n    dL_dw2 = dL_dz2 * a1  # dL/dw2 = dL/dz2 * da1/dw2\n    dL_db2 = dL_dz2 * 1    # dL/db2 = dL/dz2 * db2/db2\n\n    # Gradients for w1 and b1 (Hidden layer)\n    dz2_da1 = w2  # Derivative of z2 w.r.t. a1 (weights from hidden to output layer)\n    da1_dz1 = (z1 &gt; 0).float()  # ReLU derivative (1 if z1 &gt; 0, else 0)\n\n    dL_dz1 = dL_dz2 * dz2_da1 * da1_dz1  # Chain rule: dL/dz1 = dL/dz2 * dz2/da1 * da1/dz1\n    dL_dw1 = dL_dz1 * X.T  # dL/dw1 = dL/dz1 * X\n    dL_db1 = dL_dz1 * 1  # dL/db1 = dL/dz1 * db1/db1"
-  },
-  {
-    "objectID": "code_and_homework/backpropagation.html#compare-the-four-parameter-gradients",
-    "href": "code_and_homework/backpropagation.html#compare-the-four-parameter-gradients",
-    "title": "Backpropagation by Hand",
-    "section": "Compare the Four Parameter Gradients",
-    "text": "Compare the Four Parameter Gradients\nCompare the automatic and manual entries for both weights and both biases. The first-layer weight gradient has two entries because the hidden unit receives two features. The saved combined log is displayed after the final forward pass below.\n\n# Print Gradients\nprint(\"\\nAutomatic Gradients (PyTorch):\")\nprint(f\"dL/dw1: {w1.grad}\")\nprint(f\"dL/db1: {b1.grad}\")\nprint(f\"dL/dw2: {w2.grad}\")\nprint(f\"dL/db2: {b2.grad}\")\n\nprint(\"\\nManual Gradients (Calculated using Chain Rule):\")\nprint(f\"dL/dw1: {dL_dw1}\")\nprint(f\"dL/db1: {dL_db1}\")\nprint(f\"dL/dw2: {dL_dw2}\")\nprint(f\"dL/db2: {dL_db2}\")"
-  },
-  {
-    "objectID": "code_and_homework/backpropagation.html#check-numerical-agreement",
-    "href": "code_and_homework/backpropagation.html#check-numerical-agreement",
-    "title": "Backpropagation by Hand",
-    "section": "Check Numerical Agreement",
-    "text": "Check Numerical Agreement\ntorch.allclose checks agreement within floating-point tolerances. All four checks should be True. A missing factor of two in the MSE derivative would fail this comparison.\nSome manual bias gradients retain a (1, 1) shape while the parameter gradients have shape (1,); this comparison allows broadcasting. Values agree here, but shape checks also matter when extending the network.\n\n# Step 6: Verify Matching\nprint(\"\\nChecking if manual and automatic gradients match:\")\nprint(torch.allclose(w1.grad, dL_dw1), \"for dL/dw1\")\nprint(torch.allclose(b1.grad, dL_db1), \"for dL/db1\")\nprint(torch.allclose(w2.grad, dL_dw2), \"for dL/dw2\")\nprint(torch.allclose(b2.grad, dL_db2), \"for dL/db2\")"
-  },
-  {
-    "objectID": "code_and_homework/backpropagation.html#take-a-gradient-descent-step",
-    "href": "code_and_homework/backpropagation.html#take-a-gradient-descent-step",
-    "title": "Backpropagation by Hand",
-    "section": "Take a Gradient-Descent Step",
-    "text": "Take a Gradient-Descent Step\nEach parameter follows \\theta\\leftarrow\\theta-\\eta\\nabla_\\theta L. The update occurs inside no_grad(), since changing the parameters is not part of the next differentiation graph.\nThe gradients are then zeroed because PyTorch accumulates them by default. Rerunning the comparison after this cell would compare against zeroed gradients; restart from initialization for a fresh full comparison.\n\n# Step 7: Update Weights (Gradient Descent)\nwith torch.no_grad():\n    w1 -= lr * w1.grad\n    b1 -= lr * b1.grad\n    w2 -= lr * w2.grad\n    b2 -= lr * b2.grad\n\n    # Zero out gradients after update\n    w1.grad.zero_()\n    b1.grad.zero_()\n    w2.grad.zero_()\n    b2.grad.zero_()"
-  },
-  {
-    "objectID": "code_and_homework/backpropagation.html#recompute-the-prediction",
-    "href": "code_and_homework/backpropagation.html#recompute-the-prediction",
-    "title": "Backpropagation by Hand",
-    "section": "Recompute the Prediction",
-    "text": "Recompute the Prediction\nRun the forward equations again with the updated parameters and measure a new loss. The saved log contains the earlier gradient values, the four agreement checks, and the prediction and loss after the update.\nA smaller loss in this example confirms that the chosen update helped on this example. An excessively large learning rate can increase loss even when the gradient is correct.\n\n# Step 8: Forward Pass Again (After Weight Update)\nz1 = X @ w1 + b1\na1 = torch.relu(z1)\nz2 = a1 @ w2 + b2\nnew_output = z2\n\n# Compute new loss\nnew_loss = torch.mean((new_output - y) ** 2)\n\n# Print updated results\nprint(f\"\\nOutput after weight update: {new_output.item():.4f}\")\nprint(f\"Loss after weight update: {new_loss.item():.4f}\")\n\n\nAutomatic Gradients (PyTorch):\ndL/dw1: tensor([[-0.2181],\n        [-0.4363]])\ndL/db1: tensor([-0.4363])\ndL/dw2: tensor([[-0.5529]])\ndL/db2: tensor([-1.8607])\n\nManual Gradients (Calculated using Chain Rule):\ndL/dw1: tensor([[-0.2181],\n        [-0.4363]])\ndL/db1: tensor([[-0.4363]])\ndL/dw2: tensor([[-0.5529]])\ndL/db2: tensor([[-1.8607]])\n\nChecking if manual and automatic gradients match:\nTrue for dL/dw1\nTrue for dL/db1\nTrue for dL/dw2\nTrue for dL/db2\n\nOutput after weight update: 0.3006\nLoss after weight update: 0.4891"
-  },
-  {
     "objectID": "code_and_homework/backpropagation.html#check-your-understanding",
     "href": "code_and_homework/backpropagation.html#check-your-understanding",
     "title": "Backpropagation by Hand",
     "section": "Check Your Understanding",
-    "text": "Check Your Understanding\n\nWhich operations compute gradients, which modify weights, and which clear accumulated gradients?\nIf the hidden preactivation were negative, which weight gradients would become zero? Could the output bias still learn?\nWhy does MSE averaged over several outputs require dividing its derivative by the number of averaged elements?\n\n\n\nAnswers and discussion\n\n\nGradient calculation, parameter update, and reset are separate. loss.backward() accumulates automatic gradients in .grad; the explicit chain-rule expressions compute the manual versions. The statements such as w1 -= lr * w1.grad change parameters. Calls such as w1.grad.zero_() clear the stored gradients. torch.no_grad() only disables graph tracking for operations inside its block; it neither clears gradients nor updates parameters by itself.\nA negative hidden preactivation blocks this unit’s gradient. ReLU gives a1 = 0 and derivative zero. Both entries of the w1 gradient and the b1 gradient become zero. The w2 gradient is also zero because its input a1 is zero. The output bias still has gradient 2(O-y), so it can learn unless the prediction already matches the target.\nDifferentiation preserves the averaging factor. For m scalar output elements, MSE is the sum of their squared errors divided by m. The derivative for element i is therefore 2(O_i-y_i)/m. Omitting the division differentiates the sum of squared errors instead, scaling the gradient by m and making the update magnitude depend on how many elements were averaged. Here m is one.\n\n\nTakeaway: backpropagation computes derivatives; gradient descent uses them. Keeping those two steps separate makes training code easier to debug."
+    "text": "Check Your Understanding\n\nWhich call computes gradients, which updates parameters, and which clears gradients?\nWhy do the manual bias derivatives use a sum, and why must their shapes match?\nWhy can the output bias still learn when the hidden ReLU is inactive?\nWhy divide the MSE derivative by the number of prediction elements?\n\n\n\nAnswers and discussion\n\n\nThe operations are separate. loss.backward() accumulates derivatives in .grad. optimizer.step() changes the parameters. optimizer.zero_grad(set_to_none=True) clears stored gradients. no_grad() and inference_mode() control derivative recording; neither updates or clears parameters by itself.\nA shared bias contributes to every example. Its derivative adds contributions across the batch. sum(dim=0) removes the example axis and returns the bias parameter’s exact shape. A shape check prevents broadcasting from hiding a wrong matrix or batch dimension.\nThere is a direct path from output bias to prediction. Its local derivative is 1, regardless of the hidden activation. In the inactive case its gradient is -8. The output-weight gradient is zero because its input is zero, and the hidden-parameter gradients are blocked by ReLU’s zero slope at z=-1.\nThe derivative preserves the average. MSE averages over m scalar output entries, so each derivative is 2(\\hat y_i-y_i)/m. Omitting the divisor differentiates a sum instead and changes the update’s scale. Here m=1.\n\n\nTakeaway: backpropagation computes derivatives; an optimizer uses them. Lower loss on one example is not proof of performance on new examples.\nReferences: Official PyTorch Autograd Tutorial, MSELoss, and SGD."
   },
   {
     "objectID": "code_and_homework/CNN.html#imports-and-random-seed",
@@ -8083,5 +7810,292 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Takeaways",
     "text": "Takeaways\n\nA tree follows feature tests from a root to a prediction leaf.\nEntropy measures label mixture. Information gain measures its reduction from a split.\nGreedy learning builds locally. Size limits and pruning help control overfitting.\nA forest combines trees randomized through training rows and candidate features.\nClassification can combine probabilities or votes. Regression averages numeric predictions.\n\n\nA readable rule and a strong ensemble are both useful. Judge either one on new observations.\n\nAsset credits"
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#setup-device",
+    "href": "slides/lec27_Practical_PyTorch.html#setup-device",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Devices and .to(...)",
+    "text": "Devices and .to(...)\nA device is where a tensor is stored and computed on. An accelerator is hardware such as a graphics processing unit (GPU).\nif torch.accelerator.is_available():\n    device = torch.accelerator.current_accelerator()\nelse:\n    device = torch.device(\"cpu\")\n\nx_device = x.to(device)\nprint(x_device.device)\n\nThe central processing unit (CPU) is enough for these small examples.\n.to(device) returns a tensor on that device. Keep its return value.\nMove a model with model.to(device) before creating its optimizer.\n\nUse Colab or the official stable installer. Check the installed version with torch.__version__.\n\nThe modern torch.accelerator interface avoids assuming all students have the same accelerator. Older explicit CUDA/MPS availability checks remain valid. CUDA is NVIDIA’s Compute Unified Device Architecture; MPS is Apple’s Metal Performance Shaders backend. Tensor.to returns a tensor, which may be the same object if no conversion is necessary. Module.to moves its registered parameters/buffers and modifies the module in place; returning the module also allows chaining. A dtype can be changed with a call such as x.to(torch.float64). Source: https://docs.pytorch.org/docs/stable/generated/torch.Tensor.to.html and https://docs.pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html."
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#data-loading",
+    "href": "slides/lec27_Practical_PyTorch.html#data-loading",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Dataset and DataLoader",
+    "text": "Dataset and DataLoader\nA Dataset supplies one indexed example. A DataLoader groups examples into a batch. These four made-up examples have three input features each and class labels 0 or 1.\nfrom torch.utils.data import TensorDataset, DataLoader\n\nfeatures = torch.tensor([[1., 0., 0.], [0., 1., 0.],\n                         [0., 0., 1.], [1., 1., 1.]])\nlabels = torch.tensor([0, 1, 1, 0], dtype=torch.int64)\ndata = TensorDataset(features, labels)\nloader = DataLoader(data, batch_size=2, shuffle=True)\nxb, yb = next(iter(loader))\nprint(xb.shape, yb.shape)  # (2, 3), (2,)\n\nTensorDataset matches rows with labels at the same index.\niter(loader) creates an iterator; next(...) retrieves one batch.\nshuffle=True changes example order while keeping each label attached. int64 stores integer class indices.\n\n\nFeatures are input numbers describing an example. Labels are the chosen output classes, represented as integer indices. These artificial arrays illustrate API syntax only, not a scientific dataset or learning-performance claim. len(data)=4 and data[0] returns the first feature row with label 0. A full batch contains two rows of three numbers and two int64 labels. int64 means 64-bit integers. num_workers=0 is the portable default. Source: https://docs.pytorch.org/docs/stable/data.html#torch.utils.data.TensorDataset and https://docs.pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader."
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#simple-model",
+    "href": "slides/lec27_Practical_PyTorch.html#simple-model",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Layer: nn.Linear",
+    "text": "A Layer: nn.Linear\nA layer transforms inputs into outputs. nn.Linear(3, 2) learns a weighted sum plus an added constant (bias) for each of two outputs.\n\nfrom torch import nn\n\nlayer = nn.Linear(3, 2).to(device)\nprint(layer(features.to(device)).shape)  # (4, 2)\nprint(layer.weight.shape)               # (2, 3)\nprint(layer.bias.shape)                 # (2,)\nThe weights and biases are parameters: tensors whose values training can change. The leading batch length stays 4.\n\nLinear(in_features,out_features) applies y=x@weight.T+bias along the last input axis. The four-example input is the features tensor defined on the preceding slide. PyTorch stores the weight as (out_features,in_features), so this layer has six weights and two biases. Its output values depend on initialization; only the guaranteed shapes are shown. Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.Linear.html."
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#classification-loss",
+    "href": "slides/lec27_Practical_PyTorch.html#classification-loss",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Loss Functions and Their Inputs",
+    "text": "Loss Functions and Their Inputs\nA loss function measures prediction error. Its expected shapes and dtypes depend on the task.\n\n\n\n\n\n\n\nLoss\nInputs\n\n\n\n\nMean squared error (MSELoss)\nNumeric predictions and targets with the same shape\n\n\nCross-entropy (CrossEntropyLoss)\nRaw class scores (logits) shaped (batch, classes) and integer class indices shaped (batch,)\n\n\n\npred = torch.tensor([1., 3.])\ntarget = torch.tensor([2., 2.])\nprint(nn.MSELoss()(pred, target).item())  # 1.0\nscores = torch.tensor([[2., 0.], [0., 2.]])\nclasses = torch.tensor([0, 1], dtype=torch.int64)\nprint(nn.CrossEntropyLoss()(scores, classes).item())  # about 0.127\n\nFor this classification loss, pass raw scores. Softmax converts scores to probabilities; the loss already handles that conversion internally.\n\n\nThese are separate small examples for two loss interfaces. MSELoss gives ((1-2)2+(3-2)2)/2=1. The cross-entropy rows each assign score 2 to the correct class and 0 to the other, giving log(1+exp(-2))=0.126928… with default mean reduction. Class-index targets are int64, not float labels or argmax predictions. CrossEntropyLoss also supports probability targets in other uses, but this lecture uses the integer-index case only. Sources: https://docs.pytorch.org/docs/stable/generated/torch.nn.MSELoss.html and https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html."
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#automatic-gradients",
+    "href": "slides/lec27_Practical_PyTorch.html#automatic-gradients",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Autograd and .backward()",
+    "text": "Autograd and .backward()\nAutograd computes derivatives automatically. A gradient measures how a loss changes with a parameter. requires_grad=True requests this tracking.\nScalar example: input a=3, weight w=2, target 10, loss L=(wa-10)^2.\n\nw = torch.tensor(2.0, requires_grad=True)\nloss = (w * 3 - 10) ** 2\nloss.backward()\nprint(w.grad.item())  # gradient as a Python number: -24.0\n\\dfrac{dL}{dw}=2(wa-10)a=2(6-10)\\cdot3=-24. .backward() does not update w.\n\nThe scalar input a=3 is mathematical notation; the Python matrix x is unchanged. backward uses the chain rule: dL/dprediction=-8 and dprediction/dw=3. w.grad stores the accumulated derivative; item() extracts the single Python numeric value. A new forward pass builds a new derivative graph for an ordinary training step. detach() returns a tensor outside this gradient history and shares storage; clone() copies values and is not the same operation. Source: https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html and https://docs.pytorch.org/docs/stable/generated/torch.Tensor.detach.html."
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#optimizer-step",
+    "href": "slides/lec27_Practical_PyTorch.html#optimizer-step",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Optimizers: One Parameter Update",
+    "text": "Optimizers: One Parameter Update\nAn optimizer changes parameters using gradients. Stochastic gradient descent (SGD) uses a training batch’s gradient; lr is the learning rate, which controls update size.\nFor the TinyNet model and batch xb, yb defined above:\noptimizer = torch.optim.SGD(model.parameters(), lr=0.01)\nxb, yb = xb.to(device), yb.to(device)\noptimizer.zero_grad(set_to_none=True)\nscores = model(xb)\nloss = nn.CrossEntropyLoss()(scores, yb)\nloss.backward()\noptimizer.step()\n\nmodel.parameters() supplies the trainable tensors. Clear old gradients, run the calculation, compute gradients, then update parameters.\n\n\nGradients accumulate by default. Clear them before each new batch update unless accumulation is intentional.\n\n\nThe explicit set_to_none=True matches the modern Optimizer.zero_grad default. An unused parameter may retain grad=None, which differs from a numerical zero gradient for optimizer behavior. Create the optimizer once after placing the model on its device, not again for each batch. Intentional gradient accumulation is useful, but it needs deliberate scaling/update timing. In this ordinary example, each update has a fresh forward pass; do not call backward twice on a freed graph. If repeating a numerical gradient accumulation demonstration, rebuild the loss each time. Sources: https://docs.pytorch.org/docs/stable/generated/torch.optim.SGD.html and https://docs.pytorch.org/docs/stable/generated/torch.optim.Optimizer.zero_grad.html."
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#evaluation",
+    "href": "slides/lec27_Practical_PyTorch.html#evaluation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Model Modes and Prediction",
+    "text": "Model Modes and Prediction\nInference means making predictions. Model mode and gradient recording are separate controls.\nmodel.train()\nscores = model(xb)\n\nmodel.eval()\nwith torch.inference_mode():\n    scores = model(xb)\n    predictions = scores.argmax(dim=1)\n\ntrain() and eval() select layer behavior. Neither call updates parameters.\nFor example, dropout randomly zeros some values during training; eval() disables that behavior.\ninference_mode() disables gradient recording here. no_grad() is also valid.\nargmax(dim=1) selects the highest-scoring class in each row.\n\n\nOur simple TinyNet contains only a Linear layer and has no mode-sensitive layers, so train/eval do not change its numerical forward behavior. The pattern becomes important with layers such as dropout or batch normalization. inference_mode is intended for predictions whose resulting tensors will not re-enter gradient-tracked computation; no_grad is less restrictive and still correct. Neither replaces eval(). Sources: https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module.train and https://docs.pytorch.org/docs/stable/generated/torch.autograd.grad_mode.inference_mode.html."
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#model-checkpoint",
+    "href": "slides/lec27_Practical_PyTorch.html#model-checkpoint",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Saving State and Repeating a Run",
+    "text": "Saving State and Repeating a Run\nA model’s state_dict stores named tensors, such as linear.weight and linear.bias. A checkpoint is saved state from a run.\ntorch.save(model.state_dict(), \"model.pt\")\nrestored = TinyNet()\nstate = torch.load(\n    \"model.pt\", map_location=\"cpu\", weights_only=True)\nrestored.load_state_dict(state)\nrestored = restored.to(device)\nrestored.eval()\n\nRecreate the same architecture before loading its weights. Load only trusted files.\nA random seed initializes random-number generation. Call torch.manual_seed(42) before creating the model and shuffling data.\nRecord the version, device, and settings. Seeds do not guarantee identical results across hardware or releases.\n\n\nTinyNet’s state has keys linear.weight and linear.bias. state_dict does not include the model’s Python class definition or optimizer state. Resuming training also requires optimizer state and progress. map_location=“cpu” permits loading without the original accelerator, then the restored model is moved to the selected device. weights_only=True narrows deserialization but is not a complete security guarantee. Python random and NumPy, if used, have their own random generators to seed. Sources: https://docs.pytorch.org/docs/stable/notes/serialization.html and https://docs.pytorch.org/docs/stable/notes/randomness.html."
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#current-practices",
+    "href": "slides/lec27_Practical_PyTorch.html#current-practices",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Optional Modern Tools",
+    "text": "Optional Modern Tools\nThe calls above use eager execution: operations run immediately, making their inputs and outputs easy to inspect.\n\n\n\n\n\n\n\nTool\nPurpose\n\n\n\n\ntorch.compile(model)\nCompile and optimize computation. Initial setup costs time; measure whether repeated use benefits.\n\n\nAutomatic mixed precision (AMP)\nUse different numeric precisions for different operations to reduce time or memory on supported hardware. Check numerical stability.\n\n\nTorchVision v2 transforms\nChange image inputs before a model sees them, using the current image-transform interface.\n\n\n\nFor AMP, use the modern torch.amp interface rather than deprecated torch.cuda.amp entry points.\n\nThese are optional additions. First make tensor shapes, model calls, and gradient updates correct.\n\n\ntorch.compile is optional and does not guarantee a speedup. AMP stands for automatic mixed precision; CUDA float16 training commonly uses torch.amp.autocast(“cuda”) with torch.amp.GradScaler(“cuda”) and its step/update workflow. A gradient scaler temporarily rescales a loss to reduce underflow. Do not merely cast all tensors to half precision. TorchVision recommends torchvision.transforms.v2 for new image preprocessing; this is a library overview, not an image-classification exercise. Sources: https://docs.pytorch.org/tutorials/intermediate/torch_compile_tutorial.html, https://docs.pytorch.org/docs/stable/amp.html, and https://docs.pytorch.org/vision/stable/transforms.html."
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#quick-check",
+    "href": "slides/lec27_Practical_PyTorch.html#quick-check",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Quick Check",
+    "text": "Quick Check\n\n\n\nFor our 2-by-3 tensor x, what is the shape of x[:, 1]?\nAre x * x and x @ x.T the same operation?\nDoes model.eval() disable gradient recording?\n\n\n\n\n\n1. (2,). It selects the second column: one value from each row.\n\n\n2. No. Entrywise multiplication gives (2, 3); matrix multiplication gives (2, 2) here.\n\n\n3. No. Use inference_mode() or no_grad() for prediction as well."
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#takeaways",
+    "href": "slides/lec27_Practical_PyTorch.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nCreate tensors with intentional shapes, dtypes, and devices.\nRead indexing, dim, broadcasting, and reshaping explicitly.\nA Dataset supplies examples; a DataLoader supplies batches.\nLayers belong to modules. forward defines what a model call computes.\nA loss compares outputs with targets. Autograd computes derivatives.\nAn optimizer changes parameters. Prediction uses the appropriate mode and gradient settings.\n\n\nWhen a call is confusing, inspect its input shape, returned shape, and a few values on a tiny tensor.\n\nOfficial PyTorch Tutorial: Learn the Basics\nAsset credits and official references"
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#components",
+    "href": "slides/lec27_Practical_PyTorch.html#components",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Main PyTorch Components",
+    "text": "The Main PyTorch Components\nPyTorch is a Python library for tensor computation and learning models from data.\n\n\n\n\n\nComponent\nRole\n\n\n\n\ntorch\nCreate arrays and compute with them\n\n\ntorch.utils.data\nRetrieve examples and group them into batches\n\n\ntorch.nn\nDefine layers, models, and loss functions\n\n\ntorch.autograd\nCompute derivatives automatically\n\n\ntorch.optim\nUpdate a model’s learned values\n\n\n\n\n\n\n\nRead each call as an object, an operation, and a result. Start with small arrays whose values and shapes you can check.\n\n\nThe numerical arrays in this lecture are constructed examples for exploring PyTorch’s interface, not a real prediction dataset or reported experiment. A batch is a group of examples processed together. The cartoon is a conceptual software-toolbox illustration. Sources: https://docs.pytorch.org/tutorials/beginner/basics/intro.html and https://docs.pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html."
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#tensor-creation",
+    "href": "slides/lec27_Practical_PyTorch.html#tensor-creation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Creating Tensors",
+    "text": "Creating Tensors\nA tensor is a multidimensional array. Its dimensions are axes. Shape gives their lengths, and dtype gives the number representation.\nimport torch\n\nx = torch.tensor([[1., 2., 3.], [4., 5., 6.]],\n                 dtype=torch.float32)\nprint(x.shape)  # torch.Size([2, 3]): 2 rows, 3 columns\nprint(x.dtype)  # torch.float32: 32-bit floating point\n\n\n\nAnother constructor\nResult\n\n\n\n\ntorch.zeros(2, 3)\nA 2-by-3 array filled with zeros\n\n\ntorch.ones(2, 3)\nA 2-by-3 array filled with ones\n\n\ntorch.arange(6)\nThe integers 0, 1, 2, 3, 4, 5\n\n\ntorch.rand(2, 3)\nA 2-by-3 array of random values in [0,1)\n\n\n\n\nAn axis is one dimension. torch.tensor constructs a tensor from the nested Python lists and copies the data. float32 means 32-bit floating-point values. torch.arange(6) uses an integer dtype by default; zeros/ones/rand use the default floating dtype unless changed. rand samples a uniform distribution, not a normal distribution. The opening x remains the same 2-by-3 floating-point tensor for the following syntax examples. Sources: https://docs.pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html and https://docs.pytorch.org/docs/stable/generated/torch.tensor.html."
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#tensor-indexing",
+    "href": "slides/lec27_Practical_PyTorch.html#tensor-indexing",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Indexing and the dim Argument",
+    "text": "Indexing and the dim Argument\nIndices start at 0. In x[row, column], : selects every entry along that axis.\n\nprint(x[0])           # tensor([1., 2., 3.])\nprint(x[:, 1])        # tensor([2., 5.])\nprint(x[0:1].shape)   # torch.Size([1, 3]): keep a row axis\nprint(x.mean(dim=0))  # tensor([2.5, 3.5, 4.5])\nprint(x.mean(dim=1))  # tensor([2., 5.])\nmean(dim=0) averages down the rows. mean(dim=1) averages across each row. The averaged axis disappears by default.\n\nFor this matrix dim=0 is the row axis and dim=1 is the column axis. Reducing along dim=0 leaves one value per column. Indexing with an integer removes that axis; a slice such as 0:1 preserves it. keepdim=True can preserve a length-one axis during a reduction. These are actual values calculated from the x defined on the preceding slide. Sources: https://docs.pytorch.org/docs/stable/generated/torch.mean.html and https://docs.pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html."
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#tensor-operations",
+    "href": "slides/lec27_Practical_PyTorch.html#tensor-operations",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Operators and Broadcasting",
+    "text": "Operators and Broadcasting\n* multiplies matching entries. @ performs matrix multiplication. For this matrix, .T swaps rows and columns.\nprint(x * x)      # [[1, 4, 9], [16, 25, 36]]\nprint(x @ x.T)    # [[14, 32], [32, 77]]\n\noffset = torch.tensor([10., 20., 30.])\nprint(x + offset) # [[11, 22, 33], [14, 25, 36]]\nBroadcasting reuses values across compatible axes. Here one 3-entry offset is added to each row of the 2-by-3 tensor.\n\nCompare shapes from the right: matching lengths or a length of 1 are compatible. (2, 3) + (3,) works; (2, 3) + (2,) fails.\n\n\nThe comments abbreviate PyTorch’s printed tensor formatting, preserving the exact values. Matrix multiplication sums products across the shared dimension: (2,3)@(3,2) gives (2,2). Broadcasting conceptually extends compatible dimensions without needing to physically duplicate the offset. Missing leading axes act like length-one axes. .T is used only on a two-dimensional tensor here. Sources: https://docs.pytorch.org/docs/stable/notes/broadcasting.html, https://docs.pytorch.org/docs/stable/generated/torch.matmul.html, and https://docs.pytorch.org/docs/stable/generated/torch.mul.html."
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#tensor-reshaping",
+    "href": "slides/lec27_Practical_PyTorch.html#tensor-reshaping",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Reshaping and Joining Tensors",
+    "text": "Reshaping and Joining Tensors\nreshape reorganizes the same number of values into a new shape.\nprint(x.reshape(3, 2))\n# tensor([[1., 2.],\n#         [3., 4.],\n#         [5., 6.]])\n\n\n\n\n\n\n\nOperation on our x\nShape and meaning\n\n\n\n\nx.flatten()\n(6,): join its axes into one\n\n\nx.unsqueeze(0)\n(1, 2, 3): insert a length-one axis\n\n\ntorch.cat([x, x], dim=0)\n(4, 3): join along an existing axis\n\n\ntorch.stack([x, x], dim=0)\n(2, 2, 3): add an axis for the two tensors\n\n\n\n\nReshaping is not transposing. x.reshape(3, 2) and x.T have the same shape but different values at some positions.\n\n\nreshape may return a view or a copy, so do not rely on its storage-sharing behavior. It preserves element order for this contiguous x; transposing changes axis order. cat joins existing axes and requires other axis lengths to match. stack requires matching input shapes and inserts a new axis. squeeze(0) would undo the specific unsqueeze(0) shown here. flatten(start_dim=1) is useful for keeping an existing batch axis while joining later axes. Sources: https://docs.pytorch.org/docs/stable/generated/torch.reshape.html, https://docs.pytorch.org/docs/stable/generated/torch.cat.html, and https://docs.pytorch.org/docs/stable/generated/torch.stack.html."
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#custom-module",
+    "href": "slides/lec27_Practical_PyTorch.html#custom-module",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Model: Subclassing nn.Module",
+    "text": "A Model: Subclassing nn.Module\nA module stores computation and parameters. A subclass inherits this behavior.\nclass TinyNet(nn.Module):\n    def __init__(self):\n        super().__init__()\n        self.linear = nn.Linear(3, 2)\n\n    def forward(self, x):\n        return self.linear(x)\n\nmodel = TinyNet().to(device)\n\n\n\n\n\n\n\nSyntax\nMeaning\n\n\n\n\n__init__, super()\nInitialize the parent module, then create layers\n\n\nself.linear\nself is this model. PyTorch tracks attached layers’ parameters.\n\n\nforward\nDefine the calculation invoked by model(xb)\n\n\n\n\nCall model(xb), rather than calling forward directly, so PyTorch’s surrounding module machinery runs. Initialize the parent before assigning child modules. model.parameters() recursively exposes registered trainable tensors to an optimizer. self is Python’s conventional name for the current instance; it is not a special PyTorch tensor. Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html."
+  },
+  {
+    "objectID": "slides/lec27_Practical_PyTorch.html#sequential",
+    "href": "slides/lec27_Practical_PyTorch.html#sequential",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Layer Composition: nn.Sequential",
+    "text": "Layer Composition: nn.Sequential\nnn.Sequential feeds each layer’s output into the next layer. It is itself an nn.Module.\nAn activation function transforms intermediate values. The rectified linear unit (ReLU) keeps positive values and replaces negative values with zero.\nstack = nn.Sequential(\n    nn.Linear(3, 4),\n    nn.ReLU(),\n    nn.Linear(4, 2),\n).to(device)\nprint(stack(xb.to(device)).shape)  # (2, 2)\nprint(nn.ReLU()(torch.tensor([-2., 0., 3.])))\n# tensor([0., 0., 3.])\nFor our two-example batch, the shapes are (2,3)\\to(2,4)\\to(2,4)\\to(2,2).\n\nThe middle 4 is the number of values produced per example by the first layer, not the batch length. ReLU changes values without changing shape. This stack is an alternative model used to demonstrate composition; the later optimizer excerpt uses the simpler TinyNet named model, not this object named stack. ReLU has no learned parameters here. Sources: https://docs.pytorch.org/docs/stable/generated/torch.nn.Sequential.html and https://docs.pytorch.org/docs/stable/generated/torch.nn.ReLU.html."
+  },
+  {
+    "objectID": "slides/lec28_Deep_Learning.html#learned-features",
+    "href": "slides/lec28_Deep_Learning.html#learned-features",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "From Inputs to Learned Features",
+    "text": "From Inputs to Learned Features\nDeep learning trains neural networks with multiple layers of transformations. A representation is an intermediate description of the input.\n\n\nReturn to delivery-time prediction:\n\nInput x_1: distance, in kilometers.\nInput x_2: number of stops.\nTarget y: observed delivery time, in minutes.\n\nA neural network can learn useful combinations of these inputs rather than requiring us to specify every combination in advance.\n\n\n\n\nWe still choose the data and inputs. Learned representations do not remove the need for good data or evaluation.\n\n\nThe delivery example continues Lecture 25’s motivation, but all numbers used here are newly constructed teaching values, not measured campus data. A network can learn representations from already selected features as well as from raw inputs. Avoid a blanket claim that other machine-learning methods always require manual features or cannot scale. The courier cartoon is reused unchanged from Lecture 25. Conceptual source: AIMA, U.S. fourth edition Section 21.1 / Global fourth edition Section 22.1, and the supplied Spring 2025 Deep Learning lecture."
+  },
+  {
+    "objectID": "slides/lec28_Deep_Learning.html#network-layers",
+    "href": "slides/lec28_Deep_Learning.html#network-layers",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Inputs, Hidden Layers, and Outputs",
+    "text": "Inputs, Hidden Layers, and Outputs\nA feedforward network sends information from inputs to outputs, without a feedback loop.\n\n\nThe input layer receives the measured features.\nHidden layers compute intermediate values, rather than the final answer.\nThe output layer produces the prediction, written \\hat y.\n\n\nMultiple hidden layers make a network deep. Our later one-hidden-unit example is deliberately tiny so we can calculate its gradients.\n\n\nThe diagram shows a generic deep feedforward architecture, not a claim that our numerical notebook has two hidden layers. Hidden does not mean secret: these values are simply not the target labels. The final layer’s form depends on the prediction task. Here we use a numeric regression output, not a classification probability. Source: the supplied Spring 2025 Beamer main.tex and DNN_fig.tex, revised manually."
+  },
+  {
+    "objectID": "slides/lec28_Deep_Learning.html#neuron",
+    "href": "slides/lec28_Deep_Learning.html#neuron",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Neuron and Its Activation",
+    "text": "A Neuron and Its Activation\nA neuron computes a weighted sum and then an activation function, which transforms that sum. A bias is a learned added constant.\n\nz=w_1x_1+w_2x_2+b_{\\mathrm h},\\qquad h=\\operatorname{ReLU}(z).\n\nHere w_1,w_2 are weights, b_{\\mathrm h} is the hidden bias, z is the preactivation (weighted sum), and h is the hidden output.\nReLU means rectified linear unit: \\operatorname{ReLU}(z)=\\max(0,z).\n\n\n\nSum z\n-2\n0\n3\n\n\n\n\nReLU output\n0\n0\n3\n\n\n\n\nNonlinear activations matter: stacking only weighted sums and biases still gives a single affine map, a weighted sum plus a constant.\n\n\nAn artificial neuron is a mathematical operation, not a detailed biological-neuron model. The subscript h labels the hidden layer. ReLU is nonlinear because its slope changes at zero. A composition of affine maps is affine, so depth without nonlinearities does not create a richer family of input/output maps. At zero ReLU has no unique derivative; PyTorch chooses zero for backpropagation. Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.ReLU.html and the supplied single_neuron.tex."
+  },
+  {
+    "objectID": "slides/lec28_Deep_Learning.html#tiny-network",
+    "href": "slides/lec28_Deep_Learning.html#tiny-network",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Our Tiny Network",
+    "text": "Our Tiny Network\nConstructed example: x_1=1 km, x_2=2 stops, target y=4 minutes. The output has weight v and bias b_{\\mathrm o}: \\hat y=vh+b_{\\mathrm o}.\n\nInitial parameters: w_1=0.5, w_2=0.25, b_{\\mathrm h}=0, v=2, b_{\\mathrm o}=0.\n\nThese chosen parameters make the arithmetic transparent; they are not a fitted delivery model. The hidden scalar has no guaranteed human-readable interpretation. There are five scalar parameters, stored as four tensors in the notebook: w_hidden contains w1 and w2, b_hidden contains b_h, w_output contains v, and b_output contains b_o. This tiny one-hidden-unit network illustrates the same forward/backward machinery used in deeper networks."
+  },
+  {
+    "objectID": "slides/lec28_Deep_Learning.html#loss",
+    "href": "slides/lec28_Deep_Learning.html#loss",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Loss: Measure the Error",
+    "text": "Loss: Measure the Error\nA loss measures disagreement with the target. For N numeric examples, mean squared error (MSE) is\n\nL=\\frac{1}{N}\\sum_{i=1}^{N}(\\hat y_i-y_i)^2,\n\nwhere y_i is target i and \\hat y_i is its prediction.\nFor our one-example calculation:\n\nL=(\\hat y-y)^2=(2-4)^2=4.\n\n\nWe want to reduce this loss by changing the weights and biases, while keeping the input and target fixed.\n\n\nUse the same unweighted mean-squared-error convention in slides and code: no factor of one half. Some texts choose half the squared error, which rescales its derivatives; that is not the convention here. With one scalar output N=1. For a tensor with multiple examples/output entries, the notebook averages all prediction elements and divides its derivative by prediction.numel(). Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.MSELoss.html."
+  },
+  {
+    "objectID": "slides/lec28_Deep_Learning.html#output-gradients",
+    "href": "slides/lec28_Deep_Learning.html#output-gradients",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Chain Rule: The Output Layer",
+    "text": "Chain Rule: The Output Layer\nThe chain rule multiplies local derivatives along a computation path. Write g_{\\mathrm o} for the loss derivative with respect to the prediction.\n\n\ng_{\\mathrm o}=\\frac{\\partial L}{\\partial\\hat y}=2(\\hat y-y)=2(2-4)=-4.\n\n\n\\frac{\\partial L}{\\partial v}=g_{\\mathrm o}h=-4,\\qquad\n\\frac{\\partial L}{\\partial b_{\\mathrm o}}=g_{\\mathrm o}=-4.\n\n\nThe output equation is yhat=v*h+b_o, so its local derivatives are h with respect to v, 1 with respect to b_o, and v with respect to h. When a parameter affects a loss through multiple paths, sum the path contributions. The simple graph here has one relevant path per parameter. Source: https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html."
+  },
+  {
+    "objectID": "slides/lec28_Deep_Learning.html#hidden-gradients",
+    "href": "slides/lec28_Deep_Learning.html#hidden-gradients",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Chain Rule: The Hidden Layer",
+    "text": "Chain Rule: The Hidden Layer\nHere \\partial L/\\partial h=g_{\\mathrm o}v=-4\\cdot2=-8. Since z=1&gt;0, ReLU’s local derivative is 1.\n\nLet g_{\\mathrm h}=\\partial L/\\partial z=-8\\cdot1=-8.\n\n\n\nParameter\nChain-rule calculation\nGradient\n\n\n\n\nw_1\ng_{\\mathrm h}x_1=-8\\cdot1\n-8\n\n\nw_2\ng_{\\mathrm h}x_2=-8\\cdot2\n-16\n\n\nb_{\\mathrm h}\ng_{\\mathrm h}\\cdot1\n-8\n\n\n\n\nAll derivatives use the original parameter values, including v=2. Do not update v before calculating the hidden derivatives for this same loss. The symbols g_o and g_h are derivatives, not new trainable parameters. At z=0 ReLU has no unique mathematical derivative; PyTorch uses zero. We avoid that boundary in the main numeric walkthrough."
+  },
+  {
+    "objectID": "slides/lec28_Deep_Learning.html#parameter-update",
+    "href": "slides/lec28_Deep_Learning.html#parameter-update",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "One Gradient-Descent Update",
+    "text": "One Gradient-Descent Update\nGradient descent subtracts the gradient times a learning rate \\eta. For any one parameter \\theta, \\theta_{\\mathrm{new}}=\\theta-\\eta\\,\\partial L/\\partial\\theta.\nChoose \\eta=0.01 and update all parameters using the gradients just computed.\n\n\n\nParameter\nOld value\nGradient\nNew value\n\n\n\n\nw_1\n0.5\n-8\n0.58\n\n\nw_2\n0.25\n-16\n0.41\n\n\nb_{\\mathrm h}\n0\n-8\n0.08\n\n\nv\n2\n-4\n2.04\n\n\nb_{\\mathrm o}\n0\n-4\n0.04\n\n\n\n\nIn PyTorch, loss.backward() computes gradients. optimizer.step() applies the update.\n\n\nFor example w2_new=.25-.01*(-16)=.41. This matches stochastic gradient descent without momentum or weight decay. The parameter gradient is computed while holding the input and target fixed. The gradient points toward the locally steepest increase, so the update uses its negative direction. A finite step is not guaranteed to improve loss for every learning rate."
+  },
+  {
+    "objectID": "slides/lec28_Deep_Learning.html#after-update",
+    "href": "slides/lec28_Deep_Learning.html#after-update",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Recompute with the New Parameters",
+    "text": "Recompute with the New Parameters\nA new forward pass gives\n\nz=0.58\\cdot1+0.41\\cdot2+0.08=1.48,\n \n\\hat y=2.04\\cdot1.48+0.04=3.0592.\n\n\n\n\nQuantity\nBefore\nAfter this update\n\n\n\n\nHidden output h\n1\n1.48\n\n\nPrediction \\hat y\n2 minutes\n3.0592 minutes\n\n\nLoss L\n4\n(3.0592-4)^2\\approx0.8851\n\n\n\n\nThis step helped on this example. It does not establish accuracy on new deliveries, and a larger step can increase the loss.\n\n\nThe exact squared error after the selected update is .88510464. Recompute the hidden value as well as the output: every updated parameter can change the next prediction. These results are deterministic arithmetic for a constructed example, not an empirical evaluation of a delivery system. Validation and held-out testing remain necessary."
+  },
+  {
+    "objectID": "slides/lec28_Deep_Learning.html#inactive-relu",
+    "href": "slides/lec28_Deep_Learning.html#inactive-relu",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "When ReLU Blocks a Gradient",
+    "text": "When ReLU Blocks a Gradient\nReset the original parameters and change only b_{\\mathrm h} to -2. Then z=0.5\\cdot1+0.25\\cdot2-2=-1, so h=0 and \\hat y=0.\n\n\n\n\n\n\n\n\nParameter group\nGradient for this example\n\n\n\n\nInput weights w_1,w_2 and hidden bias b_{\\mathrm h}\n0, because ReLU’s derivative is 0 here\n\n\nOutput weight v\n0, because its input h is 0\n\n\nOutput bias b_{\\mathrm o}\n2(0-4)=-8: it can still learn\n\n\n\n\nThis is a separate fresh case, not a continuation from the updated parameters on the preceding slide. A zero gradient on this input does not mean the hidden unit is inactive on all possible inputs forever. At exactly z=0, PyTorch chooses derivative zero. The notebook executes this branch with an independently initialized parameter dictionary."
+  },
+  {
+    "objectID": "slides/lec28_Deep_Learning.html#quick-check",
+    "href": "slides/lec28_Deep_Learning.html#quick-check",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Quick Check",
+    "text": "Quick Check\n\nIn the original example, why is \\partial L/\\partial w_2 twice \\partial L/\\partial w_1?\nDoes computing gradients change the weights?\nDoes a lower loss on this one example prove that the model generalizes?\n\n\n1. The inputs differ. The shared hidden derivative is -8, multiplied by x_2=2 versus x_1=1.\n\n\n2. No. Backpropagation computes derivatives; the optimizer performs the update.\n\n\n3. No. Generalization means performing well on new examples. Check separate held-out data."
+  },
+  {
+    "objectID": "slides/lec28_Deep_Learning.html#takeaways",
+    "href": "slides/lec28_Deep_Learning.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nHidden layers learn intermediate representations of the inputs.\nA neuron combines weights, a bias, and an activation function.\nNonlinear activations let stacked layers represent more than an affine map.\nThe forward pass computes predictions and loss.\nBackpropagation applies the chain rule to compute parameter gradients.\nAn optimizer uses those gradients. Learning rate and held-out evaluation still matter.\n\n\nKeep the loss definition, its derivative, and the update rule consistent."
+  },
+  {
+    "objectID": "slides/lec28_Deep_Learning.html#notebook",
+    "href": "slides/lec28_Deep_Learning.html#notebook",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Notebook: Backpropagation by Hand",
+    "text": "Notebook: Backpropagation by Hand\nOpen the Backpropagation notebook\nThe notebook uses the same inputs, parameters, loss, and learning rate:\n\nCalculate the prediction and loss.\nCompare manual derivatives with PyTorch autograd, including tensor shapes.\nApply one update and recompute the result.\nTest an inactive ReLU and compare learning rates.\n\nThe tiny network has one hidden unit, not many hidden layers. Its arithmetic exposes the mechanism used inside larger models.\nOfficial PyTorch Autograd Tutorial\nAsset credits"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#inputs-and-target",
+    "href": "code_and_homework/backpropagation.html#inputs-and-target",
+    "title": "Backpropagation by Hand",
+    "section": "Inputs and Target",
+    "text": "Inputs and Target\nX has one row per example and one column per feature. Here its shape is (1, 2). The target y has shape (1, 1): one example, one numeric response. The learning rate is the update’s step size.\n\nimport torch\n\nDTYPE = torch.float64\nX = torch.tensor([[1.0, 2.0]], dtype=DTYPE)\ny = torch.tensor([[4.0]], dtype=DTYPE)\nlearning_rate = 0.01\nprint(\"PyTorch:\", torch.__version__)\nprint(\"Input:\", X.tolist(), \"shape:\", tuple(X.shape))\nprint(\"Target:\", y.tolist(), \"shape:\", tuple(y.shape))\n\nPyTorch: 2.11.0\nInput: [[1.0, 2.0]] shape: (1, 2)\nTarget: [[4.0]] shape: (1, 1)"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#initialize-parameters-you-can-check",
+    "href": "code_and_homework/backpropagation.html#initialize-parameters-you-can-check",
+    "title": "Backpropagation by Hand",
+    "section": "Initialize Parameters You Can Check",
+    "text": "Initialize Parameters You Can Check\nThe function creates fresh leaf tensors: tensors whose gradients PyTorch can store directly in .grad. requires_grad=True requests derivative tracking.\n\n\n\nTensor\nMeaning\nShape\nInitial values\n\n\n\n\nw_hidden\nInput weights w_1,w_2\n(2, 1)\n0.5, 0.25\n\n\nb_hidden\nHidden bias b_{\\mathrm h}\n(1,)\n0\n\n\nw_output\nOutput weight v\n(1, 1)\n2\n\n\nb_output\nOutput bias b_{\\mathrm o}\n(1,)\n0\n\n\n\nThese are four tensors containing five scalar parameters. The dictionary groups them by name. This explicit matrix implementation stores weights as (inputs, units) for X @ W; nn.Linear.weight uses the transposed (outputs, inputs) layout.\n\ndef make_parameters(hidden_bias=0.0):\n    return {\n        \"w_hidden\": torch.tensor(\n            [[0.5], [0.25]], dtype=DTYPE, requires_grad=True),\n        \"b_hidden\": torch.tensor(\n            [hidden_bias], dtype=DTYPE, requires_grad=True),\n        \"w_output\": torch.tensor(\n            [[2.0]], dtype=DTYPE, requires_grad=True),\n        \"b_output\": torch.tensor(\n            [0.0], dtype=DTYPE, requires_grad=True),\n    }\n\nparams = make_parameters()\nfor name, parameter in params.items():\n    print(name, tuple(parameter.shape), parameter.detach().tolist())\n\nw_hidden (2, 1) [[0.5], [0.25]]\nb_hidden (1,) [0.0]\nw_output (1, 1) [[2.0]]\nb_output (1,) [0.0]"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#define-the-forward-calculation",
+    "href": "code_and_homework/backpropagation.html#define-the-forward-calculation",
+    "title": "Backpropagation by Hand",
+    "section": "Define the Forward Calculation",
+    "text": "Define the Forward Calculation\nThe hidden unit computes z=x_1w_1+x_2w_2+b_{\\mathrm h} and h=\\operatorname{ReLU}(z). The rectified linear unit (ReLU) keeps positive values and replaces negative values with zero. The output is \\hat y=hv+b_{\\mathrm o}.\n@ is matrix multiplication. Adding a one-dimensional bias broadcasts it over examples. The function returns the preactivation (the weighted sum before ReLU), hidden value, and prediction so that we can inspect each stage.\n\ndef forward(inputs, parameters):\n    z_hidden = inputs @ parameters[\"w_hidden\"]\n    z_hidden = z_hidden + parameters[\"b_hidden\"]\n    hidden = torch.relu(z_hidden)\n    prediction = hidden @ parameters[\"w_output\"]\n    prediction = prediction + parameters[\"b_output\"]\n    return z_hidden, hidden, prediction\n\n\nInspect the Intermediate Values\nBefore any update, z=0.5\\cdot1+0.25\\cdot2=1, h=1, and \\hat y=2 minutes. The target remains 4 minutes. Computing this forward pass changes no parameter.\n\nz_hidden, hidden, prediction = forward(X, params)\nprint(\"Hidden weighted sum:\", z_hidden.item())\nprint(\"Hidden ReLU output:\", hidden.item())\nprint(\"Prediction before update:\", prediction.item())\n\nHidden weighted sum: 1.0\nHidden ReLU output: 1.0\nPrediction before update: 2.0"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#define-mean-squared-error",
+    "href": "code_and_homework/backpropagation.html#define-mean-squared-error",
+    "title": "Backpropagation by Hand",
+    "section": "Define Mean Squared Error",
+    "text": "Define Mean Squared Error\nMean squared error (MSE) averages squared prediction errors. We require matching prediction and target shapes to avoid accidental broadcasting. For this one-example, one-output case, L=(\\hat y-y)^2=(2-4)^2=4.\nThere is no factor of one half, matching the slides. For m averaged scalar output entries, \\partial L/\\partial\\hat y_i=2(\\hat y_i-y_i)/m. prediction.numel() counts those entries.\n\ndef mse_loss(prediction, target):\n    if prediction.shape != target.shape:\n        raise ValueError(\"Prediction and target shapes must match\")\n    return (prediction - target).square().mean()\n\nloss_before = mse_loss(prediction, y).item()\nprint(\"Loss before update:\", loss_before)\n\nLoss before update: 4.0"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#ask-autograd-for-derivatives",
+    "href": "code_and_homework/backpropagation.html#ask-autograd-for-derivatives",
+    "title": "Backpropagation by Hand",
+    "section": "Ask Autograd for Derivatives",
+    "text": "Ask Autograd for Derivatives\nAutograd differentiates the recorded operations. zero_grad(set_to_none=True) clears previous gradients; a fresh forward pass constructs a new graph; backward() computes derivatives. It does not update the parameters.\nStochastic gradient descent (SGD) is the optimizer used later for the update. We clone the automatic gradients so that clearing .grad later will not erase our comparison values. detach() removes gradient history; clone() makes an independent copy.\n\noptimizer = torch.optim.SGD(params.values(), lr=learning_rate)\noptimizer.zero_grad(set_to_none=True)\nbefore = {name: p.detach().clone() for name, p in params.items()}\n_, _, prediction = forward(X, params)\nloss = mse_loss(prediction, y)\nloss.backward()\nautomatic = {name: p.grad.detach().clone()\n             for name, p in params.items()}\nunchanged = all(torch.equal(before[name], p)\n                for name, p in params.items())\nassert unchanged\nprint(\"Parameters unchanged after backward:\", unchanged)\n\nParameters unchanged after backward: True"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#differentiate-the-same-operations-by-hand",
+    "href": "code_and_homework/backpropagation.html#differentiate-the-same-operations-by-hand",
+    "title": "Backpropagation by Hand",
+    "section": "Differentiate the Same Operations by Hand",
+    "text": "Differentiate the Same Operations by Hand\nThe chain rule multiplies derivatives along a path and adds contributions when paths merge. For this example, the output derivative is g_{\\mathrm o}=2(\\hat y-y)=-4. The output-weight derivative is hg_{\\mathrm o}=-4, and the output-bias derivative is g_{\\mathrm o}=-4.\nThe hidden preactivation derivative is g_{\\mathrm h}=g_{\\mathrm o}v\\,\\mathbb{1}[z&gt;0]=-8. Here \\mathbb{1}[z&gt;0] is 1 when the condition is true and 0 otherwise. Thus the two input-weight derivatives are -8 and -16, and the hidden-bias derivative is -8.\nThe function uses matrix products and sums over examples, rather than relying on scalar-only multiplication. Summing bias derivatives with sum(dim=0) gives the same shape as each bias parameter. At zero ReLU has no unique mathematical derivative; PyTorch uses zero. no_grad() prevents this manual check from building a second gradient graph.\n\ndef manual_gradients(inputs, target, parameters):\n    with torch.no_grad():\n        z, hidden, prediction = forward(inputs, parameters)\n        if prediction.shape != target.shape:\n            raise ValueError(\"Prediction and target shapes must match\")\n        d_prediction = 2 * (prediction - target)\n        d_prediction = d_prediction / prediction.numel()\n        d_hidden = d_prediction @ parameters[\"w_output\"].T\n        relu_slope = (z &gt; 0).to(d_hidden.dtype)\n        d_z = d_hidden * relu_slope\n        return {\n            \"w_hidden\": inputs.T @ d_z,\n            \"b_hidden\": d_z.sum(dim=0),\n            \"w_output\": hidden.T @ d_prediction,\n            \"b_output\": d_prediction.sum(dim=0),\n        }"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#compare-values-and-shapes",
+    "href": "code_and_homework/backpropagation.html#compare-values-and-shapes",
+    "title": "Backpropagation by Hand",
+    "section": "Compare Values and Shapes",
+    "text": "Compare Values and Shapes\nA shape mismatch must fail even if broadcasting could make two tensors look numerically close. First check exact shapes, then compare values within floating-point tolerances using torch.testing.assert_close. A failed assertion stops execution instead of silently accepting a wrong derivative.\nExpected gradients are w_hidden = [[-8], [-16]], b_hidden = [-8], w_output = [[-4]], and b_output = [-4].\n\nmanual = manual_gradients(X, y, params)\nfor name, parameter in params.items():\n    assert manual[name].shape == parameter.shape\n    assert automatic[name].shape == parameter.shape\n    torch.testing.assert_close(\n        manual[name], automatic[name], rtol=1e-9, atol=1e-10)\n    print(name, \"shape:\", tuple(parameter.shape))\n    print(\"  autograd:\", automatic[name].tolist())\n    print(\"  manual:  \", manual[name].tolist())\nprint(\"All gradient values and shapes match.\")\n\nw_hidden shape: (2, 1)\n  autograd: [[-8.0], [-16.0]]\n  manual:   [[-8.0], [-16.0]]\nb_hidden shape: (1,)\n  autograd: [-8.0]\n  manual:   [-8.0]\nw_output shape: (1, 1)\n  autograd: [[-4.0]]\n  manual:   [[-4.0]]\nb_output shape: (1,)\n  autograd: [-4.0]\n  manual:   [-4.0]\nAll gradient values and shapes match."
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#apply-one-update-then-recompute",
+    "href": "code_and_homework/backpropagation.html#apply-one-update-then-recompute",
+    "title": "Backpropagation by Hand",
+    "section": "Apply One Update, Then Recompute",
+    "text": "Apply One Update, Then Recompute\nFor each parameter \\theta, gradient descent uses \\theta_{\\mathrm{new}}=\\theta-\\eta\\,\\partial L/\\partial\\theta, where \\eta=0.01. All gradients above use the old parameter values. optimizer.step() applies those automatic gradients; the manual gradients are only a check, not a second update.\nThe new values are w_1=0.58, w_2=0.41, b_{\\mathrm h}=0.08, v=2.04, and b_{\\mathrm o}=0.04. A fresh forward pass gives z=h=1.48, \\hat y=3.0592 minutes, and loss 0.88510464. inference_mode() avoids recording derivatives during this measurement.\n\noptimizer.step()\noptimizer.zero_grad(set_to_none=True)\nfor name, parameter in params.items():\n    print(name, parameter.detach())\nwith torch.inference_mode():\n    new_z, new_hidden, new_prediction = forward(X, params)\n    loss_after = mse_loss(new_prediction, y).item()\nprint(f\"Hidden value after update: {new_hidden.item():.4f}\")\nprint(f\"Prediction after update: {new_prediction.item():.4f}\")\nprint(f\"Loss before: {loss_before:.8f}\")\nprint(f\"Loss after:  {loss_after:.8f}\")\nassert loss_after &lt; loss_before\n\nw_hidden tensor([[0.5800],\n        [0.4100]], dtype=torch.float64)\nb_hidden tensor([0.0800], dtype=torch.float64)\nw_output tensor([[2.0400]], dtype=torch.float64)\nb_output tensor([0.0400], dtype=torch.float64)\nHidden value after update: 1.4800\nPrediction after update: 3.0592\nLoss before: 4.00000000\nLoss after:  0.88510464"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#a-separate-case-an-inactive-relu",
+    "href": "code_and_homework/backpropagation.html#a-separate-case-an-inactive-relu",
+    "title": "Backpropagation by Hand",
+    "section": "A Separate Case: An Inactive ReLU",
+    "text": "A Separate Case: An Inactive ReLU\nStart from the original parameters, changing only the hidden bias to -2. Now z=-1, h=0, and \\hat y=0. The hidden unit passes no gradient on this input. Both input weights, the hidden bias, and the output weight have zero gradients; the output bias still has gradient 2(0-4)=-8.\nThis fresh parameter dictionary is independent of the one just updated. A unit inactive on one input is not necessarily inactive on all possible inputs.\n\ninactive = make_parameters(hidden_bias=-2.0)\ninactive_z, inactive_h, inactive_prediction = forward(X, inactive)\ninactive_loss = mse_loss(inactive_prediction, y)\ninactive_loss.backward()\nprint(\"Preactivation:\", inactive_z.item())\nprint(\"Hidden output:\", inactive_h.item())\nprint(\"Prediction:\", inactive_prediction.item())\nfor name, parameter in inactive.items():\n    print(name, \"gradient:\", parameter.grad.tolist())\n\nPreactivation: -1.0\nHidden output: 0.0\nPrediction: 0.0\nw_hidden gradient: [[0.0], [0.0]]\nb_hidden gradient: [0.0]\nw_output gradient: [[0.0]]\nb_output gradient: [-8.0]"
+  },
+  {
+    "objectID": "code_and_homework/backpropagation.html#further-experiment-learning-rate",
+    "href": "code_and_homework/backpropagation.html#further-experiment-learning-rate",
+    "title": "Backpropagation by Hand",
+    "section": "Further Experiment: Learning Rate",
+    "text": "Further Experiment: Learning Rate\nA correct gradient does not guarantee that an arbitrarily large step will reduce the loss. This helper starts from the same original parameters for every rate, performs one update, and returns the loss before and after. It does not continue training from a previous rate’s result.\n\ndef one_step(rate):\n    local_params = make_parameters()\n    local_optimizer = torch.optim.SGD(local_params.values(), lr=rate)\n    local_optimizer.zero_grad(set_to_none=True)\n    _, _, local_prediction = forward(X, local_params)\n    local_loss = mse_loss(local_prediction, y)\n    initial_loss = local_loss.item()\n    local_loss.backward()\n    local_optimizer.step()\n    with torch.inference_mode():\n        _, _, updated_prediction = forward(X, local_params)\n        updated_loss = mse_loss(updated_prediction, y).item()\n    return initial_loss, updated_loss\n\n\nCompare the Rates\nAll rows start at loss 4. The rate 0.01 helps here, while 0.1 overshoots and increases loss. These results describe one constructed update, not a generally optimal learning rate.\n\nfor rate in (0.001, 0.01, 0.1):\n    initial, updated = one_step(rate)\n    print(f\"lr={rate:g}: {initial:.6f} -&gt; {updated:.6f}\")\n\nlr=0.001: 4.000000 -&gt; 3.594088\nlr=0.01: 4.000000 -&gt; 0.885105\nlr=0.1: 4.000000 -&gt; 106.502400"
   }
 ]

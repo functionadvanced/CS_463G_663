@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec28_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,218 +164,490 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="deep-learning" class="slide level2 section-slide">
-<h2>Deep Learning</h2>
-<p>Deep learning uses neural networks with many layers to learn hierarchical representations from data.</p>
-</section>
-<section id="why-deep-learning" class="slide level2">
-<h2>Why Deep Learning?</h2>
-<p>Deep learning matters because it:</p>
+<section id="learned-features" class="slide level2 deep28-slide">
+<h2>From Inputs to Learned Features</h2>
+<p><strong>Deep learning</strong> trains neural networks with multiple layers of transformations. A <strong>representation</strong> is an intermediate description of the input.</p>
+<div class="deep28-context">
+<div>
+<p>Return to delivery-time prediction:</p>
 <ul>
-<li>Learns features from raw data.</li>
-<li>Scales with large datasets and compute.</li>
-<li>Works especially well on images, text, audio, and other unstructured data.</li>
-<li>Powers systems in vision, speech, language, medical diagnosis, autonomous driving, and generative AI.</li>
+<li>Input <span class="math inline">x_1</span>: distance, in kilometers.</li>
+<li>Input <span class="math inline">x_2</span>: number of stops.</li>
+<li>Target <span class="math inline">y</span>: observed delivery time, in minutes.</li>
+</ul>
+<p>A neural network can learn useful combinations of these inputs rather than requiring us to specify every combination in advance.</p>
+</div>
+<p><img data-src="imgs/lec25/delivery-campus-cartoon.png" class="deep28-cartoon" alt="Cartoon of a courier carrying a parcel between campus buildings."></p>
+</div>
+<div class="takeaway">
+<p>We still choose the data and inputs. Learned representations do not remove the need for good data or evaluation.</p>
+</div>
+<aside class="notes">
+<p>The delivery example continues Lecture 25’s motivation, but all numbers used here are newly constructed teaching values, not measured campus data. A network can learn representations from already selected features as well as from raw inputs. Avoid a blanket claim that other machine-learning methods always require manual features or cannot scale. The courier cartoon is reused unchanged from Lecture 25. Conceptual source: AIMA, U.S. fourth edition Section 21.1 / Global fourth edition Section 22.1, and the supplied Spring 2025 Deep Learning lecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="network-layers" class="slide level2 deep28-slide">
+<h2>Inputs, Hidden Layers, and Outputs</h2>
+<p>A <strong>feedforward network</strong> sends information from inputs to outputs, without a feedback loop.</p>
+<p><img data-src="imgs/drawio/lec28/network-layers.png" class="deep28-layers" alt="Inputs pass through two hidden layers before an output layer predicts a value. Weights in the layer transformations are learned from data."></p>
+<ul>
+<li>The <strong>input layer</strong> receives the measured features.</li>
+<li><strong>Hidden layers</strong> compute intermediate values, rather than the final answer.</li>
+<li>The <strong>output layer</strong> produces the prediction, written <span class="math inline">\hat y</span>.</li>
 </ul>
 <div class="takeaway">
-<p>The central promise: replace hand-designed features with learned representations.</p>
+<p>Multiple hidden layers make a network deep. Our later one-hidden-unit example is deliberately tiny so we can calculate its gradients.</p>
 </div>
+<aside class="notes">
+<p>The diagram shows a generic deep feedforward architecture, not a claim that our numerical notebook has two hidden layers. Hidden does not mean secret: these values are simply not the target labels. The final layer’s form depends on the prediction task. Here we use a numeric regression output, not a classification probability. Source: the supplied Spring 2025 Beamer main.tex and DNN_fig.tex, revised manually.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="traditional-ml-vs.-deep-learning" class="slide level2">
-<h2>Traditional ML vs.&nbsp;Deep Learning</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Traditional ML</th>
-<th>Deep learning</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Often needs feature engineering</td>
-<td>Learns features automatically</td>
-</tr>
-<tr class="even">
-<td>Works well with structured tables</td>
-<td>Excels on images, text, audio</td>
-</tr>
-<tr class="odd">
-<td>Decision trees, SVMs, regression</td>
-<td>Deep neural networks</td>
-</tr>
-<tr class="even">
-<td>Less data and compute hungry</td>
-<td>Often improves with scale</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="deep-neural-networks" class="slide level2">
-<h2>Deep Neural Networks</h2>
-<p>A deep neural network has multiple hidden layers.</p>
-<svg viewbox="0 0 760 350" role="img" aria-label="Feedforward neural network with input, hidden, and output layers">
-<g fill="none" stroke="#d8e3e7" stroke-width="1.4"> <line x1="125" y1="95" x2="305" y2="70"></line><line x1="125" y1="95" x2="305" y2="120"></line><line x1="125" y1="95" x2="305" y2="170"></line><line x1="125" y1="95" x2="305" y2="220"></line><line x1="125" y1="95" x2="305" y2="270"></line> <line x1="125" y1="150" x2="305" y2="70"></line><line x1="125" y1="150" x2="305" y2="120"></line><line x1="125" y1="150" x2="305" y2="170"></line><line x1="125" y1="150" x2="305" y2="220"></line><line x1="125" y1="150" x2="305" y2="270"></line> <line x1="125" y1="205" x2="305" y2="70"></line><line x1="125" y1="205" x2="305" y2="120"></line><line x1="125" y1="205" x2="305" y2="170"></line><line x1="125" y1="205" x2="305" y2="220"></line><line x1="125" y1="205" x2="305" y2="270"></line> <line x1="125" y1="260" x2="305" y2="70"></line><line x1="125" y1="260" x2="305" y2="120"></line><line x1="125" y1="260" x2="305" y2="170"></line><line x1="125" y1="260" x2="305" y2="220"></line><line x1="125" y1="260" x2="305" y2="270"></line> <line x1="305" y1="70" x2="485" y2="70"></line><line x1="305" y1="70" x2="485" y2="120"></line><line x1="305" y1="70" x2="485" y2="170"></line><line x1="305" y1="70" x2="485" y2="220"></line><line x1="305" y1="70" x2="485" y2="270"></line> <line x1="305" y1="120" x2="485" y2="70"></line><line x1="305" y1="120" x2="485" y2="120"></line><line x1="305" y1="120" x2="485" y2="170"></line><line x1="305" y1="120" x2="485" y2="220"></line><line x1="305" y1="120" x2="485" y2="270"></line> <line x1="305" y1="170" x2="485" y2="70"></line><line x1="305" y1="170" x2="485" y2="120"></line><line x1="305" y1="170" x2="485" y2="170"></line><line x1="305" y1="170" x2="485" y2="220"></line><line x1="305" y1="170" x2="485" y2="270"></line> <line x1="305" y1="220" x2="485" y2="70"></line><line x1="305" y1="220" x2="485" y2="120"></line><line x1="305" y1="220" x2="485" y2="170"></line><line x1="305" y1="220" x2="485" y2="220"></line><line x1="305" y1="220" x2="485" y2="270"></line> <line x1="305" y1="270" x2="485" y2="70"></line><line x1="305" y1="270" x2="485" y2="120"></line><line x1="305" y1="270" x2="485" y2="170"></line><line x1="305" y1="270" x2="485" y2="220"></line><line x1="305" y1="270" x2="485" y2="270"></line> <line x1="485" y1="70" x2="650" y2="120"></line><line x1="485" y1="70" x2="650" y2="175"></line><line x1="485" y1="70" x2="650" y2="230"></line> <line x1="485" y1="120" x2="650" y2="120"></line><line x1="485" y1="120" x2="650" y2="175"></line><line x1="485" y1="120" x2="650" y2="230"></line> <line x1="485" y1="170" x2="650" y2="120"></line><line x1="485" y1="170" x2="650" y2="175"></line><line x1="485" y1="170" x2="650" y2="230"></line> <line x1="485" y1="220" x2="650" y2="120"></line><line x1="485" y1="220" x2="650" y2="175"></line><line x1="485" y1="220" x2="650" y2="230"></line> <line x1="485" y1="270" x2="650" y2="120"></line><line x1="485" y1="270" x2="650" y2="175"></line><line x1="485" y1="270" x2="650" y2="230"></line> </g> <g fill="#e8f6f5" stroke="#007c89" stroke-width="3"><circle cx="125" cy="95" r="16"></circle><circle cx="125" cy="150" r="16"></circle><circle cx="125" cy="205" r="16"></circle><circle cx="125" cy="260" r="16"></circle></g> <g fill="#fff4db" stroke="#b7791f" stroke-width="3"><circle cx="305" cy="70" r="16"></circle><circle cx="305" cy="120" r="16"></circle><circle cx="305" cy="170" r="16"></circle><circle cx="305" cy="220" r="16"></circle><circle cx="305" cy="270" r="16"></circle><circle cx="485" cy="70" r="16"></circle><circle cx="485" cy="120" r="16"></circle><circle cx="485" cy="170" r="16"></circle><circle cx="485" cy="220" r="16"></circle><circle cx="485" cy="270" r="16"></circle></g> <g fill="#fdecef" stroke="#b8325f" stroke-width="3"><circle cx="650" cy="120" r="16"></circle><circle cx="650" cy="175" r="16"></circle><circle cx="650" cy="230" r="16"></circle></g> <text x="85" y="42" font-size="22" fill="#202124">Input</text> <text x="250" y="42" font-size="22" fill="#202124">Hidden 1</text> <text x="430" y="42" font-size="22" fill="#202124">Hidden 2</text> <text x="610" y="42" font-size="22" fill="#202124">Output</text>
-</svg>
-</section>
-<section id="a-single-neuron" class="slide level2">
-<h2>A Single Neuron</h2>
-<svg viewbox="0 0 760 280" role="img" aria-label="Single neuron with weighted inputs, bias, sum, ReLU, and output">
-<defs> <marker id="arrow26" markerwidth="10" markerheight="10" refx="8" refy="3" orient="auto" markerunits="userSpaceOnUse"> <path d="M0,0 L0,6 L9,3 z" fill="#202124"></path> </marker> </defs> <rect x="260" y="45" width="260" height="185" fill="none" stroke="#b7791f" stroke-width="3" stroke-dasharray="8 8" rx="7"></rect> <text x="100" y="95" font-size="28" fill="#202124">I1</text> <text x="100" y="195" font-size="28" fill="#202124">I2</text> <text x="390" y="230" font-size="28" fill="#202124">b</text> <circle cx="335" cy="140" r="38" fill="#e8f6f5" stroke="#007c89" stroke-width="4"></circle> <text x="318" y="150" font-size="34" fill="#007c89">Σ</text> <rect x="430" y="108" width="82" height="64" fill="#fff4db" stroke="#b7791f" stroke-width="4" rx="7"></rect> <text x="444" y="148" font-size="24" fill="#202124">ReLU</text> <text x="625" y="150" font-size="28" fill="#202124">O1</text> <line x1="135" y1="90" x2="295" y2="125" stroke="#202124" stroke-width="3" marker-end="url(#arrow26)"></line> <line x1="135" y1="190" x2="295" y2="155" stroke="#202124" stroke-width="3" marker-end="url(#arrow26)"></line> <line x1="405" y1="215" x2="365" y2="172" stroke="#202124" stroke-width="3" marker-end="url(#arrow26)"></line> <line x1="373" y1="140" x2="430" y2="140" stroke="#202124" stroke-width="3" marker-end="url(#arrow26)"></line> <line x1="512" y1="140" x2="610" y2="140" stroke="#202124" stroke-width="3" marker-end="url(#arrow26)"></line> <text x="190" y="92" font-size="21" fill="#5d6470">w1</text> <text x="190" y="204" font-size="21" fill="#5d6470">w2</text>
-</svg>
+<section id="neuron" class="slide level2 deep28-slide">
+<h2>A Neuron and Its Activation</h2>
+<p>A <strong>neuron</strong> computes a weighted sum and then an <strong>activation function</strong>, which transforms that sum. A <strong>bias</strong> is a learned added constant.</p>
 <p><span class="math display">
-O_1=ReLU(w_1I_1+w_2I_2+b), \qquad ReLU(z)=\max(0,z)
+z=w_1x_1+w_2x_2+b_{\mathrm h},\qquad h=\operatorname{ReLU}(z).
 </span></p>
-</section>
-<section id="types-of-neural-networks" class="slide level2">
-<h2>Types of Neural Networks</h2>
+<p>Here <span class="math inline">w_1,w_2</span> are weights, <span class="math inline">b_{\mathrm h}</span> is the hidden bias, <span class="math inline">z</span> is the <strong>preactivation</strong> (weighted sum), and <span class="math inline">h</span> is the hidden output.</p>
+<p><strong>ReLU</strong> means <strong>rectified linear unit</strong>: <span class="math inline">\operatorname{ReLU}(z)=\max(0,z)</span>.</p>
 <table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Architecture</th>
-<th>Best suited for</th>
-<th>Key idea</th>
+<th>Sum <span class="math inline">z</span></th>
+<th><span class="math inline">-2</span></th>
+<th><span class="math inline">0</span></th>
+<th><span class="math inline">3</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Feedforward neural network</td>
-<td>Classification/regression</td>
-<td>Information flows input to output</td>
-</tr>
-<tr class="even">
-<td>Convolutional neural network</td>
-<td>Images/spatial data</td>
-<td>Local filters detect patterns</td>
-</tr>
-<tr class="odd">
-<td>Recurrent neural network</td>
-<td>Sequences</td>
-<td>State carries temporal memory</td>
-</tr>
-<tr class="even">
-<td>Transformer</td>
-<td>Sequences and multimodal data</td>
-<td>Self-attention connects tokens</td>
+<td>ReLU output</td>
+<td><span class="math inline">0</span></td>
+<td><span class="math inline">0</span></td>
+<td><span class="math inline">3</span></td>
 </tr>
 </tbody>
 </table>
+<div class="takeaway">
+<p>Nonlinear activations matter: stacking only weighted sums and biases still gives a single affine map, a weighted sum plus a constant.</p>
+</div>
+<aside class="notes">
+<p>An artificial neuron is a mathematical operation, not a detailed biological-neuron model. The subscript h labels the hidden layer. ReLU is nonlinear because its slope changes at zero. A composition of affine maps is affine, so depth without nonlinearities does not create a richer family of input/output maps. At zero ReLU has no unique derivative; PyTorch chooses zero for backpropagation. Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.ReLU.html and the supplied single_neuron.tex.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="training-loop" class="slide level2">
-<h2>Training Loop</h2>
+<section id="tiny-network" class="slide level2 deep28-slide">
+<h2>Our Tiny Network</h2>
+<p>Constructed example: <span class="math inline">x_1=1</span> km, <span class="math inline">x_2=2</span> stops, target <span class="math inline">y=4</span> minutes. The output has weight <span class="math inline">v</span> and bias <span class="math inline">b_{\mathrm o}</span>: <span class="math inline">\hat y=vh+b_{\mathrm o}</span>.</p>
+<p><img data-src="imgs/drawio/lec28/tiny-network.png" class="deep28-network" alt="Two inputs feed a ReLU hidden unit, then a linear output. Initial input weights are 0.5 and 0.25, hidden bias zero, output weight 2, and output bias zero."></p>
+<p>Initial parameters: <span class="math inline">w_1=0.5</span>, <span class="math inline">w_2=0.25</span>, <span class="math inline">b_{\mathrm h}=0</span>, <span class="math inline">v=2</span>, <span class="math inline">b_{\mathrm o}=0</span>.</p>
+<aside class="notes">
+<p>These chosen parameters make the arithmetic transparent; they are not a fitted delivery model. The hidden scalar has no guaranteed human-readable interpretation. There are five scalar parameters, stored as four tensors in the notebook: w_hidden contains w1 and w2, b_hidden contains b_h, w_output contains v, and b_output contains b_o. This tiny one-hidden-unit network illustrates the same forward/backward machinery used in deeper networks.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="forward-pass" class="slide level2 deep28-slide">
+<h2>Forward Pass: Compute the Prediction</h2>
+<p>The <strong>forward pass</strong> evaluates the network with its current parameters.</p>
+<p><img data-src="imgs/drawio/lec28/forward-values.png" class="deep28-network" alt="With inputs 1 and 2, the hidden weighted sum is 1, its ReLU output is 1, and the final prediction is 2 minutes."></p>
+<div class="fragment">
+<p><span class="math inline">z=0.5\cdot1+0.25\cdot2+0=1</span>, so <span class="math inline">h=\max(0,1)=1</span>.</p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\hat y=2\cdot1+0=2</span> minutes. The target is <span class="math inline">4</span> minutes.</p>
+</div>
+<aside class="notes">
+<p>No parameter changes during the forward pass. The input weights, output weight, and both biases are the initial values from the preceding slide. The numerical diagram also supplies a visual reference during the later derivative calculations.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="loss" class="slide level2 deep28-slide">
+<h2>Loss: Measure the Error</h2>
+<p>A <strong>loss</strong> measures disagreement with the target. For <span class="math inline">N</span> numeric examples, <strong>mean squared error (MSE)</strong> is</p>
+<p><span class="math display">
+L=\frac{1}{N}\sum_{i=1}^{N}(\hat y_i-y_i)^2,
+</span></p>
+<p>where <span class="math inline">y_i</span> is target <span class="math inline">i</span> and <span class="math inline">\hat y_i</span> is its prediction.</p>
+<p>For our one-example calculation:</p>
+<p><span class="math display">
+L=(\hat y-y)^2=(2-4)^2=4.
+</span></p>
+<div class="question">
+<p>We want to reduce this loss by changing the weights and biases, while keeping the input and target fixed.</p>
+</div>
+<aside class="notes">
+<p>Use the same unweighted mean-squared-error convention in slides and code: no factor of one half. Some texts choose half the squared error, which rescales its derivatives; that is not the convention here. With one scalar output N=1. For a tensor with multiple examples/output entries, the notebook averages all prediction elements and divides its derivative by prediction.numel(). Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.MSELoss.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="training-loop" class="slide level2 deep28-slide">
+<h2>Training: Differentiate, Then Update</h2>
+<p>A <strong>gradient</strong> measures how loss changes with a parameter. <strong>Backpropagation</strong> computes these derivatives backward through the network.</p>
 <div class="pseudo-code">
 <div class="pseudo-line">
-<span class="pseudo-kw">for</span> <span class="pseudo-var">epoch</span> <span class="pseudo-op">in</span> <span class="pseudo-num">1</span>..<span class="pseudo-var">E</span>
+<span class="pseudo-kw">for each</span> <span class="pseudo-var">batch</span> <span class="pseudo-kw">in</span> <span class="pseudo-var">trainingData</span>
 </div>
 <div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">predictions</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">forward</span>(<span class="pseudo-var">network</span>, <span class="pseudo-var">inputs</span>)
+<span class="pseudo-fn">clearGradients</span>(<span class="pseudo-var">parameters</span>)
 </div>
 <div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">loss</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">Loss</span>(<span class="pseudo-var">predictions</span>, <span class="pseudo-var">targets</span>)
+<span class="pseudo-var">prediction</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">forward</span>(<span class="pseudo-var">inputs</span>, <span class="pseudo-var">parameters</span>)
+</div>
+<div class="pseudo-line fragment indent-1">
+<span class="pseudo-var">loss</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">MSE</span>(<span class="pseudo-var">prediction</span>, <span class="pseudo-var">targets</span>)
 </div>
 <div class="pseudo-line fragment indent-1">
 <span class="pseudo-var">gradients</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">backpropagate</span>(<span class="pseudo-var">loss</span>)
 </div>
 <div class="pseudo-line fragment indent-1">
-<span class="pseudo-fn">update</span>(<span class="pseudo-var">weights</span>, <span class="pseudo-var">gradients</span>, <span class="pseudo-var">learningRate</span>)
+<span class="pseudo-fn">update</span>(<span class="pseudo-var">parameters</span>, <span class="pseudo-var">gradients</span>, <span class="pseudo-var">learningRate</span>)
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">if</span> <span class="pseudo-fn">stoppingCriterion</span>() <span class="pseudo-kw">break</span>
 </div>
+<p>A <strong>batch</strong> groups examples; an <strong>epoch</strong> is one pass through the training dataset. Repeat passes as needed.</p>
+<div class="takeaway">
+<p>Backpropagation computes gradients. The optimizer uses them to change parameters. These are separate operations.</p>
+</div>
+<aside class="notes">
+<p>For the numerical walkthrough the batch contains one example. The pseudocode intentionally separates clearing stored gradients, evaluating the current computation, differentiating, and updating. A model can have correctly computed gradients and still make a poor optimization step if the learning rate is too large. Source: https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="output-gradients" class="slide level2 deep28-slide">
+<h2>Chain Rule: The Output Layer</h2>
+<p>The <strong>chain rule</strong> multiplies local derivatives along a computation path. Write <span class="math inline">g_{\mathrm o}</span> for the loss derivative with respect to the prediction.</p>
+<p><img data-src="imgs/drawio/lec28/output-gradients.png" class="deep28-gradient" alt="The output part of the tiny network is highlighted. Hidden value h is 1, prediction is 2, target is 4, and the output loss derivative is minus 4."></p>
+<div class="fragment">
+<p><span class="math display">g_{\mathrm o}=\frac{\partial L}{\partial\hat y}=2(\hat y-y)=2(2-4)=-4.</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">\frac{\partial L}{\partial v}=g_{\mathrm o}h=-4,\qquad
+\frac{\partial L}{\partial b_{\mathrm o}}=g_{\mathrm o}=-4.</span></p>
+</div>
+<aside class="notes">
+<p>The output equation is yhat=v*h+b_o, so its local derivatives are h with respect to v, 1 with respect to b_o, and v with respect to h. When a parameter affects a loss through multiple paths, sum the path contributions. The simple graph here has one relevant path per parameter. Source: https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="hidden-gradients" class="slide level2 deep28-slide">
+<h2>Chain Rule: The Hidden Layer</h2>
+<p>Here <span class="math inline">\partial L/\partial h=g_{\mathrm o}v=-4\cdot2=-8</span>. Since <span class="math inline">z=1&gt;0</span>, ReLU’s local derivative is <span class="math inline">1</span>.</p>
+<p><img data-src="imgs/drawio/lec28/hidden-gradients.png" class="deep28-gradient" alt="The input-to-hidden part is highlighted. The gradient of loss with respect to hidden preactivation is minus 8, and the two inputs are 1 and 2."></p>
+<p>Let <span class="math inline">g_{\mathrm h}=\partial L/\partial z=-8\cdot1=-8</span>.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Chain-rule calculation</th>
+<th>Gradient</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">w_1</span></td>
+<td><span class="math inline">g_{\mathrm h}x_1=-8\cdot1</span></td>
+<td><span class="math inline">-8</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">w_2</span></td>
+<td><span class="math inline">g_{\mathrm h}x_2=-8\cdot2</span></td>
+<td><span class="math inline">-16</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">b_{\mathrm h}</span></td>
+<td><span class="math inline">g_{\mathrm h}\cdot1</span></td>
+<td><span class="math inline">-8</span></td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>All derivatives use the original parameter values, including v=2. Do not update v before calculating the hidden derivatives for this same loss. The symbols g_o and g_h are derivatives, not new trainable parameters. At z=0 ReLU has no unique mathematical derivative; PyTorch uses zero. We avoid that boundary in the main numeric walkthrough.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="parameter-update" class="slide level2 deep28-slide">
+<h2>One Gradient-Descent Update</h2>
+<p><strong>Gradient descent</strong> subtracts the gradient times a <strong>learning rate</strong> <span class="math inline">\eta</span>. For any one parameter <span class="math inline">\theta</span>, <span class="math inline">\theta_{\mathrm{new}}=\theta-\eta\,\partial L/\partial\theta</span>.</p>
+<p>Choose <span class="math inline">\eta=0.01</span> and update all parameters using the gradients just computed.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Old value</th>
+<th>Gradient</th>
+<th>New value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">w_1</span></td>
+<td><span class="math inline">0.5</span></td>
+<td><span class="math inline">-8</span></td>
+<td><span class="math inline">0.58</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">w_2</span></td>
+<td><span class="math inline">0.25</span></td>
+<td><span class="math inline">-16</span></td>
+<td><span class="math inline">0.41</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">b_{\mathrm h}</span></td>
+<td><span class="math inline">0</span></td>
+<td><span class="math inline">-8</span></td>
+<td><span class="math inline">0.08</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">v</span></td>
+<td><span class="math inline">2</span></td>
+<td><span class="math inline">-4</span></td>
+<td><span class="math inline">2.04</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">b_{\mathrm o}</span></td>
+<td><span class="math inline">0</span></td>
+<td><span class="math inline">-4</span></td>
+<td><span class="math inline">0.04</span></td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>In PyTorch, <code>loss.backward()</code> computes gradients. <code>optimizer.step()</code> applies the update.</p>
+</div>
+<aside class="notes">
+<p>For example w2_new=.25-.01*(-16)=.41. This matches stochastic gradient descent without momentum or weight decay. The parameter gradient is computed while holding the input and target fixed. The gradient points toward the locally steepest increase, so the update uses its negative direction. A finite step is not guaranteed to improve loss for every learning rate.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="after-update" class="slide level2 deep28-slide">
+<h2>Recompute with the New Parameters</h2>
+<p>A new forward pass gives</p>
+<p><span class="math display">
+z=0.58\cdot1+0.41\cdot2+0.08=1.48,
+</span> <span class="math display">
+\hat y=2.04\cdot1.48+0.04=3.0592.
+</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Quantity</th>
+<th>Before</th>
+<th>After this update</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Hidden output <span class="math inline">h</span></td>
+<td><span class="math inline">1</span></td>
+<td><span class="math inline">1.48</span></td>
+</tr>
+<tr class="even">
+<td>Prediction <span class="math inline">\hat y</span></td>
+<td><span class="math inline">2</span> minutes</td>
+<td><span class="math inline">3.0592</span> minutes</td>
+</tr>
+<tr class="odd">
+<td>Loss <span class="math inline">L</span></td>
+<td><span class="math inline">4</span></td>
+<td><span class="math inline">(3.0592-4)^2\approx0.8851</span></td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>This step helped on this example. It does not establish accuracy on new deliveries, and a larger step can increase the loss.</p>
+</div>
+<aside class="notes">
+<p>The exact squared error after the selected update is .88510464. Recompute the hidden value as well as the output: every updated parameter can change the next prediction. These results are deterministic arithmetic for a constructed example, not an empirical evaluation of a delivery system. Validation and held-out testing remain necessary.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="inactive-relu" class="slide level2 deep28-slide">
+<h2>When ReLU Blocks a Gradient</h2>
+<p>Reset the original parameters and change only <span class="math inline">b_{\mathrm h}</span> to <span class="math inline">-2</span>. Then <span class="math inline">z=0.5\cdot1+0.25\cdot2-2=-1</span>, so <span class="math inline">h=0</span> and <span class="math inline">\hat y=0</span>.</p>
+<p><img data-src="imgs/drawio/lec28/inactive-relu.png" class="deep28-gradient" alt="The hidden unit has preactivation minus 1 and ReLU output zero. Its input gradients are blocked; the output bias can still receive a nonzero gradient."></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter group</th>
+<th>Gradient for this example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Input weights <span class="math inline">w_1,w_2</span> and hidden bias <span class="math inline">b_{\mathrm h}</span></td>
+<td><span class="math inline">0</span>, because ReLU’s derivative is <span class="math inline">0</span> here</td>
+</tr>
+<tr class="even">
+<td>Output weight <span class="math inline">v</span></td>
+<td><span class="math inline">0</span>, because its input <span class="math inline">h</span> is <span class="math inline">0</span></td>
+</tr>
+<tr class="odd">
+<td>Output bias <span class="math inline">b_{\mathrm o}</span></td>
+<td><span class="math inline">2(0-4)=-8</span>: it can still learn</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>This is a separate fresh case, not a continuation from the updated parameters on the preceding slide. A zero gradient on this input does not mean the hidden unit is inactive on all possible inputs forever. At exactly z=0, PyTorch chooses derivative zero. The notebook executes this branch with an independently initialized parameter dictionary.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="quick-check" class="slide level2 deep28-slide scrollable">
+<h2>Quick Check</h2>
+<ol type="1">
+<li>In the original example, why is <span class="math inline">\partial L/\partial w_2</span> twice <span class="math inline">\partial L/\partial w_1</span>?</li>
+<li>Does computing gradients change the weights?</li>
+<li>Does a lower loss on this one example prove that the model generalizes?</li>
+</ol>
+<div class="fragment" data-fragment-index="0">
+<p><strong>1. The inputs differ.</strong> The shared hidden derivative is <span class="math inline">-8</span>, multiplied by <span class="math inline">x_2=2</span> versus <span class="math inline">x_1=1</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>2. No.</strong> Backpropagation computes derivatives; the optimizer performs the update.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p><strong>3. No.</strong> Generalization means performing well on new examples. Check separate held-out data.</p>
 </div>
 </section>
-<section id="forward-pass" class="slide level2">
-<h2>Forward Pass</h2>
-<p>The forward pass computes predictions.</p>
-<p>For a single neuron:</p>
-<p><span class="math display">
-z=w_1I_1+w_2I_2+b
-</span></p>
-<p><span class="math display">
-O=\text{ReLU}(z)=\max(0,z)
-</span></p>
-<p>For a layered network:</p>
+<section id="takeaways" class="slide level2 deep28-slide">
+<h2>Takeaways</h2>
 <ul>
-<li>Each layer computes weighted sums.</li>
-<li>Each hidden layer applies nonlinear activations.</li>
-<li>The final layer produces the prediction.</li>
+<li>Hidden layers learn intermediate representations of the inputs.</li>
+<li>A neuron combines weights, a bias, and an activation function.</li>
+<li>Nonlinear activations let stacked layers represent more than an affine map.</li>
+<li>The forward pass computes predictions and loss.</li>
+<li>Backpropagation applies the chain rule to compute parameter gradients.</li>
+<li>An optimizer uses those gradients. Learning rate and held-out evaluation still matter.</li>
 </ul>
-</section>
-<section id="loss-calculation" class="slide level2">
-<h2>Loss Calculation</h2>
-<p>Loss measures prediction error.</p>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="regression">Regression</h3>
-<p><span class="math display">
-L=\frac{1}{N}\sum_{i=1}^{N}(y_i-\hat{y}_i)^2
-</span></p>
-</div><div class="column" style="width:48%;">
-<h3 id="classification">Classification</h3>
-<p><span class="math display">
-L=-\sum_{i=1}^{N} y_i\log(\hat{y}_i)
-</span></p>
-</div></div>
-<div class="example-box">
-<p>If <span class="math inline">\hat{y}=0.8</span> and <span class="math inline">y=1</span>, cross-entropy is <span class="math inline">-\log(0.8)\approx 0.22</span>.</p>
+<div class="takeaway">
+<p>Keep the loss definition, its derivative, and the update rule consistent.</p>
 </div>
 </section>
-<section id="gradients-for-one-neuron" class="slide level2">
-<h2>Gradients for One Neuron</h2>
-<p>Let:</p>
-<p><span class="math display">
-z=w_1I_1+w_2I_2+b,\quad O=\text{ReLU}(z),\quad L=\frac{1}{2}(O-y)^2
-</span></p>
-<div class="fragment">
-<p><span class="math display">
-\frac{\partial L}{\partial O}=O-y
-</span></p>
-</div>
-<div class="fragment">
-<p><span class="math display">
-\frac{\partial O}{\partial z}=\text{ReLU}'(z)=
-\begin{cases}
-1, &amp; z&gt;0\\
-0, &amp; z\leq 0
-\end{cases}
-</span></p>
-</div>
-<div class="fragment">
-<p><span class="math display">
-\frac{\partial L}{\partial w_1}=(O-y)\text{ReLU}'(z)I_1
-</span></p>
-</div>
-</section>
-<section id="weight-update" class="slide level2">
-<h2>Weight Update</h2>
-<p>Gradient descent updates each parameter in the direction that reduces loss:</p>
-<p><span class="math display">
-w_i := w_i-\eta\frac{\partial L}{\partial w_i}
-</span></p>
-<p>For the single neuron:</p>
-<p><span class="math display">
-w_1 := w_1-\eta(O-y)\text{ReLU}'(z)I_1
-</span></p>
-<p><span class="math display">
-b := b-\eta(O-y)\text{ReLU}'(z)
-</span></p>
-<div class="question">
-<p>If <span class="math inline">\eta</span> is too large, training can diverge. If it is too small, training is slow.</p>
-</div>
-</section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
-<ul>
-<li>Deep networks learn layered representations.</li>
-<li>A neuron computes a weighted sum, bias, and nonlinear activation.</li>
-<li>Training alternates forward pass, loss, backpropagation, and optimization.</li>
-<li>Backpropagation uses the chain rule to compute gradients.</li>
-<li>Learning rate controls update size.</li>
-</ul>
+<section id="notebook" class="slide level2 deep28-slide scrollable">
+<h2>Notebook: Backpropagation by Hand</h2>
+<p><a href="../code_and_homework/backpropagation.html" target="_blank" rel="noopener">Open the Backpropagation notebook</a></p>
+<p>The notebook uses <strong>the same inputs, parameters, loss, and learning rate</strong>:</p>
+<ol type="1">
+<li>Calculate the prediction and loss.</li>
+<li>Compare manual derivatives with PyTorch autograd, including tensor shapes.</li>
+<li>Apply one update and recompute the result.</li>
+<li>Test an inactive ReLU and compare learning rates.</li>
+</ol>
+<p>The tiny network has <strong>one hidden unit</strong>, not many hidden layers. Its arithmetic exposes the mechanism used inside larger models.</p>
+<p><a href="https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html" target="_blank" rel="noopener">Official PyTorch Autograd Tutorial</a></p>
 <p><a href="../asset_credits.html#lec28" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
 
 
@@ -555,6 +828,13 @@ b := b-\eta(O-y)\text{ReLU}'(z)
         // devices. It is advisable to set this to a lower number than
         // viewDistance in order to save resources.
         mobileViewDistance: 2,
+
+        // Enable scroll view
+        view: 'slide',
+        scrollProgress: true,
+        scrollActivationWidth: 0,
+        scrollSnap: 'mandatory',
+        scrollLayout: 'full',
 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be

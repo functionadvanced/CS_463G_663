@@ -1,0 +1,45 @@
+.reveal section.torch27-slide { font-size: 0.9em; }
+.reveal section.torch27-slide h2 { margin-top: 0; }
+.reveal section.torch27-slide p { margin: 0.35em 0; }
+.reveal section.torch27-slide .math.inline { white-space: nowrap; }
+.reveal section.torch27-slide .katex-display { margin: 0.4em 0; }
+.reveal section.torch27-slide table { font-size: 0.82em; line-height: 1.25; }
+.reveal section.torch27-slide th,
+.reveal section.torch27-slide td { padding: 0.4em 0.5em; }
+.reveal section.torch27-slide .question,
+.reveal section.torch27-slide .takeaway { margin: 0.4em 0; padding: 0.4em 0.6em; }
+.reveal section.torch27-slide .question p,
+.reveal section.torch27-slide .takeaway p { margin: 0; }
+.reveal section.torch27-slide pre.sourceCode { font-size: 0.7em; line-height: 1.3; padding-top: 0.65em; padding-bottom: 0.65em; }
+.reveal section.torch27-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin: 0.2em auto;
+  border: 0;
+  box-shadow: none;
+}
+.reveal section.torch27-slide .torch27-context {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 24px;
+  align-items: center;
+}
+.reveal section.torch27-slide .torch27-context > p { margin: 0; }
+.reveal section.torch27-slide .torch27-cartoon { max-height: 235px; }
+.reveal section.torch27-slide .torch27-shape { max-height: 165px; }
+.reveal section.torch27-slide .torch27-model { max-height: 155px; }
+.reveal section.torch27-slide .torch27-gradient { max-height: 175px; }
+.reveal #components table,
+.reveal #tensor-creation table,
+.reveal #tensor-reshaping table,
+.reveal #custom-module table,
+.reveal #classification-loss table,
+.reveal #current-practices table { table-layout: fixed; }
+.reveal #components col:first-child { width: 41% !important; }
+.reveal #tensor-creation col:first-child { width: 40% !important; }
+.reveal #tensor-reshaping col:first-child { width: 49% !important; }
+.reveal #custom-module col:first-child { width: 31% !important; }
+.reveal #classification-loss col:first-child { width: 37% !important; }
+.reveal #current-practices col:first-child { width: 32% !important; }

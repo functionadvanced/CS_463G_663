@@ -1,0 +1,41 @@
+.reveal section.deep28-slide { font-size: 0.9em; }
+.reveal section.deep28-slide h2 { margin-top: 0; }
+.reveal section.deep28-slide p { margin: 0.35em 0; }
+.reveal section.deep28-slide .math.inline { white-space: nowrap; }
+.reveal section.deep28-slide .katex-display { margin: 0.45em 0; }
+.reveal section.deep28-slide table { font-size: 0.85em; line-height: 1.25; }
+.reveal section.deep28-slide th,
+.reveal section.deep28-slide td { padding: 0.4em 0.5em; }
+.reveal section.deep28-slide .question,
+.reveal section.deep28-slide .takeaway { margin: 0.45em 0; padding: 0.45em 0.65em; }
+.reveal section.deep28-slide .question p,
+.reveal section.deep28-slide .takeaway p { margin: 0; }
+.reveal section.deep28-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin: 0.2em auto;
+  border: 0;
+  box-shadow: none;
+}
+.reveal section.deep28-slide .deep28-context {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 24px;
+  align-items: center;
+}
+.reveal section.deep28-slide .deep28-context > p { margin: 0; }
+.reveal section.deep28-slide .deep28-cartoon { max-height: 245px; }
+.reveal section.deep28-slide .deep28-layers { max-height: 225px; }
+.reveal section.deep28-slide .deep28-network { max-height: 280px; }
+.reveal section.deep28-slide .deep28-gradient { max-height: 245px; }
+.reveal #output-gradients .deep28-gradient { max-height: 275px; }
+.reveal section.deep28-slide .pseudo-code { font-size: 0.7em; line-height: 1.4; }
+.reveal section.deep28-slide .pseudo-line { min-height: 1.4em; white-space: nowrap; }
+.reveal #hidden-gradients table,
+.reveal #parameter-update table,
+.reveal #after-update table,
+.reveal #inactive-relu table { table-layout: fixed; }
+.reveal #inactive-relu col:first-child { width: 48% !important; }
+.reveal #inactive-relu col:last-child { width: 52% !important; }
