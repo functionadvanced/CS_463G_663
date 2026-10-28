@@ -1145,14 +1145,14 @@
     "href": "asset_credits.html#lec29",
     "title": "Visual Asset Credits",
     "section": "Lecture 29: Convolutional Neural Networks",
-    "text": "Lecture 29: Convolutional Neural Networks\nNo external visual assets. Diagrams are drawn directly in the Quarto source."
+    "text": "Lecture 29: Convolutional Neural Networks\nThe MNIST digit pixels reuse the unchanged saved notebook figure from Lecture 24. The slide layout shows only the digit strip, omitting its previous KNN prediction headings. These examples illustrate the input data, not new CNN predictions. See Lecture 24 for the original notebook and dataset source.\nThe numerical convolution setup, three animation frames, stride/padding illustration, channel diagram, ReLU map, max-pooling example, classifier head, and notebook architecture are original editable Draw.io diagrams. Their source is convolution.drawio; the slides use PNG exports. The convolution and pooling grids retain the constructed examples from the supplied Spring 2025 CNN Beamer source. They are teaching calculations, not learned filters or experimental model outputs.\nThe toy robot is unchanged public-domain OpenClipart artwork, reused from Lecture 1.\nThe shape walkthrough follows the existing single-digit CNN notebook. Technical references are PyTorch’s Conv2d, MaxPool2d, ReLU, Dropout, and CrossEntropyLoss, plus the official image-classifier tutorial."
   },
   {
     "objectID": "asset_credits.html#lec30",
     "href": "asset_credits.html#lec30",
     "title": "Visual Asset Credits",
     "section": "Lecture 30: Reinforcement Learning",
-    "text": "Lecture 30: Reinforcement Learning\nNo external visual assets. Diagrams are drawn directly in the Quarto source."
+    "text": "Lecture 30: Reinforcement Learning\nThe agent/environment loop, delivery MDP, policy highlights, reward timing, model-based/model-free comparison, value-iteration frames, uncertain-move example, and policy-iteration figures are original editable Draw.io diagrams. Their source is mdp-planning.drawio; the slides use PNG exports. The delivery jobs, rewards, transition probabilities, and values are constructed teaching examples, not measurements or experimental results.\nThe toy robot is unchanged public-domain OpenClipart artwork, reused from Lecture 1.\nThe lecture manually revises the supplied Spring 2025 RL Beamer material, using a new numerical example consistently throughout. Background references are Artificial Intelligence: A Modern Approach, fourth edition, Sections 16.1-16.3 and 16.5, and the UC Berkeley CS 188 notes on Markov decision processes, value iteration, policy iteration, and reinforcement learning. Known-model planning and learning from experience are distinguished explicitly."
   },
   {
     "objectID": "asset_credits.html#lec31",
@@ -2863,144 +2863,25 @@
     "text": "What to Remember\n\nMonte Carlo learns from full episode returns.\nTD learns online by bootstrapping.\nSARSA is on-policy.\nQ-learning is off-policy.\nTD(n) and TD(\\lambda) trade bias and variance through multi-step returns.\nEligibility traces assign credit to recently visited states.\n\nAsset credits"
   },
   {
-    "objectID": "slides/lec30_RL.html#reinforcement-learning",
-    "href": "slides/lec30_RL.html#reinforcement-learning",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Reinforcement Learning",
-    "text": "Reinforcement Learning\nReinforcement learning studies agents that learn to act through interaction and reward."
-  },
-  {
-    "objectID": "slides/lec30_RL.html#what-is-rl",
-    "href": "slides/lec30_RL.html#what-is-rl",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What Is RL?",
-    "text": "What Is RL?\n\n\n\n\nThe agent chooses actions.\nThe environment responds with new states and rewards.\nThe goal is to learn a policy that maximizes long-term reward."
-  },
-  {
-    "objectID": "slides/lec30_RL.html#real-world-examples",
-    "href": "slides/lec30_RL.html#real-world-examples",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Real-World Examples",
-    "text": "Real-World Examples\n\n\n\nDomain\nRL role\n\n\n\n\nGames\nLearn strong play from simulated experience\n\n\nRobotics\nLearn locomotion or manipulation\n\n\nRecommendation\nAdapt choices to user feedback\n\n\nFinance\nSequential decision-making under uncertainty\n\n\nTraffic control\nOptimize signals over time"
-  },
-  {
-    "objectID": "slides/lec30_RL.html#model-based-vs.-model-free",
-    "href": "slides/lec30_RL.html#model-based-vs.-model-free",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Model-Based vs. Model-Free",
-    "text": "Model-Based vs. Model-Free\n\n\nModel-based RL\nUses:\n\nP(s' \\mid s,a), \\qquad R(s,a)\n\nCan plan with the model.\n\nModel-free RL\nLearns directly from interaction.\nExamples: Q-learning, SARSA, policy gradients."
-  },
-  {
-    "objectID": "slides/lec30_RL.html#markov-decision-processes",
-    "href": "slides/lec30_RL.html#markov-decision-processes",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Markov Decision Processes",
-    "text": "Markov Decision Processes\nAn MDP is a 5-tuple:\n\n(\\mathcal{S},\\mathcal{A},\\mathcal{P},\\mathcal{R},\\gamma)\n\n\n\n\nPart\nMeaning\n\n\n\n\n\\mathcal{S}\nStates\n\n\n\\mathcal{A}\nActions\n\n\n\\mathcal{P}(s'\\mid s,a)\nTransition probabilities\n\n\n\\mathcal{R}(s,a)\nReward function\n\n\n\\gamma\nDiscount factor\n\n\n\n\nMarkov property: the next state depends on the current state and action, not the full past."
-  },
-  {
-    "objectID": "slides/lec30_RL.html#mdp-as-a-gridworld",
-    "href": "slides/lec30_RL.html#mdp-as-a-gridworld",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "MDP as a Gridworld",
-    "text": "MDP as a Gridworld"
-  },
-  {
-    "objectID": "slides/lec30_RL.html#policies-and-values",
-    "href": "slides/lec30_RL.html#policies-and-values",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Policies and Values",
-    "text": "Policies and Values\nPolicy:\n\n\\pi(a \\mid s)=P(A_t=a \\mid S_t=s)\n\nState value:\n\nV^\\pi(s)=\n\\mathbb{E}_\\pi\\left[\\sum_{t=0}^{\\infty}\\gamma^tR_{t+1}\\mid S_0=s\\right]\n\nAction value:\n\nQ^\\pi(s,a)=\n\\mathbb{E}_\\pi\\left[\\sum_{t=0}^{\\infty}\\gamma^tR_{t+1}\\mid S_0=s,A_0=a\\right]"
-  },
-  {
-    "objectID": "slides/lec30_RL.html#finding-an-optimal-policy",
-    "href": "slides/lec30_RL.html#finding-an-optimal-policy",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Finding an Optimal Policy",
-    "text": "Finding an Optimal Policy\nGoal:\n\n\\pi^*=\\arg\\max_\\pi V^\\pi(s)\n\nClassical model-based algorithms:\n\nValue iteration.\nPolicy iteration.\n\n\nBoth rely on Bellman equations: value today equals immediate reward plus discounted future value."
-  },
-  {
-    "objectID": "slides/lec30_RL.html#bellman-equation",
-    "href": "slides/lec30_RL.html#bellman-equation",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Bellman Equation",
-    "text": "Bellman Equation\nFor a fixed policy:\n\nV^\\pi(s)=\n\\sum_a \\pi(a \\mid s)\n\\sum_{s'}P(s'\\mid s,a)\n\\left[R(s,a)+\\gamma V^\\pi(s')\\right]\n\nFor action values:\n\nQ^\\pi(s,a)=\n\\sum_{s'}P(s'\\mid s,a)\n\\left[R(s,a)+\\gamma\\sum_{a'}\\pi(a'\\mid s')Q^\\pi(s',a')\\right]"
-  },
-  {
-    "objectID": "slides/lec30_RL.html#deterministic-optimal-policies",
-    "href": "slides/lec30_RL.html#deterministic-optimal-policies",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Deterministic Optimal Policies",
-    "text": "Deterministic Optimal Policies\nIn finite MDPs, if an optimal policy exists, there exists a deterministic optimal policy.\nImplications:\n\nWe can search over policies that choose one action per state.\nRandomization is not required to achieve optimal value.\nThis simplifies value and policy iteration."
-  },
-  {
     "objectID": "slides/lec30_RL.html#value-iteration",
     "href": "slides/lec30_RL.html#value-iteration",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Value Iteration",
-    "text": "Value Iteration\n\n\nfunction ValueIteration(MDP, gamma)\n\n\nV(s) = 0 for all states\n\n\nrepeat until V converges\n\n\nfor each state s\n\n\nV(s) = maxa Σs’ P(s’|s,a)[R(s,a) + gammaV(s’)]\n\n\nreturn greedy policy from V"
+    "text": "Value Iteration\nValue iteration repeatedly replaces each value by its best lookahead score. A sweep updates every nonterminal state once.\n\n\nV = 0 for all states, including terminal F\n\n\nrepeat\n\n\nold = copy(V)\n\n\nfor each nonterminal state s\n\n\nV(s) = maxa LookAhead(s, a, old)\n\n\nuntil largestChange(V, old) &lt; threshold\n\n\nreturn GreedyPolicy(V)\n\n\nlargestChange is the largest absolute value change across states. threshold is a chosen small positive stopping tolerance.\n\nEvery update in this sweep reads old. The terminal value stays zero. We call the estimates after k sweeps V_k.\n\n\nThis is synchronous value iteration, matching the numerical walkthrough. An in-place implementation is another valid variant but yields different intermediate sweeps. max ranges over actions available at s. With zero initial values, V_k can also be interpreted as an optimal k-step truncated-horizon value. A positive stopping threshold gives approximate values in general; it is not proof of exact convergence or a universal policy-error bound. Our small example happens to reach an exact fixed point after two sweeps. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/mdp/value-iteration.html."
   },
   {
     "objectID": "slides/lec30_RL.html#policy-iteration",
     "href": "slides/lec30_RL.html#policy-iteration",
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Policy Iteration",
-    "text": "Policy Iteration\n\n\nfunction PolicyIteration(MDP, gamma)\n\n\npi = arbitrary policy\n\n\nrepeat\n\n\nVπ = PolicyEvaluation(pi)\n\n\npiNew(s) = argmaxa Σs’ P(s’|s,a)[R(s,a) + gammaVπ(s’)]\n\n\nif piNew == pi return pi\n\n\npi = piNew"
-  },
-  {
-    "objectID": "slides/lec30_RL.html#value-vs.-policy-iteration",
-    "href": "slides/lec30_RL.html#value-vs.-policy-iteration",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Value vs. Policy Iteration",
-    "text": "Value vs. Policy Iteration\n\n\n\n\n\n\n\n\nMethod\nMain update\nTradeoff\n\n\n\n\nValue iteration\nRepeated Bellman optimality backups\nCheap iterations, many iterations\n\n\nPolicy iteration\nEvaluate policy, then improve policy\nFewer iterations, costlier iterations\n\n\n\nBoth converge to an optimal policy in finite discounted MDPs."
-  },
-  {
-    "objectID": "slides/lec30_RL.html#example-mdp",
-    "href": "slides/lec30_RL.html#example-mdp",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Example MDP",
-    "text": "Example MDP\n\n\n\nDiscount factor: \\gamma=0.9."
-  },
-  {
-    "objectID": "slides/lec30_RL.html#value-iteration-iteration-1",
-    "href": "slides/lec30_RL.html#value-iteration-iteration-1",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Value Iteration: Iteration 1",
-    "text": "Value Iteration: Iteration 1\nInitialize:\n\nV_0(s_1)=V_0(s_2)=V_0(s_3)=0\n\n\n\nV_1(s_1)=\\max\\{5+0,\\;10+0\\}=10\n\n\n\n\nV_1(s_2)=\\max\\{-1+0,\\;2+0\\}=2\n\n\n\nV_1(s_3)=0"
-  },
-  {
-    "objectID": "slides/lec30_RL.html#value-iteration-iteration-2",
-    "href": "slides/lec30_RL.html#value-iteration-iteration-2",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Value Iteration: Iteration 2",
-    "text": "Value Iteration: Iteration 2\nUsing V_1(s_1)=10, V_1(s_2)=2, V_1(s_3)=0:\n\n\nV_2(s_1)=\\max\\{5+0.9(2),\\;10+0.9(0)\\}=10\n\n\n\n\nV_2(s_2)=\\max\\{-1+0.9(10),\\;2+0.9(0)\\}=8\n\n\n\nV_2(s_3)=0"
-  },
-  {
-    "objectID": "slides/lec30_RL.html#value-iteration-iteration-3",
-    "href": "slides/lec30_RL.html#value-iteration-iteration-3",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Value Iteration: Iteration 3",
-    "text": "Value Iteration: Iteration 3\nUsing V_2(s_1)=10, V_2(s_2)=8, V_2(s_3)=0:\n\nV_3(s_1)=\\max\\{5+0.9(8),\\;10+0.9(0)\\}=12.2\n\n\nV_3(s_2)=\\max\\{-1+0.9(10),\\;2+0.9(0)\\}=8\n\n\nV_3(s_3)=0\n\n\nRepeat until the values stabilize."
-  },
-  {
-    "objectID": "slides/lec30_RL.html#policy-iteration-example",
-    "href": "slides/lec30_RL.html#policy-iteration-example",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Policy Iteration Example",
-    "text": "Policy Iteration Example\nInitial policy:\n\n\\pi(s_1)=a_1,\\qquad \\pi(s_2)=a_2,\\qquad \\pi(s_3)=a_1\n\nPolicy evaluation:\n\nV^\\pi(s_1)=5+0.9V^\\pi(s_2)\n\n\nV^\\pi(s_2)=2+0.9V^\\pi(s_3),\\qquad V^\\pi(s_3)=0\n\nSo:\n\nV^\\pi(s_1)=6.8,\\qquad V^\\pi(s_2)=2,\\qquad V^\\pi(s_3)=0"
+    "text": "Policy Iteration\nPolicy iteration alternates evaluation, computing the current policy’s values, with improvement, choosing better actions using those values.\n\n\npi = any deterministic policy\n\n\nrepeat\n\n\nV = EvaluatePolicy(pi)\n\n\nnewPi = GreedyPolicy(V, keepTies=pi)\n\n\nif newPi == pi: return pi\n\n\npi = newPi\n\n\nEvaluatePolicy solves the fixed-policy Bellman equations. When several actions tie for the largest score, GreedyPolicy keeps the current action.\n\nEvaluation predicts the current policy’s long-term outcome. Improvement compares all available first actions while using those evaluated future values.\n\n\nExact evaluation can solve a linear system or iterate the fixed-policy Bellman expectation updates to convergence. It is more than one value-iteration-style sweep. Stable tie handling avoids cycling among policies with equal value. There is no decision to evaluate or improve at F. Model-free algorithms later learn from sampled experience rather than requiring an exact model-based EvaluatePolicy call. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/mdp/policies-iteration.html."
   },
   {
     "objectID": "slides/lec30_RL.html#policy-improvement",
     "href": "slides/lec30_RL.html#policy-improvement",
     "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Policy Improvement",
-    "text": "Policy Improvement\nUse the evaluated values:\n\n\\pi_{new}(s_1)=\\arg\\max\\{5+0.9(2),\\;10+0.9(0)\\}=a_2\n\n\n\\pi_{new}(s_2)=\\arg\\max\\{-1+0.9(6.8),\\;2+0.9(0)\\}=a_1\n\n\nAfter evaluation, improvement makes the policy greedy with respect to the current value function."
-  },
-  {
-    "objectID": "slides/lec30_RL.html#what-to-remember",
-    "href": "slides/lec30_RL.html#what-to-remember",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What to Remember",
-    "text": "What to Remember\n\nRL learns policies from interaction and reward.\nMDPs formalize states, actions, transitions, rewards, and discounting.\nBellman equations express values recursively.\nValue iteration updates values directly.\nPolicy iteration alternates evaluation and improvement.\n\nAsset credits"
+    "section": "Improving the Policy",
+    "text": "Improving the Policy\nUse the evaluated values V^{\\pi_0}(D)=4, V^{\\pi_0}(J)=2.6, and V^{\\pi_0}(F)=0.\n\n\n\n\nState\nCurrent action’s score\nAlternative score\nNew action\n\n\n\n\nD\nsmall: 4\npickup: -1+0.9\\cdot2.6=1.34\nsmall\n\n\nJ\nreturn: -1+0.9\\cdot4=2.6\ndeliver: 8\ndeliver\n\n\n\nOnly J changes at first. Reevaluate this new policy: its values are V(D)=4 and V(J)=8.\nThe next improvement changes D to pickup, since -1+0.9\\cdot8=6.2&gt;4.\n\nAll action scores in the table use the previous fixed policy’s values, not a partially improved successor policy. Call the first improved policy pi1: small at D and deliver at J. Evaluating pi1 gives (4,8,0). Improving again gives pi2: pickup at D and deliver at J. Evaluating pi2 gives (6.2,8,0). The following slide checks stability under this final evaluation. This explains why a policy-improvement round can change actions in stages."
   },
   {
     "objectID": "slides/lec28_Deep_Learning.html#training-loop",
@@ -3162,104 +3043,6 @@
     "title": "CS 463G & CS 663\n(Intro to) AI",
     "section": "Double Descent",
     "text": "Double Descent\nDouble descent: unseen error can fall, rise near interpolation, then fall again for larger models.\n\nNear p=n, small changes in noisy training outputs can cause large coefficient changes and unstable new predictions.\nBenign overfitting describes settings where fitting even the training noise still permits accurate prediction on new data.\n\np&gt;n alone guarantees neither double descent nor benign overfitting.\n\n\nThe figure is deliberately schematic. Belkin, Hsu, Ma, and Mandal, Reconciling modern machine learning practice and the bias-variance trade-off: https://arxiv.org/abs/1812.11118. Bartlett, Long, Lugosi, and Tsigler, Benign Overfitting in Linear Regression: https://arxiv.org/abs/1906.11300. Benign overfitting can yield near-optimal prediction under particular distributional conditions; exact training fit alone is insufficient evidence. The phenomenon occurs in some linear models as well as more complex learners.\nThe notebook’s isotropic Gaussian, fixed-signal experiment need not improve indefinitely after interpolation. Its overparameterized expected-error formula has a growing signal-bias contribution and a decreasing noise-amplification contribution. Consequently the large-p branch can turn upward again. The schematic is not a promise that arbitrary further enlargement improves that experiment."
-  },
-  {
-    "objectID": "slides/lec29_CNN.html#convolutional-neural-networks",
-    "href": "slides/lec29_CNN.html#convolutional-neural-networks",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Convolutional Neural Networks",
-    "text": "Convolutional Neural Networks\nCNNs are neural networks designed for grid-like data such as images."
-  },
-  {
-    "objectID": "slides/lec29_CNN.html#why-not-fully-connected-for-images",
-    "href": "slides/lec29_CNN.html#why-not-fully-connected-for-images",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Why Not Fully Connected for Images?",
-    "text": "Why Not Fully Connected for Images?\nFully connected networks flatten images.\n\n\n\n\n\n\n\nProblem\nConsequence\n\n\n\n\nSpatial structure is lost\nNearby pixels are no longer treated as nearby\n\n\nToo many parameters\nLarge images become expensive\n\n\nNo locality bias\nThe model must relearn local patterns everywhere\n\n\n\n\nCNNs keep the spatial structure and reuse small filters across the image."
-  },
-  {
-    "objectID": "slides/lec29_CNN.html#typical-cnn-pipeline",
-    "href": "slides/lec29_CNN.html#typical-cnn-pipeline",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Typical CNN Pipeline",
-    "text": "Typical CNN Pipeline"
-  },
-  {
-    "objectID": "slides/lec29_CNN.html#what-is-a-convolution",
-    "href": "slides/lec29_CNN.html#what-is-a-convolution",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What Is a Convolution?",
-    "text": "What Is a Convolution?\nA convolution slides a small filter across an image."
-  },
-  {
-    "objectID": "slides/lec29_CNN.html#convolution-formula",
-    "href": "slides/lec29_CNN.html#convolution-formula",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Convolution Formula",
-    "text": "Convolution Formula\nAt each position, it computes a dot product:\n\n(I*K)(i,j)=\\sum_m\\sum_n I(i+m,j+n)K(m,n)\n\nExample edge detector:\n\nK=\n\\begin{bmatrix}\n-1 & -1 & -1\\\\\n0 & 0 & 0\\\\\n1 & 1 & 1\n\\end{bmatrix}"
-  },
-  {
-    "objectID": "slides/lec29_CNN.html#convolution-algorithm",
-    "href": "slides/lec29_CNN.html#convolution-algorithm",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Convolution Algorithm",
-    "text": "Convolution Algorithm\n\n\nfunction Convolve(image, kernel)\n\n\nfeatureMap = empty grid\n\n\nfor each valid position (i, j)\n\n\npatch = window(image, i, j)\n\n\nfeatureMap[i, j] = dot(patch, kernel)\n\n\nreturn featureMap"
-  },
-  {
-    "objectID": "slides/lec29_CNN.html#convolution-example",
-    "href": "slides/lec29_CNN.html#convolution-example",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Convolution Example",
-    "text": "Convolution Example\n\n\nInput I\n\n\\begin{bmatrix}\n1&2&0&2&1\\\\\n0&1&3&1&2\\\\\n1&2&1&0&0\\\\\n2&1&2&1&3\\\\\n0&1&2&2&1\n\\end{bmatrix}\n\n\nKernel K\n\n\\begin{bmatrix}\n0&1&0\\\\\n1&-4&1\\\\\n0&1&0\n\\end{bmatrix}"
-  },
-  {
-    "objectID": "slides/lec29_CNN.html#compute-one-output",
-    "href": "slides/lec29_CNN.html#compute-one-output",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Compute One Output",
-    "text": "Compute One Output\nTop-left patch:\n\n\\begin{bmatrix}\n1&2&0\\\\\n0&1&3\\\\\n1&2&1\n\\end{bmatrix}\n\n\n\nO(1,1)=\n1(0)+2(1)+0(0)+0(1)+1(-4)+3(1)+1(0)+2(1)+1(0)\n\n\n\n\nO(1,1)=3"
-  },
-  {
-    "objectID": "slides/lec29_CNN.html#stride-and-padding",
-    "href": "slides/lec29_CNN.html#stride-and-padding",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Stride and Padding",
-    "text": "Stride and Padding\n\n\nStride\nHow many pixels the filter moves at each step.\nLarger stride means smaller output.\n\nPadding\nExtra pixels, often zeros, around the image boundary.\nPadding controls edge behavior and output size."
-  },
-  {
-    "objectID": "slides/lec29_CNN.html#output-feature-map-size",
-    "href": "slides/lec29_CNN.html#output-feature-map-size",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Output Feature Map Size",
-    "text": "Output Feature Map Size\nFor input size n \\times n, filter size f \\times f, stride s, padding p:\n\n\\left\\lfloor \\frac{n-f+2p}{s}\\right\\rfloor + 1\n\nExample:\n\nn=5,\\quad f=3,\\quad p=0,\\quad s=1\n\n\n\\left\\lfloor \\frac{5-3+0}{1}\\right\\rfloor + 1=3\n\nSo the output is 3 \\times 3."
-  },
-  {
-    "objectID": "slides/lec29_CNN.html#pooling-layers",
-    "href": "slides/lec29_CNN.html#pooling-layers",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Pooling Layers",
-    "text": "Pooling Layers\nPooling downsamples feature maps.\n\n\n\nPooling type\nOperation\n\n\n\n\nMax pooling\nKeep the maximum value in each window\n\n\nAverage pooling\nKeep the average value in each window\n\n\n\nWhy pool?\n\nReduce computation.\nReduce spatial dimensions.\nAdd some robustness to small translations."
-  },
-  {
-    "objectID": "slides/lec29_CNN.html#max-pooling-example",
-    "href": "slides/lec29_CNN.html#max-pooling-example",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Max Pooling Example",
-    "text": "Max Pooling Example\nInput:\n\n\\begin{bmatrix}\n1&3&2&4\\\\\n6&2&9&5\\\\\n7&4&8&3\\\\\n2&6&1&5\n\\end{bmatrix}\n\n2 by 2 max pooling with stride 2:\n\n\n\\begin{bmatrix}\n\\max(1,3,6,2)&\\max(2,4,9,5)\\\\\n\\max(7,4,2,6)&\\max(8,3,1,5)\n\\end{bmatrix}\n=\n\\begin{bmatrix}\n6&9\\\\\n7&8\n\\end{bmatrix}"
-  },
-  {
-    "objectID": "slides/lec29_CNN.html#fully-connected-layers",
-    "href": "slides/lec29_CNN.html#fully-connected-layers",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "Fully Connected Layers",
-    "text": "Fully Connected Layers\nAfter convolution and pooling, CNNs often flatten feature maps and use dense layers.\n\n\n\n\nConvolution extracts local features; fully connected layers combine them for the final decision."
-  },
-  {
-    "objectID": "slides/lec29_CNN.html#what-to-remember",
-    "href": "slides/lec29_CNN.html#what-to-remember",
-    "title": "CS 463G & CS 663\n(Intro to) AI",
-    "section": "What to Remember",
-    "text": "What to Remember\n\nCNNs exploit local spatial structure.\nConvolution applies shared filters across an image.\nStride and padding control the output size.\nPooling downsamples feature maps.\nCNN classifiers typically end with flattening and fully connected layers.\n\nAsset credits"
   },
   {
     "objectID": "slides/lec31_MAB.html#multi-armed-bandits",
@@ -8097,5 +7880,222 @@
     "title": "Backpropagation by Hand",
     "section": "Further Experiment: Learning Rate",
     "text": "Further Experiment: Learning Rate\nA correct gradient does not guarantee that an arbitrarily large step will reduce the loss. This helper starts from the same original parameters for every rate, performs one update, and returns the loss before and after. It does not continue training from a previous rate’s result.\n\ndef one_step(rate):\n    local_params = make_parameters()\n    local_optimizer = torch.optim.SGD(local_params.values(), lr=rate)\n    local_optimizer.zero_grad(set_to_none=True)\n    _, _, local_prediction = forward(X, local_params)\n    local_loss = mse_loss(local_prediction, y)\n    initial_loss = local_loss.item()\n    local_loss.backward()\n    local_optimizer.step()\n    with torch.inference_mode():\n        _, _, updated_prediction = forward(X, local_params)\n        updated_loss = mse_loss(updated_prediction, y).item()\n    return initial_loss, updated_loss\n\n\nCompare the Rates\nAll rows start at loss 4. The rate 0.01 helps here, while 0.1 overshoots and increases loss. These results describe one constructed update, not a generally optimal learning rate.\n\nfor rate in (0.001, 0.01, 0.1):\n    initial, updated = one_step(rate)\n    print(f\"lr={rate:g}: {initial:.6f} -&gt; {updated:.6f}\")\n\nlr=0.001: 4.000000 -&gt; 3.594088\nlr=0.01: 4.000000 -&gt; 0.885105\nlr=0.1: 4.000000 -&gt; 106.502400"
+  },
+  {
+    "objectID": "slides/lec29_CNN.html#image-input",
+    "href": "slides/lec29_CNN.html#image-input",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Images as Inputs",
+    "text": "Images as Inputs\nA convolutional neural network (CNN) learns local patterns in grid-like data, including images.\n\n\n\nThe MNIST dataset, short for Modified National Institute of Standards and Technology, contains handwritten digits.\n\nEach grayscale image has 28\\times28 pixels, or brightness values.\nThe target is one digit label from 0 to 9.\nOur notebook predicts one digit per image using ten output scores.\n\n\nThe digit pixels are reused unchanged from the saved KNN notebook figure in Lecture 24. The layout crops its old prediction headings, so they cannot be mistaken for CNN results. The MNIST expansion is the customary short name of the dataset; its creators modified the original NIST data. Source: https://docs.pytorch.org/vision/stable/generated/torchvision.datasets.MNIST.html. The notebook’s one-digit classification task is separate from Homework 5. Do not preview the homework’s paired-digit construction here."
+  },
+  {
+    "objectID": "slides/lec29_CNN.html#local-sharing",
+    "href": "slides/lec29_CNN.html#local-sharing",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Local Connections and Shared Weights",
+    "text": "Local Connections and Shared Weights\nA fully connected, or dense, layer connects every input value to every output unit. Flattening rearranges the pixels into a vector, without deleting their values.\nCNNs build in two structural choices:\n\n\n\n\n\n\n\nIdea\nMeaning for an image\n\n\n\n\nLocal connections\nA unit examines a small neighboring patch of pixels.\n\n\nWeight sharing\nThe same learned coefficients examine patches at different positions.\n\n\n\nA filter is a small array of weights. One 3\\times3 grayscale filter has 9 weights and 1 bias, reused across the image.\n\nTraining learns these shared weights. Their gradient contributions accumulate across the positions where the filter operates.\n\n\nFlattening is an invertible rearrangement when the original shape is known. The issue is that an unrestricted dense layer does not enforce two-dimensional locality or shared weights. Convolution imposes those structural assumptions. The count of ten parameters is for one ordinary single-input-channel filter with a bias, independent of image size. It is not the parameter count of an entire CNN. Source: the supplied Spring 2025 CNN Beamer source, revised manually, and https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html."
+  },
+  {
+    "objectID": "slides/lec29_CNN.html#kernel-patch",
+    "href": "slides/lec29_CNN.html#kernel-patch",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Kernels, Patches, and Feature Maps",
+    "text": "Kernels, Patches, and Feature Maps\nA kernel, also called a filter, is a small array of weights. A patch is the input window under it. A feature map records the resulting value at each position.\n\nFor this arithmetic example, fix the displayed kernel and use bias b=0. Slide it one pixel at a time, with no extra border pixels.\n\nThese constructed grids retain the numerical example from the original Beamer lecture. The numbers are neither measured image intensities nor trained CNN weights. Actual CNN training learns kernel weights and biases using backpropagation. The central coefficient -4 and the four neighboring coefficients 1 make a local contrast filter. Do not call every kernel an edge detector or imply that all learned filters have this fixed form."
+  },
+  {
+    "objectID": "slides/lec29_CNN.html#convolution-trace",
+    "href": "slides/lec29_CNN.html#convolution-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Filter Moving Across the Image",
+    "text": "A Filter Moving Across the Image\nAt each position, multiply matching entries and add. We number rows and columns starting at 0.\n\n\n\nO_{0,0}=2+0+3+2-4\\cdot1=3.\n\n\n\nO_{0,1}=0+1+1+1-4\\cdot3=-9.\n\n\n\nRepeat for every valid patch. The kernel coefficients stay the same.\n\n\n\nThe compact arithmetic shows only the four nonzero neighboring contributions and the center term. Coefficients at the patch’s four corners are zero. Frame one uses top=2, left=0, right=3, bottom=2, center=1. Frame two uses top=0, left=1, right=1, bottom=1, center=3. The final feature map is [[3,-9,3],[-4,3,3],[3,-3,3]]. The teaching example has one input channel, stride 1, no padding, and zero bias. The PyTorch Conv2d cross-correlation convention agrees with this calculation."
+  },
+  {
+    "objectID": "slides/lec29_CNN.html#convolution-rule",
+    "href": "slides/lec29_CNN.html#convolution-rule",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Convolution Rule",
+    "text": "The Convolution Rule\nFor one input channel, a square f\\times f kernel, and one-pixel steps:\n\nO_{i,j}=b+\\sum_{u=0}^{f-1}\\sum_{v=0}^{f-1}\nI_{i+u,j+v}K_{u,v}.\n\n\nI is the input, K the kernel, O the output map, and b a shared bias.\n(i,j) locates the patch’s top-left corner.\n(u,v) indexes an entry within the kernel, starting at (0,0).\n\nThe numerical example has f=3 and b=0.\n\nEach output value is a small weighted sum. Backpropagation learns the kernel weights and bias just as it learns dense-layer parameters.\n\n\nThis formula assumes stride 1, no padding, dilation 1, and one input channel. The same formula works with implicit padded input values when padding is added. Strictly, applying the kernel without flipping it is cross-correlation. PyTorch and ordinary CNN terminology call this operation convolution. The distinction does not require changing the kernel or the numerical example. Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html."
+  },
+  {
+    "objectID": "slides/lec29_CNN.html#stride-padding",
+    "href": "slides/lec29_CNN.html#stride-padding",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Stride and Padding",
+    "text": "Stride and Padding\nStride s is the number of pixels moved per step. Padding p adds border values, here p rows or columns of zeros on every side.\n\n\nLarger stride usually reduces the output’s height and width.\nPadding lets filters cover boundary pixels and can preserve spatial size.\n\n\nStride is measured along both spatial dimensions in our square examples. The two outlined windows on the left are the first two positions in the top row for stride 2; two more windows start two rows lower. The right diagram illustrates padding itself, not a second stride-2 calculation. Its original input is 3 by 3 and its padded array is 5 by 5. The next slide separately calculates the convolution’s output dimensions. Source: the supplied Beamer stride/padding frames, redrawn and clarified."
+  },
+  {
+    "objectID": "slides/lec29_CNN.html#output-size",
+    "href": "slides/lec29_CNN.html#output-size",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Output Height and Width",
+    "text": "Output Height and Width\nFor a square input with side n, kernel side f, stride s, and zero-padding width p, the output side is\n\nn_{\\mathrm{out}}=\\left\\lfloor\\frac{n+2p-f}{s}\\right\\rfloor+1.\n\nThe floor \\lfloor\\cdot\\rfloor rounds down. Count only full kernel windows.\n\n\n\n\n\n\n\n\n\n\nInput side n\nKernel side f\nStride s\nPadding p\nOutput side\n\n\n\n\n5\n3\n1\n0\n3\n\n\n5\n3\n2\n0\n2\n\n\n28\n3\n1\n1\n28\n\n\n\n\nBoth notebook convolutions use the last row: spatial size stays 28\\times28.\n\n\nThis is the usual convolution shape rule with dilation fixed at 1. Rectangular inputs apply the same rule separately to height and width. A padded width of p adds p entries to both sides, hence 2p. The 3-by-3 padded example on the preceding slide would give (3+2-3)/1+1=3 output entries per side for stride 1. Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html, Shape section."
+  },
+  {
+    "objectID": "slides/lec29_CNN.html#channels",
+    "href": "slides/lec29_CNN.html#channels",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Channels and Multiple Filters",
+    "text": "Channels and Multiple Filters\nA channel is one value plane. Grayscale has one channel. RGB means red, green, blue, with three color channels.\n\nEach output channel uses its own learned filter, covering all input channels in an ordinary convolution.\nFor C_{\\mathrm{in}} input channels and C_{\\mathrm{out}} output channels, an f\\times f layer has C_{\\mathrm{out}}(C_{\\mathrm{in}}f^2+1) parameters, including biases.\nThe notebook’s first layer has 32(1\\cdot3^2+1)=320 parameters and produces 32 feature maps.\n\nThe drawing illustrates the RGB case; the notebook instead starts with grayscale, so C_in=1. One ordinary filter has C_in separate f-by-f weight planes whose contributions are summed, plus one output-channel bias. There are C_out such filters. The count assumes groups=1, bias=True, and no separate normalization-layer parameters. Weight sharing makes this count independent of image height/width. Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html."
+  },
+  {
+    "objectID": "slides/lec29_CNN.html#relu",
+    "href": "slides/lec29_CNN.html#relu",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "ReLU After Convolution",
+    "text": "ReLU After Convolution\nReLU, the rectified linear unit, applies \\max(0,z) separately to each entry z.\n\n\nConvolution computes weighted sums and biases.\nReLU adds a nonlinear transformation. It introduces no learned weights.\nApplying ReLU leaves the tensor’s shape unchanged.\n\n\nThe figure applies ReLU to the exact completed toy convolution, not to a measured MNIST activation map. Stacking only affine transformations would still produce an affine transformation. ReLU enables a richer input/output mapping. This reconnects to Lecture 28. Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.ReLU.html."
+  },
+  {
+    "objectID": "slides/lec29_CNN.html#pooling",
+    "href": "slides/lec29_CNN.html#pooling",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Pooling: A Smaller Feature Map",
+    "text": "Pooling: A Smaller Feature Map\nPooling summarizes each small window. Max pooling keeps its largest value. Average pooling keeps its mean.\n\nThis separate example uses 2\\times2 windows and stride 2, reducing 4\\times4 to 2\\times2. Pooling operates on each channel independently and learns no weights.\n\nPooling reduces spatial detail. It can soften sensitivity to small shifts, but a shifted image can still produce a different result.\n\n\nThe pooling input is a different constructed grid, matching the original Beamer example. The four window maxima are 6, 9, 7, and 8. Ordinary max/average pooling uses no learned parameters. Do not promise exact translation invariance or that pooling necessarily prevents overfitting. Modern CNNs can also downsample using strided convolution, so pooling is a common option rather than a universal requirement. Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.MaxPool2d.html."
+  },
+  {
+    "objectID": "slides/lec29_CNN.html#classifier",
+    "href": "slides/lec29_CNN.html#classifier",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Feature Maps to Class Scores",
+    "text": "Feature Maps to Class Scores\nFlattening rearranges each image’s feature maps into a vector. A fully connected (FC) layer, also called a dense layer, combines its entries.\n\nFor the notebook, 64\\cdot14\\cdot14=12{,}544 values enter the first FC layer.\nThe final ten logits are raw scores, one per digit 0 through 9. The predicted digit is the index of the largest score, called argmax.\n\nThe layer dimensions are taken directly from the existing CNN notebook. Flattening preserves each example and only rearranges its feature entries. The intermediate 128-unit layer uses ReLU. The architecture also has dropout, defined explicitly on the next slide before the full pipeline. Logits can be negative, need not sum to one, and are not probabilities. Softmax can convert them to probabilities when wanted for display; it does not change their argmax. Some CNN classifiers instead use global average pooling, so this flatten-and-dense head is our example, not a requirement for all CNNs."
+  },
+  {
+    "objectID": "slides/lec29_CNN.html#cnn-shapes",
+    "href": "slides/lec29_CNN.html#cnn-shapes",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Notebook’s CNN",
+    "text": "The Notebook’s CNN\nDropout randomly zeroes some hidden activations during training. Our model uses a probability of 0.5 before its final layer.\n\nShapes in the diagram describe one image. PyTorch batches use order (B,C,H,W): batch size, channels, height, width.\n\nThe diagram follows CNN.ipynb exactly: Conv2d(1,32,3,stride=1,padding=1), ReLU, Conv2d(32,64,3,stride=1,padding=1), ReLU, MaxPool2d(2,2), flatten, Linear(641414,128), ReLU, Dropout(0.5), Linear(128,10). The two convolution outputs keep 28 by 28 spatial dimensions. Pooling changes that to 14 by 14. The batch dimension persists through flattening; it is not combined with the feature dimension. Dropout also rescales surviving activations during training. It acts as the identity in evaluation mode. Sources: the local CNN notebook and https://docs.pytorch.org/docs/stable/generated/torch.nn.Dropout.html."
+  },
+  {
+    "objectID": "slides/lec29_CNN.html#training-evaluation",
+    "href": "slides/lec29_CNN.html#training-evaluation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Training and Evaluation",
+    "text": "Training and Evaluation\nCross-entropy is a classification loss that penalizes low probability for the correct class. PyTorch’s CrossEntropyLoss takes raw logits and integer digit labels, handling the probability calculation internally.\n\n\n\n\n\n\n\nControl\nWhat it changes\n\n\n\n\nmodel.train()\nEnables training behavior, including dropout.\n\n\nloss.backward() and optimizer.step()\nCompute gradients, then update parameters.\n\n\nmodel.eval()\nDisables dropout for ordinary prediction.\n\n\ntorch.no_grad()\nStops recording gradient history. It does not disable dropout.\n\n\n\n\nUse both evaluation mode and disabled gradient tracking for the notebook’s test pass. Keep test examples separate from model selection.\n\n\nThis revisits the mode/gradient distinction from Lecture 27 in the concrete CNN setting. The ten-class index targets have integer dtype, normally torch.int64. Do not apply softmax before the standard CrossEntropyLoss used by the notebook. For hard class targets, that loss combines log-softmax with negative log likelihood. Evaluation mode does not itself turn off autograd. no_grad remains a supported API; inference_mode is another option with stronger restrictions. Hyperparameter/architecture choices should use validation data before a final test evaluation. Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html and https://docs.pytorch.org/docs/stable/generated/torch.nn.Dropout.html."
+  },
+  {
+    "objectID": "slides/lec29_CNN.html#quick-check",
+    "href": "slides/lec29_CNN.html#quick-check",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Quick Check",
+    "text": "Quick Check\n\nDoes moving a trained kernel to another patch create new weights?\nA 28\\times28 input uses a 3\\times3 kernel, stride 1, padding 0. What is the output side?\nDoes torch.no_grad() switch off dropout?\n\n\n1. No. Every position reuses the same learned weights and bias.\n\n\n2. 26. (28-3)/1+1=26. Adding padding 1 would preserve side 28.\n\n\n3. No. model.eval() controls dropout. Gradient tracking is a separate setting."
+  },
+  {
+    "objectID": "slides/lec29_CNN.html#takeaways",
+    "href": "slides/lec29_CNN.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nConvolution combines local connections with shared learned weights.\nA feature map records one filter’s response across positions.\nStride and padding determine output height and width.\nDifferent output channels use different filters.\nReLU adds nonlinearity. Pooling reduces spatial resolution.\nThe classifier maps the resulting features to class scores.\n\n\nTrack the shape after each layer. A change to convolution or pooling can change the required FC input size."
+  },
+  {
+    "objectID": "slides/lec29_CNN.html#notebook",
+    "href": "slides/lec29_CNN.html#notebook",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "CNN Notebook and Homework 5",
+    "text": "CNN Notebook and Homework 5\n\n\nOpen the CNN notebook\nFollow the same one-digit classifier:\n\nMatch every layer to the shape diagram.\nTrain the shared filters and the dense layers.\nEvaluate on held-out images and inspect mistakes.\n\nHomework 5\n\n\n\nOfficial PyTorch image-classifier tutorial\nAsset credits\n\nThe actual Python stays in the notebook. Reserve time for its training/evaluation demonstration and the homework introduction. This lecture uses the notebook’s one-digit example, without supplying a paired-digit homework solution. The toy robot is reused unchanged from Lecture 1, credited as public-domain OpenClipart artwork. The official linked tutorial uses a separate color-image task and is a supplementary reference, not an exact copy of our MNIST architecture."
+  },
+  {
+    "objectID": "slides/lec30_RL.html#interaction",
+    "href": "slides/lec30_RL.html#interaction",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Learning Through Interaction",
+    "text": "Learning Through Interaction\nIn reinforcement learning (RL), an agent, the decision-maker, improves how it acts through interaction with an environment, the world it acts on.\n\n\n\n\nA reward is a numeric feedback signal. It scores an outcome without necessarily telling the agent which action it should have taken.\n\nAn action can affect both the next reward and the situations the agent encounters later.\n\n\nRL seeks an action rule that improves expected accumulated reward through experience. A reward signal is not a supervised target specifying an ideal action. The robot is an illustrative agent, not a claim about a deployed delivery system. Reused public-domain OpenClipart toy robot: https://openclipart.org/detail/325644/toy-robot. Conceptual background: the supplied Spring 2025 RL Beamer lecture and https://inst.eecs.berkeley.edu/~cs188/textbook/rl/rl.html."
+  },
+  {
+    "objectID": "slides/lec30_RL.html#delivery-mdp",
+    "href": "slides/lec30_RL.html#delivery-mdp",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Delivery Robot’s Choices",
+    "text": "A Delivery Robot’s Choices\nAt depot D, the robot can finish a small job or visit pickup stop J for a larger job. At J, it can deliver or return to D.\n\nAll arrows have certain outcomes here. Rewards are invented points. Pickup and return each cost 1 point.\nAn episode ends when a job finishes at F. This is a terminal state: after entry, there are no further rewards or choices.\n\nThis replaces the anonymous positive-cycle example with a new constructed delivery model. Rewards belong to transitions: the +4 or +8 is received when entering F, so later value at F is zero. The actions are state-dependent: small and pickup at D, deliver and return at J. A policy that forever alternates pickup and return incurs costs, rather than collecting a positive delivery reward without delivering. We will use discount factor 0.9. The example is fictional, not measured delivery data."
+  },
+  {
+    "objectID": "slides/lec30_RL.html#mdp-definition",
+    "href": "slides/lec30_RL.html#mdp-definition",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Markov Decision Processes",
+    "text": "Markov Decision Processes\nA Markov decision process (MDP) specifies states, choices, and their consequences. Write s for the current state, a for an action, and s' for the next state.\n\n\n\n\n\n\n\n\nPart\nMeaning\nDelivery example\n\n\n\n\n\\mathcal S\nSet of states\n\\{D,J,F\\}\n\n\n\\mathcal A(s)\nActions available at s\nAt D: small or pickup\n\n\nP(s'\\mid s,a)\nNext-state probability\nP(J\\mid D,\\text{pickup})=1\n\n\nR(s,a)\nExpected immediate reward\nR(D,\\text{pickup})=-1\n\n\n\\gamma\nDiscount factor for later rewards\nWe choose \\gamma=0.9\n\n\n\n\nThe Markov property says the current state contains the information needed to predict the next state and reward, given the action. Include battery level if it affects what the robot can do.\n\n\nThe Markov property concerns conditional distributions, not deterministic motion or absence of randomness. Location alone may not be a sufficient state if hidden battery level changes outcomes. Our simplified three-state model assumes such details do not alter its specified consequences. R(s,a) is the expected one-step reward; a transition-dependent reward convention can also be used but is not needed here. All examples use ordinary finite discounted MDPs. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/mdp/markov-decision-processes.html."
+  },
+  {
+    "objectID": "slides/lec30_RL.html#policy",
+    "href": "slides/lec30_RL.html#policy",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Policy Is an Action Rule",
+    "text": "A Policy Is an Action Rule\nA policy \\pi tells the agent how to act in each state.\n\nA deterministic policy chooses one action: \\pi(s)=a.\nA stochastic policy assigns probabilities: \\pi(a\\mid s) is the probability of choosing a in state s.\n\n\nThis policy chooses \\pi(D)=\\text{pickup} and \\pi(J)=\\text{deliver}. There is no decision at terminal state F.\n\nA policy describes what to do for every possible nonterminal state, not just a prewritten route from one start. The highlighted arrows illustrate a deterministic policy in our deterministic environment. A stochastic policy and stochastic transitions are separate sources of randomness. The chosen route is an example policy; we will establish its optimality later rather than assume it now."
+  },
+  {
+    "objectID": "slides/lec30_RL.html#discounted-return",
+    "href": "slides/lec30_RL.html#discounted-return",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Return and Discounting",
+    "text": "Return and Discounting\nThe return G_t adds future rewards from decision step t. The discount factor \\gamma gives less weight to rewards received later:\nG_t=r_{t+1}+\\gamma r_{t+2}+\\gamma^2r_{t+3}+\\cdots,\n\\qquad 0\\leq\\gamma&lt;1.\nHere r_{t+1} is the reward received after action t. After termination, all remaining rewards are zero.\n\nAt \\gamma=0.9: small job gives 4; pickup then delivery gives -1+0.9\\cdot8=6.2.\n\nThe immediate reward has weight 1, not gamma. The second reward has weight gamma. Gamma controls how later reward enters this objective; the points are not units of time or dollars. At gamma=0 an agent only cares about its next reward, while larger gamma gives later reward more influence. We restrict to gamma&lt;1 for the finite discounted guarantees discussed later. Some episodic models use gamma=1 under additional assumptions, but no such assumption is needed today."
+  },
+  {
+    "objectID": "slides/lec30_RL.html#values",
+    "href": "slides/lec30_RL.html#values",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "State Values and Action Values",
+    "text": "State Values and Action Values\nA value predicts expected return. Let S_t be the state and A_t the chosen action at step t. The expectation \\mathbb E_\\pi averages outcomes while following policy \\pi.\nV^\\pi(s)=\\mathbb E_\\pi[G_t\\mid S_t=s].\nQ^\\pi(s,a)=\\mathbb E_\\pi[G_t\\mid S_t=s,A_t=a].\n\nFor the highlighted policy: V^\\pi(D)=6.2. Choosing small once, then following \\pi, gives Q^\\pi(D,\\text{small})=4.\n\nState value follows the policy from the current state. Action value fixes the first action, then follows the policy afterward. In the example Q^pi(D,pickup)=6.2 and Q^pi(D,small)=4, while V^pi(J)=8 and V^pi(F)=0. The expectation accounts for stochastic policies and stochastic transitions in general; today’s base example has neither. We will use the shorter V(s) for a current estimate when it need not equal the exact value of any fixed policy."
+  },
+  {
+    "objectID": "slides/lec30_RL.html#models",
+    "href": "slides/lec30_RL.html#models",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "A Model and Experience",
+    "text": "A Model and Experience\nA model predicts consequences through P and R. Planning uses that model to compare future choices.\n\n\nModel-based RL learns P and R, then plans with them.\nModel-free RL learns values or a policy without an explicit P.\n\n\nWith known P and R, these are planning methods. An RL agent can learn the model first.\n\n\nModel-based approaches can use a provided model, a learned model, or both. Value iteration and policy iteration with a fully known model are dynamic-programming planning methods, not by themselves procedures for learning an unknown environment from samples. Model-free methods still learn representations or predictions; model-free does not mean no model object or no neural network of any kind. Avoid introducing unexplained names such as SARSA here. The later bandit and model-free lectures supply those methods in context. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/rl/rl.html."
+  },
+  {
+    "objectID": "slides/lec30_RL.html#bellman",
+    "href": "slides/lec30_RL.html#bellman",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "One-Step Lookahead and Bellman Equations",
+    "text": "One-Step Lookahead and Bellman Equations\nOne-step lookahead scores an action using its immediate reward and a current estimate V of later value:\n\\operatorname{LookAhead}(s,a,V)\n=R(s,a)+\\gamma\\sum_{s'}P(s'\\mid s,a)V(s').\nA Bellman equation expresses value recursively. For a fixed policy,\nV^\\pi(s)=\\sum_a\\pi(a\\mid s)\n\\operatorname{LookAhead}(s,a,V^\\pi).\nThe sums average over possible next states and policy choices. For V=V^\\pi, the lookahead score equals Q^\\pi(s,a).\n\nA greedy policy chooses an action with the largest lookahead score. GreedyPolicy(V) below means this one-step comparison, including future value.\n\n\nR(s,a) is an expected immediate reward, so it can be written outside the successor-state expectation. Correlation between reward and successor state does not change the expectation of their sum. State-dependent sums range only over available actions. At a terminal state we set value zero without performing a maximization over an empty action set. One-step lookahead still reasons about long-term consequences through V; it is not simply maximizing immediate reward. The fixed-policy equation averages rather than maximizing over actions. Reference: the supplied Beamer Bellman frame, revised for notation and teaching order."
+  },
+  {
+    "objectID": "slides/lec30_RL.html#value-trace",
+    "href": "slides/lec30_RL.html#value-trace",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Two Value-Iteration Sweeps",
+    "text": "Two Value-Iteration Sweeps\nUse \\gamma=0.9. Each sweep uses the preceding values, and V_k(F)=0 throughout.\n\n\n\nInitialize V_0(D)=V_0(J)=V_0(F)=0.\n\n\n\nV_1(D)=\\max\\{4,-1\\}=4,\\qquad\nV_1(J)=\\max\\{8,-1\\}=8.\n\n\n\n\n\n\n\n\n\n\n\n\nSweep\nV_k(D)\nV_k(J)\nV_k(F)\n\n\n\n\n0\n0\n0\n0\n\n\n1\n4\n8\n0\n\n\n2\n\\max\\{4,-1+0.9\\cdot8\\}=6.2\n\\max\\{8,-1+0.9\\cdot4\\}=8\n0\n\n\n\nFurther sweeps leave these values unchanged in this example.\n\n\n\nFrame two’s values are all calculated from V0, not immediately updated entries. Frame three uses V1(D)=4 and V1(J)=8. The last table preserves every sweep in the printable version and thumbnails. Checking the next sweep gives max(4,-1+.98)=6.2 at D and max(8,-1+.96.2)=8 at J. Do not generalize this example’s two-sweep convergence to arbitrary MDPs."
+  },
+  {
+    "objectID": "slides/lec30_RL.html#uncertainty",
+    "href": "slides/lec30_RL.html#uncertainty",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "When a Move Is Uncertain",
+    "text": "When a Move Is Uncertain\nModified scenario: pickup from D reaches J with probability 0.8, but leaves the robot at D with probability 0.2. Either outcome costs 1 point.\n\nUsing current estimates V(D)=4 and V(J)=8:\n\\operatorname{LookAhead}(D,\\text{pickup},V)\n=-1+0.9(0.8\\cdot8+0.2\\cdot4)=5.48.\n\nAverage over outcomes using their probabilities. This is one lookahead calculation, not the modified model’s converged value.\n\n\nThis slide deliberately changes only the pickup transition; the deterministic base model resumes afterward. The reward remains -1 for either possible successor, so R(D,pickup)=-1. The estimates 4 and 8 are inputs to the calculation, not asserted optimal values of the modified model. We include the stay-at-D outcome rather than silently dropping failure probability. If iterated to convergence in this variant, the best D value would be 4.76/.82, about 5.804878, not 5.48; that solution is not needed here."
+  },
+  {
+    "objectID": "slides/lec30_RL.html#policy-evaluation",
+    "href": "slides/lec30_RL.html#policy-evaluation",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Evaluating the Current Policy",
+    "text": "Evaluating the Current Policy\nReturn to the original certain-outcome model. Start with policy \\pi_0: \\pi_0(D)=\\text{small} and \\pi_0(J)=\\text{return}.\n\nV^{\\pi_0}(D)=4+0.9V^{\\pi_0}(F)=4.\nV^{\\pi_0}(J)=-1+0.9V^{\\pi_0}(D)=2.6.\nThese values describe following \\pi_0, including its poor choice to return from the pickup stop.\n\nThe terminal value V^pi0(F)=0 is shown in the diagram and follows from the reward timing established earlier. Starting from J, this policy returns to D with reward -1 and then completes the small job for 4, giving -1+.9*4=2.6. Even if a trajectory starting at D never visits J under pi0, policy evaluation still defines what would happen when starting at J. A policy is an action rule for every state."
+  },
+  {
+    "objectID": "slides/lec30_RL.html#optimal-policy",
+    "href": "slides/lec30_RL.html#optimal-policy",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "The Final Policy",
+    "text": "The Final Policy\nBoth methods choose pickup at D and deliver at J.\n\n\n\n\nState\nChosen action’s score\nOther action’s score\n\n\n\n\nD\npickup: -1+0.9\\cdot8=6.2\nsmall: 4\n\n\nJ\ndeliver: 8\nreturn: -1+0.9\\cdot6.2=4.58\n\n\n\n\nAn optimal policy \\pi^* maximizes expected return from every state. Its values are V^*. No action changes here.\n\n\nThe final values satisfy the Bellman optimality fixed point with V(F)=0. The pickup-return cycle costs a point on every transition and cannot outperform delivery. Contrast this with the supplied example, where a positive-reward cycle made continuing more attractive than the nominal terminal rewards. We use the new model consistently rather than carrying over that example’s numbers. This optimum concerns the stated reward objective, not an independently verified real-world task."
+  },
+  {
+    "objectID": "slides/lec30_RL.html#methods",
+    "href": "slides/lec30_RL.html#methods",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Value Iteration and Policy Iteration",
+    "text": "Value Iteration and Policy Iteration\n\n\n\n\n\n\n\n\nMethod\nMain operation\nPractical tradeoff\n\n\n\n\nValue iteration\nRepeated best-action value updates\nCheap sweeps, potentially many of them\n\n\nPolicy iteration\nEvaluate a policy, then improve actions\nMore work per round, often fewer rounds\n\n\n\nFor finite states and actions, bounded rewards, and 0\\leq\\gamma&lt;1:\n\nValue-iteration values approach V^*.\nExact policy iteration, keeping the old action on ties, reaches an optimal policy after finitely many changes.\nAt least one deterministic optimal policy exists in this setting.\n\n\nBoth require a model of consequences. Learning that model, or learning decisions directly from samples, is the next part of RL.\n\n\nThese guarantees refer to finite discounted MDPs with the usual unconstrained expected-return objective. Do not extend the deterministic-policy statement to every finite-horizon, constrained, or undiscounted formulation without the needed qualifications. A finite value-change stopping threshold in value iteration generally gives approximate values. There is no universal runtime winner: policy evaluation can be expensive and implementations may use approximate evaluation. References: the supplied Beamer comparison and the Berkeley value/policy iteration notes."
+  },
+  {
+    "objectID": "slides/lec30_RL.html#quick-check",
+    "href": "slides/lec30_RL.html#quick-check",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Quick Check",
+    "text": "Quick Check\n\nIf battery level affects which actions succeed, is location alone a sufficient Markov state?\nWhy is V(F)=0 even though finishing gives a positive reward?\nWhy does our value-iteration sweep make a copy called old?\n\n\n1. No. Include battery level, or another sufficient summary, to predict consequences from the current state and action.\n\n\n2. The reward arrives on entry. From the finished state onward there are no more rewards. Counting it again would double-count it.\n\n\n3. To use one consistent preceding estimate. This is the synchronous update shown here. In-place updates are a different valid variant with different intermediate values."
+  },
+  {
+    "objectID": "slides/lec30_RL.html#takeaways",
+    "href": "slides/lec30_RL.html#takeaways",
+    "title": "CS 463G & CS 663\n(Intro to) AI",
+    "section": "Takeaways",
+    "text": "Takeaways\n\nRL improves action choices through interaction and reward.\nAn MDP specifies states, actions, transition probabilities, rewards, and discounting.\nA policy chooses actions. Its value predicts expected return.\nBellman equations connect current value to successor-state values.\nValue iteration updates estimates using the best lookahead score.\nPolicy iteration evaluates a policy, then improves its choices.\n\n\nSeparate immediate reward, long-term return, and the policy that determines future actions.\n\nNext: deciding when to try an uncertain action rather than always using the current favorite.\nAsset credits"
   }
 ]

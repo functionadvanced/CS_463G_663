@@ -1,0 +1,68 @@
+.reveal section.cnn29-slide { font-size: 0.9em; }
+.reveal section.cnn29-slide h2 { margin-top: 0; }
+.reveal section.cnn29-slide p { margin: 0.4em 0; }
+.reveal section.cnn29-slide .math.inline { white-space: nowrap; }
+.reveal section.cnn29-slide .katex-display { margin: 0.45em 0; }
+.reveal section.cnn29-slide table { font-size: 0.85em; line-height: 1.25; }
+.reveal section.cnn29-slide th,
+.reveal section.cnn29-slide td { padding: 0.45em 0.5em; }
+.reveal section.cnn29-slide .question,
+.reveal section.cnn29-slide .takeaway { margin: 0.5em 0; padding: 0.5em 0.65em; }
+.reveal section.cnn29-slide .question p,
+.reveal section.cnn29-slide .takeaway p { margin: 0; }
+.reveal section.cnn29-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin: 0.25em auto;
+  border: 0;
+  box-shadow: none;
+}
+.reveal section.cnn29-slide .cnn29-digit-strip {
+  aspect-ratio: 795 / 143;
+  overflow: hidden;
+  margin: 0.6em 0;
+}
+.reveal section.cnn29-slide .cnn29-digit-strip p { margin: 0; }
+.reveal section.cnn29-slide .cnn29-digit-strip img {
+  margin: 0;
+  transform: translateY(-26.667%);
+}
+.reveal section.cnn29-slide .cnn29-convolution { max-height: 340px; }
+.reveal section.cnn29-slide .cnn29-wide { max-height: 320px; }
+.reveal section.cnn29-slide .cnn29-channels { max-height: 245px; }
+.reveal section.cnn29-slide .cnn29-pooling { max-height: 295px; }
+.reveal section.cnn29-slide .cnn29-classifier { max-height: 240px; }
+.reveal section.cnn29-slide .cnn29-pipeline { max-height: 350px; }
+.reveal section.cnn29-slide .cnn29-trace {
+  display: grid;
+  width: 100%;
+  height: 430px;
+  align-items: start;
+}
+.reveal section.cnn29-slide .cnn29-trace > div {
+  grid-area: 1 / 1;
+  width: 100%;
+}
+.reveal section.cnn29-slide .cnn29-trace p:last-child {
+  margin: 0.35em 0 0;
+  text-align: center;
+}
+.reveal section.cnn29-slide .cnn29-handoff {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 28px;
+  align-items: center;
+}
+.reveal section.cnn29-slide .cnn29-robot { max-height: 260px; }
+.lecture-viewer-slide-clone .cnn29-trace > .fragment:not(:last-child),
+html.print-pdf .cnn29-trace > .fragment:not(:last-child) {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+.lecture-viewer-slide-clone .cnn29-trace > .fragment:last-child,
+html.print-pdf .cnn29-trace > .fragment:last-child {
+  visibility: visible !important;
+  opacity: 1 !important;
+}

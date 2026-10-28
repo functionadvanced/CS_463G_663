@@ -1,0 +1,59 @@
+.reveal section.rl30-slide { font-size: 0.9em; }
+.reveal section.rl30-slide h2 { margin-top: 0; }
+.reveal section.rl30-slide p { margin: 0.35em 0; }
+.reveal section.rl30-slide .math.inline { white-space: nowrap; }
+.reveal section.rl30-slide .katex-display { margin: 0.4em 0; }
+.reveal section.rl30-slide table { font-size: 0.82em; line-height: 1.22; }
+.reveal section.rl30-slide th,
+.reveal section.rl30-slide td { padding: 0.4em 0.45em; }
+.reveal section.rl30-slide .takeaway { margin: 0.45em 0; padding: 0.45em 0.65em; }
+.reveal section.rl30-slide .takeaway p { margin: 0; }
+.reveal section.rl30-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin: 0.25em auto;
+  border: 0;
+  box-shadow: none;
+}
+.reveal section.rl30-slide .rl30-interaction {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  gap: 30px;
+  align-items: center;
+}
+.reveal section.rl30-slide .rl30-robot { max-height: 230px; }
+.reveal section.rl30-slide .rl30-loop { max-height: 260px; }
+.reveal section.rl30-slide .rl30-map { max-height: 250px; }
+.reveal section.rl30-slide .rl30-small-map { max-height: 190px; }
+.reveal section.rl30-slide .rl30-timing { max-height: 230px; }
+.reveal section.rl30-slide .rl30-wide { max-height: 260px; }
+.reveal section.rl30-slide .rl30-uncertainty { max-height: 240px; }
+.reveal section.rl30-slide .pseudo-code { font-size: 0.7em; line-height: 1.35; }
+.reveal section.rl30-slide .pseudo-line { min-height: 1.4em; white-space: nowrap; }
+.reveal section.rl30-slide .rl30-trace {
+  display: grid;
+  width: 100%;
+  height: 490px;
+  align-items: start;
+}
+.reveal section.rl30-slide .rl30-trace > div {
+  grid-area: 1 / 1;
+  width: 100%;
+}
+.reveal section.rl30-slide .rl30-trace .rl30-map { max-height: 235px; }
+.reveal section.rl30-slide .rl30-trace table { font-size: 0.75em; }
+.reveal section.rl30-slide .rl30-trace td,
+.reveal section.rl30-slide .rl30-trace th { padding: 0.28em 0.4em; }
+.reveal #policy-improvement table { font-size: 0.76em; }
+.lecture-viewer-slide-clone .rl30-trace > .fragment:not(:last-child),
+html.print-pdf .rl30-trace > .fragment:not(:last-child) {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+.lecture-viewer-slide-clone .rl30-trace > .fragment:last-child,
+html.print-pdf .rl30-trace > .fragment:last-child {
+  visibility: visible !important;
+  opacity: 1 !important;
+}

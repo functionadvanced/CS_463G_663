@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec30_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,225 +164,515 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="reinforcement-learning" class="slide level2 section-slide">
-<h2>Reinforcement Learning</h2>
-<p>Reinforcement learning studies agents that learn to act through interaction and reward.</p>
-</section>
-<section id="what-is-rl" class="slide level2">
-<h2>What Is RL?</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec28/what-is-rl.svg" alt="Reinforcement learning loop: agent sends action A t to environment, environment returns state and reward"></p>
+<section id="interaction" class="slide level2 rl30-slide">
+<h2>Learning Through Interaction</h2>
+<p>In <strong>reinforcement learning (RL)</strong>, an <strong>agent</strong>, the decision-maker, improves how it acts through interaction with an <strong>environment</strong>, the world it acts on.</p>
+<div class="rl30-interaction">
+<p><img data-src="imgs/lec1/toy_robot_openclipart.svg" class="rl30-robot" alt="Public-domain cartoon robot, representing the learning agent."></p>
+<p><img data-src="imgs/drawio/lec30/agent-environment.png" class="rl30-loop" alt="The agent sends an action to the environment. The environment returns the new situation and reward for the next decision."></p>
 </div>
-<ul>
-<li>The agent chooses actions.</li>
-<li>The environment responds with new states and rewards.</li>
-<li>The goal is to learn a policy that maximizes long-term reward.</li>
-</ul>
+<p>A <strong>reward</strong> is a numeric feedback signal. It scores an outcome without necessarily telling the agent which action it should have taken.</p>
+<div class="takeaway">
+<p>An action can affect both the next reward and the situations the agent encounters later.</p>
+</div>
+<aside class="notes">
+<p>RL seeks an action rule that improves expected accumulated reward through experience. A reward signal is not a supervised target specifying an ideal action. The robot is an illustrative agent, not a claim about a deployed delivery system. Reused public-domain OpenClipart toy robot: https://openclipart.org/detail/325644/toy-robot. Conceptual background: the supplied Spring 2025 RL Beamer lecture and https://inst.eecs.berkeley.edu/~cs188/textbook/rl/rl.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="real-world-examples" class="slide level2">
-<h2>Real-World Examples</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Domain</th>
-<th>RL role</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Games</td>
-<td>Learn strong play from simulated experience</td>
-</tr>
-<tr class="even">
-<td>Robotics</td>
-<td>Learn locomotion or manipulation</td>
-</tr>
-<tr class="odd">
-<td>Recommendation</td>
-<td>Adapt choices to user feedback</td>
-</tr>
-<tr class="even">
-<td>Finance</td>
-<td>Sequential decision-making under uncertainty</td>
-</tr>
-<tr class="odd">
-<td>Traffic control</td>
-<td>Optimize signals over time</td>
-</tr>
-</tbody>
-</table>
+<section id="delivery-mdp" class="slide level2 rl30-slide">
+<h2>A Delivery Robot’s Choices</h2>
+<p>At depot <span class="math inline">D</span>, the robot can finish a small job or visit pickup stop <span class="math inline">J</span> for a larger job. At <span class="math inline">J</span>, it can deliver or return to <span class="math inline">D</span>.</p>
+<p><img data-src="imgs/drawio/lec30/delivery-model.png" class="rl30-map" alt="Three states: D depot, J pickup, and F finished. Small goes from D to F with reward 4; pickup from D to J costs 1; deliver from J to F gives 8; return from J to D costs 1."></p>
+<p>All arrows have certain outcomes here. Rewards are invented <strong>points</strong>. Pickup and return each cost <span class="math inline">1</span> point.</p>
+<p>An <strong>episode</strong> ends when a job finishes at <span class="math inline">F</span>. This is a <strong>terminal state</strong>: after entry, there are no further rewards or choices.</p>
+<aside class="notes">
+<p>This replaces the anonymous positive-cycle example with a new constructed delivery model. Rewards belong to transitions: the +4 or +8 is received when entering F, so later value at F is zero. The actions are state-dependent: small and pickup at D, deliver and return at J. A policy that forever alternates pickup and return incurs costs, rather than collecting a positive delivery reward without delivering. We will use discount factor 0.9. The example is fictional, not measured delivery data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="model-based-vs.-model-free" class="slide level2">
-<h2>Model-Based vs.&nbsp;Model-Free</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="model-based-rl">Model-based RL</h3>
-<p>Uses:</p>
-<p><span class="math display">
-P(s' \mid s,a), \qquad R(s,a)
-</span></p>
-<p>Can plan with the model.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="model-free-rl">Model-free RL</h3>
-<p>Learns directly from interaction.</p>
-<p>Examples: Q-learning, SARSA, policy gradients.</p>
-</div></div>
-</section>
-<section id="markov-decision-processes" class="slide level2">
+<section id="mdp-definition" class="slide level2 rl30-slide">
 <h2>Markov Decision Processes</h2>
-<p>An MDP is a 5-tuple:</p>
-<p><span class="math display">
-(\mathcal{S},\mathcal{A},\mathcal{P},\mathcal{R},\gamma)
-</span></p>
+<p>A <strong>Markov decision process (MDP)</strong> specifies states, choices, and their consequences. Write <span class="math inline">s</span> for the current state, <span class="math inline">a</span> for an action, and <span class="math inline">s'</span> for the next state.</p>
 <table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Part</th>
 <th>Meaning</th>
+<th>Delivery example</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><span class="math inline">\mathcal{S}</span></td>
-<td>States</td>
+<td><span class="math inline">\mathcal S</span></td>
+<td>Set of states</td>
+<td><span class="math inline">\{D,J,F\}</span></td>
 </tr>
 <tr class="even">
-<td><span class="math inline">\mathcal{A}</span></td>
-<td>Actions</td>
+<td><span class="math inline">\mathcal A(s)</span></td>
+<td>Actions available at <span class="math inline">s</span></td>
+<td>At <span class="math inline">D</span>: small or pickup</td>
 </tr>
 <tr class="odd">
-<td><span class="math inline">\mathcal{P}(s'\mid s,a)</span></td>
-<td>Transition probabilities</td>
+<td><span class="math inline">P(s'\mid s,a)</span></td>
+<td>Next-state probability</td>
+<td><span class="math inline">P(J\mid D,\text{pickup})=1</span></td>
 </tr>
 <tr class="even">
-<td><span class="math inline">\mathcal{R}(s,a)</span></td>
-<td>Reward function</td>
+<td><span class="math inline">R(s,a)</span></td>
+<td>Expected immediate reward</td>
+<td><span class="math inline">R(D,\text{pickup})=-1</span></td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\gamma</span></td>
-<td>Discount factor</td>
+<td>Discount factor for later rewards</td>
+<td>We choose <span class="math inline">\gamma=0.9</span></td>
 </tr>
 </tbody>
 </table>
 <div class="takeaway">
-<p>Markov property: the next state depends on the current state and action, not the full past.</p>
+<p>The <strong>Markov property</strong> says the current state contains the information needed to predict the next state and reward, given the action. Include battery level if it affects what the robot can do.</p>
 </div>
+<aside class="notes">
+<p>The Markov property concerns conditional distributions, not deterministic motion or absence of randomness. Location alone may not be a sufficient state if hidden battery level changes outcomes. Our simplified three-state model assumes such details do not alter its specified consequences. R(s,a) is the expected one-step reward; a transition-dependent reward convention can also be used but is not needed here. All examples use ordinary finite discounted MDPs. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/mdp/markov-decision-processes.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="mdp-as-a-gridworld" class="slide level2">
-<h2>MDP as a Gridworld</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec28/mdp-as-a-gridworld.svg" alt="Gridworld MDP with states, actions, transition uncertainty, and terminal rewards"></p>
-</div>
-</section>
-<section id="policies-and-values" class="slide level2">
-<h2>Policies and Values</h2>
-<p>Policy:</p>
-<p><span class="math display">
-\pi(a \mid s)=P(A_t=a \mid S_t=s)
-</span></p>
-<p>State value:</p>
-<p><span class="math display">
-V^\pi(s)=
-\mathbb{E}_\pi\left[\sum_{t=0}^{\infty}\gamma^tR_{t+1}\mid S_0=s\right]
-</span></p>
-<p>Action value:</p>
-<p><span class="math display">
-Q^\pi(s,a)=
-\mathbb{E}_\pi\left[\sum_{t=0}^{\infty}\gamma^tR_{t+1}\mid S_0=s,A_0=a\right]
-</span></p>
-</section>
-<section id="finding-an-optimal-policy" class="slide level2">
-<h2>Finding an Optimal Policy</h2>
-<p>Goal:</p>
-<p><span class="math display">
-\pi^*=\arg\max_\pi V^\pi(s)
-</span></p>
-<p>Classical model-based algorithms:</p>
+<section id="policy" class="slide level2 rl30-slide">
+<h2>A Policy Is an Action Rule</h2>
+<p>A <strong>policy</strong> <span class="math inline">\pi</span> tells the agent how to act in each state.</p>
 <ul>
-<li>Value iteration.</li>
-<li>Policy iteration.</li>
+<li>A <strong>deterministic policy</strong> chooses one action: <span class="math inline">\pi(s)=a</span>.</li>
+<li>A <strong>stochastic policy</strong> assigns probabilities: <span class="math inline">\pi(a\mid s)</span> is the probability of choosing <span class="math inline">a</span> in state <span class="math inline">s</span>.</li>
+</ul>
+<p><img data-src="imgs/drawio/lec30/policy-route.png" class="rl30-map" alt="A deterministic policy highlights pickup from D to J and deliver from J to F. Unchosen small and return actions remain visible in gray."></p>
+<p>This policy chooses <span class="math inline">\pi(D)=\text{pickup}</span> and <span class="math inline">\pi(J)=\text{deliver}</span>. There is no decision at terminal state <span class="math inline">F</span>.</p>
+<aside class="notes">
+<p>A policy describes what to do for every possible nonterminal state, not just a prewritten route from one start. The highlighted arrows illustrate a deterministic policy in our deterministic environment. A stochastic policy and stochastic transitions are separate sources of randomness. The chosen route is an example policy; we will establish its optimality later rather than assume it now.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="discounted-return" class="slide level2 rl30-slide">
+<h2>Return and Discounting</h2>
+<p>The <strong>return</strong> <span class="math inline">G_t</span> adds future rewards from decision step <span class="math inline">t</span>. The <strong>discount factor</strong> <span class="math inline">\gamma</span> gives less weight to rewards received later:</p>
+<p><span class="math display">G_t=r_{t+1}+\gamma r_{t+2}+\gamma^2r_{t+3}+\cdots,
+\qquad 0\leq\gamma&lt;1.</span></p>
+<p>Here <span class="math inline">r_{t+1}</span> is the reward received after action <span class="math inline">t</span>. After termination, all remaining rewards are zero.</p>
+<p><img data-src="imgs/drawio/lec30/reward-timing.png" class="rl30-timing" alt="The small job finishes in one action with reward 4. The pickup-and-deliver route first gives minus 1, then gives 8 one action later."></p>
+<p>At <span class="math inline">\gamma=0.9</span>: small job gives <span class="math inline">4</span>; pickup then delivery gives <span class="math inline">-1+0.9\cdot8=6.2</span>.</p>
+<aside class="notes">
+<p>The immediate reward has weight 1, not gamma. The second reward has weight gamma. Gamma controls how later reward enters this objective; the points are not units of time or dollars. At gamma=0 an agent only cares about its next reward, while larger gamma gives later reward more influence. We restrict to gamma&lt;1 for the finite discounted guarantees discussed later. Some episodic models use gamma=1 under additional assumptions, but no such assumption is needed today.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="values" class="slide level2 rl30-slide">
+<h2>State Values and Action Values</h2>
+<p>A <strong>value</strong> predicts expected return. Let <span class="math inline">S_t</span> be the state and <span class="math inline">A_t</span> the chosen action at step <span class="math inline">t</span>. The expectation <span class="math inline">\mathbb E_\pi</span> averages outcomes while following policy <span class="math inline">\pi</span>.</p>
+<p><span class="math display">V^\pi(s)=\mathbb E_\pi[G_t\mid S_t=s].</span></p>
+<p><span class="math display">Q^\pi(s,a)=\mathbb E_\pi[G_t\mid S_t=s,A_t=a].</span></p>
+<p><img data-src="imgs/drawio/lec30/route-values.png" class="rl30-map rl30-small-map" alt="Under pickup then deliver, values are 6.2 at D, 8 at J, and 0 at finished state F."></p>
+<p>For the highlighted policy: <span class="math inline">V^\pi(D)=6.2</span>. Choosing small <strong>once</strong>, then following <span class="math inline">\pi</span>, gives <span class="math inline">Q^\pi(D,\text{small})=4</span>.</p>
+<aside class="notes">
+<p>State value follows the policy from the current state. Action value fixes the first action, then follows the policy afterward. In the example Q^pi(D,pickup)=6.2 and Q^pi(D,small)=4, while V^pi(J)=8 and V^pi(F)=0. The expectation accounts for stochastic policies and stochastic transitions in general; today’s base example has neither. We will use the shorter V(s) for a current estimate when it need not equal the exact value of any fixed policy.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="models" class="slide level2 rl30-slide">
+<h2>A Model and Experience</h2>
+<p>A <strong>model</strong> predicts consequences through <span class="math inline">P</span> and <span class="math inline">R</span>. <strong>Planning</strong> uses that model to compare future choices.</p>
+<p><img data-src="imgs/drawio/lec30/model-based-free.png" class="rl30-wide" alt="Model-based learning estimates transition and reward models from experience, then plans. Model-free learning estimates values or a policy directly from experience, without an explicit transition model."></p>
+<ul>
+<li><strong>Model-based RL</strong> learns <span class="math inline">P</span> and <span class="math inline">R</span>, then plans with them.</li>
+<li><strong>Model-free RL</strong> learns values or a policy without an explicit <span class="math inline">P</span>.</li>
 </ul>
 <div class="takeaway">
-<p>Both rely on Bellman equations: value today equals immediate reward plus discounted future value.</p>
+<p>With known <span class="math inline">P</span> and <span class="math inline">R</span>, these are planning methods. An RL agent can learn the model first.</p>
 </div>
+<aside class="notes">
+<p>Model-based approaches can use a provided model, a learned model, or both. Value iteration and policy iteration with a fully known model are dynamic-programming planning methods, not by themselves procedures for learning an unknown environment from samples. Model-free methods still learn representations or predictions; model-free does not mean no model object or no neural network of any kind. Avoid introducing unexplained names such as SARSA here. The later bandit and model-free lectures supply those methods in context. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/rl/rl.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="bellman-equation" class="slide level2">
-<h2>Bellman Equation</h2>
-<p>For a fixed policy:</p>
-<p><span class="math display">
-V^\pi(s)=
-\sum_a \pi(a \mid s)
-\sum_{s'}P(s'\mid s,a)
-\left[R(s,a)+\gamma V^\pi(s')\right]
-</span></p>
-<p>For action values:</p>
-<p><span class="math display">
-Q^\pi(s,a)=
-\sum_{s'}P(s'\mid s,a)
-\left[R(s,a)+\gamma\sum_{a'}\pi(a'\mid s')Q^\pi(s',a')\right]
-</span></p>
+<section id="bellman" class="slide level2 rl30-slide">
+<h2>One-Step Lookahead and Bellman Equations</h2>
+<p><strong>One-step lookahead</strong> scores an action using its immediate reward and a current estimate <span class="math inline">V</span> of later value:</p>
+<p><span class="math display">\operatorname{LookAhead}(s,a,V)
+=R(s,a)+\gamma\sum_{s'}P(s'\mid s,a)V(s').</span></p>
+<p>A <strong>Bellman equation</strong> expresses value recursively. For a fixed policy,</p>
+<p><span class="math display">V^\pi(s)=\sum_a\pi(a\mid s)
+\operatorname{LookAhead}(s,a,V^\pi).</span></p>
+<p>The sums average over possible next states and policy choices. For <span class="math inline">V=V^\pi</span>, the lookahead score equals <span class="math inline">Q^\pi(s,a)</span>.</p>
+<div class="takeaway">
+<p>A <strong>greedy policy</strong> chooses an action with the largest lookahead score. <code>GreedyPolicy(V)</code> below means this one-step comparison, including future value.</p>
+</div>
+<aside class="notes">
+<p>R(s,a) is an expected immediate reward, so it can be written outside the successor-state expectation. Correlation between reward and successor state does not change the expectation of their sum. State-dependent sums range only over available actions. At a terminal state we set value zero without performing a maximization over an empty action set. One-step lookahead still reasons about long-term consequences through V; it is not simply maximizing immediate reward. The fixed-policy equation averages rather than maximizing over actions. Reference: the supplied Beamer Bellman frame, revised for notation and teaching order.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="deterministic-optimal-policies" class="slide level2">
-<h2>Deterministic Optimal Policies</h2>
-<p>In finite MDPs, if an optimal policy exists, there exists a deterministic optimal policy.</p>
-<p>Implications:</p>
-<ul>
-<li>We can search over policies that choose one action per state.</li>
-<li>Randomization is not required to achieve optimal value.</li>
-<li>This simplifies value and policy iteration.</li>
-</ul>
-</section>
-<section id="value-iteration" class="slide level2">
+<section id="value-iteration" class="slide level2 rl30-slide">
 <h2>Value Iteration</h2>
+<p><strong>Value iteration</strong> repeatedly replaces each value by its best lookahead score. A <strong>sweep</strong> updates every nonterminal state once.</p>
 <div class="pseudo-code">
 <div class="pseudo-line">
-<span class="pseudo-kw">function</span> <span class="pseudo-fn">ValueIteration</span>(<span class="pseudo-var">MDP</span>, <span class="pseudo-var">gamma</span>)
+<span class="pseudo-var">V</span> <span class="pseudo-op">=</span> <span class="pseudo-num">0</span> <span class="pseudo-kw">for all</span> states, including terminal <span class="pseudo-var">F</span>
 </div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">V</span>(<span class="pseudo-var">s</span>) <span class="pseudo-op">=</span> <span class="pseudo-num">0</span> <span class="pseudo-kw">for all</span> <span class="pseudo-var">states</span>
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">repeat</span> <span class="pseudo-kw">until</span> <span class="pseudo-var">V</span> <span class="pseudo-op">converges</span>
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-kw">for each</span> <span class="pseudo-var">state</span> <span class="pseudo-var">s</span>
-</div>
-<div class="pseudo-line fragment indent-3">
-<span class="pseudo-var">V</span>(<span class="pseudo-var">s</span>) <span class="pseudo-op">=</span> <span class="pseudo-fn">max</span><sub>a</sub> Σ<sub>s’</sub> <span class="pseudo-fn">P</span>(<span class="pseudo-var">s’</span>|<span class="pseudo-var">s</span>,<span class="pseudo-var">a</span>)[<span class="pseudo-fn">R</span>(<span class="pseudo-var">s</span>,<span class="pseudo-var">a</span>) + <span class="pseudo-var">gamma</span><span class="pseudo-var">V</span>(<span class="pseudo-var">s’</span>)]
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">return</span> greedy policy from <span class="pseudo-var">V</span>
-</div>
-</div>
-</section>
-<section id="policy-iteration" class="slide level2">
-<h2>Policy Iteration</h2>
-<div class="pseudo-code">
 <div class="pseudo-line">
-<span class="pseudo-kw">function</span> <span class="pseudo-fn">PolicyIteration</span>(<span class="pseudo-var">MDP</span>, <span class="pseudo-var">gamma</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">pi</span> <span class="pseudo-op">=</span> arbitrary policy
-</div>
-<div class="pseudo-line fragment indent-1">
 <span class="pseudo-kw">repeat</span>
 </div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-var">V</span><sup>π</sup> <span class="pseudo-op">=</span> <span class="pseudo-fn">PolicyEvaluation</span>(<span class="pseudo-var">pi</span>)
+<div class="pseudo-line fragment indent-1" data-fragment-index="0">
+<span class="pseudo-var">old</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">copy</span>(<span class="pseudo-var">V</span>)
 </div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-var">piNew</span>(<span class="pseudo-var">s</span>) <span class="pseudo-op">=</span> <span class="pseudo-fn">argmax</span><sub>a</sub> Σ<sub>s’</sub> <span class="pseudo-fn">P</span>(<span class="pseudo-var">s’</span>|<span class="pseudo-var">s</span>,<span class="pseudo-var">a</span>)[<span class="pseudo-fn">R</span>(<span class="pseudo-var">s</span>,<span class="pseudo-var">a</span>) + <span class="pseudo-var">gamma</span><span class="pseudo-var">V</span><sup>π</sup>(<span class="pseudo-var">s’</span>)]
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-kw">for each</span> nonterminal state <span class="pseudo-var">s</span>
 </div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-kw">if</span> <span class="pseudo-var">piNew</span> <span class="pseudo-op">==</span> <span class="pseudo-var">pi</span> <span class="pseudo-kw">return</span> <span class="pseudo-var">pi</span>
+<div class="pseudo-line fragment indent-2" data-fragment-index="2">
+<span class="pseudo-var">V</span>(<span class="pseudo-var">s</span>) <span class="pseudo-op">=</span> <span class="pseudo-fn">max</span><sub>a</sub> <span class="pseudo-fn">LookAhead</span>(<span class="pseudo-var">s</span>, <span class="pseudo-var">a</span>, <span class="pseudo-var">old</span>)
 </div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-var">pi</span> <span class="pseudo-op">=</span> <span class="pseudo-var">piNew</span>
+<div class="pseudo-line fragment" data-fragment-index="3">
+<span class="pseudo-kw">until</span> <span class="pseudo-fn">largestChange</span>(<span class="pseudo-var">V</span>, <span class="pseudo-var">old</span>) <span class="pseudo-op">&lt;</span> <span class="pseudo-var">threshold</span>
+</div>
+<div class="pseudo-line fragment" data-fragment-index="4">
+<span class="pseudo-kw">return</span> <span class="pseudo-fn">GreedyPolicy</span>(<span class="pseudo-var">V</span>)
 </div>
 </div>
+<p><code>largestChange</code> is the largest absolute value change across states. <code>threshold</code> is a chosen small positive stopping tolerance.</p>
+<div class="takeaway">
+<p>Every update in this sweep reads <code>old</code>. The terminal value stays zero. We call the estimates after <span class="math inline">k</span> sweeps <span class="math inline">V_k</span>.</p>
+</div>
+<aside class="notes">
+<p>This is synchronous value iteration, matching the numerical walkthrough. An in-place implementation is another valid variant but yields different intermediate sweeps. max ranges over actions available at s. With zero initial values, V_k can also be interpreted as an optimal k-step truncated-horizon value. A positive stopping threshold gives approximate values in general; it is not proof of exact convergence or a universal policy-error bound. Our small example happens to reach an exact fixed point after two sweeps. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/mdp/value-iteration.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="value-vs.-policy-iteration" class="slide level2">
-<h2>Value vs.&nbsp;Policy Iteration</h2>
+<section id="value-trace" class="slide level2 rl30-slide">
+<h2>Two Value-Iteration Sweeps</h2>
+<p>Use <span class="math inline">\gamma=0.9</span>. Each sweep uses the preceding values, and <span class="math inline">V_k(F)=0</span> throughout.</p>
+<div class="r-stack rl30-trace">
+<div class="fragment fade-out" data-fragment-index="0">
+<p><img data-src="imgs/drawio/lec30/value-zero.png" class="rl30-map" alt="All initial values are zero. The delivery model's four rewards and arrows remain visible."></p>
+<p>Initialize <span class="math inline">V_0(D)=V_0(J)=V_0(F)=0</span>.</p>
+</div>
+<div class="fragment current-visible" data-fragment-index="0">
+<p><img data-src="imgs/drawio/lec30/value-one.png" class="rl30-map" alt="After the first sweep D has value 4 and J has value 8. Their best one-step actions are small and deliver."></p>
+<p><span class="math display">V_1(D)=\max\{4,-1\}=4,\qquad
+V_1(J)=\max\{8,-1\}=8.</span></p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><img data-src="imgs/drawio/lec30/value-two.png" class="rl30-map" alt="After the second sweep D has value 6.2, J has value 8, and F stays zero. Pickup followed by deliver is highlighted."></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Sweep</th>
+<th><span class="math inline">V_k(D)</span></th>
+<th><span class="math inline">V_k(J)</span></th>
+<th><span class="math inline">V_k(F)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">0</span></td>
+<td><span class="math inline">0</span></td>
+<td><span class="math inline">0</span></td>
+<td><span class="math inline">0</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">1</span></td>
+<td><span class="math inline">4</span></td>
+<td><span class="math inline">8</span></td>
+<td><span class="math inline">0</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">2</span></td>
+<td><span class="math inline">\max\{4,-1+0.9\cdot8\}=6.2</span></td>
+<td><span class="math inline">\max\{8,-1+0.9\cdot4\}=8</span></td>
+<td><span class="math inline">0</span></td>
+</tr>
+</tbody>
+</table>
+<p>Further sweeps leave these values unchanged in this example.</p>
+</div>
+</div>
+<aside class="notes">
+<p>Frame two’s values are all calculated from V0, not immediately updated entries. Frame three uses V1(D)=4 and V1(J)=8. The last table preserves every sweep in the printable version and thumbnails. Checking the next sweep gives max(4,-1+.9<em>8)=6.2 at D and max(8,-1+.9</em>6.2)=8 at J. Do not generalize this example’s two-sweep convergence to arbitrary MDPs.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="uncertainty" class="slide level2 rl30-slide">
+<h2>When a Move Is Uncertain</h2>
+<p><strong>Modified scenario:</strong> pickup from <span class="math inline">D</span> reaches <span class="math inline">J</span> with probability <span class="math inline">0.8</span>, but leaves the robot at <span class="math inline">D</span> with probability <span class="math inline">0.2</span>. Either outcome costs <span class="math inline">1</span> point.</p>
+<p><img data-src="imgs/drawio/lec30/uncertain-pickup.png" class="rl30-uncertainty" alt="For the modified pickup action, probability 0.8 leads from D to J and probability 0.2 returns to D. Current input value estimates are 4 at D and 8 at J."></p>
+<p>Using current estimates <span class="math inline">V(D)=4</span> and <span class="math inline">V(J)=8</span>:</p>
+<p><span class="math display">\operatorname{LookAhead}(D,\text{pickup},V)
+=-1+0.9(0.8\cdot8+0.2\cdot4)=5.48.</span></p>
+<div class="takeaway">
+<p>Average over outcomes using their probabilities. This is one lookahead calculation, not the modified model’s converged value.</p>
+</div>
+<aside class="notes">
+<p>This slide deliberately changes only the pickup transition; the deterministic base model resumes afterward. The reward remains -1 for either possible successor, so R(D,pickup)=-1. The estimates 4 and 8 are inputs to the calculation, not asserted optimal values of the modified model. We include the stay-at-D outcome rather than silently dropping failure probability. If iterated to convergence in this variant, the best D value would be 4.76/.82, about 5.804878, not 5.48; that solution is not needed here.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="policy-iteration" class="slide level2 rl30-slide">
+<h2>Policy Iteration</h2>
+<p><strong>Policy iteration</strong> alternates <strong>evaluation</strong>, computing the current policy’s values, with <strong>improvement</strong>, choosing better actions using those values.</p>
+<div class="pseudo-code">
+<div class="pseudo-line">
+<span class="pseudo-var">pi</span> <span class="pseudo-op">=</span> any deterministic policy
+</div>
+<div class="pseudo-line">
+<span class="pseudo-kw">repeat</span>
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="0">
+<span class="pseudo-var">V</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">EvaluatePolicy</span>(<span class="pseudo-var">pi</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="1">
+<span class="pseudo-var">newPi</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">GreedyPolicy</span>(<span class="pseudo-var">V</span>, <span class="pseudo-var">keepTies</span><span class="pseudo-op">=</span><span class="pseudo-var">pi</span>)
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="2">
+<span class="pseudo-kw">if</span> <span class="pseudo-var">newPi</span> <span class="pseudo-op">==</span> <span class="pseudo-var">pi</span>: <span class="pseudo-kw">return</span> <span class="pseudo-var">pi</span>
+</div>
+<div class="pseudo-line fragment indent-1" data-fragment-index="3">
+<span class="pseudo-var">pi</span> <span class="pseudo-op">=</span> <span class="pseudo-var">newPi</span>
+</div>
+</div>
+<p><code>EvaluatePolicy</code> solves the fixed-policy Bellman equations. When several actions tie for the largest score, <code>GreedyPolicy</code> keeps the current action.</p>
+<div class="takeaway">
+<p>Evaluation predicts the current policy’s long-term outcome. Improvement compares all available first actions while using those evaluated future values.</p>
+</div>
+<aside class="notes">
+<p>Exact evaluation can solve a linear system or iterate the fixed-policy Bellman expectation updates to convergence. It is more than one value-iteration-style sweep. Stable tie handling avoids cycling among policies with equal value. There is no decision to evaluate or improve at F. Model-free algorithms later learn from sampled experience rather than requiring an exact model-based EvaluatePolicy call. Reference: https://inst.eecs.berkeley.edu/~cs188/textbook/mdp/policies-iteration.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="policy-evaluation" class="slide level2 rl30-slide">
+<h2>Evaluating the Current Policy</h2>
+<p>Return to the <strong>original certain-outcome model</strong>. Start with policy <span class="math inline">\pi_0</span>: <span class="math inline">\pi_0(D)=\text{small}</span> and <span class="math inline">\pi_0(J)=\text{return}</span>.</p>
+<p><img data-src="imgs/drawio/lec30/policy-initial.png" class="rl30-map" alt="The initial policy chooses the small job from D and returns from J to D. Its evaluated values are 4 at D, 2.6 at J, and 0 at F."></p>
+<p><span class="math display">V^{\pi_0}(D)=4+0.9V^{\pi_0}(F)=4.</span></p>
+<p><span class="math display">V^{\pi_0}(J)=-1+0.9V^{\pi_0}(D)=2.6.</span></p>
+<p>These values describe <strong>following <span class="math inline">\pi_0</span></strong>, including its poor choice to return from the pickup stop.</p>
+<aside class="notes">
+<p>The terminal value V^pi0(F)=0 is shown in the diagram and follows from the reward timing established earlier. Starting from J, this policy returns to D with reward -1 and then completes the small job for 4, giving -1+.9*4=2.6. Even if a trajectory starting at D never visits J under pi0, policy evaluation still defines what would happen when starting at J. A policy is an action rule for every state.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="policy-improvement" class="slide level2 rl30-slide">
+<h2>Improving the Policy</h2>
+<p>Use the evaluated values <span class="math inline">V^{\pi_0}(D)=4</span>, <span class="math inline">V^{\pi_0}(J)=2.6</span>, and <span class="math inline">V^{\pi_0}(F)=0</span>.</p>
+<p><img data-src="imgs/drawio/lec30/policy-first-improvement.png" class="rl30-map rl30-small-map" alt="The first improved policy keeps the small job at D, but switches J from return to deliver. The new deliver arrow is highlighted."></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>State</th>
+<th>Current action’s score</th>
+<th>Alternative score</th>
+<th>New action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">D</span></td>
+<td>small: <span class="math inline">4</span></td>
+<td>pickup: <span class="math inline">-1+0.9\cdot2.6=1.34</span></td>
+<td>small</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">J</span></td>
+<td>return: <span class="math inline">-1+0.9\cdot4=2.6</span></td>
+<td>deliver: <span class="math inline">8</span></td>
+<td>deliver</td>
+</tr>
+</tbody>
+</table>
+<p>Only <span class="math inline">J</span> changes at first. Reevaluate this new policy: its values are <span class="math inline">V(D)=4</span> and <span class="math inline">V(J)=8</span>.</p>
+<p>The next improvement changes <span class="math inline">D</span> to pickup, since <span class="math inline">-1+0.9\cdot8=6.2&gt;4</span>.</p>
+<aside class="notes">
+<p>All action scores in the table use the previous fixed policy’s values, not a partially improved successor policy. Call the first improved policy pi1: small at D and deliver at J. Evaluating pi1 gives (4,8,0). Improving again gives pi2: pickup at D and deliver at J. Evaluating pi2 gives (6.2,8,0). The following slide checks stability under this final evaluation. This explains why a policy-improvement round can change actions in stages.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="optimal-policy" class="slide level2 rl30-slide">
+<h2>The Final Policy</h2>
+<p>Both methods choose pickup at <span class="math inline">D</span> and deliver at <span class="math inline">J</span>.</p>
+<p><img data-src="imgs/drawio/lec30/optimal-policy.png" class="rl30-map" alt="The final policy highlights pickup and deliver, with optimal values 6.2 at D, 8 at J, and 0 at F. The unselected return and small-job options remain visible."></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>State</th>
+<th>Chosen action’s score</th>
+<th>Other action’s score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">D</span></td>
+<td>pickup: <span class="math inline">-1+0.9\cdot8=6.2</span></td>
+<td>small: <span class="math inline">4</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">J</span></td>
+<td>deliver: <span class="math inline">8</span></td>
+<td>return: <span class="math inline">-1+0.9\cdot6.2=4.58</span></td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>An <strong>optimal policy</strong> <span class="math inline">\pi^*</span> maximizes expected return from every state. Its values are <span class="math inline">V^*</span>. No action changes here.</p>
+</div>
+<aside class="notes">
+<p>The final values satisfy the Bellman optimality fixed point with V(F)=0. The pickup-return cycle costs a point on every transition and cannot outperform delivery. Contrast this with the supplied example, where a positive-reward cycle made continuing more attractive than the nominal terminal rewards. We use the new model consistently rather than carrying over that example’s numbers. This optimum concerns the stated reward objective, not an independently verified real-world task.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="methods" class="slide level2 rl30-slide">
+<h2>Value Iteration and Policy Iteration</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -391,125 +682,77 @@ Q^\pi(s,a)=
 <thead>
 <tr class="header">
 <th>Method</th>
-<th>Main update</th>
-<th>Tradeoff</th>
+<th>Main operation</th>
+<th>Practical tradeoff</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Value iteration</td>
-<td>Repeated Bellman optimality backups</td>
-<td>Cheap iterations, many iterations</td>
+<td>Repeated best-action value updates</td>
+<td>Cheap sweeps, potentially many of them</td>
 </tr>
 <tr class="even">
 <td>Policy iteration</td>
-<td>Evaluate policy, then improve policy</td>
-<td>Fewer iterations, costlier iterations</td>
+<td>Evaluate a policy, then improve actions</td>
+<td>More work per round, often fewer rounds</td>
 </tr>
 </tbody>
 </table>
-<p>Both converge to an optimal policy in finite discounted MDPs.</p>
-</section>
-<section id="example-mdp" class="slide level2">
-<h2>Example MDP</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec28/example-mdp.svg" alt="Example Markov decision process with states s1 s2 s3 and rewards on transitions"></p>
-</div>
-<p>Discount factor: <span class="math inline">\gamma=0.9</span>.</p>
-</section>
-<section id="value-iteration-iteration-1" class="slide level2">
-<h2>Value Iteration: Iteration 1</h2>
-<p>Initialize:</p>
-<p><span class="math display">
-V_0(s_1)=V_0(s_2)=V_0(s_3)=0
-</span></p>
-<div class="fragment">
-<p><span class="math display">
-V_1(s_1)=\max\{5+0,\;10+0\}=10
-</span></p>
-</div>
-<div class="fragment">
-<p><span class="math display">
-V_1(s_2)=\max\{-1+0,\;2+0\}=2
-</span></p>
-</div>
-<p><span class="math display">
-V_1(s_3)=0
-</span></p>
-</section>
-<section id="value-iteration-iteration-2" class="slide level2">
-<h2>Value Iteration: Iteration 2</h2>
-<p>Using <span class="math inline">V_1(s_1)=10</span>, <span class="math inline">V_1(s_2)=2</span>, <span class="math inline">V_1(s_3)=0</span>:</p>
-<div class="fragment">
-<p><span class="math display">
-V_2(s_1)=\max\{5+0.9(2),\;10+0.9(0)\}=10
-</span></p>
-</div>
-<div class="fragment">
-<p><span class="math display">
-V_2(s_2)=\max\{-1+0.9(10),\;2+0.9(0)\}=8
-</span></p>
-</div>
-<p><span class="math display">
-V_2(s_3)=0
-</span></p>
-</section>
-<section id="value-iteration-iteration-3" class="slide level2">
-<h2>Value Iteration: Iteration 3</h2>
-<p>Using <span class="math inline">V_2(s_1)=10</span>, <span class="math inline">V_2(s_2)=8</span>, <span class="math inline">V_2(s_3)=0</span>:</p>
-<p><span class="math display">
-V_3(s_1)=\max\{5+0.9(8),\;10+0.9(0)\}=12.2
-</span></p>
-<p><span class="math display">
-V_3(s_2)=\max\{-1+0.9(10),\;2+0.9(0)\}=8
-</span></p>
-<p><span class="math display">
-V_3(s_3)=0
-</span></p>
-<div class="takeaway">
-<p>Repeat until the values stabilize.</p>
-</div>
-</section>
-<section id="policy-iteration-example" class="slide level2">
-<h2>Policy Iteration Example</h2>
-<p>Initial policy:</p>
-<p><span class="math display">
-\pi(s_1)=a_1,\qquad \pi(s_2)=a_2,\qquad \pi(s_3)=a_1
-</span></p>
-<p>Policy evaluation:</p>
-<p><span class="math display">
-V^\pi(s_1)=5+0.9V^\pi(s_2)
-</span></p>
-<p><span class="math display">
-V^\pi(s_2)=2+0.9V^\pi(s_3),\qquad V^\pi(s_3)=0
-</span></p>
-<p>So:</p>
-<p><span class="math display">
-V^\pi(s_1)=6.8,\qquad V^\pi(s_2)=2,\qquad V^\pi(s_3)=0
-</span></p>
-</section>
-<section id="policy-improvement" class="slide level2">
-<h2>Policy Improvement</h2>
-<p>Use the evaluated values:</p>
-<p><span class="math display">
-\pi_{new}(s_1)=\arg\max\{5+0.9(2),\;10+0.9(0)\}=a_2
-</span></p>
-<p><span class="math display">
-\pi_{new}(s_2)=\arg\max\{-1+0.9(6.8),\;2+0.9(0)\}=a_1
-</span></p>
-<div class="takeaway">
-<p>After evaluation, improvement makes the policy greedy with respect to the current value function.</p>
-</div>
-</section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
+<p>For <strong>finite states and actions</strong>, <strong>bounded rewards</strong>, and <span class="math inline">0\leq\gamma&lt;1</span>:</p>
 <ul>
-<li>RL learns policies from interaction and reward.</li>
-<li>MDPs formalize states, actions, transitions, rewards, and discounting.</li>
-<li>Bellman equations express values recursively.</li>
-<li>Value iteration updates values directly.</li>
-<li>Policy iteration alternates evaluation and improvement.</li>
+<li>Value-iteration values approach <span class="math inline">V^*</span>.</li>
+<li>Exact policy iteration, keeping the old action on ties, reaches an optimal policy after finitely many changes.</li>
+<li>At least one deterministic optimal policy exists in this setting.</li>
 </ul>
+<div class="takeaway">
+<p>Both require a model of consequences. Learning that model, or learning decisions directly from samples, is the next part of RL.</p>
+</div>
+<aside class="notes">
+<p>These guarantees refer to finite discounted MDPs with the usual unconstrained expected-return objective. Do not extend the deterministic-policy statement to every finite-horizon, constrained, or undiscounted formulation without the needed qualifications. A finite value-change stopping threshold in value iteration generally gives approximate values. There is no universal runtime winner: policy evaluation can be expensive and implementations may use approximate evaluation. References: the supplied Beamer comparison and the Berkeley value/policy iteration notes.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="quick-check" class="slide level2 rl30-slide scrollable">
+<h2>Quick Check</h2>
+<ol type="1">
+<li>If battery level affects which actions succeed, is location alone a sufficient Markov state?</li>
+<li>Why is <span class="math inline">V(F)=0</span> even though finishing gives a positive reward?</li>
+<li>Why does our value-iteration sweep make a copy called <code>old</code>?</li>
+</ol>
+<div class="fragment" data-fragment-index="0">
+<p><strong>1. No.</strong> Include battery level, or another sufficient summary, to predict consequences from the current state and action.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>2. The reward arrives on entry.</strong> From the finished state onward there are no more rewards. Counting it again would double-count it.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p><strong>3. To use one consistent preceding estimate.</strong> This is the synchronous update shown here. In-place updates are a different valid variant with different intermediate values.</p>
+</div>
+</section>
+<section id="takeaways" class="slide level2 rl30-slide">
+<h2>Takeaways</h2>
+<ul>
+<li>RL improves action choices through interaction and reward.</li>
+<li>An MDP specifies states, actions, transition probabilities, rewards, and discounting.</li>
+<li>A policy chooses actions. Its value predicts expected return.</li>
+<li>Bellman equations connect current value to successor-state values.</li>
+<li>Value iteration updates estimates using the best lookahead score.</li>
+<li>Policy iteration evaluates a policy, then improves its choices.</li>
+</ul>
+<div class="takeaway">
+<p>Separate immediate reward, long-term return, and the policy that determines future actions.</p>
+</div>
+<p>Next: deciding when to try an uncertain action rather than always using the current favorite.</p>
 <p><a href="../asset_credits.html#lec30" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
 
 
@@ -690,6 +933,13 @@ V^\pi(s_1)=6.8,\qquad V^\pi(s_2)=2,\qquad V^\pi(s_3)=0
         // devices. It is advisable to set this to a lower number than
         // viewDistance in order to save resources.
         mobileViewDistance: 2,
+
+        // Enable scroll view
+        view: 'slide',
+        scrollProgress: true,
+        scrollActivationWidth: 0,
+        scrollSnap: 'mandatory',
+        scrollLayout: 'full',
 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be

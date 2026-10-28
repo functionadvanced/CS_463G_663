@@ -35,6 +35,7 @@
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="slides_styles.css">
+  <link rel="stylesheet" href="lec29_slides_styles.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -163,13 +164,36 @@ Peizhong Ju
 
   <p class="date">Fall 2026</p>
 </section>
-<section id="convolutional-neural-networks" class="slide level2 section-slide">
-<h2>Convolutional Neural Networks</h2>
-<p>CNNs are neural networks designed for grid-like data such as images.</p>
+<section id="image-input" class="slide level2 cnn29-slide">
+<h2>Images as Inputs</h2>
+<p>A <strong>convolutional neural network (CNN)</strong> learns local patterns in grid-like data, including images.</p>
+<div class="cnn29-digit-strip">
+<p><img data-src="imgs/lec24/mnist-notebook-examples.png" alt="Five MNIST handwritten digits: 7, 8, 3, 2, and 6."></p>
+</div>
+<p>The <strong>MNIST</strong> dataset, short for <strong>Modified National Institute of Standards and Technology</strong>, contains handwritten digits.</p>
+<ul>
+<li>Each grayscale image has <span class="math inline">28\times28</span> <strong>pixels</strong>, or brightness values.</li>
+<li>The target is one digit label from <span class="math inline">0</span> to <span class="math inline">9</span>.</li>
+<li>Our notebook predicts one digit per image using ten output scores.</li>
+</ul>
+<aside class="notes">
+<p>The digit pixels are reused unchanged from the saved KNN notebook figure in Lecture 24. The layout crops its old prediction headings, so they cannot be mistaken for CNN results. The MNIST expansion is the customary short name of the dataset; its creators modified the original NIST data. Source: https://docs.pytorch.org/vision/stable/generated/torchvision.datasets.MNIST.html. The notebook’s one-digit classification task is separate from Homework 5. Do not preview the homework’s paired-digit construction here.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="why-not-fully-connected-for-images" class="slide level2">
-<h2>Why Not Fully Connected for Images?</h2>
-<p>Fully connected networks flatten images.</p>
+<section id="local-sharing" class="slide level2 cnn29-slide">
+<h2>Local Connections and Shared Weights</h2>
+<p>A <strong>fully connected</strong>, or <strong>dense</strong>, layer connects every input value to every output unit. Flattening rearranges the pixels into a vector, without deleting their values.</p>
+<p>CNNs build in two structural choices:</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
@@ -177,230 +201,422 @@ Peizhong Ju
 </colgroup>
 <thead>
 <tr class="header">
-<th>Problem</th>
-<th>Consequence</th>
+<th>Idea</th>
+<th>Meaning for an image</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Spatial structure is lost</td>
-<td>Nearby pixels are no longer treated as nearby</td>
+<td><strong>Local connections</strong></td>
+<td>A unit examines a small neighboring patch of pixels.</td>
 </tr>
 <tr class="even">
-<td>Too many parameters</td>
-<td>Large images become expensive</td>
-</tr>
-<tr class="odd">
-<td>No locality bias</td>
-<td>The model must relearn local patterns everywhere</td>
+<td><strong>Weight sharing</strong></td>
+<td>The same learned coefficients examine patches at different positions.</td>
 </tr>
 </tbody>
 </table>
+<p>A <strong>filter</strong> is a small array of weights. One <span class="math inline">3\times3</span> grayscale filter has <strong>9 weights and 1 bias</strong>, reused across the image.</p>
 <div class="takeaway">
-<p>CNNs keep the spatial structure and reuse small filters across the image.</p>
+<p>Training learns these shared weights. Their gradient contributions accumulate across the positions where the filter operates.</p>
 </div>
+<aside class="notes">
+<p>Flattening is an invertible rearrangement when the original shape is known. The issue is that an unrestricted dense layer does not enforce two-dimensional locality or shared weights. Convolution imposes those structural assumptions. The count of ten parameters is for one ordinary single-input-channel filter with a bias, independent of image size. It is not the parameter count of an entire CNN. Source: the supplied Spring 2025 CNN Beamer source, revised manually, and https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="typical-cnn-pipeline" class="slide level2">
-<h2>Typical CNN Pipeline</h2>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec27/typical-cnn-pipeline.svg" alt="Typical CNN pipeline from image to convolution, ReLU, pooling, more convolution layers, flatten, fully connected, and class scores"></p>
-</div>
+<section id="kernel-patch" class="slide level2 cnn29-slide">
+<h2>Kernels, Patches, and Feature Maps</h2>
+<p>A <strong>kernel</strong>, also called a <strong>filter</strong>, is a small array of weights. A <strong>patch</strong> is the input window under it. A <strong>feature map</strong> records the resulting value at each position.</p>
+<p><img data-src="imgs/drawio/lec29/convolution-setup.png" class="cnn29-convolution" alt="A five-by-five input I, a three-by-three kernel K, and a three-by-three output O. The top-left input patch is highlighted."></p>
+<p>For this arithmetic example, fix the displayed kernel and use bias <span class="math inline">b=0</span>. Slide it one pixel at a time, with no extra border pixels.</p>
+<aside class="notes">
+<p>These constructed grids retain the numerical example from the original Beamer lecture. The numbers are neither measured image intensities nor trained CNN weights. Actual CNN training learns kernel weights and biases using backpropagation. The central coefficient -4 and the four neighboring coefficients 1 make a local contrast filter. Do not call every kernel an edge detector or imply that all learned filters have this fixed form.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="what-is-a-convolution" class="slide level2 compact">
-<h2>What Is a Convolution?</h2>
-<p>A convolution slides a small filter across an image.</p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec27/what-is-a-convolution.svg" alt="A 3 by 3 convolution window slides across an input image and writes one value into a feature map"></p>
+<section id="convolution-trace" class="slide level2 cnn29-slide">
+<h2>A Filter Moving Across the Image</h2>
+<p>At each position, multiply matching entries and add. We number rows and columns starting at <span class="math inline">0</span>.</p>
+<div class="r-stack cnn29-trace">
+<div class="fragment fade-out" data-fragment-index="0">
+<p><img data-src="imgs/drawio/lec29/convolution-first.png" class="cnn29-convolution" alt="The top-left three-by-three patch produces output O at row zero, column zero, equal to 3."></p>
+<p><span class="math inline">O_{0,0}=2+0+3+2-4\cdot1=3</span>.</p>
 </div>
+<div class="fragment current-visible" data-fragment-index="0">
+<p><img data-src="imgs/drawio/lec29/convolution-next.png" class="cnn29-convolution" alt="The kernel shifts right one column. The next output is minus 9, while the preceding output remains 3."></p>
+<p><span class="math inline">O_{0,1}=0+1+1+1-4\cdot3=-9</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><img data-src="imgs/drawio/lec29/convolution-complete.png" class="cnn29-convolution" alt="The completed output has rows 3, minus 9, 3; minus 4, 3, 3; and 3, minus 3, 3."></p>
+<p>Repeat for every valid patch. <strong>The kernel coefficients stay the same.</strong></p>
+</div>
+</div>
+<aside class="notes">
+<p>The compact arithmetic shows only the four nonzero neighboring contributions and the center term. Coefficients at the patch’s four corners are zero. Frame one uses top=2, left=0, right=3, bottom=2, center=1. Frame two uses top=0, left=1, right=1, bottom=1, center=3. The final feature map is [[3,-9,3],[-4,3,3],[3,-3,3]]. The teaching example has one input channel, stride 1, no padding, and zero bias. The PyTorch Conv2d cross-correlation convention agrees with this calculation.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="convolution-formula" class="slide level2 compact">
-<h2>Convolution Formula</h2>
-<p>At each position, it computes a dot product:</p>
+<section id="convolution-rule" class="slide level2 cnn29-slide">
+<h2>The Convolution Rule</h2>
+<p>For one input channel, a square <span class="math inline">f\times f</span> kernel, and one-pixel steps:</p>
 <p><span class="math display">
-(I*K)(i,j)=\sum_m\sum_n I(i+m,j+n)K(m,n)
+O_{i,j}=b+\sum_{u=0}^{f-1}\sum_{v=0}^{f-1}
+I_{i+u,j+v}K_{u,v}.
 </span></p>
-<p>Example edge detector:</p>
-<p><span class="math display">
-K=
-\begin{bmatrix}
--1 &amp; -1 &amp; -1\\
-0 &amp; 0 &amp; 0\\
-1 &amp; 1 &amp; 1
-\end{bmatrix}
-</span></p>
+<ul>
+<li><span class="math inline">I</span> is the input, <span class="math inline">K</span> the kernel, <span class="math inline">O</span> the output map, and <span class="math inline">b</span> a shared bias.</li>
+<li><span class="math inline">(i,j)</span> locates the patch’s top-left corner.</li>
+<li><span class="math inline">(u,v)</span> indexes an entry within the kernel, starting at <span class="math inline">(0,0)</span>.</li>
+</ul>
+<p>The numerical example has <span class="math inline">f=3</span> and <span class="math inline">b=0</span>.</p>
+<div class="takeaway">
+<p>Each output value is a small weighted sum. Backpropagation learns the kernel weights and bias just as it learns dense-layer parameters.</p>
+</div>
+<aside class="notes">
+<p>This formula assumes stride 1, no padding, dilation 1, and one input channel. The same formula works with implicit padded input values when padding is added. Strictly, applying the kernel without flipping it is cross-correlation. PyTorch and ordinary CNN terminology call this operation convolution. The distinction does not require changing the kernel or the numerical example. Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="convolution-algorithm" class="slide level2">
-<h2>Convolution Algorithm</h2>
-<div class="pseudo-code">
-<div class="pseudo-line">
-<span class="pseudo-kw">function</span> <span class="pseudo-fn">Convolve</span>(<span class="pseudo-var">image</span>, <span class="pseudo-var">kernel</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-var">featureMap</span> <span class="pseudo-op">=</span> empty grid
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">for each</span> valid position (<span class="pseudo-var">i</span>, <span class="pseudo-var">j</span>)
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-var">patch</span> <span class="pseudo-op">=</span> <span class="pseudo-fn">window</span>(<span class="pseudo-var">image</span>, <span class="pseudo-var">i</span>, <span class="pseudo-var">j</span>)
-</div>
-<div class="pseudo-line fragment indent-2">
-<span class="pseudo-var">featureMap</span>[<span class="pseudo-var">i</span>, <span class="pseudo-var">j</span>] <span class="pseudo-op">=</span> <span class="pseudo-fn">dot</span>(<span class="pseudo-var">patch</span>, <span class="pseudo-var">kernel</span>)
-</div>
-<div class="pseudo-line fragment indent-1">
-<span class="pseudo-kw">return</span> <span class="pseudo-var">featureMap</span>
-</div>
-</div>
-</section>
-<section id="convolution-example" class="slide level2">
-<h2>Convolution Example</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="input-i">Input <span class="math inline">I</span></h3>
-<p><span class="math display">
-\begin{bmatrix}
-1&amp;2&amp;0&amp;2&amp;1\\
-0&amp;1&amp;3&amp;1&amp;2\\
-1&amp;2&amp;1&amp;0&amp;0\\
-2&amp;1&amp;2&amp;1&amp;3\\
-0&amp;1&amp;2&amp;2&amp;1
-\end{bmatrix}
-</span></p>
-</div><div class="column" style="width:48%;">
-<h3 id="kernel-k">Kernel <span class="math inline">K</span></h3>
-<p><span class="math display">
-\begin{bmatrix}
-0&amp;1&amp;0\\
-1&amp;-4&amp;1\\
-0&amp;1&amp;0
-\end{bmatrix}
-</span></p>
-</div></div>
-</section>
-<section id="compute-one-output" class="slide level2">
-<h2>Compute One Output</h2>
-<p>Top-left patch:</p>
-<p><span class="math display">
-\begin{bmatrix}
-1&amp;2&amp;0\\
-0&amp;1&amp;3\\
-1&amp;2&amp;1
-\end{bmatrix}
-</span></p>
-<div class="fragment">
-<p><span class="math display">
-O(1,1)=
-1(0)+2(1)+0(0)+0(1)+1(-4)+3(1)+1(0)+2(1)+1(0)
-</span></p>
-</div>
-<div class="fragment takeaway">
-<p><span class="math display">
-O(1,1)=3
-</span></p>
-</div>
-</section>
-<section id="stride-and-padding" class="slide level2">
+<section id="stride-padding" class="slide level2 cnn29-slide">
 <h2>Stride and Padding</h2>
-<div class="columns two-column-balance">
-<div class="column" style="width:48%;">
-<h3 id="stride">Stride</h3>
-<p>How many pixels the filter moves at each step.</p>
-<p>Larger stride means smaller output.</p>
-</div><div class="column" style="width:48%;">
-<h3 id="padding">Padding</h3>
-<p>Extra pixels, often zeros, around the image boundary.</p>
-<p>Padding controls edge behavior and output size.</p>
-</div></div>
+<p><strong>Stride</strong> <span class="math inline">s</span> is the number of pixels moved per step. <strong>Padding</strong> <span class="math inline">p</span> adds border values, here <span class="math inline">p</span> rows or columns of zeros on every side.</p>
+<p><img data-src="imgs/drawio/lec29/stride-padding.png" class="cnn29-wide" alt="Left: two three-by-three windows on a five-by-five input start two columns apart, illustrating stride two. Right: a three-by-three input gains a one-pixel zero border, becoming five by five."></p>
+<ul>
+<li>Larger stride usually reduces the output’s height and width.</li>
+<li>Padding lets filters cover boundary pixels and can preserve spatial size.</li>
+</ul>
+<aside class="notes">
+<p>Stride is measured along both spatial dimensions in our square examples. The two outlined windows on the left are the first two positions in the top row for stride 2; two more windows start two rows lower. The right diagram illustrates padding itself, not a second stride-2 calculation. Its original input is 3 by 3 and its padded array is 5 by 5. The next slide separately calculates the convolution’s output dimensions. Source: the supplied Beamer stride/padding frames, redrawn and clarified.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="output-feature-map-size" class="slide level2">
-<h2>Output Feature Map Size</h2>
-<p>For input size <span class="math inline">n \times n</span>, filter size <span class="math inline">f \times f</span>, stride <span class="math inline">s</span>, padding <span class="math inline">p</span>:</p>
+<section id="output-size" class="slide level2 cnn29-slide">
+<h2>Output Height and Width</h2>
+<p>For a square input with side <span class="math inline">n</span>, kernel side <span class="math inline">f</span>, stride <span class="math inline">s</span>, and zero-padding width <span class="math inline">p</span>, the output side is</p>
 <p><span class="math display">
-\left\lfloor \frac{n-f+2p}{s}\right\rfloor + 1
+n_{\mathrm{out}}=\left\lfloor\frac{n+2p-f}{s}\right\rfloor+1.
 </span></p>
-<p>Example:</p>
-<p><span class="math display">
-n=5,\quad f=3,\quad p=0,\quad s=1
-</span></p>
-<p><span class="math display">
-\left\lfloor \frac{5-3+0}{1}\right\rfloor + 1=3
-</span></p>
-<p>So the output is <span class="math inline">3 \times 3</span>.</p>
-</section>
-<section id="pooling-layers" class="slide level2">
-<h2>Pooling Layers</h2>
-<p>Pooling downsamples feature maps.</p>
+<p>The floor <span class="math inline">\lfloor\cdot\rfloor</span> rounds down. Count only full kernel windows.</p>
 <table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>Pooling type</th>
-<th>Operation</th>
+<th>Input side <span class="math inline">n</span></th>
+<th>Kernel side <span class="math inline">f</span></th>
+<th>Stride <span class="math inline">s</span></th>
+<th>Padding <span class="math inline">p</span></th>
+<th>Output side</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Max pooling</td>
-<td>Keep the maximum value in each window</td>
+<td><span class="math inline">5</span></td>
+<td><span class="math inline">3</span></td>
+<td><span class="math inline">1</span></td>
+<td><span class="math inline">0</span></td>
+<td><span class="math inline">3</span></td>
 </tr>
 <tr class="even">
-<td>Average pooling</td>
-<td>Keep the average value in each window</td>
+<td><span class="math inline">5</span></td>
+<td><span class="math inline">3</span></td>
+<td><span class="math inline">2</span></td>
+<td><span class="math inline">0</span></td>
+<td><span class="math inline">2</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">28</span></td>
+<td><span class="math inline">3</span></td>
+<td><span class="math inline">1</span></td>
+<td><span class="math inline">1</span></td>
+<td><span class="math inline">28</span></td>
 </tr>
 </tbody>
 </table>
-<p>Why pool?</p>
-<ul>
-<li>Reduce computation.</li>
-<li>Reduce spatial dimensions.</li>
-<li>Add some robustness to small translations.</li>
-</ul>
-</section>
-<section id="max-pooling-example" class="slide level2">
-<h2>Max Pooling Example</h2>
-<p>Input:</p>
-<p><span class="math display">
-\begin{bmatrix}
-1&amp;3&amp;2&amp;4\\
-6&amp;2&amp;9&amp;5\\
-7&amp;4&amp;8&amp;3\\
-2&amp;6&amp;1&amp;5
-\end{bmatrix}
-</span></p>
-<p>2 by 2 max pooling with stride 2:</p>
-<div class="fragment">
-<p><span class="math display">
-\begin{bmatrix}
-\max(1,3,6,2)&amp;\max(2,4,9,5)\\
-\max(7,4,2,6)&amp;\max(8,3,1,5)
-\end{bmatrix}
-=
-\begin{bmatrix}
-6&amp;9\\
-7&amp;8
-\end{bmatrix}
-</span></p>
-</div>
-</section>
-<section id="fully-connected-layers" class="slide level2">
-<h2>Fully Connected Layers</h2>
-<p>After convolution and pooling, CNNs often flatten feature maps and use dense layers.</p>
-<div class="concept-sketch drawio-figure">
-<p><img data-src="imgs/drawio/lec27/fully-connected-layers.svg" alt="Feature maps flatten into dense layer, class logits, and softmax"></p>
-</div>
 <div class="takeaway">
-<p>Convolution extracts local features; fully connected layers combine them for the final decision.</p>
+<p>Both notebook convolutions use the last row: spatial size stays <span class="math inline">28\times28</span>.</p>
+</div>
+<aside class="notes">
+<p>This is the usual convolution shape rule with dilation fixed at 1. Rectangular inputs apply the same rule separately to height and width. A padded width of p adds p entries to both sides, hence 2p. The 3-by-3 padded example on the preceding slide would give (3+2-3)/1+1=3 output entries per side for stride 1. Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html, Shape section.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="channels" class="slide level2 cnn29-slide">
+<h2>Channels and Multiple Filters</h2>
+<p>A <strong>channel</strong> is one value plane. Grayscale has one channel. <strong>RGB</strong> means <strong>red, green, blue</strong>, with three color channels.</p>
+<p><img data-src="imgs/drawio/lec29/channels.png" class="cnn29-channels" alt="An RGB image has three input planes. One filter combines weights over all three planes and adds one bias to produce one output feature map."></p>
+<p>Each output channel uses its own learned filter, covering <strong>all input channels</strong> in an ordinary convolution.</p>
+<p>For <span class="math inline">C_{\mathrm{in}}</span> input channels and <span class="math inline">C_{\mathrm{out}}</span> output channels, an <span class="math inline">f\times f</span> layer has <span class="math inline">C_{\mathrm{out}}(C_{\mathrm{in}}f^2+1)</span> parameters, including biases.</p>
+<p>The notebook’s first layer has <span class="math inline">32(1\cdot3^2+1)=320</span> parameters and produces <strong>32 feature maps</strong>.</p>
+<aside class="notes">
+<p>The drawing illustrates the RGB case; the notebook instead starts with grayscale, so C_in=1. One ordinary filter has C_in separate f-by-f weight planes whose contributions are summed, plus one output-channel bias. There are C_out such filters. The count assumes groups=1, bias=True, and no separate normalization-layer parameters. Weight sharing makes this count independent of image height/width. Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="relu" class="slide level2 cnn29-slide">
+<h2>ReLU After Convolution</h2>
+<p><strong>ReLU</strong>, the <strong>rectified linear unit</strong>, applies <span class="math inline">\max(0,z)</span> separately to each entry <span class="math inline">z</span>.</p>
+<p><img data-src="imgs/drawio/lec29/relu.png" class="cnn29-wide" alt="ReLU changes the negative entries minus 9, minus 4, and minus 3 of our feature map to zero, leaving the six positive entries equal to 3."></p>
+<ul>
+<li>Convolution computes weighted sums and biases.</li>
+<li>ReLU adds a nonlinear transformation. It introduces no learned weights.</li>
+<li>Applying ReLU leaves the tensor’s shape unchanged.</li>
+</ul>
+<aside class="notes">
+<p>The figure applies ReLU to the exact completed toy convolution, not to a measured MNIST activation map. Stacking only affine transformations would still produce an affine transformation. ReLU enables a richer input/output mapping. This reconnects to Lecture 28. Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.ReLU.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="pooling" class="slide level2 cnn29-slide">
+<h2>Pooling: A Smaller Feature Map</h2>
+<p><strong>Pooling</strong> summarizes each small window. <strong>Max pooling</strong> keeps its largest value. <strong>Average pooling</strong> keeps its mean.</p>
+<p><img data-src="imgs/drawio/lec29/max-pooling.png" class="cnn29-pooling" alt="A separate four-by-four feature map splits into four colored two-by-two windows. Stride-two max pooling returns the two-by-two map with rows 6, 9 and 7, 8."></p>
+<p>This separate example uses <span class="math inline">2\times2</span> windows and stride <span class="math inline">2</span>, reducing <span class="math inline">4\times4</span> to <span class="math inline">2\times2</span>. Pooling operates on each channel independently and learns no weights.</p>
+<div class="takeaway">
+<p>Pooling reduces spatial detail. It can soften sensitivity to small shifts, but a shifted image can still produce a different result.</p>
+</div>
+<aside class="notes">
+<p>The pooling input is a different constructed grid, matching the original Beamer example. The four window maxima are 6, 9, 7, and 8. Ordinary max/average pooling uses no learned parameters. Do not promise exact translation invariance or that pooling necessarily prevents overfitting. Modern CNNs can also downsample using strided convolution, so pooling is a common option rather than a universal requirement. Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.MaxPool2d.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="classifier" class="slide level2 cnn29-slide">
+<h2>Feature Maps to Class Scores</h2>
+<p><strong>Flattening</strong> rearranges each image’s feature maps into a vector. A <strong>fully connected (FC)</strong> layer, also called a dense layer, combines its entries.</p>
+<p><img data-src="imgs/drawio/lec29/classifier.png" class="cnn29-classifier" alt="The notebook's 64 feature maps of size 14 by 14 flatten to 12,544 values, feed a 128-unit dense layer with ReLU, and then produce ten class scores."></p>
+<p>For the notebook, <span class="math inline">64\cdot14\cdot14=12{,}544</span> values enter the first FC layer.</p>
+<p>The final ten <strong>logits</strong> are raw scores, one per digit <span class="math inline">0</span> through <span class="math inline">9</span>. The predicted digit is the index of the largest score, called <strong>argmax</strong>.</p>
+<aside class="notes">
+<p>The layer dimensions are taken directly from the existing CNN notebook. Flattening preserves each example and only rearranges its feature entries. The intermediate 128-unit layer uses ReLU. The architecture also has dropout, defined explicitly on the next slide before the full pipeline. Logits can be negative, need not sum to one, and are not probabilities. Softmax can convert them to probabilities when wanted for display; it does not change their argmax. Some CNN classifiers instead use global average pooling, so this flatten-and-dense head is our example, not a requirement for all CNNs.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="cnn-shapes" class="slide level2 cnn29-slide">
+<h2>The Notebook’s CNN</h2>
+<p><strong>Dropout</strong> randomly zeroes some hidden activations during training. Our model uses a probability of <span class="math inline">0.5</span> before its final layer.</p>
+<p><img data-src="imgs/drawio/lec29/notebook-pipeline.png" class="cnn29-pipeline" alt="The notebook pipeline: one 28-by-28 input channel; 32-channel convolution and ReLU; 64-channel convolution and ReLU; one max-pooling layer to 14 by 14; flatten to 12,544; a 128-unit dense layer and ReLU; dropout; ten logits."></p>
+<p>Shapes in the diagram describe <strong>one image</strong>. PyTorch batches use order <span class="math inline">(B,C,H,W)</span>: <strong>batch size, channels, height, width</strong>.</p>
+<aside class="notes">
+<p>The diagram follows CNN.ipynb exactly: Conv2d(1,32,3,stride=1,padding=1), ReLU, Conv2d(32,64,3,stride=1,padding=1), ReLU, MaxPool2d(2,2), flatten, Linear(64<em>14</em>14,128), ReLU, Dropout(0.5), Linear(128,10). The two convolution outputs keep 28 by 28 spatial dimensions. Pooling changes that to 14 by 14. The batch dimension persists through flattening; it is not combined with the feature dimension. Dropout also rescales surviving activations during training. It acts as the identity in evaluation mode. Sources: the local CNN notebook and https://docs.pytorch.org/docs/stable/generated/torch.nn.Dropout.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="training-evaluation" class="slide level2 cnn29-slide">
+<h2>Training and Evaluation</h2>
+<p><strong>Cross-entropy</strong> is a classification loss that penalizes low probability for the correct class. PyTorch’s <code>CrossEntropyLoss</code> takes <strong>raw logits</strong> and integer digit labels, handling the probability calculation internally.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Control</th>
+<th>What it changes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>model.train()</code></td>
+<td>Enables training behavior, including dropout.</td>
+</tr>
+<tr class="even">
+<td><code>loss.backward()</code> and <code>optimizer.step()</code></td>
+<td>Compute gradients, then update parameters.</td>
+</tr>
+<tr class="odd">
+<td><code>model.eval()</code></td>
+<td>Disables dropout for ordinary prediction.</td>
+</tr>
+<tr class="even">
+<td><code>torch.no_grad()</code></td>
+<td>Stops recording gradient history. It does not disable dropout.</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p>Use both evaluation mode and disabled gradient tracking for the notebook’s test pass. Keep test examples separate from model selection.</p>
+</div>
+<aside class="notes">
+<p>This revisits the mode/gradient distinction from Lecture 27 in the concrete CNN setting. The ten-class index targets have integer dtype, normally torch.int64. Do not apply softmax before the standard CrossEntropyLoss used by the notebook. For hard class targets, that loss combines log-softmax with negative log likelihood. Evaluation mode does not itself turn off autograd. no_grad remains a supported API; inference_mode is another option with stronger restrictions. Hyperparameter/architecture choices should use validation data before a final test evaluation. Source: https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html and https://docs.pytorch.org/docs/stable/generated/torch.nn.Dropout.html.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="quick-check" class="slide level2 cnn29-slide scrollable">
+<h2>Quick Check</h2>
+<ol type="1">
+<li>Does moving a trained kernel to another patch create new weights?</li>
+<li>A <span class="math inline">28\times28</span> input uses a <span class="math inline">3\times3</span> kernel, stride <span class="math inline">1</span>, padding <span class="math inline">0</span>. What is the output side?</li>
+<li>Does <code>torch.no_grad()</code> switch off dropout?</li>
+</ol>
+<div class="fragment" data-fragment-index="0">
+<p><strong>1. No.</strong> Every position reuses the same learned weights and bias.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<p><strong>2. 26.</strong> <span class="math inline">(28-3)/1+1=26</span>. Adding padding <span class="math inline">1</span> would preserve side <span class="math inline">28</span>.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p><strong>3. No.</strong> <code>model.eval()</code> controls dropout. Gradient tracking is a separate setting.</p>
 </div>
 </section>
-<section id="what-to-remember" class="slide level2">
-<h2>What to Remember</h2>
+<section id="takeaways" class="slide level2 cnn29-slide">
+<h2>Takeaways</h2>
 <ul>
-<li>CNNs exploit local spatial structure.</li>
-<li>Convolution applies shared filters across an image.</li>
-<li>Stride and padding control the output size.</li>
-<li>Pooling downsamples feature maps.</li>
-<li>CNN classifiers typically end with flattening and fully connected layers.</li>
+<li>Convolution combines local connections with shared learned weights.</li>
+<li>A feature map records one filter’s response across positions.</li>
+<li>Stride and padding determine output height and width.</li>
+<li>Different output channels use different filters.</li>
+<li>ReLU adds nonlinearity. Pooling reduces spatial resolution.</li>
+<li>The classifier maps the resulting features to class scores.</li>
 </ul>
+<div class="takeaway">
+<p>Track the shape after each layer. A change to convolution or pooling can change the required FC input size.</p>
+</div>
+</section>
+<section id="notebook" class="slide level2 cnn29-slide scrollable">
+<h2>CNN Notebook and Homework 5</h2>
+<div class="cnn29-handoff">
+<div>
+<p><a href="../code_and_homework/CNN.html" target="_blank" rel="noopener">Open the CNN notebook</a></p>
+<p>Follow the same one-digit classifier:</p>
+<ol type="1">
+<li>Match every layer to the shape diagram.</li>
+<li>Train the shared filters and the dense layers.</li>
+<li>Evaluate on held-out images and inspect mistakes.</li>
+</ol>
+<p><a href="../homeworks/hw5.html" target="_blank" rel="noopener">Homework 5</a></p>
+</div>
+<p><img data-src="imgs/lec1/toy_robot_openclipart.svg" class="cnn29-robot" alt="Public-domain cartoon toy robot."></p>
+</div>
+<p><a href="https://docs.pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html" target="_blank" rel="noopener">Official PyTorch image-classifier tutorial</a></p>
 <p><a href="../asset_credits.html#lec29" class="asset-credit-link" target="_blank" rel="noopener">Asset credits</a></p>
+<aside class="notes">
+<p>The actual Python stays in the notebook. Reserve time for its training/evaluation demonstration and the homework introduction. This lecture uses the notebook’s one-digit example, without supplying a paired-digit homework solution. The toy robot is reused unchanged from Lecture 1, credited as public-domain OpenClipart artwork. The official linked tutorial uses a separate color-image task and is a supplementary reference, not an exact copy of our MNIST architecture.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 
 
 </section>
@@ -580,6 +796,13 @@ n=5,\quad f=3,\quad p=0,\quad s=1
         // devices. It is advisable to set this to a lower number than
         // viewDistance in order to save resources.
         mobileViewDistance: 2,
+
+        // Enable scroll view
+        view: 'slide',
+        scrollProgress: true,
+        scrollActivationWidth: 0,
+        scrollSnap: 'mandatory',
+        scrollLayout: 'full',
 
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
