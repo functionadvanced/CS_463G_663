@@ -219,21 +219,19 @@ Select a filename below to show its complete contents. These are the same files 
 <span id="cb1-5"><a href="#cb1-5"></a><span class="fu">## Setup</span></span>
 <span id="cb1-6"><a href="#cb1-6"></a></span>
 <span id="cb1-7"><a href="#cb1-7"></a><span class="in">```bash</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="ex">python</span> <span class="at">-m</span> venv .venv</span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="bu">source</span> .venv/bin/activate        <span class="co"># Windows: .venv\Scripts\activate</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="ex">python</span> check_setup.py</span>
-<span id="cb1-12"><a href="#cb1-12"></a><span class="in">```</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="ex">python</span> check_setup.py</span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="in">```</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a></span>
+<span id="cb1-12"><a href="#cb1-12"></a>The first run downloads MNIST into a local <span class="in">`data/`</span> directory.</span>
 <span id="cb1-13"><a href="#cb1-13"></a></span>
-<span id="cb1-14"><a href="#cb1-14"></a>The first run downloads MNIST into a local <span class="in">`data/`</span> directory.</span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="fu">## Files</span></span>
 <span id="cb1-15"><a href="#cb1-15"></a></span>
-<span id="cb1-16"><a href="#cb1-16"></a><span class="fu">## Files</span></span>
-<span id="cb1-17"><a href="#cb1-17"></a></span>
-<span id="cb1-18"><a href="#cb1-18"></a><span class="ss">- </span><span class="in">`hw5_starter.py`</span>: paired dataset, reproducibility helpers, loaders, plotting helper, and TODO interfaces.</span>
-<span id="cb1-19"><a href="#cb1-19"></a><span class="ss">- </span><span class="in">`check_setup.py`</span>: checks imports, data dimensions, labels, and batch construction.</span>
-<span id="cb1-20"><a href="#cb1-20"></a><span class="ss">- </span><span class="in">`requirements.txt`</span>: required Python packages.</span>
-<span id="cb1-21"><a href="#cb1-21"></a></span>
-<span id="cb1-22"><a href="#cb1-22"></a>Upload only <span class="in">`hw5submission.pdf`</span> to Canvas. Include the complete finished code in the PDF appendix.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="ss">- </span><span class="in">`hw5_starter.py`</span>: paired dataset, reproducibility helpers, loaders, plotting helper, and TODO interfaces.</span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="ss">- </span><span class="in">`check_setup.py`</span>: checks imports, data dimensions, labels, and batch construction.</span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="ss">- </span><span class="in">`requirements.txt`</span>: required Python packages.</span>
+<span id="cb1-19"><a href="#cb1-19"></a></span>
+<span id="cb1-20"><a href="#cb1-20"></a>Upload only <span class="in">`hw5submission.pdf`</span> to Canvas. Include the complete finished code in the PDF appendix.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>torch&gt;=2.2</span>
