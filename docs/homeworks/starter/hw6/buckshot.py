@@ -108,7 +108,6 @@ def legal_actions(state, player):
 def pass_control(state):
     player = state.current_player
     other = 1 - player
-    state.saw_active[player] = False
     if state.skip_next[other]:
         state.skip_next[other] = False
     else:
@@ -141,7 +140,11 @@ def describe(state):
 
 
 def run_game(agent0, agent1, training=False, seed=None, max_hp=7, verbose=False):
-    """Run one game and return winner index, decision count, and final state."""
+    """Run one game and return winner index, decision count, and final state.
+
+    see_result follows the acting agent's action; the opponent may move before
+    that agent's next choose_action. Both agents receive terminal results.
+    """
     if seed is not None:
         random.seed(seed)
     state = State(max_hp=max_hp, rng=random.Random(seed))
@@ -180,8 +183,9 @@ def run_game(agent0, agent1, training=False, seed=None, max_hp=7, verbose=False)
 
         if shell == 1:
             damage = 2 if state.saw_active[player] else 1
-            state.saw_active[player] = False
             state.hp[target] -= damage
+        # Every fired shot consumes the handsaw effect, including blanks.
+        state.saw_active[player] = False
         rack_shell(state)
 
         if state.hp[target] <= 0:
