@@ -42,7 +42,17 @@
 .reveal section.tree26-slide .tree26-trace img { max-height: 420px; margin: 0; }
 .reveal section.tree26-slide .tree26-trace .fragment { transition: none; }
 .reveal section.tree26-slide .tree26-gain { max-height: 275px; }
-.reveal section.tree26-slide .tree26-regression { max-height: 300px; }
+.reveal section.tree26-slide .tree26-regression { max-height: 200px; }
+.reveal #regression-tree .tree26-regression-math {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+.reveal #regression-tree .tree26-regression-math h3 {
+  font-size: 0.95em;
+  margin: 0.2em 0;
+}
+.reveal #regression-tree .tree26-regression-math .katex-display { margin: 0.3em 0; }
 .reveal section.tree26-slide .tree26-forest-training { max-height: 280px; }
 .reveal section.tree26-slide .tree26-forest-prediction { max-height: 175px; }
 .reveal section.tree26-slide .pseudo-code { font-size: 0.7em; line-height: 1.4; }

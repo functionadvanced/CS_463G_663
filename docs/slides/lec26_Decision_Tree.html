@@ -556,14 +556,22 @@ add child <span class="pseudo-fn">LearnTree</span>(<span class="pseudo-var">rows
 </section>
 <section id="regression-tree" class="slide level2 tree26-slide">
 <h2>Numeric Inputs and Regression Trees</h2>
-<p>A <strong>threshold</strong> is a numeric cut point, such as distance <span class="math inline">\leq3</span> km.</p>
-<p>A <strong>regression tree</strong> predicts a number. For squared-error fitting, each leaf predicts the <strong>mean</strong> training output in that leaf.</p>
+<p>For <strong>squared-error fitting</strong>, a <strong>regression tree</strong> splits at numeric <strong>thresholds</strong> (cut points) and predicts each <strong>leaf mean</strong>.</p>
 <p><img data-src="imgs/drawio/lec26/regression-tree.png" class="tree26-regression" alt="Illustrative delivery-time tree. Distance at most 3 km reaches durations 10,12,14 minutes and predicts mean 12. Longer distances reach durations 18,20,22 and predict mean 20 minutes."></p>
-<div class="fragment takeaway" data-fragment-index="0">
-<p>A new 4 km delivery route reaches the right leaf: predict <strong>20 minutes</strong>. The output is a duration, not a Yes/No label.</p>
-</div>
+<div class="columns two-column-balance tree26-regression-math">
+<div class="column tree26-node-mse" style="width:48%;">
+<h3 id="mean-squared-error-mse">Mean Squared Error (MSE)</h3>
+<p>For <span class="math inline">n</span> parent outputs <span class="math inline">y_i</span> with mean <span class="math inline">\bar y</span>:</p>
+<p><span class="math display">\operatorname{MSE}=\frac1n\sum_{i=1}^n(y_i-\bar y)^2=V.</span></p>
+<p><span class="math inline">V</span>: <strong>empirical variance</strong>, using <span class="math inline">n</span>, <strong>not</strong> <span class="math inline">n-1</span>.</p>
+</div><div class="column fragment" data-fragment-index="0" style="width:48%;">
+<h3 id="choosing-the-split">Choosing the Split</h3>
+<p>Left and right children: sizes <span class="math inline">n_L,n_R</span>, variances <span class="math inline">V_L,V_R</span>.</p>
+<p><span class="math display">G=V-\frac{n_LV_L+n_RV_R}{n_L+n_R}.</span></p>
+<p>Maximize <strong>variance reduction</strong> <span class="math inline">G</span>, replacing information gain.</p>
+</div></div>
 <aside class="notes">
-<p>In this invented example, training distances 1,2,3,4,5,6 km have durations 10,12,14,18,20,22 minutes. Thresholds 3 and 3.5 produce the same training partition. Each leaf mean minimizes that child’s squared residual sum. Compare numeric splits using squared errors rather than label entropy. Predictions are constant within a leaf, not sloping fitted lines. Reference: https://scikit-learn.org/stable/modules/tree.html#regression.</p>
+<p>In this invented example, training distances 1,2,3,4,5,6 km have durations 10,12,14,18,20,22 minutes. A new 4 km route reaches the right leaf and predicts 20 minutes. Thresholds 3 and 3.5 produce the same training partition. Each leaf mean minimizes that child’s squared residual sum. The displayed MSE uses the node’s own sample mean, so it is exactly empirical output variance with divisor n, not the unbiased sample-variance estimator with divisor n-1. For an arbitrary constant prediction c, MSE(c)=V+(c-mean)^2; equality to variance holds at c=mean. The split gain G is parent variance minus the record-count-weighted average child variance, where n=n_L+n_R. Equivalently, minimize the total sum of squared errors across children; do not average child MSEs equally when their record counts differ. Here the parent mean is 16 and its squared error sum is 112. Each child has squared error sum 8, so the total falls to 16; MSE falls from 112/6 to 16/6, a reduction of 16 square minutes. This is within-node output variance, not the variability of retrained trees discussed later. Other regression losses can use other criteria and leaf predictions; this slide assumes squared error. Predictions are constant within a leaf, not sloping fitted lines. References: https://scikit-learn.org/stable/modules/tree.html#regression-criteria and https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
