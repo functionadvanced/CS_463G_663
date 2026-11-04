@@ -129,6 +129,32 @@ def apply_item(state, player, item):
         state.skip_next[other] = True
 
 
+def apply_action(state, action):
+    """Apply one legal action to a loaded game and return the actor's reward."""
+    player = state.current_player
+    if action not in legal_actions(state, player):
+        raise ValueError(f"P{player} selected illegal action {action}")
+
+    if action in ALL_ITEMS:
+        apply_item(state, player, action)
+        return 0
+
+    shell = current_shell(state)
+    target = player if action == SHOOT_SELF else 1 - player
+    if shell == 1:
+        damage = 2 if state.saw_active[player] else 1
+        state.hp[target] -= damage
+    # Every fired shot consumes the handsaw effect, including blanks.
+    state.saw_active[player] = False
+    rack_shell(state)
+
+    if state.hp[target] <= 0:
+        return -1 if target == player else 1
+    if shell == 1 or target != player:
+        pass_control(state)
+    return 0
+
+
 def describe(state):
     remaining = remaining_shells(state)
     return (
@@ -161,35 +187,20 @@ def run_game(agent0, agent1, training=False, seed=None, max_hp=7, verbose=False)
         action = agents[player].choose_action(info)
         decisions += 1
 
-        if action not in legal_actions(state, player):
-            raise ValueError(f"P{player} selected illegal action {action}")
+        if verbose and action in (SHOOT_SELF, SHOOT_OTHER):
+            target_name = "self" if action == SHOOT_SELF else f"P{other}"
+            shell_name = "live" if current_shell(state) else "blank"
+            print(f"P{player} shoots {target_name}: {shell_name}")
 
+        reward = apply_action(state, action)
         if action in ALL_ITEMS:
-            apply_item(state, player, action)
-            agents[player].see_result(
-                0, observation(state, player), training
-            )
+            agents[player].see_result(0, observation(state, player), training)
             if verbose:
                 print(f"P{player} uses {ITEM_NAMES[action]}")
                 print(describe(state))
             continue
 
-        shell = current_shell(state)
-        target = player if action == SHOOT_SELF else other
-        if verbose:
-            target_name = "self" if target == player else f"P{other}"
-            shell_name = "live" if shell else "blank"
-            print(f"P{player} shoots {target_name}: {shell_name}")
-
-        if shell == 1:
-            damage = 2 if state.saw_active[player] else 1
-            state.hp[target] -= damage
-        # Every fired shot consumes the handsaw effect, including blanks.
-        state.saw_active[player] = False
-        rack_shell(state)
-
-        if state.hp[target] <= 0:
-            reward = -1 if target == player else 1
+        if reward:
             winner = other if reward == -1 else player
             agents[player].see_result(
                 reward, observation(state, player), training
@@ -201,9 +212,6 @@ def run_game(agent0, agent1, training=False, seed=None, max_hp=7, verbose=False)
                 print(describe(state))
                 print(f"P{winner} wins")
             return {"winner": winner, "decisions": decisions, "state": state}
-
-        if shell == 1 or target == other:
-            pass_control(state)
 
         agents[player].see_result(0, observation(state, player), training)
         if verbose:

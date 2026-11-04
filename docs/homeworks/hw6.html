@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Implement Actor-Critic and show how the agent’s winning rate changes during training.">
+<meta name="description" content="Implement Actor-Critic, measure its learning curve, and try the trained agent in the graphical game.">
 
 <title>Homework 6: Actor-Critic for Buckshot Roulette – CS 463G &amp; 663: (Intro to) AI</title>
 <style>
@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -141,9 +176,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#submission" id="toc-submission" class="nav-link active" data-scroll-target="#submission">Submission</a></li>
+  <li><a href="#play-the-starter-game" id="toc-play-the-starter-game" class="nav-link active" data-scroll-target="#play-the-starter-game">1. Play the starter game</a></li>
   <li><a href="#game-overview" id="toc-game-overview" class="nav-link" data-scroll-target="#game-overview">Game overview</a></li>
-  <li><a href="#starter-code" id="toc-starter-code" class="nav-link" data-scroll-target="#starter-code">Starter code</a></li>
+  <li><a href="#implement-the-agent" id="toc-implement-the-agent" class="nav-link" data-scroll-target="#implement-the-agent">2. Implement the agent</a></li>
+  <li><a href="#train-evaluate-and-try-your-agent" id="toc-train-evaluate-and-try-your-agent" class="nav-link" data-scroll-target="#train-evaluate-and-try-your-agent">3. Train, evaluate, and try your agent</a></li>
+  <li><a href="#submission" id="toc-submission" class="nav-link" data-scroll-target="#submission">Submission</a></li>
   </ul>
 </nav>
     </div>
@@ -153,12 +190,12 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Homework 6: Actor-Critic for Buckshot Roulette</h1>
-<p class="subtitle lead">Train an agent using reinforcement learning</p>
+<p class="subtitle lead">Train, evaluate, and play against a reinforcement learning agent</p>
 </div>
 
 <div>
   <div class="description">
-    Implement Actor-Critic and show how the agent’s winning rate changes during training.
+    Implement Actor-Critic, measure its learning curve, and try the trained agent in the graphical game.
   </div>
 </div>
 
@@ -176,10 +213,10 @@ ul.task-list li input[type="checkbox"] {
 
 
 <div class="assignment-meta">
-<span>Reinforcement learning</span><span>Python + PyTorch</span>
+<span>Reinforcement learning</span><span>Python + PyTorch</span><span>PySide6 game</span>
 </div>
 <div class="assignment-summary">
-<strong>Your goal:</strong> implement an AI agent for the supplied Buckshot Roulette game using the Actor-Critic reinforcement learning algorithm.
+<strong>Your goal:</strong> implement an Actor-Critic agent, measure how its win rate changes during training, and try the trained agent in the supplied graphical game.
 </div>
 <div class="assignment-facts">
 <div class="assignment-fact">
@@ -195,21 +232,29 @@ ul.task-list li input[type="checkbox"] {
 <strong>Starter</strong>Download below
 </div>
 </div>
-<section id="submission" class="level2">
-<h2 class="anchored" data-anchor-id="submission">Submission</h2>
-<p>Submit one PDF named <code>hw6submission.pdf</code> through Canvas. Late submissions follow the syllabus policy. Scoring is <strong>80% completeness and 20% correctness</strong>; this homework contributes <strong>10% of the course grade</strong>.</p>
-<p>Your PDF should include:</p>
-<ul>
-<li>A brief explanation of your Actor-Critic implementation: network structure, action selection, and training. You may use PyTorch, but avoid built-in Actor-Critic implementations.</li>
-<li>A plot or table showing how your agent’s winning rate against a reference agent (such as a random agent) changes during training.</li>
-<li>Your full source code at the end, including the agent class and training loop.</li>
-</ul>
-<p>You may consult the textbook, online materials, or large language models to understand the algorithm, including how to handle terminal states.</p>
+<div class="starter-download">
+<div>
+<span class="starter-download-label">Starter package</span><strong>Buckshot Actor-Critic</strong>
+<p>
+Graphical game, shared rules engine, unfinished agent, and training driver.
+</p>
+</div>
+<div class="starter-actions">
+<a class="btn btn-light" href="hw6-starter.html">View starter files</a><a class="btn btn-outline-light" href="downloads/hw6-starter.zip" download="">Download ZIP</a>
+</div>
+</div>
+<section id="play-the-starter-game" class="level2">
+<h2 class="anchored" data-anchor-id="play-the-starter-game">1. Play the starter game</h2>
+<p>Extract the ZIP and run these commands from the extracted <code>hw6</code> folder.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> check_environment.py</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> main.py</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In <strong>Settings</strong>, choose <strong>Human</strong> and <strong>Random</strong>, then click <strong>Save Settings</strong>. The shotgun rests beside the active player, and each player’s HP appears above their portrait. Click a portrait to shoot that player, or click an item in your tray to use it. Hover over an item to see its effect. The shell tray shows the remaining live and blank counts, and the move log records public outcomes. Use <strong>New Game</strong> to change players.</p>
 </section>
 <section id="game-overview" class="level2">
 <h2 class="anchored" data-anchor-id="game-overview">Game overview</h2>
-<p>Two players take turns using items and shooting themselves or the opponent. The supplied driver starts each player with <strong>7 HP</strong>, matching the previous source code. Each inventory holds up to four items; both players draw two items on a reload. The starting player is random.</p>
-<p>The shotgun holds 3-7 randomly ordered live and blank shells. A live shell deals one damage (two with an active handsaw). A blank self-shot keeps your turn; other shots pass control unless the opponent is handcuffed. Reload when no live shells remain. A player loses when their HP reaches zero.</p>
+<p>Two players take turns using items and shooting themselves or the opponent. Each player starts with <strong>7 HP</strong> and can hold up to four items. On each reload, each player draws up to two items, subject to the inventory limit. The starting player is random.</p>
+<p>The shotgun holds 3-7 randomly ordered live and blank shells. A live shell deals one damage (two with an active handsaw). A blank self-shot keeps your turn. Other shots pass control unless the opponent is handcuffed. The game reloads automatically when no live shells remain. A player loses when their HP reaches zero.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -228,7 +273,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td>Magnifying glass</td>
-<td>Reveals the next shell.</td>
+<td>Privately reveals the next shell to the player using it.</td>
 </tr>
 <tr class="odd">
 <td>Cigarette</td>
@@ -245,21 +290,30 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </section>
-<section id="starter-code" class="level2">
-<h2 class="anchored" data-anchor-id="starter-code">Starter code</h2>
-<p>Complete <code>ActorNetwork</code>, <code>CriticNetwork</code>, and <code>RLAgent</code> in <code>ai.py</code>, then use <code>train.py</code> to train and plot results. The environment supplies an 18-value observation and seven actions: the five items above (<code>0</code>-<code>4</code>), shoot self (<code>5</code>), and shoot opponent (<code>6</code>). The supplied mask helper excludes items you do not own.</p>
+<section id="implement-the-agent" class="level2">
+<h2 class="anchored" data-anchor-id="implement-the-agent">2. Implement the agent</h2>
+<p>Complete <code>ActorNetwork</code>, <code>CriticNetwork</code>, and <code>RLAgent</code> in <code>ai.py</code>. The actor returns seven action logits, and the critic estimates a scalar state value. Keep the networks on <code>self.actor</code> and <code>self.critic</code> so the supplied driver can save their weights and the GUI can load them.</p>
+<p>The shared rules engine gives the agent an 18-value observation from its own perspective. The seven actions are handsaw (<code>0</code>), magnifying glass (<code>1</code>), cigarette (<code>2</code>), beer (<code>3</code>), handcuffs (<code>4</code>), shoot self (<code>5</code>), and shoot opponent (<code>6</code>). Use the supplied action mask when sampling so the actor only selects legal actions.</p>
+<p>The game calls <code>choose_action(info)</code> when the agent acts and <code>see_result(result, info, training_flag)</code> to report outcomes. A win gives <code>+1</code>, a loss gives <code>-1</code>, and nonterminal actions give <code>0</code>. Both agents receive the terminal result. Apply learning updates only in training and clear any pending state at the end of each game.</p>
 <p>You may use the supporting code as-is, modify it, or write your own solution.</p>
-<div class="starter-download">
-<div>
-<span class="starter-download-label">Starter package</span><strong>Buckshot Actor-Critic</strong>
-<p>
-Game environment, unfinished agent, and example training driver.
-</p>
-</div>
-<div class="starter-actions">
-<a class="btn btn-light" href="hw6-starter.html">View starter files</a><a class="btn btn-outline-light" href="downloads/hw6-starter.zip" download="">Download ZIP</a>
-</div>
-</div>
+</section>
+<section id="train-evaluate-and-try-your-agent" class="level2">
+<h2 class="anchored" data-anchor-id="train-evaluate-and-try-your-agent">3. Train, evaluate, and try your agent</h2>
+<p>Run the training driver from the same folder.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> train.py</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The default run trains for 1,000 games against the random agent. It measures win rate before training and every 100 training games, using 200 evaluation games per measurement and alternating seats. Use <code>learning_curve.csv</code> or <code>learning_curve.png</code> for your report. Describe the opponent and evaluation protocol you used.</p>
+<p>The driver also saves the final network weights to <code>agent.pt</code>. From the same folder, run <code>python main.py</code>, choose <strong>Actor-Critic</strong> for one player and <strong>Random</strong> for the other, and watch a match to check that your trained agent plays legal moves. The GUI loads the weights for play. Use the headless evaluation games for your reported win rates.</p>
+</section>
+<section id="submission" class="level2">
+<h2 class="anchored" data-anchor-id="submission">Submission</h2>
+<p>Submit one PDF named <code>hw6submission.pdf</code> through Canvas. Late submissions follow the syllabus policy. Scoring is <strong>80% completeness and 20% correctness</strong>. This homework contributes <strong>10% of the course grade</strong>.</p>
+<p>Your PDF should include:</p>
+<ul>
+<li>A brief explanation of your Actor-Critic implementation covering network structure, action selection, and training. You may use PyTorch, but avoid built-in Actor-Critic implementations.</li>
+<li>A plot or table showing how your agent’s winning rate against a reference agent (such as a random agent) changes during training.</li>
+<li>A code appendix containing only your <code>ai.py</code> and any other source files you wrote or modified.</li>
+</ul>
+<p>You may consult the textbook, online materials, or large language models to understand the algorithm, including how to handle terminal states.</p>
 <nav class="assignment-nav">
 <a href="../homeworks/hw5.html">← Homework 5</a><a href="../homeworks/index.html">All assignments →</a>
 </nav>

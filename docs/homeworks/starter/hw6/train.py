@@ -1,6 +1,7 @@
 import csv
 
-import matplotlib.pyplot as plt
+import torch
+from matplotlib.figure import Figure
 
 from ai import RLAgent, RandomAgent, set_seed
 from buckshot import run_game
@@ -33,14 +34,12 @@ def save_history(history):
 
     x_values = [row[0] for row in history]
     y_values = [row[1] for row in history]
-    plt.figure(figsize=(7, 4))
-    plt.plot(x_values, y_values, marker="o")
-    plt.xlabel("Training games")
-    plt.ylabel("Winning rate vs. random agent")
-    plt.ylim(0, 1)
-    plt.grid(alpha=0.25)
-    plt.tight_layout()
-    plt.savefig("learning_curve.png", dpi=180)
+    figure = Figure(figsize=(7, 4), layout="tight")
+    axes = figure.subplots()
+    axes.plot(x_values, y_values, marker="o")
+    axes.set(xlabel="Training games", ylabel="Winning rate vs. random agent", ylim=(0, 1))
+    axes.grid(alpha=0.25)
+    figure.savefig("learning_curve.png", dpi=180)
 
 
 def main():
@@ -61,7 +60,11 @@ def main():
             print(f"checkpoint {game}: winning rate {rate:.3f}")
 
     save_history(history)
-    print("wrote learning_curve.csv and learning_curve.png")
+    torch.save(
+        {"actor": learner.actor.state_dict(), "critic": learner.critic.state_dict()},
+        "agent.pt",
+    )
+    print("wrote learning_curve.csv, learning_curve.png, and agent.pt")
 
 
 if __name__ == "__main__":
