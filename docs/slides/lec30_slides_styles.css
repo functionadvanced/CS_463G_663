@@ -27,8 +27,14 @@
 .reveal section.rl30-slide .rl30-loop { max-height: 260px; }
 .reveal section.rl30-slide .rl30-map { max-height: 250px; }
 .reveal section.rl30-slide .rl30-small-map { max-height: 190px; }
+.reveal #values .rl30-map { max-height: 130px; }
+.reveal #values .rl30-value-calculations { gap: 20px; align-items: flex-start; }
+.reveal #values .rl30-value-calculations h3 { font-size: 0.9em; margin: 0.15em 0; }
+.reveal #values .rl30-value-calculations .katex-display { font-size: 0.85em; margin: 0.25em 0; }
+.reveal #values .rl30-return-path { font-size: 0.85em; margin-top: 0.3em; }
 .reveal section.rl30-slide .rl30-timing { max-height: 230px; }
 .reveal section.rl30-slide .rl30-wide { max-height: 260px; }
+.reveal #models .rl30-wide { max-height: 190px; }
 .reveal section.rl30-slide .rl30-uncertainty { max-height: 240px; }
 .reveal section.rl30-slide .pseudo-code { font-size: 0.7em; line-height: 1.35; }
 .reveal section.rl30-slide .pseudo-line { min-height: 1.4em; white-space: nowrap; }

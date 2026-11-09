@@ -318,12 +318,32 @@ Peizhong Ju
 <section id="values" class="slide level2 rl30-slide">
 <h2>State Values and Action Values</h2>
 <p>A <strong>value</strong> predicts expected return. Let <span class="math inline">S_t</span> be the state and <span class="math inline">A_t</span> the chosen action at step <span class="math inline">t</span>. The expectation <span class="math inline">\mathbb E_\pi</span> averages outcomes while following policy <span class="math inline">\pi</span>.</p>
-<p><span class="math display">V^\pi(s)=\mathbb E_\pi[G_t\mid S_t=s].</span></p>
-<p><span class="math display">Q^\pi(s,a)=\mathbb E_\pi[G_t\mid S_t=s,A_t=a].</span></p>
+<p><span class="math display">V^\pi(s)=\mathbb E_\pi[G_t\mid S_t=s],\qquad
+Q^\pi(s,a)=\mathbb E_\pi[G_t\mid S_t=s,A_t=a].</span></p>
 <p><img data-src="imgs/drawio/lec30/route-values.png" class="rl30-map rl30-small-map" alt="Under pickup then deliver, values are 6.2 at D, 8 at J, and 0 at finished state F."></p>
-<p>For the highlighted policy: <span class="math inline">V^\pi(D)=6.2</span>. Choosing small <strong>once</strong>, then following <span class="math inline">\pi</span>, gives <span class="math inline">Q^\pi(D,\text{small})=4</span>.</p>
+<p>Use <span class="math inline">\gamma=0.9</span>, <span class="math inline">\pi(D)=\text{pickup}</span>, and <span class="math inline">\pi(J)=\text{deliver}</span>.</p>
+<div class="columns two-column-balance rl30-value-calculations">
+<div class="column fragment" data-fragment-index="0" style="width:47%;">
+<h3 id="state-values-follow-pi">State Values: Follow <span class="math inline">\pi</span></h3>
+<p><span class="math display">\begin{aligned}
+V^\pi(F)&amp;=0,\\
+V^\pi(J)&amp;=8+0.9\cdot0=8,\\
+V^\pi(D)&amp;=-1+0.9\cdot8=6.2.
+\end{aligned}</span></p>
+</div><div class="column fragment" data-fragment-index="1" style="width:53%;">
+<h3 id="action-values-choose-once-then-pi">Action Values: Choose Once, Then <span class="math inline">\pi</span></h3>
+<p><span class="math display">\begin{aligned}
+Q^\pi(D,\text{pickup})&amp;=-1+0.9\cdot8=6.2,\\
+Q^\pi(D,\text{small})&amp;=4+0.9\cdot0=4,\\
+Q^\pi(J,\text{deliver})&amp;=8+0.9\cdot0=8,\\
+Q^\pi(J,\text{return})&amp;=-1+0.9\cdot6.2=4.58.
+\end{aligned}</span></p>
+</div></div>
+<div class="rl30-return-path fragment" data-fragment-index="2">
+<p>Return <strong>once</strong>: <span class="math inline">J\to D\to J\to F</span>, giving <span class="math inline">-1+0.9(-1+0.9\cdot8)=4.58</span>.</p>
+</div>
 <aside class="notes">
-<p>State value follows the policy from the current state. Action value fixes the first action, then follows the policy afterward. In the example Q^pi(D,pickup)=6.2 and Q^pi(D,small)=4, while V^pi(J)=8 and V^pi(F)=0. The expectation accounts for stochastic policies and stochastic transitions in general; today’s base example has neither. We will use the shorter V(s) for a current estimate when it need not equal the exact value of any fixed policy.</p>
+<p>State value follows the policy from the current state. Action value fixes the first action, then follows the policy afterward. The expectation accounts for stochastic policies and stochastic transitions in general; today’s base example has neither. Work backward: F has no future rewards, J chooses deliver for 8 then terminates, and D chooses pickup for -1 then receives 8 one step later. Thus V^pi(F)=0, V^pi(J)=8, and V^pi(D)=-1+.9<em>8=6.2. Each Q uses the reward for its specified first action plus .9 times the V^pi of its successor. Q^pi(J,return) is not the value of returning forever: return once to D, then follow pi by picking up and delivering. Its rewards are -1, -1, 8, so its return is -1+.9</em>(-1)+.9^2*8=4.58. Q<sup>pi(s,pi(s))=V</sup>pi(s) for this deterministic policy; the other first actions need not have that value. The +4 and +8 rewards are received on entry to F, not counted again as a value at F. We will use the shorter V(s) for a current estimate when it need not equal the exact value of any fixed policy.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -338,7 +358,9 @@ Peizhong Ju
 </section>
 <section id="models" class="slide level2 rl30-slide">
 <h2>A Model and Experience</h2>
-<p>A <strong>model</strong> predicts consequences through <span class="math inline">P</span> and <span class="math inline">R</span>. <strong>Planning</strong> uses that model to compare future choices.</p>
+<p>A <strong>model</strong> specifies <span class="math inline">P</span> and <span class="math inline">R</span>. <strong>Planning</strong> uses it to compare future choices.</p>
+<p><span class="math inline">P(s'\mid s,a)</span>: probability of next state <span class="math inline">s'</span> after action <span class="math inline">a</span> in state <span class="math inline">s</span>.<br>
+<span class="math inline">R(s,a)</span>: expected immediate reward for action <span class="math inline">a</span> in state <span class="math inline">s</span>.</p>
 <p><img data-src="imgs/drawio/lec30/model-based-free.png" class="rl30-wide" alt="Model-based learning estimates transition and reward models from experience, then plans. Model-free learning estimates values or a policy directly from experience, without an explicit transition model."></p>
 <ul>
 <li><strong>Model-based RL</strong> learns <span class="math inline">P</span> and <span class="math inline">R</span>, then plans with them.</li>
