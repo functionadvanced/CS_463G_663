@@ -28,13 +28,23 @@
 .reveal section.value32-slide .value32-robot { max-height: 180px; }
 .reveal section.value32-slide .value32-sample { max-height: 185px; }
 .reveal section.value32-slide .value32-route { max-height: 220px; }
+.reveal section.value32-slide .value32-episodes { max-height: 230px; }
+.reveal #episode .katex-display { font-size: 0.9em; }
 .reveal section.value32-slide .value32-timing { max-height: 300px; }
 .reveal section.value32-slide .value32-choice { max-height: 200px; }
 .reveal section.value32-slide .value32-horizons { max-height: 235px; }
-.reveal section.value32-slide .value32-traces { max-height: 220px; }
-.reveal section.value32-slide .value32-network { max-height: 165px; }
+.reveal #n-step .value32-horizons { max-height: 215px; }
+.reveal section.value32-slide .value32-network { max-height: 240px; }
 .reveal section.value32-slide .value32-paper { font-size: 0.75em; line-height: 1.25; margin-top: 0.65em; }
-.reveal #dqn-variants th:first-child { width: 29%; }
+.reveal #dqn-details .value32-dqn-details { gap: 25px; align-items: flex-start; }
+.reveal #dqn-details .value32-dqn-details h3 { font-size: 0.95em; margin: 0.2em 0; }
+.reveal #dqn-details .value32-dqn-details ol { font-size: 0.9em; margin-top: 0.3em; }
+.reveal #dqn-details .katex-display { font-size: 0.88em; }
+.reveal #dqn-details .value32-variants { font-size: 0.82em; margin-top: 0.6em; }
+.reveal #td-comparison table { font-size: 0.8em; table-layout: fixed; }
+.reveal #td-comparison col:first-child { width: 17% !important; }
+.reveal #td-comparison col:nth-child(2) { width: 47% !important; }
+.reveal #td-comparison col:last-child { width: 36% !important; }
 .reveal section.value32-slide .pseudo-code { font-size: 0.75em; line-height: 1.4; }
 .reveal section.value32-slide .pseudo-line { min-height: 1.4em; white-space: nowrap; }
 .reveal section.value32-loop .pseudo-code { font-size: 0.68em; }

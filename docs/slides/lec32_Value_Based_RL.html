@@ -165,18 +165,18 @@ Peizhong Ju
   <p class="date">Fall 2026</p>
 </section>
 <section id="experience" class="slide level2 value32-slide">
-<h2>Learning from Experience</h2>
-<p><strong>Reinforcement learning (RL)</strong> learns how to act from rewards. <strong>Model-free</strong> methods learn values or a policy without constructing an explicit transition-and-reward model.</p>
+<h2>Learning an Unknown Delivery Service</h2>
+<p>The robot joins a <strong>new delivery service</strong>. Pickup may fail and delivery rewards vary. It knows the locations and actions, but not outcome probabilities or average rewards.</p>
 <div class="value32-intro">
 <p><img data-src="imgs/lec1/toy_robot_openclipart.svg" class="value32-robot" alt="Public-domain cartoon robot representing the learning agent."></p>
 <p><img data-src="imgs/drawio/lec32/observed-transition.png" class="value32-sample" alt="Observed experience: at depot D the robot takes pickup, receives reward minus one, and reaches pickup stop J."></p>
 </div>
-<p>A sample <span class="math inline">(s,a,r,s')</span> records the current <strong>state</strong>, <strong>action</strong>, observed <strong>reward</strong>, and <strong>next state</strong>.</p>
+<p>A sample <span class="math inline">(s,a,r,s')</span> records the <strong>state</strong>, <strong>action</strong>, observed <strong>reward</strong> (points), and <strong>next state</strong>. The shown <span class="math inline">-1</span> is one outcome, not a fixed pickup cost.</p>
 <div class="takeaway">
-<p>Learning uses these samples, not a supplied table of transition probabilities or expected rewards.</p>
+<p><strong>Model-free reinforcement learning (RL)</strong> learns values or a policy from these samples without constructing an explicit transition-and-reward model.</p>
 </div>
 <aside class="notes">
-<p>The delivery setting continues Lecture 30. Diagrams explain the setting to the class; the learner is not given its complete dynamics. A simulator may generate samples without exposing its transition table to the algorithm. Model-based RL can instead learn such a model and plan with it. This does not mean model-free methods lack learned representations. Original public-domain robot: https://openclipart.org/detail/325644/toy-robot. Background: the supplied Spring 2025 Value-Based RL Beamer lecture and https://inst.eecs.berkeley.edu/~cs188/textbook/rl/rl.html.</p>
+<p>This is a new stochastic delivery task, not the known deterministic model of Lecture 30. Reuse the location names D (depot), J (pickup stop), and F (finished) for continuity, but do not reuse its transition or reward table. Pickup may fail and leave the robot at D, and both job costs and delivery rewards can vary. The learner knows the available actions and the numeric feedback it receives, but not the outcome distributions or their probabilities. Assume these distributions are stationary and depend only on the current state and action. The diagrams show sampled attempts, not all possible outcomes or fixed edge rewards. Model-based RL could learn a model and plan with it. Model-free methods instead update values or a policy directly from experience; they can still learn representations. Even a deterministic task can require learning when its dynamics are unknown, but stochastic outcomes here make repeated experience visibly useful. Original public-domain robot: https://openclipart.org/detail/325644/toy-robot. Background: the supplied Spring 2025 Value-Based RL Beamer lecture and https://inst.eecs.berkeley.edu/~cs188/textbook/rl/rl.html.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -190,14 +190,17 @@ Peizhong Ju
       }</style></aside>
 </section>
 <section id="episode" class="slide level2 value32-slide">
-<h2>A Delivery Episode</h2>
-<p>A <strong>policy</strong> <span class="math inline">\pi</span> is an action rule. First evaluate a fixed policy: pick up at depot <span class="math inline">D</span>, then deliver from stop <span class="math inline">J</span>.</p>
-<p><img data-src="imgs/drawio/lec32/delivery-episode.png" class="value32-route" alt="One observed episode: D at step zero, pickup with reward minus one to J at step one, then deliver with reward eight to terminal F at step two."></p>
-<p>An <strong>episode</strong> is one run ending at terminal state <span class="math inline">F</span>. Its later value is zero: the task has finished.</p>
-<p>The <strong>return</strong> <span class="math inline">G_t</span> totals future rewards. The <strong>discount factor</strong> <span class="math inline">\gamma</span> weights each later reward by another factor. Use <strong><span class="math inline">\gamma=0.9</span></strong>:</p>
-<p><span class="math display">G_0=-1+0.9\cdot8=6.2,\qquad G_1=8.</span></p>
+<h2>Two Observed Episodes, Same Policy</h2>
+<p>A <strong>policy</strong> <span class="math inline">\pi</span> is an action rule: choose pickup at <span class="math inline">D</span> and deliver at <span class="math inline">J</span>. Each <strong>episode</strong> ends at terminal state <span class="math inline">F</span>, whose future value is zero.</p>
+<p><img data-src="imgs/drawio/lec32/delivery-episodes.png" class="value32-episodes" alt="Two observed episodes under the same policy. Episode 1: D, pickup with reward minus one to J, deliver with reward eight to F. Episode 2: pickup at D fails with reward minus two and leaves the robot at D; pickup then reaches J with reward minus one; delivery finishes at F with reward four."></p>
+<p>The <strong>return</strong> <span class="math inline">G_t</span> sums future rewards, weighted by successive powers of the <strong>discount factor</strong> <span class="math inline">\gamma=0.9</span>:</p>
+<p><span class="math display">\begin{aligned}
+\text{Episode 1: }G_0&amp;=-1+0.9\cdot8=6.2,\\
+\text{Episode 2: }G_0&amp;=-2+0.9(-1)+0.9^2\cdot4=0.34.
+\end{aligned}</span></p>
+<p>Use <strong>episode 1</strong> for the worked updates below. Its return from <span class="math inline">J</span> is <span class="math inline">G_1=8</span>.</p>
 <aside class="notes">
-<p>All rewards are fictional points. The small-job and return choices from Lecture 30 remain available, but the first prediction example follows the fixed pickup-then-deliver policy. Reward r_(t+1) arrives after the action at step t: r1=-1, r2=8. The +8 is received on entry to F; it is not also a terminal-state value. This two-transition episode is deterministic for easy arithmetic, not empirical robot data. After termination all further rewards and bootstrap values are zero.</p>
+<p>These are constructed possible sample traces, not empirical robot data and not a complete model. Rewards are fictional points. In episode 2 the first pickup fails: its next state is D again. The same policy therefore tries pickup again, then delivers at J. The action rule is deterministic, but its outcomes are stochastic. No success probabilities or expected rewards are supplied. Gamma multiplies the second reward once and the third reward twice, giving -2-.9+3.24=.34 for episode 2. Episode 1 is the selected two-transition trace used in all subsequent MC, TD, n-step, and lambda-return calculations. Its observed rewards are r1=-1 and r2=8, with G0=6.2 and G1=8. The +8 is received on entry to F and is not also a terminal-state value. After termination all further rewards and bootstrap values are zero. The additional small-job action at D and return action at J will be used later for control; their reward laws are also unknown. We do not claim that 6.2 or .34 is the true expected value of D, nor that two samples determine that expectation.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -215,6 +218,7 @@ Peizhong Ju
 <p>The <strong>state value</strong> <span class="math inline">V^\pi(s)</span> is expected return when starting at <span class="math inline">s</span> and following policy <span class="math inline">\pi</span>:</p>
 <p><span class="math display">V^\pi(s)=\mathbb E_\pi[G_t\mid s_t=s].</span></p>
 <p><span class="math inline">\mathbb E_\pi</span> averages over outcomes under that policy. Write <span class="math inline">V(s)</span> for the learner’s <strong>current estimate</strong>, which may be wrong.</p>
+<p>Episode 1’s <span class="math inline">G_0=6.2</span> is <strong>one sampled return</strong>. The true average <span class="math inline">V^\pi(D)</span> remains unknown.</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 20%">
@@ -243,7 +247,7 @@ Peizhong Ju
 <p><strong>Policy evaluation</strong>, also called prediction, estimates how well a given policy does. It does not yet change which actions the policy selects.</p>
 </div>
 <aside class="notes">
-<p>The initial estimates are stipulated, not values obtained by planning or earlier updates in this lecture. The exact fixed-policy values in this deterministic example are 6.2 at D, 8 at J, and 0 at F. The learner must estimate them from samples. We compare Monte Carlo and one-step TD using separate copies of this same initial value table. State values concern accumulated future reward, not merely the next reward. Lowercase s_t denotes the state observed at time t; the conditioning notation has its usual random-variable interpretation.</p>
+<p>The initial estimates are stipulated guesses, not values obtained by planning or by solving the new task. In particular, the two observed delivery rewards 8 and 4 do not establish an expected value of 6 without further sampling assumptions or known probabilities. The stochastic model’s true V^pi(D) and V^pi(J) are unknown. V(F)=0 is known because F terminates the task. We compare Monte Carlo and one-step TD using separate copies of the same initial estimate table and the same observed episode 1. State values concern accumulated future reward, not merely the next reward. Lowercase s_t denotes the state observed at time t; the conditioning notation has its usual random-variable interpretation.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -261,7 +265,7 @@ Peizhong Ju
 <p><strong>Monte Carlo (MC)</strong> evaluation learns from complete sampled returns. Wait for the episode to end so <span class="math inline">G_t</span> is known, then move the estimate toward it:</p>
 <p><span class="math display">V(s_t)\leftarrow V(s_t)+\alpha[G_t-V(s_t)].</span></p>
 <p>The <strong>learning rate</strong> <span class="math inline">\alpha</span> controls the adjustment size. We use <strong><span class="math inline">\alpha=0.5</span></strong>: move halfway toward the target.</p>
-<p>For the completed delivery episode, <span class="math inline">G_0=6.2</span> and the old <span class="math inline">V(D)=0</span>.</p>
+<p>For completed <strong>episode 1</strong>, <span class="math inline">G_0=6.2</span> and the old <span class="math inline">V(D)=0</span>.</p>
 <div class="fragment takeaway">
 <p><span class="math display">V(D)\leftarrow0+0.5(6.2-0)=3.1.</span> This is one update, not the exact value after learning has finished.</p>
 </div>
@@ -305,7 +309,7 @@ Peizhong Ju
       }</style></aside>
 </section>
 <section id="timing" class="slide level2 value32-slide">
-<h2>Same Episode, Different Update Timing</h2>
+<h2>Episode 1: Different Update Timing</h2>
 <p>Start both methods from <span class="math inline">V(D)=0</span>, <span class="math inline">V(J)=4</span>, <span class="math inline">V(F)=0</span>, with <span class="math inline">\gamma=0.9</span> and <span class="math inline">\alpha=0.5</span>.</p>
 <p><img data-src="imgs/drawio/lec32/update-timing.png" class="value32-timing" alt="Just after pickup with reward minus one: Monte Carlo waits for delivery; TD uses minus one plus 0.9 times the current J value four, giving target 2.6 and new D value 1.3."></p>
 <p>When delivery then gives <span class="math inline">8</span> and ends the episode:</p>
@@ -371,7 +375,7 @@ Peizhong Ju
 <p><strong>Control</strong> improves the action rule, rather than only evaluating a fixed one. An <strong>action value</strong> <span class="math inline">Q(s,a)</span> estimates return after choosing <span class="math inline">a</span> at <span class="math inline">s</span> and following the policy being evaluated afterward.</p>
 <p>A <strong>tabular</strong> method stores one number per state-action pair. Both methods below update toward a target <span class="math inline">y</span>:</p>
 <p><span class="math display">Q(s,a)\leftarrow Q(s,a)+\alpha[y-Q(s,a)].</span></p>
-<p>At <span class="math inline">D</span>, a small job finishes immediately; pickup goes to <span class="math inline">J</span>. A <strong>greedy</strong> choice takes the largest current <span class="math inline">Q</span>: if these estimates are <span class="math inline">4</span> and <span class="math inline">0</span>, it chooses the small job.</p>
+<p>At <span class="math inline">D</span>, choose a <strong>small job</strong> or try <strong>pickup</strong>. A <strong>greedy</strong> choice takes the largest current <span class="math inline">Q</span>: if these estimates are <span class="math inline">4</span> and <span class="math inline">0</span>, it chooses the small job.</p>
 <p><strong>Epsilon-greedy</strong> explores with probability <span class="math inline">\epsilon</span> by choosing uniformly among all available actions; otherwise it is greedy.</p>
 <div class="takeaway">
 <p>The table is still an estimate. Exploration can collect evidence about an action whose current estimate is too low.</p>
@@ -397,10 +401,10 @@ Peizhong Ju
 <li><strong>On-policy:</strong> learn about the same policy used to act.</li>
 <li><strong>Off-policy:</strong> the target policy can differ from the behavior policy.</li>
 </ul>
-<p>At <span class="math inline">J</span>, deliver finishes the job; return goes back to <span class="math inline">D</span>. After pickup gives <span class="math inline">-1</span>, the robot reaches <span class="math inline">J</span> and explores by selecting <strong>return</strong>:</p>
+<p>At <span class="math inline">J</span>, the actions are <strong>deliver</strong> and <strong>return</strong>. In another observed attempt, pickup gave <span class="math inline">-1</span> and reached <span class="math inline">J</span>. The robot now explores by selecting <strong>return</strong>:</p>
 <p><img data-src="imgs/drawio/lec32/behavior-choice.png" class="value32-choice" alt="At J, current Q values are six for deliver and one for return. Behavior selects the exploratory return action, while the greedy action is deliver."></p>
 <aside class="notes">
-<p>This is a different experience from the earlier fixed pickup-then-deliver episode: after reaching J the behavior policy selects return. The first pickup at D can also be exploratory under the displayed Q table. For the next two numerical updates, start independently from Q(D,pickup)=0, Q(J,deliver)=6, Q(J,return)=1, gamma=.9, and alpha=.5. Off-policy is about the relationship between behavior and target, not a promise that the target is already good or that exploration is unnecessary. SARSA’s name and Q-learning are introduced on their own slides, not in an unexplained list of algorithms.</p>
+<p>This is a different experience from episode 1: after an observed successful pickup, the behavior policy selects return at J. We observe the first transition and then select the next action; the outcome of return is not needed yet. The first pickup at D can also be exploratory under the displayed Q table. For the next two numerical updates, start independently from Q(D,pickup)=0, Q(J,deliver)=6, Q(J,return)=1, gamma=.9, and alpha=.5. These Q values are current guesses, not known model values. Off-policy is about the relationship between behavior and target, not a promise that the target is already good or that exploration is unnecessary. SARSA’s name and Q-learning are introduced on their own slides, not in an unexplained list of algorithms.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -513,19 +517,18 @@ Peizhong Ju
       }</style></aside>
 </section>
 <section id="dqn" class="slide level2 value32-slide">
-<h2>Deep Q-Networks: From Tables to Networks</h2>
-<p>A <strong>deep Q-network (DQN)</strong> replaces a Q table with a neural network <span class="math inline">Q_\theta(s,a)</span>, where <span class="math inline">\theta</span> denotes learned weights. DQN uses Q-learning, but <strong>not all Q-learning is DQN</strong>.</p>
-<p><img data-src="imgs/drawio/lec32/deep-q-network.png" class="value32-network" alt="A numerical representation of depot state D enters a Q network with shared learned weights. Its outputs estimate values for the available small-job and pickup actions, not action probabilities."></p>
-<ul>
-<li><strong>Experience replay:</strong> store past transitions and train on randomly sampled batches.</li>
-<li><strong>Target network:</strong> a separate, periodically refreshed network supplies bootstrap estimates, helping stabilize learning.</li>
-</ul>
+<h2>Deep Q-Networks: Predicting Action Values</h2>
+<p>A <strong>deep Q-network (DQN)</strong> uses a neural network <span class="math inline">Q_\theta(s,a)</span> to estimate action values. The shared weights <span class="math inline">\theta</span> are learned. DQN is a neural-network version of <strong>Q-learning</strong>.</p>
+<p>Input: the state vector <span class="math inline">(1,0,0)</span> means at <span class="math inline">D</span>, not <span class="math inline">J</span> or <span class="math inline">F</span>. The figure shows the two outputs for actions <strong>available at <span class="math inline">D</span></strong>.</p>
+<p><img data-src="imgs/drawio/lec32/dqn-action-values.png" class="value32-network" alt="State D is encoded by three inputs: at D equals one, at J equals zero, at F equals zero. Two hidden layers with shared learned weights feed action-value outputs. The displayed available actions have estimated returns four for small job and zero for pickup. Outputs for actions unavailable at D are omitted."></p>
+<div class="takeaway">
+<p>Greedy chooses <strong>small job</strong> because <span class="math inline">4&gt;0</span>. The outputs are estimated returns, not action probabilities.</p>
+</div>
 <div class="value32-paper">
 <p>Volodymyr Mnih et al.&nbsp;(2015), <a href="https://doi.org/10.1038/nature14236" target="_blank" rel="noopener"><em>Human-level control through deep reinforcement learning</em></a>, <strong>Nature</strong>.</p>
-<p>Earlier paper: Volodymyr Mnih et al.&nbsp;(2013), <a href="https://arxiv.org/abs/1312.5602" target="_blank" rel="noopener"><em>Playing Atari with Deep Reinforcement Learning</em></a>.</p>
 </div>
 <aside class="notes">
-<p>DQN stands for deep Q-network, also used to name the associated algorithm/agent. Q-learning is the broader method: it can use a table or a function approximator. Canonical DQN uses a trained online network, stored transitions for uniform experience replay, and a separate target network whose weights are held fixed between periodic copies. At a terminal transition the target remains just r. The network is fitted to targets with gradient-based updates rather than directly overwriting an individual table entry. Its shared weights can change predictions for several states/actions. The diagram shows only actions available at D; a full implementation must respect state-dependent action availability. It is a schematic, not a trained network or performance result. The original Atari work used a fixed set of game actions and image inputs. References are shown on the slide at first introduction: Mnih et al.&nbsp;(2013), https://arxiv.org/abs/1312.5602, and Mnih et al.&nbsp;(2015), https://doi.org/10.1038/nature14236. The 2015 paper’s first three, equally contributing authors are Volodymyr Mnih, Koray Kavukcuoglu, and David Silver.</p>
+<p>DQN stands for deep Q-network, also used to name the algorithm. Q-learning also includes tabular methods. The one-hot input is a toy encoding: each input indicates one of the three locations. The picture depicts two hidden layers schematically, not an architecture recommendation. Values 4 and 0 are illustrative current predictions, consistent with the earlier depot comparison, not measured outputs of a trained model. Q_theta(s,a) names an action’s entry in the network’s output vector. A full implementation can output all global actions and ignore invalid ones; only the two available depot outputs are drawn. Network weights stay the same for every state input, and training can change several predictions through these shared weights. The original DQN used Atari image inputs. Sources: Mnih et al.&nbsp;(2015), https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf, Figure 1 and Methods; earlier work: Mnih et al.&nbsp;(2013), Playing Atari with Deep Reinforcement Learning, https://arxiv.org/abs/1312.5602. The three equally contributing first authors of the 2015 paper are Volodymyr Mnih, Koray Kavukcuoglu, and David Silver.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -538,39 +541,31 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="dqn-variants" class="slide level2 value32-slide">
-<h2>Common DQN Variants and Extensions</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Variant or extension</th>
-<th>Main idea</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="https://arxiv.org/abs/1509.06461" target="_blank" rel="noopener"><strong>Double DQN</strong></a></td>
-<td>Select the next action with the trained network; evaluate it with the target network. This reduces overly optimistic estimates.</td>
-</tr>
-<tr class="even">
-<td><a href="https://arxiv.org/abs/1511.06581" target="_blank" rel="noopener"><strong>Dueling DQN</strong></a></td>
-<td>Learn state value and <strong>action advantage</strong>, an action’s score relative to that baseline, then combine both into Q estimates.</td>
-</tr>
-<tr class="odd">
-<td><a href="https://arxiv.org/abs/1511.05952" target="_blank" rel="noopener"><strong>Prioritized experience replay (PER)</strong></a></td>
-<td>Replay transitions with larger TD errors more often; corrective weights compensate for unequal sampling.</td>
-</tr>
-<tr class="even">
-<td><a href="https://arxiv.org/abs/1710.02298" target="_blank" rel="noopener"><strong>Rainbow</strong></a></td>
-<td>Combine several DQN improvements rather than choosing just one.</td>
-</tr>
-</tbody>
-</table>
-<div class="takeaway">
-<p>Double DQN changes target action selection, not just the number of networks. These extensions can be combined.</p>
+<section id="dqn-details" class="slide level2 value32-slide scrollable">
+<h2>Details of DQN</h2>
+<p>The <strong>online network</strong> has trainable weights <span class="math inline">\theta</span>. A <strong>target network</strong> uses a separate copy <span class="math inline">\theta^-</span>, held fixed between refreshes.</p>
+<div class="columns two-column-balance value32-dqn-details">
+<div class="column" style="width:46%;">
+<h3 id="training-with-replay">Training with Replay</h3>
+<ol type="1">
+<li>Store observed <span class="math inline">(s,a,r,s')</span> and terminal status in a <strong>replay buffer</strong>: a collection of past transitions.</li>
+<li>Sample a small random <strong>batch</strong> of transitions.</li>
+<li>Use <strong>backpropagation</strong> to reduce their average squared error, <span class="math inline">(y-Q_\theta(s,a))^2</span>, holding <span class="math inline">y</span> fixed.</li>
+<li>Periodically copy online weights into the target network.</li>
+</ol>
+</div><div class="column" style="width:54%;">
+<h3 id="target-for-one-transition">Target for One Transition</h3>
+<p>If the next state is terminal, <span class="math inline">y=r</span>. Otherwise, maximize over its available actions:</p>
+<p><span class="math display">y=r+\gamma\max_{a'}Q_{\theta^-}(s',a').</span></p>
+<p>For observed <span class="math inline">(D,\text{pickup},-1,J)</span>, suppose the target network’s estimates at <span class="math inline">J</span> are <span class="math inline">6</span> and <span class="math inline">1</span>:</p>
+<p><span class="math display">y=-1+0.9\max\{6,1\}=4.4.</span></p>
+<p>Fit <span class="math inline">Q_\theta(D,\text{pickup})</span> toward <strong><span class="math inline">4.4</span></strong>.</p>
+</div></div>
+<div class="value32-variants">
+<p>Variants and extensions include <a href="https://arxiv.org/abs/1509.06461" target="_blank" rel="noopener">Double DQN</a>, <a href="https://arxiv.org/abs/1511.06581" target="_blank" rel="noopener">Dueling DQN</a>, <a href="https://arxiv.org/abs/1511.05952" target="_blank" rel="noopener">prioritized experience replay</a>, and <a href="https://arxiv.org/abs/1710.02298" target="_blank" rel="noopener">Rainbow</a>.</p>
 </div>
 <aside class="notes">
-<p>The names link to primary papers. Double DQN: Hado van Hasselt, Arthur Guez, and David Silver, Deep Reinforcement Learning with Double Q-learning, AAAI 2016 (preprint 2015), https://arxiv.org/abs/1509.06461. Unlike standard DQN’s maximum over the target network’s own values, Double DQN selects a maximizing next action with the online network and evaluates that selected action with the target network. Dueling: Ziyu Wang, Tom Schaul, Matteo Hessel, Hado van Hasselt, Marc Lanctot, and Nando de Freitas, Dueling Network Architectures for Deep Reinforcement Learning, ICML 2016 (preprint 2015), https://arxiv.org/abs/1511.06581. The two streams are combined with an identifying normalization, typically subtracting the mean action-advantage output; a raw stream output should not be mistaken for an independently identified exact Q-minus-V. PER: Tom Schaul, John Quan, Ioannis Antonoglou, and David Silver, Prioritized Experience Replay, ICLR 2016 (preprint 2015), https://arxiv.org/abs/1511.05952. Importance-sampling weights correct the changed sampling distribution; partial correction is often annealed. Rainbow: Matteo Hessel et al., Rainbow: Combining Improvements in Deep Reinforcement Learning, AAAI 2018 (preprint 2017), https://arxiv.org/abs/1710.02298. It combines Double DQN, dueling architecture, prioritized replay, multi-step learning, distributional returns, and noisy-network exploration. These are established examples, not claims about the latest or universally best algorithm. PER is a replay extension, not a separate synonym for Q-learning.</p>
+<p>This is standard DQN with uniform replay and periodic hard target copies. The superscript minus labels a separate parameter copy, not negated weights. Initialize it from the online network, then keep it fixed between copies. Optimize only the online prediction for each sampled action, without differentiating through y. The example uses target-network values 6 and 1 as stipulated current estimates; no known transition or reward model supplies them. Averaging squared errors is the basic loss explanation; implementations may use a Huber loss and other refinements. Sources: Mnih et al.&nbsp;(2015), https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf, Algorithm 1; official PyTorch DQN tutorial, https://docs.pytorch.org/tutorials/intermediate/reinforcement_q_learning.html. That tutorial uses soft target updates and a Huber loss, so its implementation is not identical to this simplified hard-copy explanation. The linked variants are optional names, not additional algorithms developed in this lecture.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -584,16 +579,16 @@ Peizhong Ju
       }</style></aside>
 </section>
 <section id="n-step" class="slide level2 value32-slide">
-<h2>Multi-Step Returns</h2>
-<p>An <strong><span class="math inline">n</span>-step return</strong> uses <span class="math inline">n</span> observed rewards, then an estimated continuation:</p>
+<h2>n-Step TD</h2>
+<p><strong><span class="math inline">n</span>-step TD</strong> updates <span class="math inline">V</span> toward the <strong><span class="math inline">n</span>-step return</strong>:</p>
 <p><span class="math display">G_t^{(n)}=\sum_{k=0}^{n-1}\gamma^k r_{t+k+1}+\gamma^n V(s_{t+n}).</span></p>
 <p>Here <span class="math inline">n=1,2,\ldots</span> and <span class="math inline">k</span> indexes the rewards. At termination, stop and use no future value.</p>
 <p><img data-src="imgs/drawio/lec32/return-horizons.png" class="value32-horizons" alt="With the original V(J)=4, the one-step target at D is minus one plus 0.9 times four, or 2.6. Waiting for two rewards reaches terminal F and gives minus one plus 0.9 times eight, or 6.2."></p>
 <div class="takeaway">
-<p>TD(0) uses <span class="math inline">n=1</span>. More observed rewards require waiting longer.</p>
+<p>TD(0) is <strong>one-step TD</strong> (<span class="math inline">n=1</span>). Stop early if the episode ends.</p>
 </div>
 <aside class="notes">
-<p>Return to the original pickup-then-deliver episode and the original V(J)=4 for this horizon comparison. The bootstrapped value is a current estimate when the target is formed. The displayed formula applies when n transitions are available before or at termination; at termination V(F)=0. A general implementation truncates n at the remaining episode length. Larger n reduces dependence on a possibly inaccurate bootstrap estimate but adds sampled-reward variability; it is not universally better or a universal monotonic bias/variance theorem. Background: supplied Beamer n-step material and Sutton and Barto, second edition, Chapter 7.</p>
+<p>Return to observed episode 1 and the original estimate V(J)=4 for this horizon comparison. Its complete return is 6.2, not a known expected return for the stochastic task. The bootstrapped value is a current estimate when the target is formed. The displayed formula applies when n transitions are available before or at termination; at termination V(F)=0. A general implementation truncates n at the remaining episode length. Larger n reduces dependence on a possibly inaccurate bootstrap estimate but adds sampled-reward variability; it is not universally better or a universal monotonic bias/variance theorem. Background: supplied Beamer n-step material and Sutton and Barto, second edition, Chapter 7.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -607,10 +602,11 @@ Peizhong Ju
       }</style></aside>
 </section>
 <section id="lambda" class="slide level2 value32-slide">
-<h2>TD-Lambda: Blend Return Horizons</h2>
-<p><strong>TD(<span class="math inline">\lambda</span>)</strong> mixes different return horizons. The parameter <span class="math inline">0\leq\lambda\leq1</span> controls how much weight longer returns receive.</p>
-<p>For our <strong>two-step episode</strong>, the blended target is exactly:</p>
-<p><span class="math display">G_0^{(\lambda)}=(1-\lambda)\,2.6+\lambda\,6.2.</span></p>
+<h2>TD-Lambda: A Bridge from TD(0) to MC</h2>
+<p><strong>TD(<span class="math inline">\lambda</span>)</strong> blends targets, with <span class="math inline">0\leq\lambda\leq1</span> controlling the weight on longer returns.</p>
+<p>For <strong>observed episode 1</strong>, <span class="math inline">2.6=-1+0.9\cdot4</span> is the <strong>TD(0) target</strong>, using the estimate <span class="math inline">V(J)=4</span>. The <strong>Monte Carlo (MC) return</strong> is <span class="math inline">6.2=-1+0.9\cdot8</span>, using the complete episode’s observed rewards.</p>
+<p><span class="math display">G_0^{(\lambda)}=(1-\lambda)\underbrace{2.6}_{\text{TD(0) target}}
++\lambda\underbrace{6.2}_{\text{MC return}}.</span></p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -623,22 +619,22 @@ Peizhong Ju
 <tr class="odd">
 <td><span class="math inline">0</span></td>
 <td style="text-align: right;"><span class="math inline">2.6</span></td>
-<td>One-step TD target</td>
+<td>TD(0): one reward plus an estimate</td>
 </tr>
 <tr class="even">
 <td><span class="math inline">0.5</span></td>
 <td style="text-align: right;"><span class="math inline">4.4</span></td>
-<td>Equal mix of the two horizons</td>
+<td>Equal mix of TD(0) and MC</td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">1</span></td>
 <td style="text-align: right;"><span class="math inline">6.2</span></td>
-<td>Complete episode return</td>
+<td>MC: the complete sampled return</td>
 </tr>
 </tbody>
 </table>
 <div class="takeaway">
-<p>The zero in TD(0) refers to <span class="math inline">\lambda=0</span>, not to observing zero rewards. Longer episodes blend more than two horizons.</p>
+<p>TD(<span class="math inline">\lambda</span>) bridges <strong>TD(0)</strong> and <strong>MC</strong>. Longer episodes also blend intermediate return horizons.</p>
 </div>
 <aside class="notes">
 <p>This is the episodic forward-view lambda-return using the original estimates, not a claim that every online accumulating-trace update is identical to this fixed-target calculation. For H remaining transitions, the finite episodic weights are (1-lambda)*lambda^(n-1) for n=1,…,H-1 and residual lambda^(H-1) on the full return. They sum to one and correctly give the complete return at lambda=1. We deliberately avoid substituting lambda=1 into an unqualified infinite expression with prefactor 1-lambda. The target 4.4 at lambda=.5 coincides numerically with the earlier Q-learning target but arises from a different construction. References: Sutton and Barto, second edition, Chapter 12; https://www.davidsilver.uk/wp-content/uploads/2020/03/MC-TD.pdf.</p>
@@ -654,15 +650,45 @@ Peizhong Ju
           display:block!important;
       }</style></aside>
 </section>
-<section id="traces" class="slide level2 value32-slide">
-<h2>Eligibility Traces: Remember Recent States</h2>
-<p>An <strong>eligibility trace</strong> <span class="math inline">e(s)</span> is a temporary weight tracking recent visits. It lets a new TD error adjust earlier states too.</p>
-<p>Start traces at zero for each episode. Before each update, decay all traces by <span class="math inline">\gamma\lambda</span>, then add <span class="math inline">1</span> to the current state’s trace.</p>
-<p><img data-src="imgs/drawio/lec32/eligibility-traces.png" class="value32-traces" alt="After distinct visits D then J with gamma 0.9 and lambda 0.5, D's trace has decayed to 0.45 while current J has trace one. The TD error at J can adjust both states."></p>
-<p>Use the current TD error <span class="math inline">\delta_t</span> to update <strong>every</strong> state:</p>
-<p><span class="math display">V(s)\leftarrow V(s)+\alpha\delta_t e(s).</span></p>
+<section id="td-comparison" class="slide level2 value32-slide">
+<h2>Comparing TD Methods</h2>
+<p>For the same fixed policy, use <strong>episode 1</strong>: rewards <span class="math inline">-1</span>, then <span class="math inline">8</span>, <span class="math inline">\gamma=0.9</span>, <span class="math inline">V(J)=4</span>, and terminal <span class="math inline">V(F)=0</span>.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Target construction</th>
+<th>Target at <span class="math inline">D</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>TD(0)</strong></td>
+<td><strong>One</strong> observed reward plus a next-state estimate.</td>
+<td><span class="math inline">-1+0.9\cdot4=2.6</span></td>
+</tr>
+<tr class="even">
+<td><strong><span class="math inline">n</span>-step TD</strong></td>
+<td><strong>One chosen horizon</strong>: up to <span class="math inline">n</span> rewards, then bootstrap unless the episode ends.</td>
+<td><span class="math inline">n=1</span>: <span class="math inline">2.6</span><br><span class="math inline">n=2</span>: <span class="math inline">6.2</span> (MC here)</td>
+</tr>
+<tr class="odd">
+<td><strong>TD(<span class="math inline">\lambda</span>)</strong></td>
+<td>A <strong>weighted mixture</strong> of targets from different horizons.</td>
+<td><span class="math inline">\lambda=0</span>: <span class="math inline">2.6</span><br><span class="math inline">\lambda=0.5</span>: <span class="math inline">4.4</span><br><span class="math inline">\lambda=1</span>: <span class="math inline">6.2</span> (MC)</td>
+</tr>
+</tbody>
+</table>
+<div class="takeaway">
+<p><span class="math inline">n</span> chooses <strong>one horizon</strong>. <span class="math inline">\lambda</span> blends horizons. TD(0) is both the <strong><span class="math inline">n=1</span></strong> case and the <strong><span class="math inline">\lambda=0</span></strong> endpoint.</p>
+</div>
 <aside class="notes">
-<p>This is accumulating tabular TD(lambda): compute delta from pre-update V, set all e(s) &lt;- gamma<em>lambda</em>e(s), increment e(current) by 1, then update all V(s) using that same delta. After D then J without revisits, e(D)=.9*.5=.45 and e(J)=1. These are trace weights, not action probabilities; with repeated visits accumulating traces can exceed one. Reset traces at each true episode boundary, not after every transition. The diagram illustrates credit assignment without asserting that standard online traces exactly match an arbitrary frozen-value forward return; exact online forward/backward equivalence requires the appropriate true-online method. Background: supplied accumulating-trace Beamer material, Sutton and Barto Chapter 12, and https://arxiv.org/abs/1512.04087.</p>
+<p>This comparison concerns fixed-policy state-value prediction. The target is the quantity inside the correction, not the value after multiplying by alpha. All calculations use separate copies of the original estimates. Episode 1 has two transitions, so its one-step target at D is -1+.9<em>4=2.6 and its two-step target is the complete MC sampled return -1+.9</em>8=6.2. The two-step target has no continuation because F terminates the task. For this episode the lambda-return is (1-lambda)<em>2.6+lambda</em>6.2, giving 4.4 at lambda=.5. In a longer episode, n=2 generally still bootstraps and need not be MC; an n-step target stops at termination if it occurs before n transitions. The lambda comparison is the episodic forward view already introduced, not an eligibility-trace implementation. A complete forward-view mixture generally depends on later rewards; this table does not claim that all of its horizons become available after one step. The endpoint lambda=1 is the full MC return for an episodic task. The true expected state value remains unknown in the stochastic delivery service.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -724,8 +750,7 @@ Peizhong Ju
 <li>State values evaluate a policy; action values help improve choices.</li>
 <li>SARSA uses the selected next action; Q-learning uses a greedy target.</li>
 <li>DQN uses a neural Q-network, experience replay, and a target network.</li>
-<li>Multi-step returns and TD(<span class="math inline">\lambda</span>) combine longer experience with estimates.</li>
-<li>Eligibility traces distribute a TD error across recently visited states.</li>
+<li><span class="math inline">n</span>-step TD uses a chosen return horizon. TD(<span class="math inline">\lambda</span>) blends horizons.</li>
 </ul>
 <div class="takeaway">
 <p>Always identify the observed reward, the estimated continuation, and the policy that continuation represents.</p>
