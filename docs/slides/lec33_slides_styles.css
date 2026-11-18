@@ -30,9 +30,12 @@
 .reveal section.policy33-slide .policy33-routes { max-height: 260px; }
 .reveal section.policy33-slide .policy33-probabilities { max-height: 245px; }
 .reveal section.policy33-slide .policy33-timeline { max-height: 190px; }
-.reveal section.policy33-slide .policy33-baseline { max-height: 240px; }
+.reveal section.policy33-slide .policy33-baseline { max-height: 210px; }
 .reveal section.policy33-slide .policy33-loop-figure { max-height: 285px; }
 .reveal section.policy33-slide .policy33-transition { max-height: 170px; }
+.reveal #sample-updates table { font-size: 0.8em; }
+.reveal #sample-updates th,
+.reveal #sample-updates td { padding: 0.3em 0.4em; }
 .reveal section.policy33-slide .pseudo-code { font-size: 0.73em; line-height: 1.4; }
 .reveal section.policy33-slide .pseudo-line { min-height: 1.4em; white-space: nowrap; }
 .reveal section.policy33-loop .pseudo-code { font-size: 0.68em; }
