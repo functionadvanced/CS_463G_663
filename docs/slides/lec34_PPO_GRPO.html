@@ -397,11 +397,15 @@ Peizhong Ju
 <h2>Rollout Snapshot and Reference Policy</h2>
 <p>The <strong>reference policy</strong> <span class="math inline">\pi_{\text{ref}}</span> is a fixed SFT copy during this RLHF stage. It anchors behavior. The <strong>rollout snapshot</strong> <span class="math inline">\pi_{\text{old}}</span> is refreshed when collecting each new PPO batch.</p>
 <p><img data-src="imgs/drawio/lec34/policy-roles.png" class="opt34-roles" alt="The current trainable policy compares with the recent rollout snapshot for PPO probability ratios, and with the fixed SFT reference for KL regularization. These are different comparisons."></p>
-<p><strong>Kullback-Leibler (KL) divergence</strong> measures how one probability distribution differs from another. At a fixed text prefix, let <span class="math inline">P</span> be the current token distribution and <span class="math inline">Q</span> the reference:</p>
+<p>At a fixed prefix, <strong>Kullback-Leibler (KL) divergence</strong> compares <span class="math inline">P</span> (current) to <span class="math inline">Q</span> (reference):</p>
 <p><span class="math display">D_{\text{KL}}(P\|Q)=\sum_a P(a)\log\frac{P(a)}{Q(a)}.</span></p>
-<p>Optimize preference reward while penalizing this departure. A coefficient <span class="math inline">\beta\geq0</span> controls penalty strength. KL is zero for equal distributions and is asymmetric.</p>
+<p><strong>RLHF objective:</strong> maximize reward minus a reference penalty of strength <span class="math inline">\beta\geq0</span>:</p>
+<p><span class="math display">J_{\text{RLHF}}(\theta)=
+\mathbb E_{q,\,y\sim\pi_\theta(\cdot\mid q)}
+\left[s_\phi(q,y)-\beta\log
+\frac{\pi_\theta(y\mid q)}{\pi_{\text{ref}}(y\mid q)}\right].</span></p>
 <aside class="notes">
-<p>The sum ranges over token actions. Assume the reference has positive probability wherever the current policy does. KL is nonnegative in expectation/distribution form, although an individual sampled log-ratio can be negative. In language-model RLHF, a sampled token penalty uses beta*log(pi_old(token|prefix)/pi_ref(token|prefix)) when forming the fixed rollout rewards; the expected log-ratio gives a KL cost under the collection policy. A score from the reward model is added at response completion. The reference anchors the SFT behavior; the old snapshot supplies fixed denominators for recent-data importance ratios. They coincide initially but generally differ after training. PPO clipping alone does not enforce either KL bound. Source: Ouyang et al., Equation 2 and the per-token penalty discussion.</p>
+<p>The sum ranges over token actions. Assume the reference has positive probability wherever the current policy does. KL is asymmetric, zero for equal distributions, and nonnegative in distribution form, although an individual sampled log-ratio can be negative. The displayed objective is the PPO variant of Ouyang et al., Equation 2, without pretraining-data mixing. Its response log-ratio is the sum of the log-ratios for the generated tokens. In the PPO implementation on the next slide, compute those sampled penalties with the collection snapshot when forming the fixed rollout rewards. Add the score from the reward model at response completion. The reference anchors the SFT behavior; the old snapshot supplies fixed denominators for recent-data importance ratios. They coincide initially but generally differ after training. PPO clipping alone does not enforce either KL bound.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -624,16 +628,28 @@ L_{\text{DPO}}=-\log\sigma\!\left(\beta(u_\theta^+-u_\theta^-)\right).</span></p
 </section>
 <section id="token-update" class="slide level2 opt34-slide">
 <h2>GRPO Uses Token-Level Ratios</h2>
-<p>For response <span class="math inline">i</span>, let <span class="math inline">y_{i,t}</span> be token <span class="math inline">t</span> and <span class="math inline">y_{i,&lt;t}</span> the earlier tokens. The state <span class="math inline">s_{i,t}</span> contains prompt <span class="math inline">q</span> and that prefix.</p>
+<p>Token <span class="math inline">y_{i,t}</span> is action <span class="math inline">t</span> of response <span class="math inline">i</span> at prefix <span class="math inline">s_{i,t}</span> (prompt plus earlier tokens). All tokens of response <span class="math inline">i</span> share its group-relative advantage <span class="math inline">\hat A_i</span>.</p>
 <p><span class="math display">\rho_{i,t}=\frac{\pi_\theta(y_{i,t}\mid s_{i,t})}
-{\pi_{\text{old}}(y_{i,t}\mid s_{i,t})}.</span></p>
-<p>Use the same response weight <span class="math inline">\hat A_i</span> for its tokens in this final-reward example. Average the PPO-style scores <span class="math inline">\ell(\rho_{i,t},\hat A_i)</span> within each response, then across the group.</p>
-<p>For a token in a response with <span class="math inline">\hat A_i=1</span>, changing its probability from <span class="math inline">0.50</span> to <span class="math inline">0.65</span> gives <span class="math inline">\rho=1.3</span> and clipped score <span class="math inline">1.2</span>.</p>
-<div class="takeaway">
-<p>Clipping uses one ratio per generated token. The original GRPO objective adds a reference-policy KL penalty separately from the group-normalized reward.</p>
-</div>
+{\pi_{\text{old}}(y_{i,t}\mid s_{i,t})},
+\qquad
+\ell(\rho,\hat A)=\min\{\rho\hat A,\,
+\operatorname{clip}(\rho,1-\epsilon,1+\epsilon)\hat A\}.</span></p>
+<p>Maximize the mean group score on <span class="math inline">\pi_{\text{old}}</span> rollouts; <span class="math inline">T_i</span> is response <span class="math inline">i</span>’s token count:</p>
+<p><span class="math display">\begin{aligned}
+J_{\text{group}}(\theta)
+&amp;=\frac{1}{G}\sum_{i=1}^{G}\frac{1}{T_i}\sum_{t=1}^{T_i}
+\big[\ell(\rho_{i,t},\hat A_i)-\beta d_{i,t}\big],\\
+d_{i,t}&amp;=u_{i,t}-\log u_{i,t}-1,\qquad
+u_{i,t}=\frac{\pi_{\text{ref}}(y_{i,t}\mid s_{i,t})}
+{\pi_\theta(y_{i,t}\mid s_{i,t})}.
+\end{aligned}</span></p>
+<p><strong>Why KL?</strong> At one prefix, sample tokens from current policy <span class="math inline">P</span> and compare to reference <span class="math inline">Q</span>:</p>
+<p><span class="math display">\mathbb E_P[u]={\textstyle\sum_a} Q(a)=1
+\quad\Longrightarrow\quad
+\mathbb E_P[d]=\mathbb E_P[-\log u]=D_{\text{KL}}(P\|Q).</span></p>
 <aside class="notes">
-<p>This is the outcome-supervision form, where one final normalized score weights every token in a response. The original paper also considers process rewards, which give different per-token weights. The displayed ratio conditions on the full same prefix in numerator and denominator. It is not the product of ratios across a whole response. DeepSeekMath averages over tokens within each response and then responses, with a separate KL regularizer. Its sampled KL estimator uses u-log(u)-1 with u=pi_ref/pi_theta; the reference in that term is distinct from the old policy in the clipped ratio. A reference may be refreshed between outer training stages in the paper’s iterative variant; it stays fixed within the optimization stage illustrated here.</p>
+<p>This is the outcome-supervision form in DeepSeekMath, Equations 3 and 4, where one final normalized score weights every token in a response. For example, with A-hat=1 and epsilon=.2, increasing the saved token probability from .50 to .65 gives rho=1.3 and ell=min(1.3,1.2)=1.2. Clip constrains rho to the band shown in ell’s second argument. The displayed ratios use the same prefix in numerator and denominator, not entire-response probabilities. Average over tokens within each response and then over responses, keeping the penalty outside the clipped score. Beta controls its strength. The reference in d is distinct from the old policy in rho.</p>
+<p>Assume both distributions assign positive mass to the same tokens. In the expectation of u, P(a) cancels its denominator, leaving the sum of Q(a), which is 1. Thus adding u-1 to -log(u) keeps its current-policy expectation unchanged, but makes each sampled penalty nonnegative because log(u) &lt;= u-1. A single d is not the KL divergence. GRPO evaluates d on old-policy rollouts, so the current-policy expectation identity does not make the unweighted old-policy average unbiased after the policies diverge. The reference stays fixed within the training stage shown here.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

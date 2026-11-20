@@ -33,7 +33,7 @@
 .reveal section.opt34-slide .opt34-pipeline { max-height: 220px; }
 .reveal section.opt34-slide .opt34-dpo { max-height: 180px; }
 .reveal section.opt34-slide .opt34-pair { max-height: 205px; }
-.reveal section.opt34-slide .opt34-roles { max-height: 170px; }
+.reveal #reference .opt34-roles { max-height: 140px; }
 .reveal section.opt34-slide .opt34-group { max-height: 265px; }
 .reveal section.opt34-slide .opt34-paper { font-size: 0.74em; line-height: 1.25; margin-top: 0.6em; }
 .reveal section.opt34-slide .pseudo-code { font-size: 0.72em; line-height: 1.4; }
