@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Why Tabular TD(0) Converges – CS 463G &amp; 663: (Intro to) AI</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./assets/cs463-ai-icon.svg" rel="icon" type="image/svg+xml">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">CS 463G &amp; 663: (Intro to) AI</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./homeworks/index.html"> 
+<span class="menu-text">Assignments</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Resources</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="https://aima.cs.berkeley.edu/global-index.html">
+ <span class="dropdown-text">AIMA textbook</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://registrar.uky.edu/calendars/academic-calendar">
+ <span class="dropdown-text">UK Academic Calendar</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://registrar.uky.edu/calendars/examination-schedules">
+ <span class="dropdown-text">UK Examination Schedule</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#the-td0-update" id="toc-the-td0-update" class="nav-link active" data-scroll-target="#the-td0-update">The TD(0) update</a></li>
+  <li><a href="#assumptions-and-result" id="toc-assumptions-and-result" class="nav-link" data-scroll-target="#assumptions-and-result">Assumptions and result</a></li>
+  <li><a href="#a-one-state-example" id="toc-a-one-state-example" class="nav-link" data-scroll-target="#a-one-state-example">A one-state example</a></li>
+  <li><a href="#bellman-notation" id="toc-bellman-notation" class="nav-link" data-scroll-target="#bellman-notation">Bellman notation</a></li>
+  <li><a href="#step-1-bound-the-estimates" id="toc-step-1-bound-the-estimates" class="nav-link" data-scroll-target="#step-1-bound-the-estimates">Step 1: Bound the estimates</a></li>
+  <li><a href="#step-2-separate-the-correction-from-the-noise" id="toc-step-2-separate-the-correction-from-the-noise" class="nav-link" data-scroll-target="#step-2-separate-the-correction-from-the-noise">Step 2: Separate the correction from the noise</a></li>
+  <li><a href="#step-3-show-that-accumulated-noise-vanishes" id="toc-step-3-show-that-accumulated-noise-vanishes" class="nav-link" data-scroll-target="#step-3-show-that-accumulated-noise-vanishes">Step 3: Show that accumulated noise vanishes</a></li>
+  <li><a href="#step-4-show-that-the-remaining-error-vanishes" id="toc-step-4-show-that-the-remaining-error-vanishes" class="nav-link" data-scroll-target="#step-4-show-that-the-remaining-error-vanishes">Step 4: Show that the remaining error vanishes</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#what-td-error-tells-us" id="toc-what-td-error-tells-us" class="nav-link" data-scroll-target="#what-td-error-tells-us">What TD error tells us</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Why Tabular TD(0) Converges</h1>
+<p class="subtitle lead">Supplement to Lecture 32: Value-Based Model-Free RL</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<style>
+@media (max-width: 360px) {
+  #quarto-document-content .math.display .katex { font-size: 1em; }
+}
+</style>
+<p>Temporal-difference (TD) learning updates an estimate using another estimate. Why does that lead to the <strong>true value</strong> rather than preserving the initial errors?</p>
+<p>We prove convergence of <strong>tabular TD(0) for a fixed policy</strong>. The proof uses sampled transitions along Markov trajectories, including repeated episodes. It separates a TD update into a Bellman correction and sampling noise, shows that the accumulated effect of the noise vanishes, and then uses discounting to eliminate the remaining error.</p>
+<section id="the-td0-update" class="level2">
+<h2 class="anchored" data-anchor-id="the-td0-update">The TD(0) update</h2>
+<p>Fix a policy <span class="math inline">\pi</span>. Its true value <span class="math inline">v_\pi(s)</span> is the expected discounted return when starting from <span class="math inline">s</span> and following <span class="math inline">\pi</span>:</p>
+<p><span class="math display">
+v_\pi(s)=\mathbb E_\pi\!\left[
+\sum_{k=0}^{\infty}\gamma^k R_{k+1}
+\;\middle|\; S_0=s\right].
+</span></p>
+<p>Here <span class="math inline">k</span> counts steps along the trajectory, <span class="math inline">R_{k+1}</span> is the reward on its next transition, and <span class="math inline">\gamma</span> is the discount factor. For an episodic task, rewards after termination are zero in this definition. We are evaluating a policy, not searching for the optimal one.</p>
+<p>TD(0) keeps one estimate per state in a table <span class="math inline">V_t</span>. The index <span class="math inline">t</span> counts <strong>training updates across all episodes</strong>. In sample <span class="math inline">t</span>, the current state is <span class="math inline">S_t</span>, the reward is <span class="math inline">R_{t+1}</span>, and the observed successor is <span class="math inline">S'_t</span>. The successor need not be the next update’s current state <span class="math inline">S_{t+1}</span>: if the episode ends, the next update starts a new episode.</p>
+<p>From a finite, deterministic initial table <span class="math inline">V_0</span>, update only the entry for <span class="math inline">S_t</span>:</p>
+<p><span class="math display">
+\begin{aligned}
+\delta_t &amp;= R_{t+1}+\gamma V_t(S'_t)-V_t(S_t),\\
+V_{t+1}(S_t)&amp;=V_t(S_t)+\alpha_t\delta_t .
+\end{aligned}
+</span></p>
+<p><span class="math inline">\delta_t</span> is the <strong>TD error</strong>: the sampled target minus the current estimate. <span class="math inline">\alpha_t</span> is the learning rate. A terminal state’s value is fixed at zero, so an update that enters a terminal state uses just the observed reward as its target.</p>
+</section>
+<section id="assumptions-and-result" class="level2">
+<h2 class="anchored" data-anchor-id="assumptions-and-result">Assumptions and result</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Assumption</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>The state space is finite and the values are tabular.</td>
+<td>We can represent the exact values and bound the largest error over the whole table.</td>
+</tr>
+<tr class="even">
+<td>Actions are sampled from a fixed policy in a time-homogeneous Markov environment.</td>
+<td>Given the current state, the policy and environment give the same conditional law for the next transition throughout training.</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">0\le\gamma&lt;1</span>.</td>
+<td>Discounting makes the Bellman operator contract errors.</td>
+</tr>
+<tr class="even">
+<td>Rewards are bounded: <span class="math inline">\lvert R_{t+1}\rvert\le R_{\max}</span>.</td>
+<td>Values and sampling noise stay bounded.</td>
+</tr>
+<tr class="odd">
+<td>Every learned state is updated infinitely often, with suitable learning rates.</td>
+<td>Each entry receives enough updates to forget its initial error without letting noise accumulate indefinitely.</td>
+</tr>
+</tbody>
+</table>
+<p>Let <span class="math inline">a_t(s)=\alpha_t\mathbf 1\{S_t=s\}</span> be the learning rate actually applied to entry <span class="math inline">s</span> at time <span class="math inline">t</span>. The indicator is <span class="math inline">1</span> when that entry is updated and <span class="math inline">0</span> otherwise. For each learned state, require, with probability one,</p>
+<p><span class="math display">
+\begin{gathered}
+0\le a_t(s)\le 1,\\
+\sum_{t=0}^{\infty}a_t(s)=\infty,\qquad
+\sum_{t=0}^{\infty}a_t(s)^2&lt;\infty.
+\end{gathered}
+</span></p>
+<p>These <strong>Robbins–Monro conditions</strong> give an infinite total learning rate, but a finite total squared learning rate. A simple choice is <span class="math inline">\alpha_t=1/k</span> on the <span class="math inline">k</span>-th visit to the current state. Count visits to that state, not the total number of updates. Choose the rate before sampling the current transition. In episodic tasks these conditions apply only to learned (nonterminal) states.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Convergence theorem">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Convergence theorem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Under these assumptions, <span class="math inline">V_t(s)\to v_\pi(s)</span> for every state <span class="math inline">s</span>, <strong>almost surely</strong> (with probability one). This is a statement about the limit, not a claim that every update improves the estimate.</p>
+</div>
+</div>
+</section>
+<section id="a-one-state-example" class="level2">
+<h2 class="anchored" data-anchor-id="a-one-state-example">A one-state example</h2>
+<p>Suppose every step gives reward <span class="math inline">1</span> and returns to the same state. With <span class="math inline">\gamma=0.9</span>, the true value satisfies <span class="math inline">v=1+0.9v</span>, so <span class="math inline">v=10</span>. Starting at <span class="math inline">V=0</span>, full bootstrap updates <span class="math inline">V\leftarrow 1+0.9V</span> give:</p>
+<p><span class="math display">
+0\to 1\to 1.9\to 2.71\to\cdots\to10 .
+</span></p>
+<p>The target uses an imperfect estimate, yet the sequence converges. This deterministic example illustrates bootstrapping; the proof also handles random rewards, random next states, and one-entry-at-a-time updates.</p>
+</section>
+<section id="bellman-notation" class="level2">
+<h2 class="anchored" data-anchor-id="bellman-notation">Bellman notation</h2>
+<p>Let <span class="math inline">P=P_\pi</span> be the transition matrix under policy <span class="math inline">\pi</span>, so <span class="math inline">P(s,s')</span> is the probability of going from <span class="math inline">s</span> to <span class="math inline">s'</span>. A terminal state is treated as absorbing with zero further reward. <strong>Resets are not transitions in <span class="math inline">P</span></strong>; they provide starting states for new samples. Let <span class="math inline">r(s)</span> be the expected immediate reward at <span class="math inline">s</span>.</p>
+<p>For any vector <span class="math inline">x</span>, define its <strong>sup norm</strong> as <span class="math inline">\lVert x\rVert_\infty=\max_s\lvert x(s)\rvert</span>. Since <span class="math inline">(Px)(s)</span> is a weighted average,</p>
+<p><span class="math display">
+\begin{gathered}
+(Px)(s)=\sum_{s'}P(s,s')x(s'),\\
+\lvert (Px)(s)\rvert\le\lVert x\rVert_\infty .
+\end{gathered}
+</span></p>
+<p>The <strong>Bellman operator</strong> gives the expected one-step target for a table <span class="math inline">V</span>. The true value is its fixed point:</p>
+<p><span class="math display">
+T^\pi V=r+\gamma PV,\qquad v_\pi=T^\pi v_\pi .
+</span></p>
+<p>The proof tracks four quantities that the algorithm itself does not compute:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">e_t=V_t-v_\pi</span></td>
+<td>The true value-estimation error.</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\eta_{t+1}</span></td>
+<td>The sampled target minus its conditional expectation.</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">z_t</span></td>
+<td>The accumulated effect of the noise after averaging.</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">y_t=e_t-z_t</span></td>
+<td>The error remaining after removing <span class="math inline">z_t</span>. Here <span class="math inline">y_t</span> is an error vector, not the TD target.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="step-1-bound-the-estimates" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-bound-the-estimates">Step 1: Bound the estimates</h2>
+<p>Set</p>
+<p><span class="math display">
+B=\max\!\left\{\lVert V_0\rVert_\infty,\frac{R_{\max}}{1-\gamma}\right\}.
+</span></p>
+<p><span class="math inline">R_{\max}</span> bounds the <strong>magnitude</strong> of a reward. For example, we can take <span class="math inline">R_{\max}=5</span> if all rewards lie in <span class="math inline">[-5,-1]</span>. The argument also covers <span class="math inline">R_{\max}=0</span>.</p>
+<p>If <span class="math inline">\lVert V_t\rVert_\infty\le B</span>, every sampled target has magnitude at most <span class="math inline">R_{\max}+\gamma B\le B</span>. The updated entry is a <strong>convex combination</strong>, an average with nonnegative weights that sum to one:</p>
+<p><span class="math display">
+\begin{aligned}
+V_{t+1}(S_t)={}&amp;(1-\alpha_t)V_t(S_t)\\
+&amp;+\alpha_t\big[R_{t+1}+\gamma V_t(S'_t)\big].
+\end{aligned}
+</span></p>
+<p>Both quantities being averaged lie in <span class="math inline">[-B,B]</span>. The other entries do not change, so <span class="math inline">\lVert V_t\rVert_\infty\le B</span> for every <span class="math inline">t</span> by induction. Also <span class="math inline">\lVert v_\pi\rVert_\infty\le R_{\max}/(1-\gamma)\le B</span>, so <span class="math inline">e_t</span> is bounded.</p>
+</section>
+<section id="step-2-separate-the-correction-from-the-noise" class="level2">
+<h2 class="anchored" data-anchor-id="step-2-separate-the-correction-from-the-noise">Step 2: Separate the correction from the noise</h2>
+<p>Let <span class="math inline">\mathcal F_t</span> be the information available at the current state: the past, <span class="math inline">S_t</span>, <span class="math inline">V_t</span>, and the chosen learning rate. It excludes the current action, reward, and successor state, which have not yet been sampled.</p>
+<p>The conditional mean of the sampled target is <span class="math inline">(T^\pi V_t)(S_t)</span>. Define the difference:</p>
+<p><span class="math display">
+\begin{aligned}
+\eta_{t+1}={}&amp;R_{t+1}+\gamma V_t(S'_t)\\
+&amp;-(T^\pi V_t)(S_t),\\
+\mathbb E[\eta_{t+1}\mid\mathcal F_t]={}&amp;0.
+\end{aligned}
+</span></p>
+<p>The target and its conditional mean both lie in <span class="math inline">[-B,B]</span>, so <span class="math inline">\lvert\eta_{t+1}\rvert\le 2B</span>. <strong>Conditional mean zero</strong> does not require independent transitions. Consecutive samples can be correlated.</p>
+<p>The TD error is therefore</p>
+<p><span class="math display">
+\delta_t=(T^\pi V_t)(S_t)-V_t(S_t)+\eta_{t+1}.
+</span></p>
+<p>To get the error update, first write the estimated-value update for any state:</p>
+<p><span class="math display">
+\begin{aligned}
+V_{t+1}(s)={}&amp;(1-a_t(s))V_t(s)\\
+&amp;+a_t(s)\big[(T^\pi V_t)(s)+\eta_{t+1}\big].
+\end{aligned}
+</span></p>
+<p>The scalar noise comes from the transition at <span class="math inline">S_t</span>. For every other state, <span class="math inline">a_t(s)=0</span>, so it has no effect there.</p>
+<p>The Bellman equation gives the matching identity for the true value:</p>
+<p><span class="math display">
+\begin{aligned}
+v_\pi(s)={}&amp;(1-a_t(s))v_\pi(s)\\
+&amp;+a_t(s)(T^\pi v_\pi)(s).
+\end{aligned}
+</span></p>
+<p>Subtract the identities. The <span class="math inline">r(s)</span> terms cancel, and linearity gives <span class="math inline">PV_t-Pv_\pi=P(V_t-v_\pi)=Pe_t</span>. Thus</p>
+<p><span class="math display">
+\begin{aligned}
+e_{t+1}(s)={}&amp;(1-a_t(s))e_t(s)\\
+&amp;+a_t(s)\gamma(Pe_t)(s)\\
+&amp;+a_t(s)\eta_{t+1}.
+\end{aligned}
+\tag{1}
+</span></p>
+<p>The new error combines the old entry, a discounted average of other entries’ errors, and sampling noise. We need to control both the averaging and the noise.</p>
+</section>
+<section id="step-3-show-that-accumulated-noise-vanishes" class="level2">
+<h2 class="anchored" data-anchor-id="step-3-show-that-accumulated-noise-vanishes">Step 3: Show that accumulated noise vanishes</h2>
+<p>Define an auxiliary process starting at <span class="math inline">z_0(s)=0</span>:</p>
+<p><span class="math display">
+\begin{aligned}
+z_{t+1}(s)={}&amp;(1-a_t(s))z_t(s)\\
+&amp;+a_t(s)\eta_{t+1}.
+\end{aligned}
+\tag{2}
+</span></p>
+<p>Equation (2) uses the same old-value weight and noise term as (1). Later we subtract it to cancel the raw noise. Since the updates are convex combinations of bounded quantities, <span class="math inline">\lvert z_t(s)\rvert\le 2B</span>.</p>
+<section id="the-robbinssiegmund-lemma" class="level3">
+<h3 class="anchored" data-anchor-id="the-robbinssiegmund-lemma">The Robbins–Siegmund lemma</h3>
+<p>We use the following form of the <a href="https://hankyang.seas.harvard.edu/OptimalControlReinforcementLearning/value-rl.html">Robbins–Siegmund lemma</a>. Suppose <span class="math inline">X_t\ge 0</span> has finite expectation and is <strong>adapted</strong> to <span class="math inline">\mathcal F_t</span>, meaning its value is known at time <span class="math inline">t</span>. Suppose</p>
+<p><span class="math display">
+\mathbb E[X_{t+1}\mid\mathcal F_t]\le X_t-b_t+c_t,
+</span></p>
+<p>where <span class="math inline">b_t,c_t</span> are nonnegative and known at time <span class="math inline">t</span>. If <span class="math inline">\sum_t c_t&lt;\infty</span> almost surely, then <span class="math inline">X_t</span> converges to a finite limit and <span class="math inline">\sum_t b_t&lt;\infty</span> almost surely. In our application, the deterministic bounds ensure the expectations exist.</p>
+</section>
+<section id="apply-the-lemma" class="level3">
+<h3 class="anchored" data-anchor-id="apply-the-lemma">Apply the lemma</h3>
+<p>Fix a state <span class="math inline">s</span> and write <span class="math inline">a=a_t(s)</span> and <span class="math inline">z=z_t(s)</span>. Square (2) and take the conditional expectation. The cross term <span class="math inline">2a(1-a)z\,\mathbb E[\eta_{t+1}\mid\mathcal F_t]</span> is zero. With <span class="math inline">C=4B^2</span>, the remaining terms satisfy</p>
+<p><span class="math display">
+\begin{aligned}
+&amp;\mathbb E[z_{t+1}(s)^2\mid\mathcal F_t]\\
+&amp;\quad=(1-a)^2 z^2
+   +a^2\mathbb E[\eta_{t+1}^2\mid\mathcal F_t]\\
+&amp;\quad\le (1-a)z^2+C a^2\\
+&amp;\quad= z^2-a z^2+C a^2.
+\end{aligned}
+</span></p>
+<p>Here we used <span class="math inline">(1-a)^2\le 1-a</span> and <span class="math inline">\lvert\eta_{t+1}\rvert\le 2B</span>. Apply the lemma with <span class="math inline">X_t=z_t(s)^2</span>, <span class="math inline">b_t=a_t(s)z_t(s)^2</span>, and <span class="math inline">c_t=C a_t(s)^2</span>. The squared learning rates are summable, so <span class="math inline">z_t(s)^2</span> converges and <span class="math inline">\sum_t a_t(s)z_t(s)^2&lt;\infty</span> almost surely.</p>
+<p>The limit cannot be positive. If it were <span class="math inline">\ell&gt;0</span>, then eventually <span class="math inline">z_t(s)^2\ge\ell/2</span>. Since the tail sum of <span class="math inline">a_t(s)</span> is infinite, the sum of <span class="math inline">a_t(s)z_t(s)^2</span> would be infinite too, a contradiction. Thus <span class="math inline">z_t(s)\to 0</span> almost surely. There are finitely many states, so <span class="math inline">\lVert z_t\rVert_\infty\to0</span> almost surely.</p>
+<p><strong>What vanishes is the accumulated effect of the averaged noise.</strong> Individual noise samples <span class="math inline">\eta_{t+1}</span> can stay large.</p>
+</section>
+</section>
+<section id="step-4-show-that-the-remaining-error-vanishes" class="level2">
+<h2 class="anchored" data-anchor-id="step-4-show-that-the-remaining-error-vanishes">Step 4: Show that the remaining error vanishes</h2>
+<p>Set <span class="math inline">y_t=e_t-z_t</span>. Subtract (2) from (1) and substitute <span class="math inline">e_t=y_t+z_t</span>:</p>
+<p><span class="math display">
+\begin{aligned}
+&amp;y_{t+1}(s)=(1-a_t(s))y_t(s)\\
+&amp;\quad+a_t(s)\gamma[P(y_t+z_t)](s).
+\end{aligned}
+\tag{3}
+</span></p>
+<p>Both <span class="math inline">e_t</span> and <span class="math inline">z_t</span> are bounded, so <span class="math inline">y_t</span> is bounded. Let <span class="math inline">L=\limsup_{t\to\infty}\lVert y_t\rVert_\infty</span>, the largest error level that recurs arbitrarily late. Work on a sample path where <span class="math inline">\lVert z_t\rVert_\infty\to0</span> and the learning-rate conditions hold. For any <span class="math inline">\varepsilon&gt;0</span>, choose <span class="math inline">T</span> large enough that for all <span class="math inline">t\ge T</span>,</p>
+<p><span class="math display">
+\lVert y_t\rVert_\infty\le L+\varepsilon,\qquad
+\lVert z_t\rVert_\infty\le\varepsilon .
+</span></p>
+<p>Because <span class="math inline">P</span> takes weighted averages, the target in (3) has magnitude at most <span class="math inline">C_\varepsilon=\gamma(L+2\varepsilon)</span>. Each entry averages its old value with these bounded targets. Iterating (3) in absolute value gives</p>
+<p><span class="math display">
+\lvert y_t(s)\rvert
+\le C_\varepsilon+\lvert y_T(s)\rvert
+\prod_{u=T}^{t-1}(1-a_u(s)).
+</span></p>
+<p>The product is the surviving weight of the old entry. By <span class="math inline">1-x\le e^{-x}</span>,</p>
+<p><span class="math display">
+\begin{gathered}
+\prod_{u=T}^{t-1}(1-a_u(s))\\
+\le \exp\!\left(-\sum_{u=T}^{t-1}a_u(s)\right)
+\longrightarrow 0 .
+\end{gathered}
+</span></p>
+<p>The upper bound goes to zero because <span class="math inline">\sum_u a_u(s)=\infty</span> for each learned state. Therefore <span class="math inline">\limsup_t\lvert y_t(s)\rvert\le C_\varepsilon</span>. Terminal entries are already zero. Since there are finitely many states, we can take the maximum:</p>
+<p><span class="math display">
+L=\max_s\limsup_{t\to\infty}\lvert y_t(s)\rvert
+\le \gamma(L+2\varepsilon).
+</span></p>
+<p>Letting <span class="math inline">\varepsilon</span> go to zero gives <span class="math inline">L\le\gamma L</span>. Since <span class="math inline">L\ge0</span> and <span class="math inline">\gamma&lt;1</span>, this forces <span class="math inline">L=0</span>. Hence <span class="math inline">y_t\to0</span> on every such sample path.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>We proved that both <span class="math inline">z_t</span> and <span class="math inline">y_t</span> converge to zero almost surely. Since <span class="math inline">V_t-v_\pi=e_t=y_t+z_t</span>, we have <span class="math inline">V_t(s)\to v_\pi(s)</span> for every state, almost surely.</p>
+<p>The noise-filtering argument is a bounded-reward, no-delay version of the asynchronous stochastic-approximation approach in <a href="https://www.mit.edu/~jnt/Papers/J052-94-jnt-q.pdf">Tsitsiklis (1994), <em>Asynchronous Stochastic Approximation and Q-Learning</em></a> (Lemma 1 and Theorem 3).</p>
+</section>
+<section id="what-td-error-tells-us" class="level2">
+<h2 class="anchored" data-anchor-id="what-td-error-tells-us">What TD error tells us</h2>
+<p>Holding the current table fixed, the conditional mean of the TD error is</p>
+<p><span class="math display">
+\mathbb E[\delta_t\mid\mathcal F_t]
+=(T^\pi V_t)(S_t)-V_t(S_t).
+</span></p>
+<p>TD error is a noisy observation of <strong>Bellman inconsistency</strong>: the gap between the expected one-step target and the current estimate. Its conditional mean is generally not the true estimation error <span class="math inline">v_\pi(S_t)-V_t(S_t)</span>.</p>
+<p>At the correct value, the conditional mean TD error is zero at each state, but individual sampled errors can still be nonzero. Neither a single sampled error nor a small signed average across different states certifies that the table is correct: positive and negative errors can cancel.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script>
+  (function () {
+    var offsetMeta = document.querySelector('meta[name="quarto:offset"]');
+    var offset = offsetMeta ? offsetMeta.getAttribute("content") : "./";
+    var script = document.createElement("script");
+    script.src = offset + "assets/neural-background.js";
+    document.currentScript.after(script);
+  }());
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
